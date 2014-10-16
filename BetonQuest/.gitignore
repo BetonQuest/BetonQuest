@@ -2,4 +2,5 @@
 /.project
 /.classpath
 /.settings/
-/target/
+/resources/
+/src/
