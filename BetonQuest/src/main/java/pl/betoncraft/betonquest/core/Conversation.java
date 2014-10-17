@@ -8,5 +8,14 @@ package pl.betoncraft.betonquest.core;
  * @author Co0sh
  */
 public class Conversation {
+	
+	/**
+	 * Constructor method
+	 * @param playerID
+	 * @param conversationID
+	 */
+	public Conversation(String playerID, String conversationID) {
+		
+	}
 
 }

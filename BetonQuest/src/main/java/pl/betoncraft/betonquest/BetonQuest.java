@@ -10,6 +10,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	private static BetonQuest instance;
 	private MySQL MySQL;
+	private ConfigAccessor conversations = new ConfigAccessor(getInstance(), "conversations.yml");
 	
 	@Override
 	public void onEnable() {
@@ -43,5 +44,12 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public MySQL getMySQL() {
 		return MySQL;
+	}
+
+	/**
+	 * @return the conversations
+	 */
+	public ConfigAccessor getConversations() {
+		return conversations;
 	}
 }
