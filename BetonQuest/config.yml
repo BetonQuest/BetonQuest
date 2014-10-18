@@ -4,3 +4,5 @@ mysql:
   user: 'root'
   pass: 'beton'
   base: 'default'
+language: pl
+max_npc_distance: '5'

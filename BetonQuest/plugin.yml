@@ -1,3 +1,13 @@
 name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
 version: 0.1
+commands:
+  conv:
+    description: Starts test conversation
+    usage: /<command>
+    permission: betonquest.conv
+    permission-message: You don't have permission!
+permissions:
+  betonquest.conv:
+    default: true
+  

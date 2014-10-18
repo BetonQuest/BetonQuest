@@ -1,0 +1,13 @@
+global:
+  quester_line_format: '&4%quester%&f: &a&o'
+  quester_reply_format: '&e%number%. &b'
+  player_reply_format: '&2%player%&f: &7'
+  plugin_prefix: '&e[&2BetonQuest&e]&r '
+pl:
+  conversation_start: '&e******\n&bRozpoczales rozmowe z %quester%!\n&e******'
+  conversation_enc: '&e******\n&bZakonczyles rozmowe z %quester%!\n&e******'
+  help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
+en:
+  conversation_start: '&e******\n&bConversation with %quester% started!\n&e******'
+  conversation_enc: '&e******\n&bConversation with %quester% finished!\n&e******'
+  help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
