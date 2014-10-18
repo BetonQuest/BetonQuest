@@ -1,6 +1,7 @@
 testconversation:
   quester: 'test subject'
   initial: 'witaj, jestem obiektem testowym rozmow z npcami'
+  unknown: 'nie wiem co do mnie mowisz'
   first: '1,2,3'
   options:
     '1':
@@ -23,7 +24,7 @@ testconversation:
       conditions: ''
       events: ''
       objectives: ''
-      pointer: ''
+      pointer: 'end'
     '4':
       question: 'masz dla mnie jakis quest?'
       answer: 'tak, chce abys scial drewno'
@@ -37,14 +38,14 @@ testconversation:
       conditions: ''
       events: ''
       objectives: ''
-      pointer: ''
+      pointer: 'end'
     '6':
       question: 'nie chce mi sie scinac drewna dla ciebie, spadaj'
       answer: 'szkoda, zegnaj'
       conditions: ''
       events: ''
       objectives: ''
-      pointer: ''
+      pointer: 'end'
     '7':
       question: 'dobrze, zetne to drewno dla ciebie, ale musisz mi zaplacic'
       answer: 'nie ma problemu'
@@ -58,7 +59,7 @@ testconversation:
       conditions: ''
       events: ''
       objectives: ''
-      pointer: ''
+      pointer: 'end'
     '9':
       question: 'mam kilka pytan...'
       answer: 'odpowiem najlepiej jak potrafie'
@@ -72,7 +73,7 @@ testconversation:
       conditions: ''
       events: ''
       objectives: ''
-      pointer: ''
+      pointer: '0'
     '11':
       question: 'gdzie scinac drewno?'
       answer: 'najlepiej w lesie'

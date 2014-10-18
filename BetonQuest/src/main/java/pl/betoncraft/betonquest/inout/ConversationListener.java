@@ -41,6 +41,7 @@ public class ConversationListener implements Listener {
 		if (event.getPlayer() != player) {
 			return;
 		}
+		event.setCancelled(true);
 		conversation.passPlayerAnswer(event.getMessage());
 	}
 	

@@ -19,7 +19,7 @@ public class Conversation {
 	private final String quester;
 	private final String playerID;
 	private final String conversationID;
-	private HashMap<Integer,String> current;
+	private HashMap<Integer,String> current = new HashMap<Integer,String>();
 	private ConversationListener listener;
 	
 	/**
@@ -36,12 +36,20 @@ public class Conversation {
 		
 		// print message about starting a conversation
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_start").replaceAll("%quester%", quester));
-		
+
 		// get initial npc's text
 		String initial = ConfigInput.getString("conversations." + conversationID + ".initial");
 		
 		// and print it to player
 		SimpleTextOutput.sendQuesterMessage(playerID, quester, initial);
+		
+		getStartingPoint();
+		
+		// initialize listeners for player's replies
+		listener = new ConversationListener(playerID, location, this);
+	}
+
+	private void getStartingPoint() {
 		
 		// read initial options
 		String[] firsts = ConfigInput.getString("conversations." + conversationID + ".first").split(",");
@@ -57,9 +65,6 @@ public class Conversation {
 			// put reply to hashmap in order to find it's ID when player responds by it's i number (id is string, we don't want to print it to player)
 			current.put(Integer.valueOf(i), first);
 		}
-		
-		// initialize listeners for player's replies
-		listener = new ConversationListener(playerID, location, this);
 	}
 	
 	public void passPlayerAnswer(String rawAnswer) {
@@ -89,13 +94,22 @@ public class Conversation {
 		SimpleTextOutput.sendQuesterMessage(playerID, quester, ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".answer"));
 		
 		// read answering options
-		String[] options = ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + "pointer").split(",");
+		String rawOptions = ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".pointer");
 		
 		// end conversation if there's no pointers
-		if (options.length == 0) {
+		if (rawOptions.equalsIgnoreCase("end")) {
 			endConversation();
 			return;
 		}
+		
+		// return to starting point if the pointer is 0
+		if (rawOptions.equals("0")) {
+			getStartingPoint();
+			return;
+		}
+		
+		// else get pointed IDs
+		String[] options = rawOptions.split(",");
 		
 		//print them
 		int i = 0;
@@ -112,7 +126,7 @@ public class Conversation {
 	}
 	
 	public void endConversation() {
-		SimpleTextOutput.sendSystemMessage(playerID, "messages."+ ConfigInput.getString("config.language") +".conversation_end");
+		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		listener.unregisterListener();
 	}
 

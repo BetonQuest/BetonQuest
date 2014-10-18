@@ -21,9 +21,11 @@ public class TemporatyCommand implements CommandExecutor {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("conv")) {
 			if (!(sender instanceof Player)) {
+				sender.sendMessage("musisz byc graczem");
 				return true;
 			}
 			new Conversation(sender.getName(), "testconversation", new NPCLocation(((Player) sender).getLocation()));
+			return true;
 		}
 		return false;
 	}

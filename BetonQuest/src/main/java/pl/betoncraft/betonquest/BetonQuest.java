@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.TemporatyCommand;
 
 /**
  * Represents BetonQuest plugin
@@ -25,6 +26,8 @@ public final class BetonQuest extends JavaPlugin {
 				getConfig().getString("mysql.pass"));
 		
 		new ConfigInput();
+		
+		this.getCommand("conv").setExecutor(new TemporatyCommand());
 	}
 	
 	@Override

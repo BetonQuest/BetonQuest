@@ -44,6 +44,12 @@ public class SimpleTextOutput {
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
 	}
 	
+	/**
+	 * Sends player a message that looks like his answer to npc
+	 * @param playerID
+	 * @param quester
+	 * @param message
+	 */
 	public static void sendPlayerReply(String playerID, String quester, String message) {
 		String finalString = (ConfigInput.getString("messages.global.player_reply_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "§");
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);

@@ -38,7 +38,7 @@ public class ConfigInput {
 	}
 	
 	private Object getObject(String rawPath) {
-		String[] parts = rawPath.split(".");
+		String[] parts = rawPath.split("\\.");
 		String first = parts[0];
 		String path = rawPath.substring(first.length() + 1);
 		switch (first) {
