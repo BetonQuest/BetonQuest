@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.core.Condition;
  * 
  * @author Co0sh
  */
-public class TestCondition extends Condition {
+public class PermissionCondition extends Condition {
 	
 	private String permission;
 	private boolean inverted;
@@ -21,7 +21,7 @@ public class TestCondition extends Condition {
 	 * @param playerID
 	 * @param instructions
 	 */
-	public TestCondition(String playerID, String instructions) {
+	public PermissionCondition(String playerID, String instructions) {
 		super(playerID, instructions);
 		if (instructions.contains(" inverted ")) {
 			inverted = true;

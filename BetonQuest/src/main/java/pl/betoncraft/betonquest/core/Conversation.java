@@ -25,7 +25,7 @@ public class Conversation {
 	private ConversationListener listener;
 	
 	/**
-	 * Constructor method
+	 * Constructor method, starts a new conversation between player and npc at given location
 	 * @param playerID
 	 * @param conversationID
 	 */
@@ -51,12 +51,18 @@ public class Conversation {
 		listener = new ConversationListener(playerID, location, this);
 	}
 
+	/**
+	 * returns to the starting point
+	 */
 	private void getStartingPoint() {
-		
 		String options = ConfigInput.getString("conversations." + conversationID + ".first");
 		printOptions(options);
 	}
 	
+	/**
+	 * this method passes given string as answer from player in a conversation
+	 * @param rawAnswer
+	 */
 	public void passPlayerAnswer(String rawAnswer) {
 		
 		String answer = rawAnswer.trim();
@@ -83,6 +89,18 @@ public class Conversation {
 		// print to player npc's answer
 		SimpleTextOutput.sendQuesterMessage(playerID, quester, ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".answer"));
 		
+		// get raw event string
+		String rawEvents = ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".events");
+		// do nothing if its empty
+		if (!rawEvents.equalsIgnoreCase("")) {
+			// split it to individual event ids
+			String[] events = rawEvents.split(",");
+			// foreach eventID fire an event
+			for (String event : events) {
+				event(event);
+			}
+		}
+		
 		// read answering options
 		String rawOptions = ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".pointer");
 		
@@ -98,6 +116,7 @@ public class Conversation {
 			return;
 		}
 		
+		// print options to player
 		printOptions(rawOptions);
 		
 		return;
@@ -121,7 +140,7 @@ public class Conversation {
 			if (!rawConditions.equalsIgnoreCase("")) {
 				// split them to separate ids
 				String[] conditions = ConfigInput.getString("conversations." + conversationID + ".options." + option + ".conditions").split(",");
-				// foreach
+				// if some condition is not met, skip printing this option and move on
 				for (String conditionID : conditions) {
 					if (!condition(conditionID)) {
 						continue answers;
@@ -137,11 +156,21 @@ public class Conversation {
 		}
 	}
 	
+	/**
+	 * ends conversation...
+	 */
 	public void endConversation() {
+		// print message
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
+		// unregister listener
 		listener.unregisterListener();
 	}
 	
+	/**
+	 * returns if the condition described by conditionID is met
+	 * @param conditionID
+	 * @return
+	 */
 	private boolean condition(String conditionID) {
 		String conditionInstruction = ConfigInput.getString("conditions." + conditionID);
 		String[] parts = conditionInstruction.split(" ");
@@ -149,20 +178,31 @@ public class Conversation {
 		Condition instance = null;
 		try {
 			instance = condition.getConstructor(String.class, String.class).newInstance(playerID, conditionInstruction);
-		} catch (InstantiationException e) {
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
+			// return false for safety
+			return false;
 		}
 		return instance.isMet();
+	}
+	
+	/**
+	 * fires the event described by eventID
+	 * @param eventID
+	 */
+	private void event(String eventID) {
+		String eventInstruction = ConfigInput.getString("events." + eventID);
+		String[] parts = eventInstruction.split(" ");
+		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
+		try {
+			event.getConstructor(String.class, String.class).newInstance(playerID, eventInstruction);
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

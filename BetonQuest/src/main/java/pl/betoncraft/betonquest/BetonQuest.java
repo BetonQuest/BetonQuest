@@ -5,8 +5,10 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.betoncraft.betonquest.conditions.TestCondition;
+import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.TemporatyCommand;
 
@@ -20,6 +22,7 @@ public final class BetonQuest extends JavaPlugin {
 	private MySQL MySQL;
 	
 	private HashMap<String,Class<? extends Condition>> conditions = new HashMap<String,Class<? extends Condition>>();
+	private HashMap<String,Class<? extends QuestEvent>> events = new HashMap<String,Class<? extends QuestEvent>>();
 	
 	@Override
 	public void onEnable() {
@@ -37,7 +40,10 @@ public final class BetonQuest extends JavaPlugin {
 		this.getCommand("conv").setExecutor(new TemporatyCommand());
 		
 		// register our test condition
-		registerConditions("test", TestCondition.class);
+		registerConditions("permission", PermissionCondition.class);
+		
+		// register test event
+		registerEvents("message", MessageEvent.class);
 		
 	}
 	
@@ -66,8 +72,13 @@ public final class BetonQuest extends JavaPlugin {
 	 * @param conditionClass
 	 */
 	public void registerConditions(String name, Class<? extends Condition> conditionClass) {
-		conditions.put(name, (Class<? extends Condition>)conditionClass);
+		conditions.put(name, conditionClass);
 		Bukkit.getLogger().info("Condition " + name + " registered!");
+	}
+	
+	public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
+		events.put(name, eventClass);
+		Bukkit.getLogger().info("Event " + name + " registered!");
 	}
 	
 	/**
@@ -77,5 +88,9 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public Class<? extends Condition> getCondition(String name) {
 		return conditions.get(name);
+	}
+	
+	public Class<? extends QuestEvent> getEvent(String name) {
+		return events.get(name);
 	}
 }

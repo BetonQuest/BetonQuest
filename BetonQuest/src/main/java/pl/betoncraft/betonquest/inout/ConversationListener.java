@@ -12,6 +12,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Conversation;
@@ -48,7 +49,7 @@ public class ConversationListener implements Listener {
 	@EventHandler
 	public void onWalkAway(PlayerMoveEvent event) {
 		// return if it's someone else
-		if (event.getPlayer() != player) {
+		if (!event.getPlayer().equals(player)) {
 			return;
 		}
 		// end conversation if player moved away from npc more than value defined in config
@@ -56,6 +57,14 @@ public class ConversationListener implements Listener {
 			conversation.endConversation();
 		}
 		return;
+	}
+	
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		// if player quits, end conversation (why keep listeners running?)
+		if (event.getPlayer().equals(player)) {
+			conversation.endConversation();
+		}
 	}
 	
 	public void unregisterListener() {
