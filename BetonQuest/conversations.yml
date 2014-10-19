@@ -14,7 +14,7 @@ testconversation:
     '2':
       question: 'zrobilem quest'
       answer: 'swietnie, oto nagroda!'
-      conditions: ''
+      conditions: 'test1'
       events: ''
       objectives: ''
       pointer: '0'

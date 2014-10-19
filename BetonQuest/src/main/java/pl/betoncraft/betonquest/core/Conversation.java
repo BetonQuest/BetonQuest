@@ -3,8 +3,10 @@
  */
 package pl.betoncraft.betonquest.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationListener;
 import pl.betoncraft.betonquest.inout.NPCLocation;
@@ -51,20 +53,8 @@ public class Conversation {
 
 	private void getStartingPoint() {
 		
-		// read initial options
-		String[] firsts = ConfigInput.getString("conversations." + conversationID + ".first").split(",");
-		
-		//print them
-		int i = 0;
-		for (String first : firsts) {
-			// TODO condition part
-			// i is for counting replies, like 1. something, 2. something else etc.
-			i++;
-			// print reply
-			SimpleTextOutput.sendQuesterReply(playerID, i, quester, ConfigInput.getString("conversations." + conversationID + ".options." + first + ".question"));
-			// put reply to hashmap in order to find it's ID when player responds by it's i number (id is string, we don't want to print it to player)
-			current.put(Integer.valueOf(i), first);
-		}
+		String options = ConfigInput.getString("conversations." + conversationID + ".first");
+		printOptions(options);
 	}
 	
 	public void passPlayerAnswer(String rawAnswer) {
@@ -97,7 +87,7 @@ public class Conversation {
 		String rawOptions = ConfigInput.getString("conversations." + conversationID + ".options." + choosenAnswerID + ".pointer");
 		
 		// end conversation if there's no pointers
-		if (rawOptions.equalsIgnoreCase("end")) {
+		if (rawOptions.equalsIgnoreCase("")) {
 			endConversation();
 			return;
 		}
@@ -108,13 +98,36 @@ public class Conversation {
 			return;
 		}
 		
+		printOptions(rawOptions);
+		
+		return;
+	}
+
+	/**
+	 * prints options the player have
+	 * @param rawOptions
+	 */
+	private void printOptions(String rawOptions) {
 		// else get pointed IDs
 		String[] options = rawOptions.split(",");
 		
 		//print them
 		int i = 0;
+		answers:
 		for (String option : options) {
-			// TODO condition part
+			// get conditions from config
+			String rawConditions = ConfigInput.getString("conversations." + conversationID + ".options." + option + ".conditions");
+			// if there are any conditions, do something with them
+			if (!rawConditions.equalsIgnoreCase("")) {
+				// split them to separate ids
+				String[] conditions = ConfigInput.getString("conversations." + conversationID + ".options." + option + ".conditions").split(",");
+				// foreach
+				for (String conditionID : conditions) {
+					if (!condition(conditionID)) {
+						continue answers;
+					}
+				}
+			}
 			// i is for counting replies, like 1. something, 2. something else etc.
 			i++;
 			// print reply
@@ -122,12 +135,34 @@ public class Conversation {
 			// put reply to hashmap in order to find it's ID when player responds by it's i number (id is string, we don't want to print it to player)
 			current.put(Integer.valueOf(i), option);
 		}
-		return;
 	}
 	
 	public void endConversation() {
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		listener.unregisterListener();
+	}
+	
+	private boolean condition(String conditionID) {
+		String conditionInstruction = ConfigInput.getString("conditions." + conditionID);
+		String[] parts = conditionInstruction.split(" ");
+		Class<? extends Condition> condition = BetonQuest.getInstance().getCondition(parts[0]);
+		Condition instance = null;
+		try {
+			instance = condition.getConstructor(String.class, String.class).newInstance(playerID, conditionInstruction);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		return instance.isMet();
 	}
 
 }
