@@ -35,17 +35,22 @@ public final class BetonQuest extends JavaPlugin {
 		
 		instance = this;
 
-		// try to connect to database
-		this.MySQL = new MySQL(this, getConfig().getString("mysql.host"),
-				getConfig().getString("mysql.port"), getConfig().getString(
-						"mysql.base"), getConfig().getString("mysql.user"),
-				getConfig().getString("mysql.pass"));
-		
-		// create tables if they don't exist
-		MySQL.openConnection();
-		MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048));");
-		
 		new ConfigInput();
+		
+		// try to connect to database
+		try {
+			this.MySQL = new MySQL(this, getConfig().getString("mysql.host"),
+					getConfig().getString("mysql.port"), getConfig().getString(
+							"mysql.base"), getConfig().getString("mysql.user"),
+					getConfig().getString("mysql.pass"));
+			
+			// create tables if they don't exist
+			MySQL.openConnection();
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048));");
+		} catch (Exception e) {
+			Bukkit.getLogger().info("Database Error!");
+		}
+		
 		new JoinListener();
 		
 		this.getCommand("conv").setExecutor(new TemporatyCommand());
