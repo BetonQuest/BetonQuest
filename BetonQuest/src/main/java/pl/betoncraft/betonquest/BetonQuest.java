@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Objective;
@@ -55,8 +56,9 @@ public final class BetonQuest extends JavaPlugin {
 		
 		this.getCommand("conv").setExecutor(new TemporatyCommand());
 		
-		// register our test condition
+		// register conditions
 		registerConditions("permission", PermissionCondition.class);
+		registerConditions("experience", ExperienceCondition.class);
 		
 		// register test events
 		registerEvents("message", MessageEvent.class);
