@@ -3,7 +3,6 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -97,7 +96,7 @@ public class Conversation {
 			String[] events = rawEvents.split(",");
 			// foreach eventID fire an event
 			for (String event : events) {
-				event(event);
+				BetonQuest.event(playerID, event);
 			}
 		}
 		
@@ -142,7 +141,7 @@ public class Conversation {
 				String[] conditions = ConfigInput.getString("conversations." + conversationID + ".options." + option + ".conditions").split(",");
 				// if some condition is not met, skip printing this option and move on
 				for (String conditionID : conditions) {
-					if (!condition(conditionID)) {
+					if (!BetonQuest.condition(playerID, conditionID)) {
 						continue answers;
 					}
 				}
@@ -164,45 +163,6 @@ public class Conversation {
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		// unregister listener
 		listener.unregisterListener();
-	}
-	
-	/**
-	 * returns if the condition described by conditionID is met
-	 * @param conditionID
-	 * @return
-	 */
-	private boolean condition(String conditionID) {
-		String conditionInstruction = ConfigInput.getString("conditions." + conditionID);
-		String[] parts = conditionInstruction.split(" ");
-		Class<? extends Condition> condition = BetonQuest.getInstance().getCondition(parts[0]);
-		Condition instance = null;
-		try {
-			instance = condition.getConstructor(String.class, String.class).newInstance(playerID, conditionInstruction);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-			// return false for safety
-			return false;
-		}
-		return instance.isMet();
-	}
-	
-	/**
-	 * fires the event described by eventID
-	 * @param eventID
-	 */
-	private void event(String eventID) {
-		String eventInstruction = ConfigInput.getString("events." + eventID);
-		String[] parts = eventInstruction.split(" ");
-		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
-		try {
-			event.getConstructor(String.class, String.class).newInstance(playerID, eventInstruction);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
