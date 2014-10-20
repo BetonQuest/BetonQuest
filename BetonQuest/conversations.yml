@@ -44,7 +44,7 @@ testconversation:
       question: 'dobrze, zetne to drewno dla ciebie, ale musisz mi zaplacic'
       answer: 'nie ma problemu'
       conditions: ''
-      events: ''
+      events: 'test2,test3'
       pointer: '8,9,10'
     '8':
       question: 'ide scinac drewno, na razie'
