@@ -14,7 +14,7 @@ testconversation:
       question: 'co slychac? :3'
       answer: 'masz duzo expa! swietnie, masz to :D'
       conditions: 'test2'
-      events: 'test1'
+      events: 'dzien'
       pointer: '15,16'
     '15':
       question: 'co to jest?'

@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Objective;
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
@@ -70,6 +71,7 @@ public final class BetonQuest extends JavaPlugin {
 		// register test events
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
+		registerEvents("command", CommandEvent.class);
 		
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
