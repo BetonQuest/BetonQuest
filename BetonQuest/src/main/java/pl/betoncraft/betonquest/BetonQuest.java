@@ -55,9 +55,9 @@ public final class BetonQuest extends JavaPlugin {
 			
 			// create tables if they don't exist
 			MySQL.openConnection();
-			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048));");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048), isused BOOLEAN NOT NULL DEFAULT 0);");
 		} catch (Exception e) {
-			Bukkit.getLogger().info("Database Error!");
+			Bukkit.getLogger().info("Database Error! Problably not configured.");
 		}
 		
 		new JoinListener();
@@ -186,12 +186,20 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void loadObjectives(String playerID) {
 		try {
-			ResultSet res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "'");
-			while (res.next()) {
-				BetonQuest.objective(playerID, res.getString("instructions"));
+			// TODO poprawiæ to miejsce
+			ResultSet res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
+			if (res.isBeforeFirst()) {
+				while (res.next()) {
+					BetonQuest.objective(playerID, res.getString("instructions"));
+				}
+				BetonQuest.getInstance().getMySQL().closeConnection();
+			} else {
+				res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
+				while (res.next()) {
+					BetonQuest.objective(playerID, res.getString("instructions"));
+				}
+				BetonQuest.getInstance().getMySQL().updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
 			}
-			BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID = '" + playerID + "'");
-			BetonQuest.getInstance().getMySQL().closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

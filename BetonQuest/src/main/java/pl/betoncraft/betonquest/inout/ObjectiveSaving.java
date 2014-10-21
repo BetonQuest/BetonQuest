@@ -38,7 +38,9 @@ public class ObjectiveSaving implements Listener {
 	 */
 	public void saveObjective() {
 		BetonQuest.getInstance().getMySQL().openConnection();
-		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + objective.getInstructions() + "'");
+		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + playerID + "' AND isused = 1;");
+		BetonQuest.getInstance().getMySQL().openConnection();
+		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + objective.getInstructions() + "', isused='0'");
 		deleteThis();
 	}
 
