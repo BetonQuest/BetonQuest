@@ -1,1 +1,3 @@
 test1: 'permission inverted perm:betonquest.test'
+test2: 'experience exp:1000'
+test2i: 'experience inverted exp:30'

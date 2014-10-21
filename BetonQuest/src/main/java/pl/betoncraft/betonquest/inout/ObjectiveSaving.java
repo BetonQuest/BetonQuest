@@ -34,6 +34,7 @@ public class ObjectiveSaving implements Listener {
 
 	public void unregister() {
 		HandlerList.unregisterAll(this);
+	}
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {

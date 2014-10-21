@@ -23,7 +23,7 @@ public class ExperienceCondition extends Condition{
 
 	@Override
 	public boolean isMet() {
-		if (Bukkit.getPlayer(playerID).getExp() > experience) {
+		if (Bukkit.getPlayer(playerID).getLevel() > experience) {
 			return !inverted;
 		}
 		return inverted;

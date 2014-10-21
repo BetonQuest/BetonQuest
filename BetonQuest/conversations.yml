@@ -2,14 +2,32 @@ testconversation:
   quester: 'test subject'
   initial: 'witaj, jestem obiektem testowym rozmow z npcami'
   unknown: 'nie wiem co do mnie mowisz'
-  first: '1,2,3'
+  first: '1,1prim,2,3'
   options:
     '1':
       question: 'co slychac? :3'
       answer: 'nic ciekawego, ale w sumie mozesz mi pomoc'
+      conditions: 'test2i'
+      events: ''
+      pointer: '4,5'
+    '1prim':
+      question: 'co slychac? :3'
+      answer: 'masz duzo expa! swietnie, masz to :D'
+      conditions: 'test2'
+      events: 'test1'
+      pointer: '15,16'
+    '15':
+      question: 'co to jest?'
+      answer: 'taka rzecz :D a tak przy okazji, w sumie mozesz mi pomoc...'
       conditions: ''
       events: ''
       pointer: '4,5'
+    '16':
+      question: 'bleh, wez to ode mnie!'
+      answer: 'jak chcesz :v'
+      conditions: ''
+      events: ''
+      pointer: ''
     '2':
       question: 'zrobilem quest'
       answer: 'swietnie, oto nagroda!'
