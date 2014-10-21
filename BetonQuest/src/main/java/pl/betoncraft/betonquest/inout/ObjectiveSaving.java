@@ -21,26 +21,47 @@ public class ObjectiveSaving implements Listener {
 	private Objective objective;
 	private String playerID;
 	
+	/**
+	 * Constructor method, this one safely removes objective from memory, storing it in database if needed
+	 * @param playerID
+	 * @param objective
+	 */
 	public ObjectiveSaving(String playerID, Objective objective) {
 		this.objective = objective;
 		this.playerID = playerID;
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+		BetonQuest.getInstance().putObjectiveSaving(this);
 	}
 	
-	private void saveObjective(String playerID, String instructions) {
+	/**
+	 * Saves objective to database and removes it from memory (in case of player's quit or server shutdown/reload)
+	 */
+	public void saveObjective() {
 		BetonQuest.getInstance().getMySQL().openConnection();
-		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + instructions + "'");
+		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + objective.getInstructions() + "'");
+		deleteThis();
 	}
 
+	/**
+	 * Deleted objective (in case of it's completion)
+	 */
 	public void unregister() {
+		deleteThis();
+	}
+
+	/**
+	 * Deletes objective
+	 */
+	private void deleteThis() {
+		BetonQuest.getInstance().deleteObjectiveSaving(this);
 		HandlerList.unregisterAll(this);
 	}
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		if (event.getPlayer().equals(Bukkit.getPlayer(playerID))) {
-			saveObjective(playerID, objective.getInstructions());
-			HandlerList.unregisterAll(this);
+			// save objective when player quits
+			saveObjective();
 		}
 	}
 }
