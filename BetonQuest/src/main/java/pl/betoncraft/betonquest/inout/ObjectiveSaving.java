@@ -31,6 +31,9 @@ public class ObjectiveSaving implements Listener {
 		BetonQuest.getInstance().getMySQL().openConnection();
 		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + instructions + "'");
 	}
+
+	public void unregister() {
+		HandlerList.unregisterAll(this);
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {

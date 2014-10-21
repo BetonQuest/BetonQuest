@@ -3,14 +3,12 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import org.bukkit.event.HandlerList;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 
 
 /**
- * 
+ * This class represents an objective. You must extend it and register using registerObjectives() method from this plugin instance.
  * @author Co0sh
  */
 public abstract class Objective {
@@ -25,6 +23,9 @@ public abstract class Objective {
 		listener = new ObjectiveSaving(playerID, this);
 	}
 	
+/**
+ * Use this method to when your objective is completed. Unregister all Listeners before!
+ */
 	protected void completeObjective() {
 		// split instructions
 		String[] parts = instructions.split(" ");
@@ -46,9 +47,12 @@ public abstract class Objective {
 				BetonQuest.event(playerID, eventID);
 			}
 		}
-		HandlerList.unregisterAll(listener);
+		listener.unregister();
 	}
 	
+/**
+ * Use this method to check if all conditions have been met before accepting objective completion.
+ */
 	protected boolean checkConditions() {
 		// split instructions
 		String[] parts = instructions.split(" ");
