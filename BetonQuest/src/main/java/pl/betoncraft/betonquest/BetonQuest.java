@@ -15,7 +15,7 @@ import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinListener;
-import pl.betoncraft.betonquest.inout.TemporatyCommand;
+import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 
 /**
@@ -53,8 +53,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		
 		new JoinListener();
-		
-		this.getCommand("conv").setExecutor(new TemporatyCommand());
+		new NPCListener();
 		
 		// register conditions
 		registerConditions("permission", PermissionCondition.class);

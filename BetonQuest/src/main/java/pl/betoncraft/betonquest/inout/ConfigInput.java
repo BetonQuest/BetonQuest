@@ -19,6 +19,7 @@ public class ConfigInput {
 	private ConfigAccessor conditions;
 	private ConfigAccessor events;
 	private ConfigAccessor messages;
+	private ConfigAccessor npcs;
 	
 	public ConfigInput() {
 		instance = this;
@@ -28,6 +29,7 @@ public class ConfigInput {
 		conditions = new ConfigAccessor(BetonQuest.getInstance(), "conditions.yml");
 		events = new ConfigAccessor(BetonQuest.getInstance(), "events.yml");
 		messages = new ConfigAccessor(BetonQuest.getInstance(), "messages.yml");
+		npcs = new ConfigAccessor(BetonQuest.getInstance(), "npcs.yml");
 		// save config if there isn't one
 		BetonQuest.getInstance().saveDefaultConfig();
 		conversations.saveDefaultConfig();
@@ -35,6 +37,7 @@ public class ConfigInput {
 		conditions.saveDefaultConfig();
 		events.saveDefaultConfig();
 		messages.saveDefaultConfig();
+		npcs.saveDefaultConfig();
 	}
 	
 	private Object getObject(String rawPath) {
@@ -54,6 +57,8 @@ public class ConfigInput {
 			return events.getConfig().get(path);
 		case "messages":
 			return messages.getConfig().get(path);
+		case "npcs":
+			return npcs.getConfig().get(path);
 		default:
 			return null;
 		}
