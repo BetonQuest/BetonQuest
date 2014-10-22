@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,14 +14,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
+import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Objective;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
-import pl.betoncraft.betonquest.inout.JoinListener;
+import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
@@ -38,6 +41,8 @@ public final class BetonQuest extends JavaPlugin {
 	private HashMap<String,Class<? extends QuestEvent>> events = new HashMap<String,Class<? extends QuestEvent>>();
 	private HashMap<String,Class<? extends Objective>> objectives = new HashMap<String,Class<? extends Objective>>();
 	
+	private HashMap<String,List<String>> playerStrings = new HashMap<String,List<String>>();
+	
 	private List<ObjectiveSaving> saving = new ArrayList<ObjectiveSaving>();
 	
 	@Override
@@ -48,30 +53,34 @@ public final class BetonQuest extends JavaPlugin {
 		new ConfigInput();
 		
 		// try to connect to database
-		try {
-			this.MySQL = new MySQL(this, getConfig().getString("mysql.host"),
-					getConfig().getString("mysql.port"), getConfig().getString(
-							"mysql.base"), getConfig().getString("mysql.user"),
-					getConfig().getString("mysql.pass"));
+		this.MySQL = new MySQL(this, getConfig().getString("mysql.host"),
+				getConfig().getString("mysql.port"), getConfig().getString(
+						"mysql.base"), getConfig().getString("mysql.user"),
+				getConfig().getString("mysql.pass"));
 			
-			// create tables if they don't exist
-			MySQL.openConnection();
+		// create tables if they don't exist
+		if (MySQL.openConnection() != null) {
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048), isused BOOLEAN NOT NULL DEFAULT 0);");
-		} catch (Exception e) {
-			Bukkit.getLogger().info("Database Error! Problably not configured.");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS strings (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), string TEXT, isused BOOLEAN NOT NULL DEFAULT 0);");
+			MySQL.closeConnection();
+		} else {
+			BetonQuest.getInstance().getLogger().info("Couldn't connect to database, fix this and restart the server!");
+			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		
-		new JoinListener();
+		new JoinQuitListener();
 		new NPCListener();
 		
 		// register conditions
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
+		registerConditions("tag", TagCondition.class);
 		
 		// register test events
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
+		registerEvents("tag", TagEvent.class);
 		
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
@@ -80,6 +89,8 @@ public final class BetonQuest extends JavaPlugin {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			loadObjectives(player.getName());
 		}
+
+		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
 	}
 	
 	@Override
@@ -93,6 +104,7 @@ public final class BetonQuest extends JavaPlugin {
 		for (ObjectiveSaving objective : list) {
 			objective.saveObjective();
 		}
+		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
 	/**
@@ -188,20 +200,20 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void loadObjectives(String playerID) {
 		try {
-			// TODO poprawiæ to miejsce
-			ResultSet res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
+			MySQL.openConnection();
+			ResultSet res = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
 			if (res.isBeforeFirst()) {
 				while (res.next()) {
 					BetonQuest.objective(playerID, res.getString("instructions"));
 				}
-				BetonQuest.getInstance().getMySQL().closeConnection();
 			} else {
-				res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
+				res = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
 				while (res.next()) {
 					BetonQuest.objective(playerID, res.getString("instructions"));
 				}
-				BetonQuest.getInstance().getMySQL().updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
+				MySQL.updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
 			}
+			MySQL.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -261,5 +273,79 @@ public final class BetonQuest extends JavaPlugin {
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void loadPlayerStrings(String playerID) {
+		try {
+			MySQL.openConnection();
+			ResultSet res = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 1;");
+			if (res.isBeforeFirst()) {
+				while (res.next()) {
+					putPlayerString(playerID, res.getString("string"));
+				}
+			} else {
+				res = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 0;");
+				while (res.next()) {
+					putPlayerString(playerID, res.getString("string"));
+				}
+				MySQL.updateSQL("UPDATE strings SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0");
+			}
+			MySQL.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Puts a string in player's list
+	 * @param playerID
+	 * @param string
+	 */
+	public void putPlayerString(String playerID, String string) {
+		if (!playerStrings.containsKey(playerID)) {
+			playerStrings.put(playerID, new ArrayList<String>());
+		}
+		playerStrings.get(playerID).add(string);
+	}
+	
+	/**
+	 * Checks if player has specified string in his list
+	 * @param playerID
+	 * @param string
+	 * @return
+	 */
+	public boolean havePlayerString(String playerID, String string) {
+		if (!playerStrings.containsKey(playerID)) {
+			return false;
+		}
+		return playerStrings.get(playerID).contains(string);
+	}
+	
+	/**
+	 * Removes specified string from player's list
+	 * @param playerID
+	 * @param string
+	 */
+	public void removePlayerString(String playerID, String string) {
+		if (playerStrings.containsKey(playerID)) {
+			playerStrings.get(playerID).remove(string);
+		}
+	}
+	
+	/**
+	 * Removes player's list from HashMap and returns it (eg. for storing in database)
+	 * @param playerID
+	 */
+	public void savePlayerStrings(String playerID) {
+		List<String> strings = playerStrings.remove(playerID);
+		if (strings == null) {
+			return;
+		}
+		MySQL.openConnection();
+		MySQL.updateSQL("DELETE FROM strings WHERE playerID = '" + playerID + "'");
+		for (String string : strings) {
+			MySQL.updateSQL("INSERT INTO strings (playerID, string) VALUES ('" + playerID + "', '" + string + "')");
+		}
+		MySQL.closeConnection();
 	}
 }

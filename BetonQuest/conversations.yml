@@ -31,8 +31,8 @@ testconversation:
     '2':
       question: 'zrobilem quest'
       answer: 'swietnie, oto nagroda!'
-      conditions: 'test1'
-      events: 'test1'
+      conditions: 'questdone'
+      events: 'questended'
       pointer: '0'
     '3':
       question: 'do widzenia'

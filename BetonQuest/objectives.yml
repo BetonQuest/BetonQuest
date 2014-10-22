@@ -1,1 +1,1 @@
-test1: 'location 100;200;300;world;5 conditions:test1'
+test1: 'location 100;200;300;world;5 conditions:test1 events:test1,questdone'

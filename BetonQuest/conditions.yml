@@ -1,3 +1,4 @@
-test1: 'permission inverted perm:betonquest.test'
+test1: 'permission --inverted perm:betonquest.test'
 test2: 'experience exp:30'
-test2i: 'experience inverted exp:30'
+test2i: 'experience --inverted exp:30'
+questdone: 'tag done'

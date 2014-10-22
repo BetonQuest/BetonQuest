@@ -23,7 +23,7 @@ public class PermissionCondition extends Condition {
 	 */
 	public PermissionCondition(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (instructions.contains(" inverted ")) {
+		if (instructions.contains("--inverted")) {
 			inverted = true;
 		} else {
 			inverted = false;

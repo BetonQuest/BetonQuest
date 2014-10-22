@@ -2,3 +2,5 @@ test1: 'message &9DZIALA!!! EVENTY DZIALAJA! %player%, czemu sie jeszcze nie cie
 test2: 'objective test1'
 test3: 'message Rozpoczeto quest: musisz sie dostac na koordynaty 100x 200y 300z, powodzenia'
 dzien: 'command time set day'
+questdone: 'tag add done'
+questended: 'tag del done'

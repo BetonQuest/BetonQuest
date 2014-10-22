@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 
 import org.bukkit.plugin.Plugin;
@@ -62,6 +61,7 @@ public class MySQL {
 		if (this.connection != null) {
 			try {
 				this.connection.close();
+				this.connection = null;
 			} catch (SQLException e) {
 				this.plugin.getLogger().log(Level.SEVERE,
 						"Error closing the MySQL Connection!");
@@ -71,43 +71,19 @@ public class MySQL {
 	}
 
 	public ResultSet querySQL(String query) {
-		Connection c = null;
-		if (checkConnection()) {
-			c = getConnection();
-		} else {
-			c = openConnection();
-		}
-		Statement s = null;
 		try {
-			s = c.createStatement();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		ResultSet ret = null;
-		try {
-			ret = s.executeQuery(query);
+			return this.connection.createStatement().executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		closeConnection();
-
-		return ret;
 	}
 
 	public void updateSQL(String update) {
-		Connection c = null;
-		if (checkConnection()) {
-			c = getConnection();
-		} else {
-			c = openConnection();
-		}
-		Statement s = null;
 		try {
-			s = c.createStatement();
-			s.executeUpdate(update);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			this.connection.createStatement().executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		closeConnection();
 	}
 }
