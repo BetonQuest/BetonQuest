@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
+import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalTestCommand;
@@ -91,7 +92,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("command", CommandEvent.class);
 		registerEvents("tag", TagEvent.class);
 		registerEvents("journal", JournalEvent.class);
-		
+		registerEvents("teleport", TeleportEvent.class);
+
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
 		
