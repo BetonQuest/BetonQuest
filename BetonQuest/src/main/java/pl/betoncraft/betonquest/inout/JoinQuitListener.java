@@ -28,11 +28,13 @@ public class JoinQuitListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
 		BetonQuest.getInstance().loadPlayerStrings(event.getPlayer().getName());
+		BetonQuest.getInstance().loadJournal(event.getPlayer().getName());
 	}
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		BetonQuest.getInstance().savePlayerStrings(event.getPlayer().getName());
+		BetonQuest.getInstance().saveJournal(event.getPlayer().getName());
 		BetonQuest.getInstance().getMySQL().openConnection();
 		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + event.getPlayer().getName() + "' AND isused = 1;");
 		BetonQuest.getInstance().getMySQL().closeConnection();

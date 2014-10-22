@@ -2,7 +2,7 @@ name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
 version: 0.1
 commands:
-  conv:
+  journal:
     description: Starts test conversation
     usage: /<command>
     permission: betonquest.conv

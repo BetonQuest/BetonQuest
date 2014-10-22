@@ -16,14 +16,18 @@ import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
+import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
+import pl.betoncraft.betonquest.inout.JournalTestCommand;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
@@ -43,6 +47,8 @@ public final class BetonQuest extends JavaPlugin {
 	
 	private HashMap<String,List<String>> playerStrings = new HashMap<String,List<String>>();
 	
+	private HashMap<String,Journal> journals = new HashMap<String,Journal>();
+	
 	private List<ObjectiveSaving> saving = new ArrayList<ObjectiveSaving>();
 	
 	@Override
@@ -60,8 +66,9 @@ public final class BetonQuest extends JavaPlugin {
 			
 		// create tables if they don't exist
 		if (MySQL.openConnection() != null) {
-			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), instructions VARCHAR(2048), isused BOOLEAN NOT NULL DEFAULT 0);");
-			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS strings (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256), string TEXT, isused BOOLEAN NOT NULL DEFAULT 0);");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS strings (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, string TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS journal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
 			MySQL.closeConnection();
 		} else {
 			BetonQuest.getInstance().getLogger().info("Couldn't connect to database, fix this and restart the server!");
@@ -70,6 +77,8 @@ public final class BetonQuest extends JavaPlugin {
 		
 		new JoinQuitListener();
 		new NPCListener();
+		
+		getCommand("journal").setExecutor(new JournalTestCommand());
 		
 		// register conditions
 		registerConditions("permission", PermissionCondition.class);
@@ -81,6 +90,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
 		registerEvents("tag", TagEvent.class);
+		registerEvents("journal", JournalEvent.class);
 		
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
@@ -88,6 +98,8 @@ public final class BetonQuest extends JavaPlugin {
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			loadObjectives(player.getName());
+			loadPlayerStrings(player.getName());
+			loadJournal(player.getName());
 		}
 
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -104,6 +116,14 @@ public final class BetonQuest extends JavaPlugin {
 		for (ObjectiveSaving objective : list) {
 			objective.saveObjective();
 		}
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			saveJournal(player.getName());
+		}
+		BetonQuest.getInstance().getMySQL().openConnection();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player.getName() + "' AND isused = 1;");
+		}
+		BetonQuest.getInstance().getMySQL().closeConnection();
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
@@ -345,6 +365,24 @@ public final class BetonQuest extends JavaPlugin {
 		MySQL.updateSQL("DELETE FROM strings WHERE playerID = '" + playerID + "'");
 		for (String string : strings) {
 			MySQL.updateSQL("INSERT INTO strings (playerID, string) VALUES ('" + playerID + "', '" + string + "')");
+		}
+		MySQL.closeConnection();
+	}
+	
+	public void loadJournal(String playerID) {
+		journals.put(playerID, new Journal(playerID));
+	}
+	
+	public Journal getJournal(String playerID) {
+		return journals.get(playerID);
+	}
+	
+	public void saveJournal(String playerID) {
+		MySQL.openConnection();
+		MySQL.updateSQL("DELETE FROM journal WHERE playerID = '" + playerID + "'");
+		List<Pointer> pointers = journals.remove(playerID).getPointers();
+		for (Pointer pointer : pointers) {
+			MySQL.updateSQL("INSERT INTO journal (playerID, pointer, date) VALUES ('" + playerID + "', '" + pointer.getPointer() + "', '" + pointer.getTimestamp() + "')");
 		}
 		MySQL.closeConnection();
 	}

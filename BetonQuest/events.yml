@@ -4,3 +4,6 @@ test3: 'message Rozpoczeto quest: musisz sie dostac na koordynaty 100x 200y 300z
 dzien: 'command time set day'
 questdone: 'tag add done'
 questended: 'tag del done'
+journal1: 'journal test1'
+journal2: 'journal test2'
+journal3: 'journal test3'

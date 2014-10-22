@@ -32,7 +32,7 @@ testconversation:
       question: 'zrobilem quest'
       answer: 'swietnie, oto nagroda!'
       conditions: 'questdone'
-      events: 'questended'
+      events: 'questended, journal3'
       pointer: '0'
     '3':
       question: 'do widzenia'
@@ -62,7 +62,7 @@ testconversation:
       question: 'dobrze, zetne to drewno dla ciebie, ale musisz mi zaplacic'
       answer: 'nie ma problemu'
       conditions: ''
-      events: 'test2,test3'
+      events: 'test2,test3,journal1'
       pointer: '8,9,10'
     '8':
       question: 'ide scinac drewno, na razie'
