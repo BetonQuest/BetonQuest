@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinListener;
 import pl.betoncraft.betonquest.inout.NPCListener;
@@ -72,7 +73,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
-		
+		registerEvents("teleport", TeleportEvent.class);
+
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
 		
@@ -188,7 +190,7 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void loadObjectives(String playerID) {
 		try {
-			// TODO poprawiæ to miejsce
+			// TODO poprawiï¿½ to miejsce
 			ResultSet res = BetonQuest.getInstance().getMySQL().openConnection().createStatement().executeQuery("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
 			if (res.isBeforeFirst()) {
 				while (res.next()) {
