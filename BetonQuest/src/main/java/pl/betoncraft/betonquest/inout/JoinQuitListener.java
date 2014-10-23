@@ -6,8 +6,10 @@ package pl.betoncraft.betonquest.inout;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 
@@ -25,6 +27,11 @@ public class JoinQuitListener implements Listener {
 	}
 	
 	@EventHandler
+	public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
+		BetonQuest.getInstance().loadAllPlayerData(event.getName());
+	}
+	
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
 		BetonQuest.getInstance().loadPlayerStrings(event.getPlayer().getName());
@@ -33,10 +40,14 @@ public class JoinQuitListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		BetonQuest.getInstance().savePlayerStrings(event.getPlayer().getName());
-		BetonQuest.getInstance().saveJournal(event.getPlayer().getName());
-		BetonQuest.getInstance().getMySQL().openConnection();
-		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + event.getPlayer().getName() + "' AND isused = 1;");
-		BetonQuest.getInstance().getMySQL().closeConnection();
+		final String player = event.getPlayer().getName();
+		new BukkitRunnable() {
+            @Override
+            public void run() {
+        		BetonQuest.getInstance().savePlayerStrings(player);
+        		BetonQuest.getInstance().saveJournal(player);
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player + "' AND isused = 1;");
+            }
+        }.runTaskAsynchronously(BetonQuest.getInstance());
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
@@ -37,9 +38,7 @@ public class ObjectiveSaving implements Listener {
 	 * Saves objective to database and removes it from memory (in case of player's quit or server shutdown/reload)
 	 */
 	public void saveObjective() {
-		BetonQuest.getInstance().getMySQL().openConnection();
 		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + objective.getInstructions() + "', isused='0'");
-		BetonQuest.getInstance().getMySQL().closeConnection();
 		deleteThis();
 	}
 
@@ -61,8 +60,12 @@ public class ObjectiveSaving implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		if (event.getPlayer().equals(Bukkit.getPlayer(playerID))) {
-			// save objective when player quits
-			saveObjective();
+			new BukkitRunnable() {
+	            @Override
+	            public void run() {
+	        		saveObjective();
+	            }
+	        }.runTaskAsynchronously(BetonQuest.getInstance());
 		}
 	}
 }

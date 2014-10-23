@@ -49,41 +49,38 @@ public class MySQL {
 		return this.connection;
 	}
 
-	public boolean checkConnection() {
-		return this.connection != null;
-	}
-
 	public Connection getConnection() {
 		return this.connection;
 	}
 
 	public void closeConnection() {
-		if (this.connection != null) {
-			try {
-				this.connection.close();
-				this.connection = null;
-			} catch (SQLException e) {
-				this.plugin.getLogger().log(Level.SEVERE,
-						"Error closing the MySQL Connection!");
-				e.printStackTrace();
-			}
-		}
+		// nothing
 	}
 
 	public ResultSet querySQL(String query) {
 		try {
 			return this.connection.createStatement().executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} catch (Exception e1) {
+			try {
+				openConnection();
+				return this.connection.createStatement().executeQuery(query);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				return null;
+			}
 		}
 	}
 
 	public void updateSQL(String update) {
 		try {
 			this.connection.createStatement().executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e1) {
+			try {
+				openConnection();
+				this.connection.createStatement().executeUpdate(update);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 }

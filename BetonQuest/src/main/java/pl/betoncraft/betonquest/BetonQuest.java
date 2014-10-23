@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -17,9 +18,12 @@ import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Journal;
+import pl.betoncraft.betonquest.core.JournalRes;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.core.ObjectiveRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.core.StringRes;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
@@ -46,6 +50,10 @@ public final class BetonQuest extends JavaPlugin {
 	private HashMap<String,Class<? extends QuestEvent>> events = new HashMap<String,Class<? extends QuestEvent>>();
 	private HashMap<String,Class<? extends Objective>> objectives = new HashMap<String,Class<? extends Objective>>();
 	
+	private ConcurrentHashMap<String,ObjectiveRes> objectiveRes = new ConcurrentHashMap<String,ObjectiveRes>();
+	private ConcurrentHashMap<String,StringRes> stringsRes = new ConcurrentHashMap<String,StringRes>();
+	private ConcurrentHashMap<String,JournalRes> journalRes = new ConcurrentHashMap<String,JournalRes>();
+	
 	private HashMap<String,List<String>> playerStrings = new HashMap<String,List<String>>();
 	
 	private HashMap<String,Journal> journals = new HashMap<String,Journal>();
@@ -70,7 +78,6 @@ public final class BetonQuest extends JavaPlugin {
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS strings (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, string TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS journal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-			MySQL.closeConnection();
 		} else {
 			BetonQuest.getInstance().getLogger().info("Couldn't connect to database, fix this and restart the server!");
 			Bukkit.getPluginManager().disablePlugin(this);
@@ -99,6 +106,7 @@ public final class BetonQuest extends JavaPlugin {
 		
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
+			loadAllPlayerData(player.getName());
 			loadObjectives(player.getName());
 			loadPlayerStrings(player.getName());
 			loadJournal(player.getName());
@@ -120,12 +128,11 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			saveJournal(player.getName());
+			savePlayerStrings(player.getName());
 		}
-		BetonQuest.getInstance().getMySQL().openConnection();
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player.getName() + "' AND isused = 1;");
-		}
-		BetonQuest.getInstance().getMySQL().closeConnection();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+        	BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player.getName() + "' AND isused = 1;");
+        }
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
@@ -209,7 +216,7 @@ public final class BetonQuest extends JavaPlugin {
 	}
 	
 	/**
-	 * deleted pointer to ObjectiveSaving instance in case the objective was completed and needs to be deleted
+	 * deletes pointer to ObjectiveSaving instance in case the objective was completed and needs to be deleted
 	 * @param object
 	 */
 	public void deleteObjectiveSaving(ObjectiveSaving object) {
@@ -221,24 +228,11 @@ public final class BetonQuest extends JavaPlugin {
 	 * @param playerID
 	 */
 	public void loadObjectives(String playerID) {
-		try {
-			MySQL.openConnection();
-			ResultSet res = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
-			if (res.isBeforeFirst()) {
-				while (res.next()) {
-					BetonQuest.objective(playerID, res.getString("instructions"));
-				}
-			} else {
-				res = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
-				while (res.next()) {
-					BetonQuest.objective(playerID, res.getString("instructions"));
-				}
-				MySQL.updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
-			}
-			MySQL.closeConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		ObjectiveRes res = objectiveRes.get(playerID);
+		while (res.next()) {
+			BetonQuest.objective(playerID, res.getInstruction());
 		}
+		objectiveRes.remove(playerID);
 	}
 	
 	/**
@@ -297,25 +291,16 @@ public final class BetonQuest extends JavaPlugin {
 		}
 	}
 	
+	/**
+	 * loads strings (tags) for specified player
+	 * @param playerID
+	 */
 	public void loadPlayerStrings(String playerID) {
-		try {
-			MySQL.openConnection();
-			ResultSet res = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 1;");
-			if (res.isBeforeFirst()) {
-				while (res.next()) {
-					putPlayerString(playerID, res.getString("string"));
-				}
-			} else {
-				res = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 0;");
-				while (res.next()) {
-					putPlayerString(playerID, res.getString("string"));
-				}
-				MySQL.updateSQL("UPDATE strings SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0");
-			}
-			MySQL.closeConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		StringRes res = stringsRes.get(playerID);
+		while (res.next()) {
+			putPlayerString(playerID, res.getString());
 		}
+		stringsRes.remove(playerID);
 	}
 	
 	/**
@@ -358,34 +343,96 @@ public final class BetonQuest extends JavaPlugin {
 	 * Removes player's list from HashMap and returns it (eg. for storing in database)
 	 * @param playerID
 	 */
-	public void savePlayerStrings(String playerID) {
-		List<String> strings = playerStrings.remove(playerID);
-		if (strings == null) {
-			return;
-		}
-		MySQL.openConnection();
-		MySQL.updateSQL("DELETE FROM strings WHERE playerID = '" + playerID + "'");
-		for (String string : strings) {
-			MySQL.updateSQL("INSERT INTO strings (playerID, string) VALUES ('" + playerID + "', '" + string + "')");
-		}
-		MySQL.closeConnection();
+	public void savePlayerStrings(final String playerID) {
+        List<String> strings = playerStrings.remove(playerID);
+        if (strings == null) {
+        	return;
+        }
+        MySQL.openConnection();
+        MySQL.updateSQL("DELETE FROM strings WHERE playerID = '" + playerID + "'");
+        for (String string : strings) {
+        	MySQL.updateSQL("INSERT INTO strings (playerID, string) VALUES ('" + playerID + "', '" + string + "')");
+       	}
 	}
 	
+	/**
+	 * loads journal of specified player
+	 * @param playerID
+	 */
 	public void loadJournal(String playerID) {
 		journals.put(playerID, new Journal(playerID));
 	}
 	
+	/**
+	 * returns journal of specified player
+	 * @param playerID
+	 * @return
+	 */
 	public Journal getJournal(String playerID) {
 		return journals.get(playerID);
 	}
 	
-	public void saveJournal(String playerID) {
-		MySQL.openConnection();
-		MySQL.updateSQL("DELETE FROM journal WHERE playerID = '" + playerID + "'");
-		List<Pointer> pointers = journals.remove(playerID).getPointers();
-		for (Pointer pointer : pointers) {
-			MySQL.updateSQL("INSERT INTO journal (playerID, pointer, date) VALUES ('" + playerID + "', '" + pointer.getPointer() + "', '" + pointer.getTimestamp() + "')");
+	/**
+	 * saves player's journal
+	 * @param playerID
+	 */
+	public void saveJournal(final String playerID) {
+        MySQL.updateSQL("DELETE FROM journal WHERE playerID = '" + playerID + "'");
+        List<Pointer> pointers = journals.remove(playerID).getPointers();
+        for (Pointer pointer : pointers) {
+        	MySQL.updateSQL("INSERT INTO journal (playerID, pointer, date) VALUES ('" + playerID + "', '" + pointer.getPointer() + "', '" + pointer.getTimestamp() + "')");
+        }
+	}
+
+	
+	/**
+	 * @return the objectiveRes
+	 */
+	public ConcurrentHashMap<String,ObjectiveRes> getObjectiveRes() {
+		return objectiveRes;
+	}
+	
+
+	/**
+	 * @return the stringsRes
+	 */
+	public ConcurrentHashMap<String,StringRes> getStringsRes() {
+		return stringsRes;
+	}
+	
+
+	/**
+	 * @return the journalRes
+	 */
+	public ConcurrentHashMap<String,JournalRes> getJournalRes() {
+		return journalRes;
+	}
+	
+	/**
+	 * loads all player data from database and puts it to concurrent HashMap, so it's safe to call it in async thread
+	 * @param playerID
+	 */
+	public void loadAllPlayerData(String playerID) {
+		try {
+			// load objectives
+			ResultSet res1 = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 1;");
+			if (!res1.isBeforeFirst()) {
+				res1 = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
+			}
+			BetonQuest.getInstance().getObjectiveRes().put(playerID, new ObjectiveRes(res1));
+			MySQL.updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
+			// load strings
+			ResultSet res2 = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 1;");
+			if (!res2.isBeforeFirst()) {
+				res2 = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 0;");
+			}
+			BetonQuest.getInstance().getStringsRes().put(playerID, new StringRes(res2));
+			MySQL.updateSQL("UPDATE strings SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0");
+			// load journals
+			ResultSet res3 = MySQL.querySQL("SELECT pointer, date FROM journal WHERE playerID = '" + playerID + "'");
+			BetonQuest.getInstance().getJournalRes().put(playerID, new JournalRes(res3));
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		MySQL.closeConnection();
 	}
 }

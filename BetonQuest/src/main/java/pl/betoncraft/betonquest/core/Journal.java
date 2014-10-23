@@ -3,16 +3,14 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
+
+import com.google.common.collect.Lists;
 
 /**
  * Represents player's journal
@@ -24,16 +22,11 @@ public class Journal {
 	private List<String> texts = new ArrayList<String>();
 	
 	public Journal(String playerID) {
-		BetonQuest.getInstance().getMySQL().openConnection();
-		ResultSet res = BetonQuest.getInstance().getMySQL().querySQL("SELECT pointer, date FROM journal WHERE playerID = '" + playerID + "'");
-		try {
-			while (res.next()) {
-				pointers.add(new Pointer(res.getString("pointer"), res.getTimestamp("date")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		JournalRes res = BetonQuest.getInstance().getJournalRes().get(playerID);
+		while (res.next()) {
+			pointers.add(new Pointer(res.getRow().getPointer(), res.getRow().getTimestamp()));
 		}
-		BetonQuest.getInstance().getMySQL().closeConnection();
+		BetonQuest.getInstance().getJournalRes().remove(playerID);
 		generateTexts();
 	}
 	
