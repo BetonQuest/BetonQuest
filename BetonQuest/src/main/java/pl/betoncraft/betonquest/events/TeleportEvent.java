@@ -42,18 +42,18 @@ public class TeleportEvent extends QuestEvent {
         if(locArgs.length  == 4) {
             // Location without head alignment
             loc = new Location(
-                    Bukkit.getWorld(locArgs[0]),     // World
-                    Double.parseDouble(locArgs[1]),  // X
-                    Double.parseDouble(locArgs[2]),  // Y
-                    Double.parseDouble(locArgs[3])   // Z
+                    Bukkit.getWorld(locArgs[3]),     // World
+                    Double.parseDouble(locArgs[0]),  // X
+                    Double.parseDouble(locArgs[1]),  // Y
+                    Double.parseDouble(locArgs[2])   // Z
                     );
         } else {
             // Location with head alignment
             loc = new Location(
-                    Bukkit.getWorld(locArgs[0]),     // World
-                    Double.parseDouble(locArgs[1]),  // X
-                    Double.parseDouble(locArgs[2]),  // Y
-                    Double.parseDouble(locArgs[3]),  // Z
+                    Bukkit.getWorld(locArgs[3]),     // World
+                    Double.parseDouble(locArgs[0]),  // X
+                    Double.parseDouble(locArgs[1]),  // Y
+                    Double.parseDouble(locArgs[2]),  // Z
                     Float.parseFloat(locArgs[4]),    // Yaw
                     Float.parseFloat(locArgs[5])     // Pitch
                     );

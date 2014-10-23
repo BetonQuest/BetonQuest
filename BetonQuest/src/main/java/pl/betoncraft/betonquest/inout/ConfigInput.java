@@ -82,4 +82,18 @@ public class ConfigInput {
 			return null;
 		}
 	}
+	
+	/**
+	 * reloads all config files
+	 */
+	public static void reload() {
+		instance.conversations.reloadConfig();
+		instance.conditions.reloadConfig();
+		instance.events.reloadConfig();
+		instance.journal.reloadConfig();
+		instance.messages.reloadConfig();
+		instance.npcs.reloadConfig();
+		instance.objectives.reloadConfig();
+		BetonQuest.getInstance().reloadConfig();
+	}
 }

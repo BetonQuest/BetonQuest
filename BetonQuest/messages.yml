@@ -7,7 +7,13 @@ pl:
   conversation_start: '&e*&bRozpoczales rozmowe z %quester%!&e*'
   conversation_end: '&e*&bZakonczyles rozmowe z %quester%!&e*'
   help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
+  unknown_argument: '&cNiewlasciwy argument.'
+  no_permission: '&cNie masz permisji.'
+  reloaded: '&cKonfiguracja przeladowana!'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
   help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
+  unknown_argument: '&cWrong argument.'
+  no_permission: '&cYou don''t have permission'
+  reloaded: '&cConfiguration reloaded!'

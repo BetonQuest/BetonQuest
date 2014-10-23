@@ -32,9 +32,9 @@ import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
-import pl.betoncraft.betonquest.inout.JournalTestCommand;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
+import pl.betoncraft.betonquest.inout.QuestCommand;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 
 /**
@@ -86,7 +86,7 @@ public final class BetonQuest extends JavaPlugin {
 		new JoinQuitListener();
 		new NPCListener();
 		
-		getCommand("journal").setExecutor(new JournalTestCommand());
+		getCommand("q").setExecutor(new QuestCommand());
 		
 		// register conditions
 		registerConditions("permission", PermissionCondition.class);
