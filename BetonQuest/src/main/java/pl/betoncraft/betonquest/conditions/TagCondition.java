@@ -22,10 +22,15 @@ public class TagCondition extends Condition {
 	 */
 	public TagCondition(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (instructions.contains("--inverted")) {
-			inverted = true;
+		String[] parts = instructions.split(" ");
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("--inverted")) {
+				inverted = true;
+			}
+			if (part.contains("tag:")) {
+				string = part.substring(4);
+			}
 		}
-		string = instructions.split(" ")[instructions.split(" ").length - 1];
 	}
 
 	/* (non-Javadoc)

@@ -14,7 +14,7 @@ import pl.betoncraft.betonquest.core.Condition;
 public class PermissionCondition extends Condition {
 	
 	private String permission;
-	private boolean inverted;
+	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -23,13 +23,11 @@ public class PermissionCondition extends Condition {
 	 */
 	public PermissionCondition(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (instructions.contains("--inverted")) {
-			inverted = true;
-		} else {
-			inverted = false;
-		}
 		String[] parts = instructions.split(" ");
 		for (String part : parts) {
+			if (part.equalsIgnoreCase("--inverted")) {
+				inverted = true;
+			}
 			if (part.contains("perm:")) {
 				permission = part.substring(5);
 				break;
