@@ -36,6 +36,7 @@ import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.inout.QuestCommand;
+import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 
 /**
@@ -105,6 +106,7 @@ public final class BetonQuest extends JavaPlugin {
 
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
+		registerObjectives("block", BlockObjective.class);
 		
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {

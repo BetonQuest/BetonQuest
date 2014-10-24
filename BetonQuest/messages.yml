@@ -10,6 +10,7 @@ pl:
   unknown_argument: '&cNiewlasciwy argument.'
   no_permission: '&cNie masz permisji.'
   reloaded: '&cKonfiguracja przeladowana!'
+  new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -17,3 +18,4 @@ en:
   unknown_argument: '&cWrong argument.'
   no_permission: '&cYou don''t have permission'
   reloaded: '&cConfiguration reloaded!'
+  new_journal_entry: '&e*&bJournal updated!&e*'
