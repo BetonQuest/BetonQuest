@@ -13,7 +13,7 @@ public class ExperienceCondition extends Condition{
 		super(playerID, instructions);
 		String[] parts = instructions.split(" ");
 		for (String part : parts) {
-			if (part.equalsIgnoreCase("inverted")) {
+			if (part.equalsIgnoreCase("--inverted")) {
 				inverted = true;
 			} else if (part.contains("exp:")) {
 				experience = Integer.valueOf(part.substring(4));

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 
 import org.bukkit.plugin.Plugin;
@@ -50,64 +49,38 @@ public class MySQL {
 		return this.connection;
 	}
 
-	public boolean checkConnection() {
-		return this.connection != null;
-	}
-
 	public Connection getConnection() {
 		return this.connection;
 	}
 
 	public void closeConnection() {
-		if (this.connection != null) {
+		// nothing
+	}
+
+	public ResultSet querySQL(String query) {
+		try {
+			return this.connection.createStatement().executeQuery(query);
+		} catch (Exception e1) {
 			try {
-				this.connection.close();
-			} catch (SQLException e) {
-				this.plugin.getLogger().log(Level.SEVERE,
-						"Error closing the MySQL Connection!");
-				e.printStackTrace();
+				openConnection();
+				return this.connection.createStatement().executeQuery(query);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				return null;
 			}
 		}
 	}
 
-	public ResultSet querySQL(String query) {
-		Connection c = null;
-		if (checkConnection()) {
-			c = getConnection();
-		} else {
-			c = openConnection();
-		}
-		Statement s = null;
-		try {
-			s = c.createStatement();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		ResultSet ret = null;
-		try {
-			ret = s.executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		closeConnection();
-
-		return ret;
-	}
-
 	public void updateSQL(String update) {
-		Connection c = null;
-		if (checkConnection()) {
-			c = getConnection();
-		} else {
-			c = openConnection();
-		}
-		Statement s = null;
 		try {
-			s = c.createStatement();
-			s.executeUpdate(update);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			this.connection.createStatement().executeUpdate(update);
+		} catch (Exception e1) {
+			try {
+				openConnection();
+				this.connection.createStatement().executeUpdate(update);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
-		closeConnection();
 	}
 }

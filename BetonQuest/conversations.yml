@@ -9,19 +9,19 @@ testconversation:
       answer: 'nic ciekawego, ale w sumie mozesz mi pomoc'
       conditions: 'test2i'
       events: ''
-      pointer: '4,5'
+      pointer: '4p1,4p2,4p3,5'
     '1prim':
       question: 'co slychac? :3'
       answer: 'masz duzo expa! swietnie, masz to :D'
       conditions: 'test2'
-      events: 'test1'
+      events: 'dzien'
       pointer: '15,16'
     '15':
       question: 'co to jest?'
       answer: 'taka rzecz :D a tak przy okazji, w sumie mozesz mi pomoc...'
       conditions: ''
       events: ''
-      pointer: '4,5'
+      pointer: '4p1,4p2,4p3,5'
     '16':
       question: 'bleh, wez to ode mnie!'
       answer: 'jak chcesz :v'
@@ -31,8 +31,8 @@ testconversation:
     '2':
       question: 'zrobilem quest'
       answer: 'swietnie, oto nagroda!'
-      conditions: 'test1'
-      events: 'test1'
+      conditions: 'zrobione,niezaplacone'
+      events: 'zaplac,journal3'
       pointer: '0'
     '3':
       question: 'do widzenia'
@@ -40,12 +40,30 @@ testconversation:
       conditions: ''
       events: ''
       pointer: ''
-    '4':
-      question: 'masz dla mnie jakis quest?'
+    '4p1':
+      question: 'masz dla mnie jakis quest? 1'
       answer: 'tak, chce abys scial drewno'
-      conditions: ''
+      conditions: 'niezaczete'
       events: ''
       pointer: '6,7'
+    '4p2':
+      question: 'masz dla mnie jakis quest? 2'
+      answer: 'przeciez scinasz dla mnie drewno'
+      conditions: 'zaczete,niezaplacone'
+      events: ''
+      pointer: '4k'
+    '4p3':
+      question: 'masz dla mnie jakis quest? 3'
+      answer: 'nie, juz wszystko sciales'
+      conditions: 'zrobione,zaplacone'
+      events: ''
+      pointer: '4k'
+    '4k':
+      question: 'aha, ok'
+      answer: 'jest jeszcze cos, o co chciales mnie zapytac?'
+      conditions: ''
+      events: ''
+      pointer: '0'
     '5':
       question: 'slyszales o <jakis temat>'
       answer: 'niestety nie :( musze isc, narazie'
@@ -62,7 +80,7 @@ testconversation:
       question: 'dobrze, zetne to drewno dla ciebie, ale musisz mi zaplacic'
       answer: 'nie ma problemu'
       conditions: ''
-      events: 'test2,test3'
+      events: 'start,infostart,zacznij,journal1'
       pointer: '8,9,10'
     '8':
       question: 'ide scinac drewno, na razie'

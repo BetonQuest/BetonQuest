@@ -20,6 +20,7 @@ public class ConfigInput {
 	private ConfigAccessor events;
 	private ConfigAccessor messages;
 	private ConfigAccessor npcs;
+	private ConfigAccessor journal;
 	
 	public ConfigInput() {
 		instance = this;
@@ -30,6 +31,7 @@ public class ConfigInput {
 		events = new ConfigAccessor(BetonQuest.getInstance(), "events.yml");
 		messages = new ConfigAccessor(BetonQuest.getInstance(), "messages.yml");
 		npcs = new ConfigAccessor(BetonQuest.getInstance(), "npcs.yml");
+		journal = new ConfigAccessor(BetonQuest.getInstance(), "journal.yml");
 		// save config if there isn't one
 		BetonQuest.getInstance().saveDefaultConfig();
 		conversations.saveDefaultConfig();
@@ -38,6 +40,7 @@ public class ConfigInput {
 		events.saveDefaultConfig();
 		messages.saveDefaultConfig();
 		npcs.saveDefaultConfig();
+		journal.saveDefaultConfig();
 	}
 	
 	private Object getObject(String rawPath) {
@@ -59,6 +62,8 @@ public class ConfigInput {
 			return messages.getConfig().get(path);
 		case "npcs":
 			return npcs.getConfig().get(path);
+		case "journal":
+			return journal.getConfig().get(path);
 		default:
 			return null;
 		}
@@ -76,5 +81,19 @@ public class ConfigInput {
 		} catch (ClassCastException e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * reloads all config files
+	 */
+	public static void reload() {
+		instance.conversations.reloadConfig();
+		instance.conditions.reloadConfig();
+		instance.events.reloadConfig();
+		instance.journal.reloadConfig();
+		instance.messages.reloadConfig();
+		instance.npcs.reloadConfig();
+		instance.objectives.reloadConfig();
+		BetonQuest.getInstance().reloadConfig();
 	}
 }

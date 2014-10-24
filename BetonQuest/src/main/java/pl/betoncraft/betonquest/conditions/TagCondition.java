@@ -3,17 +3,16 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
-
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Condition;
 
 /**
  * 
  * @author Co0sh
  */
-public class PermissionCondition extends Condition {
+public class TagCondition extends Condition {
 	
-	private String permission;
+	private String string;
 	private boolean inverted = false;
 
 	/**
@@ -21,23 +20,25 @@ public class PermissionCondition extends Condition {
 	 * @param playerID
 	 * @param instructions
 	 */
-	public PermissionCondition(String playerID, String instructions) {
+	public TagCondition(String playerID, String instructions) {
 		super(playerID, instructions);
 		String[] parts = instructions.split(" ");
 		for (String part : parts) {
 			if (part.equalsIgnoreCase("--inverted")) {
 				inverted = true;
 			}
-			if (part.contains("perm:")) {
-				permission = part.substring(5);
-				break;
+			if (part.contains("tag:")) {
+				string = part.substring(4);
 			}
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see pl.betoncraft.betonquest.core.Condition#isMet()
+	 */
 	@Override
 	public boolean isMet() {
-		if (Bukkit.getPlayer(super.playerID).hasPermission(permission)) {
+		if (BetonQuest.getInstance().havePlayerString(playerID, string)) {
 			return !inverted;
 		}
 		return inverted;
