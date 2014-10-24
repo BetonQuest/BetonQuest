@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Objective;
@@ -64,6 +65,7 @@ public final class BetonQuest extends JavaPlugin {
 		new NPCListener();
 		
 		// register conditions
+		registerConditions("health",HealthCondition.class);
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		
