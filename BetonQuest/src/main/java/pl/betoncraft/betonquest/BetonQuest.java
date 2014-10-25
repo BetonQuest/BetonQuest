@@ -25,12 +25,7 @@ import pl.betoncraft.betonquest.core.ObjectiveRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.StringRes;
-import pl.betoncraft.betonquest.events.CommandEvent;
-import pl.betoncraft.betonquest.events.JournalEvent;
-import pl.betoncraft.betonquest.events.MessageEvent;
-import pl.betoncraft.betonquest.events.ObjectiveEvent;
-import pl.betoncraft.betonquest.events.TagEvent;
-import pl.betoncraft.betonquest.events.TeleportEvent;
+import pl.betoncraft.betonquest.events.*;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
@@ -105,6 +100,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("tag", TagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
+        registerEvents("explosion", ExplosionEvent.class);
+        registerEvents("lightning", LightningEvent.class);
 
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
