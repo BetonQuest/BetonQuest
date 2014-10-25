@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import pl.betoncraft.betonquest.core.QuestEvent;
 
 /**
@@ -24,7 +25,11 @@ public class LightningEvent extends QuestEvent {
 
         Location loc = decodeLocation(instr[1]);
 
-        (loc.getWorld()).strikeLightning(loc);
+        getWorld(instr[1]).strikeLightning(loc);
+    }
+
+    private World getWorld(String locStr) {
+        return Bukkit.getWorld(locStr.split(";")[3]);
     }
 
     private Location decodeLocation(String locStr) {
