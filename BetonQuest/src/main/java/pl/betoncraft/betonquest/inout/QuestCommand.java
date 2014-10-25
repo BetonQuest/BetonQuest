@@ -3,14 +3,10 @@
  */
 package pl.betoncraft.betonquest.inout;
 
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import pl.betoncraft.betonquest.BetonQuest;
 
 /**
  * 
@@ -25,6 +21,11 @@ public class QuestCommand implements CommandExecutor {
 			String[] args) {
 		
 		if (cmd.getName().equalsIgnoreCase("q")) {
+			if (args.length < 1) {
+				// TODO wyœwietlenie pomocy
+				sender.sendMessage("TODO wyswietlenie pomocy");
+				return true;
+			}
 			switch (args[0]) {
 			case "reload":
 				if (!sender.hasPermission("betonquest.reload")) {
@@ -36,17 +37,11 @@ public class QuestCommand implements CommandExecutor {
 				break;
 			case "journal":
 				if (sender instanceof Player) {
-					List<String> texts = BetonQuest.getInstance().getJournal(sender.getName()).getText();
-					sender.sendMessage("Dziennik");
-					for (String text : texts) {
-						sender.sendMessage("");
-						for (String line : text.split("\\n")) {
-							sender.sendMessage(line);
-						}
-					}
+					JournalBook.addJournal(sender.getName(), -1);
 				}
+				break;
 			default:
-				sender.sendMessage(ConfigInput.getString("messages." + lang + ".unknown_argument"));
+				sender.sendMessage(ConfigInput.getString("messages." + lang + ".unknown_argument").replace("&", "§"));
 				break;
 			}
 			return true;

@@ -33,6 +33,7 @@ import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
+import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.inout.QuestCommand;
@@ -87,6 +88,7 @@ public final class BetonQuest extends JavaPlugin {
 		
 		new JoinQuitListener();
 		new NPCListener();
+		new JournalBook();
 		
 		getCommand("q").setExecutor(new QuestCommand());
 		
@@ -131,6 +133,7 @@ public final class BetonQuest extends JavaPlugin {
 			objective.saveObjective();
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
+			JournalBook.removeJournal(player.getName());
 			saveJournal(player.getName());
 			savePlayerStrings(player.getName());
 		}

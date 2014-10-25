@@ -40,13 +40,14 @@ public class JoinQuitListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		final String player = event.getPlayer().getName();
+		final String playerID = event.getPlayer().getName();
+		JournalBook.removeJournal(playerID);
 		new BukkitRunnable() {
             @Override
             public void run() {
-        		BetonQuest.getInstance().savePlayerStrings(player);
-        		BetonQuest.getInstance().saveJournal(player);
-        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player + "' AND isused = 1;");
+        		BetonQuest.getInstance().savePlayerStrings(playerID);
+        		BetonQuest.getInstance().saveJournal(playerID);
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + playerID + "' AND isused = 1;");
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());
 	}
