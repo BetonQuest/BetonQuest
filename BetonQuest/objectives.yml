@@ -1,1 +1,2 @@
-slup: 'location 139;68;249;world;3 conditions:test1 events:infocomplete,zrob,journal2,teleport'
+drewno: 'block LOG -32 events:tag_drewno_zrob,wpis_drewno_zrobione'
+global_slup: 'location 139;68;249;world;3 conditions:test1 events:infocomplete'

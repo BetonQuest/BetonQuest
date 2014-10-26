@@ -1,8 +1,9 @@
 mysql:
-  host: 'localhost'
-  port: '3306'
-  user: 'root'
-  pass: 'beton'
-  base: 'default'
+  host: ''
+  port: ''
+  user: ''
+  pass: ''
+  base: ''
 language: pl
 max_npc_distance: '5'
+global_locations: 'global_slup'

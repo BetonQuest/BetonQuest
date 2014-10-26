@@ -13,7 +13,7 @@ pl:
   new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
   journal_title: 'Dziennik'
   journal_lore: 'Twoj dziennik, zawierajacy informacje o questach'
-  inventory_full: 'Twoj ekwipunek jest pelny!'
+  inventory_full: '&e*&bTwoj ekwipunek jest pelny!&e*'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -24,4 +24,4 @@ en:
   new_journal_entry: '&e*&bJournal updated!&e*'
   journal_title: 'Journal'
   journal_lore: 'Your journal, containing all quest info'
-  inventory_full: 'Your inventory is full!'
+  inventory_full: '&e*&bYour inventory is full!&e*'

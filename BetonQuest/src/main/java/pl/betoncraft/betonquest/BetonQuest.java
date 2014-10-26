@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.StringRes;
 import pl.betoncraft.betonquest.events.*;
 import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.NPCListener;
@@ -42,7 +43,7 @@ import pl.betoncraft.betonquest.objectives.LocationObjective;
 
 /**
  * Represents BetonQuest plugin
- * @author Co0sh
+ * @authors Co0sh, Dzejkop, BYK
  */
 public final class BetonQuest extends JavaPlugin {
 
@@ -92,6 +93,7 @@ public final class BetonQuest extends JavaPlugin {
 		new JoinQuitListener();
 		new NPCListener();
 		new JournalBook();
+		new GlobalLocations().runTaskTimer(this, 0, 20);
 		
 		getCommand("q").setExecutor(new QuestCommand());
 		
