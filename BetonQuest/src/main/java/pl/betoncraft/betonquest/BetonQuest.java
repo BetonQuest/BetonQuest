@@ -16,12 +16,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
+import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.JournalRes;
 import pl.betoncraft.betonquest.core.Objective;
 import pl.betoncraft.betonquest.core.ObjectiveRes;
+import pl.betoncraft.betonquest.core.Point;
+import pl.betoncraft.betonquest.core.PointRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.StringRes;
@@ -51,10 +54,11 @@ public final class BetonQuest extends JavaPlugin {
 	private ConcurrentHashMap<String,ObjectiveRes> objectiveRes = new ConcurrentHashMap<String,ObjectiveRes>();
 	private ConcurrentHashMap<String,StringRes> stringsRes = new ConcurrentHashMap<String,StringRes>();
 	private ConcurrentHashMap<String,JournalRes> journalRes = new ConcurrentHashMap<String,JournalRes>();
+	private ConcurrentHashMap<String,PointRes> pointRes	= new ConcurrentHashMap<String,PointRes>();
 	
 	private HashMap<String,List<String>> playerStrings = new HashMap<String,List<String>>();
-	
 	private HashMap<String,Journal> journals = new HashMap<String,Journal>();
+	private HashMap<String,List<Point>> points = new HashMap<String,List<Point>>();
 	
 	private List<ObjectiveSaving> saving = new ArrayList<ObjectiveSaving>();
 	
@@ -76,9 +80,11 @@ public final class BetonQuest extends JavaPlugin {
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS strings (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, string TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS journal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
+			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS points (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
 		} else {
 			BetonQuest.getInstance().getLogger().info("Couldn't connect to database, fix this and restart the server!");
 			Bukkit.getPluginManager().disablePlugin(this);
+			return;
 		}
 		
 		new JoinQuitListener();
@@ -92,8 +98,9 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
+		registerConditions("point", PointCondition.class);
 		
-		// register test events
+		// register events
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
@@ -102,6 +109,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);
+        registerEvents("point", PointEvent.class);
 
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
@@ -113,6 +121,7 @@ public final class BetonQuest extends JavaPlugin {
 			loadObjectives(player.getName());
 			loadPlayerStrings(player.getName());
 			loadJournal(player.getName());
+			loadPlayerPoints(player.getName());
 		}
 
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -133,10 +142,9 @@ public final class BetonQuest extends JavaPlugin {
 			JournalBook.removeJournal(player.getName());
 			saveJournal(player.getName());
 			savePlayerStrings(player.getName());
+			savePlayerPoints(player.getName());
+			BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player.getName() + "' AND isused = 1;");
 		}
-        for (Player player : Bukkit.getOnlinePlayers()) {
-        	BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + player.getName() + "' AND isused = 1;");
-        }
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
@@ -296,6 +304,86 @@ public final class BetonQuest extends JavaPlugin {
 	}
 	
 	/**
+	 * Loads point objects for specified player
+	 * @param playerID
+	 */
+	public void loadPlayerPoints(String playerID) {
+		PointRes res = pointRes.get(playerID);
+		while (res.next()) {
+			putPlayerPoints(playerID, res.getPoint());
+		}
+		pointRes.remove(playerID);
+	}
+	
+	/**
+	 * puts points in player's list
+	 * @param playerID
+	 * @param points
+	 */
+	public void putPlayerPoints(String playerID, Point points) {
+		if (!this.points.containsKey(playerID)) {
+			this.points.put(playerID, new ArrayList<Point>());
+		}
+		this.points.get(playerID).add(points);
+	}
+	
+	/**
+	 * Saves player's points to database
+	 * @param playerID
+	 */
+	public void savePlayerPoints(String playerID) {
+        List<Point> points = this.points.remove(playerID);
+        if (points == null) {
+        	return;
+        }
+        MySQL.updateSQL("DELETE FROM points WHERE playerID = '" + playerID + "'");
+        for (Point point : points) {
+        	MySQL.updateSQL("INSERT INTO points (playerID, category, count) VALUES ('" + playerID + "', '" + point.getCategory() + "', '" + point.getCount() + "')");
+       	}
+	}
+	
+	/**
+	 * returns how many points from given category the player has
+	 * @param playerID
+	 * @param category
+	 * @return
+	 */
+	public int getPlayerPoints(String playerID, String category) {
+		List<Point> points = this.points.get(playerID);
+		if (points == null) {
+			return 0;
+		}
+		for (Point point : points) {
+			if (point.getCategory().equalsIgnoreCase(category)) {
+				return point.getCount();
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * adds points to specified category
+	 * @param playerID
+	 * @param category
+	 * @param count
+	 */
+	public void addPlayerPoints(String playerID, String category, int count) {
+		List<Point> points = this.points.get(playerID);
+		if (points == null) {
+			this.points.put(playerID, new ArrayList<Point>());
+			this.points.get(playerID).add(new Point(category, count));
+			return;
+		}
+		for (Point point : points) {
+			if (point.getCategory().equalsIgnoreCase(category)) {
+				point.addPoints(count);
+				return;
+			}
+		}
+		this.points.get(playerID).add(new Point(category, count));
+	}
+	
+	/**
 	 * loads strings (tags) for specified player
 	 * @param playerID
 	 */
@@ -388,7 +476,6 @@ public final class BetonQuest extends JavaPlugin {
         }
 	}
 
-	
 	/**
 	 * @return the objectiveRes
 	 */
@@ -396,7 +483,6 @@ public final class BetonQuest extends JavaPlugin {
 		return objectiveRes;
 	}
 	
-
 	/**
 	 * @return the stringsRes
 	 */
@@ -404,12 +490,18 @@ public final class BetonQuest extends JavaPlugin {
 		return stringsRes;
 	}
 	
-
 	/**
 	 * @return the journalRes
 	 */
 	public ConcurrentHashMap<String,JournalRes> getJournalRes() {
 		return journalRes;
+	}
+	
+	/**
+	 * @return the pointRes
+	 */
+	public ConcurrentHashMap<String,PointRes> getPointRes() {
+		return pointRes;
 	}
 	
 	/**
@@ -423,18 +515,21 @@ public final class BetonQuest extends JavaPlugin {
 			if (!res1.isBeforeFirst()) {
 				res1 = MySQL.querySQL("SELECT instructions FROM objectives WHERE playerID = '" + playerID + "' AND isused= 0;");
 			}
-			BetonQuest.getInstance().getObjectiveRes().put(playerID, new ObjectiveRes(res1));
+			getObjectiveRes().put(playerID, new ObjectiveRes(res1));
 			MySQL.updateSQL("UPDATE objectives SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0;");
 			// load strings
 			ResultSet res2 = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 1;");
 			if (!res2.isBeforeFirst()) {
 				res2 = MySQL.querySQL("SELECT string FROM strings WHERE playerID = '" + playerID + "' AND isused = 0;");
 			}
-			BetonQuest.getInstance().getStringsRes().put(playerID, new StringRes(res2));
+			getStringsRes().put(playerID, new StringRes(res2));
 			MySQL.updateSQL("UPDATE strings SET isused = 1 WHERE playerID = '" + playerID + "' AND isused = 0");
 			// load journals
 			ResultSet res3 = MySQL.querySQL("SELECT pointer, date FROM journal WHERE playerID = '" + playerID + "'");
-			BetonQuest.getInstance().getJournalRes().put(playerID, new JournalRes(res3));
+			getJournalRes().put(playerID, new JournalRes(res3));
+			// load points
+			ResultSet res4 = MySQL.querySQL("SELECT category, count FROM points WHERE playerID = '" + playerID + "'");
+			getPointRes().put(playerID, new PointRes(res4));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -39,10 +39,7 @@ public class MySQL {
 					+ this.hostname + ":" + this.port + "/" + this.database,
 					this.user, this.password);
 		} catch (SQLException e) {
-			this.plugin.getLogger().log(
-					Level.SEVERE,
-					"Could not connect to MySQL server! because: "
-							+ e.getMessage());
+			this.connection = null;
 		} catch (ClassNotFoundException e) {
 			this.plugin.getLogger().log(Level.SEVERE, "JDBC Driver not found!");
 		}
@@ -51,10 +48,6 @@ public class MySQL {
 
 	public Connection getConnection() {
 		return this.connection;
-	}
-
-	public void closeConnection() {
-		// nothing
 	}
 
 	public ResultSet querySQL(String query) {

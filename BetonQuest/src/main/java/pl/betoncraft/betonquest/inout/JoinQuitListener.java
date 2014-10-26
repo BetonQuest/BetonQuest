@@ -36,6 +36,7 @@ public class JoinQuitListener implements Listener {
 		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
 		BetonQuest.getInstance().loadPlayerStrings(event.getPlayer().getName());
 		BetonQuest.getInstance().loadJournal(event.getPlayer().getName());
+		BetonQuest.getInstance().loadPlayerPoints(event.getPlayer().getName());
 	}
 	
 	@EventHandler
@@ -47,6 +48,7 @@ public class JoinQuitListener implements Listener {
             public void run() {
         		BetonQuest.getInstance().savePlayerStrings(playerID);
         		BetonQuest.getInstance().saveJournal(playerID);
+        		BetonQuest.getInstance().savePlayerPoints(playerID);
         		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + playerID + "' AND isused = 1;");
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());

@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Converts ResultSet to readable and persistent data object. Works exactly the same as ResultSet
+ * 
  * @author Co0sh
  */
-public class StringRes {
+public class PointRes {
 	
-	private List<String> strings = new ArrayList<String>();
+	private List<Point> points = new ArrayList<Point>();
+	
 	private int iterator;
 	
-	public StringRes(ResultSet res) {
+	public PointRes(ResultSet res) {
 		try {
 			while (res.next()) {
-				strings.add(res.getString("string"));
+				points.add(new Point(res.getString("category"), res.getInt("count")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -34,7 +35,7 @@ public class StringRes {
 	 */
 	public boolean next() {
 		iterator++;
-		if (iterator < strings.size()) {
+		if (iterator < points.size()) {
 			return true;
 		}
 		return false;
@@ -44,7 +45,7 @@ public class StringRes {
 	 * returns string (tag) on this row
 	 * @return
 	 */
-	public String getString() {
-		return strings.get(iterator);
+	public Point getPoint() {
+		return points.get(iterator);
 	}
 }
