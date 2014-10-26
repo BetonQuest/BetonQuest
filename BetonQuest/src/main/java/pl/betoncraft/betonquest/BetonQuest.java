@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.betoncraft.betonquest.conditions.AlternativeCondition;
+import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
@@ -99,6 +101,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
 		registerConditions("point", PointCondition.class);
+		registerConditions("and", ConjunctionCondition.class);
+		registerConditions("or", AlternativeCondition.class);
 		
 		// register events
 		registerEvents("message", MessageEvent.class);
