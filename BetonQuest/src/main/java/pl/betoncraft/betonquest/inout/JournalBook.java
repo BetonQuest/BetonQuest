@@ -5,11 +5,13 @@ package pl.betoncraft.betonquest.inout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -56,6 +58,19 @@ public class JournalBook implements Listener {
 					event.setCancelled(true);
 					return;
 				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		List<ItemStack> drops = event.getDrops();
+		ListIterator<ItemStack> litr = drops.listIterator();
+		while(litr.hasNext()) {
+			ItemStack stack = litr.next();
+			if(isJournal(stack)) {
+				litr.remove();
+				return;
 			}
 		}
 	}

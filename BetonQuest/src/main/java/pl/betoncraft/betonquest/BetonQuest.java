@@ -46,6 +46,8 @@ import pl.betoncraft.betonquest.objectives.LocationObjective;
  * @authors Co0sh, Dzejkop, BYK
  */
 public final class BetonQuest extends JavaPlugin {
+	
+	private boolean disabling = false;
 
 	private static BetonQuest instance;
 	private MySQL MySQL;
@@ -86,6 +88,7 @@ public final class BetonQuest extends JavaPlugin {
 			MySQL.updateSQL("CREATE TABLE IF NOT EXISTS points (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
 		} else {
 			BetonQuest.getInstance().getLogger().info("Couldn't connect to database, fix this and restart the server!");
+			disabling = true;
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -135,6 +138,9 @@ public final class BetonQuest extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+		if (disabling) {
+			return;
+		}
 		// create array and put there objectives (to avoid concurrent modification exception)
 		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
 		// save all active objectives to database
