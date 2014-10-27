@@ -47,24 +47,58 @@ public class ConfigInput {
 		String[] parts = rawPath.split("\\.");
 		String first = parts[0];
 		String path = rawPath.substring(first.length() + 1);
+		Object object;
 		switch (first) {
 		case "config":
-			return BetonQuest.getInstance().getConfig().get(path);
+			object = BetonQuest.getInstance().getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "conversations":
-			return conversations.getConfig().get(path);
+			object = conversations.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "objectives":
-			return objectives.getConfig().get(path);
+			object = objectives.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "conditions":
-			return conditions.getConfig().get(path);
+			object = conditions.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "events":
-			return events.getConfig().get(path);
+			object = events.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "messages":
-			return messages.getConfig().get(path);
+			object = messages.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "npcs":
-			return npcs.getConfig().get(path);
+			object = npcs.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		case "journal":
-			return journal.getConfig().get(path);
+			object = journal.getConfig().get(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		default:
+			BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			return null;
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.ListIterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -16,6 +17,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -72,6 +74,13 @@ public class JournalBook implements Listener {
 				litr.remove();
 				return;
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onItemFrameClick(PlayerInteractEntityEvent event) {
+		if (event.getRightClicked() instanceof ItemFrame && isJournal(event.getPlayer().getItemInHand())) {
+			event.setCancelled(true);
 		}
 	}
 	

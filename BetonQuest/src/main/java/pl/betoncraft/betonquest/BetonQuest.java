@@ -266,6 +266,10 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public static boolean condition(String playerID, String conditionID) {
 		String conditionInstruction = ConfigInput.getString("conditions." + conditionID);
+		if (conditionInstruction == null) {
+			BetonQuest.getInstance().getLogger().severe("Error while fetching condition: " + conditionID);
+			return false;
+		}
 		String[] parts = conditionInstruction.split(" ");
 		Class<? extends Condition> condition = BetonQuest.getInstance().getCondition(parts[0]);
 		Condition instance = null;
@@ -287,6 +291,10 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public static void event(String playerID, String eventID) {
 		String eventInstruction = ConfigInput.getString("events." + eventID);
+		if (eventInstruction == null) {
+			BetonQuest.getInstance().getLogger().severe("Error while fetching event: " + eventID);
+			return;
+		}
 		String[] parts = eventInstruction.split(" ");
 		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
 		try {
@@ -304,6 +312,10 @@ public final class BetonQuest extends JavaPlugin {
 	 * @param instruction
 	 */
 	public static void objective(String playerID, String instruction) {
+		if (instruction == null) {
+			BetonQuest.getInstance().getLogger().severe("Error while creating objective.");
+			return;
+		}
 		String[] parts = instruction.split(" ");
 		Class<? extends Objective> objective = BetonQuest.getInstance().getObjective(parts[0]);
 		try {
