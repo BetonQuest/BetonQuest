@@ -77,7 +77,7 @@ public class BlockObjective extends Objective implements Listener{
 
 	@Override
 	public String getInstructions() {
-		String instruction = new String("block " + material.toString() + " " + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events);
+		String instruction = new String("block " + material.toString() + " " + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events + " tag:" + tag);
 		HandlerList.unregisterAll(this);
 		return instruction;
 	}
