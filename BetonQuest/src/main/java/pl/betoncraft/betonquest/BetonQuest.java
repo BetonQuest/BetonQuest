@@ -558,4 +558,12 @@ public final class BetonQuest extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteObjective(String playerID, String tag) {
+		for (ObjectiveSaving objective : saving) {
+			if (objective.getPlayerID().equals(playerID) && objective.getTag() != null && objective.getTag().equalsIgnoreCase(tag)) {
+				objective.deleteThis();
+			}
+		}
+	}
 }

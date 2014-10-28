@@ -21,6 +21,7 @@ public class ObjectiveSaving implements Listener {
 
 	private Objective objective;
 	private String playerID;
+	private String tag;
 	
 	/**
 	 * Constructor method, this one safely removes objective from memory, storing it in database if needed
@@ -30,6 +31,7 @@ public class ObjectiveSaving implements Listener {
 	public ObjectiveSaving(String playerID, Objective objective) {
 		this.objective = objective;
 		this.playerID = playerID;
+		this.tag = objective.getTag();
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 		BetonQuest.getInstance().putObjectiveSaving(this);
 	}
@@ -52,7 +54,7 @@ public class ObjectiveSaving implements Listener {
 	/**
 	 * Deletes objective
 	 */
-	private void deleteThis() {
+	public void deleteThis() {
 		BetonQuest.getInstance().deleteObjectiveSaving(this);
 		HandlerList.unregisterAll(this);
 	}
@@ -67,5 +69,19 @@ public class ObjectiveSaving implements Listener {
 	            }
 	        }.runTaskAsynchronously(BetonQuest.getInstance());
 		}
+	}
+
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * @return the playerID
+	 */
+	public String getPlayerID() {
+		return playerID;
 	}
 }

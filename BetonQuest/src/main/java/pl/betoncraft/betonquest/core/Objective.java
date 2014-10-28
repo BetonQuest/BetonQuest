@@ -16,10 +16,17 @@ public abstract class Objective {
 	protected String playerID;
 	protected String instructions;
 	private ObjectiveSaving listener;
+	private String tag;
 	
 	public Objective(String playerID, String instructions) {
 		this.playerID = playerID;
 		this.instructions = instructions;
+		for (String part : instructions.split(" ")) {
+			if (part.contains("tag:")) {
+				tag = part.substring(4);
+				break;
+			}
+		}
 		listener = new ObjectiveSaving(playerID, this);
 	}
 	
@@ -85,5 +92,12 @@ public abstract class Objective {
 	 * @return
 	 */
 	abstract public String getInstructions();
+
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
 
 }
