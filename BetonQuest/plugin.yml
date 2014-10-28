@@ -1,5 +1,8 @@
 name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
+authors: [Co0sh, Dzejkop, BYK]
+website: http://betoncraft.pl
+depend: Citizens
 version: 0.1
 commands:
   q:
@@ -7,5 +10,11 @@ commands:
     usage: /<command>
 permissions:
   betonquest.reload:
+    default: op
+  betonquest.objectives:
+    default: op
+  betonquest.tags:
+    default: op
+  betonquest.conditions:
     default: op
   

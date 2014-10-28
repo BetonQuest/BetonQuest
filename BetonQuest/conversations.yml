@@ -1,108 +1,151 @@
 karczmarz:
   quester: 'Karczmarz'
-  initial: 'Witaj w mojej karczmie, %player%! Co moge dla Ciebie zrobic?'
   unknown: 'Nie zrozumialem, mozesz powtorzyc?'
-  first: '1p1,2p1,2p2,2p3,2p4,end'
-  options:
-    '1p1':
-      question: 'Dlaczego prowadzisz tu karczme?'
-      answer: 'Concrete potrzebuje karczmy. Przejezdni musza gdzies spac, mieszkancy potrzebuja miejsca do picia Amareny, no i jest jeszcze Arena.'
-      conditions: 'concrete_szanowany'
-      events: ''
-      pointer: 'karczma1,karczma2,karczma3,back'
-    'back':
-      question: 'Wracajac do poprzedniego tematu...'
-      answer: 'Tak?'
-      conditions: ''
-      events: ''
-      pointer: '0'
-    'karczma1':
-      question: 'Mozna tu wynajac pokoj? Jak to zrobic?'
-      answer: 'Po prostu idz schodami na gore, wybierz pokoj i kliknij prawym na odpowiadajacej mu tabliczce. Kosztuje to 3 emeraldy, a pokoj masz na kolejny tydzien.'
-      conditions: ''
-      events: ''
-      pointer: 'karczma2,karczma3,back'
-    'karczma2':
-      question: 'Prowadzisz tu sklep?'
-      answer: 'Tak, porozmawiaj ze stojacym obok Villagerem. Sprzedaje on jedzenie i Amarene.'
-      conditions: ''
-      events: ''
-      pointer: 'karczma1,karczma3,back'
-    'karczma3':
-      question: 'Arena? O co chodzi?'
-      answer: 'Emm... Prowadzimy tu cos w stylu areny PvP... Nie jest to do konca legalne, wiec nie rozpowiadaj o tym kazdemu. Idz schodami w dol. Po smierci na arenie nie tracisz swoich przedmiotow.'
-      conditions: ''
-      events: ''
-      pointer: 'arena,karczma1,karczma2,back'
-    'arena':
-      question: 'Co masz na mysli mowiac "nielegalne"?'
-      answer: 'Jarl wie co tu sie dzieje, ale ma z tego dosc duzy zysk. Gdyby ktos jednak zaczal o tym publicznie mowic, Jarl nie bedzie mial innego wyjscia jak zamknac nasza arene.'
-      conditions: ''
-      events: ''
-      pointer: 'karczma1,karczma2,back'
-    '2p1':
-      question: 'Masz moze cos do zrobienia? Potrzebuje pieniedzy...'
-      answer: 'Hmm... Cos by sie tu znalazlo. Potrzebuje drewna z tartaku, co Ty na to, zebys mi go troche przyniosl?'
+  first: 'start,start_drewno_zaczete,start_drewno_zaplacone'
+  NPC_options:
+    'start':
+      text: 'Witaj w mojej karczmie, %player%! Co moge dla Ciebie zrobic?'
       conditions: 'drewno_niezaczete'
       events: ''
+      pointer: 'co_slychac,questy,zegnaj'
+    'back':
+      text: 'Tak?'
+      conditions: ''
+      events: ''
+      pointer: 'co_slychac,questy,drewno_pytania,drewno_zrobilem,wiecej_questow,zegnaj'
+    'start_drewno_zaczete':
+      text: 'Witaj ponownie! Jak Ci idzie zbieranie drewna dla mnie?'
+      conditions: 'drewno_zaczete,drewno_niezaplacone'
+      events: ''
+      pointer: 'co_slychac,drewno_pytania,drewno_zrobilem,zegnaj'
+    'start_drewno_zaplacone':
+      text: 'Aaa, moj ulubiony klient zawital w moje skromne progi! Czego potrzebujesz tym razem?'
+      conditions: 'drewno_zaplacone'
+      events: ''
+      pointer: 'co_slychac,wiecej_questow,zegnaj'
+    'propozycja_drewno':
+      text: 'Hmm... Robilem ostatnio nowe kufle na piwo, ale skonczylo mi sie drewno. Gdybys byl tak uprzejmy i przyniosl mi 16 blokow drewna z pobliskiego tartaku mysle ze znalazlbym kilka emeraldow.'
+      conditions: ''
+      events: ''
       pointer: 'drewno_tak,drewno_nie'
-    'drewno_tak':
-      question: 'Brzmi uczciwie.'
-      answer: 'Swietnie. Idz do tartaku, zetnij 32 bloki brzozy i przynies mi je.'
-      conditions: ''
-      events: 'quest_drewno_start,tag_drewno_zacznij,wpis_drewno_zaczete'
-      pointer: 'drewno_go,drewno_pytania,back'
-    'drewno_nie':
-      question: 'Z drugiej strony nie potrzebuje tych pieniedzy az tak bardzo...'
-      answer: 'Coz, znajde kogos innego w takim razie.'
+    'pytania':
+      text: 'Odpowiem najlepiej jak potrafie.'
       conditions: ''
       events: ''
-      pointer: '0'
-    '2p2':
-      question: 'Moglbys powtorzyc co dokladnie mam zrobic?'
-      answer: 'Oczywiscie. Musisz mi przyniesc 32 bloki drewna brzozowego sciete w tartaku Concrete.'
-      conditions: 'drewno_zaczete,drewno_niezrobione'
+      pointer: 'drewno_gdzie,drewno_jak,drewno_czym,koniec_pytan'
+    'drewno_nagroda':
+      text: 'Swietnie! Oto 5 emeraldow dla Ciebie.'
+      conditions: ''
       events: ''
-      pointer: 'drewno_go,drewno_pytania'
-    'drewno_go':
-      question: 'W takim razie ide scinac te brzozy.'
-      answer: 'Powodzenia!'
+      pointer: 'co_slychac,wiecej_questow,zegnaj'
+    'brak_questow':
+      text: 'Niestety nic juz nie mam. Wroc kiedy indziej, moze akurat bede cos mial.'
+      conditions: ''
+      events: ''
+      pointer: 'co_slychac,zegnaj'
+    'drewno_zgoda':
+      text: 'Swietnie. Idz do tartaku i zetnij mi 16 blokow drewna.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_ide,drewno_pytania,back'
+    'drewno_odmowa':
+      text: 'Szkoda.'
       conditions: ''
       events: ''
       pointer: ''
+    'drewno_gdzie_odpowiedz':
+      text: 'Wyjdz z Concrete poludniowa brama. Tartak zobaczysz po prawej, to ten brzozowy lasek.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_jak,drewno_czym,koniec_pytan'
+    'drewno_jak_odpowiedz':
+      text: 'Podejdz do drzewa i bij je tak dlugo, az wypadnie drewno.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_gdzie,drewno_czym,koniec_pytan'
+    'drewno_czym_odpowiedz':
+      text: 'Poszukaj w domku drwala jakiejs siekiery, na pewno cos znajdziesz.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_gdzie,drewno_jak,koniec_pytan'
+    'koniec_pytan':
+      text: 'Mam nadzieje, ze pomoglem.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_ide,back'
+    'drewno_ide':
+      text: 'Powodzenia!'
+      conditions: ''
+      events: ''
+      pointer: ''
+  player_options:
+    'co_slychac':
+      text: ''
+      conditions: ''
+      events: ''
+      pointer: ''
+    'back':
+      text: 'Wracajac do poprzedniego tematu...'
+      conditions: ''
+      events: ''
+      pointer: 'back'
+    'questy':
+      text: 'Masz moze dla mnie jakies zadania? Potrzebuje pieniedzy...'
+      conditions: 'drewno_niezaczete'
+      events: ''
+      pointer: 'propozycja_drewno'
     'drewno_pytania':
-      question: 'Mam kilka pytan odnosnie tego zadania.'
-      answer: 'Pytaj, postaram sie odpowiedziec najlepiej jak potrafie.'
-      conditions: ''
+      text: 'Mam kilka pytan odnosnie scinania drzew.'
+      conditions: 'drewno_zaczete,drewno_niezrobione'
       events: ''
-      pointer: 'drewno_pytanie_gdzie,drewno_pytanie_czym'
-    'drewno_pytanie_gdzie':
-      question: 'Gdzie znajde tartak?'
-      answer: 'Wyjdz z karczmy i skrec w prawo. Opusc Concrete poludniowa brama, przejdz kolo mlynu i po prawej zobaczysz chatke Drwala, za ktora jest brzozowy tartak.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_pytanie_czym,drewno_go,back'
-    'drewno_pytanie_czym':
-      question: 'Czym mam scinac te drzewa? Nie mam przy sobie siekiery...'
-      answer: 'Sprawdz w chatce Drwala. On na pewno ma jakies zapasowe siekiery.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_pytanie_gdzie,drewno_go,back'
-    '2p3':
-      question: 'Oto Twoje drewno.'
-      answer: 'Swietnie! Oto nagroda dla Ciebie: 5 emeraldow.'
+      pointer: 'pytania'
+    'drewno_zrobilem':
+      text: 'Zebralem drewno o ktore mnie prosiles. Oto ono.'
       conditions: 'drewno_zrobione,drewno_niezaplacone'
-      events: 'tag_drewno_zaplac,wpis_drewno_zaplacone,nagroda_drewno,concrete_punkty'
-      pointer: '0'
-    '2p4':
-      question: 'Masz jeszcze jakies zadania dla mnie? 5 emeraldow to troche malo...'
-      answer: 'Niestety nie. Wroc pozniej, moze wtedy bede cos mial.'
+      events: 'nagroda_drewno,tag_drewno_zaplac,wpis_drewno_zaplacone'
+      pointer: 'drewno_nagroda'
+    'wiecej_questow':
+      text: 'Masz moze jeszcze jakies zadania dla mnie? 5 emeraldow to troche malo.'
       conditions: 'drewno_zaplacone'
       events: ''
-      pointer: '0'
-    'end':
-      question: 'Zegnaj.'
-      answer: 'Do zobaczenia! Wroc jeszcze kiedys do mojej karczmy.'
+      pointer: 'brak_questow'
+    'drewno_tak':
+      text: 'Brzmi uczciwie.'
+      conditions: ''
+      events: 'drewno_start,tag_drewno_zacznij,wpis_drewno_zaczete'
+      pointer: 'drewno_zgoda'
+    'drewno_nie':
+      text: 'Z drugiej strony nie potrzebuje tych pieniedzy az tak bardzo.'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_odmowa'
+    'drewno_gdzie':
+      text: 'Gdzie znajde tartak?'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_gdzie_odpowiedz'
+    'drewno_jak':
+      text: 'Jak sie scina drewno?'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_jak_odpowiedz'
+    'drewno_czym':
+      text: 'Czym mam scinac to drewno?'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_czym_odpowiedz'
+    'koniec_pytan':
+      text: 'Nie mam wiecej pytan.'
+      conditions: ''
+      events: ''
+      pointer: 'koniec_pytan'
+    'drewno_ide':
+      text: 'Dobrze. W takim razie ide scinac drzewo. Do zobaczenia!'
+      conditions: ''
+      events: ''
+      pointer: 'drewno_ide'
+    'zegnaj':
+      text: 'Zegnaj.'
       conditions: ''
       events: ''
       pointer: ''
