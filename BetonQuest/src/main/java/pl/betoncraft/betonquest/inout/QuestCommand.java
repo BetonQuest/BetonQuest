@@ -88,6 +88,20 @@ public class QuestCommand implements CommandExecutor {
 				}
 				sender.sendMessage(getMessage("player_condition").replace("%condition%", ConfigInput.getString("conditions." + args[1])).replace("%outcome%", BetonQuest.condition(sender.getName(), args[1]) + ""));
 				break;
+			case "points":
+				if (!sender.hasPermission("betonquest.conditions")) {
+					sender.sendMessage(getMessage("no_permission"));
+					return true;
+				}
+				if (!(sender instanceof Player)) {
+					return true;
+				}
+				if (args.length < 2) {
+					sender.sendMessage(getMessage("specify_condition"));
+					return true;
+				}
+				sender.sendMessage(getMessage("player_points").replace("%category%", args[1]).replace("%count%", BetonQuest.getInstance().getPlayerPoints(sender.getName(), args[1]) + ""));
+				break;
 			default:
 				sender.sendMessage(getMessage("unknown_argument"));
 				break;

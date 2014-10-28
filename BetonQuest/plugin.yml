@@ -2,7 +2,7 @@ name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
 authors: [Co0sh, Dzejkop, BYK]
 website: http://betoncraft.pl
-depend: Citizens
+depend: [Citizens]
 version: 0.1
 commands:
   q:

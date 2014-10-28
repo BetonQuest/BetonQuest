@@ -18,6 +18,7 @@ pl:
   player_objectives: '&aZadania gracza:'
   player_tags: '&aTagi gracza:'
   player_condition: '&aWarunek %condition%: %outcome%'
+  player_points: '&aPunkty %category%: %count%'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -33,3 +34,4 @@ en:
   player_objectives: '&aPlayer''s objectives:'
   player_tags: '&aPlayer''s tags:'
   player_condition: '&aCondition %condition%: %outcome%'
+  player_points: '&a%category% points: %count%'
