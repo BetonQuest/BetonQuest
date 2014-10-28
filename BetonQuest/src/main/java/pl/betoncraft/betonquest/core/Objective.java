@@ -16,6 +16,8 @@ public abstract class Objective {
 	protected String playerID;
 	protected String instructions;
 	private ObjectiveSaving listener;
+	protected String conditions;
+	protected String events;
 	protected String tag;
 	
 	public Objective(String playerID, String instructions) {
@@ -24,7 +26,12 @@ public abstract class Objective {
 		for (String part : instructions.split(" ")) {
 			if (part.contains("tag:")) {
 				tag = part.substring(4);
-				break;
+			}
+			if (part.contains("events:")) {
+				events = part;
+			}
+			if (part.contains("conditions:")) {
+				conditions = part;
 			}
 		}
 		listener = new ObjectiveSaving(playerID, this);

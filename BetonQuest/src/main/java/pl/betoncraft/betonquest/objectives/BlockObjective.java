@@ -24,8 +24,6 @@ public class BlockObjective extends Objective implements Listener{
 //	private int data;
 	private int neededAmount;
 	private int currentAmount = 0;
-	private String conditions;
-	private String events;
 
 	/**
 	 * Constructor method
