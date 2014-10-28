@@ -16,7 +16,7 @@ public abstract class Objective {
 	protected String playerID;
 	protected String instructions;
 	private ObjectiveSaving listener;
-	private String tag;
+	protected String tag;
 	
 	public Objective(String playerID, String instructions) {
 		this.playerID = playerID;

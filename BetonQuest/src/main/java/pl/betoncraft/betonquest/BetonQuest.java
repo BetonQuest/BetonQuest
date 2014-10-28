@@ -317,6 +317,17 @@ public final class BetonQuest extends JavaPlugin {
 			return;
 		}
 		String[] parts = instruction.split(" ");
+		String tag = null;
+		for (String part : parts) {
+			if (part.contains("tag:")) {
+				tag = part.substring(4);
+				break;
+			}
+		}
+		if (tag == null) {
+			BetonQuest.getInstance().getLogger().severe("Tag not found in: " + instruction);
+			return;
+		}
 		Class<? extends Objective> objective = BetonQuest.getInstance().getObjective(parts[0]);
 		try {
 			objective.getConstructor(String.class, String.class).newInstance(playerID, instruction);
@@ -431,6 +442,13 @@ public final class BetonQuest extends JavaPlugin {
 		playerStrings.get(playerID).add(string);
 	}
 	
+	/**
+	 * @return the playerStrings
+	 */
+	public HashMap<String, List<String>> getPlayerStrings() {
+		return playerStrings;
+	}
+
 	/**
 	 * Checks if player has specified string in his list
 	 * @param playerID
@@ -565,5 +583,15 @@ public final class BetonQuest extends JavaPlugin {
 				objective.deleteThis();
 			}
 		}
+	}
+	
+	public List<ObjectiveSaving> getObjectives(String playerID) {
+		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
+		for (ObjectiveSaving objective : saving) {
+			if (objective.getPlayerID().equals(playerID) && objective.getTag() != null) {
+				list.add(objective);
+			}
+		}
+		return list;
 	}
 }

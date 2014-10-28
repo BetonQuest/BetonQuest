@@ -14,6 +14,10 @@ pl:
   journal_title: 'Dziennik'
   journal_lore: 'Twoj dziennik, zawierajacy informacje o questach'
   inventory_full: '&e*&bTwoj ekwipunek jest pelny!&e*'
+  specify_condition: '&cPodaj nazwe warunku.'
+  player_objectives: '&aZadania gracza:'
+  player_tags: '&aTagi gracza:'
+  player_condition: '&aWarunek %condition%: %outcome%'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -25,3 +29,7 @@ en:
   journal_title: 'Journal'
   journal_lore: 'Your journal, containing all quest info'
   inventory_full: '&e*&bYour inventory is full!&e*'
+  specify_condition: '&cPodaj nazwe warunku.'
+  player_objectives: '&aPlayer''s objectives:'
+  player_tags: '&aPlayer''s tags:'
+  player_condition: '&aCondition %condition%: %outcome%'
