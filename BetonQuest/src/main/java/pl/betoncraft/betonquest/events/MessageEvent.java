@@ -20,9 +20,6 @@ public class MessageEvent extends QuestEvent {
 	 */
 	public MessageEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (!fire) {
-			return;
-		}
 		String message = super.instructions.substring(super.instructions.split(" ")[0].length() + 1);
 		Bukkit.getPlayer(super.playerID).sendMessage(message.replaceAll("&", "§").replaceAll("%player%", super.playerID));
 	}

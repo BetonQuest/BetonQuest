@@ -296,6 +296,22 @@ public final class BetonQuest extends JavaPlugin {
 			return;
 		}
 		String[] parts = eventInstruction.split(" ");
+		boolean fire = true;
+		conditions:
+		for (String part : parts) {
+			if (part.contains("conditions:")) {
+				String[] conditions = part.substring(11).split(",");
+				for (String condition : conditions) {
+					if (!BetonQuest.condition(playerID, condition)) {
+						fire = false;
+						break conditions;
+					}
+				}
+			}
+		}
+		if (!fire) {
+			return;
+		}
 		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
 		try {
 			event.getConstructor(String.class, String.class).newInstance(playerID, eventInstruction);

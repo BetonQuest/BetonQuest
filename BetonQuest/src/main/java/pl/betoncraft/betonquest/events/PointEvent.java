@@ -19,9 +19,6 @@ public class PointEvent extends QuestEvent {
 	 */
 	public PointEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (!fire) {
-			return;
-		}
 		String[] parts = instructions.split(" ");
 		String category = parts[1];
 		int count = Integer.valueOf(parts[2]);

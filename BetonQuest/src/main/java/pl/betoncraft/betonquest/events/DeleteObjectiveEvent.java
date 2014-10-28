@@ -19,9 +19,6 @@ public class DeleteObjectiveEvent extends QuestEvent {
 	 */
 	public DeleteObjectiveEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (!fire) {
-			return;
-		}
 		BetonQuest.getInstance().deleteObjective(playerID, instructions.split(" ")[1]);
 	}
 

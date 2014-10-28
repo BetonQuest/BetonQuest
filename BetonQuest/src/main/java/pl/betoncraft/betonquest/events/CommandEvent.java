@@ -20,9 +20,6 @@ public class CommandEvent extends QuestEvent {
 	 */
 	public CommandEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (!fire) {
-			return;
-		}
 		String command = instructions.substring(instructions.indexOf(" ") + 1);
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("%player%", playerID));
 	}
