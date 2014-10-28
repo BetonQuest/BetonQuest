@@ -20,6 +20,9 @@ public class ObjectiveEvent extends QuestEvent {
 	 */
 	public ObjectiveEvent(String playerID, String instructions) {
 		super(playerID, instructions);
+		if (!fire) {
+			return;
+		}
 		BetonQuest.objective(playerID, ConfigInput.getString("objectives." + instructions.split(" ")[1]));
 	}
 

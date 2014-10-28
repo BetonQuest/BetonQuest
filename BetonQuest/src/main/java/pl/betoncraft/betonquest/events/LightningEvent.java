@@ -20,6 +20,9 @@ public class LightningEvent extends QuestEvent {
      */
     public LightningEvent(String playerID, String instructions) {
         super(playerID, instructions);
+		if (!fire) {
+			return;
+		}
 
         String [] instr = instructions.split(" ");
 

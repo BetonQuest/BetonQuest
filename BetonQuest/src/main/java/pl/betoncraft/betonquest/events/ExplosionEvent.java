@@ -19,6 +19,9 @@ public class ExplosionEvent extends QuestEvent {
      */
     public ExplosionEvent(String playerID, String instructions) {
         super(playerID, instructions);
+		if (!fire) {
+			return;
+		}
 
         String [] s = instructions.split(" ");
 

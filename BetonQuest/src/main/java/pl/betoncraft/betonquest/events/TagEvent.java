@@ -19,6 +19,9 @@ public class TagEvent extends QuestEvent {
 	 */
 	public TagEvent(String playerID, String instructions) {
 		super(playerID, instructions);
+		if (!fire) {
+			return;
+		}
 		String[] parts = instructions.split(" ");
 		switch (parts[1]) {
 		case "add":

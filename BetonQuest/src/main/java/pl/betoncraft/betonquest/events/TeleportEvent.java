@@ -17,6 +17,9 @@ public class TeleportEvent extends QuestEvent {
      */
     public TeleportEvent(String playerID, String instructions) {
         super(playerID, instructions);
+		if (!fire) {
+			return;
+		}
         Player player = Bukkit.getPlayer(playerID);
 
         // Ignoring the first part of instruction
