@@ -18,10 +18,11 @@ import pl.betoncraft.betonquest.core.Objective;
  * Block place/break objective
  * @author Co0sh
  */
+@SuppressWarnings("deprecation")
 public class BlockObjective extends Objective implements Listener{
 	
 	private Material material;
-//	private int data;
+	private byte data;
 	private int neededAmount;
 	private int currentAmount = 0;
 
@@ -33,14 +34,14 @@ public class BlockObjective extends Objective implements Listener{
 	public BlockObjective(String playerID, String instructions) {
 		super(playerID, instructions);
 		String[] parts = instructions.split(" ");
-//		String blockType = parts[1];
-//		if (blockType.contains(":")) {
-//			material = Material.valueOf(blockType.split(":")[0]);
-//			data = Integer.valueOf(blockType.split(":")[1]);
-//		} else {
+		String blockType = parts[1];
+		if (blockType.contains(":")) {
+			material = Material.valueOf(blockType.split(":")[0]);
+			data = Byte.valueOf(blockType.split(":")[1]);
+		} else {
 			material = Material.valueOf(parts[1]);
-//			data = 0;
-//		}
+			data = 0;
+		}
 		neededAmount = Integer.valueOf(parts[2]);
 		for (String part : parts) {
 			if (part.contains("conditions:")) {
@@ -55,7 +56,7 @@ public class BlockObjective extends Objective implements Listener{
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && checkConditions()) {
+		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && event.getBlock().getData() == data && checkConditions()) {
 			currentAmount++;
 			if (currentAmount == neededAmount) {
 				completeObjective();
@@ -65,7 +66,7 @@ public class BlockObjective extends Objective implements Listener{
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && checkConditions()) {
+		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && event.getBlock().getData() == data && checkConditions()) {
 			currentAmount--;
 			if (currentAmount == neededAmount) {
 				completeObjective();
@@ -75,7 +76,7 @@ public class BlockObjective extends Objective implements Listener{
 
 	@Override
 	public String getInstructions() {
-		String instruction = new String("block " + material.toString() + " " + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events + " tag:" + tag);
+		String instruction = new String("block " + material.toString() + ":" + data + " " + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events + " tag:" + tag);
 		HandlerList.unregisterAll(this);
 		return instruction;
 	}
