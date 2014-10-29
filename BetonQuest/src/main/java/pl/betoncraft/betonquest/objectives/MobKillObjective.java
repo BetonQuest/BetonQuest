@@ -3,6 +3,7 @@
  */
 package pl.betoncraft.betonquest.objectives;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
 
 /**
@@ -34,6 +36,7 @@ public class MobKillObjective extends Objective implements Listener {
 		String[] parts = instructions.split(" ");
 		mobType = EntityType.valueOf(parts[1]);
 		amount = Integer.valueOf(parts[2]);
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
 	@EventHandler
@@ -60,7 +63,7 @@ public class MobKillObjective extends Objective implements Listener {
 	@Override
 	public String getInstructions() {
 		HandlerList.unregisterAll(this);
-		return "objective " + mobType.toString() + " " + amount + " " + conditions + " " + events + " tag:" + tag;
+		return "mobkill " + mobType.toString() + " " + amount + " " + conditions + " " + events + " tag:" + tag;
 	}
 
 }
