@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
@@ -127,6 +128,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("time", TimeCondition.class);
 		registerConditions("height", HeightCondition.class);
 		registerConditions("item", ItemCondition.class);
+		registerConditions("hand", HandCondition.class);
 		
 		// register events
 		registerEvents("message", MessageEvent.class);
