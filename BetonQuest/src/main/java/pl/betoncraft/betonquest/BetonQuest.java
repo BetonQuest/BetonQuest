@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -12,6 +13,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
@@ -32,7 +34,16 @@ import pl.betoncraft.betonquest.core.PointRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.StringRes;
-import pl.betoncraft.betonquest.events.*;
+import pl.betoncraft.betonquest.events.CommandEvent;
+import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
+import pl.betoncraft.betonquest.events.ExplosionEvent;
+import pl.betoncraft.betonquest.events.JournalEvent;
+import pl.betoncraft.betonquest.events.LightningEvent;
+import pl.betoncraft.betonquest.events.MessageEvent;
+import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.PointEvent;
+import pl.betoncraft.betonquest.events.TagEvent;
+import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
@@ -622,5 +633,31 @@ public final class BetonQuest extends JavaPlugin {
 			}
 		}
 		return list;
+	}
+	
+	public void purgePlayer(final String playerID) {
+		playerStrings.remove(playerID);
+		journals.remove(playerID);
+		points.remove(playerID);
+		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
+		Iterator<ObjectiveSaving> iterator = saving.iterator();
+		while (iterator.hasNext()) {
+			ObjectiveSaving objective = (ObjectiveSaving) iterator.next();
+			if (objective.getPlayerID().equals(playerID)) {
+				list.add(objective);
+			}
+		}
+		for (ObjectiveSaving objective : list) {
+			objective.saveObjective();
+		}
+		new BukkitRunnable() {
+            @Override
+            public void run() {
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + playerID + "'");
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM journal WHERE playerID='" + playerID + "'");
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM strings WHERE playerID='" + playerID + "'");
+        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM points WHERE playerID='" + playerID + "'");
+            }
+        }.runTaskAsynchronously(BetonQuest.getInstance());
 	}
 }

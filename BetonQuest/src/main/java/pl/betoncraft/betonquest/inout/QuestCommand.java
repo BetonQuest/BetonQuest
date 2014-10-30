@@ -86,7 +86,7 @@ public class QuestCommand implements CommandExecutor {
 					sender.sendMessage(getMessage("specify_condition"));
 					return true;
 				}
-				sender.sendMessage(getMessage("player_condition").replace("%condition%", ConfigInput.getString("conditions." + args[1])).replace("%outcome%", BetonQuest.condition(sender.getName(), args[1]) + ""));
+				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(sender.getName(), args[1]) + ""));
 				break;
 			case "points":
 				if (!sender.hasPermission("betonquest.conditions")) {
@@ -100,7 +100,19 @@ public class QuestCommand implements CommandExecutor {
 					sender.sendMessage(getMessage("specify_condition"));
 					return true;
 				}
-				sender.sendMessage(getMessage("player_points").replace("%category%", args[1]).replace("%count%", BetonQuest.getInstance().getPlayerPoints(sender.getName(), args[1]) + ""));
+				sender.sendMessage(getMessage("player_points").replaceAll("%category%", args[1]).replaceAll("%count%", BetonQuest.getInstance().getPlayerPoints(sender.getName(), args[1]) + ""));
+				break;
+			case "purge":
+				if (!sender.hasPermission("betonquest.purge")) {
+					sender.sendMessage(getMessage("no_permission"));
+					return true;
+				}
+				if (args.length < 2) {
+					sender.sendMessage(getMessage("specify_player"));
+					return true;
+				}
+				BetonQuest.getInstance().purgePlayer(args[1]);
+				sender.sendMessage(getMessage("purged").replaceAll("%player%", args[1]));
 				break;
 			default:
 				sender.sendMessage(getMessage("unknown_argument"));
@@ -112,7 +124,7 @@ public class QuestCommand implements CommandExecutor {
 	}
 	
 	private String getMessage(String name) {
-		return ConfigInput.getString("messages." + lang + "." + name).replace("&", "§");
+		return ConfigInput.getString("messages." + lang + "." + name).replaceAll("&", "§");
 	}
 
 }

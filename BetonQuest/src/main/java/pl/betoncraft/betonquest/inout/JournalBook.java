@@ -151,7 +151,9 @@ public class JournalBook implements Listener {
 		List<String> lore = new ArrayList<String>();
 		lore.add(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore"));
 		meta.setLore(lore);
-		meta.setPages(BetonQuest.getInstance().getJournal(playerID).getText());
+		if (BetonQuest.getInstance().getJournal(playerID) != null) {
+			meta.setPages(BetonQuest.getInstance().getJournal(playerID).getText());
+		}
 		item.setItemMeta(meta);
 		return item;
 	}
