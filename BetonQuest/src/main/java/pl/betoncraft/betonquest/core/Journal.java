@@ -51,4 +51,8 @@ public class Journal {
 		}
 	}
 
+	public void clear() {
+		texts.clear();
+		pointers.clear();
+	}
 }

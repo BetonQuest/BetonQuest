@@ -636,9 +636,15 @@ public final class BetonQuest extends JavaPlugin {
 	}
 	
 	public void purgePlayer(final String playerID) {
-		playerStrings.remove(playerID);
-		journals.remove(playerID);
-		points.remove(playerID);
+		if (playerStrings.get(playerID) != null) {
+			playerStrings.get(playerID).clear();
+		}
+		if (journals.get(playerID) != null) {
+			journals.get(playerID).clear();
+		}
+		if (points.get(playerID) != null) {
+			points.get(playerID).clear();
+		}
 		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
 		Iterator<ObjectiveSaving> iterator = saving.iterator();
 		while (iterator.hasNext()) {

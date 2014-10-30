@@ -112,6 +112,7 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				BetonQuest.getInstance().purgePlayer(args[1]);
+				JournalBook.updateJournal(args[1]);
 				sender.sendMessage(getMessage("purged").replaceAll("%player%", args[1]));
 				break;
 			default:
