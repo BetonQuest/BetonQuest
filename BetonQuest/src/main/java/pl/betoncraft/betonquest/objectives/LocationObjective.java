@@ -21,7 +21,6 @@ public class LocationObjective extends Objective implements Listener {
 	
 	private Location location;
 	private double distance;
-	private String instructions;
 
 	/**
 	 * Constructor method
@@ -30,11 +29,6 @@ public class LocationObjective extends Objective implements Listener {
 	 */
 	public LocationObjective(String playerID, String instructions) {
 		super(playerID, instructions);
-		if (tag == null) {
-			BetonQuest.getInstance().getLogger().severe("Tag not found in: " + instructions);
-			return;
-		}
-		this.instructions = instructions;
 		String[] partsOfLoc = instructions.split(" ")[1].split(";");
 		location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]), Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
 		distance = Double.valueOf(partsOfLoc[4]);

@@ -22,6 +22,7 @@ import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
+import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
@@ -129,6 +130,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("height", HeightCondition.class);
 		registerConditions("item", ItemCondition.class);
 		registerConditions("hand", HandCondition.class);
+		registerConditions("location", LocationCondition.class);
 		
 		// register events
 		registerEvents("message", MessageEvent.class);
