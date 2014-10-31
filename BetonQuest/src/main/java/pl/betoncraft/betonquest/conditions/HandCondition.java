@@ -44,7 +44,7 @@ public class HandCondition extends Condition {
 				data = Byte.valueOf(part.substring(5));
 			} else if (part.contains("enchants:")) {
 				for (String enchant : part.substring(9).split(",")) {
-					enchants.put(Enchantment.getByName(enchant.split(":")[0]), Integer.getInteger(enchant.split(":")[1]));
+					enchants.put(Enchantment.getByName(enchant.split(":")[0]), Integer.decode(enchant.split(":")[1]));
 				}
 			} else if (part.contains("lore:")) {
 				for (String loreLine : part.substring(5).split(";")) {

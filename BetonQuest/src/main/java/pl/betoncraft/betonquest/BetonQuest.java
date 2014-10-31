@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
+import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
@@ -131,6 +132,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("item", ItemCondition.class);
 		registerConditions("hand", HandCondition.class);
 		registerConditions("location", LocationCondition.class);
+		registerConditions("armor", ArmorCondition.class);
 		
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -642,25 +644,28 @@ public final class BetonQuest extends JavaPlugin {
 	}
 	
 	public void purgePlayer(final String playerID) {
-		if (playerStrings.get(playerID) != null) {
-			playerStrings.get(playerID).clear();
-		}
-		if (journals.get(playerID) != null) {
-			journals.get(playerID).clear();
-		}
-		if (points.get(playerID) != null) {
-			points.get(playerID).clear();
-		}
-		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
-		Iterator<ObjectiveSaving> iterator = saving.iterator();
-		while (iterator.hasNext()) {
-			ObjectiveSaving objective = (ObjectiveSaving) iterator.next();
-			if (objective.getPlayerID().equals(playerID)) {
-				list.add(objective);
+		if (Bukkit.getPlayer(playerID) != null) {
+			if (playerStrings.get(playerID) != null) {
+				playerStrings.get(playerID).clear();
 			}
-		}
-		for (ObjectiveSaving objective : list) {
-			objective.saveObjective();
+			if (journals.get(playerID) != null) {
+				journals.get(playerID).clear();
+			}
+			if (points.get(playerID) != null) {
+				points.get(playerID).clear();
+			}
+			List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
+			Iterator<ObjectiveSaving> iterator = saving.iterator();
+			while (iterator.hasNext()) {
+				ObjectiveSaving objective = (ObjectiveSaving) iterator.next();
+				if (objective.getPlayerID().equals(playerID)) {
+					list.add(objective);
+				}
+			}
+			for (ObjectiveSaving objective : list) {
+				objective.saveObjective();
+			}
+			JournalBook.updateJournal(playerID);
 		}
 		new BukkitRunnable() {
             @Override
