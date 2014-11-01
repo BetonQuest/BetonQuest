@@ -46,6 +46,7 @@ public class MobKillObjective extends Objective implements Listener {
 			if (damage.getDamager() instanceof Player && ((Player) damage.getDamager()).getName().equals(playerID) && damage.getEntity().getType().equals(mobType) && checkConditions()) {
 				amount--;
 				if (amount == 0) {
+					HandlerList.unregisterAll(this);
 					completeObjective();
 				}
 			}
@@ -54,6 +55,7 @@ public class MobKillObjective extends Objective implements Listener {
 			if (projectile.getShooter() instanceof Player && ((Player) projectile.getShooter()).getName().equals(playerID) && event.getEntity().getType().equals(mobType) && checkConditions()) {
 				amount--;
 				if (amount == 0) {
+					HandlerList.unregisterAll(this);
 					completeObjective();
 				}
 			}

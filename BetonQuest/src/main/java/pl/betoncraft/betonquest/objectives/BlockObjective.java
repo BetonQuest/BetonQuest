@@ -59,6 +59,7 @@ public class BlockObjective extends Objective implements Listener{
 		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && event.getBlock().getData() == data && checkConditions()) {
 			currentAmount++;
 			if (currentAmount == neededAmount) {
+				HandlerList.unregisterAll(this);
 				completeObjective();
 			}
 		}
@@ -69,6 +70,7 @@ public class BlockObjective extends Objective implements Listener{
 		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && event.getBlock().getData() == data && checkConditions()) {
 			currentAmount--;
 			if (currentAmount == neededAmount) {
+				HandlerList.unregisterAll(this);
 				completeObjective();
 			}
 		}

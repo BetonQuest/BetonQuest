@@ -62,6 +62,7 @@ public class ActionObjective extends Objective implements Listener {
 			return;
 		}
 		if ((action == null || event.getAction().equals(action)) && event.getClickedBlock().getType().equals(type) && event.getClickedBlock().getData() == data && checkConditions()) {
+			HandlerList.unregisterAll(this);
 			completeObjective();
 		}
 	}
