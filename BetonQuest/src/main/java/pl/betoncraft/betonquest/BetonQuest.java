@@ -49,6 +49,7 @@ import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
+import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
@@ -149,6 +150,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("point", PointEvent.class);
         registerEvents("delete", DeleteObjectiveEvent.class);
         registerEvents("give", GiveEvent.class);
+        registerEvents("take", TakeEvent.class);
 
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
