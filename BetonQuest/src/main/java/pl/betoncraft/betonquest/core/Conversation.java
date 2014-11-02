@@ -257,6 +257,15 @@ public class Conversation {
 	 * ends conversation...
 	 */
 	public void endConversation() {
+		// fire final events
+		String[] finalEvents = ConfigInput.getString("conversations." + conversationID + ".final_events").split(",");
+		if (finalEvents != null) {
+			for (String event : finalEvents) {
+				BetonQuest.event(playerID, event);
+			}
+		} else {
+			BetonQuest.getInstance().getLogger().severe("Conversation " + conversationID + " final events error!");
+		}
 		// print message
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		// delete conversation
