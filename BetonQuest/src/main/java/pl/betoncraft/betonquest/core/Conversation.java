@@ -258,8 +258,9 @@ public class Conversation {
 	 */
 	public void endConversation() {
 		// fire final events
-		String[] finalEvents = ConfigInput.getString("conversations." + conversationID + ".final_events").split(",");
-		if (finalEvents != null) {
+		String rawFinalEvents = ConfigInput.getString("conversations." + conversationID + ".final_events");
+		if (rawFinalEvents != null) {
+			String[] finalEvents = rawFinalEvents.split(",");
 			for (String event : finalEvents) {
 				BetonQuest.event(playerID, event);
 			}

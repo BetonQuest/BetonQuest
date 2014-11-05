@@ -2,6 +2,7 @@ karczmarz:
   quester: 'Karczmarz'
   unknown: 'Nie zrozumialem, mozesz powtorzyc?'
   first: 'start,start_drewno_zaczete,start_drewno_zaplacone'
+  final_events: ''
   NPC_options:
     'start':
       text: 'Witaj w mojej karczmie, %player%! Co moge dla Ciebie zrobic?'

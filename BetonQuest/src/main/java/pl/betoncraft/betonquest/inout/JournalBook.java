@@ -151,9 +151,26 @@ public class JournalBook implements Listener {
 		List<String> lore = new ArrayList<String>();
 		lore.add(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore"));
 		meta.setLore(lore);
-		if (BetonQuest.getInstance().getJournal(playerID) != null) {
-			meta.setPages(BetonQuest.getInstance().getJournal(playerID).getText());
+		
+		// logic for converting entries into single text and then to pages
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String entry : BetonQuest.getInstance().getJournal(playerID).getText()) {
+			stringBuilder.append(entry + "\n\n");
 		}
+		String wholeString = stringBuilder.toString().trim();
+		List<String> pages = new ArrayList<>();
+		StringBuilder page = new StringBuilder();
+		for (String word : wholeString.split(" ")) {
+			if (page.length() + word.length() + 1 > 256) {
+				pages.add(page.toString().trim());
+				page = new StringBuilder();
+			}
+			page.append(word + " ");
+		}
+		pages.add(page.toString().trim());
+		// end of this logic
+		
+		meta.setPages(pages);
 		item.setItemMeta(meta);
 		return item;
 	}
