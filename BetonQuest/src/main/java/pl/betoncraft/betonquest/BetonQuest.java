@@ -45,6 +45,7 @@ import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
+import pl.betoncraft.betonquest.events.KillEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
@@ -153,6 +154,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("give", GiveEvent.class);
         registerEvents("take", TakeEvent.class);
         registerEvents("conversation", ConversationEvent.class);
+        registerEvents("kill", KillEvent.class);
 
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
