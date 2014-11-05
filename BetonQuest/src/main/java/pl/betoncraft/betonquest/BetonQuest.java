@@ -55,6 +55,7 @@ import pl.betoncraft.betonquest.events.SpawnMobEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
+import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
@@ -159,6 +160,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("kill", KillEvent.class);
         registerEvents("effect", EffectEvent.class);
         registerEvents("spawn", SpawnMobEvent.class);
+        registerEvents("time", TimeEvent.class);
         
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
