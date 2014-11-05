@@ -51,6 +51,7 @@ import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
+import pl.betoncraft.betonquest.events.SpawnMobEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
@@ -157,7 +158,8 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("conversation", ConversationEvent.class);
         registerEvents("kill", KillEvent.class);
         registerEvents("effect", EffectEvent.class);
-
+        registerEvents("spawn", SpawnMobEvent.class);
+        
 		// register test objective
 		registerObjectives("location", LocationObjective.class);
 		registerObjectives("block", BlockObjective.class);
