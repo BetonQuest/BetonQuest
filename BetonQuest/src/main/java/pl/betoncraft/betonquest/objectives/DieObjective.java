@@ -53,8 +53,8 @@ public class DieObjective extends Objective implements Listener {
 		}
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
-			// TODO przetestowaæ ile zdrowia mo¿e mieæ gracz zanim umrze
 			if (player.getName().equals(playerID) && player.getHealth() - event.getDamage() < 0 && checkConditions()) {
+				event.setCancelled(true);
 				player.setHealth(player.getMaxHealth());
 				HandlerList.unregisterAll(this);
 				completeObjective();

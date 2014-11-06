@@ -167,7 +167,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("time", TimeEvent.class);
         registerEvents("weather", WeatherEvent.class);
         
-		// register test objective
+		// register objectives
 		registerObjectives("location", LocationObjective.class);
 		registerObjectives("block", BlockObjective.class);
 		registerObjectives("mobkill", MobKillObjective.class);

@@ -1,11 +1,16 @@
 package pl.betoncraft.betonquest.objectives;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
 
 /**
@@ -30,10 +35,11 @@ public class SmeltingObjective extends Objective implements Listener {
 		super(playerID, instructions);
 		material = Material.getMaterial(instructions.split(" ")[1]);
 		amount = Integer.parseInt(instructions.split(" ")[2]);
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
 	@EventHandler
-	public void onCrafting(FurnaceExtractEvent event) {
+	public void onSmelting(FurnaceExtractEvent event) {
 		Player player = (Player) event.getPlayer();
 		if (player.getName().equals(playerID) && event.getItemType().equals(material) && checkConditions()) {
 			amount = amount - event.getItemAmount();
@@ -43,11 +49,24 @@ public class SmeltingObjective extends Objective implements Listener {
 			}
 		}
 	}
+	
+	@EventHandler
+	public void onShiftSmelting(InventoryClickEvent event) {
+		if (event.getInventory().getType().equals(InventoryType.FURNACE)) {
+			if (event.getRawSlot() == 2) {
+				if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
+					if (event.getWhoClicked().getName().equals(playerID)) {
+						event.setCancelled(true);
+					}
+				}
+			} 
+		}
+	}
 
 	@Override
 	public String getInstructions() {
 		HandlerList.unregisterAll(this);
-		return "smelt " + material + " " + amount + " " + conditions + " " + events + " " + tag;
+		return "smelt " + material + " " + amount + " " + conditions + " " + events + " tag:" + tag;
 	}
 
 }
