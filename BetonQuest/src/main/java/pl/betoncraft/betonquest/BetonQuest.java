@@ -29,6 +29,7 @@ import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
+import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.core.Condition;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.JournalRes;
@@ -140,6 +141,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("and", ConjunctionCondition.class);
 		registerConditions("or", AlternativeCondition.class);
 		registerConditions("time", TimeCondition.class);
+		registerConditions("weather", WeatherCondition.class);
 		registerConditions("height", HeightCondition.class);
 		registerConditions("item", ItemCondition.class);
 		registerConditions("hand", HandCondition.class);
