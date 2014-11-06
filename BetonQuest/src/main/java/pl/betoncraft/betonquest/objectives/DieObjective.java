@@ -64,6 +64,7 @@ public class DieObjective extends Objective implements Listener {
 
 	@Override
 	public String getInstructions() {
+		HandlerList.unregisterAll(this);
 		return instructions;
 	}
 
