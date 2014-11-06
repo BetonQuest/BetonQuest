@@ -40,8 +40,11 @@ public class CraftingObjective extends Objective implements Listener {
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
 			if (player.getName().equals(playerID) && event.getCursor().getType().equals(material) && event.getCursor().getData().getData() == data && checkConditions()) {
-				HandlerList.unregisterAll(this);
-				completeObjective();
+				amount = amount - event.getCursor().getAmount();
+				if (amount <= 0) {
+					HandlerList.unregisterAll(this);
+					completeObjective();
+				}
 			}
 		}
 	}
