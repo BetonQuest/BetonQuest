@@ -5,6 +5,7 @@ package pl.betoncraft.betonquest.inout;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,6 +38,8 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				ConfigInput.reload();
+				Bukkit.getPluginManager().disablePlugin(BetonQuest.getInstance());
+				Bukkit.getPluginManager().enablePlugin(BetonQuest.getInstance());
 				sender.sendMessage(getMessage("reloaded"));
 				break;
 			case "journal":
