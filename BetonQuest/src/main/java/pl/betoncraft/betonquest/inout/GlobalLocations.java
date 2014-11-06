@@ -25,6 +25,7 @@ public class GlobalLocations extends BukkitRunnable{
 		String rawGlobalLocations = ConfigInput.getString("config.global_locations");
 		if (rawGlobalLocations.equals("")) {
 			finalLocations = null;
+			BetonQuest.getInstance().getLogger().severe("Global locations not defined!");
 			return;
 		}
 		String[] parts = rawGlobalLocations.split(",");
@@ -36,10 +37,18 @@ public class GlobalLocations extends BukkitRunnable{
 	
 	@Override
 	public void run() {
+		if (finalLocations == null) {
+			this.cancel();
+			return;
+		}
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
 			locations:
 			for (GlobalLocation location : finalLocations) {
+				if (location.getLocation() == null) {
+					this.cancel();
+					return;
+				}
 				if (player.getLocation().distance(location.getLocation()) < location.getDistance()) {
 					for (String condition : location.getConditions()) {
 						if (!BetonQuest.condition(player.getName(), condition)) {

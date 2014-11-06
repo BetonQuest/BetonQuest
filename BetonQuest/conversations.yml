@@ -10,7 +10,7 @@ example:
       events: ''
       pointer: 'some_option,some_other_option'
     'welcome_angry':
-      text: 'What are you doing here %player%? You're not welcome here.'
+      text: 'What are you doing here %player%? You''re not welcome here.'
       conditions: 'angry'
       events: ''
       pointer: 'some_option,some_other_option'

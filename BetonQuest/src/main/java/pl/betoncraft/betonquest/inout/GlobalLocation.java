@@ -6,6 +6,8 @@ package pl.betoncraft.betonquest.inout;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import pl.betoncraft.betonquest.BetonQuest;
+
 /**
  * 
  * @author Co0sh
@@ -19,6 +21,10 @@ public class GlobalLocation {
 	
 	public GlobalLocation(String objective) {
 		String instructions = ConfigInput.getString("objectives." + objective);
+		if (instructions == null) {
+			BetonQuest.getInstance().getLogger().severe("Global location not found: " + objective);
+			return;
+		}
 		String[] parts = instructions.split(" ");
 		String[] rawLocation = parts[1].split(";");
 		location = new Location(Bukkit.getWorld(rawLocation[3]), Double.parseDouble(rawLocation[0]), Double.parseDouble(rawLocation[1]), Double.parseDouble(rawLocation[2]));
