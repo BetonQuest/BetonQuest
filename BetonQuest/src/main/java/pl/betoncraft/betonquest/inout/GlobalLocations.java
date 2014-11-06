@@ -22,7 +22,12 @@ public class GlobalLocations extends BukkitRunnable{
 	private final List<GlobalLocation> finalLocations;
 
 	public GlobalLocations() {
-		String[] parts = ConfigInput.getString("config.global_locations").split(",");
+		String rawGlobalLocations = ConfigInput.getString("config.global_locations");
+		if (rawGlobalLocations.equals("")) {
+			finalLocations = null;
+			return;
+		}
+		String[] parts = rawGlobalLocations.split(",");
 		for (String objective : parts) {
 			locations.add(new GlobalLocation(objective));
 		}

@@ -6,4 +6,4 @@ mysql:
   base: ''
 language: en
 max_npc_distance: '5'
-global_locations: 'global_slup'
+global_locations: ''
