@@ -1,9 +1,9 @@
 name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
 authors: [Co0sh, Dzejkop, BYK]
-website: http://betoncraft.pl
+website: http://betoncraft.pl/
 depend: [Citizens]
-version: 0.1
+version: 1.0
 commands:
   q:
     description: General quest command

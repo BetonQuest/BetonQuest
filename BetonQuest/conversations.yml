@@ -1,152 +1,27 @@
-karczmarz:
-  quester: 'Karczmarz'
-  unknown: 'Nie zrozumialem, mozesz powtorzyc?'
-  first: 'start,start_drewno_zaczete,start_drewno_zaplacone'
-  final_events: ''
-  NPC_options:
-    'start':
-      text: 'Witaj w mojej karczmie, %player%! Co moge dla Ciebie zrobic?'
-      conditions: 'drewno_niezaczete'
+example:
+  quester: 'Miner'
+  unknown: 'Im sorry, what was that?'
+  first: 'welcome,welcome_angry'
+  final_events: 'some_final_event'
+  npc_options:
+    'welcome':
+      text: 'Welcome in my inn, %player%! What can I do for you?'
+      conditions: 'not_angry'
       events: ''
-      pointer: 'co_slychac,questy,zegnaj'
-    'back':
-      text: 'Tak?'
-      conditions: ''
+      pointer: 'some_option,some_other_option'
+    'welcome_angry':
+      text: 'What are you doing here %player%? You're not welcome here.'
+      conditions: 'angry'
       events: ''
-      pointer: 'co_slychac,questy,drewno_pytania,drewno_zrobilem,wiecej_questow,zegnaj'
-    'start_drewno_zaczete':
-      text: 'Witaj ponownie! Jak Ci idzie zbieranie drewna dla mnie?'
-      conditions: 'drewno_zaczete,drewno_niezaplacone'
-      events: ''
-      pointer: 'co_slychac,drewno_pytania,drewno_zrobilem,zegnaj'
-    'start_drewno_zaplacone':
-      text: 'Aaa, moj ulubiony klient zawital w moje skromne progi! Czego potrzebujesz tym razem?'
-      conditions: 'drewno_zaplacone'
-      events: ''
-      pointer: 'co_slychac,wiecej_questow,zegnaj'
-    'propozycja_drewno':
-      text: 'Hmm... Robilem ostatnio nowe kufle na piwo, ale skonczylo mi sie drewno. Gdybys byl tak uprzejmy i przyniosl mi 16 blokow drewna z pobliskiego tartaku mysle ze znalazlbym kilka emeraldow.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_tak,drewno_nie'
-    'pytania':
-      text: 'Odpowiem najlepiej jak potrafie.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_gdzie,drewno_jak,drewno_czym,koniec_pytan'
-    'drewno_nagroda':
-      text: 'Swietnie! Oto 5 emeraldow dla Ciebie.'
-      conditions: ''
-      events: ''
-      pointer: 'co_slychac,wiecej_questow,zegnaj'
-    'brak_questow':
-      text: 'Niestety nic juz nie mam. Wroc kiedy indziej, moze akurat bede cos mial.'
-      conditions: ''
-      events: ''
-      pointer: 'co_slychac,zegnaj'
-    'drewno_zgoda':
-      text: 'Swietnie. Idz do tartaku i zetnij mi 16 blokow drewna.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_ide,drewno_pytania,back'
-    'drewno_odmowa':
-      text: 'Szkoda.'
-      conditions: ''
-      events: ''
-      pointer: ''
-    'drewno_gdzie_odpowiedz':
-      text: 'Wyjdz z Concrete poludniowa brama. Tartak zobaczysz po prawej, to ten brzozowy lasek.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_jak,drewno_czym,koniec_pytan'
-    'drewno_jak_odpowiedz':
-      text: 'Podejdz do drzewa i bij je tak dlugo, az wypadnie drewno.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_gdzie,drewno_czym,koniec_pytan'
-    'drewno_czym_odpowiedz':
-      text: 'Poszukaj w domku drwala jakiejs siekiery, na pewno cos znajdziesz.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_gdzie,drewno_jak,koniec_pytan'
-    'koniec_pytan':
-      text: 'Mam nadzieje, ze pomoglem.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_ide,back'
-    'drewno_ide':
-      text: 'Powodzenia!'
-      conditions: ''
-      events: ''
-      pointer: ''
+      pointer: 'some_option,some_other_option'
   player_options:
-    'co_slychac':
-      text: ''
+    'some_option':
+      text: 'How are you?'
       conditions: ''
       events: ''
-      pointer: ''
-    'back':
-      text: 'Wracajac do poprzedniego tematu...'
+      pointer: 'quest'
+    'some_other_option':
+      text: 'Where can I buy food?'
       conditions: ''
       events: ''
-      pointer: 'back'
-    'questy':
-      text: 'Masz moze dla mnie jakies zadania? Potrzebuje pieniedzy...'
-      conditions: 'drewno_niezaczete'
-      events: ''
-      pointer: 'propozycja_drewno'
-    'drewno_pytania':
-      text: 'Mam kilka pytan odnosnie scinania drzew.'
-      conditions: 'drewno_zaczete,drewno_niezrobione'
-      events: ''
-      pointer: 'pytania'
-    'drewno_zrobilem':
-      text: 'Zebralem drewno o ktore mnie prosiles. Oto ono.'
-      conditions: 'drewno_zrobione,drewno_niezaplacone'
-      events: 'nagroda_drewno,tag_drewno_zaplac,wpis_drewno_zaplacone'
-      pointer: 'drewno_nagroda'
-    'wiecej_questow':
-      text: 'Masz moze jeszcze jakies zadania dla mnie? 5 emeraldow to troche malo.'
-      conditions: 'drewno_zaplacone'
-      events: ''
-      pointer: 'brak_questow'
-    'drewno_tak':
-      text: 'Brzmi uczciwie.'
-      conditions: ''
-      events: 'drewno_start,tag_drewno_zacznij,wpis_drewno_zaczete'
-      pointer: 'drewno_zgoda'
-    'drewno_nie':
-      text: 'Z drugiej strony nie potrzebuje tych pieniedzy az tak bardzo.'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_odmowa'
-    'drewno_gdzie':
-      text: 'Gdzie znajde tartak?'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_gdzie_odpowiedz'
-    'drewno_jak':
-      text: 'Jak sie scina drewno?'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_jak_odpowiedz'
-    'drewno_czym':
-      text: 'Czym mam scinac to drewno?'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_czym_odpowiedz'
-    'koniec_pytan':
-      text: 'Nie mam wiecej pytan.'
-      conditions: ''
-      events: ''
-      pointer: 'koniec_pytan'
-    'drewno_ide':
-      text: 'Dobrze. W takim razie ide scinac drzewo. Do zobaczenia!'
-      conditions: ''
-      events: ''
-      pointer: 'drewno_ide'
-    'zegnaj':
-      text: 'Zegnaj.'
-      conditions: ''
-      events: ''
-      pointer: ''
+      pointer: 'food'

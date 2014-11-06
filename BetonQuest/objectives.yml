@@ -1,2 +1,1 @@
-drewno: 'block LOG -16 events:tag_drewno_zrob,wpis_drewno_zrobione tag:drewno'
-global_slup: 'location 139;68;249;world;3 conditions:test1 events:infocomplete,test1 tag:slup'
+example: 'milk 5 tag:example'
