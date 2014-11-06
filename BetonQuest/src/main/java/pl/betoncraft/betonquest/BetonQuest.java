@@ -237,7 +237,6 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void registerConditions(String name, Class<? extends Condition> conditionClass) {
 		conditions.put(name, conditionClass);
-		Bukkit.getLogger().info("Condition " + name + " registered!");
 	}
 	
 	/**
@@ -247,7 +246,6 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
 		events.put(name, eventClass);
-		Bukkit.getLogger().info("Event " + name + " registered!");
 	}
 	
 	/**
@@ -257,7 +255,6 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
 		objectives.put(name, objectiveClass);
-		Bukkit.getLogger().info("Objective " + name + " registered!");
 	}
 	
 	/**
