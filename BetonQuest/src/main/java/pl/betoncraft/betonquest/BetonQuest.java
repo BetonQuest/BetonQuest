@@ -62,6 +62,7 @@ import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
+import pl.betoncraft.betonquest.inout.JournalCommand;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.inout.QuestCommand;
@@ -132,6 +133,7 @@ public final class BetonQuest extends JavaPlugin {
 		new GlobalLocations().runTaskTimer(this, 0, 20);
 		
 		getCommand("q").setExecutor(new QuestCommand());
+		getCommand("j").setExecutor(new JournalCommand());
 		
 		// register conditions
 		registerConditions("health",HealthCondition.class);

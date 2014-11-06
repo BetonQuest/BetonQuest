@@ -8,6 +8,9 @@ commands:
   q:
     description: General quest command
     usage: /<command>
+  j:
+    description: Adds journal to your inventory
+    usage: /<command>
 permissions:
   betonquest.reload:
     default: op

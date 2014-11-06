@@ -27,8 +27,13 @@ public class QuestCommand implements CommandExecutor {
 		
 		if (cmd.getName().equalsIgnoreCase("q")) {
 			if (args.length < 1) {
-				// TODO wyœwietlenie pomocy
-				sender.sendMessage("TODO wyswietlenie pomocy");
+				sender.sendMessage("§e----- §aBetonQuest §e-----");
+				sender.sendMessage("§c/q reload §b- reload the plugin");
+				sender.sendMessage("§c/q objectives §b- display your objectives");
+				sender.sendMessage("§c/q tags §b- display your tags");
+				sender.sendMessage("§c/q points §b- display your points");
+				sender.sendMessage("§c/q condition <id> §b- check if you meet condition");
+				sender.sendMessage("§c/q purge <player> §b- reset all player's data");
 				return true;
 			}
 			switch (args[0]) {
@@ -41,11 +46,6 @@ public class QuestCommand implements CommandExecutor {
 				Bukkit.getPluginManager().disablePlugin(BetonQuest.getInstance());
 				Bukkit.getPluginManager().enablePlugin(BetonQuest.getInstance());
 				sender.sendMessage(getMessage("reloaded"));
-				break;
-			case "journal":
-				if (sender instanceof Player) {
-					JournalBook.addJournal(sender.getName(), -1);
-				}
 				break;
 			case "objectives":
 				if (!sender.hasPermission("betonquest.objectives")) {
