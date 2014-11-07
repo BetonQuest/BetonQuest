@@ -87,9 +87,6 @@ public class ConfigInput {
 			return object;
 		case "npcs":
 			object = npcs.getConfig().get(path);
-			if (object == null) {
-				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
-			}
 			return object;
 		case "journal":
 			object = journal.getConfig().get(path);
