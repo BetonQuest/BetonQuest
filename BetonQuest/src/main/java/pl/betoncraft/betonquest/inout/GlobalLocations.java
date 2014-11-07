@@ -48,10 +48,13 @@ public class GlobalLocations extends BukkitRunnable{
 					this.cancel();
 					return;
 				}
-				if (player.getLocation().distance(location.getLocation()) < location.getDistance()) {
-					for (String condition : location.getConditions()) {
-						if (!BetonQuest.condition(player.getName(), condition)) {
-							continue locations;
+				
+				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation().distance(location.getLocation()) < location.getDistance()) {
+					if (location.getConditions() != null) {
+						for (String condition : location.getConditions()) {
+							if (!BetonQuest.condition(player.getName(), condition)) {
+								continue locations;
+							}
 						}
 					}
 					for (String event : location.getEvents()) {
