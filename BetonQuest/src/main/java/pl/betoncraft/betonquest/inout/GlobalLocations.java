@@ -25,7 +25,6 @@ public class GlobalLocations extends BukkitRunnable{
 		String rawGlobalLocations = ConfigInput.getString("config.global_locations");
 		if (rawGlobalLocations.equals("")) {
 			finalLocations = null;
-			BetonQuest.getInstance().getLogger().severe("Global locations not defined!");
 			return;
 		}
 		String[] parts = rawGlobalLocations.split(",");
