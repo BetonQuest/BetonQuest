@@ -62,7 +62,6 @@ public class TakeEvent extends QuestEvent {
 			if (item != null && item.getType().equals(type) && item.getData().getData() == data && (name == null || (item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) && (lore.isEmpty() || (item.getItemMeta().hasLore() && item.getItemMeta().getLore().equals(lore))) && (enchants.isEmpty() || (item.getEnchantments().equals(enchants)))) {
 				if (item.getAmount() - amount <= 0) {
 					amount = amount - item.getAmount();
-					Bukkit.getPlayer(playerID).sendMessage("removing...");
 					item.setType(Material.AIR);
 				} else {
 					item.setAmount(item.getAmount() - amount);

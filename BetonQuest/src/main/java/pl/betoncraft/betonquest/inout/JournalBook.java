@@ -155,7 +155,7 @@ public class JournalBook implements Listener {
 		// logic for converting entries into single text and then to pages
 		StringBuilder stringBuilder = new StringBuilder();
 		for (String entry : BetonQuest.getInstance().getJournal(playerID).getText()) {
-			stringBuilder.append(entry + "\n\n");
+			stringBuilder.append(entry + "\n---------------\n");
 		}
 		String wholeString = stringBuilder.toString().trim();
 		List<String> pages = new ArrayList<>();
