@@ -48,10 +48,10 @@ public class HandCondition extends Condition {
 				}
 			} else if (part.contains("lore:")) {
 				for (String loreLine : part.substring(5).split(";")) {
-					lore.add(loreLine);
+					lore.add(loreLine.replaceAll("_", " "));
 				}
 			} else if (part.contains("name:")) {
-				name = part.substring(5);
+				name = part.substring(5).replaceAll("_", " ");
 			} else if (part.equalsIgnoreCase("--inverted")) {
 				inverted = true;
 			}

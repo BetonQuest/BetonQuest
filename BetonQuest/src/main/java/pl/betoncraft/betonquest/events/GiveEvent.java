@@ -54,7 +54,7 @@ public class GiveEvent extends QuestEvent {
 					lore.add(loreLine.replaceAll("_", " "));
 				}
 			} else if (part.contains("name:")) {
-				name = part.substring(5);
+				name = part.substring(5).replaceAll("_", " ");
 			}
 		}
 		while (amount > 0) {
