@@ -1,1 +1,1 @@
-example: 'milk 5 tag:example'
+wood: 'block LOG -16 events:tag_wood_done,entry_wood_done tag:wood'

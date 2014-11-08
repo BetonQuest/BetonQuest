@@ -1,1 +1,3 @@
-example: 'This is an example of journal entry.'
+wood_started: 'The Innkeeper asked me to bring him 16 blocks of wood from nearby forest.'
+wood_done: 'I colected 16 block of wood. I should return to the Innkeeper.'
+wood_paid: 'I brought wood to the Innkeeper and he gave me 5 emeralds.'

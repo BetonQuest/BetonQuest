@@ -5,6 +5,5 @@ mysql:
   pass: ''
   base: ''
 language: en
-default_journal_slot: '-1'
 max_npc_distance: '5'
 global_locations: ''
