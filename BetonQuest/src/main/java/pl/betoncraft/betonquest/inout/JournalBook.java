@@ -161,7 +161,7 @@ public class JournalBook implements Listener {
 		List<String> pages = new ArrayList<>();
 		StringBuilder page = new StringBuilder();
 		for (String word : wholeString.split(" ")) {
-			if (page.length() + word.length() + 1 > 256) {
+			if (page.length() + word.length() + 1 > 245) {
 				pages.add(page.toString().trim());
 				page = new StringBuilder();
 			}
