@@ -22,7 +22,7 @@ import pl.betoncraft.betonquest.core.QuestEvent;
 public class TakeEvent extends QuestEvent {
 
 	private Material type;
-	private byte data = 0;
+	private byte data = -1;
 	private int amount = 1;
 	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
 	private List<String> lore = new ArrayList<String>();
@@ -59,7 +59,7 @@ public class TakeEvent extends QuestEvent {
 		}
 		ItemStack[] items = Bukkit.getPlayer(playerID).getInventory().getContents();
 		for (ItemStack item : items) {
-			if (item != null && item.getType().equals(type) && item.getData().getData() == data && (name == null || (item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) && (lore.isEmpty() || (item.getItemMeta().hasLore() && item.getItemMeta().getLore().equals(lore))) && (enchants.isEmpty() || (item.getEnchantments().equals(enchants)))) {
+			if (item != null && item.getType().equals(type) && (data < 0 || item.getData().getData() == data) && (name == null || (item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) && (lore.isEmpty() || (item.getItemMeta().hasLore() && item.getItemMeta().getLore().equals(lore))) && (enchants.isEmpty() || (item.getEnchantments().equals(enchants)))) {
 				if (item.getAmount() - amount <= 0) {
 					amount = amount - item.getAmount();
 					item.setType(Material.AIR);

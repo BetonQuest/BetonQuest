@@ -22,7 +22,7 @@ import pl.betoncraft.betonquest.core.Objective;
 public class BlockObjective extends Objective implements Listener{
 	
 	private Material material;
-	private byte data;
+	private byte data = -1;
 	private int neededAmount;
 	private int currentAmount = 0;
 
@@ -40,7 +40,6 @@ public class BlockObjective extends Objective implements Listener{
 			data = Byte.valueOf(blockType.split(":")[1]);
 		} else {
 			material = Material.valueOf(parts[1]);
-			data = 0;
 		}
 		neededAmount = Integer.valueOf(parts[2]);
 		for (String part : parts) {
@@ -56,7 +55,7 @@ public class BlockObjective extends Objective implements Listener{
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && event.getBlock().getData() == data && checkConditions()) {
+		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && event.getBlock().getType().equals(material) && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
 			currentAmount++;
 			if (currentAmount == neededAmount) {
 				HandlerList.unregisterAll(this);

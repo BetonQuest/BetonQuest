@@ -22,7 +22,7 @@ public class ActionObjective extends Objective implements Listener {
 	
 	private Action action;
 	private Material type;
-	private byte data;
+	private byte data = -1;
 	private String rawAction;
 
 	/**
@@ -50,7 +50,6 @@ public class ActionObjective extends Objective implements Listener {
 			data = Byte.valueOf(parts[2].split(":")[1]);
 		} else {
 			type = Material.valueOf(parts[2]);
-			data = 0;
 		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
@@ -61,7 +60,7 @@ public class ActionObjective extends Objective implements Listener {
 		if (!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
 			return;
 		}
-		if ((action == null || event.getAction().equals(action)) && event.getClickedBlock().getType().equals(type) && event.getClickedBlock().getData() == data && checkConditions()) {
+		if ((action == null || event.getAction().equals(action)) && event.getClickedBlock().getType().equals(type) && (data < 0 || event.getClickedBlock().getData() == data) && checkConditions()) {
 			HandlerList.unregisterAll(this);
 			completeObjective();
 		}

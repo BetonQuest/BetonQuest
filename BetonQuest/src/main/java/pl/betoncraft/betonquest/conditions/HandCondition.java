@@ -23,7 +23,7 @@ import pl.betoncraft.betonquest.core.Condition;
 public class HandCondition extends Condition {
 	
 	private Material type;
-	private byte data = 0;
+	private byte data = -1;
 	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
 	private List<String> lore = new ArrayList<String>();
 	private String name;
@@ -68,7 +68,7 @@ public class HandCondition extends Condition {
 		if (item == null) {
 			return inverted;
 		}
-		if (!(item.getType().equals(type) && item.getData().getData() == data)) {
+		if (!(item.getType().equals(type) && (data < 0 || item.getData().getData() == data))) {
 			return inverted;
 		}
 		if (name != null && !(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) {

@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.core.Objective;
 public class CraftingObjective extends Objective implements Listener {
 	
 	private Material material;
-	private byte data;
+	private byte data = -1;
 	private int amount;
 
 	/**
@@ -34,8 +34,13 @@ public class CraftingObjective extends Objective implements Listener {
 	 */
 	public CraftingObjective(String playerID, String instructions) {
 		super(playerID, instructions);
-		material = Material.getMaterial(instructions.split(" ")[1].split(":")[0]);
-		data = Byte.parseByte(instructions.split(" ")[1].split(":")[1]);
+		String type = instructions.split(" ")[1];
+		if (type.contains(":")) {
+			material = Material.getMaterial(type.split(":")[0]);
+			data = Byte.parseByte(type.split(":")[1]);
+		} else {
+			material = Material.getMaterial(type);
+		}
 		amount = Integer.parseInt(instructions.split(" ")[2]);
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
@@ -45,7 +50,7 @@ public class CraftingObjective extends Objective implements Listener {
 	public void onCrafting(CraftItemEvent event) {
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
-			if (player.getName().equals(playerID) && event.getRecipe().getResult().getType().equals(material) && event.getRecipe().getResult().getData().getData() == data && checkConditions()) {
+			if (player.getName().equals(playerID) && event.getRecipe().getResult().getType().equals(material) && (data < 0 || event.getRecipe().getResult().getData().getData() == data) && checkConditions()) {
 				this.amount = amount - event.getRecipe().getResult().getAmount();
 				if (amount <= 0) {
 					HandlerList.unregisterAll(this);
