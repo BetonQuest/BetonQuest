@@ -37,9 +37,9 @@ public class ConjunctionCondition extends Condition {
 	public boolean isMet() {
 		for (String condition : conditions) {
 			if (!BetonQuest.condition(playerID, condition)) {
-				return !inverted;
+				return inverted;
 			}
 		}
-		return inverted;
+		return !inverted;
 	}
 }
