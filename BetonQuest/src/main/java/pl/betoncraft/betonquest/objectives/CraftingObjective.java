@@ -46,15 +46,11 @@ public class CraftingObjective extends Objective implements Listener {
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
 			if (player.getName().equals(playerID) && event.getRecipe().getResult().getType().equals(material) && event.getRecipe().getResult().getData().getData() == data && checkConditions()) {
-				BetonQuest.getInstance().getLogger().info("przed " + amount);
 				this.amount = amount - event.getRecipe().getResult().getAmount();
-				BetonQuest.getInstance().getLogger().info("po " + amount);
 				if (amount <= 0) {
-					BetonQuest.getInstance().getLogger().info("zrobione!");
 					HandlerList.unregisterAll(this);
 					completeObjective();
 				} else {
-					BetonQuest.getInstance().getLogger().info("niezrobione!");
 				}
 			}
 		}
