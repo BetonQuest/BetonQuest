@@ -328,6 +328,10 @@ public final class BetonQuest extends JavaPlugin {
 		String[] parts = conditionInstruction.split(" ");
 		Class<? extends Condition> condition = BetonQuest.getInstance().getCondition(parts[0]);
 		Condition instance = null;
+		if (condition == null) {
+			BetonQuest.getInstance().getLogger().severe("Condition type not defined, in: " + conditionID);
+			return false;
+		}
 		try {
 			instance = condition.getConstructor(String.class, String.class).newInstance(playerID, conditionInstruction);
 		} catch (InstantiationException | IllegalAccessException
@@ -368,6 +372,10 @@ public final class BetonQuest extends JavaPlugin {
 			return;
 		}
 		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
+		if (event == null) {
+			BetonQuest.getInstance().getLogger().severe("Event type not defined, in: " + eventID);
+			return;
+		}
 		try {
 			event.getConstructor(String.class, String.class).newInstance(playerID, eventInstruction);
 		} catch (InstantiationException | IllegalAccessException
@@ -400,6 +408,10 @@ public final class BetonQuest extends JavaPlugin {
 			return;
 		}
 		Class<? extends Objective> objective = BetonQuest.getInstance().getObjective(parts[0]);
+		if (objective == null) {
+			BetonQuest.getInstance().getLogger().severe("Objective type not defined, in: " + tag);
+			return;
+		}
 		try {
 			objective.getConstructor(String.class, String.class).newInstance(playerID, instruction);
 		} catch (InstantiationException | IllegalAccessException
