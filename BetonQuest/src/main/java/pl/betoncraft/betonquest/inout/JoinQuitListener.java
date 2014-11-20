@@ -29,11 +29,19 @@ public class JoinQuitListener implements Listener {
 	
 	@EventHandler
 	public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
-		BetonQuest.getInstance().loadAllPlayerData(event.getName());
+		if (BetonQuest.getInstance().isMySQLUsed()) {
+			BetonQuest.getInstance().getDB().openConnection();
+			BetonQuest.getInstance().loadAllPlayerData(event.getName());
+		}
 	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		if (!BetonQuest.getInstance().isMySQLUsed()) {
+			BetonQuest.getInstance().getDB().openConnection();
+			BetonQuest.getInstance().loadAllPlayerData(event.getPlayer().getName());
+			BetonQuest.getInstance().getDB().closeConnection();
+		}
 		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
 		BetonQuest.getInstance().loadPlayerTags(event.getPlayer().getName());
 		BetonQuest.getInstance().loadJournal(event.getPlayer().getName());
@@ -44,14 +52,24 @@ public class JoinQuitListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		final String playerID = event.getPlayer().getName();
 		JournalBook.removeJournal(playerID);
-		new BukkitRunnable() {
-            @Override
-            public void run() {
-        		BetonQuest.getInstance().savePlayerTags(playerID);
-        		BetonQuest.getInstance().saveJournal(playerID);
-        		BetonQuest.getInstance().savePlayerPoints(playerID);
-        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
-            }
-        }.runTaskAsynchronously(BetonQuest.getInstance());
+		if (BetonQuest.getInstance().isMySQLUsed()) {
+			new BukkitRunnable() {
+	            @Override
+	            public void run() {
+	            	BetonQuest.getInstance().getDB().openConnection();
+	        		BetonQuest.getInstance().savePlayerTags(playerID);
+	        		BetonQuest.getInstance().saveJournal(playerID);
+	        		BetonQuest.getInstance().savePlayerPoints(playerID);
+	        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
+	            }
+	        }.runTaskAsynchronously(BetonQuest.getInstance());
+		} else {
+			BetonQuest.getInstance().getDB().openConnection();
+			BetonQuest.getInstance().savePlayerTags(playerID);
+    		BetonQuest.getInstance().saveJournal(playerID);
+    		BetonQuest.getInstance().savePlayerPoints(playerID);
+    		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
+    		BetonQuest.getInstance().getDB().closeConnection();
+		}
 	}
 }

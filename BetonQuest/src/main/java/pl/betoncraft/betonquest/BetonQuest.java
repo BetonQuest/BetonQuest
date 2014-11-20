@@ -94,6 +94,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	private static BetonQuest instance;
 	private Database database;
+	private boolean isMySQLUsed;
 	
 	private HashMap<String,Class<? extends Condition>> conditions = new HashMap<String,Class<? extends Condition>>();
 	private HashMap<String,Class<? extends QuestEvent>> events = new HashMap<String,Class<? extends QuestEvent>>();
@@ -127,10 +128,13 @@ public final class BetonQuest extends JavaPlugin {
 		// create tables if they don't exist
 		if (database.openConnection() != null) {
 			BetonQuest.getInstance().getLogger().info("Using MySQL for storing data!");
+			isMySQLUsed = true;
 			autoIncrement = "AUTO_INCREMENT";
+			database.closeConnection();
 		} else {
 			this.database = new SQLite(this, "database.db");
 			BetonQuest.getInstance().getLogger().info("Using SQLite for storing data!");
+			isMySQLUsed = false;
 			autoIncrement = "AUTOINCREMENT";
 		}
 		
@@ -143,8 +147,7 @@ public final class BetonQuest extends JavaPlugin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		database.generateStatements();
+		database.closeConnection();
 		
 		new JoinQuitListener();
 		new NPCListener();
@@ -204,11 +207,13 @@ public final class BetonQuest extends JavaPlugin {
 		
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
+			database.openConnection();
 			loadAllPlayerData(player.getName());
 			loadObjectives(player.getName());
 			loadPlayerTags(player.getName());
 			loadJournal(player.getName());
 			loadPlayerPoints(player.getName());
+			database.closeConnection();
 		}
 
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -216,6 +221,7 @@ public final class BetonQuest extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+		database.openConnection();
 		// create array and put there objectives (to avoid concurrent modification exception)
 		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
 		// save all active objectives to database
@@ -232,6 +238,7 @@ public final class BetonQuest extends JavaPlugin {
 			savePlayerPoints(player.getName());
 			BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{player.getName()});
 		}
+		database.closeConnection();
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
@@ -579,7 +586,6 @@ public final class BetonQuest extends JavaPlugin {
         if (tags == null) {
         	return;
         }
-        database.openConnection();
         database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
         for (String tag : tags) {
         	database.updateSQL(UpdateType.ADD_TAGS, new String[]{playerID,tag});
@@ -733,5 +739,12 @@ public final class BetonQuest extends JavaPlugin {
         		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());
+	}
+
+	/**
+	 * @return if MySQL is uset (false means SQLite)
+	 */
+	public boolean isMySQLUsed() {
+		return isMySQLUsed;
 	}
 }

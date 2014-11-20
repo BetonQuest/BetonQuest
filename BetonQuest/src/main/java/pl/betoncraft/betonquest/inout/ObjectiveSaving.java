@@ -57,12 +57,19 @@ public class ObjectiveSaving implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		if (event.getPlayer().equals(Bukkit.getPlayer(playerID))) {
-			new BukkitRunnable() {
-	            @Override
-	            public void run() {
-	        		saveObjective();
-	            }
-	        }.runTaskAsynchronously(BetonQuest.getInstance());
+			if (BetonQuest.getInstance().isMySQLUsed()) {
+				new BukkitRunnable() {
+		            @Override
+		            public void run() {
+		            	BetonQuest.getInstance().getDB().openConnection();
+		        		saveObjective();
+		            }
+		        }.runTaskAsynchronously(BetonQuest.getInstance());
+			} else {
+				BetonQuest.getInstance().getDB().openConnection();
+				saveObjective();
+				BetonQuest.getInstance().getDB().closeConnection();
+			}
 		}
 	}
 

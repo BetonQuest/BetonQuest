@@ -2,11 +2,6 @@ package pl.betoncraft.betonquest.database;
 
 public enum UpdateType {
 
-	TABLE_OBJECTIVE,
-	TABLE_TAGS,
-	TABLE_POINTS,
-	TABLE_JOURNAL,
-	
 	ADD_NEW_OBJECTIVE,
 	DELETE_USED_OBJECTIVES,
 	DELETE_POINTS,
