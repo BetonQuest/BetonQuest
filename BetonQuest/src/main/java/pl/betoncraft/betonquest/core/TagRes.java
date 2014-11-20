@@ -20,7 +20,7 @@ public class TagRes {
 	public TagRes(ResultSet res) {
 		try {
 			while (res.next()) {
-				tags.add(res.getString("string"));
+				tags.add(res.getString("tag"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

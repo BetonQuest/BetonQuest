@@ -55,13 +55,10 @@ public abstract class Database {
 	public abstract Connection openConnection();
 	
 	public void generateStatements() {
+		openConnection();
 		try {
 			ping = connection.prepareStatement("SELECT 1;");
-			tableObjectives = connection.prepareStatement("CREATE TABLE IF NOT EXISTS objectives (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-			tableTags = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tags (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-			tablePoints = connection.prepareStatement("CREATE TABLE IF NOT EXISTS points (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-			tableJournal = connection.prepareStatement("CREATE TABLE IF NOT EXISTS journal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-			addNewObjective = connection.prepareStatement("INSERT INTO objectives SET playerID = ?, instructions = ?, isused='0';");
+			addNewObjective = connection.prepareStatement("INSERT INTO objectives (playerID, instructions, isused) VALUES (?, ?, 0);");
 			deleteUsedObjectives = connection.prepareStatement("DELETE FROM objectives WHERE playerID = ? AND isused = 1;");
 			deletePoints = connection.prepareStatement("DELETE FROM points WHERE playerID = ?;");
 			addPoints = connection.prepareStatement("INSERT INTO points (playerID, category, count) VALUES (?, ?, ?);");
@@ -113,6 +110,9 @@ public abstract class Database {
 			default:
 				statement = null;
 				break;
+			}
+			for (int i = 0; i < args.length; i++) {
+				statement.setString(i+1, args[i]);
 			}
 			return statement.executeQuery();
 		} catch (SQLException e) {

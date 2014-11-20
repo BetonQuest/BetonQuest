@@ -5,6 +5,7 @@ package pl.betoncraft.betonquest;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -116,24 +117,34 @@ public final class BetonQuest extends JavaPlugin {
 
 		new ConfigInput();
 		
+		String autoIncrement;
 		// try to connect to database
-		this.database = new MySQL(this, getConfig().getString("database.host"),
-				getConfig().getString("database.port"), getConfig().getString(
-						"database.base"), getConfig().getString("database.user"),
-				getConfig().getString("database.pass"));
+		this.database = new MySQL(this, getConfig().getString("mysql.host"),
+				getConfig().getString("mysql.port"), getConfig().getString(
+						"mysql.base"), getConfig().getString("mysql.user"),
+				getConfig().getString("mysql.pass"));
 			
 		// create tables if they don't exist
 		if (database.openConnection() != null) {
 			BetonQuest.getInstance().getLogger().info("Using MySQL for storing data!");
+			autoIncrement = "AUTO_INCREMENT";
 		} else {
 			this.database = new SQLite(this, "database.db");
 			BetonQuest.getInstance().getLogger().info("Using SQLite for storing data!");
+			autoIncrement = "AUTOINCREMENT";
 		}
 		
-		database.updateSQL(UpdateType.TABLE_OBJECTIVE, new String[0]);
-		database.updateSQL(UpdateType.TABLE_OBJECTIVE, new String[0]);
-		database.updateSQL(UpdateType.TABLE_OBJECTIVE, new String[0]);
-		database.updateSQL(UpdateType.TABLE_OBJECTIVE, new String[0]);
+		Connection connection = database.openConnection();
+		try {
+			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
+			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		database.generateStatements();
 		
 		new JoinQuitListener();
 		new NPCListener();
