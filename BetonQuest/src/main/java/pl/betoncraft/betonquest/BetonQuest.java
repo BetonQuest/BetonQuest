@@ -730,15 +730,25 @@ public final class BetonQuest extends JavaPlugin {
 			}
 			JournalBook.updateJournal(playerID);
 		}
-		new BukkitRunnable() {
-            @Override
-            public void run() {
-        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[]{playerID});
-        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
-        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
-        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
-            }
-        }.runTaskAsynchronously(BetonQuest.getInstance());
+		if (isMySQLUsed) {
+			new BukkitRunnable() {
+	            @Override
+	            public void run() {
+	            	database.openConnection();
+	        		database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[]{playerID});
+	        		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
+	        		database.updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
+	        		database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
+	            }
+	        }.runTaskAsynchronously(BetonQuest.getInstance());
+		} else {
+        	database.openConnection();
+    		database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[]{playerID});
+    		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
+    		database.updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
+    		database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
+			database.closeConnection();
+		}
 	}
 
 	/**
