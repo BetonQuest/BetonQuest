@@ -45,16 +45,10 @@ public class ObjectiveSaving implements Listener {
 	}
 
 	/**
-	 * Deleted objective (in case of it's completion)
-	 */
-	public void unregister() {
-		deleteThis();
-	}
-
-	/**
 	 * Deletes objective
 	 */
 	public void deleteThis() {
+		objective.getInstructions();
 		BetonQuest.getInstance().deleteObjectiveSaving(this);
 		HandlerList.unregisterAll(this);
 	}

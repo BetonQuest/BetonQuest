@@ -61,7 +61,7 @@ public abstract class Objective {
 				BetonQuest.event(playerID, eventID);
 			}
 		}
-		listener.unregister();
+		listener.deleteThis();
 	}
 	
 /**

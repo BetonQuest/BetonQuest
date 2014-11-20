@@ -10,6 +10,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
@@ -52,11 +54,25 @@ public class DieObjective extends Objective implements Listener {
 			return;
 		}
 		if (event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			if (player.getName().equals(playerID) && player.getHealth() - event.getDamage() < 0 && checkConditions()) {
+			final Player player = (Player) event.getEntity();
+			if (player.getName().equals(playerID) && player.getHealth() - event.getDamage() <= 0 && checkConditions()) {
 				event.setCancelled(true);
 				player.setHealth(player.getMaxHealth());
+				player.setFoodLevel(20);
+				player.setExhaustion(4);
+				player.setSaturation(20);
+				for (PotionEffect effect : player.getActivePotionEffects()) {
+					player.removePotionEffect(effect.getType());
+				}
 				HandlerList.unregisterAll(this);
+				new BukkitRunnable() {
+					
+					@Override
+					public void run() {
+						player.setFireTicks(0);
+						
+					}
+				}.runTaskLater(BetonQuest.getInstance(), 1);
 				completeObjective();
 			}
 		}

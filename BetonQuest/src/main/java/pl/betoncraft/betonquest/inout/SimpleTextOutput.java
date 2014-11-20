@@ -17,7 +17,7 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendSystemMessage(String playerID, String message) {
-		String finalString = (ConfigInput.getString("messages.global.plugin_prefix") + message).replaceAll("&", "ง");
+		String finalString = (ConfigInput.getString("messages.global.plugin_prefix") + message).replaceAll("&", "ยง");
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
 	}
 	
@@ -28,7 +28,7 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendQuesterMessage(String playerID, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.quester_line_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "ง");
+		String finalString = (ConfigInput.getString("messages.global.quester_line_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "ยง");
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
 	}
 	
@@ -40,7 +40,7 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendQuesterReply(String playerID, int number, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.quester_reply_format") + message).replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number)).replaceAll("%player%", playerID).replaceAll("&", "ง");
+		String finalString = (ConfigInput.getString("messages.global.quester_reply_format") + message).replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number)).replaceAll("%player%", playerID).replaceAll("&", "ยง");
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
 	}
 	
@@ -51,7 +51,7 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendPlayerReply(String playerID, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.player_reply_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "ง");
+		String finalString = (ConfigInput.getString("messages.global.player_reply_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "ยง");
 		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
 	}
 }

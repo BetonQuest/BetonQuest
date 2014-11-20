@@ -45,11 +45,15 @@ public class ActionObjective extends Objective implements Listener {
 			action = null;
 			break;
 		}
-		if (parts[2].contains(":")) {
-			type = Material.valueOf(parts[2].split(":")[0]);
-			data = Byte.valueOf(parts[2].split(":")[1]);
+		if (parts[2].equalsIgnoreCase("any")) {
+			type = Material.AIR;
 		} else {
-			type = Material.valueOf(parts[2]);
+			if (parts[2].contains(":")) {
+				type = Material.valueOf(parts[2].split(":")[0]);
+				data = Byte.valueOf(parts[2].split(":")[1]);
+			} else {
+				type = Material.valueOf(parts[2]);
+			}
 		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
@@ -60,7 +64,7 @@ public class ActionObjective extends Objective implements Listener {
 		if (!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
 			return;
 		}
-		if ((action == null || event.getAction().equals(action)) && event.getClickedBlock().getType().equals(type) && (data < 0 || event.getClickedBlock().getData() == data) && checkConditions()) {
+		if ((action == null || event.getAction().equals(action)) && (type.equals(Material.AIR) || event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && checkConditions()) {
 			HandlerList.unregisterAll(this);
 			completeObjective();
 		}
@@ -69,7 +73,7 @@ public class ActionObjective extends Objective implements Listener {
 	@Override
 	public String getInstructions() {
 		HandlerList.unregisterAll(this);
-		return "action " + rawAction + " " + type + ":" + data + conditions + " " + events + " tag:" + tag;
+		return "action " + rawAction + " " + type + ":" + data + " " + conditions + " " + events + " tag:" + tag;
 	}
 
 }

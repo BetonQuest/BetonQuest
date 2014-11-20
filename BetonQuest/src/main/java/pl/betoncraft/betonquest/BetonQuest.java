@@ -1,5 +1,9 @@
 package pl.betoncraft.betonquest;
 
+// TODO sqlite support, gui for quest editing, prepared statements, book event, book objective, folder for events with optional delay
+// TODO condition for being in worldedit region
+
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
+import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
@@ -151,6 +156,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("location", LocationCondition.class);
 		registerConditions("armor", ArmorCondition.class);
 		registerConditions("effect", EffectCondition.class);
+		registerConditions("rating", ArmorRatingCondition.class);
 		
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -665,10 +671,14 @@ public final class BetonQuest extends JavaPlugin {
 	}
 	
 	public void deleteObjective(String playerID, String tag) {
+		List<ObjectiveSaving> list = new ArrayList<>();
 		for (ObjectiveSaving objective : saving) {
 			if (objective.getPlayerID().equals(playerID) && objective.getTag() != null && objective.getTag().equalsIgnoreCase(tag)) {
-				objective.deleteThis();
+				list.add(objective);
 			}
+		}
+		for (ObjectiveSaving objective : list) {
+			objective.deleteThis();
 		}
 	}
 	

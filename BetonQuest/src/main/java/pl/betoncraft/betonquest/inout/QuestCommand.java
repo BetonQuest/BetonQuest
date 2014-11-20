@@ -27,13 +27,13 @@ public class QuestCommand implements CommandExecutor {
 		
 		if (cmd.getName().equalsIgnoreCase("q")) {
 			if (args.length < 1) {
-				sender.sendMessage("§e----- §aBetonQuest §e-----");
-				sender.sendMessage("§c/q reload §b- reload the plugin");
-				sender.sendMessage("§c/q objectives §b- display your objectives");
-				sender.sendMessage("§c/q tags §b- display your tags");
-				sender.sendMessage("§c/q points §b- display your points");
-				sender.sendMessage("§c/q condition <id> §b- check if you meet condition");
-				sender.sendMessage("§c/q purge <player> §b- reset all player's data");
+				sender.sendMessage("Â§e----- Â§aBetonQuest Â§e-----");
+				sender.sendMessage("Â§c/q reload Â§b- reload the plugin");
+				sender.sendMessage("Â§c/q objectives Â§b- display your objectives");
+				sender.sendMessage("Â§c/q tags Â§b- display your tags");
+				sender.sendMessage("Â§c/q points Â§b- display your points");
+				sender.sendMessage("Â§c/q condition <id> Â§b- check if you meet condition");
+				sender.sendMessage("Â§c/q purge <player> Â§b- reset all player's data");
 				return true;
 			}
 			switch (args[0]) {
@@ -57,7 +57,7 @@ public class QuestCommand implements CommandExecutor {
 				}
 				sender.sendMessage(getMessage("player_objectives"));
 				for (ObjectiveSaving objective : BetonQuest.getInstance().getObjectives(sender.getName())) {
-					sender.sendMessage("§b- " + objective.getTag());
+					sender.sendMessage("Â§b- " + objective.getTag());
 				}
 				break;
 			case "tags":
@@ -74,7 +74,7 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				for (String tag : tags) {
-					sender.sendMessage("§b- " + tag);
+					sender.sendMessage("Â§b- " + tag);
 				}
 				break;
 			case "condition":
@@ -127,7 +127,7 @@ public class QuestCommand implements CommandExecutor {
 	}
 	
 	private String getMessage(String name) {
-		return ConfigInput.getString("messages." + lang + "." + name).replaceAll("&", "§");
+		return ConfigInput.getString("messages." + lang + "." + name).replaceAll("&", "Â§");
 	}
 
 }
