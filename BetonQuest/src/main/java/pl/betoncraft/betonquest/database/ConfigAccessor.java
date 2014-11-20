@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest;
+package pl.betoncraft.betonquest.database;
 
 /*
 * Copyright (C) 2012

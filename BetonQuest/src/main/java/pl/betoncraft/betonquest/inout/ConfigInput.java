@@ -4,7 +4,7 @@
 package pl.betoncraft.betonquest.inout;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConfigAccessor;
+import pl.betoncraft.betonquest.database.ConfigAccessor;
 
 /**
  * 

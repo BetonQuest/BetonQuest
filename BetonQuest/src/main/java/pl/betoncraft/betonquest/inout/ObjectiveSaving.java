@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.database.UpdateType;
 
 /**
  * 
@@ -40,7 +41,7 @@ public class ObjectiveSaving implements Listener {
 	 * Saves objective to database and removes it from memory (in case of player's quit or server shutdown/reload)
 	 */
 	public void saveObjective() {
-		BetonQuest.getInstance().getMySQL().updateSQL("INSERT INTO objectives SET playerID='" + playerID + "', instructions='" + objective.getInstructions() + "', isused='0'");
+		BetonQuest.getInstance().getDB().updateSQL(UpdateType.ADD_NEW_OBJECTIVE, new String[]{playerID,objective.getInstructions()});
 		deleteThis();
 	}
 

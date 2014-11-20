@@ -69,7 +69,7 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				sender.sendMessage(getMessage("player_tags"));
-				List<String> tags = BetonQuest.getInstance().getPlayerStrings().get(sender.getName());
+				List<String> tags = BetonQuest.getInstance().getPlayerTags().get(sender.getName());
 				if (tags == null) {
 					return true;
 				}

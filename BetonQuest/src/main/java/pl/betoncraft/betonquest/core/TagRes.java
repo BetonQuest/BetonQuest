@@ -12,15 +12,15 @@ import java.util.List;
  * Converts ResultSet to readable and persistent data object. Works exactly the same as ResultSet
  * @author Co0sh
  */
-public class StringRes {
+public class TagRes {
 	
-	private List<String> strings = new ArrayList<String>();
+	private List<String> tags = new ArrayList<String>();
 	private int iterator;
 	
-	public StringRes(ResultSet res) {
+	public TagRes(ResultSet res) {
 		try {
 			while (res.next()) {
-				strings.add(res.getString("string"));
+				tags.add(res.getString("string"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -34,7 +34,7 @@ public class StringRes {
 	 */
 	public boolean next() {
 		iterator++;
-		if (iterator < strings.size()) {
+		if (iterator < tags.size()) {
 			return true;
 		}
 		return false;
@@ -44,7 +44,7 @@ public class StringRes {
 	 * returns string (tag) on this row
 	 * @return
 	 */
-	public String getString() {
-		return strings.get(iterator);
+	public String getTag() {
+		return tags.get(iterator);
 	}
 }

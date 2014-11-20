@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.core.Condition;
  */
 public class TagCondition extends Condition {
 	
-	private String string;
+	private String tag;
 	private boolean inverted = false;
 
 	/**
@@ -28,7 +28,7 @@ public class TagCondition extends Condition {
 				inverted = true;
 			}
 			if (part.contains("tag:")) {
-				string = part.substring(4);
+				tag = part.substring(4);
 			}
 		}
 	}
@@ -38,7 +38,7 @@ public class TagCondition extends Condition {
 	 */
 	@Override
 	public boolean isMet() {
-		if (BetonQuest.getInstance().havePlayerString(playerID, string)) {
+		if (BetonQuest.getInstance().havePlayerTag(playerID, tag)) {
 			return !inverted;
 		}
 		return inverted;

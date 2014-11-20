@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.database.UpdateType;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class JoinQuitListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
-		BetonQuest.getInstance().loadPlayerStrings(event.getPlayer().getName());
+		BetonQuest.getInstance().loadPlayerTags(event.getPlayer().getName());
 		BetonQuest.getInstance().loadJournal(event.getPlayer().getName());
 		BetonQuest.getInstance().loadPlayerPoints(event.getPlayer().getName());
 	}
@@ -46,10 +47,10 @@ public class JoinQuitListener implements Listener {
 		new BukkitRunnable() {
             @Override
             public void run() {
-        		BetonQuest.getInstance().savePlayerStrings(playerID);
+        		BetonQuest.getInstance().savePlayerTags(playerID);
         		BetonQuest.getInstance().saveJournal(playerID);
         		BetonQuest.getInstance().savePlayerPoints(playerID);
-        		BetonQuest.getInstance().getMySQL().updateSQL("DELETE FROM objectives WHERE playerID='" + playerID + "' AND isused = 1;");
+        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());
 	}
