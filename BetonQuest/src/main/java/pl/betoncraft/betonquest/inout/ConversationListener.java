@@ -36,7 +36,7 @@ public class ConversationListener implements Listener {
 		BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onReply(AsyncPlayerChatEvent event) {
 		// return if it's someone else
 		if (event.getPlayer() != player) {
