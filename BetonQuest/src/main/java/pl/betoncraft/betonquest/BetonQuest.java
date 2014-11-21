@@ -4,6 +4,7 @@ package pl.betoncraft.betonquest;
 // TODO condition for being in worldedit region
 
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -47,6 +48,7 @@ import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.TagRes;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.Metrics;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.QueryType;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -214,6 +216,18 @@ public final class BetonQuest extends JavaPlugin {
 			loadJournal(player.getName());
 			loadPlayerPoints(player.getName());
 			database.closeConnection();
+		}
+		
+		if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
+			try {
+		        Metrics metrics = new Metrics(this);
+		        metrics.start();
+		    	getLogger().log(Level.INFO, "Metrics enabled!");
+		    } catch (IOException e) {
+		    	getLogger().log(Level.INFO, "Metrics faild to enable!");
+		    }
+		} else  {
+	    	getLogger().log(Level.INFO, "Metrics are not used!");
 		}
 
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
