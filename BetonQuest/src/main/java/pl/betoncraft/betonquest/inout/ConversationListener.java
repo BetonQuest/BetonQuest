@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.Vector;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Conversation;
@@ -52,9 +53,22 @@ public class ConversationListener implements Listener {
 		if (!event.getPlayer().equals(player)) {
 			return;
 		}
-		// end conversation if player moved away from npc more than value defined in config
+		// if player passes max distance
 		if (event.getTo().distance(location) > Integer.valueOf(ConfigInput.getString("config.max_npc_distance"))) {
-			conversation.endConversation();
+			// we can stop the player or end conversation
+			if (conversation.isMovementBlock()) {
+				float yaw = event.getTo().getYaw();
+				float pitch = event.getTo().getPitch();
+				Vector vector = new Vector(location.getX() - event.getTo().getX(), location.getY() - event.getTo().getY(), location.getZ() - event.getTo().getZ());
+				vector = vector.multiply(1 / vector.length());
+				Location newLocation = event.getTo().clone();
+				newLocation.add(vector);
+				newLocation.setPitch(pitch);
+				newLocation.setYaw(yaw);
+				event.getPlayer().teleport(newLocation);
+			} else {
+				conversation.endConversation();
+			}
 		}
 		return;
 	}

@@ -739,9 +739,11 @@ public final class BetonQuest extends JavaPlugin {
 					list.add(objective);
 				}
 			}
+			database.openConnection();
 			for (ObjectiveSaving objective : list) {
 				objective.saveObjective();
 			}
+			database.closeConnection();
 			JournalBook.updateJournal(playerID);
 		}
 		if (isMySQLUsed) {

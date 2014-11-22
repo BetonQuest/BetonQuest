@@ -23,6 +23,7 @@ public class Conversation {
 	private final String conversationID;
 	private HashMap<Integer,String> current = new HashMap<Integer,String>();
 	private ConversationListener listener;
+	private boolean movementBlock;
 	
 	/**
 	 * Constructor method, starts a new conversation between player and npc at given location
@@ -55,6 +56,14 @@ public class Conversation {
 			BetonQuest.getInstance().getLogger().severe("Conversation initialization not defined at: " + conversationID);
 			endConversation();
 			return;
+		}
+		
+		// if stop is true stop the player from moving away
+		String stop = ConfigInput.getString("conversations." + conversationID + ".stop");
+		if (stop != null && stop.equalsIgnoreCase("true")) {
+			movementBlock = true;
+		} else {
+			movementBlock = true;
 		}
 		
 		// print one of them
@@ -275,6 +284,10 @@ public class Conversation {
 		NPCListener.removePlayerConversation(playerID);
 		// unregister listener
 		listener.unregisterListener();
+	}
+
+	public boolean isMovementBlock() {
+		return movementBlock;
 	}
 
 }
