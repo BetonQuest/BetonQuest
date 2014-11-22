@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.core.GlobalLocation;
 
 /**
  * 
@@ -49,7 +51,7 @@ public class GlobalLocations extends BukkitRunnable{
 					return;
 				}
 				
-				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation().distance(location.getLocation()) < location.getDistance()) {
+				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation().distance(new Location(Bukkit.getWorld(location.getLocation().getWorld()), location.getLocation().getX(), location.getLocation().getY(), location.getLocation().getZ())) < location.getDistance()) {
 					if (location.getConditions() != null) {
 						for (String condition : location.getConditions()) {
 							if (!BetonQuest.condition(player.getName(), condition)) {

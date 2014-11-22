@@ -1,12 +1,11 @@
 /**
  * 
  */
-package pl.betoncraft.betonquest.inout;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+package pl.betoncraft.betonquest.core;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.UnifiedLocation;
 
 /**
  * 
@@ -14,7 +13,7 @@ import pl.betoncraft.betonquest.BetonQuest;
  */
 public class GlobalLocation {
 
-	private Location location;
+	private UnifiedLocation location;
 	private String[] conditions;
 	private String[] events;
 	private int distance;
@@ -27,7 +26,7 @@ public class GlobalLocation {
 		}
 		String[] parts = instructions.split(" ");
 		String[] rawLocation = parts[1].split(";");
-		location = new Location(Bukkit.getWorld(rawLocation[3]), Double.parseDouble(rawLocation[0]), Double.parseDouble(rawLocation[1]), Double.parseDouble(rawLocation[2]));
+		location = new UnifiedLocation(Double.parseDouble(rawLocation[0]), Double.parseDouble(rawLocation[1]), Double.parseDouble(rawLocation[2]), rawLocation[3]);
 		for (String part : parts) {
 			if (part.contains("conditions:")) {
 				conditions = part.substring(11).split(",");
@@ -42,7 +41,7 @@ public class GlobalLocation {
 	/**
 	 * @return the location
 	 */
-	public Location getLocation() {
+	public UnifiedLocation getLocation() {
 		return location;
 	}
 

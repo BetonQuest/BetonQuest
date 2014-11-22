@@ -35,7 +35,7 @@ public class NPCListener implements Listener {
 	@EventHandler
 	public void onNPCClick(NPCRightClickEvent event) {
 		if (ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())) != null && !conversations.contains(event.getClicker().getName())) {
-			new Conversation(event.getClicker().getName(), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new NPCLocation(event.getNPC().getEntity().getLocation()));
+			new Conversation(event.getClicker().getName(), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new UnifiedLocation(event.getNPC().getEntity().getLocation()));
 			conversations.add(event.getClicker().getName());
 		}
 	}

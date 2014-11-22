@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationListener;
 import pl.betoncraft.betonquest.inout.NPCListener;
-import pl.betoncraft.betonquest.inout.NPCLocation;
+import pl.betoncraft.betonquest.inout.UnifiedLocation;
 import pl.betoncraft.betonquest.inout.SimpleTextOutput;
 
 /**
@@ -30,7 +30,7 @@ public class Conversation {
 	 * @param playerID
 	 * @param conversationID
 	 */
-	public Conversation(String playerID, String conversationID, NPCLocation location) {
+	public Conversation(String playerID, String conversationID, UnifiedLocation location) {
 		
 		this.playerID = playerID;
 		this.conversationID = conversationID;
