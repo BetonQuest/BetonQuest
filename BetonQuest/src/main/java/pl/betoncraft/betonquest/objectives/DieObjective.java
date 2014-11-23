@@ -4,6 +4,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -23,6 +24,7 @@ import pl.betoncraft.betonquest.core.Objective;
 public class DieObjective extends Objective implements Listener {
 	
 	private boolean cancel = false;
+	private Location location = null;
 
 	/**
 	 * Constructor method
@@ -33,6 +35,16 @@ public class DieObjective extends Objective implements Listener {
 		super(playerID, instructions);
 		if (instructions.contains("cancel")) {
 			cancel = true;
+		}
+		for (String part : instructions.split(" ")) {
+			if (part.contains("respawn:")) {
+				String[] rawLocParts = part.substring(8).split(";");
+				if (rawLocParts.length == 4) {
+					location = new Location(Bukkit.getWorld(rawLocParts[3]), Double.parseDouble(rawLocParts[0]), Double.parseDouble(rawLocParts[1]), Double.parseDouble(rawLocParts[2]));
+				} else if (rawLocParts.length == 6) {
+					location = new Location(Bukkit.getWorld(rawLocParts[3]), Double.parseDouble(rawLocParts[0]), Double.parseDouble(rawLocParts[1]), Double.parseDouble(rawLocParts[2]), Float.parseFloat(rawLocParts[4]), Float.parseFloat(rawLocParts[5]));
+				}
+			}
 		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
@@ -63,6 +75,9 @@ public class DieObjective extends Objective implements Listener {
 				player.setSaturation(20);
 				for (PotionEffect effect : player.getActivePotionEffects()) {
 					player.removePotionEffect(effect.getType());
+				}
+				if (location != null) {
+					player.teleport(location);
 				}
 				HandlerList.unregisterAll(this);
 				new BukkitRunnable() {

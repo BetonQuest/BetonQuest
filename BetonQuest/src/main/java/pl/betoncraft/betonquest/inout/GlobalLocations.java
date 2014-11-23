@@ -52,6 +52,9 @@ public class GlobalLocations extends BukkitRunnable{
 				}
 				
 				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation().distance(new Location(Bukkit.getWorld(location.getLocation().getWorld()), location.getLocation().getX(), location.getLocation().getY(), location.getLocation().getZ())) < location.getDistance()) {
+					if (BetonQuest.condition(player.getName(), "tag tag:global_" + location.getTag())) {
+						continue locations;
+					}
 					if (location.getConditions() != null) {
 						for (String condition : location.getConditions()) {
 							if (!BetonQuest.condition(player.getName(), condition)) {
@@ -59,6 +62,7 @@ public class GlobalLocations extends BukkitRunnable{
 							}
 						}
 					}
+					BetonQuest.event(player.getName(), "tag add global_" + location.getTag());
 					for (String event : location.getEvents()) {
 						BetonQuest.event(player.getName(), event);
 					}

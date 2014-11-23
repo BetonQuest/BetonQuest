@@ -17,7 +17,8 @@ public class GlobalLocation {
 	private String[] conditions;
 	private String[] events;
 	private int distance;
-	
+	private String tag;
+
 	public GlobalLocation(String objective) {
 		String instructions = ConfigInput.getString("objectives." + objective);
 		if (instructions == null) {
@@ -33,6 +34,9 @@ public class GlobalLocation {
 			}
 			if (part.contains("events:")) {
 				events = part.substring(7).split(",");
+			}
+			if (part.contains("tag:")) {
+				tag = part.substring(4);
 			}
 		}
 		distance = Integer.parseInt(rawLocation[4]);
@@ -64,5 +68,12 @@ public class GlobalLocation {
 	 */
 	public int getDistance() {
 		return distance;
+	}
+	
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
 	}
 }
