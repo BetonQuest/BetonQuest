@@ -58,6 +58,7 @@ import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
+import pl.betoncraft.betonquest.events.FolderEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
@@ -196,6 +197,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("spawn", SpawnMobEvent.class);
         registerEvents("time", TimeEvent.class);
         registerEvents("weather", WeatherEvent.class);
+        registerEvents("folder", FolderEvent.class );
         
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
