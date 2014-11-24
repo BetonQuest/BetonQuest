@@ -3,7 +3,7 @@ main: pl.betoncraft.betonquest.BetonQuest
 authors: [Co0sh, Dzejkop, BYK]
 website: http://betoncraft.pl/
 depend: [Citizens]
-version: 1.0
+version: 1.2
 commands:
   q:
     description: General quest command
