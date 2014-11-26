@@ -1,0 +1,61 @@
+package pl.betoncraft.betonquest.inout;
+
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+@SuppressWarnings("deprecation")
+public class PlayerConverter {
+	
+	private static PlayerConversionType type;
+	
+	static {
+		String uuid = ConfigInput.getString("config.uuid");
+		if (uuid != null &&  uuid.equals("true")) {
+			type = PlayerConversionType.UUID;
+		} else {
+			type = PlayerConversionType.NAME;
+		}
+	}
+	
+	public enum PlayerConversionType {
+		UUID,
+		NAME
+	}
+	
+	public static String getID(Player player) {
+		if (type == PlayerConversionType.NAME) {
+			return player.getName();
+		} else if (type == PlayerConversionType.UUID) {
+			return player.getUniqueId().toString();
+		} else {
+			return null;
+		}
+	}
+	
+	public static String getID(String name) {
+		if (type == PlayerConversionType.NAME) {
+			return name;
+		} else if (type == PlayerConversionType.UUID) {
+			return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
+		} else {
+			return null;
+		}
+	}
+	
+	public static Player getPlayer(String ID) {
+		if (type == PlayerConversionType.NAME) {
+			return Bukkit.getPlayer(ID);
+		} else if (type == PlayerConversionType.UUID) {
+			return Bukkit.getPlayer(UUID.fromString(ID));
+		} else {
+			return null;
+		}
+	}
+
+	public static PlayerConversionType getType() {
+		return type;
+	}
+
+}

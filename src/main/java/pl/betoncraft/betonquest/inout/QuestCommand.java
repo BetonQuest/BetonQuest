@@ -56,7 +56,7 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				sender.sendMessage(getMessage("player_objectives"));
-				for (ObjectiveSaving objective : BetonQuest.getInstance().getObjectives(sender.getName())) {
+				for (ObjectiveSaving objective : BetonQuest.getInstance().getObjectives(PlayerConverter.getID((Player) sender))) {
 					sender.sendMessage("§b- " + objective.getTag());
 				}
 				break;
@@ -69,7 +69,7 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				sender.sendMessage(getMessage("player_tags"));
-				List<String> tags = BetonQuest.getInstance().getPlayerTags().get(sender.getName());
+				List<String> tags = BetonQuest.getInstance().getPlayerTags().get(PlayerConverter.getID((Player) sender));
 				if (tags == null) {
 					return true;
 				}
@@ -89,7 +89,7 @@ public class QuestCommand implements CommandExecutor {
 					sender.sendMessage(getMessage("specify_condition"));
 					return true;
 				}
-				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(sender.getName(), args[1]) + ""));
+				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(PlayerConverter.getID((Player) sender), args[1]) + ""));
 				break;
 			case "points":
 				if (!sender.hasPermission("betonquest.conditions")) {
@@ -103,7 +103,7 @@ public class QuestCommand implements CommandExecutor {
 					sender.sendMessage(getMessage("specify_condition"));
 					return true;
 				}
-				sender.sendMessage(getMessage("player_points").replaceAll("%category%", args[1]).replaceAll("%count%", BetonQuest.getInstance().getPlayerPoints(sender.getName(), args[1]) + ""));
+				sender.sendMessage(getMessage("player_points").replaceAll("%category%", args[1]).replaceAll("%count%", BetonQuest.getInstance().getPlayerPoints(PlayerConverter.getID((Player) sender), args[1]) + ""));
 				break;
 			case "purge":
 				if (!sender.hasPermission("betonquest.purge")) {
@@ -114,7 +114,7 @@ public class QuestCommand implements CommandExecutor {
 					sender.sendMessage(getMessage("specify_player"));
 					return true;
 				}
-				BetonQuest.getInstance().purgePlayer(args[1]);
+				BetonQuest.getInstance().purgePlayer(PlayerConverter.getID(args[1]));
 				sender.sendMessage(getMessage("purged").replaceAll("%player%", args[1]));
 				break;
 			default:

@@ -88,7 +88,7 @@ public class JournalBook implements Listener {
 		if (hasJournal(playerID)) {
 			return;
 		}
-		Inventory inventory = Bukkit.getPlayer(playerID).getInventory();
+		Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
 		if (slot < 0) {
 			slot = 8;
 		}
@@ -113,7 +113,7 @@ public class JournalBook implements Listener {
 	}
 	
 	public static boolean hasJournal(String playerID) {
-		for (ItemStack item : Bukkit.getPlayer(playerID).getInventory().getContents()) {
+		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
 			if (isJournal(item)) {
 				return true;
 			}
@@ -122,7 +122,7 @@ public class JournalBook implements Listener {
 	}
 	
 	public static int removeJournal(String playerID) {
-		Inventory inventory = Bukkit.getPlayer(playerID).getInventory();
+		Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
 		for (int i = 0; i < inventory.getSize(); i++) {
 			if (isJournal(inventory.getItem(i))) {
 				inventory.setItem(i, new ItemStack(Material.AIR));
@@ -147,7 +147,7 @@ public class JournalBook implements Listener {
 		ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 		BookMeta meta = (BookMeta) item.getItemMeta();
 		meta.setTitle(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_title"));
-		meta.setAuthor(playerID);
+		meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
 		List<String> lore = new ArrayList<String>();
 		lore.add(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore"));
 		meta.setLore(lore);

@@ -3,7 +3,6 @@
  */
 package pl.betoncraft.betonquest.inout;
 
-import org.bukkit.Bukkit;
 
 /**
  * 
@@ -18,7 +17,7 @@ public class SimpleTextOutput {
 	 */
 	public static void sendSystemMessage(String playerID, String message) {
 		String finalString = (ConfigInput.getString("messages.global.plugin_prefix") + message).replaceAll("&", "§");
-		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
+		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
 	}
 	
 	/**
@@ -28,8 +27,8 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendQuesterMessage(String playerID, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.quester_line_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "§");
-		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
+		String finalString = (ConfigInput.getString("messages.global.quester_line_format") + message).replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()).replaceAll("%quester%", quester).replaceAll("&", "§");
+		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
 	}
 	
 	/**
@@ -40,8 +39,8 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendQuesterReply(String playerID, int number, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.quester_reply_format") + message).replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number)).replaceAll("%player%", playerID).replaceAll("&", "§");
-		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
+		String finalString = (ConfigInput.getString("messages.global.quester_reply_format") + message).replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number)).replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()).replaceAll("&", "§");
+		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
 	}
 	
 	/**
@@ -51,7 +50,7 @@ public class SimpleTextOutput {
 	 * @param message
 	 */
 	public static void sendPlayerReply(String playerID, String quester, String message) {
-		String finalString = (ConfigInput.getString("messages.global.player_reply_format") + message).replaceAll("%player%", playerID).replaceAll("%quester%", quester).replaceAll("&", "§");
-		Bukkit.getServer().getPlayer(playerID).sendMessage(finalString);
+		String finalString = (ConfigInput.getString("messages.global.player_reply_format") + message).replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()).replaceAll("%quester%", quester).replaceAll("&", "§");
+		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
 	}
 }

@@ -13,63 +13,71 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.database.UpdateType;
+import pl.betoncraft.betonquest.inout.PlayerConverter.PlayerConversionType;
 
 /**
  * 
  * @author Co0sh
  */
 public class JoinQuitListener implements Listener {
+	
+	private BetonQuest instance = BetonQuest.getInstance();
 
 	/**
 	 * Constructor method, this listener loads all objectives for joining player
 	 */
 	public JoinQuitListener() {
-		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+		Bukkit.getPluginManager().registerEvents(this, instance);
 	}
 	
 	@EventHandler
 	public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
-		if (BetonQuest.getInstance().isMySQLUsed()) {
-			BetonQuest.getInstance().getDB().openConnection();
-			BetonQuest.getInstance().loadAllPlayerData(event.getName());
+		if (instance.isMySQLUsed()) {
+			instance.getDB().openConnection();
+			if (PlayerConverter.getType() == PlayerConversionType.UUID) {
+				instance.loadAllPlayerData(event.getUniqueId().toString());
+			} else if (PlayerConverter.getType() == PlayerConversionType.NAME) {
+				instance.loadAllPlayerData(event.getName());
+			}
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (!BetonQuest.getInstance().isMySQLUsed()) {
-			BetonQuest.getInstance().getDB().openConnection();
-			BetonQuest.getInstance().loadAllPlayerData(event.getPlayer().getName());
-			BetonQuest.getInstance().getDB().closeConnection();
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (!instance.isMySQLUsed()) {
+			instance.getDB().openConnection();
+			instance.loadAllPlayerData(playerID);
+			instance.getDB().closeConnection();
 		}
-		BetonQuest.getInstance().loadObjectives(event.getPlayer().getName());
-		BetonQuest.getInstance().loadPlayerTags(event.getPlayer().getName());
-		BetonQuest.getInstance().loadJournal(event.getPlayer().getName());
-		BetonQuest.getInstance().loadPlayerPoints(event.getPlayer().getName());
+		instance.loadObjectives(playerID);
+		instance.loadPlayerTags(playerID);
+		instance.loadJournal(playerID);
+		instance.loadPlayerPoints(playerID);
 	}
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		final String playerID = event.getPlayer().getName();
+		final String playerID = PlayerConverter.getID(event.getPlayer());
 		JournalBook.removeJournal(playerID);
-		if (BetonQuest.getInstance().isMySQLUsed()) {
+		if (instance.isMySQLUsed()) {
 			new BukkitRunnable() {
 	            @Override
 	            public void run() {
-	            	BetonQuest.getInstance().getDB().openConnection();
-	        		BetonQuest.getInstance().savePlayerTags(playerID);
-	        		BetonQuest.getInstance().saveJournal(playerID);
-	        		BetonQuest.getInstance().savePlayerPoints(playerID);
-	        		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
+	            	instance.getDB().openConnection();
+	        		instance.savePlayerTags(playerID);
+	        		instance.saveJournal(playerID);
+	        		instance.savePlayerPoints(playerID);
+	        		instance.getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
 	            }
-	        }.runTaskAsynchronously(BetonQuest.getInstance());
+	        }.runTaskAsynchronously(instance);
 		} else {
-			BetonQuest.getInstance().getDB().openConnection();
-			BetonQuest.getInstance().savePlayerTags(playerID);
-    		BetonQuest.getInstance().saveJournal(playerID);
-    		BetonQuest.getInstance().savePlayerPoints(playerID);
-    		BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
-    		BetonQuest.getInstance().getDB().closeConnection();
+			instance.getDB().openConnection();
+			instance.savePlayerTags(playerID);
+    		instance.saveJournal(playerID);
+    		instance.savePlayerPoints(playerID);
+    		instance.getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{playerID});
+    		instance.getDB().closeConnection();
 		}
 	}
 }

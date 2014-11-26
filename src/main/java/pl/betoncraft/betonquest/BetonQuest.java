@@ -79,6 +79,7 @@ import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.JournalCommand;
 import pl.betoncraft.betonquest.inout.NPCListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 import pl.betoncraft.betonquest.inout.QuestCommand;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
@@ -214,11 +215,11 @@ public final class BetonQuest extends JavaPlugin {
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			database.openConnection();
-			loadAllPlayerData(player.getName());
-			loadObjectives(player.getName());
-			loadPlayerTags(player.getName());
-			loadJournal(player.getName());
-			loadPlayerPoints(player.getName());
+			loadAllPlayerData(PlayerConverter.getID(player));
+			loadObjectives(PlayerConverter.getID(player));
+			loadPlayerTags(PlayerConverter.getID(player));
+			loadJournal(PlayerConverter.getID(player));
+			loadPlayerPoints(PlayerConverter.getID(player));
 			database.closeConnection();
 		}
 		
@@ -250,11 +251,11 @@ public final class BetonQuest extends JavaPlugin {
 			objective.saveObjective();
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			JournalBook.removeJournal(player.getName());
-			saveJournal(player.getName());
-			savePlayerTags(player.getName());
-			savePlayerPoints(player.getName());
-			BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{player.getName()});
+			JournalBook.removeJournal(PlayerConverter.getID(player));
+			saveJournal(PlayerConverter.getID(player));
+			savePlayerTags(PlayerConverter.getID(player));
+			savePlayerPoints(PlayerConverter.getID(player));
+			BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{PlayerConverter.getID(player)});
 		}
 		database.closeConnection();
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
@@ -724,32 +725,34 @@ public final class BetonQuest extends JavaPlugin {
 		return list;
 	}
 	
+	/**
+	 * Purges player's objectives. Player MUST be online!
+	 * @param playerID
+	 */
 	public void purgePlayer(final String playerID) {
-		if (Bukkit.getPlayer(playerID) != null) {
-			if (playerTags.get(playerID) != null) {
-				playerTags.get(playerID).clear();
-			}
-			if (journals.get(playerID) != null) {
-				journals.get(playerID).clear();
-			}
-			if (points.get(playerID) != null) {
-				points.get(playerID).clear();
-			}
-			List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
-			Iterator<ObjectiveSaving> iterator = saving.iterator();
-			while (iterator.hasNext()) {
-				ObjectiveSaving objective = (ObjectiveSaving) iterator.next();
-				if (objective.getPlayerID().equals(playerID)) {
-					list.add(objective);
-				}
-			}
-			database.openConnection();
-			for (ObjectiveSaving objective : list) {
-				objective.saveObjective();
-			}
-			database.closeConnection();
-			JournalBook.updateJournal(playerID);
+		if (playerTags.get(playerID) != null) {
+			playerTags.get(playerID).clear();
 		}
+		if (journals.get(playerID) != null) {
+			journals.get(playerID).clear();
+		}
+		if (points.get(playerID) != null) {
+			points.get(playerID).clear();
+		}
+		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
+		Iterator<ObjectiveSaving> iterator = saving.iterator();
+		while (iterator.hasNext()) {
+			ObjectiveSaving objective = (ObjectiveSaving) iterator.next();
+			if (objective.getPlayerID().equals(playerID)) {
+				list.add(objective);
+			}
+		}
+		database.openConnection();
+		for (ObjectiveSaving objective : list) {
+			objective.saveObjective();
+		}
+		database.closeConnection();
+		JournalBook.updateJournal(playerID);
 		if (isMySQLUsed) {
 			new BukkitRunnable() {
 	            @Override

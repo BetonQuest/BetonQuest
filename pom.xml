@@ -29,8 +29,7 @@
        <dependency>
            <groupId>org.bukkit</groupId>
            <artifactId>bukkit</artifactId>
-           <version>1.7.2-R0.3</version>
-           <type>jar</type>
+           <version>1.7.9-R0.2</version>
            <scope>provided</scope>
        </dependency>
        <dependency>

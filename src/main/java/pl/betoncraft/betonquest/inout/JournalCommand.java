@@ -19,7 +19,7 @@ public class JournalCommand implements CommandExecutor {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("j")) {
 			if (sender instanceof Player) {
-				JournalBook.addJournal(sender.getName(), Integer.parseInt(ConfigInput.getString("config.default_journal_slot")));
+				JournalBook.addJournal(PlayerConverter.getID((Player) sender), Integer.parseInt(ConfigInput.getString("config.default_journal_slot")));
 			}
 			return true;
 		}

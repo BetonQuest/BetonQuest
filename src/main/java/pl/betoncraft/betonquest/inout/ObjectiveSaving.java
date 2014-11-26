@@ -56,7 +56,7 @@ public class ObjectiveSaving implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID))) {
+		if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID))) {
 			if (BetonQuest.getInstance().isMySQLUsed()) {
 				new BukkitRunnable() {
 		            @Override

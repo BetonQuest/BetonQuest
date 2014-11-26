@@ -30,7 +30,7 @@ public class ConversationListener implements Listener {
 	
 	public ConversationListener(String playerID, UnifiedLocation location, Conversation conversation) {
 		// set fields for later use
-		player = Bukkit.getServer().getPlayer(playerID);
+		player = PlayerConverter.getPlayer(playerID);
 		this.location = new Location(Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
 		this.conversation = conversation;
 		// register this listener

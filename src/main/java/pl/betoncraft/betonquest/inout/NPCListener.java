@@ -34,16 +34,16 @@ public class NPCListener implements Listener {
 	
 	@EventHandler
 	public void onNPCClick(NPCRightClickEvent event) {
-		if (ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())) != null && !conversations.contains(event.getClicker().getName())) {
-			new Conversation(event.getClicker().getName(), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new UnifiedLocation(event.getNPC().getEntity().getLocation()));
-			conversations.add(event.getClicker().getName());
+		if (ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())) != null && !conversations.contains(PlayerConverter.getID(event.getClicker()))) {
+			new Conversation(PlayerConverter.getID(event.getClicker()), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new UnifiedLocation(event.getNPC().getEntity().getLocation()));
+			conversations.add(PlayerConverter.getID(event.getClicker()));
 		}
 	}
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		if (conversations.contains(event.getPlayer().getName())) {
-			removePlayerConversation(event.getPlayer().getName());
+		if (conversations.contains(PlayerConverter.getID(event.getPlayer()))) {
+			removePlayerConversation(PlayerConverter.getID(event.getPlayer()));
 		}
 	}
 }
