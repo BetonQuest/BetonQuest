@@ -83,7 +83,7 @@ import pl.betoncraft.betonquest.inout.QuestCommand;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
-import pl.betoncraft.betonquest.objectives.DelayObjective;
+//import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
