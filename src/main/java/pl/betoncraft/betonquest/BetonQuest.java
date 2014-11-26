@@ -83,7 +83,7 @@ import pl.betoncraft.betonquest.inout.QuestCommand;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
-//import pl.betoncraft.betonquest.objectives.DelayObjective;
+import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
@@ -209,7 +209,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("craft", CraftingObjective.class);
 		registerObjectives("smelt", SmeltingObjective.class);
 		registerObjectives("tame", TameObjective.class);
-//		registerObjectives("delay", DelayObjective.class);
+		registerObjectives("delay", DelayObjective.class);
 		
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
