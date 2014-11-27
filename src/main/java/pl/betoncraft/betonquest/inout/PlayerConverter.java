@@ -5,17 +5,22 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.BetonQuest;
+
 @SuppressWarnings("deprecation")
 public class PlayerConverter {
 	
 	private static PlayerConversionType type;
 	
 	static {
-		String uuid = ConfigInput.getString("config.uuid");
+		String uuid = BetonQuest.getInstance().getConfig().getString("uuid");
+		BetonQuest.getInstance().getLogger().info(uuid);
 		if (uuid != null &&  uuid.equals("true")) {
 			type = PlayerConversionType.UUID;
+			BetonQuest.getInstance().getLogger().info("Using UUID!");
 		} else {
 			type = PlayerConversionType.NAME;
+			BetonQuest.getInstance().getLogger().info("Using Names!");
 		}
 	}
 	
