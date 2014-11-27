@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -41,7 +42,7 @@ public class SmeltingObjective extends Objective implements Listener {
 	@EventHandler
 	public void onSmelting(FurnaceExtractEvent event) {
 		Player player = (Player) event.getPlayer();
-		if (player.getName().equals(playerID) && event.getItemType().equals(material) && checkConditions()) {
+		if (player.equals(PlayerConverter.getPlayer(playerID)) && event.getItemType().equals(material) && checkConditions()) {
 			amount = amount - event.getItemAmount();
 			if (amount <= 0) {
 				HandlerList.unregisterAll(this);
@@ -55,7 +56,7 @@ public class SmeltingObjective extends Objective implements Listener {
 		if (event.getInventory().getType().equals(InventoryType.FURNACE)) {
 			if (event.getRawSlot() == 2) {
 				if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
-					if (event.getWhoClicked().getName().equals(playerID)) {
+					if (event.getWhoClicked().equals(PlayerConverter.getPlayer(playerID))) {
 						event.setCancelled(true);
 					}
 				}

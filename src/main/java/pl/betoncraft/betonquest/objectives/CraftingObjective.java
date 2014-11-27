@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -50,7 +51,7 @@ public class CraftingObjective extends Objective implements Listener {
 	public void onCrafting(CraftItemEvent event) {
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
-			if (player.getName().equals(playerID) && event.getRecipe().getResult().getType().equals(material) && (data < 0 || event.getRecipe().getResult().getData().getData() == data) && checkConditions()) {
+			if (player.equals(PlayerConverter.getPlayer(playerID)) && event.getRecipe().getResult().getType().equals(material) && (data < 0 || event.getRecipe().getResult().getData().getData() == data) && checkConditions()) {
 				this.amount = amount - event.getRecipe().getResult().getAmount();
 				if (amount <= 0) {
 					HandlerList.unregisterAll(this);
@@ -65,7 +66,7 @@ public class CraftingObjective extends Objective implements Listener {
 	public void onShiftCrafting(InventoryClickEvent event) {
 		if ((event.getInventory().getType().equals(InventoryType.CRAFTING) && event.getRawSlot() == 9) || (event.getInventory().getType().equals(InventoryType.WORKBENCH) && event.getRawSlot() == 8)) {
 			if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
-				if (event.getWhoClicked().getName().equals(playerID)) {
+				if (event.getWhoClicked().equals(PlayerConverter.getPlayer(playerID))) {
 					event.setCancelled(true);
 				}
 			} 

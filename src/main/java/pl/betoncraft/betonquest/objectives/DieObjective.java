@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -54,7 +55,7 @@ public class DieObjective extends Objective implements Listener {
 		if (cancel) {
 			return;
 		}
-		if (event.getEntity() instanceof Player && ((Player) event.getEntity()).getName().equals(playerID) && checkConditions()) {
+		if (event.getEntity() instanceof Player && ((Player) event.getEntity()).equals(PlayerConverter.getPlayer(playerID)) && checkConditions()) {
 			HandlerList.unregisterAll(this);
 			completeObjective();
 		}
@@ -67,7 +68,7 @@ public class DieObjective extends Objective implements Listener {
 		}
 		if (event.getEntity() instanceof Player) {
 			final Player player = (Player) event.getEntity();
-			if (player.getName().equals(playerID) && player.getHealth() - event.getDamage() <= 0 && checkConditions()) {
+			if (player.equals(PlayerConverter.getPlayer(playerID)) && player.getHealth() - event.getDamage() <= 0 && checkConditions()) {
 				event.setCancelled(true);
 				player.setHealth(player.getMaxHealth());
 				player.setFoodLevel(20);

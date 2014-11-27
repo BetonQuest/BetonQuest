@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -37,7 +38,7 @@ public class LocationObjective extends Objective implements Listener {
 	
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
-		if (event.getPlayer().getName().equals(super.playerID) && event.getTo().distance(location) < distance && super.checkConditions()) {
+		if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && event.getTo().distance(location) < distance && super.checkConditions()) {
 			HandlerList.unregisterAll(this);
 			super.completeObjective();
 		}

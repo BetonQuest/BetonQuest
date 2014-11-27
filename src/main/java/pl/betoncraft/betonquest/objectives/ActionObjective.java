@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -61,6 +62,9 @@ public class ActionObjective extends Objective implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		if (!event.getPlayer().equals(PlayerConverter.getPlayer(playerID))) {
+			return;
+		}
 		if (!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
 			return;
 		}

@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * Block place/break objective
@@ -55,7 +56,7 @@ public class BlockObjective extends Objective implements Listener{
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && !event.isCancelled() && event.getBlock().getType().equals(material) && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
+		if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && !event.isCancelled() && event.getBlock().getType().equals(material) && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
 			currentAmount++;
 			if (currentAmount == neededAmount) {
 				HandlerList.unregisterAll(this);
@@ -66,7 +67,7 @@ public class BlockObjective extends Objective implements Listener{
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.getPlayer().equals(Bukkit.getPlayer(playerID)) && !event.isCancelled() &&  event.getBlock().getType().equals(material) && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
+		if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && !event.isCancelled() &&  event.getBlock().getType().equals(material) && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
 			currentAmount--;
 			if (currentAmount == neededAmount) {
 				HandlerList.unregisterAll(this);

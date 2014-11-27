@@ -6,6 +6,7 @@ package pl.betoncraft.betonquest.objectives;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Objective;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -43,7 +45,7 @@ public class TameObjective extends Objective implements Listener {
 	
 	@EventHandler
 	public void onTaming(EntityTameEvent event) {
-		if (!event.getOwner().getName().equals(playerID)) {
+		if (!((Player) event.getOwner()).equals(PlayerConverter.getPlayer(playerID))) {
 			return;
 		}
 		LivingEntity entity = event.getEntity();
