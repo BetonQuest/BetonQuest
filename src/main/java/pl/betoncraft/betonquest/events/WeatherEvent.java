@@ -3,10 +3,10 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -22,7 +22,7 @@ public class WeatherEvent extends QuestEvent {
 	public WeatherEvent(String playerID, String instructions) {
 		super(playerID, instructions);
 		String weather = instructions.split(" ")[1];
-		World world = Bukkit.getPlayer(playerID).getWorld();
+		World world = PlayerConverter.getPlayer(playerID).getWorld();
 		switch (weather) {
 		case "sun":
 			world.setThundering(false);

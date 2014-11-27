@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -57,7 +57,7 @@ public class TakeEvent extends QuestEvent {
 				name = part.substring(5).replaceAll("_", " ");
 			}
 		}
-		ItemStack[] items = Bukkit.getPlayer(playerID).getInventory().getContents();
+		ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 		for (ItemStack item : items) {
 			if (item != null && item.getType().equals(type) && (data < 0 || item.getData().getData() == data) && (name == null || (item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) && (lore.isEmpty() || (item.getItemMeta().hasLore() && item.getItemMeta().getLore().equals(lore))) && (enchants.isEmpty() || (item.getEnchantments().equals(enchants)))) {
 				if (item.getAmount() - amount <= 0) {
@@ -72,7 +72,7 @@ public class TakeEvent extends QuestEvent {
 				}
 			}
 		}
-		Bukkit.getPlayer(playerID).getInventory().setContents(items);
+		PlayerConverter.getPlayer(playerID).getInventory().setContents(items);
 	}
 
 }

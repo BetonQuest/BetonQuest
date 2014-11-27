@@ -3,10 +3,10 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -21,7 +21,7 @@ public class TimeEvent extends QuestEvent {
 	 */
 	public TimeEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		World world = Bukkit.getPlayer(playerID).getWorld();
+		World world = PlayerConverter.getPlayer(playerID).getWorld();
 		String string = instructions.split(" ")[1];
 		long time;
 		if (string.matches("/+//d+")) {

@@ -3,7 +3,9 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * @author Dzejkop
@@ -17,7 +19,7 @@ public class TeleportEvent extends QuestEvent {
      */
     public TeleportEvent(String playerID, String instructions) {
         super(playerID, instructions);
-        Player player = Bukkit.getPlayer(playerID);
+        Player player = PlayerConverter.getPlayer(playerID);
 
         // Ignoring the first part of instruction
         String locationString = instructions.substring(instructions.indexOf(" ")+1);

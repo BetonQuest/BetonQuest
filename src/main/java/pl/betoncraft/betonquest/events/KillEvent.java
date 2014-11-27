@@ -3,9 +3,10 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -20,7 +21,8 @@ public class KillEvent extends QuestEvent {
 	 */
 	public KillEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		Bukkit.getPlayer(playerID).damage(Bukkit.getPlayer(playerID).getHealth() + 100);
+		Player player = PlayerConverter.getPlayer(playerID);
+		player.damage(player.getHealth() + 100);
 	}
 
 }

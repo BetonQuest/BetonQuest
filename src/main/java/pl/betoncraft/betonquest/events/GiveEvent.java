@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -72,7 +72,7 @@ public class GiveEvent extends QuestEvent {
 			meta.setLore(lore);
 			item.addEnchantments(enchants);
 			item.setItemMeta(meta);
-			Bukkit.getPlayer(playerID).getInventory().addItem(item);
+			PlayerConverter.getPlayer(playerID).getInventory().addItem(item);
 			amount = amount - stackSize;
 		}
 		

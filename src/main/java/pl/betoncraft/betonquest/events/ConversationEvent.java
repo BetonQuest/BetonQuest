@@ -3,10 +3,9 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
-
 import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 import pl.betoncraft.betonquest.inout.UnifiedLocation;
 
 /**
@@ -22,7 +21,7 @@ public class ConversationEvent extends QuestEvent {
 	 */
 	public ConversationEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		new Conversation(playerID, instructions.split(" ")[1], new UnifiedLocation(Bukkit.getPlayer(playerID).getLocation()));
+		new Conversation(playerID, instructions.split(" ")[1], new UnifiedLocation(PlayerConverter.getPlayer(playerID).getLocation()));
 	}
 
 }

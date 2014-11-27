@@ -3,11 +3,11 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class EffectEvent extends QuestEvent {
 		if (instructions.contains("--ambient")) {
 			ambient = true;
 		}
-		Bukkit.getPlayer(playerID).addPotionEffect(new PotionEffect(effect, duration * 20, amplifier - 1, ambient));
+		PlayerConverter.getPlayer(playerID).addPotionEffect(new PotionEffect(effect, duration * 20, amplifier - 1, ambient));
 	}
 
 }
