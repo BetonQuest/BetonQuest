@@ -47,6 +47,7 @@ import pl.betoncraft.betonquest.core.PointRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.TagRes;
+import pl.betoncraft.betonquest.database.ConfigUpdater;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Metrics;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -129,20 +130,22 @@ public final class BetonQuest extends JavaPlugin {
 				getConfig().getString("mysql.port"), getConfig().getString(
 						"mysql.base"), getConfig().getString("mysql.user"),
 				getConfig().getString("mysql.pass"));
-			
-		// create tables if they don't exist
+		
+		// try to connect to MySQL
 		if (database.openConnection() != null) {
 			BetonQuest.getInstance().getLogger().info("Using MySQL for storing data!");
 			isMySQLUsed = true;
 			autoIncrement = "AUTO_INCREMENT";
 			database.closeConnection();
+		// if it fails use SQLite
 		} else {
 			this.database = new SQLite(this, "database.db");
 			BetonQuest.getInstance().getLogger().info("Using SQLite for storing data!");
 			isMySQLUsed = false;
 			autoIncrement = "AUTOINCREMENT";
 		}
-		
+
+		// create tables if they don't exist
 		Connection connection = database.openConnection();
 		try {
 			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
@@ -154,6 +157,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		database.closeConnection();
 		
+		// update configs
+		new ConfigUpdater();
+		
+		// instantiating of these important things
 		new JoinQuitListener();
 		new NPCListener();
 		new JournalBook();
@@ -223,6 +230,7 @@ public final class BetonQuest extends JavaPlugin {
 			database.closeConnection();
 		}
 		
+		// metrics!
 		if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
 			try {
 		        Metrics metrics = new Metrics(this);
@@ -235,6 +243,7 @@ public final class BetonQuest extends JavaPlugin {
 	    	getLogger().log(Level.INFO, "Metrics are not used!");
 		}
 
+		// done
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
 	}
 	

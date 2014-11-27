@@ -3,6 +3,8 @@
  */
 package pl.betoncraft.betonquest.inout;
 
+import java.util.HashMap;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.database.ConfigAccessor;
 
@@ -126,5 +128,17 @@ public class ConfigInput {
 		instance.npcs.reloadConfig();
 		instance.objectives.reloadConfig();
 		BetonQuest.getInstance().reloadConfig();
+	}
+	
+	public static HashMap<String,ConfigAccessor> getConfigs() {
+		HashMap<String,ConfigAccessor> map = new HashMap<>();
+		map.put("conversations", instance.conversations);
+		map.put("conditions", instance.conditions);
+		map.put("events", instance.events);
+		map.put("objectives", instance.objectives);
+		map.put("journal", instance.journal);
+		map.put("messages", instance.messages);
+		map.put("npcs", instance.npcs);
+		return map;
 	}
 }
