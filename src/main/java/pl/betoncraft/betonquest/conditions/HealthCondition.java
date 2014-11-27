@@ -1,21 +1,18 @@
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
-
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 public class HealthCondition extends Condition{
 
-	private boolean inverted=false;
-private String Health=null;
+	private Double health = null;
 
 	public HealthCondition(String playerID, String instructions) {
 		super(playerID, instructions);
-		String[] parts=instructions.split(" ");
+		String[] parts = instructions.split(" ");
 		for (String part : parts) {
-			if(part.contains("health:"))	
-			{
-				Health=part.substring(7);
+			if(part.contains("health:")) {
+				health = Double.parseDouble(part.substring(7));
 			}
 			
 		}
@@ -23,11 +20,11 @@ private String Health=null;
 
 	@Override
 	public boolean isMet() {
-		if(Bukkit.getPlayer(super.playerID).getHealth()>=Double.parseDouble(Health))
+		if(PlayerConverter.getPlayer(playerID).getHealth() >= health)
 		{
-			return !inverted;
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

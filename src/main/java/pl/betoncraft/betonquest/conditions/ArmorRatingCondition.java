@@ -1,15 +1,14 @@
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 public class ArmorRatingCondition extends Condition {
 	
-	private boolean inverted = false;
 	private int rating = 0;
 	private int required;
 
@@ -21,12 +20,10 @@ public class ArmorRatingCondition extends Condition {
 		for (String part : parts) {
 			if (part.contains("rating:")) {
 				required = Integer.parseInt(part.split(":")[1]);
-			} else if (part.equalsIgnoreCase("--inverted")) {
-				inverted = true;
 			}
 		}
 		
-		PlayerInventory inv = Bukkit.getPlayer(playerID).getInventory();
+		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
 	    ItemStack boots = inv.getBoots();
 	    ItemStack helmet = inv.getHelmet();
 	    ItemStack chest = inv.getChestplate();
@@ -59,9 +56,9 @@ public class ArmorRatingCondition extends Condition {
 	@Override
 	public boolean isMet() {
 		if (rating >= required) {
-			return !inverted;
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

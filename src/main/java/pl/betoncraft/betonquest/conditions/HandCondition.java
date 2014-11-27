@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * Having item in inventory condition, instrucion string: "hand type:DIAMOND_SWORD enchants:DAMAGE_ALL:3,KNOCKBACK:1 name:Siekacz"
@@ -27,7 +27,6 @@ public class HandCondition extends Condition {
 	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
 	private List<String> lore = new ArrayList<String>();
 	private String name;
-	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -52,8 +51,6 @@ public class HandCondition extends Condition {
 				}
 			} else if (part.contains("name:")) {
 				name = part.substring(5).replaceAll("_", " ");
-			} else if (part.equalsIgnoreCase("--inverted")) {
-				inverted = true;
 			}
 		}
 		if (type == null) {
@@ -64,23 +61,23 @@ public class HandCondition extends Condition {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMet() {
-		ItemStack item = Bukkit.getPlayer(playerID).getItemInHand();
+		ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
 		if (item == null) {
-			return inverted;
+			return false;
 		}
 		if (!(item.getType().equals(type) && (data < 0 || item.getData().getData() == data))) {
-			return inverted;
+			return false;
 		}
 		if (name != null && !(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(name))) {
-			return inverted;
+			return false;
 		}
 		if (lore.size() > 0 && !(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().equals(lore))) {
-			return inverted;
+			return false;
 		}
 		if (enchants.size() > 0 && enchants.equals(item.getEnchantments())) {
-			return inverted;
+			return false;
 		}
-		return !inverted;
+		return true;
 	}
 
 }

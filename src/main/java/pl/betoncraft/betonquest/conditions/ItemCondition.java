@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * Having item in inventory condition, instrucion string: "item type:DIAMOND_SWORD amount:1 enchants:DAMAGE_ALL:3,KNOCKBACK:1 name:Siekacz --inverted"
@@ -28,7 +28,6 @@ public class ItemCondition extends Condition {
 	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
 	private List<String> lore = new ArrayList<String>();
 	private String name;
-	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -55,8 +54,6 @@ public class ItemCondition extends Condition {
 				}
 			} else if (part.contains("name:")) {
 				name = part.substring(5).replaceAll("_", " ");
-			} else if (part.equalsIgnoreCase("--inverted")) {
-				inverted = true;
 			}
 		}
 		if (type == null) {
@@ -67,7 +64,7 @@ public class ItemCondition extends Condition {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMet() {
-		ItemStack[] items = Bukkit.getPlayer(playerID).getInventory().getContents();
+		ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 		for (ItemStack item : items) {
 			if (item == null) {
 				continue;
@@ -86,10 +83,10 @@ public class ItemCondition extends Condition {
 			}
 			amount = amount - item.getAmount();
 			if (amount <= 0) {
-				return !inverted;
+				return true;
 			}
 		}
-		return inverted;
+		return false;
 	}
 
 }

@@ -3,10 +3,10 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * instructions: effect:POISON
@@ -15,7 +15,6 @@ import pl.betoncraft.betonquest.core.Condition;
 public class EffectCondition extends Condition {
 	
 	private PotionEffectType type;
-	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -27,18 +26,16 @@ public class EffectCondition extends Condition {
 		for (String part : instructions.split(" ")) {
 			if (part.contains("type:")) {
 				type = PotionEffectType.getByName(part.substring(5).toUpperCase());
-			} else if (part.equals("--inverted")) {
-				inverted = true;
 			}
 		}
 	}
 
 	@Override
 	public boolean isMet() {
-		if (Bukkit.getPlayer(playerID).hasPotionEffect(type)) {
-			return !inverted;
+		if (PlayerConverter.getPlayer(playerID).hasPotionEffect(type)) {
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

@@ -3,9 +3,8 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
-
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -14,7 +13,6 @@ import pl.betoncraft.betonquest.core.Condition;
 public class PermissionCondition extends Condition {
 	
 	private String permission;
-	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -25,9 +23,6 @@ public class PermissionCondition extends Condition {
 		super(playerID, instructions);
 		String[] parts = instructions.split(" ");
 		for (String part : parts) {
-			if (part.equalsIgnoreCase("--inverted")) {
-				inverted = true;
-			}
 			if (part.contains("perm:")) {
 				permission = part.substring(5);
 				break;
@@ -37,10 +32,10 @@ public class PermissionCondition extends Condition {
 
 	@Override
 	public boolean isMet() {
-		if (Bukkit.getPlayer(super.playerID).hasPermission(permission)) {
-			return !inverted;
+		if (PlayerConverter.getPlayer(playerID).hasPermission(permission)) {
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

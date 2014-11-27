@@ -365,6 +365,7 @@ public final class BetonQuest extends JavaPlugin {
 			BetonQuest.getInstance().getLogger().severe("Error while fetching condition: " + conditionID);
 			return false;
 		}
+		boolean inverted = conditionInstruction.contains("--inverted");
 		String[] parts = conditionInstruction.split(" ");
 		Class<? extends Condition> condition = BetonQuest.getInstance().getCondition(parts[0]);
 		Condition instance = null;
@@ -381,7 +382,7 @@ public final class BetonQuest extends JavaPlugin {
 			// return false for safety
 			return false;
 		}
-		return instance.isMet();
+		return (instance.isMet() && !inverted) || (!instance.isMet() && inverted);
 	}
 	
 	/**

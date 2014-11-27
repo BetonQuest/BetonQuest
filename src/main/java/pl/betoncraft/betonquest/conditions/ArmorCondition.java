@@ -6,12 +6,12 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * Instruction string: type:leggings material:iron
@@ -23,7 +23,6 @@ public class ArmorCondition extends Condition {
 	private String type;
 	private String material;
 	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
-	boolean inverted = false;
 	
 	/**
 	 * Constructor method
@@ -41,8 +40,6 @@ public class ArmorCondition extends Condition {
 				for (String enchant : part.substring(9).split(",")) {
 					enchants.put(Enchantment.getByName(enchant.split(":")[0]), Integer.decode(enchant.split(":")[1]));
 				}
-			} else if (part.equals("--inverted")) {
-				inverted = true;
 			}
 		}
 		if (type != null && material != null) {
@@ -52,22 +49,22 @@ public class ArmorCondition extends Condition {
 
 	@Override
 	public boolean isMet() {
-		for (ItemStack item : Bukkit.getPlayer(playerID).getEquipment().getArmorContents()) {
+		for (ItemStack item : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
 			if (item.getType().equals(armor)) {
 				if (enchants != null) {
 					for (Enchantment enchant : enchants.keySet()) {
 						if (item.getEnchantments().get(enchant) == null) {
-							return inverted;
+							return false;
 						}
 						if (item.getEnchantments().get(enchant) < enchants.get(enchant)) {
-							return inverted;
+							return false;
 						}
 					}
 				}
-				return !inverted;
+				return true;
 			}
 		}
-		return inverted;
+		return false;
 	}
 
 }

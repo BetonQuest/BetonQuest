@@ -8,6 +8,7 @@ import org.bukkit.Location;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * 
@@ -17,7 +18,6 @@ public class LocationCondition extends Condition {
 	
 	private Location location;
 	private double distance;
-	boolean inverted;
 
 	/**
 	 * Constructor method
@@ -30,9 +30,6 @@ public class LocationCondition extends Condition {
 		for (String part : instructions.split(" ")) {
 			if (part.contains("loc:")) {
 				partsOfLoc = part.substring(4).split(";");
-			}
-			if (part.equalsIgnoreCase("--inverted")) {
-				inverted = true;
 			}
 		}
 		if (partsOfLoc != null) {
@@ -47,10 +44,10 @@ public class LocationCondition extends Condition {
 			BetonQuest.getInstance().getLogger().severe("Location invalid at: " + instructions);
 			return false;
 		}
-		if (Bukkit.getPlayer(playerID).getLocation().distance(location) <= distance) {
-			return !inverted;
+		if (PlayerConverter.getPlayer(playerID).getLocation().distance(location) <= distance) {
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

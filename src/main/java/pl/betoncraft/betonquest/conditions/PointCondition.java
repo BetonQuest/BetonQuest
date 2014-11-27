@@ -14,7 +14,6 @@ public class PointCondition extends Condition {
 	
 	private String category = null;
 	private int count = 0;
-	private boolean inverted = false;
 
 	/**
 	 * Constructor method
@@ -31,9 +30,6 @@ public class PointCondition extends Condition {
 			if (part.contains("count:")) {
 				count = Integer.valueOf(part.substring(6));
 			}
-			if (part.contains("--inverted")) {
-				inverted = true;
-			}
 		}
 		if (category == null) {
 			category = "global";
@@ -43,9 +39,9 @@ public class PointCondition extends Condition {
 	@Override
 	public boolean isMet() {
 		if (BetonQuest.getInstance().getPlayerPoints(playerID, category) >= count) {
-			return !inverted;
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }

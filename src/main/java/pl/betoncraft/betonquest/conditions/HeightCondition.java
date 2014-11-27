@@ -1,8 +1,7 @@
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
-
 import pl.betoncraft.betonquest.core.Condition;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
  * Checks Y height player is at (must be below)
@@ -10,7 +9,6 @@ import pl.betoncraft.betonquest.core.Condition;
  */
 public class HeightCondition extends Condition {
 
-	private boolean inverted = false;
 	private double height;
 	
 	public HeightCondition(String playerID, String instructions) {
@@ -25,10 +23,10 @@ public class HeightCondition extends Condition {
 
 	@Override
 	public boolean isMet() {
-		if(Bukkit.getPlayer(playerID).getLocation().getY() <= height){
-			return !inverted;
+		if(PlayerConverter.getPlayer(playerID).getLocation().getY() <= height){
+			return true;
 		}
-		return inverted;
+		return false;
 	}
 
 }
