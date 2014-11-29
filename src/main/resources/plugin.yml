@@ -17,6 +17,8 @@ commands:
 permissions:
   betonquest.admin:
     default: op
+  betonquest.createnpc:
+    default: op
   betonquest.journal:
     default: true
   
