@@ -1,23 +1,22 @@
 name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
+description: Advanced quest plugin
 authors: [Co0sh, Dzejkop, BYK]
-website: http://betoncraft.pl/
+website: http://dev.bukkit.org/bukkit-plugins/betonquest/
 depend: [Citizens]
 version: 1.3
 commands:
   q:
     description: General quest command
     usage: /<command>
+    permission: betonquest.admin
   j:
     description: Adds journal to your inventory
     usage: /<command>
+    permission: betonquest.journal
 permissions:
-  betonquest.reload:
+  betonquest.admin:
     default: op
-  betonquest.objectives:
-    default: op
-  betonquest.tags:
-    default: op
-  betonquest.conditions:
-    default: op
+  betonquest.journal:
+    default: true
   

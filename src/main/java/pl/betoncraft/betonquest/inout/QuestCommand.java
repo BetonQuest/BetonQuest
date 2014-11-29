@@ -38,20 +38,12 @@ public class QuestCommand implements CommandExecutor {
 			}
 			switch (args[0]) {
 			case "reload":
-				if (!sender.hasPermission("betonquest.reload")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				ConfigInput.reload();
 				Bukkit.getPluginManager().disablePlugin(BetonQuest.getInstance());
 				Bukkit.getPluginManager().enablePlugin(BetonQuest.getInstance());
 				sender.sendMessage(getMessage("reloaded"));
 				break;
 			case "objectives":
-				if (!sender.hasPermission("betonquest.objectives")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				if (!(sender instanceof Player)) {
 					return true;
 				}
@@ -61,10 +53,6 @@ public class QuestCommand implements CommandExecutor {
 				}
 				break;
 			case "tags":
-				if (!sender.hasPermission("betonquest.tags")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				if (!(sender instanceof Player)) {
 					return true;
 				}
@@ -78,10 +66,6 @@ public class QuestCommand implements CommandExecutor {
 				}
 				break;
 			case "condition":
-				if (!sender.hasPermission("betonquest.conditions")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				if (!(sender instanceof Player)) {
 					return true;
 				}
@@ -92,10 +76,6 @@ public class QuestCommand implements CommandExecutor {
 				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(PlayerConverter.getID((Player) sender), args[1]) + ""));
 				break;
 			case "points":
-				if (!sender.hasPermission("betonquest.conditions")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				if (!(sender instanceof Player)) {
 					return true;
 				}
@@ -106,10 +86,6 @@ public class QuestCommand implements CommandExecutor {
 				sender.sendMessage(getMessage("player_points").replaceAll("%category%", args[1]).replaceAll("%count%", BetonQuest.getInstance().getPlayerPoints(PlayerConverter.getID((Player) sender), args[1]) + ""));
 				break;
 			case "purge":
-				if (!sender.hasPermission("betonquest.purge")) {
-					sender.sendMessage(getMessage("no_permission"));
-					return true;
-				}
 				if (args.length < 2) {
 					sender.sendMessage(getMessage("specify_player"));
 					return true;
