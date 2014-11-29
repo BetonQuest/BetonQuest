@@ -1,9 +1,5 @@
 package pl.betoncraft.betonquest;
 
-// TODO sqlite support, gui for quest editing, prepared statements, book event, book objective, folder for events with optional delay
-// TODO condition for being in worldedit region
-
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -95,6 +91,7 @@ import pl.betoncraft.betonquest.objectives.TameObjective;
 
 /**
  * Represents BetonQuest plugin
+ * 
  * @authors Co0sh, Dzejkop, BYK
  */
 public final class BetonQuest extends JavaPlugin {
@@ -102,43 +99,41 @@ public final class BetonQuest extends JavaPlugin {
 	private static BetonQuest instance;
 	private Database database;
 	private boolean isMySQLUsed;
-	
-	private HashMap<String,Class<? extends Condition>> conditions = new HashMap<String,Class<? extends Condition>>();
-	private HashMap<String,Class<? extends QuestEvent>> events = new HashMap<String,Class<? extends QuestEvent>>();
-	private HashMap<String,Class<? extends Objective>> objectives = new HashMap<String,Class<? extends Objective>>();
-	
-	private ConcurrentHashMap<String,ObjectiveRes> objectiveRes = new ConcurrentHashMap<String,ObjectiveRes>();
-	private ConcurrentHashMap<String,TagRes> stringsRes = new ConcurrentHashMap<String,TagRes>();
-	private ConcurrentHashMap<String,JournalRes> journalRes = new ConcurrentHashMap<String,JournalRes>();
-	private ConcurrentHashMap<String,PointRes> pointRes	= new ConcurrentHashMap<String,PointRes>();
-	
-	private HashMap<String,List<String>> playerTags = new HashMap<String,List<String>>();
-	private HashMap<String,Journal> journals = new HashMap<String,Journal>();
-	private HashMap<String,List<Point>> points = new HashMap<String,List<Point>>();
-	
+
+	private HashMap<String, Class<? extends Condition>> conditions = new HashMap<String, Class<? extends Condition>>();
+	private HashMap<String, Class<? extends QuestEvent>> events = new HashMap<String, Class<? extends QuestEvent>>();
+	private HashMap<String, Class<? extends Objective>> objectives = new HashMap<String, Class<? extends Objective>>();
+
+	private ConcurrentHashMap<String, ObjectiveRes> objectiveRes = new ConcurrentHashMap<String, ObjectiveRes>();
+	private ConcurrentHashMap<String, TagRes> stringsRes = new ConcurrentHashMap<String, TagRes>();
+	private ConcurrentHashMap<String, JournalRes> journalRes = new ConcurrentHashMap<String, JournalRes>();
+	private ConcurrentHashMap<String, PointRes> pointRes = new ConcurrentHashMap<String, PointRes>();
+
+	private HashMap<String, List<String>> playerTags = new HashMap<String, List<String>>();
+	private HashMap<String, Journal> journals = new HashMap<String, Journal>();
+	private HashMap<String, List<Point>> points = new HashMap<String, List<Point>>();
+
 	private List<ObjectiveSaving> saving = new ArrayList<ObjectiveSaving>();
-	
+
 	@Override
 	public void onEnable() {
-            
+
 		instance = this;
 
 		new ConfigInput();
-		
+
 		String autoIncrement;
 		// try to connect to database
-		this.database = new MySQL(this, getConfig().getString("mysql.host"),
-				getConfig().getString("mysql.port"), getConfig().getString(
-						"mysql.base"), getConfig().getString("mysql.user"),
-				getConfig().getString("mysql.pass"));
-		
+		this.database = new MySQL(this, getConfig().getString("mysql.host"), getConfig().getString("mysql.port"), getConfig()
+				.getString("mysql.base"), getConfig().getString("mysql.user"), getConfig().getString("mysql.pass"));
+
 		// try to connect to MySQL
 		if (database.openConnection() != null) {
 			BetonQuest.getInstance().getLogger().info("Using MySQL for storing data!");
 			isMySQLUsed = true;
 			autoIncrement = "AUTO_INCREMENT";
 			database.closeConnection();
-		// if it fails use SQLite
+			// if it fails use SQLite
 		} else {
 			this.database = new SQLite(this, "database.db");
 			BetonQuest.getInstance().getLogger().info("Using SQLite for storing data!");
@@ -149,21 +144,32 @@ public final class BetonQuest extends JavaPlugin {
 		// create tables if they don't exist
 		Connection connection = database.openConnection();
 		try {
-			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-			connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement + ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
+			connection
+					.createStatement()
+					.executeUpdate(
+							"CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY "
+									+ autoIncrement
+									+ ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		database.closeConnection();
-		
+
 		// update configs
 		new ConfigUpdater();
-		
+
 		// instantiating of these important things
 		new JoinQuitListener();
-		
+
 		// instantiate one of conversation start listeners
 		if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
 			getLogger().info("Using Citizens NPCs for conversation starting!");
@@ -172,16 +178,16 @@ public final class BetonQuest extends JavaPlugin {
 			new CubePeopleListener();
 			getLogger().info("Using cube people for conversation starting!");
 		}
-		
+
 		new CitizensListener();
 		new JournalBook();
 		new GlobalLocations().runTaskTimer(this, 0, 20);
-		
+
 		getCommand("q").setExecutor(new QuestCommand());
 		getCommand("j").setExecutor(new JournalCommand());
-		
+
 		// register conditions
-		registerConditions("health",HealthCondition.class);
+		registerConditions("health", HealthCondition.class);
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
@@ -197,7 +203,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("armor", ArmorCondition.class);
 		registerConditions("effect", EffectCondition.class);
 		registerConditions("rating", ArmorRatingCondition.class);
-		
+
 		// register events
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
@@ -205,20 +211,20 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("tag", TagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
-                registerEvents("explosion", ExplosionEvent.class);
-                registerEvents("lightning", LightningEvent.class);
-                registerEvents("point", PointEvent.class);
-                registerEvents("delete", DeleteObjectiveEvent.class);
-                registerEvents("give", GiveEvent.class);
-                registerEvents("take", TakeEvent.class);
-                registerEvents("conversation", ConversationEvent.class);
-                registerEvents("kill", KillEvent.class);
-                registerEvents("effect", EffectEvent.class);
-                registerEvents("spawn", SpawnMobEvent.class);
-                registerEvents("time", TimeEvent.class);
-                registerEvents("weather", WeatherEvent.class);
-                registerEvents("folder", FolderEvent.class );
-        
+		registerEvents("explosion", ExplosionEvent.class);
+		registerEvents("lightning", LightningEvent.class);
+		registerEvents("point", PointEvent.class);
+		registerEvents("delete", DeleteObjectiveEvent.class);
+		registerEvents("give", GiveEvent.class);
+		registerEvents("take", TakeEvent.class);
+		registerEvents("conversation", ConversationEvent.class);
+		registerEvents("kill", KillEvent.class);
+		registerEvents("effect", EffectEvent.class);
+		registerEvents("spawn", SpawnMobEvent.class);
+		registerEvents("time", TimeEvent.class);
+		registerEvents("weather", WeatherEvent.class);
+		registerEvents("folder", FolderEvent.class);
+
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
 		registerObjectives("block", BlockObjective.class);
@@ -229,7 +235,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("smelt", SmeltingObjective.class);
 		registerObjectives("tame", TameObjective.class);
 		registerObjectives("delay", DelayObjective.class);
-		
+
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			database.openConnection();
@@ -240,28 +246,61 @@ public final class BetonQuest extends JavaPlugin {
 			loadPlayerPoints(PlayerConverter.getID(player));
 			database.closeConnection();
 		}
-		
+
 		// metrics!
-		if (getConfig().getBoolean("metrics")) {
+		if (getConfig().getString("metrics").equalsIgnoreCase("true")) { // getBoolean
+		// is
+		// not
+		// working
+		// if
+		// someone
+		// uses
+		// 'true'
+		// instead
+		// of
+		// just
+		// true,
+		// sorry
+		// shooly
+		// but
+		// I'm
+		// not
+		// changing
+		// half
+		// of
+		// my
+		// code
+		// and
+		// making
+		// config
+		// updaters.
+		// It's
+		// fine
+		// the
+		// way
+		// it
+		// is
+		// though
 			try {
-		        Metrics metrics = new Metrics(this);
-		        metrics.start();
-		    	getLogger().log(Level.INFO, "Metrics enabled!");
-		    } catch (IOException e) {
-		    	getLogger().log(Level.INFO, "Metrics faild to enable!");
-		    }
-		} else  {
-                    getLogger().log(Level.INFO, "Metrics are not used!");
+				Metrics metrics = new Metrics(this);
+				metrics.start();
+				getLogger().log(Level.INFO, "Metrics enabled!");
+			} catch (IOException e) {
+				getLogger().log(Level.INFO, "Metrics faild to enable!");
+			}
+		} else {
+			getLogger().log(Level.INFO, "Metrics are not used!");
 		}
 
 		// done
 		getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
 	}
-	
+
 	@Override
 	public void onDisable() {
 		database.openConnection();
-		// create array and put there objectives (to avoid concurrent modification exception)
+		// create array and put there objectives (to avoid concurrent
+		// modification exception)
 		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
 		// save all active objectives to database
 		for (ObjectiveSaving objective : saving) {
@@ -275,7 +314,8 @@ public final class BetonQuest extends JavaPlugin {
 			saveJournal(PlayerConverter.getID(player));
 			savePlayerTags(PlayerConverter.getID(player));
 			savePlayerPoints(PlayerConverter.getID(player));
-			BetonQuest.getInstance().getDB().updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[]{PlayerConverter.getID(player)});
+			BetonQuest.getInstance().getDB()
+					.updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[] { PlayerConverter.getID(player) });
 		}
 		database.closeConnection();
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
@@ -291,71 +331,81 @@ public final class BetonQuest extends JavaPlugin {
 	public Database getDB() {
 		return database;
 	}
-	
+
 	/**
 	 * Registers new condition classes by their names
+	 * 
 	 * @param name
 	 * @param conditionClass
 	 */
 	public void registerConditions(String name, Class<? extends Condition> conditionClass) {
 		conditions.put(name, conditionClass);
 	}
-	
+
 	/**
 	 * Registers new event classes by their names
+	 * 
 	 * @param name
 	 * @param eventClass
 	 */
 	public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
 		events.put(name, eventClass);
 	}
-	
+
 	/**
 	 * Registers new objective classes by their names
+	 * 
 	 * @param name
 	 * @param objectiveClass
 	 */
 	public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
 		objectives.put(name, objectiveClass);
 	}
-	
+
 	/**
 	 * returns Class object of condition with given name
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Class<? extends Condition> getCondition(String name) {
 		return conditions.get(name);
 	}
-	
+
 	/**
 	 * returns Class object of event with given name
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Class<? extends QuestEvent> getEvent(String name) {
 		return events.get(name);
 	}
-	
+
 	/**
 	 * returns Class object of objective with given name
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Class<? extends Objective> getObjective(String name) {
 		return objectives.get(name);
 	}
-	
+
 	/**
-	 * stores pointer to ObjectiveSaving instance in order to store it on disable
+	 * stores pointer to ObjectiveSaving instance in order to store it on
+	 * disable
+	 * 
 	 * @param object
 	 */
 	public void putObjectiveSaving(ObjectiveSaving object) {
 		saving.add(object);
 	}
-	
+
 	/**
-	 * deletes pointer to ObjectiveSaving instance in case the objective was completed and needs to be deleted
+	 * deletes pointer to ObjectiveSaving instance in case the objective was
+	 * completed and needs to be deleted
+	 * 
 	 * @param object
 	 */
 	public void deleteObjectiveSaving(ObjectiveSaving object) {
@@ -364,6 +414,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * loads from database all objectives of given player
+	 * 
 	 * @param playerID
 	 */
 	public void loadObjectives(String playerID) {
@@ -373,9 +424,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		objectiveRes.remove(playerID);
 	}
-	
+
 	/**
 	 * returns if the condition described by conditionID is met
+	 * 
 	 * @param conditionID
 	 * @return
 	 */
@@ -395,8 +447,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		try {
 			instance = condition.getConstructor(String.class, String.class).newInstance(playerID, conditionInstruction);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			// return false for safety
@@ -404,9 +455,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		return (instance.isMet() && !inverted) || (!instance.isMet() && inverted);
 	}
-	
+
 	/**
 	 * fires the event described by eventID
+	 * 
 	 * @param eventID
 	 */
 	public static void event(String playerID, String eventID) {
@@ -417,8 +469,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		String[] parts = eventInstruction.split(" ");
 		boolean fire = true;
-		conditions:
-		for (String part : parts) {
+		conditions: for (String part : parts) {
 			if (part.contains("conditions:")) {
 				String[] conditions = part.substring(11).split(",");
 				for (String condition : conditions) {
@@ -439,15 +490,15 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		try {
 			event.getConstructor(String.class, String.class).newInstance(playerID, eventInstruction);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * creates new objective for given player
+	 * 
 	 * @param playerID
 	 * @param instruction
 	 */
@@ -475,15 +526,15 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		try {
 			objective.getConstructor(String.class, String.class).newInstance(playerID, instruction);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Loads point objects for specified player
+	 * 
 	 * @param playerID
 	 */
 	public void loadPlayerPoints(String playerID) {
@@ -493,9 +544,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		pointRes.remove(playerID);
 	}
-	
+
 	/**
 	 * puts points in player's list
+	 * 
 	 * @param playerID
 	 * @param points
 	 */
@@ -505,24 +557,26 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		this.points.get(playerID).add(points);
 	}
-	
+
 	/**
 	 * Saves player's points to database
+	 * 
 	 * @param playerID
 	 */
 	public void savePlayerPoints(String playerID) {
-        List<Point> points = this.points.remove(playerID);
-        if (points == null) {
-        	return;
-        }
-        database.updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
-        for (Point point : points) {
-        	database.updateSQL(UpdateType.ADD_POINTS, new String[]{playerID,point.getCategory(),point.getCount()+""});
-       	}
+		List<Point> points = this.points.remove(playerID);
+		if (points == null) {
+			return;
+		}
+		database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+		for (Point point : points) {
+			database.updateSQL(UpdateType.ADD_POINTS, new String[] { playerID, point.getCategory(), point.getCount() + "" });
+		}
 	}
-	
+
 	/**
 	 * returns how many points from given category the player has
+	 * 
 	 * @param playerID
 	 * @param category
 	 * @return
@@ -539,9 +593,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * adds points to specified category
+	 * 
 	 * @param playerID
 	 * @param category
 	 * @param count
@@ -561,9 +616,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		this.points.get(playerID).add(new Point(category, count));
 	}
-	
+
 	/**
 	 * loads tags (tags) for specified player
+	 * 
 	 * @param playerID
 	 */
 	public void loadPlayerTags(String playerID) {
@@ -573,9 +629,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		stringsRes.remove(playerID);
 	}
-	
+
 	/**
 	 * Puts a tag in player's list
+	 * 
 	 * @param playerID
 	 * @param tag
 	 */
@@ -585,7 +642,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		playerTags.get(playerID).add(tag);
 	}
-	
+
 	/**
 	 * @return the playerTags
 	 */
@@ -595,6 +652,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Checks if player has specified tag in his list
+	 * 
 	 * @param playerID
 	 * @param tag
 	 * @return
@@ -605,9 +663,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		return playerTags.get(playerID).contains(tag);
 	}
-	
+
 	/**
 	 * Removes specified tag from player's list
+	 * 
 	 * @param playerID
 	 * @param tag
 	 */
@@ -616,118 +675,127 @@ public final class BetonQuest extends JavaPlugin {
 			playerTags.get(playerID).remove(tag);
 		}
 	}
-	
+
 	/**
-	 * Removes player's list from HashMap and returns it (eg. for storing in database)
+	 * Removes player's list from HashMap and returns it (eg. for storing in
+	 * database)
+	 * 
 	 * @param playerID
 	 */
 	public void savePlayerTags(final String playerID) {
-        List<String> tags = playerTags.remove(playerID);
-        if (tags == null) {
-        	return;
-        }
-        database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
-        for (String tag : tags) {
-        	database.updateSQL(UpdateType.ADD_TAGS, new String[]{playerID,tag});
-       	}
+		List<String> tags = playerTags.remove(playerID);
+		if (tags == null) {
+			return;
+		}
+		database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+		for (String tag : tags) {
+			database.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
+		}
 	}
-	
+
 	/**
 	 * loads journal of specified player
+	 * 
 	 * @param playerID
 	 */
 	public void loadJournal(String playerID) {
 		journals.put(playerID, new Journal(playerID));
 	}
-	
+
 	/**
 	 * returns journal of specified player
+	 * 
 	 * @param playerID
 	 * @return
 	 */
 	public Journal getJournal(String playerID) {
 		return journals.get(playerID);
 	}
-	
+
 	/**
 	 * saves player's journal
+	 * 
 	 * @param playerID
 	 */
 	public void saveJournal(final String playerID) {
-        database.updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
-        Journal journal = journals.remove(playerID);
-        if (journal == null) {
+		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+		Journal journal = journals.remove(playerID);
+		if (journal == null) {
 			return;
 		}
-        List<Pointer> pointers = journal.getPointers();
-        for (Pointer pointer : pointers) {
-        	database.updateSQL(UpdateType.ADD_JOURNAL, new String[]{playerID,pointer.getPointer(),pointer.getTimestamp().toString()});
-        }
+		List<Pointer> pointers = journal.getPointers();
+		for (Pointer pointer : pointers) {
+			database.updateSQL(UpdateType.ADD_JOURNAL, new String[] { playerID, pointer.getPointer(),
+					pointer.getTimestamp().toString() });
+		}
 	}
 
 	/**
 	 * @return the objectiveRes
 	 */
-	public ConcurrentHashMap<String,ObjectiveRes> getObjectiveRes() {
+	public ConcurrentHashMap<String, ObjectiveRes> getObjectiveRes() {
 		return objectiveRes;
 	}
-	
+
 	/**
 	 * @return the stringsRes
 	 */
-	public ConcurrentHashMap<String,TagRes> getTagsRes() {
+	public ConcurrentHashMap<String, TagRes> getTagsRes() {
 		return stringsRes;
 	}
-	
+
 	/**
 	 * @return the journalRes
 	 */
-	public ConcurrentHashMap<String,JournalRes> getJournalRes() {
+	public ConcurrentHashMap<String, JournalRes> getJournalRes() {
 		return journalRes;
 	}
-	
+
 	/**
 	 * @return the pointRes
 	 */
-	public ConcurrentHashMap<String,PointRes> getPointRes() {
+	public ConcurrentHashMap<String, PointRes> getPointRes() {
 		return pointRes;
 	}
-	
+
 	/**
-	 * loads all player data from database and puts it to concurrent HashMap, so it's safe to call it in async thread
+	 * loads all player data from database and puts it to concurrent HashMap, so
+	 * it's safe to call it in async thread
+	 * 
 	 * @param playerID
 	 */
 	public void loadAllPlayerData(String playerID) {
 		try {
 			// load objectives
-			ResultSet res1 = database.querySQL(QueryType.SELECT_USED_OBJECTIVES, new String[]{playerID});
+			ResultSet res1 = database.querySQL(QueryType.SELECT_USED_OBJECTIVES, new String[] { playerID });
 			if (!res1.isBeforeFirst()) {
-				res1 = database.querySQL(QueryType.SELECT_UNUSED_OBJECTIVES, new String[]{playerID});
+				res1 = database.querySQL(QueryType.SELECT_UNUSED_OBJECTIVES, new String[] { playerID });
 			}
 			getObjectiveRes().put(playerID, new ObjectiveRes(res1));
-			database.updateSQL(UpdateType.UPDATE_OBJECTIVES, new String[]{playerID});
+			database.updateSQL(UpdateType.UPDATE_OBJECTIVES, new String[] { playerID });
 			// load tags
-			ResultSet res2 = database.querySQL(QueryType.SELECT_USED_TAGS, new String[]{playerID});
+			ResultSet res2 = database.querySQL(QueryType.SELECT_USED_TAGS, new String[] { playerID });
 			if (!res2.isBeforeFirst()) {
-				res2 = database.querySQL(QueryType.SELECT_UNUSED_TAGS, new String[]{playerID});
+				res2 = database.querySQL(QueryType.SELECT_UNUSED_TAGS, new String[] { playerID });
 			}
 			getTagsRes().put(playerID, new TagRes(res2));
-			database.updateSQL(UpdateType.UPDATE_TAGS, new String[]{playerID});
+			database.updateSQL(UpdateType.UPDATE_TAGS, new String[] { playerID });
 			// load journals
-			ResultSet res3 = database.querySQL(QueryType.SELECT_JOURNAL, new String[]{playerID});
+			ResultSet res3 = database.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
 			getJournalRes().put(playerID, new JournalRes(res3));
 			// load points
-			ResultSet res4 = database.querySQL(QueryType.SELECT_POINTS, new String[]{playerID});
+			ResultSet res4 = database.querySQL(QueryType.SELECT_POINTS, new String[] { playerID });
 			getPointRes().put(playerID, new PointRes(res4));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void deleteObjective(String playerID, String tag) {
 		List<ObjectiveSaving> list = new ArrayList<>();
 		for (ObjectiveSaving objective : saving) {
-			if (objective.getPlayerID().equals(playerID) && objective.getTag() != null && objective.getTag().equalsIgnoreCase(tag)) {
+			if (objective.getPlayerID().equals(playerID) && objective.getTag() != null
+					&& objective.getTag().equalsIgnoreCase(tag)) {
 				list.add(objective);
 			}
 		}
@@ -735,7 +803,7 @@ public final class BetonQuest extends JavaPlugin {
 			objective.deleteThis();
 		}
 	}
-	
+
 	public List<ObjectiveSaving> getObjectives(String playerID) {
 		List<ObjectiveSaving> list = new ArrayList<ObjectiveSaving>();
 		for (ObjectiveSaving objective : saving) {
@@ -745,9 +813,10 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Purges player's objectives. Player MUST be online!
+	 * 
 	 * @param playerID
 	 */
 	public void purgePlayer(final String playerID) {
@@ -776,21 +845,21 @@ public final class BetonQuest extends JavaPlugin {
 		JournalBook.updateJournal(playerID);
 		if (isMySQLUsed) {
 			new BukkitRunnable() {
-	            @Override
-	            public void run() {
-	            	database.openConnection();
-	        		database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[]{playerID});
-	        		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
-	        		database.updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
-	        		database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
-	            }
-	        }.runTaskAsynchronously(BetonQuest.getInstance());
+				@Override
+				public void run() {
+					database.openConnection();
+					database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[] { playerID });
+					database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+					database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+					database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+				}
+			}.runTaskAsynchronously(BetonQuest.getInstance());
 		} else {
-        	database.openConnection();
-    		database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[]{playerID});
-    		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[]{playerID});
-    		database.updateSQL(UpdateType.DELETE_POINTS, new String[]{playerID});
-    		database.updateSQL(UpdateType.DELETE_TAGS, new String[]{playerID});
+			database.openConnection();
+			database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[] { playerID });
+			database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+			database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+			database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
 			database.closeConnection();
 		}
 	}
