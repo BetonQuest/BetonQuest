@@ -119,7 +119,7 @@ public final class BetonQuest extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		
+            
 		instance = this;
 
 		new ConfigInput();
@@ -194,19 +194,19 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("tag", TagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
-        registerEvents("explosion", ExplosionEvent.class);
-        registerEvents("lightning", LightningEvent.class);
-        registerEvents("point", PointEvent.class);
-        registerEvents("delete", DeleteObjectiveEvent.class);
-        registerEvents("give", GiveEvent.class);
-        registerEvents("take", TakeEvent.class);
-        registerEvents("conversation", ConversationEvent.class);
-        registerEvents("kill", KillEvent.class);
-        registerEvents("effect", EffectEvent.class);
-        registerEvents("spawn", SpawnMobEvent.class);
-        registerEvents("time", TimeEvent.class);
-        registerEvents("weather", WeatherEvent.class);
-        registerEvents("folder", FolderEvent.class );
+                registerEvents("explosion", ExplosionEvent.class);
+                registerEvents("lightning", LightningEvent.class);
+                registerEvents("point", PointEvent.class);
+                registerEvents("delete", DeleteObjectiveEvent.class);
+                registerEvents("give", GiveEvent.class);
+                registerEvents("take", TakeEvent.class);
+                registerEvents("conversation", ConversationEvent.class);
+                registerEvents("kill", KillEvent.class);
+                registerEvents("effect", EffectEvent.class);
+                registerEvents("spawn", SpawnMobEvent.class);
+                registerEvents("time", TimeEvent.class);
+                registerEvents("weather", WeatherEvent.class);
+                registerEvents("folder", FolderEvent.class );
         
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
@@ -231,7 +231,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		
 		// metrics!
-		if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
+		if (getConfig().getBoolean("metrics")) {
 			try {
 		        Metrics metrics = new Metrics(this);
 		        metrics.start();
@@ -240,7 +240,7 @@ public final class BetonQuest extends JavaPlugin {
 		    	getLogger().log(Level.INFO, "Metrics faild to enable!");
 		    }
 		} else  {
-	    	getLogger().log(Level.INFO, "Metrics are not used!");
+                    getLogger().log(Level.INFO, "Metrics are not used!");
 		}
 
 		// done
