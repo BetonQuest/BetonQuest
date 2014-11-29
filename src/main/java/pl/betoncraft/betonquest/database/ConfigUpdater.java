@@ -41,28 +41,6 @@ public class ConfigUpdater {
 				}
 			}
 			BetonQuest.getInstance().getLogger().info("Done, modified " + count + " conversations!");
-			// add new languages
-			ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
-			for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
-				BetonQuest.getInstance().getLogger().info("found "+path);
-				if (messages.getConfig().isSet(path)) {
-					BetonQuest.getInstance().getLogger().info("entered "+path);
-					for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-						BetonQuest.getInstance().getLogger().info("found "+messageNode);
-						if (!messages.getConfig().isSet(path + "." + messageNode)) {
-							BetonQuest.getInstance().getLogger().info("entered "+messageNode);
-							messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
-						}
-					}
-				} else {
-					for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-						BetonQuest.getInstance().getLogger().info("set "+messageNode);
-						messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
-					}
-				}
-			}
-			messages.saveConfig();
-			BetonQuest.getInstance().getLogger().info("Updated language files!");
 			// end of updating to 1.3
 			config.set("version", "1.3");
 			conversations.saveConfig();
@@ -71,6 +49,38 @@ public class ConfigUpdater {
 			new ConfigUpdater();
 		} else if (version.equals("1.3")) {
 			// do nothing, we're up to date!
+		}
+		// add new languages
+		boolean isUpdated = false;
+		ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
+		// check every language if it exists
+		for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
+			BetonQuest.getInstance().getLogger().info("found "+path);
+			if (messages.getConfig().isSet(path)) {
+				// if it exists check every message if it exists
+				BetonQuest.getInstance().getLogger().info("entered "+path);
+				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
+					BetonQuest.getInstance().getLogger().info("found "+messageNode);
+					if (!messages.getConfig().isSet(path + "." + messageNode)) {
+						// if message doesn't exist then add it from defaults
+						BetonQuest.getInstance().getLogger().info("entered "+messageNode);
+						messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
+						isUpdated = true;
+					}
+				}
+			} else {
+				// if language does not exist then add every message to it
+				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
+					BetonQuest.getInstance().getLogger().info("set "+messageNode);
+					messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
+					isUpdated = true;
+				}
+			}
+		}
+		// if we updated config filse then print the message
+		if (isUpdated) {
+			messages.saveConfig();
+			BetonQuest.getInstance().getLogger().info("Updated language files!");
 		}
 		// when the config is up to date then check for pending conversions
 		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
