@@ -57,6 +57,18 @@ public abstract class Database {
 			case SELECT_USED_TAGS:
 				statement = connection.prepareStatement("SELECT tag FROM tags WHERE playerID = ? AND isused = 1;");
 				break;
+			case SELECT_PLAYERS_TAGS:
+				statement = connection.prepareStatement("SELECT playerID FROM tags GROUP BY playerID;");
+				break;
+			case SELECT_PLAYERS_JOURNAL:
+				statement = connection.prepareStatement("SELECT playerID FROM journal GROUP BY playerID;");
+				break;
+			case SELECT_PLAYERS_POINTS:
+				statement = connection.prepareStatement("SELECT playerID FROM points GROUP BY playerID;");
+				break;
+			case SELECT_PLAYERS_OBJECTIVES:
+				statement = connection.prepareStatement("SELECT playerID FROM objectives GROUP BY playerID;");
+				break;
 			default:
 				statement = null;
 				break;
@@ -107,6 +119,18 @@ public abstract class Database {
 				break;
 			case UPDATE_TAGS:
 				statement = connection.prepareStatement("UPDATE tags SET isused = 1 WHERE playerID = ? AND isused = 0;");
+				break;
+			case UPDATE_PLAYERS_TAGS:
+				statement = connection.prepareStatement("UPDATE tags SET playerID = ? WHERE playerID = ?;");
+				break;
+			case UPDATE_PLAYERS_JOURNAL:
+				statement = connection.prepareStatement("UPDATE journal SET playerID = ? WHERE playerID = ?;");
+				break;
+			case UPDATE_PLAYERS_POINTS:
+				statement = connection.prepareStatement("UPDATE points SET playerID = ? WHERE playerID = ?;");
+				break;
+			case UPDATE_PLAYERS_OBJECTIVES:
+				statement = connection.prepareStatement("UPDATE objectives SET playerID = ? WHERE playerID = ?;");
 				break;
 			default:
 				statement = null;
