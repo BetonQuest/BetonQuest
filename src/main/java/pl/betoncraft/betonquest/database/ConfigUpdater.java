@@ -61,15 +61,11 @@ public class ConfigUpdater {
 		ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
 		// check every language if it exists
 		for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
-			instance.getLogger().info("found "+path);
 			if (messages.getConfig().isSet(path)) {
 				// if it exists check every message if it exists
-				instance.getLogger().info("entered "+path);
 				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-					instance.getLogger().info("found "+messageNode);
 					if (!messages.getConfig().isSet(path + "." + messageNode)) {
 						// if message doesn't exist then add it from defaults
-						instance.getLogger().info("entered "+messageNode);
 						messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
 						isUpdated = true;
 					}
@@ -77,7 +73,6 @@ public class ConfigUpdater {
 			} else {
 				// if language does not exist then add every message to it
 				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-					instance.getLogger().info("set "+messageNode);
 					messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
 					isUpdated = true;
 				}
@@ -97,16 +92,21 @@ public class ConfigUpdater {
 		instance.saveConfig();
 	}
 	
+	/**
+	 * As the name says, converts all names to UUID in database
+	 */
 	@SuppressWarnings("deprecation")
 	private void convertNamesToUUID() {
 		instance.getLogger().info("Converting names to UUID...");
 		instance.getDB().openConnection();
+		// loop all tables
 		HashMap<String,String> list = new HashMap<>();
 		String[] tables = new String[]{"OBJECTIVES","TAGS","POINTS","JOURNAL"};
 		for (String table : tables) {
 			ResultSet res = instance.getDB().querySQL(QueryType.valueOf("SELECT_PLAYERS_" + table), new String[]{});
 			try {
 				while (res.next()) {
+					// and extract from them list of player names
 					String playerID = res.getString("playerID");
 					if (!list.containsKey(playerID)) {
 						list.put(playerID, Bukkit.getOfflinePlayer(playerID).getUniqueId().toString());
@@ -116,11 +116,13 @@ public class ConfigUpdater {
 				e.printStackTrace();
 			}
 		}
+		// convert all player names in all tables
 		for (String table : tables) {
 			for (String playerID : list.keySet()) {
 				instance.getDB().updateSQL(UpdateType.valueOf("UPDATE_PLAYERS_" + table), new String[]{list.get(playerID),playerID});
 			}
 		}
+		instance.getDB().closeConnection();
 		instance.getLogger().info("Names conversion finished!");
 	}
 }
