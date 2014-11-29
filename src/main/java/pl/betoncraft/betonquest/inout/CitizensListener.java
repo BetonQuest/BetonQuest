@@ -20,11 +20,11 @@ import pl.betoncraft.betonquest.core.Conversation;
  * 
  * @author Co0sh
  */
-public class NPCListener implements Listener {
+public class CitizensListener implements Listener {
 
 	private static List<String> conversations = new ArrayList<String>();
 	
-	public NPCListener() {
+	public CitizensListener() {
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	

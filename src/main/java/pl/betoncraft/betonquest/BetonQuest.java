@@ -74,11 +74,12 @@ import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.CubePeopleListener;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.JournalCommand;
-import pl.betoncraft.betonquest.inout.NPCListener;
+import pl.betoncraft.betonquest.inout.CitizensListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.inout.PlayerConverter;
 import pl.betoncraft.betonquest.inout.QuestCommand;
@@ -162,7 +163,17 @@ public final class BetonQuest extends JavaPlugin {
 		
 		// instantiating of these important things
 		new JoinQuitListener();
-		new NPCListener();
+		
+		// instantiate one of conversation start listeners
+		if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
+			getLogger().info("Using Citizens NPCs for conversation starting!");
+			new CitizensListener();
+		} else {
+			new CubePeopleListener();
+			getLogger().info("Using cube people for conversation starting!");
+		}
+		
+		new CitizensListener();
 		new JournalBook();
 		new GlobalLocations().runTaskTimer(this, 0, 20);
 		

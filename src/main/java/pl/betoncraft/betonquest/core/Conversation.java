@@ -8,7 +8,7 @@ import java.util.HashMap;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationListener;
-import pl.betoncraft.betonquest.inout.NPCListener;
+import pl.betoncraft.betonquest.inout.CitizensListener;
 import pl.betoncraft.betonquest.inout.UnifiedLocation;
 import pl.betoncraft.betonquest.inout.SimpleTextOutput;
 
@@ -281,7 +281,7 @@ public class Conversation {
 		// print message
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		// delete conversation
-		NPCListener.removePlayerConversation(playerID);
+		CitizensListener.removePlayerConversation(playerID);
 		// unregister listener
 		listener.unregisterListener();
 	}

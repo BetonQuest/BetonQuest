@@ -14,7 +14,6 @@ public class PlayerConverter {
 	
 	static {
 		String uuid = BetonQuest.getInstance().getConfig().getString("uuid");
-		BetonQuest.getInstance().getLogger().info(uuid);
 		if (uuid != null &&  uuid.equals("true")) {
 			type = PlayerConversionType.UUID;
 			BetonQuest.getInstance().getLogger().info("Using UUID!");
