@@ -4,6 +4,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 public class FolderEvent extends QuestEvent {
 
@@ -30,6 +31,10 @@ public class FolderEvent extends QuestEvent {
 			
 			@Override
 			public void run() {
+				if (PlayerConverter.getPlayer(player) == null) {
+					this.cancel();
+					return;
+				}
 				for (String event : finalEvents) {
 					BetonQuest.event(player, event);
 				}
