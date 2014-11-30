@@ -3,6 +3,7 @@ innkeeper:
   unknown: 'I''m sorry, I didn''t understand. Can you repeat?'
   first: 'start,start_wood_started,start_wood_completed'
   final_events: ''
+  stop: 'true'
   NPC_options:
     'start':
       text: 'Welcome to my inn %player%! What can I do for you?'

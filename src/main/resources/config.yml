@@ -1,3 +1,4 @@
+version: 1.3
 mysql:
   host: ''
   port: ''
@@ -6,7 +7,7 @@ mysql:
   base: ''
 language: en
 metrics: 'true'
-uuid: 'true'
+uuid: 'false'
 default_journal_slot: '-1'
 max_npc_distance: '5'
 global_locations: ''

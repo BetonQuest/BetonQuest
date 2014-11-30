@@ -3,7 +3,7 @@ main: pl.betoncraft.betonquest.BetonQuest
 description: Advanced quest plugin
 authors: [Co0sh, Dzejkop, BYK]
 website: http://dev.bukkit.org/bukkit-plugins/betonquest/
-depend: [Citizens]
+softdepend: [Citizens]
 version: 1.3
 commands:
   q:
