@@ -33,6 +33,7 @@ public class QuestCommand implements CommandExecutor {
 				sender.sendMessage("§c/q tags §b- display your tags");
 				sender.sendMessage("§c/q points §b- display your points");
 				sender.sendMessage("§c/q condition <id> §b- check if you meet condition");
+				sender.sendMessage("§c/q event <id> §b- fires an event");
 				sender.sendMessage("§c/q purge <player> §b- reset all player's data");
 				return true;
 			}
@@ -74,6 +75,17 @@ public class QuestCommand implements CommandExecutor {
 					return true;
 				}
 				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(PlayerConverter.getID((Player) sender), args[1]) + ""));
+				break;
+			case "event":
+				if (!(sender instanceof Player)) {
+					return true;
+				}
+				if (args.length < 2) {
+					sender.sendMessage(getMessage("specify_event"));
+					return true;
+				}
+				BetonQuest.event(PlayerConverter.getID((Player) sender), args[1]);
+				sender.sendMessage(getMessage("player_event").replaceAll("%event%", ConfigInput.getString("events." + args[1])));
 				break;
 			case "points":
 				if (!(sender instanceof Player)) {
