@@ -7,10 +7,10 @@ import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.ConversationContainer;
 import pl.betoncraft.betonquest.inout.ConversationListener;
-import pl.betoncraft.betonquest.inout.CitizensListener;
-import pl.betoncraft.betonquest.inout.UnifiedLocation;
 import pl.betoncraft.betonquest.inout.SimpleTextOutput;
+import pl.betoncraft.betonquest.inout.UnifiedLocation;
 
 /**
  * Represents a conversation between QuestPlayer and Quester
@@ -52,7 +52,7 @@ public class Conversation {
 		// get initial npc's options
 		String options = ConfigInput.getString("conversations." + conversationID + ".first");
 		
-		if (options == null) {
+		if (options == null || options.equals("")) {
 			BetonQuest.getInstance().getLogger().severe("Conversation initialization not defined at: " + conversationID);
 			endConversation();
 			return;
@@ -281,7 +281,7 @@ public class Conversation {
 		// print message
 		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
 		// delete conversation
-		CitizensListener.removePlayerConversation(playerID);
+		ConversationContainer.removePlayer(playerID);
 		// unregister listener
 		listener.unregisterListener();
 	}

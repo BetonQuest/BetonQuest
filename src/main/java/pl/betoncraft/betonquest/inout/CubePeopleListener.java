@@ -3,9 +3,6 @@
  */
 package pl.betoncraft.betonquest.inout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Conversation;
@@ -26,15 +22,9 @@ import pl.betoncraft.betonquest.core.Conversation;
  * @author Co0sh
  */
 public class CubePeopleListener implements Listener {
-
-	private static List<String> conversations = new ArrayList<String>();
 	
 	public CubePeopleListener() {
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-	}
-	
-	public static void removePlayerConversation(String playerID) {
-		conversations.remove(playerID);
 	}
 	
 	@EventHandler
@@ -66,16 +56,9 @@ public class CubePeopleListener implements Listener {
 			}
 			
 		}
-		if (conversationID != null) {
+		if (conversationID != null && !ConversationContainer.containsPlayer(PlayerConverter.getID(event.getPlayer()))) {
 			new Conversation(PlayerConverter.getID(event.getPlayer()), conversationID, new UnifiedLocation(event.getClickedBlock().getLocation()));
-			conversations.add(PlayerConverter.getID(event.getPlayer()));
-		}
-	}
-	
-	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
-		if (conversations.contains(PlayerConverter.getID(event.getPlayer()))) {
-			removePlayerConversation(PlayerConverter.getID(event.getPlayer()));
+			ConversationContainer.addPlayer(PlayerConverter.getID(event.getPlayer()));
 		}
 	}
 }
