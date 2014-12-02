@@ -17,6 +17,7 @@ public class ConfigInput {
 	
 	private static ConfigInput instance;
 	
+	private File folder;
 	private HashMap<String,ConfigAccessor> conversationsMap = new HashMap<>();
 	private ConfigAccessor conversations;
 	private ConfigAccessor objectives;
@@ -28,12 +29,20 @@ public class ConfigInput {
 	
 	public ConfigInput() {
 		instance = this;
+		// save default config if there isn't one and by the way create plugin's directory
+		BetonQuest.getInstance().saveDefaultConfig();
+		// conversations needs to be created first
+		conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
+		// create conversations folder if there isn't one
+		folder = new File(BetonQuest.getInstance().getDataFolder(), "conversations");
+		if (!folder.isDirectory()) {
+			folder.mkdirs();
+		}
 		// put conversations accessors in the hashmap
-		for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
+		for (File file : folder.listFiles()) {
 			conversationsMap.put(file.getName(), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
 		}
 		// put config accesors in fields
-		conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
 		objectives = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml");
 		conditions = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml");
 		events = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml");
@@ -41,8 +50,6 @@ public class ConfigInput {
 		npcs = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml");
 		journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml");
 		// save config if there isn't one
-		BetonQuest.getInstance().saveDefaultConfig();
-		conversations.saveDefaultConfig();
 		objectives.saveDefaultConfig();
 		conditions.saveDefaultConfig();
 		events.saveDefaultConfig();
@@ -51,53 +58,58 @@ public class ConfigInput {
 		journal.saveDefaultConfig();
 	}
 	
-	private Object getObject(String rawPath) {
+	public static String getString(String rawPath) {
 		String[] parts = rawPath.split("\\.");
 		String first = parts[0];
 		String path = rawPath.substring(first.length() + 1);
-		Object object;
+		String object;
 		switch (first) {
 		case "config":
-			object = BetonQuest.getInstance().getConfig().get(path);
+			object = BetonQuest.getInstance().getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "conversations":
-			object = conversations.getConfig().get(path);
+			object = null;
+			String conversationID = path.split("\\.")[0];
+			String rest = path.substring(path.indexOf(".") + 1);
+			if (instance.conversationsMap.get(conversationID) != null) {
+				object = instance.conversationsMap.get(conversationID).getConfig().getString(rest);
+			}
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "objectives":
-			object = objectives.getConfig().get(path);
+			object = instance.objectives.getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "conditions":
-			object = conditions.getConfig().get(path);
+			object = instance.conditions.getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "events":
-			object = events.getConfig().get(path);
+			object = instance.events.getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "messages":
-			object = messages.getConfig().get(path);
+			object = instance.messages.getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
 		case "npcs":
-			object = npcs.getConfig().get(path);
+			object = instance.npcs.getConfig().getString(path);
 			return object;
 		case "journal":
-			object = journal.getConfig().get(path);
+			object = instance.journal.getConfig().getString(path);
 			if (object == null) {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
@@ -109,31 +121,21 @@ public class ConfigInput {
 	}
 	
 	/**
-	 * Returns string from configuration file where path looks like "(nameOfFile).path.to.string"
-	 * @param path
-	 * @return
-	 */
-	public static String getString(String path) {
-		try {
-			String string = (String) instance.getObject(path);
-			return string;
-		} catch (ClassCastException e) {
-			return null;
-		}
-	}
-	
-	/**
 	 * reloads all config files
 	 */
 	public static void reload() {
-		instance.conversations.reloadConfig();
+		BetonQuest.getInstance().reloadConfig();
+		// put conversations accessors in the hashmap
+		instance.conversationsMap.clear();
+		for (File file : instance.folder.listFiles()) {
+			instance.conversationsMap.put(file.getName(), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+		}
 		instance.conditions.reloadConfig();
 		instance.events.reloadConfig();
 		instance.journal.reloadConfig();
 		instance.messages.reloadConfig();
 		instance.npcs.reloadConfig();
 		instance.objectives.reloadConfig();
-		BetonQuest.getInstance().reloadConfig();
 	}
 	
 	public static HashMap<String,ConfigAccessor> getConfigs() {
@@ -146,5 +148,9 @@ public class ConfigInput {
 		map.put("messages", instance.messages);
 		map.put("npcs", instance.npcs);
 		return map;
+	}
+	
+	public static HashMap<String,ConfigAccessor> getConversations() {
+		return instance.conversationsMap;
 	}
 }
