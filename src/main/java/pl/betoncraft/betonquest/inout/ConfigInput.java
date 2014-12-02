@@ -3,6 +3,7 @@
  */
 package pl.betoncraft.betonquest.inout;
 
+import java.io.File;
 import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -16,6 +17,7 @@ public class ConfigInput {
 	
 	private static ConfigInput instance;
 	
+	private HashMap<String,ConfigAccessor> conversationsMap = new HashMap<>();
 	private ConfigAccessor conversations;
 	private ConfigAccessor objectives;
 	private ConfigAccessor conditions;
@@ -26,14 +28,18 @@ public class ConfigInput {
 	
 	public ConfigInput() {
 		instance = this;
+		// put conversations accessors in the hashmap
+		for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
+			conversationsMap.put(file.getName(), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+		}
 		// put config accesors in fields
-		conversations = new ConfigAccessor(BetonQuest.getInstance(), "conversations.yml");
-		objectives = new ConfigAccessor(BetonQuest.getInstance(), "objectives.yml");
-		conditions = new ConfigAccessor(BetonQuest.getInstance(), "conditions.yml");
-		events = new ConfigAccessor(BetonQuest.getInstance(), "events.yml");
-		messages = new ConfigAccessor(BetonQuest.getInstance(), "messages.yml");
-		npcs = new ConfigAccessor(BetonQuest.getInstance(), "npcs.yml");
-		journal = new ConfigAccessor(BetonQuest.getInstance(), "journal.yml");
+		conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
+		objectives = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml");
+		conditions = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml");
+		events = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml");
+		messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml");
+		npcs = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml");
+		journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml");
 		// save config if there isn't one
 		BetonQuest.getInstance().saveDefaultConfig();
 		conversations.saveDefaultConfig();

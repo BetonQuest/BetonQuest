@@ -38,7 +38,7 @@ public class ConfigAccessor {
     private File configFile;
     private FileConfiguration fileConfiguration;
  
-    public ConfigAccessor(JavaPlugin plugin, String fileName) {
+    public ConfigAccessor(JavaPlugin plugin, File file, String fileName) {
         if (plugin == null)
             throw new IllegalArgumentException("plugin cannot be null");
         if (!plugin.isEnabled())
@@ -48,7 +48,7 @@ public class ConfigAccessor {
         File dataFolder = plugin.getDataFolder();
         if (dataFolder == null)
             throw new IllegalStateException();
-        this.configFile = new File(plugin.getDataFolder(), fileName);
+        this.configFile = file;
     }
  
     public void reloadConfig() {        
