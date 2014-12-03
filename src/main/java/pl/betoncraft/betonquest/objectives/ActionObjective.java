@@ -4,6 +4,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -25,6 +26,8 @@ public class ActionObjective extends Objective implements Listener {
 	private Material type;
 	private byte data = -1;
 	private String rawAction;
+	private Location loc;
+	double range = 0;
 
 	/**
 	 * Constructor method
@@ -56,6 +59,17 @@ public class ActionObjective extends Objective implements Listener {
 				type = Material.matchMaterial(parts[2]);
 			}
 		}
+		for (String part : parts) {
+			if (part.contains("loc:")) {
+		        String [] coords = part.substring(4).split(";");
+		        loc = new Location(
+		                Bukkit.getWorld(coords[3]),
+		                Double.parseDouble(coords[0]),
+		                Double.parseDouble(coords[1]),
+		                Double.parseDouble(coords[2]));
+		        range = Double.parseDouble(coords[3]);
+			}
+		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
@@ -69,8 +83,10 @@ public class ActionObjective extends Objective implements Listener {
 			return;
 		}
 		if ((action == null || event.getAction().equals(action)) && (type.equals(Material.AIR) || event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && checkConditions()) {
-			HandlerList.unregisterAll(this);
-			completeObjective();
+			if (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) {
+				HandlerList.unregisterAll(this);
+				completeObjective();
+			}
 		}
 	}
 
