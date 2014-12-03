@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.core;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +11,31 @@ import pl.betoncraft.betonquest.inout.ConfigInput;
  */
 public class QuestItem {
 	
-	private String material;
+	private String material = null;
 	private int data = 0;
-	private Map<String,Integer> enchants;
-	private String name;
-	private List<String> lore;
-	private String title;
-	private String author;
-	private List<String> pages;
-	private Map<String,Integer> effects;
+	private Map<String,Integer> enchants = new HashMap<>();
+	private String name = null;
+	private List<String> lore = null;
+	private String title = null;
+	private String author = null;
+	private List<String> pages = null;
+	private Map<String,Integer> effects = null;
+	
+	/**
+	 * Legacy method for the updater, don't use for anything else
+	 * @param material
+	 * @param data
+	 * @param enchants
+	 * @param name
+	 * @param lore
+	 */
+	public QuestItem(String material, int data, Map<String,Integer> enchants, String name, List<String> lore) {
+		this.material = material;
+		this.data = data;
+		this.enchants = enchants;
+		this.name = name;
+		this.lore = lore;
+	}
 	
 	/**
 	 * Represents an item from items.yml
@@ -33,7 +48,6 @@ public class QuestItem {
 			if (part.contains("data:")) {
 				data = Integer.parseInt(part.substring(5));
 			} else if (part.contains("enchants:")) {
-				enchants = new HashMap<>();
 				for (String enchant : part.substring(9).split(",")) {
 					String ID = enchant.split(":")[0];
 					Integer level;
@@ -47,7 +61,6 @@ public class QuestItem {
 			} else if (part.contains("name:")) {
 				name = part.substring(5);
 			} else if (part.contains("lore:")) {
-				lore = new ArrayList<>();
 				for (String line : part.substring(5).split(";")) {
 					lore.add(line);
 				}
@@ -56,12 +69,10 @@ public class QuestItem {
 			} else if (part.contains("author:")) {
 				author = part.substring(7);
 			} else if (part.contains("pages:")) {
-				pages = new ArrayList<>();
 				for (String page : part.substring(6).split(";")) {
 					pages.add(page);
 				}
 			} else if (part.contains("effects:")) {
-				effects = new HashMap<>();
 				for (String effect : part.substring(8).split(",")) {
 					String ID = effect.split(":")[0];
 					Integer power;

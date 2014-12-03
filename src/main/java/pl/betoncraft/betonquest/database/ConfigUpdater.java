@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 
 /**
@@ -93,6 +96,140 @@ public class ConfigUpdater {
 			}
 			instance.getLogger().info("All conversations moved, deleting old file.");
 			new File(instance.getDataFolder(), "conversations.yml").delete();
+			
+			// updating items
+			instance.getLogger().info("Starting conversion of items...");
+			// this map will contain all QuestItem objects extracted from
+			// configs
+			HashMap<String, QuestItem> items = new HashMap<>();
+			// this is counter for a number in item names (in items.yml)
+			int number = 0;
+			// check every event
+			for (String key : ConfigInput.getConfigs().get("events").getConfig().getKeys(false)) {
+				String instructions = ConfigInput.getString("events." + key);
+				String[] parts = instructions.split(" ");
+				String type = parts[0];
+				// if this event has items in it do the thing
+				if (type.equals("give") || type.equals("take")) {
+					// define all required variables
+					String amount = "";
+					String conditions = "";
+					String material = null;
+					int data = 0;
+					Map<String, Integer> enchants = new HashMap<>();
+					List<String> lore = new ArrayList<>();
+					String name = null;
+					// for each part of the instruction string check if it
+					// contains some data and if so pu it in variables
+					for (String part : parts) {
+						if (part.contains("type:")) {
+							material = part.substring(5);
+						} else if (part.contains("data:")) {
+							data = Byte.valueOf(part.substring(5));
+						} else if (part.contains("enchants:")) {
+							for (String enchant : part.substring(9).split(",")) {
+								enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
+							}
+						} else if (part.contains("lore:")) {
+							for (String loreLine : part.substring(5).split(";")) {
+								lore.add(loreLine.replaceAll("_", " "));
+							}
+						} else if (part.contains("name:")) {
+							name = part.substring(5).replaceAll("_", " ");
+						} else if (part.contains("amount:")) {
+							amount = part;
+						} else if (part.contains("conditions:")) {
+							conditions = part;
+						}
+					}
+					// generate new name for an item
+					String newItemID = "item" + number;
+					number++;
+					// create an item
+					items.put(newItemID, new QuestItem(material, data, enchants, name, lore));
+					// replace event with updated version
+					ConfigInput.getConfigs().get("events").getConfig()
+							.set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
+					instance.getLogger().info("Extracted " + newItemID + " from " + key + " event!");
+				}
+			}
+			// check every condition (it's almost the same code, I didn't know how to do it better
+			for (String key : ConfigInput.getConfigs().get("conditions").getConfig().getKeys(false)) {
+				String instructions = ConfigInput.getString("conditions." + key);
+				String[] parts = instructions.split(" ");
+				String type = parts[0];
+				// if this condition has items do the thing
+				if (type.equals("hand") || type.equals("item")) {
+					// define all variables
+					String amount = "";
+					String material = null;
+					int data = 0;
+					Map<String, Integer> enchants = new HashMap<>();
+					List<String> lore = new ArrayList<>();
+					String name = null;
+					String inverted = "";
+					// for every part check if it has some data and place it in
+					// variables
+					for (String part : parts) {
+						if (part.contains("type:")) {
+							material = part.substring(5);
+						} else if (part.contains("data:")) {
+							data = Byte.valueOf(part.substring(5));
+						} else if (part.contains("enchants:")) {
+							for (String enchant : part.substring(9).split(",")) {
+								enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
+							}
+						} else if (part.contains("lore:")) {
+							for (String loreLine : part.substring(5).split(";")) {
+								lore.add(loreLine.replaceAll("_", " "));
+							}
+						} else if (part.contains("name:")) {
+							name = part.substring(5).replaceAll("_", " ");
+						} else if (part.contains("amount:")) {
+							amount = part;
+						} else if (part.equalsIgnoreCase("--inverted")) {
+							inverted = part;
+						}
+					}
+					// generate new name
+					String newItemID = "item" + number;
+					number++;
+					// create an item
+					items.put(newItemID, new QuestItem(material, data, enchants, name, lore));
+					// replace condition with updated version
+					ConfigInput.getConfigs().get("conditions").getConfig()
+							.set(key, (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
+					instance.getLogger().info("Extracted " + newItemID + " from " + key + " condition!");
+				}
+			}
+			// generated all items, now place them in items.yml
+			for (String key : items.keySet()) {
+				QuestItem item = items.get(key);
+				String instruction = item.getMaterial().toUpperCase() + " data:" + item.getData();
+				if (item.getName() != null) {
+					instruction = instruction + " name:" + item.getName().replace(" ", "_");
+				}
+				if (!item.getLore().isEmpty()) {
+					StringBuilder lore = new StringBuilder();
+					for (String line : item.getLore()) {
+						lore.append(line + ";");
+					}
+					instruction = instruction + " lore:" + (lore.substring(0, lore.length()-1).replace(" ", "_"));
+				}
+				if (!item.getEnchants().isEmpty()) {
+					StringBuilder enchants = new StringBuilder();
+					for (String enchant : item.getEnchants().keySet()) {
+						enchants.append(enchant.toUpperCase() + ":" + item.getEnchants().get(enchant) + ",");
+					}
+					instruction = instruction + " enchants:" + enchants.substring(0, enchants.length()-1);
+				}
+				ConfigInput.getConfigs().get("items").getConfig().set(key, instruction);
+			}
+			ConfigInput.getConfigs().get("items").saveConfig();
+			ConfigInput.getConfigs().get("events").saveConfig();
+			ConfigInput.getConfigs().get("conditions").saveConfig();
+			instance.getLogger().info("All extracted items has been successfully saved to items.yml!");
+
 			// end of updating to 1.4
 			config.set("version", "1.4");
 			instance.getLogger().info("Conversion to v1.4 finished.");
