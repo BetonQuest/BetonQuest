@@ -52,11 +52,5 @@
            <artifactId>updater</artifactId>
            <version>2.1</version>
        </dependency>
-       <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>R7</version>
-            <scope>compile</scope>
-        </dependency>
    </dependencies>
 </project>

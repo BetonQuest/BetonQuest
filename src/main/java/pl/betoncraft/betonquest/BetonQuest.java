@@ -19,7 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.mcstats.Metrics;
 
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
@@ -49,6 +48,7 @@ import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.TagRes;
 import pl.betoncraft.betonquest.database.ConfigUpdater;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.Metrics;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.QueryType;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -247,6 +247,9 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("delay", DelayObjective.class);
 		registerObjectives("npckill", NPCKillObjective.class);
 
+		// initialize PlayerConverter
+		PlayerConverter.getType();
+		
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			database.openConnection();
