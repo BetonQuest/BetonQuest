@@ -63,6 +63,7 @@ import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
+import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
@@ -87,6 +88,7 @@ import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
+import pl.betoncraft.betonquest.objectives.NPCKillObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
 import pl.betoncraft.betonquest.objectives.TameObjective;
 
@@ -228,6 +230,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("time", TimeEvent.class);
 		registerEvents("weather", WeatherEvent.class);
 		registerEvents("folder", FolderEvent.class);
+		registerEvents("setblock", SetBlockEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
@@ -239,6 +242,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("smelt", SmeltingObjective.class);
 		registerObjectives("tame", TameObjective.class);
 		registerObjectives("delay", DelayObjective.class);
+		registerObjectives("npckill", NPCKillObjective.class);
 
 		// load objectives for all online players (in case of reload)
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -252,39 +256,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 
 		// metrics!
-		if (getConfig().getString("metrics").equalsIgnoreCase("true")) { // getBoolean
-		// is
-		// not
-		// working
-		// if
-		// someone
-		// uses
-		// 'true'
-		// instead
-		// of
-		// just
-		// true,
-		// sorry
-		// shooly
-		// but
-		// I'm
-		// not
-		// changing
-		// half
-		// of
-		// my
-		// code
-		// and
-		// making
-		// config
-		// updaters.
-		// It's
-		// fine
-		// the
-		// way
-		// it
-		// is
-		// though
+		if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
 			try {
 				Metrics metrics = new Metrics(this);
 				metrics.start();
