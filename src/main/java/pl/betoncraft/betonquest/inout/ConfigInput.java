@@ -4,6 +4,8 @@
 package pl.betoncraft.betonquest.inout;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -38,9 +40,17 @@ public class ConfigInput {
 		if (!folder.isDirectory()) {
 			folder.mkdirs();
 		}
+		if (folder.listFiles().length == 0) {
+			File defaultConversation = new File(folder, "innkeeper.yml");
+	        try {
+				Files.copy(BetonQuest.getInstance().getResource("defaultConversation.yml"), defaultConversation.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		// put conversations accessors in the hashmap
 		for (File file : folder.listFiles()) {
-			conversationsMap.put(file.getName(), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+			conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
 		}
 		// put config accesors in fields
 		objectives = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml");
