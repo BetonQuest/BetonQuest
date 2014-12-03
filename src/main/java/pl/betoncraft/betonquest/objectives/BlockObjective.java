@@ -37,10 +37,10 @@ public class BlockObjective extends Objective implements Listener{
 		String[] parts = instructions.split(" ");
 		String blockType = parts[1];
 		if (blockType.contains(":")) {
-			material = Material.valueOf(blockType.split(":")[0]);
+			material = Material.matchMaterial(blockType.split(":")[0]);
 			data = Byte.valueOf(blockType.split(":")[1]);
 		} else {
-			material = Material.valueOf(parts[1]);
+			material = Material.matchMaterial(parts[1]);
 		}
 		neededAmount = Integer.valueOf(parts[2]);
 		for (String part : parts) {

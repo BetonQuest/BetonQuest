@@ -50,10 +50,10 @@ public class ActionObjective extends Objective implements Listener {
 			type = Material.AIR;
 		} else {
 			if (parts[2].contains(":")) {
-				type = Material.valueOf(parts[2].split(":")[0]);
+				type = Material.matchMaterial(parts[2].split(":")[0]);
 				data = Byte.valueOf(parts[2].split(":")[1]);
 			} else {
-				type = Material.valueOf(parts[2]);
+				type = Material.matchMaterial(parts[2]);
 			}
 		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

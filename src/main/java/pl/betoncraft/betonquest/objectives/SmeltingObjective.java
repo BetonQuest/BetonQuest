@@ -34,7 +34,7 @@ public class SmeltingObjective extends Objective implements Listener {
 	 */
 	public SmeltingObjective(String playerID, String instructions) {
 		super(playerID, instructions);
-		material = Material.getMaterial(instructions.split(" ")[1]);
+		material = Material.matchMaterial(instructions.split(" ")[1]);
 		amount = Integer.parseInt(instructions.split(" ")[2]);
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}

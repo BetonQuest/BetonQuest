@@ -43,7 +43,7 @@ public class ArmorCondition extends Condition {
 			}
 		}
 		if (type != null && material != null) {
-			armor = Material.valueOf(material + "_" + type);
+			armor = Material.matchMaterial(material + "_" + type);
 		}
 	}
 

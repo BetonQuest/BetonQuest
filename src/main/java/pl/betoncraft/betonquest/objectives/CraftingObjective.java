@@ -37,10 +37,10 @@ public class CraftingObjective extends Objective implements Listener {
 		super(playerID, instructions);
 		String type = instructions.split(" ")[1];
 		if (type.contains(":")) {
-			material = Material.getMaterial(type.split(":")[0]);
+			material = Material.matchMaterial(type.split(":")[0]);
 			data = Byte.parseByte(type.split(":")[1]);
 		} else {
-			material = Material.getMaterial(type);
+			material = Material.matchMaterial(type);
 		}
 		amount = Integer.parseInt(instructions.split(" ")[2]);
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

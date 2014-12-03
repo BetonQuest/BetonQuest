@@ -40,7 +40,7 @@ public class TakeEvent extends QuestEvent {
 		String[] parts = instructions.split(" ");
 		for (String part : parts) {
 			if (part.contains("type:")) {
-				type = Material.valueOf(part.substring(5));
+				type = Material.matchMaterial(part.substring(5));
 			} else if (part.contains("data:")) {
 				data = Byte.valueOf(part.substring(5));
 			} else if (part.contains("amount:")) {
