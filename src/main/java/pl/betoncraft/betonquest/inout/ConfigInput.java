@@ -28,6 +28,7 @@ public class ConfigInput {
 	private ConfigAccessor messages;
 	private ConfigAccessor npcs;
 	private ConfigAccessor journal;
+	private ConfigAccessor items;
 	
 	public ConfigInput() {
 		instance = this;
@@ -59,6 +60,7 @@ public class ConfigInput {
 		messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml");
 		npcs = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml");
 		journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml");
+		items = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml");
 		// save config if there isn't one
 		objectives.saveDefaultConfig();
 		conditions.saveDefaultConfig();
@@ -66,6 +68,7 @@ public class ConfigInput {
 		messages.saveDefaultConfig();
 		npcs.saveDefaultConfig();
 		journal.saveDefaultConfig();
+		items.saveDefaultConfig();
 	}
 	
 	public static String getString(String rawPath) {
@@ -124,6 +127,12 @@ public class ConfigInput {
 				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			}
 			return object;
+		case "items":
+			object = instance.items.getConfig().getString(path);
+			if (object == null) {
+				BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
+			}
+			return object;
 		default:
 			BetonQuest.getInstance().getLogger().severe("Error while accessing path: " + rawPath);
 			return null;
@@ -146,6 +155,7 @@ public class ConfigInput {
 		instance.messages.reloadConfig();
 		instance.npcs.reloadConfig();
 		instance.objectives.reloadConfig();
+		instance.items.reloadConfig();
 	}
 	
 	public static HashMap<String,ConfigAccessor> getConfigs() {
@@ -157,6 +167,7 @@ public class ConfigInput {
 		map.put("journal", instance.journal);
 		map.put("messages", instance.messages);
 		map.put("npcs", instance.npcs);
+		map.put("items", instance.items);
 		return map;
 	}
 	
