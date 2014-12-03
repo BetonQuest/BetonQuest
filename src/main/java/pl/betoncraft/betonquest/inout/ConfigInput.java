@@ -33,13 +33,12 @@ public class ConfigInput {
 		instance = this;
 		// save default config if there isn't one and by the way create plugin's directory
 		BetonQuest.getInstance().saveDefaultConfig();
-		// conversations needs to be created first
-		conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
 		// create conversations folder if there isn't one
 		folder = new File(BetonQuest.getInstance().getDataFolder(), "conversations");
 		if (!folder.isDirectory()) {
 			folder.mkdirs();
 		}
+		// if it's empty copy default conversation
 		if (folder.listFiles().length == 0) {
 			File defaultConversation = new File(folder, "innkeeper.yml");
 	        try {
@@ -53,6 +52,7 @@ public class ConfigInput {
 			conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
 		}
 		// put config accesors in fields
+		conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
 		objectives = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml");
 		conditions = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml");
 		events = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml");

@@ -1,12 +1,16 @@
 package pl.betoncraft.betonquest.database;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
@@ -22,6 +26,15 @@ public class ConfigUpdater {
 	public ConfigUpdater() {
 		FileConfiguration config = instance.getConfig();
 		String version = config.getString("version", null);
+		if (version != null && version.equals("1.4")) {
+			instance.getLogger().info("Configuration up to date!");
+			return;
+		} else {
+			instance.getLogger().info("Backing up before conversion!");
+			String outputPath = instance.getDataFolder().getAbsolutePath() + File.separator + "backup-" + version + ".zip";
+			new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
+			instance.getLogger().info("Done, you can find the backup here: " + outputPath);
+		}
 		// if the version is null the plugin is updated from pre-1.3 version (which can be 1.0, 1.1 or 1.2)
 		if (version == null) {
 			instance.getLogger().info("Started converting configuration files from unknown version to v1.3!");
@@ -46,14 +59,43 @@ public class ConfigUpdater {
 					count++;
 				}
 			}
+			conversations.saveConfig();
 			instance.getLogger().info("Done, modified " + count + " conversations!");
 			// end of updating to 1.3
 			config.set("version", "1.3");
-			conversations.saveConfig();
 			instance.getLogger().info("Conversion to v1.3 finished.");
 			// start update recursively for next versions
 			new ConfigUpdater();
 		} else if (version.equals("1.3")) {
+			instance.getLogger().info("Started converting configuration files from v1.3 to v1.4!");
+			instance.getLogger().info("Moving conversation to separate files...");
+			ConfigAccessor convOld = ConfigInput.getConfigs().get("conversations");
+			Set<String> keys = convOld.getConfig().getKeys(false);
+			File folder = new File(instance.getDataFolder(), "conversations");
+			for (File file : folder.listFiles()) {
+				file.delete();
+			}
+			for (String convID : keys) {
+				File convFile = new File(folder, convID + ".yml");
+		        Map<String,Object> convSection = convOld.getConfig().getConfigurationSection(convID).getValues(true);
+		        YamlConfiguration convNew = YamlConfiguration.loadConfiguration(convFile);
+		        for (String key : convSection.keySet()) {
+					convNew.set(key, convSection.get(key));
+				}
+		        try {
+					convNew.save(convFile);
+					instance.getLogger().info("Conversation " + convID + " moved to it's own file!");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			instance.getLogger().info("All conversations moved, deleting old file.");
+			new File(instance.getDataFolder(), "conversations.yml").delete();
+			// end of updating to 1.4
+			config.set("version", "1.4");
+			instance.getLogger().info("Conversion to v1.4 finished.");
+			
+		} else if (version.equals("1.4")) {
 			// do nothing, we're up to date!
 		}
 		// add new languages
@@ -83,7 +125,7 @@ public class ConfigUpdater {
 			messages.saveConfig();
 			instance.getLogger().info("Updated language files!");
 		}
-		// when the config is up to date then check for pending conversions
+		// when the config is up to date then check for pending names conversion
 		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
 		if (config.getString("uuid").equals("true") && config.getString("convert") != null && config.getString("convert").equals("true")) {
 			convertNamesToUUID();
