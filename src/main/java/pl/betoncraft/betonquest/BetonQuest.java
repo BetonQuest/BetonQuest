@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import net.gravitydevelopment.updater.Updater;
+import net.gravitydevelopment.updater.Updater.UpdateResult;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.mcstats.Metrics;
 
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
@@ -45,7 +49,6 @@ import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.TagRes;
 import pl.betoncraft.betonquest.database.ConfigUpdater;
 import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.Metrics;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.QueryType;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -70,6 +73,7 @@ import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
+import pl.betoncraft.betonquest.inout.CitizensListener;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationContainer;
 import pl.betoncraft.betonquest.inout.CubePeopleListener;
@@ -77,7 +81,6 @@ import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.JournalCommand;
-import pl.betoncraft.betonquest.inout.CitizensListener;
 import pl.betoncraft.betonquest.inout.ObjectiveSaving;
 import pl.betoncraft.betonquest.inout.PlayerConverter;
 import pl.betoncraft.betonquest.inout.QuestCommand;
@@ -260,12 +263,20 @@ public final class BetonQuest extends JavaPlugin {
 			try {
 				Metrics metrics = new Metrics(this);
 				metrics.start();
-				getLogger().log(Level.INFO, "Metrics enabled!");
+				getLogger().info("Metrics enabled!");
 			} catch (IOException e) {
-				getLogger().log(Level.INFO, "Metrics faild to enable!");
+				getLogger().info("Metrics faild to enable!");
 			}
 		} else {
-			getLogger().log(Level.INFO, "Metrics are not used!");
+			getLogger().info("Metrics are not used!");
+		}
+		
+		// updater!
+		if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
+			Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT, false);
+			if (updater.getResult().equals(UpdateResult.SUCCESS)) {
+				getLogger().info("Found " + updater.getLatestName() + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
+			}
 		}
 
 		// done

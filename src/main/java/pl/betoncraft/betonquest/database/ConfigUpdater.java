@@ -68,6 +68,8 @@ public class ConfigUpdater {
 			new ConfigUpdater();
 		} else if (version.equals("1.3")) {
 			instance.getLogger().info("Started converting configuration files from v1.3 to v1.4!");
+			instance.getConfig().set("autoupdate", "false");
+			instance.getLogger().info("Added AutoUpdate option to config. It's DISABLED by default!");
 			instance.getLogger().info("Moving conversation to separate files...");
 			ConfigAccessor convOld = ConfigInput.getConfigs().get("conversations");
 			Set<String> keys = convOld.getConfig().getKeys(false);
@@ -94,7 +96,6 @@ public class ConfigUpdater {
 			// end of updating to 1.4
 			config.set("version", "1.4");
 			instance.getLogger().info("Conversion to v1.4 finished.");
-			
 		} else if (version.equals("1.4")) {
 			// do nothing, we're up to date!
 		}
