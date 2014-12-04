@@ -22,11 +22,11 @@ import pl.betoncraft.betonquest.inout.PlayerConverter;
  */
 public class ActionObjective extends Objective implements Listener {
 	
-	private Action action;
+	private String action;
 	private Material type;
 	private byte data = -1;
-	private String rawAction;
-	private Location loc;
+	private String rawLoc;
+	private Location loc = null;
 	double range = 0;
 
 	/**
@@ -37,18 +37,7 @@ public class ActionObjective extends Objective implements Listener {
 	public ActionObjective(String playerID, String instructions) {
 		super(playerID, instructions);
 		String[] parts = instructions.split(" ");
-		rawAction = parts[1];
-		switch (parts[1]) {
-		case "right":
-			action = Action.RIGHT_CLICK_BLOCK;
-			break;
-		case "left":
-			action = Action.LEFT_CLICK_BLOCK;
-			break;
-		default:
-			action = null;
-			break;
-		}
+		action = parts[1];
 		if (parts[2].equalsIgnoreCase("any")) {
 			type = Material.AIR;
 		} else {
@@ -61,6 +50,7 @@ public class ActionObjective extends Objective implements Listener {
 		}
 		for (String part : parts) {
 			if (part.contains("loc:")) {
+				rawLoc = part;
 		        String [] coords = part.substring(4).split(";");
 		        loc = new Location(
 		                Bukkit.getWorld(coords[3]),
@@ -79,13 +69,45 @@ public class ActionObjective extends Objective implements Listener {
 		if (!event.getPlayer().equals(PlayerConverter.getPlayer(playerID))) {
 			return;
 		}
-		if (!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
-			return;
-		}
-		if ((action == null || event.getAction().equals(action)) && (type.equals(Material.AIR) || event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && checkConditions()) {
-			if (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) {
-				HandlerList.unregisterAll(this);
-				completeObjective();
+		if (type == Material.AIR) {
+			switch (action) {
+			case "right":
+				if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) && checkConditions()) {
+					completeObjective();
+					HandlerList.unregisterAll(this);
+				}
+				break;
+			case "left":
+				if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_AIR)) && checkConditions()) {
+					completeObjective();
+					HandlerList.unregisterAll(this);
+				}
+				break;
+			default:
+				if (checkConditions()) {
+					completeObjective();
+					HandlerList.unregisterAll(this);
+				}
+				break;
+			}
+		} else {
+			Action actionEnum;
+			switch (action) {
+			case "right":
+				actionEnum = Action.RIGHT_CLICK_BLOCK;
+				break;
+			case "left":
+				actionEnum = Action.LEFT_CLICK_BLOCK;
+				break;
+			default:
+				actionEnum = null;
+				break;
+			}
+			if ((actionEnum == null || event.getAction().equals(actionEnum)) && event.getClickedBlock().getType().equals(type) && (data < 0 || event.getClickedBlock().getData() == data) && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) && checkConditions() ) {
+				if (checkConditions()) {
+					completeObjective();
+					HandlerList.unregisterAll(this);
+				}
 			}
 		}
 	}
@@ -93,7 +115,7 @@ public class ActionObjective extends Objective implements Listener {
 	@Override
 	public String getInstructions() {
 		HandlerList.unregisterAll(this);
-		return "action " + rawAction + " " + type + ":" + data + " " + conditions + " " + events + " tag:" + tag;
+		return "action " + action + " " + type + ":" + data + " " + rawLoc + " " + conditions + " " + events + " tag:" + tag;
 	}
 
 }
