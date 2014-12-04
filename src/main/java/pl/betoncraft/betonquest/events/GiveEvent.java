@@ -3,17 +3,20 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import pl.betoncraft.betonquest.core.EffectContainer;
 import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.JournalBook;
 import pl.betoncraft.betonquest.inout.PlayerConverter;
 
 /**
@@ -22,12 +25,8 @@ import pl.betoncraft.betonquest.inout.PlayerConverter;
  */
 public class GiveEvent extends QuestEvent {
 	
-	private Material type;
-	private byte data = 0;
+	private QuestItem questItem;
 	private int amount = 1;
-	private Map<Enchantment,Integer> enchants = new HashMap<Enchantment,Integer>();
-	private List<String> lore = new ArrayList<String>();
-	private String name;
 
 	/**
 	 * Constructor method
@@ -38,23 +37,10 @@ public class GiveEvent extends QuestEvent {
 		super(playerID, instructions);
 
 		String[] parts = instructions.split(" ");
+		questItem = new QuestItem(parts[1]);
 		for (String part : parts) {
-			if (part.contains("type:")) {
-				type = Material.matchMaterial(part.substring(5));
-			} else if (part.contains("data:")) {
-				data = Byte.valueOf(part.substring(5));
-			} else if (part.contains("amount:")) {
+			if (part.contains("amount:")) {
 				amount = Integer.valueOf(part.substring(7));
-			} else if (part.contains("enchants:")) {
-				for (String enchant : part.substring(9).split(",")) {
-					enchants.put(Enchantment.getByName(enchant.split(":")[0]), Integer.decode(enchant.split(":")[1]));
-				}
-			} else if (part.contains("lore:")) {
-				for (String loreLine : part.substring(5).split(";")) {
-					lore.add(loreLine.replaceAll("_", " "));
-				}
-			} else if (part.contains("name:")) {
-				name = part.substring(5).replaceAll("_", " ");
 			}
 		}
 		while (amount > 0) {
@@ -64,13 +50,45 @@ public class GiveEvent extends QuestEvent {
 			} else {
 				stackSize = amount;
 			}
-			ItemStack item = new ItemStack(type, stackSize, data);
-			ItemMeta meta = item.getItemMeta();
-			if (name != null) {
-				meta.setDisplayName(name);
+			byte data;
+			if (questItem.getData() < 0) {
+				data = 0;
+			} else {
+				data = (byte) questItem.getData();
 			}
-			meta.setLore(lore);
-			item.addEnchantments(enchants);
+			ItemStack item = new ItemStack(Material.matchMaterial(questItem.getMaterial()), stackSize, data);
+			ItemMeta meta = item.getItemMeta();
+			if (questItem.getName() != null) {
+				meta.setDisplayName(questItem.getName());
+			}
+			meta.setLore(questItem.getLore());
+			for (String enchant : questItem.getEnchants().keySet()) {
+				meta.addEnchant(Enchantment.getByName(enchant), questItem.getEnchants().get(enchant), true);
+			}
+			if (Material.matchMaterial(questItem.getMaterial()).equals(Material.WRITTEN_BOOK)) {
+				BookMeta bookMeta = (BookMeta) meta;
+				if (questItem.getAuthor() != null) {
+					bookMeta.setAuthor(questItem.getAuthor());
+				} else {
+					bookMeta.setAuthor(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".unknown_author"));
+				}
+				if (questItem.getText() != null) {
+					bookMeta.setPages(JournalBook.pagesFromString(questItem.getText()));
+				}
+				if (questItem.getTitle() != null) {
+					bookMeta.setTitle(questItem.getTitle());
+				} else {
+					bookMeta.setTitle(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".unknown_title"));
+				}
+				item.setItemMeta(bookMeta);
+			}
+			if (Material.matchMaterial(questItem.getMaterial()).equals(Material.POTION)) {
+				PotionMeta potionMeta = (PotionMeta) meta;
+				for (EffectContainer effect : questItem.getEffects()) {
+					potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effect.getType()), effect.getDuration(), effect.getPower()), true);
+				}
+				item.setItemMeta(potionMeta);
+			}
 			item.setItemMeta(meta);
 			PlayerConverter.getPlayer(playerID).getInventory().addItem(item);
 			amount = amount - stackSize;

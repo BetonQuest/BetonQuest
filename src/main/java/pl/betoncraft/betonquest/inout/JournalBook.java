@@ -158,9 +158,17 @@ public class JournalBook implements Listener {
 			stringBuilder.append(entry + "\n---------------\n");
 		}
 		String wholeString = stringBuilder.toString().trim();
+		// end of this logic
+		
+		meta.setPages(pagesFromString(wholeString));
+		item.setItemMeta(meta);
+		return item;
+	}
+	
+	public static List<String> pagesFromString(String string) {
 		List<String> pages = new ArrayList<>();
 		StringBuilder page = new StringBuilder();
-		for (String word : wholeString.split(" ")) {
+		for (String word : string.split(" ")) {
 			if (page.length() + word.length() + 1 > 245) {
 				pages.add(page.toString().trim());
 				page = new StringBuilder();
@@ -168,10 +176,6 @@ public class JournalBook implements Listener {
 			page.append(word + " ");
 		}
 		pages.add(page.toString().trim());
-		// end of this logic
-		
-		meta.setPages(pages);
-		item.setItemMeta(meta);
-		return item;
+		return pages;
 	}
 }

@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +13,14 @@ import pl.betoncraft.betonquest.inout.ConfigInput;
 public class QuestItem {
 	
 	private String material = null;
-	private int data = 0;
+	private int data = -1;
 	private Map<String,Integer> enchants = new HashMap<>();
 	private String name = null;
-	private List<String> lore = null;
+	private List<String> lore = new ArrayList<>();
 	private String title = null;
 	private String author = null;
-	private List<String> pages = null;
-	private Map<String,Integer> effects = null;
+	private String text = null;
+	private List<EffectContainer> effects = new ArrayList<>();
 	
 	/**
 	 * Legacy method for the updater, don't use for anything else
@@ -42,7 +43,7 @@ public class QuestItem {
 	 * @param itemID
 	 */
 	public QuestItem(String itemID) {
-		String[] parts = ConfigInput.getString("items.itemID").split(" ");
+		String[] parts = ConfigInput.getString("items." + itemID).split(" ");
 		material = parts[0];
 		for (String part : parts) {
 			if (part.contains("data:")) {
@@ -50,38 +51,27 @@ public class QuestItem {
 			} else if (part.contains("enchants:")) {
 				for (String enchant : part.substring(9).split(",")) {
 					String ID = enchant.split(":")[0];
-					Integer level;
-					if (enchant.split(":").length == 2) {
-						level = new Integer(enchant.split(":")[1]);
-					} else {
-						level = new Integer(0);
-					}
+					Integer level = new Integer(enchant.split(":")[1]);
 					enchants.put(ID, level);
 				}
 			} else if (part.contains("name:")) {
-				name = part.substring(5);
+				name = part.substring(5).replace("_", " ");
 			} else if (part.contains("lore:")) {
 				for (String line : part.substring(5).split(";")) {
-					lore.add(line);
+					lore.add(line.replaceAll("_", " "));
 				}
 			} else if (part.contains("title:")) {
-				title = part.substring(6);
+				title = part.substring(6).replace("_", " ");
 			} else if (part.contains("author:")) {
-				author = part.substring(7);
-			} else if (part.contains("pages:")) {
-				for (String page : part.substring(6).split(";")) {
-					pages.add(page);
-				}
+				author = part.substring(7).replace("_", " ");
+			} else if (part.contains("text:")) {
+				text = part.substring(5).replace("_", " ");
 			} else if (part.contains("effects:")) {
 				for (String effect : part.substring(8).split(",")) {
 					String ID = effect.split(":")[0];
-					Integer power;
-					if (effect.split(":").length == 2) {
-						power = new Integer(effect.split(":")[1]);
-					} else {
-						power = new Integer(0);
-					}
-					effects.put(ID, power);
+					int power = Integer.parseInt(effect.split(":")[1]) - 1;
+					int duration = Integer.parseInt(effect.split(":")[2]) * 20;
+					effects.add(new EffectContainer(ID, power, duration));
 				}
 			}
 		}
@@ -139,14 +129,14 @@ public class QuestItem {
 	/**
 	 * @return the pages
 	 */
-	public List<String> getPages() {
-		return pages;
+	public String getText() {
+		return text;
 	}
 
 	/**
 	 * @return the effects
 	 */
-	public Map<String, Integer> getEffects() {
+	public List<EffectContainer> getEffects() {
 		return effects;
 	}
 
