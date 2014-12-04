@@ -3,6 +3,8 @@
  */
 package pl.betoncraft.betonquest.inout;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,6 +56,11 @@ public class JoinQuitListener implements Listener {
 		instance.loadPlayerTags(playerID);
 		instance.loadJournal(playerID);
 		instance.loadPlayerPoints(playerID);
+		
+		// display changelog message to the admins
+		if (event.getPlayer().hasPermission("betonquest.admin") && new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {
+			SimpleTextOutput.sendSystemMessage(PlayerConverter.getID(event.getPlayer()), ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".changelog"));
+		}
 	}
 	
 	@EventHandler

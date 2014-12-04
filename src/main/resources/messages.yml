@@ -23,6 +23,7 @@ pl:
   player_event: '&aZdarzenie wykonane: %event%'
   player_points: '&aPunkty %category%: %count%'
   purged: '&4Dane gracza %player% wyczyszczone!'
+  changelog: '&e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku aby wylaczyc ten komunikat!&e*'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -43,6 +44,7 @@ en:
   player_event: '&aEvent fired: %event%'
   player_points: '&a%category% points: %count%'
   purged: '&4%player%''s data purged!'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
 de:
   conversation_start: '&e*&bGesprach mit %quester% begonnen!&e*'
   conversation_end: '&e*&bEnde Gesprach mit %quester%!&e*'
@@ -63,6 +65,7 @@ de:
   player_event: '&aEvent fired: %event%'
   player_points: '&a%category% Punkte: %count%'
   purged: '&4%player% - alle datei zuruckgesetzt!'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
 fr:
   conversation_start: '&e*&bLa conversation avec %quester% est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec %quester% est terminee!&e*'
@@ -83,3 +86,4 @@ fr:
   player_event: '&aEvent fired: %event%'
   player_points: '&a%category% points: %count%'
   purged: '&4Donnes du joueur %player% effacees!'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'

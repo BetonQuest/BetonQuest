@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.database;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -263,6 +264,7 @@ public class ConfigUpdater {
 			instance.getLogger().info("All extracted items has been successfully saved to items.yml!");
 
 			// end of updating to 1.4
+			addChangelog();
 			config.set("version", "1.4");
 			instance.getLogger().info("Conversion to v1.4 finished.");
 		} else if (version.equals("1.4")) {
@@ -336,5 +338,19 @@ public class ConfigUpdater {
 		}
 		instance.getDB().closeConnection();
 		instance.getLogger().info("Names conversion finished!");
+	}
+	
+	private void addChangelog() {
+		try {
+			File changelog = new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt");
+			if (changelog.exists()) {
+				changelog.delete();
+			}
+			Files.copy(BetonQuest.getInstance().getResource("changelog.txt"), changelog.toPath());
+			instance.getLogger().info("Changelog added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
