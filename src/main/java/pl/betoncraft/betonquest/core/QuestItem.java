@@ -76,6 +76,37 @@ public class QuestItem {
 			}
 		}
 	}
+	
+	public boolean equalsToItem(QuestItem item) {
+		if (!((item.getAuthor() == null && author == null) || (item.getAuthor() != null && author != null && item.getAuthor().equals(author)))) {
+			return false;
+		}
+		if (item.getData() != data) {
+			return false;
+		}
+		if (!((item.getEffects() == null && effects == null) || (item.getEffects() != null && effects != null && item.getEffects().equals(effects)))) {
+			return false;
+		}
+		if (!((item.getEnchants() == null && enchants == null) || (item.getEnchants() != null && enchants != null && item.getEnchants().equals(enchants)))) {
+			return false;
+		}
+		if (!((item.getLore() == null && lore == null) || (item.getLore() != null && lore != null && item.getLore().equals(lore)))) {
+			return false;
+		}
+		if (!((item.getMaterial() == null && material == null) || (item.getMaterial() != null && material != null && item.getMaterial().equalsIgnoreCase(material)))) {
+			return false;
+		}
+		if (!((item.getName() == null && name == null) || (item.getName() != null && name != null && item.getName().equals(name)))) {
+			return false;
+		}
+		if (!((item.getText() == null && text == null) || (item.getText() != null && text != null && item.getText().equals(text)))) {
+			return false;
+		}
+		if (!((item.getTitle() == null && title == null) || (item.getTitle() != null && title != null && item.getTitle().equals(title)))) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * @return the material

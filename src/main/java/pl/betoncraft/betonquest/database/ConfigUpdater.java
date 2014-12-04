@@ -142,14 +142,31 @@ public class ConfigUpdater {
 							conditions = part;
 						}
 					}
-					// generate new name for an item
-					String newItemID = "item" + number;
-					number++;
 					// create an item
-					items.put(newItemID, new QuestItem(material, data, enchants, name, lore));
+					String newItemID = null;
+					QuestItem item = new QuestItem(material, data, enchants, name, lore);
+					boolean contains = false;
+					for (String itemKey : items.keySet()) {
+						if (items.get(itemKey).equalsToItem(item)) {
+							contains = true;
+							break;
+						}
+					}
+					if (!contains) {
+						// generate new name for an item
+						newItemID = "item" + number;
+						number++;
+						items.put(newItemID, item);
+					} else {
+						for (String itemName : items.keySet()) {
+							if (items.get(itemName).equalsToItem(item)) {
+								newItemID = itemName;
+							}
+						}
+					}
+					ConfigInput.getConfigs().get("events").getConfig().set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
+					
 					// replace event with updated version
-					ConfigInput.getConfigs().get("events").getConfig()
-							.set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
 					instance.getLogger().info("Extracted " + newItemID + " from " + key + " event!");
 				}
 			}
@@ -191,14 +208,29 @@ public class ConfigUpdater {
 							inverted = part;
 						}
 					}
-					// generate new name
-					String newItemID = "item" + number;
-					number++;
 					// create an item
-					items.put(newItemID, new QuestItem(material, data, enchants, name, lore));
-					// replace condition with updated version
-					ConfigInput.getConfigs().get("conditions").getConfig()
-							.set(key, (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
+					String newItemID = null;
+					QuestItem item = new QuestItem(material, data, enchants, name, lore);
+					boolean contains = false;
+					for (String itemKey : items.keySet()) {
+						if (items.get(itemKey).equalsToItem(item)) {
+							contains = true;
+							break;
+						}
+					}
+					if (!contains) {
+						// generate new name for an item
+						newItemID = "item" + number;
+						number++;
+						items.put(newItemID, item);
+					} else {
+						for (String itemName : items.keySet()) {
+							if (items.get(itemName).equalsToItem(item)) {
+								newItemID = itemName;
+							}
+						}
+					}
+					ConfigInput.getConfigs().get("conditions").getConfig().set(key, (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
 					instance.getLogger().info("Extracted " + newItemID + " from " + key + " condition!");
 				}
 			}
