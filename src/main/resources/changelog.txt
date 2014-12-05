@@ -1,1 +1,56 @@
-Changelog goes here.
+v1.4
+Changes:
+    * Conversations are now divided into multiple files in "conversations" directory
+    * Items are now saved to items.yml file and referenced by "take", "give", "item" and "hand" events/conditions
+    * Added /q item <itemID> command which saves currently held item to the config as specified itemID
+    * Added location to Action objective, which checks the location of the block (unlike location condition which checks location of the player)
+    * Added /q event <eventID> command which fires specified event
+    * Fixed multiple bugs with conversation starting and ending
+    * Block NPCs can now be used with Citizens enabled
+    * Added NPCKill objective for killing NPCs
+    * Added SetBlock event for setting a block at specified location
+    * Improved Material matching in configs
+    * Modified Action objective for greater flexibility:
+      - It is now possible to detect clicking in air
+      - It is no longer possible to detect clicking on any block (as this accepts clicking on air)
+      - Can be used to detect book reading (with help of updated Hand condition)
+    * Added AutoUpdater; it's disabled by default
+Notes:
+  Conversion of configuration should have been done automatically, you don't have to worry about anything. If something went wrong you can revert changes from generated backup file, which contains all your previous configs.
+  You can enable AutoUpdater by setting "autoupdate" to true in config.yml. It is completely safe because all next versions will generate backups and convert all files automatically. You will be notified on joining the server about new changelog file.
+  Please refer to the wiki for changes in formatting instruction strings for various things: https://github.com/Co0sh/BetonQuest/wiki
+  You probably should also change names of converted items to something else than "item12". But that works too of course.
+
+v1.3
+Changes:
+    * UUID support (optional)
+    * NPCs made from a clay block, head and sign, for servers without Citizens2 plugin
+    * Global, long and persistent delay for events (as an objective)
+    * Folder event for multiple events, with optional short delay
+    * French translation (thanks to fastlockel)
+If you want to convert names to UUIDs run the plugin once and then change in the config "uuid: false" to true. Do not touch the "convert: true" option unless you want your database wiped! Conversion will happen on next plugin reload (eg. /q reload). This is not revertable!
+Remember to backup your config files before updating! It shouldn't destroy anything but you never know.
+
+v1.2
+Global locations now automatically run only once, no need for blocking it with tags and conditions. They use however tags that follow the syntax "global_<tag>", where <tag> is global location objective tag.
+Added optional respawn location for cancelled death objective, just add "respawn:100.5;200;300.5;world;90;0" to instruction string.
+Added german translation, thanks to coalaa!
+Added optional movement blocking while in conversation, just add option "stop: true" or "stop: false" in every conversation.
+Changed priority of conversation chat event to lowest, should work even for muted players.
+Fixed data values in block objective.
+Added metrics, you can disable them by setting "metrics: false" in config.yml
+Added support for SQLite, plugin will use it when connecting to MySQL fails.
+Fixed death objective not working every time and not removing all effects.
+
+v1.1
+Fixed many bugs including but not limited to:
+    * negated conjunction condition
+    * unnecessary debug messages
+    * not working global locations
+Replaced config examples with default quest
+Leaving data values in item's definition will make plugin ignore data value in most cases
+Improved journal to stop text leaks
+Item names now replace _ with spaces
+
+v1.0
+Initial release

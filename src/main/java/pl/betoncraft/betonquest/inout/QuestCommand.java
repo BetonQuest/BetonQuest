@@ -118,7 +118,6 @@ public class QuestCommand implements CommandExecutor {
 				String author = "";
 				String effects = "";
 				
-				// TODO item creation
 				ItemMeta meta = item.getItemMeta();
 				if (meta.hasDisplayName()) {
 					name = " name:" +meta.getDisplayName().replace(" ", "_");
@@ -147,7 +146,6 @@ public class QuestCommand implements CommandExecutor {
 					}
 					if (bookMeta.hasPages()) {
 						StringBuilder string = new StringBuilder();
-						BetonQuest.getInstance().getLogger().info(bookMeta.getPages().toString());
 						for (String page : bookMeta.getPages()) {
 							string.append(page.trim().replace(" ", "_") + "_");
 						}

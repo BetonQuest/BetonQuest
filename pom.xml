@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.betoncraft.betonquest</groupId>
   <artifactId>BetonQuest</artifactId>
-  <version>1.4-dev</version>
+  <version>1.4</version>
   <build>
       <plugins>
           <plugin>
