@@ -147,7 +147,7 @@ public class ConfigInput {
 		// put conversations accessors in the hashmap
 		instance.conversationsMap.clear();
 		for (File file : instance.folder.listFiles()) {
-			instance.conversationsMap.put(file.getName(), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+			instance.conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")), new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
 		}
 		instance.conditions.reloadConfig();
 		instance.events.reloadConfig();

@@ -20,7 +20,13 @@ public class Zipper {
 	private static String SOURCE_FOLDER;
 
 	public Zipper(String source, String output) {
-		OUTPUT_ZIP_FILE = output;
+		String modifiedOutput = output;
+		int i = 1;
+		while (new File(modifiedOutput + ".zip").exists()) {
+			i++;
+			modifiedOutput = output + "-" + i;
+		}
+		OUTPUT_ZIP_FILE = modifiedOutput + ".zip";
 		SOURCE_FOLDER = source;
 		generateFileList(new File(SOURCE_FOLDER));
 		zipIt(OUTPUT_ZIP_FILE);

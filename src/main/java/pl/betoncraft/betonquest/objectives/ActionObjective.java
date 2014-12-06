@@ -103,7 +103,7 @@ public class ActionObjective extends Objective implements Listener {
 				actionEnum = null;
 				break;
 			}
-			if ((actionEnum == null || event.getAction().equals(actionEnum)) && event.getClickedBlock().getType().equals(type) && (data < 0 || event.getClickedBlock().getData() == data) && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) && checkConditions() ) {
+			if ((actionEnum == null || event.getAction().equals(actionEnum)) && (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) && checkConditions() ) {
 				if (checkConditions()) {
 					completeObjective();
 					HandlerList.unregisterAll(this);
