@@ -57,7 +57,7 @@ public class ActionObjective extends Objective implements Listener {
 		                Double.parseDouble(coords[0]),
 		                Double.parseDouble(coords[1]),
 		                Double.parseDouble(coords[2]));
-		        range = Double.parseDouble(coords[3]);
+		        range = Double.parseDouble(coords[4]);
 			}
 		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

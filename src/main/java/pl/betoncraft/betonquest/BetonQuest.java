@@ -184,11 +184,10 @@ public final class BetonQuest extends JavaPlugin {
 			getLogger().info("Citizens found, hooking!");
 			new CitizensListener();
 		} else {
-			getLogger().info("Citizens not found, using only block NPCs");
+			getLogger().info("Citizens not found, using only cube NPCs");
 		}
 		new CubePeopleListener();
 
-		new CitizensListener();
 		new JournalBook();
 		new GlobalLocations().runTaskTimer(this, 0, 20);
 
