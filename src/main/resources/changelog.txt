@@ -1,3 +1,7 @@
+v1.4.1
+Fixed few bugs in Action objective.
+Fixed updater, hopefully.
+
 v1.4
 Changes:
     * Conversations are now divided into multiple files in "conversations" directory

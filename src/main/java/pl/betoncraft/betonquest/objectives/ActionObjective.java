@@ -66,48 +66,61 @@ public class ActionObjective extends Objective implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		event.getPlayer().sendMessage(String.valueOf("1"));
 		if (!event.getPlayer().equals(PlayerConverter.getPlayer(playerID))) {
+			event.getPlayer().sendMessage(String.valueOf("2"));
 			return;
 		}
+		event.getPlayer().sendMessage(String.valueOf("3"));
 		if (type == Material.AIR) {
+			event.getPlayer().sendMessage(String.valueOf("4"));
 			switch (action) {
 			case "right":
-				if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) && checkConditions()) {
+				event.getPlayer().sendMessage(String.valueOf("5"));
+				if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+					event.getPlayer().sendMessage(String.valueOf("6"));
 					completeObjective();
 					HandlerList.unregisterAll(this);
 				}
 				break;
 			case "left":
-				if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_AIR)) && checkConditions()) {
+				event.getPlayer().sendMessage(String.valueOf("7"));
+				if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) && checkConditions()) {
+					event.getPlayer().sendMessage(String.valueOf("8"));
 					completeObjective();
 					HandlerList.unregisterAll(this);
 				}
 				break;
 			default:
-				if (checkConditions()) {
+				event.getPlayer().sendMessage(String.valueOf("9"));
+				if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+					event.getPlayer().sendMessage(String.valueOf("0"));
 					completeObjective();
 					HandlerList.unregisterAll(this);
 				}
 				break;
 			}
 		} else {
+			event.getPlayer().sendMessage(String.valueOf("A"));
 			Action actionEnum;
 			switch (action) {
 			case "right":
+				event.getPlayer().sendMessage(String.valueOf("B"));
 				actionEnum = Action.RIGHT_CLICK_BLOCK;
 				break;
 			case "left":
+				event.getPlayer().sendMessage(String.valueOf("C"));
 				actionEnum = Action.LEFT_CLICK_BLOCK;
 				break;
 			default:
+				event.getPlayer().sendMessage(String.valueOf("D"));
 				actionEnum = null;
 				break;
 			}
-			if ((actionEnum == null || event.getAction().equals(actionEnum)) && (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) && checkConditions() ) {
-				if (checkConditions()) {
-					completeObjective();
-					HandlerList.unregisterAll(this);
-				}
+			if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum)) && (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(type)) && (data < 0 || event.getClickedBlock().getData() == data) && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range) && checkConditions() ) {
+				event.getPlayer().sendMessage(String.valueOf("E"));
+				completeObjective();
+				HandlerList.unregisterAll(this);
 			}
 		}
 	}

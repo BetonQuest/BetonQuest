@@ -4,7 +4,7 @@ description: Advanced quest plugin
 authors: [Co0sh, Dzejkop, BYK]
 website: http://dev.bukkit.org/bukkit-plugins/betonquest/
 softdepend: [Citizens]
-version: 1.4
+version: 1.4.1
 commands:
   q:
     description: General quest command

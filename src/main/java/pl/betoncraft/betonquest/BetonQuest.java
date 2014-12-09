@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import net.gravitydevelopment.updater.Updater;
-import net.gravitydevelopment.updater.Updater.UpdateResult;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,6 +50,8 @@ import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.QueryType;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.database.UpdateType;
+import pl.betoncraft.betonquest.database.Updater;
+import pl.betoncraft.betonquest.database.Updater.UpdateResult;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
@@ -275,10 +274,13 @@ public final class BetonQuest extends JavaPlugin {
 		
 		// updater!
 		if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
+			getLogger().info("AutoUpdater enabled!");
 			Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult().equals(UpdateResult.SUCCESS)) {
 				getLogger().info("Found " + updater.getLatestName() + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
 			}
+		} else {
+			getLogger().info("AutoUpdater disabled!");
 		}
 
 		// done

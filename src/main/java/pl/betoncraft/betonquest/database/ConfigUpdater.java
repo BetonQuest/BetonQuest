@@ -26,11 +26,11 @@ import pl.betoncraft.betonquest.inout.ConfigInput;
 public class ConfigUpdater {
 	
 	private BetonQuest instance = BetonQuest.getInstance();
+	private FileConfiguration config = instance.getConfig();
 
 	public ConfigUpdater() {
-		FileConfiguration config = instance.getConfig();
 		String version = config.getString("version", null);
-		if (version != null && version.equals("1.4")) {
+		if (version != null && version.equals("1.4.1")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
@@ -41,235 +41,68 @@ public class ConfigUpdater {
 		}
 		// if the version is null the plugin is updated from pre-1.3 version (which can be 1.0, 1.1 or 1.2)
 		if (version == null) {
-			instance.getLogger().info("Started converting configuration files from unknown version to v1.3!");
-			// add conversion options
-			instance.getLogger().info("Using Names by for safety. If you run UUID compatible server and want to use UUID, change it manually in the config file and reload the plugin.");
-			config.set("uuid", "false");
-			// this will alert the plugin that the conversion should be done if UUID is set to true
-			config.set("convert", "true");
-			// add metrics if they are not set yet
-			if (!config.isSet("metrics")) {
-				instance.getLogger().info("Added metrics option.");
-				config.set("metrics", "true");
-			}
-			// add stop to conversation if not done already
-			instance.getLogger().info("Adding stop nodes to conversations...");
-			int count = 0;
-			ConfigAccessor conversations = ConfigInput.getConfigs().get("conversations");
-			Set<String> convNodes = conversations.getConfig().getKeys(false);
-			for (String convNode : convNodes) {
-				if (!conversations.getConfig().isSet(convNode + ".stop")) {
-					conversations.getConfig().set(convNode + ".stop", "false");
-					count++;
-				}
-			}
-			conversations.saveConfig();
-			instance.getLogger().info("Done, modified " + count + " conversations!");
-			// end of updating to 1.3
-			config.set("version", "1.3");
-			instance.getLogger().info("Conversion to v1.3 finished.");
-			// start update recursively for next versions
+			updateTo1_3();
 			new ConfigUpdater();
 		} else if (version.equals("1.3")) {
-			instance.getLogger().info("Started converting configuration files from v1.3 to v1.4!");
-			instance.getConfig().set("autoupdate", "false");
-			instance.getLogger().info("Added AutoUpdate option to config. It's DISABLED by default!");
-			instance.getLogger().info("Moving conversation to separate files...");
-			ConfigAccessor convOld = ConfigInput.getConfigs().get("conversations");
-			Set<String> keys = convOld.getConfig().getKeys(false);
-			File folder = new File(instance.getDataFolder(), "conversations");
-			for (File file : folder.listFiles()) {
-				file.delete();
-			}
-			for (String convID : keys) {
-				File convFile = new File(folder, convID + ".yml");
-		        Map<String,Object> convSection = convOld.getConfig().getConfigurationSection(convID).getValues(true);
-		        YamlConfiguration convNew = YamlConfiguration.loadConfiguration(convFile);
-		        for (String key : convSection.keySet()) {
-					convNew.set(key, convSection.get(key));
-				}
-		        try {
-					convNew.save(convFile);
-					instance.getLogger().info("Conversation " + convID + " moved to it's own file!");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			instance.getLogger().info("All conversations moved, deleting old file.");
-			new File(instance.getDataFolder(), "conversations.yml").delete();
-			
-			// updating items
-			instance.getLogger().info("Starting conversion of items...");
-			// this map will contain all QuestItem objects extracted from
-			// configs
-			HashMap<String, QuestItem> items = new HashMap<>();
-			// this is counter for a number in item names (in items.yml)
-			int number = 0;
-			// check every event
-			for (String key : ConfigInput.getConfigs().get("events").getConfig().getKeys(false)) {
-				String instructions = ConfigInput.getString("events." + key);
-				String[] parts = instructions.split(" ");
-				String type = parts[0];
-				// if this event has items in it do the thing
-				if (type.equals("give") || type.equals("take")) {
-					// define all required variables
-					String amount = "";
-					String conditions = "";
-					String material = null;
-					int data = 0;
-					Map<String, Integer> enchants = new HashMap<>();
-					List<String> lore = new ArrayList<>();
-					String name = null;
-					// for each part of the instruction string check if it
-					// contains some data and if so pu it in variables
-					for (String part : parts) {
-						if (part.contains("type:")) {
-							material = part.substring(5);
-						} else if (part.contains("data:")) {
-							data = Byte.valueOf(part.substring(5));
-						} else if (part.contains("enchants:")) {
-							for (String enchant : part.substring(9).split(",")) {
-								enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
-							}
-						} else if (part.contains("lore:")) {
-							for (String loreLine : part.substring(5).split(";")) {
-								lore.add(loreLine.replaceAll("_", " "));
-							}
-						} else if (part.contains("name:")) {
-							name = part.substring(5).replaceAll("_", " ");
-						} else if (part.contains("amount:")) {
-							amount = part;
-						} else if (part.contains("conditions:")) {
-							conditions = part;
-						}
-					}
-					// create an item
-					String newItemID = null;
-					QuestItem item = new QuestItem(material, data, enchants, name, lore);
-					boolean contains = false;
-					for (String itemKey : items.keySet()) {
-						if (items.get(itemKey).equalsToItem(item)) {
-							contains = true;
-							break;
-						}
-					}
-					if (!contains) {
-						// generate new name for an item
-						newItemID = "item" + number;
-						number++;
-						items.put(newItemID, item);
-					} else {
-						for (String itemName : items.keySet()) {
-							if (items.get(itemName).equalsToItem(item)) {
-								newItemID = itemName;
-							}
-						}
-					}
-					ConfigInput.getConfigs().get("events").getConfig().set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
-					
-					// replace event with updated version
-					instance.getLogger().info("Extracted " + newItemID + " from " + key + " event!");
-				}
-			}
-			// check every condition (it's almost the same code, I didn't know how to do it better
-			for (String key : ConfigInput.getConfigs().get("conditions").getConfig().getKeys(false)) {
-				String instructions = ConfigInput.getString("conditions." + key);
-				String[] parts = instructions.split(" ");
-				String type = parts[0];
-				// if this condition has items do the thing
-				if (type.equals("hand") || type.equals("item")) {
-					// define all variables
-					String amount = "";
-					String material = null;
-					int data = 0;
-					Map<String, Integer> enchants = new HashMap<>();
-					List<String> lore = new ArrayList<>();
-					String name = null;
-					String inverted = "";
-					// for every part check if it has some data and place it in
-					// variables
-					for (String part : parts) {
-						if (part.contains("type:")) {
-							material = part.substring(5);
-						} else if (part.contains("data:")) {
-							data = Byte.valueOf(part.substring(5));
-						} else if (part.contains("enchants:")) {
-							for (String enchant : part.substring(9).split(",")) {
-								enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
-							}
-						} else if (part.contains("lore:")) {
-							for (String loreLine : part.substring(5).split(";")) {
-								lore.add(loreLine.replaceAll("_", " "));
-							}
-						} else if (part.contains("name:")) {
-							name = part.substring(5).replaceAll("_", " ");
-						} else if (part.contains("amount:")) {
-							amount = part;
-						} else if (part.equalsIgnoreCase("--inverted")) {
-							inverted = part;
-						}
-					}
-					// create an item
-					String newItemID = null;
-					QuestItem item = new QuestItem(material, data, enchants, name, lore);
-					boolean contains = false;
-					for (String itemKey : items.keySet()) {
-						if (items.get(itemKey).equalsToItem(item)) {
-							contains = true;
-							break;
-						}
-					}
-					if (!contains) {
-						// generate new name for an item
-						newItemID = "item" + number;
-						number++;
-						items.put(newItemID, item);
-					} else {
-						for (String itemName : items.keySet()) {
-							if (items.get(itemName).equalsToItem(item)) {
-								newItemID = itemName;
-							}
-						}
-					}
-					ConfigInput.getConfigs().get("conditions").getConfig().set(key, (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
-					instance.getLogger().info("Extracted " + newItemID + " from " + key + " condition!");
-				}
-			}
-			// generated all items, now place them in items.yml
-			for (String key : items.keySet()) {
-				QuestItem item = items.get(key);
-				String instruction = item.getMaterial().toUpperCase() + " data:" + item.getData();
-				if (item.getName() != null) {
-					instruction = instruction + " name:" + item.getName().replace(" ", "_");
-				}
-				if (!item.getLore().isEmpty()) {
-					StringBuilder lore = new StringBuilder();
-					for (String line : item.getLore()) {
-						lore.append(line + ";");
-					}
-					instruction = instruction + " lore:" + (lore.substring(0, lore.length()-1).replace(" ", "_"));
-				}
-				if (!item.getEnchants().isEmpty()) {
-					StringBuilder enchants = new StringBuilder();
-					for (String enchant : item.getEnchants().keySet()) {
-						enchants.append(enchant.toUpperCase() + ":" + item.getEnchants().get(enchant) + ",");
-					}
-					instruction = instruction + " enchants:" + enchants.substring(0, enchants.length()-1);
-				}
-				ConfigInput.getConfigs().get("items").getConfig().set(key, instruction);
-			}
-			ConfigInput.getConfigs().get("items").saveConfig();
-			ConfigInput.getConfigs().get("events").saveConfig();
-			ConfigInput.getConfigs().get("conditions").saveConfig();
-			instance.getLogger().info("All extracted items has been successfully saved to items.yml!");
-
-			// end of updating to 1.4
-			addChangelog();
-			config.set("version", "1.4");
-			instance.getLogger().info("Conversion to v1.4 finished.");
+			updateTo1_4();
+			new ConfigUpdater();
 		} else if (version.equals("1.4")) {
-			// do nothing, we're up to date!
+			updateTo1_4_1();
+			new ConfigUpdater();
+		} else if (version.equals("1.4.1")) {
+			// do nothing
 		}
+		updateLanguages();
+		// when the config is up to date then check for pending names conversion
+		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
+		if (config.getString("uuid").equals("true") && config.getString("convert") != null && config.getString("convert").equals("true")) {
+			convertNamesToUUID();
+			config.set("convert", null);
+		}
+		instance.saveConfig();
+		
+		// reload configuration file to apply all possible changes
+		ConfigInput.reload();
+	}
+
+	private void updateTo1_4_1() {
+		// nothing to update
+		addChangelog();
+		config.set("version", "1.4.1");
+		instance.getLogger().info("Converted to 1.4.1");
+	}
+
+	private void updateTo1_3() {
+		instance.getLogger().info("Started converting configuration files from unknown version to v1.3!");
+		// add conversion options
+		instance.getLogger().info("Using Names by for safety. If you run UUID compatible server and want to use UUID, change it manually in the config file and reload the plugin.");
+		config.set("uuid", "false");
+		// this will alert the plugin that the conversion should be done if UUID is set to true
+		config.set("convert", "true");
+		// add metrics if they are not set yet
+		if (!config.isSet("metrics")) {
+			instance.getLogger().info("Added metrics option.");
+			config.set("metrics", "true");
+		}
+		// add stop to conversation if not done already
+		instance.getLogger().info("Adding stop nodes to conversations...");
+		int count = 0;
+		ConfigAccessor conversations = ConfigInput.getConfigs().get("conversations");
+		Set<String> convNodes = conversations.getConfig().getKeys(false);
+		for (String convNode : convNodes) {
+			if (!conversations.getConfig().isSet(convNode + ".stop")) {
+				conversations.getConfig().set(convNode + ".stop", "false");
+				count++;
+			}
+		}
+		conversations.saveConfig();
+		instance.getLogger().info("Done, modified " + count + " conversations!");
+		// end of updating to 1.3
+		config.set("version", "1.3");
+		instance.getLogger().info("Conversion to v1.3 finished.");
+	}
+
+	private void updateLanguages() {
 		// add new languages
 		boolean isUpdated = false;
 		ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
@@ -297,16 +130,204 @@ public class ConfigUpdater {
 			messages.saveConfig();
 			instance.getLogger().info("Updated language files!");
 		}
-		// when the config is up to date then check for pending names conversion
-		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
-		if (config.getString("uuid").equals("true") && config.getString("convert") != null && config.getString("convert").equals("true")) {
-			convertNamesToUUID();
-			config.set("convert", null);
+	}
+
+	private void updateTo1_4() {
+		instance.getLogger().info("Started converting configuration files from v1.3 to v1.4!");
+		instance.getConfig().set("autoupdate", "false");
+		instance.getLogger().info("Added AutoUpdate option to config. It's DISABLED by default!");
+		instance.getLogger().info("Moving conversation to separate files...");
+		ConfigAccessor convOld = ConfigInput.getConfigs().get("conversations");
+		Set<String> keys = convOld.getConfig().getKeys(false);
+		File folder = new File(instance.getDataFolder(), "conversations");
+		for (File file : folder.listFiles()) {
+			file.delete();
 		}
-		instance.saveConfig();
+		for (String convID : keys) {
+			File convFile = new File(folder, convID + ".yml");
+		    Map<String,Object> convSection = convOld.getConfig().getConfigurationSection(convID).getValues(true);
+		    YamlConfiguration convNew = YamlConfiguration.loadConfiguration(convFile);
+		    for (String key : convSection.keySet()) {
+				convNew.set(key, convSection.get(key));
+			}
+		    try {
+				convNew.save(convFile);
+				instance.getLogger().info("Conversation " + convID + " moved to it's own file!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		instance.getLogger().info("All conversations moved, deleting old file.");
+		new File(instance.getDataFolder(), "conversations.yml").delete();
 		
-		// reload configuration file to apply all possible changes
-		ConfigInput.reload();
+		// updating items
+		instance.getLogger().info("Starting conversion of items...");
+		// this map will contain all QuestItem objects extracted from
+		// configs
+		HashMap<String, QuestItem> items = new HashMap<>();
+		// this is counter for a number in item names (in items.yml)
+		int number = 0;
+		// check every event
+		for (String key : ConfigInput.getConfigs().get("events").getConfig().getKeys(false)) {
+			String instructions = ConfigInput.getString("events." + key);
+			String[] parts = instructions.split(" ");
+			String type = parts[0];
+			// if this event has items in it do the thing
+			if (type.equals("give") || type.equals("take")) {
+				// define all required variables
+				String amount = "";
+				String conditions = "";
+				String material = null;
+				int data = 0;
+				Map<String, Integer> enchants = new HashMap<>();
+				List<String> lore = new ArrayList<>();
+				String name = null;
+				// for each part of the instruction string check if it
+				// contains some data and if so pu it in variables
+				for (String part : parts) {
+					if (part.contains("type:")) {
+						material = part.substring(5);
+					} else if (part.contains("data:")) {
+						data = Byte.valueOf(part.substring(5));
+					} else if (part.contains("enchants:")) {
+						for (String enchant : part.substring(9).split(",")) {
+							enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
+						}
+					} else if (part.contains("lore:")) {
+						for (String loreLine : part.substring(5).split(";")) {
+							lore.add(loreLine.replaceAll("_", " "));
+						}
+					} else if (part.contains("name:")) {
+						name = part.substring(5).replaceAll("_", " ");
+					} else if (part.contains("amount:")) {
+						amount = part;
+					} else if (part.contains("conditions:")) {
+						conditions = part;
+					}
+				}
+				// create an item
+				String newItemID = null;
+				QuestItem item = new QuestItem(material, data, enchants, name, lore);
+				boolean contains = false;
+				for (String itemKey : items.keySet()) {
+					if (items.get(itemKey).equalsToItem(item)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					// generate new name for an item
+					newItemID = "item" + number;
+					number++;
+					items.put(newItemID, item);
+				} else {
+					for (String itemName : items.keySet()) {
+						if (items.get(itemName).equalsToItem(item)) {
+							newItemID = itemName;
+						}
+					}
+				}
+				ConfigInput.getConfigs().get("events").getConfig().set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
+				
+				// replace event with updated version
+				instance.getLogger().info("Extracted " + newItemID + " from " + key + " event!");
+			}
+		}
+		// check every condition (it's almost the same code, I didn't know how to do it better
+		for (String key : ConfigInput.getConfigs().get("conditions").getConfig().getKeys(false)) {
+			String instructions = ConfigInput.getString("conditions." + key);
+			String[] parts = instructions.split(" ");
+			String type = parts[0];
+			// if this condition has items do the thing
+			if (type.equals("hand") || type.equals("item")) {
+				// define all variables
+				String amount = "";
+				String material = null;
+				int data = 0;
+				Map<String, Integer> enchants = new HashMap<>();
+				List<String> lore = new ArrayList<>();
+				String name = null;
+				String inverted = "";
+				// for every part check if it has some data and place it in
+				// variables
+				for (String part : parts) {
+					if (part.contains("type:")) {
+						material = part.substring(5);
+					} else if (part.contains("data:")) {
+						data = Byte.valueOf(part.substring(5));
+					} else if (part.contains("enchants:")) {
+						for (String enchant : part.substring(9).split(",")) {
+							enchants.put(enchant.split(":")[0], Integer.decode(enchant.split(":")[1]));
+						}
+					} else if (part.contains("lore:")) {
+						for (String loreLine : part.substring(5).split(";")) {
+							lore.add(loreLine.replaceAll("_", " "));
+						}
+					} else if (part.contains("name:")) {
+						name = part.substring(5).replaceAll("_", " ");
+					} else if (part.contains("amount:")) {
+						amount = part;
+					} else if (part.equalsIgnoreCase("--inverted")) {
+						inverted = part;
+					}
+				}
+				// create an item
+				String newItemID = null;
+				QuestItem item = new QuestItem(material, data, enchants, name, lore);
+				boolean contains = false;
+				for (String itemKey : items.keySet()) {
+					if (items.get(itemKey).equalsToItem(item)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					// generate new name for an item
+					newItemID = "item" + number;
+					number++;
+					items.put(newItemID, item);
+				} else {
+					for (String itemName : items.keySet()) {
+						if (items.get(itemName).equalsToItem(item)) {
+							newItemID = itemName;
+						}
+					}
+				}
+				ConfigInput.getConfigs().get("conditions").getConfig().set(key, (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
+				instance.getLogger().info("Extracted " + newItemID + " from " + key + " condition!");
+			}
+		}
+		// generated all items, now place them in items.yml
+		for (String key : items.keySet()) {
+			QuestItem item = items.get(key);
+			String instruction = item.getMaterial().toUpperCase() + " data:" + item.getData();
+			if (item.getName() != null) {
+				instruction = instruction + " name:" + item.getName().replace(" ", "_");
+			}
+			if (!item.getLore().isEmpty()) {
+				StringBuilder lore = new StringBuilder();
+				for (String line : item.getLore()) {
+					lore.append(line + ";");
+				}
+				instruction = instruction + " lore:" + (lore.substring(0, lore.length()-1).replace(" ", "_"));
+			}
+			if (!item.getEnchants().isEmpty()) {
+				StringBuilder enchants = new StringBuilder();
+				for (String enchant : item.getEnchants().keySet()) {
+					enchants.append(enchant.toUpperCase() + ":" + item.getEnchants().get(enchant) + ",");
+				}
+				instruction = instruction + " enchants:" + enchants.substring(0, enchants.length()-1);
+			}
+			ConfigInput.getConfigs().get("items").getConfig().set(key, instruction);
+		}
+		ConfigInput.getConfigs().get("items").saveConfig();
+		ConfigInput.getConfigs().get("events").saveConfig();
+		ConfigInput.getConfigs().get("conditions").saveConfig();
+		instance.getLogger().info("All extracted items has been successfully saved to items.yml!");
+		// end of updating to 1.4
+		addChangelog();
+		instance.getConfig().set("version", "1.4");
+		instance.getLogger().info("Conversion to v1.4 finished.");
 	}
 	
 	/**
