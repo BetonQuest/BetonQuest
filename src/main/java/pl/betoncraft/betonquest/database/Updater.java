@@ -605,7 +605,34 @@ public class Updater {
      * @return true if Updater should consider the remote version an update, false if not.
      */
     public boolean shouldUpdate(String localVersion, String remoteVersion) {
-        return !localVersion.equalsIgnoreCase(remoteVersion);
+    	
+    	// if the version is exaclty the same there's no need for an update
+    	if (localVersion.equals(remoteVersion)) {
+			return false;
+		}
+    	
+    	// split versions to digits so we can compare them
+    	
+    	String[] localParts = localVersion.split("\\.");
+    	String[] remoteParts = remoteVersion.split("\\.");
+    	
+    	// compare every common digit and determine if it's behind or ahead of remote. if it is the same then it will differ in the additional digit as it cannot be the same (we checked this few lines ago)
+    	
+		for (int i = 0; i < Math.min(Integer.valueOf(localParts.length), Integer.valueOf(remoteParts.length)); i++) {
+			if (Integer.valueOf(localParts[i]) < Integer.valueOf(remoteParts[i])) {
+				return true;
+			} else if (Integer.valueOf(localParts[i]) > Integer.valueOf(remoteParts[i])) {
+				return false;
+			}
+		}
+		
+		// at this point we compared versions, and they are the same until last common digit. also they are not exaclty the same so they must differ in last digit
+		
+		if (localParts.length < remoteParts.length) {
+			return true;
+		} else {
+			return false;
+		}
     }
 
     /**
