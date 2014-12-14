@@ -26,6 +26,7 @@ public class MobKillObjective extends Objective implements Listener {
 	
 	private EntityType mobType;
 	private int amount;
+	private String name;
 
 	/**
 	 * Constructor method
@@ -37,11 +38,19 @@ public class MobKillObjective extends Objective implements Listener {
 		String[] parts = instructions.split(" ");
 		mobType = EntityType.valueOf(parts[1]);
 		amount = Integer.valueOf(parts[2]);
+		for (String part : parts) {
+			if (part.contains("name:")) {
+				name = part.substring(5);
+			}
+		}
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
 	@EventHandler
 	public void onEntityKill(EntityDeathEvent event) {
+		if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name.replaceAll("_", " ")))) {
+			return;
+		}
 		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
 			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
 			if (damage.getDamager() instanceof Player && ((Player) damage.getDamager()).equals(PlayerConverter.getPlayer(playerID)) && damage.getEntity().getType().equals(mobType) && checkConditions()) {
@@ -66,7 +75,11 @@ public class MobKillObjective extends Objective implements Listener {
 	@Override
 	public String getInstructions() {
 		HandlerList.unregisterAll(this);
-		return "mobkill " + mobType.toString() + " " + amount + " " + conditions + " " + events + " tag:" + tag;
+		String namePart = "";
+		if (name != null) {
+			namePart = " name:" + name + " ";
+		}
+		return "mobkill " + mobType.toString() + " " + amount + namePart + " " + conditions + " " + events + " tag:" + tag;
 	}
 
 }

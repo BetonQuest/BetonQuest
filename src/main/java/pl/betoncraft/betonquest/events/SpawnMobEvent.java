@@ -35,7 +35,7 @@ public class SpawnMobEvent extends QuestEvent {
 	}
 
 	/**
-	 * @author D¿ejkop
+	 * @author Dzejkop
 	 * @param locStr
 	 * @return
 	 */

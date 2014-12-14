@@ -35,14 +35,14 @@ public class QuestCommand implements CommandExecutor {
 		if (cmd.getName().equalsIgnoreCase("q")) {
 			if (args.length < 1) {
 				sender.sendMessage("§e----- §aBetonQuest §e-----");
-				sender.sendMessage("§c/q reload §b- " + getMessage("command_reload"));
-				sender.sendMessage("§c/q objectives §b- " + getMessage("command_objectives"));
-				sender.sendMessage("§c/q tags §b- " + getMessage("command_tags"));
-				sender.sendMessage("§c/q points §b- " + getMessage("command_tags"));
-				sender.sendMessage("§c/q condition <id> §b- " + getMessage("command_condition"));
-				sender.sendMessage("§c/q event <id> §b- " + getMessage("command_event"));
-				sender.sendMessage("§c/q item <id> §b- " + getMessage("command_event"));
-				sender.sendMessage("§c/q purge <player> §b- " + getMessage("command_purge"));
+				sender.sendMessage("§c/"+alias+" reload §b- " + getMessage("command_reload"));
+				sender.sendMessage("§c/"+alias+" objectives §b- " + getMessage("command_objectives"));
+				sender.sendMessage("§c/"+alias+" tags §b- " + getMessage("command_tags"));
+				sender.sendMessage("§c/"+alias+" points §b- " + getMessage("command_tags"));
+				sender.sendMessage("§c/"+alias+" condition <id> §b- " + getMessage("command_condition"));
+				sender.sendMessage("§c/"+alias+" event <id> §b- " + getMessage("command_event"));
+				sender.sendMessage("§c/"+alias+" item <id> §b- " + getMessage("command_event"));
+				sender.sendMessage("§c/"+alias+" purge <player> §b- " + getMessage("command_purge"));
 				return true;
 			}
 			switch (args[0]) {

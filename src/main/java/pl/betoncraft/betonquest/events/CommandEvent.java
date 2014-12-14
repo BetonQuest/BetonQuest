@@ -21,8 +21,9 @@ public class CommandEvent extends QuestEvent {
 	 */
 	public CommandEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		String command = instructions.substring(instructions.indexOf(" ") + 1);
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()));
+		String commands = instructions.substring(instructions.indexOf(" ") + 1);
+		for (String command : commands.split("\\|")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()));
+		}
 	}
-
 }

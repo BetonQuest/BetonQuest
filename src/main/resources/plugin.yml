@@ -10,14 +10,14 @@ commands:
     description: General quest command
     usage: /<command>
     permission: betonquest.admin
+    aliases: [bq, bquest, bquests, betonquest, betonquests, quest, quests]
   j:
     description: Adds journal to your inventory
     usage: /<command>
     permission: betonquest.journal
+    aliases: [bj, journal, bjournal, betonjournal]
 permissions:
   betonquest.admin:
-    default: op
-  betonquest.createnpc:
     default: op
   betonquest.journal:
     default: true

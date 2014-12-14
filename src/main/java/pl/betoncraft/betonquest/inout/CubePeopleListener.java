@@ -29,7 +29,7 @@ public class CubePeopleListener implements Listener {
 	
 	@EventHandler
 	public void onSignPlace(SignChangeEvent event) {
-		if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.createnpc")) {
+		if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".no_permission").replaceAll("&", "§"));
 		}
