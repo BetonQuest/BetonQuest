@@ -1,3 +1,13 @@
+v1.5
+Changes:
+    * Command event accepts multiple commands separated by "|" sign
+    * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
+    * Added aliases for /j command: bj, journal, bjournal, betonjournal
+    * Objectives are now defined directly in event instruction, not in objectives.yml
+
+v1.4.2
+Really fixed an updater.
+
 v1.4.1
 Fixed few bugs in Action objective.
 Fixed updater, hopefully.

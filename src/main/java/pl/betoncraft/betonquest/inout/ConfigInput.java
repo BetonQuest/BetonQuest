@@ -62,7 +62,6 @@ public class ConfigInput {
 		journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml");
 		items = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml");
 		// save config if there isn't one
-		objectives.saveDefaultConfig();
 		conditions.saveDefaultConfig();
 		events.saveDefaultConfig();
 		messages.saveDefaultConfig();

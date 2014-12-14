@@ -30,10 +30,11 @@ public class ConfigUpdater {
 
 	public ConfigUpdater() {
 		String version = config.getString("version", null);
-		if (version != null && version.equals("1.4.2")) {
+		if (version != null && version.equals("1.5")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
+			addChangelog();
 			instance.getLogger().info("Backing up before conversion!");
 			String outputPath = instance.getDataFolder().getAbsolutePath() + File.separator + "backup-" + version;
 			new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
@@ -52,6 +53,9 @@ public class ConfigUpdater {
 		} else if (version.equals("1.4.1")) {
 			updateTo1_4_2();
 			new ConfigUpdater();
+		} else if (version.equals("1.4.2")) {
+			updateTo1_5();
+			new ConfigUpdater();
 		}
 		updateLanguages();
 		// when the config is up to date then check for pending names conversion
@@ -65,17 +69,35 @@ public class ConfigUpdater {
 		// reload configuration file to apply all possible changes
 		ConfigInput.reload();
 	}
+	
+	private void updateTo1_5() {
+		instance.getLogger().info("Starting conversion to 1.5");
+		// convert objectives to new format
+		instance.getLogger().info("Converting objectives to new format...");
+		ConfigAccessor objectives = ConfigInput.getConfigs().get("objectives");
+		ConfigAccessor events = ConfigInput.getConfigs().get("events");
+		for (String key : events.getConfig().getKeys(false)) {
+			if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
+				events.getConfig().set(key, "objective " + objectives.getConfig().getString(events.getConfig().getString(key).split(" ")[1]));
+				instance.getLogger().info("Event " + key + " converted!");
+			}
+		}
+		events.saveConfig();
+		new File(instance.getDataFolder(), "objectives.yml").delete();
+		instance.getLogger().info("Objectives converted!");
+		// end of update
+		config.set("version", "1.5");
+		instance.getLogger().info("Converted to 1.5");
+	}
 
 	private void updateTo1_4_2() {
 		// nothing to update
-		addChangelog();
 		config.set("version", "1.4.2");
 		instance.getLogger().info("Converted to 1.4.2");
 	}
 
 	private void updateTo1_4_1() {
 		// nothing to update
-		addChangelog();
 		config.set("version", "1.4.1");
 		instance.getLogger().info("Converted to 1.4.1");
 	}
@@ -333,7 +355,6 @@ public class ConfigUpdater {
 		ConfigInput.getConfigs().get("conditions").saveConfig();
 		instance.getLogger().info("All extracted items has been successfully saved to items.yml!");
 		// end of updating to 1.4
-		addChangelog();
 		instance.getConfig().set("version", "1.4");
 		instance.getLogger().info("Conversion to v1.4 finished.");
 	}

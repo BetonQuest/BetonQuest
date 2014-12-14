@@ -5,7 +5,6 @@ package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestEvent;
-import pl.betoncraft.betonquest.inout.ConfigInput;
 
 /**
  * 
@@ -20,7 +19,7 @@ public class ObjectiveEvent extends QuestEvent {
 	 */
 	public ObjectiveEvent(String playerID, String instructions) {
 		super(playerID, instructions);
-		BetonQuest.objective(playerID, ConfigInput.getString("objectives." + instructions.split(" ")[1]));
+		BetonQuest.objective(playerID, instructions.substring(instructions.indexOf(" ") + 1));
 	}
 
 }
