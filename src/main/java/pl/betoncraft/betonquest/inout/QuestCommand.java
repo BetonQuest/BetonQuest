@@ -145,11 +145,11 @@ public class QuestCommand implements CommandExecutor {
 						title = " title:" + bookMeta.getTitle().replace(" ", "_");
 					}
 					if (bookMeta.hasPages()) {
-						StringBuilder string = new StringBuilder();
+						text = " text:";
 						for (String page : bookMeta.getPages()) {
-							string.append(page.trim().replace(" ", "_") + "_");
+							text = text + page.trim().replace(" ", "_") + "|";
 						}
-						text = " text:" + string.substring(0, string.length()-1);
+						text = text.substring(0, text.length() - 1);
 					}
 				}
 				if (meta instanceof PotionMeta) {

@@ -98,7 +98,7 @@ public class TakeEvent extends QuestEvent {
 			if (!questItem.getLore().isEmpty() && (!bookMeta.hasLore() || !bookMeta.getLore().equals(questItem.getLore()))) {
 				return false;
 			}
-			if (questItem.getText() != null && (!bookMeta.hasPages() || !bookMeta.getPages().equals(JournalBook.pagesFromString(questItem.getText())))) {
+			if (questItem.getText() != null && (!bookMeta.hasPages() || !bookMeta.getPages().equals(JournalBook.pagesFromString(questItem.getText(), false)))) {
 				return false;
 			}
 		} else if (item.getType().equals(Material.POTION)) {

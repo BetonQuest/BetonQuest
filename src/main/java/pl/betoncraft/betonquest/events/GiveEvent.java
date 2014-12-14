@@ -73,7 +73,7 @@ public class GiveEvent extends QuestEvent {
 					bookMeta.setAuthor(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".unknown_author"));
 				}
 				if (questItem.getText() != null) {
-					bookMeta.setPages(JournalBook.pagesFromString(questItem.getText()));
+					bookMeta.setPages(JournalBook.pagesFromString(questItem.getText(), false));
 				}
 				if (questItem.getTitle() != null) {
 					bookMeta.setTitle(questItem.getTitle());

@@ -4,6 +4,7 @@
 package pl.betoncraft.betonquest.inout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -160,22 +161,26 @@ public class JournalBook implements Listener {
 		String wholeString = stringBuilder.toString().trim();
 		// end of this logic
 		
-		meta.setPages(pagesFromString(wholeString));
+		meta.setPages(pagesFromString(wholeString, true));
 		item.setItemMeta(meta);
 		return item;
 	}
 	
-	public static List<String> pagesFromString(String string) {
+	public static List<String> pagesFromString(String string, boolean singleString) {
 		List<String> pages = new ArrayList<>();
-		StringBuilder page = new StringBuilder();
-		for (String word : string.split(" ")) {
-			if (page.length() + word.length() + 1 > 245) {
-				pages.add(page.toString().trim());
-				page = new StringBuilder();
+		if (singleString) {
+			StringBuilder page = new StringBuilder();
+			for (String word : string.split(" ")) {
+				if (page.length() + word.length() + 1 > 245) {
+					pages.add(page.toString().trim());
+					page = new StringBuilder();
+				}
+				page.append(word + " ");
 			}
-			page.append(word + " ");
+			pages.add(page.toString().trim());
+		} else {
+			pages = Arrays.asList(string.split("\\|"));
 		}
-		pages.add(page.toString().trim());
 		return pages;
 	}
 }
