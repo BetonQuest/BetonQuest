@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
@@ -245,6 +246,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("delay", DelayObjective.class);
 		registerObjectives("npckill", NPCKillObjective.class);
 
+		new Compatibility();
+		
 		// initialize PlayerConverter
 		PlayerConverter.getType();
 		
