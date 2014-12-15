@@ -30,7 +30,7 @@ public class ConfigUpdater {
 
 	public ConfigUpdater() {
 		String version = config.getString("version", null);
-		if (version != null && version.equals("1.4.2")) {
+		if (version != null && version.equals("1.4.3")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
@@ -52,6 +52,9 @@ public class ConfigUpdater {
 		} else if (version.equals("1.4.1")) {
 			updateTo1_4_2();
 			new ConfigUpdater();
+		} else if (version.equals("1.4.2")) {
+			updateTo1_4_3();
+			new ConfigUpdater();
 		}
 		updateLanguages();
 		// when the config is up to date then check for pending names conversion
@@ -64,6 +67,13 @@ public class ConfigUpdater {
 		
 		// reload configuration file to apply all possible changes
 		ConfigInput.reload();
+	}
+	
+	private void updateTo1_4_3() {
+		// nothing to update
+		addChangelog();
+		config.set("version", "1.4.3");
+		instance.getLogger().info("Converted to 1.4.3");
 	}
 
 	private void updateTo1_4_2() {

@@ -1,3 +1,9 @@
+v1.4.3
+Removed debug messages from ActionObjective. You could have told me, any of you guys...
+
+v1.4.2
+Really fixed an updater.
+
 v1.4.1
 Fixed few bugs in Action objective.
 Fixed updater, hopefully.
