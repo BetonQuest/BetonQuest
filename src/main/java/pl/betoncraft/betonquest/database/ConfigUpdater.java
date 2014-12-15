@@ -54,6 +54,9 @@ public class ConfigUpdater {
 			updateTo1_4_2();
 			new ConfigUpdater();
 		} else if (version.equals("1.4.2")) {
+			updateTo1_4_3();
+			new ConfigUpdater();
+		} else if (version.equals("1.4.3")) {
 			updateTo1_5();
 			new ConfigUpdater();
 		}
@@ -88,6 +91,12 @@ public class ConfigUpdater {
 		// end of update
 		config.set("version", "1.5");
 		instance.getLogger().info("Converted to 1.5");
+	}
+	
+	private void updateTo1_4_3() {
+		// nothing to update
+		config.set("version", "1.4.3");
+		instance.getLogger().info("Converted to 1.4.3");
 	}
 
 	private void updateTo1_4_2() {

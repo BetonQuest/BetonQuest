@@ -4,6 +4,10 @@ Changes:
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
     * Objectives are now defined directly in event instruction, not in objectives.yml
+    * Added support for MythicMobs
+
+v1.4.3
+Removed debug messages from ActionObjective. You could have told me, any of you guys...
 
 v1.4.2
 Really fixed an updater.
