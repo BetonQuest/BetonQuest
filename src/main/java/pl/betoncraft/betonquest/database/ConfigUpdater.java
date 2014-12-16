@@ -88,6 +88,8 @@ public class ConfigUpdater {
 		events.saveConfig();
 		new File(instance.getDataFolder(), "objectives.yml").delete();
 		instance.getLogger().info("Objectives converted!");
+		config.set("tellraw", "false");
+		instance.getLogger().info("Tellraw option added to config.yml!");
 		// end of update
 		config.set("version", "1.5");
 		instance.getLogger().info("Converted to 1.5");

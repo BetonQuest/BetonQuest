@@ -5,6 +5,7 @@ Changes:
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
     * Objectives are now defined directly in event instruction, not in objectives.yml
     * Added support for MythicMobs
+    * Replies in conversations are now optionally clickable
 
 v1.4.3
 Removed debug messages from ActionObjective. You could have told me, any of you guys...

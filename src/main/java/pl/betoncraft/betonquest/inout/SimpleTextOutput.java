@@ -3,6 +3,8 @@
  */
 package pl.betoncraft.betonquest.inout;
 
+import org.bukkit.Bukkit;
+
 
 /**
  * 
@@ -40,7 +42,11 @@ public class SimpleTextOutput {
 	 */
 	public static void sendQuesterReply(String playerID, int number, String quester, String message) {
 		String finalString = (ConfigInput.getString("messages.global.quester_reply_format") + message).replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number)).replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName()).replaceAll("&", "§");
-		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
+		if (ConfigInput.getString("config.tellraw").equalsIgnoreCase("true")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + PlayerConverter.getPlayer(playerID).getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"" + finalString + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + number + "\"}}]}");
+		} else {
+			PlayerConverter.getPlayer(playerID).sendMessage(finalString);
+		}
 	}
 	
 	/**
