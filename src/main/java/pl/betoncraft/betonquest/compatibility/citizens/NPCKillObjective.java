@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.objectives;
+package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.event.NPCDeathEvent;
 

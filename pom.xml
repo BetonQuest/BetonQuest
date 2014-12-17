@@ -26,6 +26,10 @@
 			<id>citizens-repo</id>
 			<url>http://repo.citizensnpcs.co/</url>
 		</repository>
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -41,11 +45,24 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>net.elseland.xikage</groupId>
 			<artifactId>MythicMobs</artifactId>
 			<version>1.1.4</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/MythicMobs.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>net.aufdemrand</groupId>
+			<artifactId>denizen</artifactId>
+			<version>0.9.6-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/Denizen.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>

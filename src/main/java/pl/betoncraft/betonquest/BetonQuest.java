@@ -91,7 +91,6 @@ import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
-import pl.betoncraft.betonquest.objectives.NPCKillObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
 import pl.betoncraft.betonquest.objectives.TameObjective;
 
@@ -181,7 +180,7 @@ public final class BetonQuest extends JavaPlugin {
 
 		// instantiate one of conversation start listeners
 		if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
-			getLogger().info("Citizens found, hooking!");
+			getLogger().info("Citizens found, NPCs active!");
 			new CitizensListener();
 		} else {
 			getLogger().info("Citizens not found, using only cube NPCs");
@@ -244,7 +243,6 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("smelt", SmeltingObjective.class);
 		registerObjectives("tame", TameObjective.class);
 		registerObjectives("delay", DelayObjective.class);
-		registerObjectives("npckill", NPCKillObjective.class);
 
 		new Compatibility();
 		
