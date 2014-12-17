@@ -4,6 +4,8 @@
 package pl.betoncraft.betonquest.inout;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 
 /**
@@ -17,9 +19,13 @@ public class SimpleTextOutput {
 	 * @param playerID
 	 * @param message
 	 */
-	public static void sendSystemMessage(String playerID, String message) {
+	public static void sendSystemMessage(String playerID, String message, String soundName) {
+		Player player = PlayerConverter.getPlayer(playerID);
 		String finalString = (ConfigInput.getString("messages.global.plugin_prefix") + message).replaceAll("&", "§");
-		PlayerConverter.getPlayer(playerID).sendMessage(finalString);
+		player.sendMessage(finalString);
+		if (!soundName.equalsIgnoreCase("false")) {
+			player.playSound(player.getLocation(), Sound.valueOf(soundName), 1F, 1F);
+		}
 	}
 	
 	/**

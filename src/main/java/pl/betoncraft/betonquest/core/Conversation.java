@@ -47,7 +47,7 @@ public class Conversation {
 		listener = new ConversationListener(playerID, location, this);
 		
 		// print message about starting a conversation
-		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_start").replaceAll("%quester%", quester));
+		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_start").replaceAll("%quester%", quester), ConfigInput.getString("config.sounds.start"));
 
 		// get initial npc's options
 		String options = ConfigInput.getString("conversations." + conversationID + ".first");
@@ -153,7 +153,7 @@ public class Conversation {
 			}
 			SimpleTextOutput.sendQuesterMessage(playerID, quester, message);
 			// and instructions from plugin about answering npcs
-			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".help_with_answering"));
+			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".help_with_answering"), ConfigInput.getString("config.sounds.unknown"));
 			return;
 		}
 		
@@ -279,7 +279,7 @@ public class Conversation {
 			BetonQuest.getInstance().getLogger().severe("Conversation " + conversationID + " final events error!");
 		}
 		// print message
-		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester));
+		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages."+ ConfigInput.getString("config.language") +".conversation_end").replaceAll("%quester%", quester), ConfigInput.getString("config.sounds.end"));
 		// delete conversation
 		ConversationContainer.removePlayer(playerID);
 		// unregister listener

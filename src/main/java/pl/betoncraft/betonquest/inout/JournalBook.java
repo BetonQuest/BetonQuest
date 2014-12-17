@@ -101,7 +101,7 @@ public class JournalBook implements Listener {
 				inventory.addItem(oldItem);
 			}
 		} else {
-			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".inventory_full"));
+			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".inventory_full"), ConfigInput.getString("config.sounds.full"));
 		}
 	}
 	

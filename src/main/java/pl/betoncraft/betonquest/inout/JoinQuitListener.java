@@ -59,7 +59,7 @@ public class JoinQuitListener implements Listener {
 		
 		// display changelog message to the admins
 		if (event.getPlayer().hasPermission("betonquest.admin") && new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {
-			SimpleTextOutput.sendSystemMessage(PlayerConverter.getID(event.getPlayer()), ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".changelog"));
+			SimpleTextOutput.sendSystemMessage(PlayerConverter.getID(event.getPlayer()), ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".changelog"), ConfigInput.getString("config.sounds.update"));
 		}
 	}
 	

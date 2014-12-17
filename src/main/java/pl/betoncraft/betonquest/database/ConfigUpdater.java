@@ -75,6 +75,12 @@ public class ConfigUpdater {
 	
 	private void updateTo1_5() {
 		instance.getLogger().info("Starting conversion to 1.5");
+		// add sound settings
+		instance.getLogger().info("Adding new sound options...");
+		String[] array = new String[]{"start", "end", "journal", "update", "full"};
+		for (String string : array) {
+			config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
+		}
 		// convert objectives to new format
 		instance.getLogger().info("Converting objectives to new format...");
 		ConfigAccessor objectives = ConfigInput.getConfigs().get("objectives");
