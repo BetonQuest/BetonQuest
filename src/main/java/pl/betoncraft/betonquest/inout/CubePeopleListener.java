@@ -37,6 +37,9 @@ public class CubePeopleListener implements Listener {
 	
 	@EventHandler
 	public void onNPCClick(PlayerInteractEvent event) {
+		if (!event.getPlayer().hasPermission("betonquest.conversation")) {
+			return;
+		}
 		String conversationID = null;
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.SKULL)) {
 			Block block = event.getClickedBlock().getLocation().clone().add(0, -1, 0).getBlock();

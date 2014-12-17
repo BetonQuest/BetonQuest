@@ -21,4 +21,6 @@ permissions:
     default: op
   betonquest.journal:
     default: true
+  betonquest.conversation:
+    default: true
   
