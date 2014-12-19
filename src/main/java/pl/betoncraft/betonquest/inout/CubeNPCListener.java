@@ -21,9 +21,9 @@ import pl.betoncraft.betonquest.core.Conversation;
  * 
  * @author Co0sh
  */
-public class CubePeopleListener implements Listener {
+public class CubeNPCListener implements Listener {
 	
-	public CubePeopleListener() {
+	public CubeNPCListener() {
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	

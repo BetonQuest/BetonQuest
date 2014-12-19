@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.betoncraft.betonquest.inout;
+package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 
@@ -11,6 +11,10 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.ConversationContainer;
+import pl.betoncraft.betonquest.inout.PlayerConverter;
+import pl.betoncraft.betonquest.inout.UnifiedLocation;
 
 /**
  * 

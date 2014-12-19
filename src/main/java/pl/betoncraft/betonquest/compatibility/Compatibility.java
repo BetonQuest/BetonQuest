@@ -13,12 +13,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
+import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
 import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
-import pl.betoncraft.betonquest.inout.CitizensListener;
 
 /**
  * @author co0sh
@@ -37,6 +38,7 @@ public class Compatibility {
 		// hook into MythicMobs
 		if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
 			instance.registerObjectives("mmobkill", MythicMobKillObjective.class);
+			instance.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
 			hooked.add("MythicMobs");
 		}
 

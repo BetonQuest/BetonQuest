@@ -75,7 +75,7 @@ import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationContainer;
-import pl.betoncraft.betonquest.inout.CubePeopleListener;
+import pl.betoncraft.betonquest.inout.CubeNPCListener;
 import pl.betoncraft.betonquest.inout.GlobalLocations;
 import pl.betoncraft.betonquest.inout.JoinQuitListener;
 import pl.betoncraft.betonquest.inout.JournalBook;
@@ -178,7 +178,7 @@ public final class BetonQuest extends JavaPlugin {
 		new JoinQuitListener();
 
 		// instantiate default conversation start listener
-		new CubePeopleListener();
+		new CubeNPCListener();
 
 		new JournalBook();
 		new GlobalLocations().runTaskTimer(this, 0, 20);
