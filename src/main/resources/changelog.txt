@@ -1,14 +1,27 @@
 v1.5
 Changes:
-    * Added support for MythicMobs
-    * Added support for Vault
+    * Added support for MythicMobs and Vault (see wiki for more info)
+    * AutoUpdater is now enabled by default! If you want you can change this and reload the
+      plugin, nothing will be downloaded in that case
     * Command event accepts multiple commands separated by "|" sign
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
-    * Objectives are now defined directly in event instruction, not in objectives.yml
-    * Replies in conversations are now optionally clickable
+    * Objectives are now defined directly in event instruction, not in objectives.yml (which
+      was deleted, if you want to restore something check the backup)
+    * Replies in conversations are now optionally clickable (tellraw option in config.yml)
     * Added permission for starting a conversation: betonquest.conversation
-    * Conversation starting/ending, updating journal, plugin's update and full inventory can now make sounds
+    * Conversation starting/ending, updating journal, plugin's update and full inventory can now make
+      sounds; you can find a list of possible values here: jd.bukkit.org/rb/apidocs/org/bukkit/Sound.html
+    * Updater is now run when disabling the plugin (it does matter if your server restarts every night)
+Notes:
+  All Objective events has been converted to new format. The objectives.yml file has been deleted, so if
+  it contained any objectives that weren't covered by an event they may seem lost. However there is a backup file
+  and you can easily extract everything from it. Please refer to the wiki to learn how objectives are now defined
+  or just study converted ones (it's pretty straightforward).
+  AutoUpdater is now enabled by default. Every future update will be working exactly like before, all changes
+  will be automaticly updated by a converter, there is always a backup and you are informed about all changes in
+  this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you
+  don't want to have latest fixex and features you can disable updating but this will make the developer sad.
 
 v1.4.3
 Removed debug messages from ActionObjective. You could have told me, any of you guys...

@@ -30,6 +30,13 @@ public class ConfigUpdater {
 
 	public ConfigUpdater() {
 		String version = config.getString("version", null);
+		// when the config is up to date then check for pending names conversion
+		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
+		if (config.getString("uuid") != null && config.getString("uuid").equals("true") && config.getString("convert") != null && config.getString("convert").equals("true")) {
+			convertNamesToUUID();
+			config.set("convert", null);
+			instance.saveConfig();
+		}
 		if (version != null && version.equals("1.5")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
@@ -43,30 +50,18 @@ public class ConfigUpdater {
 		// if the version is null the plugin is updated from pre-1.3 version (which can be 1.0, 1.1 or 1.2)
 		if (version == null) {
 			updateTo1_3();
-			new ConfigUpdater();
 		} else if (version.equals("1.3")) {
 			updateTo1_4();
-			new ConfigUpdater();
 		} else if (version.equals("1.4")) {
 			updateTo1_4_1();
-			new ConfigUpdater();
 		} else if (version.equals("1.4.1")) {
 			updateTo1_4_2();
-			new ConfigUpdater();
 		} else if (version.equals("1.4.2")) {
 			updateTo1_4_3();
-			new ConfigUpdater();
 		} else if (version.equals("1.4.3")) {
 			updateTo1_5();
-			new ConfigUpdater();
 		}
 		updateLanguages();
-		// when the config is up to date then check for pending names conversion
-		// conversion will occur only if UUID is manually set to true, as we have never set uuid AND convert to true
-		if (config.getString("uuid").equals("true") && config.getString("convert") != null && config.getString("convert").equals("true")) {
-			convertNamesToUUID();
-			config.set("convert", null);
-		}
 		instance.saveConfig();
 		
 		// reload configuration file to apply all possible changes
@@ -96,6 +91,8 @@ public class ConfigUpdater {
 		instance.getLogger().info("Objectives converted!");
 		config.set("tellraw", "false");
 		instance.getLogger().info("Tellraw option added to config.yml!");
+		config.set("autoupdate", "true");
+		instance.getLogger().info("AutoUpdater is now enabled by default! You can change this if you want and reload the plugin, nothing will be downloaded in that case.");
 		// end of update
 		config.set("version", "1.5");
 		instance.getLogger().info("Converted to 1.5");
@@ -105,80 +102,23 @@ public class ConfigUpdater {
 		// nothing to update
 		config.set("version", "1.4.3");
 		instance.getLogger().info("Converted to 1.4.3");
+		updateTo1_5();
 	}
 
 	private void updateTo1_4_2() {
 		// nothing to update
 		config.set("version", "1.4.2");
 		instance.getLogger().info("Converted to 1.4.2");
+		updateTo1_4_3();
 	}
 
 	private void updateTo1_4_1() {
 		// nothing to update
 		config.set("version", "1.4.1");
 		instance.getLogger().info("Converted to 1.4.1");
+		updateTo1_4_2();
 	}
-
-	private void updateTo1_3() {
-		instance.getLogger().info("Started converting configuration files from unknown version to v1.3!");
-		// add conversion options
-		instance.getLogger().info("Using Names by for safety. If you run UUID compatible server and want to use UUID, change it manually in the config file and reload the plugin.");
-		config.set("uuid", "false");
-		// this will alert the plugin that the conversion should be done if UUID is set to true
-		config.set("convert", "true");
-		// add metrics if they are not set yet
-		if (!config.isSet("metrics")) {
-			instance.getLogger().info("Added metrics option.");
-			config.set("metrics", "true");
-		}
-		// add stop to conversation if not done already
-		instance.getLogger().info("Adding stop nodes to conversations...");
-		int count = 0;
-		ConfigAccessor conversations = ConfigInput.getConfigs().get("conversations");
-		Set<String> convNodes = conversations.getConfig().getKeys(false);
-		for (String convNode : convNodes) {
-			if (!conversations.getConfig().isSet(convNode + ".stop")) {
-				conversations.getConfig().set(convNode + ".stop", "false");
-				count++;
-			}
-		}
-		conversations.saveConfig();
-		instance.getLogger().info("Done, modified " + count + " conversations!");
-		// end of updating to 1.3
-		config.set("version", "1.3");
-		instance.getLogger().info("Conversion to v1.3 finished.");
-	}
-
-	private void updateLanguages() {
-		// add new languages
-		boolean isUpdated = false;
-		ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
-		// check every language if it exists
-		for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
-			if (messages.getConfig().isSet(path)) {
-				// if it exists check every message if it exists
-				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-					if (!messages.getConfig().isSet(path + "." + messageNode)) {
-						// if message doesn't exist then add it from defaults
-						messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
-						isUpdated = true;
-					}
-				}
-			} else {
-				// if language does not exist then add every message to it
-				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
-					messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
-					isUpdated = true;
-				}
-			}
-		}
-		// if we updated config filse then print the message
-		if (isUpdated) {
-			messages.saveConfig();
-			instance.getLogger().info("Updated language files!");
-		}
-	}
-
+	
 	private void updateTo1_4() {
 		instance.getLogger().info("Started converting configuration files from v1.3 to v1.4!");
 		instance.getConfig().set("autoupdate", "false");
@@ -374,6 +314,68 @@ public class ConfigUpdater {
 		// end of updating to 1.4
 		instance.getConfig().set("version", "1.4");
 		instance.getLogger().info("Conversion to v1.4 finished.");
+		updateTo1_4_1();
+	}
+
+	private void updateTo1_3() {
+		instance.getLogger().info("Started converting configuration files from unknown version to v1.3!");
+		// add conversion options
+		instance.getLogger().info("Using Names by for safety. If you run UUID compatible server and want to use UUID, change it manually in the config file and reload the plugin.");
+		config.set("uuid", "false");
+		// this will alert the plugin that the conversion should be done if UUID is set to true
+		config.set("convert", "true");
+		// add metrics if they are not set yet
+		if (!config.isSet("metrics")) {
+			instance.getLogger().info("Added metrics option.");
+			config.set("metrics", "true");
+		}
+		// add stop to conversation if not done already
+		instance.getLogger().info("Adding stop nodes to conversations...");
+		int count = 0;
+		ConfigAccessor conversations = ConfigInput.getConfigs().get("conversations");
+		Set<String> convNodes = conversations.getConfig().getKeys(false);
+		for (String convNode : convNodes) {
+			if (!conversations.getConfig().isSet(convNode + ".stop")) {
+				conversations.getConfig().set(convNode + ".stop", "false");
+				count++;
+			}
+		}
+		conversations.saveConfig();
+		instance.getLogger().info("Done, modified " + count + " conversations!");
+		// end of updating to 1.3
+		config.set("version", "1.3");
+		instance.getLogger().info("Conversion to v1.3 finished.");
+		updateTo1_4();
+	}
+
+	private void updateLanguages() {
+		// add new languages
+		boolean isUpdated = false;
+		ConfigAccessor messages = ConfigInput.getConfigs().get("messages");
+		// check every language if it exists
+		for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
+			if (messages.getConfig().isSet(path)) {
+				// if it exists check every message if it exists
+				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
+					if (!messages.getConfig().isSet(path + "." + messageNode)) {
+						// if message doesn't exist then add it from defaults
+						messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
+						isUpdated = true;
+					}
+				}
+			} else {
+				// if language does not exist then add every message to it
+				for (String messageNode : messages.getConfig().getDefaults().getConfigurationSection(path).getKeys(false)) {
+					messages.getConfig().set(path + "." + messageNode, messages.getConfig().getDefaults().get(path + "." + messageNode));
+					isUpdated = true;
+				}
+			}
+		}
+		// if we updated config filse then print the message
+		if (isUpdated) {
+			messages.saveConfig();
+			instance.getLogger().info("Updated language files!");
+		}
 	}
 	
 	/**

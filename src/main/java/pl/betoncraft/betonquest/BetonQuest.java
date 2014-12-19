@@ -269,10 +269,6 @@ public final class BetonQuest extends JavaPlugin {
 		// updater!
 		if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
 			getLogger().info("AutoUpdater enabled!");
-			Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT, false);
-			if (updater.getResult().equals(UpdateResult.SUCCESS)) {
-				getLogger().info("Found " + updater.getLatestName() + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
-			}
 		} else {
 			getLogger().info("AutoUpdater disabled!");
 		}
@@ -303,6 +299,14 @@ public final class BetonQuest extends JavaPlugin {
 					.updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[] { PlayerConverter.getID(player) });
 		}
 		database.closeConnection();
+		
+		if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
+			Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT, false);
+			if (updater.getResult().equals(UpdateResult.SUCCESS)) {
+				getLogger().info("Found " + updater.getLatestName() + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
+			}
+		}
+		
 		getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
 	}
 
