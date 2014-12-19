@@ -1,11 +1,14 @@
 v1.5
 Changes:
+    * Added support for MythicMobs
+    * Added support for Vault
     * Command event accepts multiple commands separated by "|" sign
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
     * Objectives are now defined directly in event instruction, not in objectives.yml
-    * Added support for MythicMobs
     * Replies in conversations are now optionally clickable
+    * Added permission for starting a conversation: betonquest.conversation
+    * Conversation starting/ending, updating journal, plugin's update and full inventory can now make sounds
 
 v1.4.3
 Removed debug messages from ActionObjective. You could have told me, any of you guys...

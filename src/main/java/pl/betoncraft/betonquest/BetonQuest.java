@@ -73,7 +73,6 @@ import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
-import pl.betoncraft.betonquest.inout.CitizensListener;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationContainer;
 import pl.betoncraft.betonquest.inout.CubePeopleListener;
@@ -178,13 +177,7 @@ public final class BetonQuest extends JavaPlugin {
 		// instantiating of these important things
 		new JoinQuitListener();
 
-		// instantiate one of conversation start listeners
-		if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
-			getLogger().info("Citizens found, NPCs active!");
-			new CitizensListener();
-		} else {
-			getLogger().info("Citizens not found, using only cube NPCs");
-		}
+		// instantiate default conversation start listener
 		new CubePeopleListener();
 
 		new JournalBook();

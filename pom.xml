@@ -5,6 +5,23 @@
 	<artifactId>BetonQuest</artifactId>
 	<version>1.5</version>
 	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>LICENSE</include>
+					<include>README.md</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>*</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -56,13 +73,6 @@
 			<version>1.1.4</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/MythicMobs.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>net.aufdemrand</groupId>
-			<artifactId>denizen</artifactId>
-			<version>0.9.6-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/Denizen.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>
