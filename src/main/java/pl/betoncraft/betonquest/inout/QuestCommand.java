@@ -88,11 +88,21 @@ public class QuestCommand implements CommandExecutor {
 				if (!(sender instanceof Player)) {
 					return true;
 				}
-				if (args.length < 2) {
+				if (args.length < 2 || ConfigInput.getString("events." + args[1]) == null) {
 					sender.sendMessage(getMessage("specify_event"));
 					return true;
 				}
-				BetonQuest.event(PlayerConverter.getID((Player) sender), args[1]);
+				String playerID;
+				if (args.length > 2) {
+					playerID = PlayerConverter.getID(args[2]);
+					if (PlayerConverter.getPlayer(playerID) == null) {
+						sender.sendMessage(getMessage("specify_player"));
+						return true;
+					}
+				} else {
+					playerID = PlayerConverter.getID((Player) sender);
+				}
+				BetonQuest.event(playerID, args[1]);
 				sender.sendMessage(getMessage("player_event").replaceAll("%event%", ConfigInput.getString("events." + args[1])));
 				break;
 			case "item":

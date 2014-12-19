@@ -3,7 +3,9 @@ Changes:
     * Added support for MythicMobs and Vault (see wiki for more info)
     * AutoUpdater is now enabled by default! If you want you can change this and reload the
       plugin, nothing will be downloaded in that case
-    * Command event accepts multiple commands separated by "|" sign
+    * Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"
+    * Event command now accepts optional <name> argument at the end; this will fire event for <name> player.
+      eg. "/q event wood_reward Steve"
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
     * Objectives are now defined directly in event instruction, not in objectives.yml (which
