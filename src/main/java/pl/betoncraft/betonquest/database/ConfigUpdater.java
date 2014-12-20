@@ -6,7 +6,10 @@ import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.inout.ConfigInput;
+import pl.betoncraft.betonquest.inout.JournalBook;
 
 /**
  * Updates configuration files to newest version.
@@ -89,6 +93,40 @@ public class ConfigUpdater {
 		events.saveConfig();
 		new File(instance.getDataFolder(), "objectives.yml").delete();
 		instance.getLogger().info("Objectives converted!");
+		// convert books to new format
+		instance.getLogger().info("Converting books to new format!");
+		ConfigAccessor items = ConfigInput.getConfigs().get("items");
+		for (String key : items.getConfig().getKeys(false)) {
+			String string = items.getConfig().getString(key);
+			if (string.split(" ")[0].equalsIgnoreCase("WRITTEN_BOOK")) {
+				String text = null;
+				LinkedList<String> parts = new LinkedList<String>(Arrays.asList(string.split(" ")));
+				for (Iterator<String> iterator = parts.iterator(); iterator.hasNext();) {
+					String part = (String) iterator.next();
+					if (part.startsWith("text:")) {
+						text = part.substring(5);
+						iterator.remove();
+						break;
+					}
+				}
+				if (text != null) {
+					StringBuilder pages = new StringBuilder();
+					for (String page : JournalBook.pagesFromString(text.replace("_", " "), true)) {
+						pages.append(page.replaceAll(" ", "_") + "|");
+					}
+					parts.add("text:" + pages.substring(0, pages.length() - 2));
+					StringBuilder instruction = new StringBuilder();
+					for (String part : parts) {
+						instruction.append(part + " ");
+					}
+					items.getConfig().set(key, instruction.toString().trim().replaceAll("\\n", "\\\\n"));
+					instance.getLogger().info("Converted book " + key + ".");
+				}
+			}
+		}
+		items.saveConfig();
+		instance.getLogger().info("All books converted!");
+		//JournalBook.pagesFromString(questItem.getText(), false);
 		config.set("tellraw", "false");
 		instance.getLogger().info("Tellraw option added to config.yml!");
 		config.set("autoupdate", "true");

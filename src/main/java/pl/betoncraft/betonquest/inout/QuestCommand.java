@@ -157,9 +157,12 @@ public class QuestCommand implements CommandExecutor {
 					if (bookMeta.hasPages()) {
 						text = " text:";
 						for (String page : bookMeta.getPages()) {
+							if (page.startsWith("\"") && page.endsWith("\"")) {
+								page = page.substring(1, page.length() - 1);
+							}
 							text = text + page.trim().replace(" ", "_") + "|";
 						}
-						text = text.substring(0, text.length() - 1);
+						text = text.substring(0, text.length() - 1).replaceAll("\\n", "\\\\n");
 					}
 				}
 				if (meta instanceof PotionMeta) {

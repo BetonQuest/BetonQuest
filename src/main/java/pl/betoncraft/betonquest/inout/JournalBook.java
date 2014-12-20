@@ -166,6 +166,14 @@ public class JournalBook implements Listener {
 		return item;
 	}
 	
+	/**
+	 * Converts string to list of pages for a book. SingleString defines
+	 * if you passed a string separated by "|" for every page. False means
+	 * that it is separated, true that it isn't.
+	 * @param string
+	 * @param singleString
+	 * @return
+	 */
 	public static List<String> pagesFromString(String string, boolean singleString) {
 		List<String> pages = new ArrayList<>();
 		if (singleString) {
@@ -179,7 +187,7 @@ public class JournalBook implements Listener {
 			}
 			pages.add(page.toString().trim());
 		} else {
-			pages = Arrays.asList(string.split("\\|"));
+			pages = Arrays.asList(string.replaceAll("\\\\n", "\n").split("\\|"));
 		}
 		return pages;
 	}

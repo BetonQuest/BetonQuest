@@ -3,6 +3,8 @@ Changes:
     * Added support for MythicMobs and Vault (see wiki for more info)
     * AutoUpdater is now enabled by default! If you want you can change this and reload the
       plugin, nothing will be downloaded in that case
+    * Books saving format has changed. All books were automatically converted, but you need to check them if
+      everything looks like it's supposed to.
     * Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"
     * Event command now accepts optional <name> argument at the end; this will fire event for <name> player.
       eg. "/q event wood_reward Steve"
@@ -24,6 +26,9 @@ Notes:
   will be automaticly updated by a converter, there is always a backup and you are informed about all changes in
   this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you
   don't want to have latest fixex and features you can disable updating but this will make the developer sad.
+  Because of changes in how books behave since 1.8 you may experience some strange bugs with saving books
+  to items.yml. Generally you should open a book before saving it using /q item command. And don't start or end
+  your books with " character, as it's part of a workaround of this bug/feature.
 
 v1.4.3
 Removed debug messages from ActionObjective. You could have told me, any of you guys...
