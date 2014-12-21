@@ -12,6 +12,11 @@ uuid: 'false'
 default_journal_slot: '-1'
 max_npc_distance: '5'
 tellraw: 'false'
+journal_colors:
+  date:
+    day: '9'
+    hour: '6'
+  line: '4'
 sounds:
   start: 'VILLAGER_HAGGLE'
   end: 'VILLAGER_YES'

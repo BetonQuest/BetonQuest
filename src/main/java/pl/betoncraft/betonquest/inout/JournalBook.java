@@ -139,24 +139,24 @@ public class JournalBook implements Listener {
 		}
 		return (item.getType().equals(Material.WRITTEN_BOOK)
 		&& ((BookMeta)item.getItemMeta()).hasTitle()
-		&& ((BookMeta)item.getItemMeta()).getTitle().equals(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_title")) 
+		&& ((BookMeta)item.getItemMeta()).getTitle().equals(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_title").replaceAll("&", "§")) 
 		&& item.getItemMeta().hasLore()
-		&& item.getItemMeta().getLore().contains(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore")));
+		&& item.getItemMeta().getLore().contains(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore").replaceAll("&", "§")));
 	}
 
 	private static ItemStack generateJournal(String playerID) {
 		ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 		BookMeta meta = (BookMeta) item.getItemMeta();
-		meta.setTitle(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_title"));
+		meta.setTitle(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_title").replaceAll("&", "§"));
 		meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
 		List<String> lore = new ArrayList<String>();
-		lore.add(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore"));
+		lore.add(ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".journal_lore").replaceAll("&", "§"));
 		meta.setLore(lore);
 		
 		// logic for converting entries into single text and then to pages
 		StringBuilder stringBuilder = new StringBuilder();
 		for (String entry : BetonQuest.getInstance().getJournal(playerID).getText()) {
-			stringBuilder.append(entry + "\n---------------\n");
+			stringBuilder.append(entry + "\n§" + ConfigInput.getString("config.journal_colors.line") + "---------------\n");
 		}
 		String wholeString = stringBuilder.toString().trim();
 		// end of this logic

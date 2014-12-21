@@ -47,7 +47,9 @@ public class Journal {
 		texts.clear();
 		for (Pointer pointer : pointers) {
 			String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(pointer.getTimestamp());
-			texts.add(date + "\n" + ConfigInput.getString("journal." + pointer.getPointer()));
+			String day = "§" + ConfigInput.getString("config.journal_colors.date.day") + date.split(" ")[0];
+			String hour = "§" + ConfigInput.getString("config.journal_colors.date.hour") + date.split(" ")[1];
+			texts.add(day + " " + hour + "§0" + "\n" + ConfigInput.getString("journal." + pointer.getPointer()));
 		}
 	}
 

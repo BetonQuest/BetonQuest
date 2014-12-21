@@ -77,9 +77,15 @@ public class ConfigUpdater {
 		instance.getLogger().info("Started converting configuration files from v1.4 to v1.5!");
 		// add sound settings
 		instance.getLogger().info("Adding new sound options...");
-		String[] array = new String[]{"start", "end", "journal", "update", "full"};
-		for (String string : array) {
+		String[] array1 = new String[]{"start", "end", "journal", "update", "full"};
+		for (String string : array1) {
 			config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
+		}
+		// add colors for journal
+		instance.getLogger().info("Adding new journal colors options...");
+		String[] array2 = new String[]{"date.day", "date.hour", "line"};
+		for (String string : array2) {
+			config.set("journal_colors." + string, config.getDefaults().getString("journal_colors." + string));
 		}
 		// convert conditions in events to event_condition: format
 		instance.getLogger().info("Changing 'conditions:' to 'event_conditions:' in events.yml...");

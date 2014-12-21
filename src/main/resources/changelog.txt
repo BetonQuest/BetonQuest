@@ -8,6 +8,8 @@ Changes:
     * Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"
     * Event command now accepts optional <name> argument at the end; this will fire event for <name> player.
       eg. "/q event wood_reward Steve"
+    
+    * Journal title and lore can now use colors (&4 etc.) and journal is colorful; options in config.yml
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal
     * Objectives are now defined directly in event instruction, not in objectives.yml (which
