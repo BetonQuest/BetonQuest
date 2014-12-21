@@ -30,8 +30,8 @@ public class GlobalLocations extends BukkitRunnable{
 			return;
 		}
 		String[] parts = rawGlobalLocations.split(",");
-		for (String objective : parts) {
-			locations.add(new GlobalLocation(objective));
+		for (String event : parts) {
+			locations.add(new GlobalLocation(event));
 		}
 		finalLocations = locations;
 	}

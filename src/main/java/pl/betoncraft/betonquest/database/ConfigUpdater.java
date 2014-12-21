@@ -45,7 +45,6 @@ public class ConfigUpdater {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
-			addChangelog();
 			instance.getLogger().info("Backing up before conversion!");
 			String outputPath = instance.getDataFolder().getAbsolutePath() + File.separator + "backup-" + version;
 			new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
@@ -70,29 +69,63 @@ public class ConfigUpdater {
 		
 		// reload configuration file to apply all possible changes
 		ConfigInput.reload();
+		addChangelog();
+		instance.getLogger().info("Converted to v1.5");
 	}
 	
 	private void updateTo1_5() {
-		instance.getLogger().info("Starting conversion to 1.5");
+		instance.getLogger().info("Started converting configuration files from v1.4 to v1.5!");
 		// add sound settings
 		instance.getLogger().info("Adding new sound options...");
 		String[] array = new String[]{"start", "end", "journal", "update", "full"};
 		for (String string : array) {
 			config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
 		}
+		// convert conditions in events to event_condition: format
+		instance.getLogger().info("Changing 'conditions:' to 'event_conditions:' in events.yml...");
+		ConfigAccessor events = ConfigInput.getConfigs().get("events");
+		for (String key : events.getConfig().getKeys(false)) {
+			if (events.getConfig().getString(key).contains("conditions:")) {
+				StringBuilder parts = new StringBuilder();
+				for (String part : events.getConfig().getString(key).split(" ")) {
+					if (part.startsWith("conditions:")) {
+						parts.append("event_conditions:" + part.substring(11) + " ");
+					} else {
+						parts.append(part + " ");
+					}
+				}
+				events.getConfig().set(key, parts.substring(0, parts.length() - 1));
+			}
+		}
+		instance.getLogger().info("Events now use 'event_conditions:' for conditioning.");
 		// convert objectives to new format
 		instance.getLogger().info("Converting objectives to new format...");
 		ConfigAccessor objectives = ConfigInput.getConfigs().get("objectives");
-		ConfigAccessor events = ConfigInput.getConfigs().get("events");
 		for (String key : events.getConfig().getKeys(false)) {
 			if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
 				events.getConfig().set(key, "objective " + objectives.getConfig().getString(events.getConfig().getString(key).split(" ")[1]));
 				instance.getLogger().info("Event " + key + " converted!");
 			}
 		}
-		events.saveConfig();
-		new File(instance.getDataFolder(), "objectives.yml").delete();
 		instance.getLogger().info("Objectives converted!");
+		// convert global locations
+		String globalLocations = config.getString("global_locations");
+		if (globalLocations != null && !globalLocations.equals("")) {
+			StringBuilder configGlobalLocs = new StringBuilder();
+			instance.getLogger().info("Converting global locations to use events...");
+			int i = 0;
+			for (String globalLoc : config.getString("global_locations").split(",")) {
+				i++;
+				events.getConfig().set("global_location_" + i, "objective " + objectives.getConfig().getString(globalLoc));
+				configGlobalLocs.append("global_location_" + i + ",");
+				instance.getLogger().info("Converted " + globalLoc + " objective.");
+			}
+			config.set("global_locations", configGlobalLocs.substring(0, configGlobalLocs.length() - 1));
+			instance.getLogger().info("All " + i + " global locations have been converted.");
+		}
+		events.saveConfig();
+		instance.getLogger().info("Removing old file.");
+		new File(instance.getDataFolder(), "objectives.yml").delete();
 		// convert books to new format
 		instance.getLogger().info("Converting books to new format!");
 		ConfigAccessor items = ConfigInput.getConfigs().get("items");
@@ -133,27 +166,24 @@ public class ConfigUpdater {
 		instance.getLogger().info("AutoUpdater is now enabled by default! You can change this if you want and reload the plugin, nothing will be downloaded in that case.");
 		// end of update
 		config.set("version", "1.5");
-		instance.getLogger().info("Converted to 1.5");
+		instance.getLogger().info("Conversion to v1.5 finished.");
 	}
 	
 	private void updateTo1_4_3() {
 		// nothing to update
 		config.set("version", "1.4.3");
-		instance.getLogger().info("Converted to 1.4.3");
 		updateTo1_5();
 	}
 
 	private void updateTo1_4_2() {
 		// nothing to update
 		config.set("version", "1.4.2");
-		instance.getLogger().info("Converted to 1.4.2");
 		updateTo1_4_3();
 	}
 
 	private void updateTo1_4_1() {
 		// nothing to update
 		config.set("version", "1.4.1");
-		instance.getLogger().info("Converted to 1.4.1");
 		updateTo1_4_2();
 	}
 	

@@ -19,14 +19,14 @@ public class GlobalLocation {
 	private int distance;
 	private String tag;
 
-	public GlobalLocation(String objective) {
-		String instructions = ConfigInput.getString("objectives." + objective);
+	public GlobalLocation(String event) {
+		String instructions = ConfigInput.getString("events." + event);
 		if (instructions == null) {
-			BetonQuest.getInstance().getLogger().severe("Global location not found: " + objective);
+			BetonQuest.getInstance().getLogger().severe("Global location not found: " + event);
 			return;
 		}
 		String[] parts = instructions.split(" ");
-		String[] rawLocation = parts[1].split(";");
+		String[] rawLocation = parts[2].split(";");
 		location = new UnifiedLocation(Double.parseDouble(rawLocation[0]), Double.parseDouble(rawLocation[1]), Double.parseDouble(rawLocation[2]), rawLocation[3]);
 		for (String part : parts) {
 			if (part.contains("conditions:")) {

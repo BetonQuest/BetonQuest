@@ -457,6 +457,17 @@ public final class BetonQuest extends JavaPlugin {
 			return;
 		}
 		String[] parts = eventInstruction.split(" ");
+		for (String part : parts) {
+			if (part.startsWith("event_conditions:")) {
+				String[] conditions = part.substring(17).split(",");
+				for (String condition : conditions) {
+					if (!condition(playerID, condition)) {
+						return;
+					}
+				}
+				break;
+			}
+		}
 		Class<? extends QuestEvent> event = BetonQuest.getInstance().getEvent(parts[0]);
 		if (event == null) {
 			BetonQuest.getInstance().getLogger().severe("Event type not defined, in: " + eventID);
