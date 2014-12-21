@@ -17,6 +17,7 @@ journal_colors:
     day: '9'
     hour: '6'
   line: '4'
+  text: '0'
 sounds:
   start: 'VILLAGER_HAGGLE'
   end: 'VILLAGER_YES'

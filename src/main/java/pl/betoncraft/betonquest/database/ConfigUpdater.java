@@ -83,7 +83,7 @@ public class ConfigUpdater {
 		}
 		// add colors for journal
 		instance.getLogger().info("Adding new journal colors options...");
-		String[] array2 = new String[]{"date.day", "date.hour", "line"};
+		String[] array2 = new String[]{"date.day", "date.hour", "line", "text"};
 		for (String string : array2) {
 			config.set("journal_colors." + string, config.getDefaults().getString("journal_colors." + string));
 		}

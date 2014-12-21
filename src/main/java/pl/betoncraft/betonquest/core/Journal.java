@@ -49,7 +49,7 @@ public class Journal {
 			String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(pointer.getTimestamp());
 			String day = "§" + ConfigInput.getString("config.journal_colors.date.day") + date.split(" ")[0];
 			String hour = "§" + ConfigInput.getString("config.journal_colors.date.hour") + date.split(" ")[1];
-			texts.add(day + " " + hour + "§0" + "\n" + ConfigInput.getString("journal." + pointer.getPointer()));
+			texts.add(day + " " + hour + "§" + ConfigInput.getString("config.journal_colors.text") + "\n" + ConfigInput.getString("journal." + pointer.getPointer()));
 		}
 	}
 
