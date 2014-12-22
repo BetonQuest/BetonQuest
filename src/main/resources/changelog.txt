@@ -1,8 +1,10 @@
 v1.5.1
 Changes:
-    * Fixed stop option in conversation having no effect, it was hardcoded to "true"
-    * Added color codes to item's name and lore
-    * Fixed NPE on unknown answer in conversations
+    * Multiple tags in one event are now possible
+    * Change /q event command to run from console
+    * Add color codes to item's name and lore
+    * Fix "stop" option in conversations not working
+    * Fix NPE on unknown answer in conversations
 
 v1.5
 Changes:
