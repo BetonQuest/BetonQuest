@@ -85,9 +85,6 @@ public class QuestCommand implements CommandExecutor {
 				sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", ConfigInput.getString("conditions." + args[1])).replaceAll("%outcome%", BetonQuest.condition(PlayerConverter.getID((Player) sender), args[1]) + ""));
 				break;
 			case "event":
-				if (!(sender instanceof Player)) {
-					return true;
-				}
 				if (args.length < 2 || ConfigInput.getString("events." + args[1]) == null) {
 					sender.sendMessage(getMessage("specify_event"));
 					return true;
@@ -100,6 +97,10 @@ public class QuestCommand implements CommandExecutor {
 						return true;
 					}
 				} else {
+					if (!(sender instanceof Player)) {
+						sender.sendMessage(getMessage("specify_player"));
+						return true;
+					}
 					playerID = PlayerConverter.getID((Player) sender);
 				}
 				BetonQuest.event(playerID, args[1]);

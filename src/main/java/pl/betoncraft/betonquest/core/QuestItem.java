@@ -55,13 +55,13 @@ public class QuestItem {
 					enchants.put(ID, level);
 				}
 			} else if (part.contains("name:")) {
-				name = part.substring(5).replace("_", " ");
+				name = part.substring(5).replace("_", " ").replaceAll("&", "§");
 			} else if (part.contains("lore:")) {
 				for (String line : part.substring(5).split(";")) {
-					lore.add(line.replaceAll("_", " "));
+					lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
 				}
 			} else if (part.contains("title:")) {
-				title = part.substring(6).replace("_", " ");
+				title = part.substring(6).replace("_", " ").replaceAll("&", "§");
 			} else if (part.contains("author:")) {
 				author = part.substring(7).replace("_", " ");
 			} else if (part.contains("text:")) {

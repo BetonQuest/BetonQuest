@@ -22,10 +22,14 @@ public class TagEvent extends QuestEvent {
 		String[] parts = instructions.split(" ");
 		switch (parts[1]) {
 		case "add":
-			BetonQuest.getInstance().putPlayerTag(playerID, parts[2]);
+			for (String tag : parts[2].split(",")) {
+				BetonQuest.getInstance().putPlayerTag(playerID, tag);
+			}
 			break;
 		default:
-			BetonQuest.getInstance().removePlayerTag(playerID, parts[2]);
+			for (String tag : parts[2].split(",")) {
+				BetonQuest.getInstance().removePlayerTag(playerID, tag);
+			}
 			break;
 		}
 	}

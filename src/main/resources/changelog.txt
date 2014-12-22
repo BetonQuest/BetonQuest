@@ -1,3 +1,9 @@
+v1.5.1
+Changes:
+    * Fixed stop option in conversation having no effect, it was hardcoded to "true"
+    * Added color codes to item's name and lore
+    * Fixed NPE on unknown answer in conversations
+
 v1.5
 Changes:
     * Added support for MythicMobs and Vault (see wiki for more info)

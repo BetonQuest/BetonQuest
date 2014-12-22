@@ -63,7 +63,7 @@ public class Conversation {
 		if (stop != null && stop.equalsIgnoreCase("true")) {
 			movementBlock = true;
 		} else {
-			movementBlock = true;
+			movementBlock = false;
 		}
 		
 		// print one of them
@@ -153,7 +153,7 @@ public class Conversation {
 			}
 			SimpleTextOutput.sendQuesterMessage(playerID, quester, message);
 			// and instructions from plugin about answering npcs
-			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".help_with_answering"), ConfigInput.getString("config.sounds.unknown"));
+			SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".help_with_answering"), "false");
 			return;
 		}
 		
