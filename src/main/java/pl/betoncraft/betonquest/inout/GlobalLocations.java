@@ -18,7 +18,7 @@ import pl.betoncraft.betonquest.core.GlobalLocation;
  * 
  * @author Co0sh
  */
-public class GlobalLocations extends BukkitRunnable{
+public class GlobalLocations extends BukkitRunnable {
 	
 	private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
 	private final List<GlobalLocation> finalLocations;

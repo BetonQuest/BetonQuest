@@ -1,3 +1,7 @@
+v1.5.2
+- Fixed errors that were spamming the console when a player with active Location objective was teleporting to
+  other worlds.
+
 v1.5.1
 Changes:
     * Multiple tags in one event are now possible

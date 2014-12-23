@@ -54,23 +54,31 @@ public class ConversationListener implements Listener {
 			return;
 		}
 		// if player passes max distance
-		if (event.getTo().distance(location) > Integer.valueOf(ConfigInput.getString("config.max_npc_distance"))) {
+		if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location) > Integer.valueOf(ConfigInput.getString("config.max_npc_distance"))) {
 			// we can stop the player or end conversation
 			if (conversation.isMovementBlock()) {
-				float yaw = event.getTo().getYaw();
-				float pitch = event.getTo().getPitch();
-				Vector vector = new Vector(location.getX() - event.getTo().getX(), location.getY() - event.getTo().getY(), location.getZ() - event.getTo().getZ());
-				vector = vector.multiply(1 / vector.length());
-				Location newLocation = event.getTo().clone();
-				newLocation.add(vector);
-				newLocation.setPitch(pitch);
-				newLocation.setYaw(yaw);
-				event.getPlayer().teleport(newLocation);
+				moveBack(event);
 			} else {
 				conversation.endConversation();
 			}
 		}
 		return;
+	}
+
+	private void moveBack(PlayerMoveEvent event) {
+		if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location) > Integer.valueOf(ConfigInput.getString("config.max_npc_distance")) * 2) {
+			event.getPlayer().teleport(location);
+			return;
+		}
+		float yaw = event.getTo().getYaw();
+		float pitch = event.getTo().getPitch();
+		Vector vector = new Vector(location.getX() - event.getTo().getX(), location.getY() - event.getTo().getY(), location.getZ() - event.getTo().getZ());
+		vector = vector.multiply(1 / vector.length());
+		Location newLocation = event.getTo().clone();
+		newLocation.add(vector);
+		newLocation.setPitch(pitch);
+		newLocation.setYaw(yaw);
+		event.getPlayer().teleport(newLocation);
 	}
 	
 	@EventHandler
