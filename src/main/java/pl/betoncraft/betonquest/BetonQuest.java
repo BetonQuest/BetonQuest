@@ -827,7 +827,9 @@ public final class BetonQuest extends JavaPlugin {
 			objective.saveObjective();
 		}
 		database.closeConnection();
-		JournalBook.updateJournal(playerID);
+		if (PlayerConverter.getPlayer(playerID).isOnline()) {
+			JournalBook.updateJournal(playerID);
+		}
 		if (isMySQLUsed) {
 			new BukkitRunnable() {
 				@Override

@@ -1,3 +1,6 @@
+v1.5.3
+- Small fix of /q purge command not working on offline players.
+
 v1.5.2
 - Fixed errors that were spamming the console when a player with active Location objective was teleporting to
   other worlds.

@@ -41,7 +41,7 @@ public class ConfigUpdater {
 			config.set("convert", null);
 			instance.saveConfig();
 		}
-		if (version != null && version.equals("1.5.2")) {
+		if (version != null && version.equals("1.5.3")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
@@ -67,6 +67,8 @@ public class ConfigUpdater {
 			updateTo1_5_1();
 		} else if (version.equals("1.5.1")) {
 			updateTo1_5_2();
+		} else if (version.equals("1.5.2")) {
+			updateTo1_5_3();
 		}
 		updateLanguages();
 		instance.saveConfig();
@@ -74,12 +76,18 @@ public class ConfigUpdater {
 		// reload configuration file to apply all possible changes
 		ConfigInput.reload();
 		addChangelog();
-		instance.getLogger().info("Converted to v1.5.2");
+		instance.getLogger().info("Converted to v1.5.3");
+	}
+	
+	private void updateTo1_5_3() {
+		// nothing to update
+		config.set("version", "1.5.3");
 	}
 	
 	private void updateTo1_5_2() {
 		// nothing to update
 		config.set("version", "1.5.2");
+		updateTo1_5_3();
 	}
 	
 	private void updateTo1_5_1() {
