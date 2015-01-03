@@ -1,3 +1,7 @@
+v1.6
+Changes:
+    * Players can chat while in conversations by prefixing their messages with # character
+
 v1.5.3
 - Small fix of /q purge command not working on offline players.
 

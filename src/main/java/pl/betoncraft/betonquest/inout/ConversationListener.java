@@ -43,8 +43,12 @@ public class ConversationListener implements Listener {
 		if (event.getPlayer() != player) {
 			return;
 		}
-		event.setCancelled(true);
-		conversation.passPlayerAnswer(event.getMessage());
+		if (event.getMessage().startsWith("#")) {
+			event.setMessage(event.getMessage().substring(1).trim());
+		} else {
+			event.setCancelled(true);
+			conversation.passPlayerAnswer(event.getMessage());
+		}
 	}
 	
 	@EventHandler
