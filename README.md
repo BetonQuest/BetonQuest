@@ -1,4 +1,4 @@
-![BetonQuest](http://dev.bukkit.org/media/images/78/928/BetonQuestLogo.png)
+![BetonQuest](http://i.imgur.com/Gy9ORlk.png)
 
 BetonQuest is advanced and powerful quests plugin. It doesn't follow traditional convention, where "quest" is a closed structure object, which can have a set of tasks, events and rewards on completion. Instead, BetonQuest introduces the net of objectives which can under certain conditions trigger events, start new objectives or change NPC's attitude to the player. Of course grouping this all together and saying "this group is a quest" is still possible.
 
