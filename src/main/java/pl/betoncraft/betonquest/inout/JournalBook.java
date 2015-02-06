@@ -156,7 +156,7 @@ public class JournalBook implements Listener {
 		// logic for converting entries into single text and then to pages
 		StringBuilder stringBuilder = new StringBuilder();
 		for (String entry : BetonQuest.getInstance().getJournal(playerID).getText()) {
-			stringBuilder.append(entry + "\n§" + ConfigInput.getString("config.journal_colors.line") + "---------------\n");
+			stringBuilder.append(entry.replaceAll("&", "§") + "\n§" + ConfigInput.getString("config.journal_colors.line") + "---------------\n");
 		}
 		String wholeString = stringBuilder.toString().trim();
 		// end of this logic
