@@ -41,14 +41,25 @@ public class ConfigUpdater {
 			config.set("convert", null);
 			instance.saveConfig();
 		}
+		// move backup files to backup folder
+			for (File file : instance.getDataFolder().listFiles()) {
+				if (file.getName().matches("^backup-.*\\.zip$")) {
+					file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups" + File.separator + file.getName()));
+					instance.getLogger().info("File " + file.getName() + " moved to backup folder!");
+				}
+			}
 		if (version != null && version.equals("1.6")) {
 			instance.getLogger().info("Configuration up to date!");
 			return;
 		} else {
 			instance.getLogger().info("Backing up before conversion!");
-			String outputPath = instance.getDataFolder().getAbsolutePath() + File.separator + "backup-" + version;
+			File backupFolder = new File(instance.getDataFolder(), "backups");
+			if (!backupFolder.isDirectory()) {
+				backupFolder.mkdir();
+			}
+			String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-" + version;
 			new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
-			instance.getLogger().info("Done, you can find the backup in BetonQuest plugin directory.");
+			instance.getLogger().info("Done, you can find the backup in \"backups\" directory.");
 		}
 		// if the version is null the plugin is updated from pre-1.3 version (which can be 1.0, 1.1 or 1.2)
 		if (version == null) {
