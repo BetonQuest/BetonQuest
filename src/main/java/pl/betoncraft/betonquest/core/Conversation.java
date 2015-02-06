@@ -5,6 +5,8 @@ package pl.betoncraft.betonquest.core;
 
 import java.util.HashMap;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.inout.ConfigInput;
 import pl.betoncraft.betonquest.inout.ConversationContainer;
@@ -192,15 +194,22 @@ public class Conversation {
 		printNPCText(NPCanswer);
 	}
 
-	private void fireEvents(String rawEvents) {
+	private void fireEvents(final String rawEvents) {
 		// do nothing if its empty
 		if (!rawEvents.equalsIgnoreCase("")) {
-			// split it to individual event ids
-			String[] events = rawEvents.split(",");
-			// foreach eventID fire an event
-			for (String event : events) {
-				BetonQuest.event(playerID, event);
-			}
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					// split it to individual event ids
+					String[] events = rawEvents.split(",");
+					// foreach eventID fire an event
+					for (String event : events) {
+						BetonQuest.event(playerID, event);
+					}
+				}
+				
+			}.runTask(BetonQuest.getInstance());
 		}
 	}
 
