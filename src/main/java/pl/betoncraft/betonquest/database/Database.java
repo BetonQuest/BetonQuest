@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
  * 
  * @author -_Husky_-
  * @author tips48
+ * @author Co0sh
  */
 public abstract class Database {
 
