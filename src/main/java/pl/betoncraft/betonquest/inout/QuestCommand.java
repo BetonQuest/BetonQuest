@@ -52,10 +52,10 @@ public class QuestCommand implements CommandExecutor {
 				sender.sendMessage("§c/"+alias+" reload §b- " + getMessage("command_reload"));
 				sender.sendMessage("§c/"+alias+" objectives §b- " + getMessage("command_objectives"));
 				sender.sendMessage("§c/"+alias+" tags §b- " + getMessage("command_tags"));
-				sender.sendMessage("§c/"+alias+" points §b- " + getMessage("command_tags"));
+				sender.sendMessage("§c/"+alias+" points §b- " + getMessage("command_points"));
 				sender.sendMessage("§c/"+alias+" condition <id> §b- " + getMessage("command_condition"));
 				sender.sendMessage("§c/"+alias+" event <id> §b- " + getMessage("command_event"));
-				sender.sendMessage("§c/"+alias+" item <id> §b- " + getMessage("command_event"));
+				sender.sendMessage("§c/"+alias+" item <id> §b- " + getMessage("command_item"));
 				sender.sendMessage("§c/"+alias+" purge <player> §b- " + getMessage("command_purge"));
 				return true;
 			}
