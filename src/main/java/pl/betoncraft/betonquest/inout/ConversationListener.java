@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -52,7 +53,7 @@ public class ConversationListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onReply(AsyncPlayerChatEvent event) {
+	public void onReply(final AsyncPlayerChatEvent event) {
 		// return if it's someone else
 		if (event.getPlayer() != player) {
 			return;
@@ -61,7 +62,15 @@ public class ConversationListener implements Listener {
 			event.setMessage(event.getMessage().substring(1).trim());
 		} else {
 			event.setCancelled(true);
-			conversation.passPlayerAnswer(event.getMessage());
+			// processing the answer should be done in a sync thread
+			new BukkitRunnable() {
+
+				@Override
+				public void run() {
+					conversation.passPlayerAnswer(event.getMessage());
+				}
+				
+			}.runTask(BetonQuest.getInstance());
 		}
 	}
 	

@@ -61,9 +61,21 @@ public class QuestCommand implements CommandExecutor {
 			}
 			switch (args[0]) {
 			case "reload":
+				// reload the configuration
 				ConfigInput.reload();
-				Bukkit.getPluginManager().disablePlugin(BetonQuest.getInstance());
-				Bukkit.getPluginManager().enablePlugin(BetonQuest.getInstance());
+				// stop current global locations listener
+				GlobalLocations.stop();
+				// and start new one with reloaded configs
+				new GlobalLocations().runTaskTimer(BetonQuest.getInstance(), 0, 20);
+				// update journals for every online player
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					String playerID = PlayerConverter.getID(player);
+					BetonQuest.getInstance().getJournal(playerID).generateTexts();
+					JournalBook.updateJournal(playerID);
+				}
+				// kill all conversation
+				ConversationContainer.clear();
+				// reloading is finished
 				sender.sendMessage(getMessage("reloaded"));
 				break;
 			case "objectives":

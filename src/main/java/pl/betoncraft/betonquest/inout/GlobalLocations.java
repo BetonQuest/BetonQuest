@@ -36,8 +36,10 @@ public class GlobalLocations extends BukkitRunnable {
 	
 	private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
 	private final List<GlobalLocation> finalLocations;
+	private static GlobalLocations instance;
 
 	public GlobalLocations() {
+		instance = this;
 		String rawGlobalLocations = ConfigInput.getString("config.global_locations");
 		if (rawGlobalLocations.equals("")) {
 			finalLocations = null;
@@ -48,6 +50,10 @@ public class GlobalLocations extends BukkitRunnable {
 			locations.add(new GlobalLocation(event));
 		}
 		finalLocations = locations;
+	}
+	
+	public static void stop() {
+		instance.cancel();
 	}
 	
 	@Override

@@ -74,8 +74,8 @@ public class CubeNPCListener implements Listener {
 			
 		}
 		if (conversationID != null && !ConversationContainer.containsPlayer(PlayerConverter.getID(event.getPlayer()))) {
-			new Conversation(PlayerConverter.getID(event.getPlayer()), conversationID, new UnifiedLocation(event.getClickedBlock().getLocation().add(0.5, -1, 0.5)));
-			ConversationContainer.addPlayer(PlayerConverter.getID(event.getPlayer()));
+			Conversation con = new Conversation(PlayerConverter.getID(event.getPlayer()), conversationID, new UnifiedLocation(event.getClickedBlock().getLocation().add(0.5, -1, 0.5)));
+			ConversationContainer.addPlayer(PlayerConverter.getID(event.getPlayer()), con);
 		}
 	}
 }

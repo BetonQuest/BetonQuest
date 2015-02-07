@@ -43,8 +43,8 @@ public class CitizensListener implements Listener {
 	@EventHandler
 	public void onNPCClick(NPCRightClickEvent event) {
 		if (ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())) != null && !ConversationContainer.containsPlayer(PlayerConverter.getID(event.getClicker())) && event.getClicker().hasPermission("betonquest.conversation")) {
-			new Conversation(PlayerConverter.getID(event.getClicker()), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new UnifiedLocation(event.getNPC().getEntity().getLocation()));
-			ConversationContainer.addPlayer(PlayerConverter.getID(event.getClicker()));
+			Conversation con = new Conversation(PlayerConverter.getID(event.getClicker()), ConfigInput.getString("npcs." + String.valueOf(event.getNPC().getId())), new UnifiedLocation(event.getNPC().getEntity().getLocation()));
+			ConversationContainer.addPlayer(PlayerConverter.getID(event.getClicker()), con);
 		}
 	}
 }

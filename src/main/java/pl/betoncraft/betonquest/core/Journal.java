@@ -57,7 +57,7 @@ public class Journal {
 		return Lists.reverse(texts);
 	}
 	
-	private void generateTexts() {
+	public void generateTexts() {
 		texts.clear();
 		for (Pointer pointer : pointers) {
 			String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(pointer.getTimestamp());

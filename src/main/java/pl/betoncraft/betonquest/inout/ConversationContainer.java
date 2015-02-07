@@ -17,51 +17,83 @@
  */
 package pl.betoncraft.betonquest.inout;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.core.Conversation;
 
 /**
- * This class stores all active conversations. It should be used to prevent activating multiple conversations at once by all conversation starting things.
+ * This class stores all active conversations. It should be used to prevent activating
+ * multiple conversations at once by all conversation starting things.
  * 
  * @author co0sh
  *
  */
 public class ConversationContainer implements Listener {
 
-	private static ArrayList<String> list = new ArrayList<>();
+	private static HashMap<String, Conversation> list = new HashMap<>();
 	
+	/**
+	 * Creates a container for players' conversations.
+	 */
 	public ConversationContainer() {
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 	
-	public static void addPlayer(String playerID) {
-		list.add(playerID);
+	/**
+	 * Adds the player to the list of active conversations
+	 * @param playerID - ID of the player
+	 * @param conversation - pointer to player's conversation
+	 */
+	public static void addPlayer(String playerID, Conversation conversation) {
+		list.put(playerID, conversation);
 	}
 	
+	/**
+	 * Checks if the player is in a conversation
+	 * @param playerID
+	 * @return if the player is on the list of active conversations
+	 */
 	public static boolean containsPlayer(String playerID) {
-		return list.contains(playerID);
+		return list.containsKey(playerID);
 	}
 	
+	/**
+	 * Removes player from the list of active conversations. This does not end the conversation!
+	 * @param playerID - ID of the player
+	 */
 	public static void removePlayer(final String playerID) {
-		new BukkitRunnable() {
-			
-			@Override
-			public void run() {
-				list.remove(playerID);
-				
-			}
-		}.runTask(BetonQuest.getInstance());
+		list.remove(playerID);
 	}
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		list.remove(PlayerConverter.getID(event.getPlayer()));
+	}
+	
+	/**
+	 * Ends every active conversation for every online player
+	 */
+	public static void clear() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			String playerID = PlayerConverter.getID(player);
+			if (list.containsKey(playerID))
+				list.get(playerID).endConversation();
+		}
+	}
+	
+	/**
+	 * Gets this player's active conversation.
+	 * @param playerID - ID of the player
+	 * @return player's active conversation or null if there is no conversation
+	 */
+	public static Conversation getConversation(String playerID) {
+		return list.get(playerID);
 	}
 }

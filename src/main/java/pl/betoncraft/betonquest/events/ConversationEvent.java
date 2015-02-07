@@ -37,8 +37,8 @@ public class ConversationEvent extends QuestEvent {
 	public ConversationEvent(String playerID, String instructions) {
 		super(playerID, instructions);
 		if (!ConversationContainer.containsPlayer(playerID)) {
-			new Conversation(playerID, instructions.split(" ")[1], new UnifiedLocation(PlayerConverter.getPlayer(playerID).getLocation()));
-			ConversationContainer.addPlayer(playerID);
+			Conversation con = new Conversation(playerID, instructions.split(" ")[1], new UnifiedLocation(PlayerConverter.getPlayer(playerID).getLocation()));
+			ConversationContainer.addPlayer(playerID, con);
 		}
 	}
 
