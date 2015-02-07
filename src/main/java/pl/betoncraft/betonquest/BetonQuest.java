@@ -31,6 +31,7 @@ import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
+import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
@@ -203,6 +204,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("armor", ArmorCondition.class);
 		registerConditions("effect", EffectCondition.class);
 		registerConditions("rating", ArmorRatingCondition.class);
+		registerConditions("sneak", SneakCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
