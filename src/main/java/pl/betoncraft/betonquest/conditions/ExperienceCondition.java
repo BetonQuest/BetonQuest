@@ -17,29 +17,29 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import pl.betoncraft.betonquest.core.Condition;
-import pl.betoncraft.betonquest.inout.PlayerConverter;
+import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class ExperienceCondition extends Condition{
-	
-	private int experience;
+public class ExperienceCondition extends Condition {
 
-	public ExperienceCondition(String playerID, String instructions) {
-		super(playerID, instructions);
-		String[] parts = instructions.split(" ");
-		for (String part : parts) {
-			if (part.contains("exp:")) {
-				experience = Integer.valueOf(part.substring(4));
-			}
-		}
-	}
+    private int experience;
 
-	@Override
-	public boolean isMet() {
-		if (PlayerConverter.getPlayer(playerID).getLevel() > experience) {
-			return true;
-		}
-		return false;
-	}
+    public ExperienceCondition(String playerID, String instructions) {
+        super(playerID, instructions);
+        String[] parts = instructions.split(" ");
+        for (String part : parts) {
+            if (part.contains("exp:")) {
+                experience = Integer.valueOf(part.substring(4));
+            }
+        }
+    }
+
+    @Override
+    public boolean isMet() {
+        if (PlayerConverter.getPlayer(playerID).getLevel() > experience) {
+            return true;
+        }
+        return false;
+    }
 
 }

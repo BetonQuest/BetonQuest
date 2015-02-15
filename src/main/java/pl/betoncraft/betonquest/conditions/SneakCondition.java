@@ -17,30 +17,34 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import pl.betoncraft.betonquest.core.Condition;
-import pl.betoncraft.betonquest.inout.PlayerConverter;
+import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Returns true if the player is sneaking
+ * 
  * @author Coosh
  */
 public class SneakCondition extends Condition {
 
-	/**
-	 * Returns true if the player is sneaking
-	 * @param String playerID - id of the player
-	 * @param String instructions - instruction string
-	 */
-	public SneakCondition(String playerID, String instructions) {
-		super(playerID, instructions);
-	}
-	
-	@Override
-	public boolean isMet() {
-		if (PlayerConverter.getPlayer(playerID).isSneaking()) {
-			return true;
-		}
-		return false;
-	}
+    /**
+     * Returns true if the player is sneaking
+     * 
+     * @param String
+     *            playerID - id of the player
+     * @param String
+     *            instructions - instruction string
+     */
+    public SneakCondition(String playerID, String instructions) {
+        super(playerID, instructions);
+    }
+
+    @Override
+    public boolean isMet() {
+        if (PlayerConverter.getPlayer(playerID).isSneaking()) {
+            return true;
+        }
+        return false;
+    }
 
 }

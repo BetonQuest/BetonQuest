@@ -1,6 +1,26 @@
-v1.6
-Changes:
+v1.6 (dev)
+Notes:
+  This is a dev version of the plugin. It may contain a lot of bugs, so please report them here:
+  <https://github.com/Co0sh/BetonQuest/issues>. Except all uncaught bugs it looks like more stable
+  than 1.5.3 (which is full of bugs), so you theoretically should use it on production server. 
+  The configuration will update automatically between next dev versions, but the plugin will not 
+  be autoupdated to next dev version. It will however update when a full version is released.
+Fixes (since 1.5.3):
+    * Events fired from conversations won't throw async errors
+    * Conversation can be started after plugin's reload without relogging
+    * /q reload no longer lags the server
+    * Corrected description in /q command
+Changes (since 1.5.3):
     * Players can chat while in conversations by prefixing their messages with # character
+    * New "sneak" condition (without instruction, just "sneak" and optional --inverted)
+    * Added input validation for global locations - if event is incorrect it will display an error
+      instead of breaking the whole functionality
+    * Configuration updater is no longer based on plugin's version
+    * Backup files are now kept in "backups" directory, old ones are moved to it
+    * Error logging to the "error.log" file in "logs" directory
+    * Debug option in config.yml (true/false) for logging plugin's activity to "debug.log" file
+    * Changed internal structure of the code (may matter to developers - QuestEvent, Condition
+      and Objective classes has been moved from "core" package to "api", update your imports) 
 
 v1.5.3
 - Small fix of /q purge command not working on offline players.

@@ -22,170 +22,220 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.betoncraft.betonquest.inout.ConfigInput;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import pl.betoncraft.betonquest.config.ConfigHandler;
 
 /**
+ * Represents an item handled by the configuration
+ * 
  * @author co0sh
  */
 public class QuestItem {
-	
-	private String material = null;
-	private int data = -1;
-	private Map<String,Integer> enchants = new HashMap<>();
-	private String name = null;
-	private List<String> lore = new ArrayList<>();
-	private String title = null;
-	private String author = null;
-	private String text = null;
-	private List<EffectContainer> effects = new ArrayList<>();
-	
-	/**
-	 * Legacy method for the updater, don't use for anything else
-	 * @param material
-	 * @param data
-	 * @param enchants
-	 * @param name
-	 * @param lore
-	 */
-	public QuestItem(String material, int data, Map<String,Integer> enchants, String name, List<String> lore) {
-		this.material = material;
-		this.data = data;
-		this.enchants = enchants;
-		this.name = name;
-		this.lore = lore;
-	}
-	
-	/**
-	 * Represents an item from items.yml
-	 * @param itemID
-	 */
-	public QuestItem(String itemID) {
-		String[] parts = ConfigInput.getString("items." + itemID).split(" ");
-		material = parts[0];
-		for (String part : parts) {
-			if (part.contains("data:")) {
-				data = Integer.parseInt(part.substring(5));
-			} else if (part.contains("enchants:")) {
-				for (String enchant : part.substring(9).split(",")) {
-					String ID = enchant.split(":")[0];
-					Integer level = new Integer(enchant.split(":")[1]);
-					enchants.put(ID, level);
-				}
-			} else if (part.contains("name:")) {
-				name = part.substring(5).replace("_", " ").replaceAll("&", "§");
-			} else if (part.contains("lore:")) {
-				for (String line : part.substring(5).split(";")) {
-					lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
-				}
-			} else if (part.contains("title:")) {
-				title = part.substring(6).replace("_", " ").replaceAll("&", "§");
-			} else if (part.contains("author:")) {
-				author = part.substring(7).replace("_", " ");
-			} else if (part.contains("text:")) {
-				text = part.substring(5).replace("_", " ");
-			} else if (part.contains("effects:")) {
-				for (String effect : part.substring(8).split(",")) {
-					String ID = effect.split(":")[0];
-					int power = Integer.parseInt(effect.split(":")[1]) - 1;
-					int duration = Integer.parseInt(effect.split(":")[2]) * 20;
-					effects.add(new EffectContainer(ID, power, duration));
-				}
-			}
-		}
-	}
-	
-	public boolean equalsToItem(QuestItem item) {
-		if (!((item.getAuthor() == null && author == null) || (item.getAuthor() != null && author != null && item.getAuthor().equals(author)))) {
-			return false;
-		}
-		if (item.getData() != data) {
-			return false;
-		}
-		if (!((item.getEffects() == null && effects == null) || (item.getEffects() != null && effects != null && item.getEffects().equals(effects)))) {
-			return false;
-		}
-		if (!((item.getEnchants() == null && enchants == null) || (item.getEnchants() != null && enchants != null && item.getEnchants().equals(enchants)))) {
-			return false;
-		}
-		if (!((item.getLore() == null && lore == null) || (item.getLore() != null && lore != null && item.getLore().equals(lore)))) {
-			return false;
-		}
-		if (!((item.getMaterial() == null && material == null) || (item.getMaterial() != null && material != null && item.getMaterial().equalsIgnoreCase(material)))) {
-			return false;
-		}
-		if (!((item.getName() == null && name == null) || (item.getName() != null && name != null && item.getName().equals(name)))) {
-			return false;
-		}
-		if (!((item.getText() == null && text == null) || (item.getText() != null && text != null && item.getText().equals(text)))) {
-			return false;
-		}
-		if (!((item.getTitle() == null && title == null) || (item.getTitle() != null && title != null && item.getTitle().equals(title)))) {
-			return false;
-		}
-		return true;
-	}
 
-	/**
-	 * @return the material
-	 */
-	public String getMaterial() {
-		return material;
-	}
+    private String material = null;
+    private int data = -1;
+    private Map<String, Integer> enchants = new HashMap<>();
+    private String name = null;
+    private List<String> lore = new ArrayList<>();
+    private String title = null;
+    private String author = null;
+    private String text = null;
+    private List<PotionEffect> effects = new ArrayList<>();
 
-	/**
-	 * @return the data
-	 */
-	public int getData() {
-		return data;
-	}
+    /**
+     * Legacy method for the updater, don't use for anything else
+     * 
+     * @param material
+     * @param data
+     * @param enchants
+     * @param name
+     * @param lore
+     */
+    public QuestItem(String material, int data, Map<String, Integer> enchants, String name,
+            List<String> lore) {
+        this.material = material;
+        this.data = data;
+        this.enchants = enchants;
+        this.name = name;
+        this.lore = lore;
+    }
 
-	/**
-	 * @return the enchants
-	 */
-	public Map<String, Integer> getEnchants() {
-		return enchants;
-	}
+    /**
+     * Creates new instance of the quest item using the itemID in items.yml
+     * 
+     * @param itemID
+     *            ID of the item from items.yml
+     */
+    public QuestItem(String itemID) {
+        String[] parts = ConfigHandler.getString("items." + itemID).split(" ");
+        // get material type
+        material = parts[0];
+        for (String part : parts) {
+            if (part.contains("data:")) {
+                // get data if exists
+                data = Integer.parseInt(part.substring(5));
+            } else if (part.contains("enchants:")) {
+                // get enchantments
+                for (String enchant : part.substring(9).split(",")) {
+                    String ID = enchant.split(":")[0];
+                    Integer level = new Integer(enchant.split(":")[1]);
+                    enchants.put(ID, level);
+                }
+            } else if (part.contains("name:")) {
+                // get name
+                name = part.substring(5).replace("_", " ").replaceAll("&", "§");
+            } else if (part.contains("lore:")) {
+                // get lore
+                for (String line : part.substring(5).split(";")) {
+                    lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
+                }
+            } else if (part.contains("title:")) {
+                // get title
+                title = part.substring(6).replace("_", " ").replaceAll("&", "§");
+            } else if (part.contains("author:")) {
+                // get author
+                author = part.substring(7).replace("_", " ");
+            } else if (part.contains("text:")) {
+                // get text
+                text = part.substring(5).replace("_", " ");
+            } else if (part.contains("effects:")) {
+                // get potion effects
+                for (String effect : part.substring(8).split(",")) {
+                    PotionEffectType ID = PotionEffectType.getByName(effect.split(":")[0]);
+                    int power = Integer.parseInt(effect.split(":")[1]) - 1;
+                    int duration = Integer.parseInt(effect.split(":")[2]) * 20;
+                    effects.add(new PotionEffect(ID, power, duration));
+                }
+            }
+        }
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Checks if it's equal to other quest item
+     * 
+     * @param item
+     *            item to check against
+     * @return if both items are equal
+     */
+    public boolean equalsToItem(QuestItem item) {
+        if (!((item.getAuthor() == null && author == null) || (item.getAuthor() != null
+            && author != null && item.getAuthor().equals(author)))) {
+            return false;
+        }
+        if (item.getData() != data) {
+            return false;
+        }
+        if (!((item.getEffects() == null && effects == null) || (item.getEffects() != null
+            && effects != null && item.getEffects().equals(effects)))) {
+            return false;
+        }
+        if (!((item.getEnchants() == null && enchants == null) || (item.getEnchants() != null
+            && enchants != null && item.getEnchants().equals(enchants)))) {
+            return false;
+        }
+        if (!((item.getLore() == null && lore == null) || (item.getLore() != null && lore != null && item
+                .getLore().equals(lore)))) {
+            return false;
+        }
+        if (!((item.getMaterial() == null && material == null) || (item.getMaterial() != null
+            && material != null && item.getMaterial().equalsIgnoreCase(material)))) {
+            return false;
+        }
+        if (!((item.getName() == null && name == null) || (item.getName() != null && name != null && item
+                .getName().equals(name)))) {
+            return false;
+        }
+        if (!((item.getText() == null && text == null) || (item.getText() != null && text != null && item
+                .getText().equals(text)))) {
+            return false;
+        }
+        if (!((item.getTitle() == null && title == null) || (item.getTitle() != null
+            && title != null && item.getTitle().equals(title)))) {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * @return the lore
-	 */
-	public List<String> getLore() {
-		return lore;
-	}
+    /**
+     * Returns the material of this item.
+     * 
+     * @return the material
+     */
+    public String getMaterial() {
+        return material;
+    }
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
+    /**
+     * Return the data of this item.
+     * 
+     * @return the data of -1 if any data is allowed
+     */
+    public int getData() {
+        return data;
+    }
 
-	/**
-	 * @return the author
-	 */
-	public String getAuthor() {
-		return author;
-	}
+    /**
+     * Return the list of enchantments.
+     * 
+     * @return the list of enchantments
+     */
+    public Map<String, Integer> getEnchants() {
+        return enchants;
+    }
 
-	/**
-	 * @return the pages
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Returns the name of the item.
+     * 
+     * @return the name or null if there is no name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @return the effects
-	 */
-	public List<EffectContainer> getEffects() {
-		return effects;
-	}
+    /**
+     * Returns the lore of the item.
+     * 
+     * @return the lore
+     */
+    public List<String> getLore() {
+        return lore;
+    }
 
+    /**
+     * Returns the title of the book.
+     * 
+     * @return the title or null if it's not a book
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Returns the author of the book.
+     * 
+     * @return the author or null if it's nor a book
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * Returns the text from the book.
+     * 
+     * @return the pages from the book or null if it's not a bug
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Returns the list of potion effects.
+     * 
+     * @return the effects
+     */
+    public List<PotionEffect> getEffects() {
+        return effects;
+    }
 }

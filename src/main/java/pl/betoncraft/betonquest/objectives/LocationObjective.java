@@ -25,45 +25,48 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.Objective;
-import pl.betoncraft.betonquest.inout.PlayerConverter;
+import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
  * @author Co0sh
  */
 public class LocationObjective extends Objective implements Listener {
-	
-	private Location location;
-	private double distance;
 
-	/**
-	 * Constructor method
-	 * @param playerID
-	 * @param instructions
-	 */
-	public LocationObjective(String playerID, String instructions) {
-		super(playerID, instructions);
-		String[] partsOfLoc = instructions.split(" ")[1].split(";");
-		location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]), Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
-		distance = Double.valueOf(partsOfLoc[4]);
-		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-	}
-	
-	@EventHandler
-	public void onMove(PlayerMoveEvent event) {
-		if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && event.getPlayer().getWorld().equals(location.getWorld())) {
-			if (event.getTo().distance(location) < distance && super.checkConditions()) {
-				HandlerList.unregisterAll(this);
-				super.completeObjective();
-			}
-		}
-	}
-	
-	@Override
-	public String getInstructions() {
-		HandlerList.unregisterAll(this);
-		return instructions;
-	}
+    private Location location;
+    private double distance;
+
+    /**
+     * Constructor method
+     * 
+     * @param playerID
+     * @param instructions
+     */
+    public LocationObjective(String playerID, String instructions) {
+        super(playerID, instructions);
+        String[] partsOfLoc = instructions.split(" ")[1].split(";");
+        location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]),
+                Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
+        distance = Double.valueOf(partsOfLoc[4]);
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID))
+            && event.getPlayer().getWorld().equals(location.getWorld())) {
+            if (event.getTo().distance(location) < distance && super.checkConditions()) {
+                HandlerList.unregisterAll(this);
+                super.completeObjective();
+            }
+        }
+    }
+
+    @Override
+    public String getInstructions() {
+        HandlerList.unregisterAll(this);
+        return instructions;
+    }
 
 }

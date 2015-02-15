@@ -20,30 +20,49 @@ package pl.betoncraft.betonquest.core;
 import java.sql.Timestamp;
 
 /**
+ * Represents the journal pointer.
  * 
  * @author Co0sh
  */
 public class Pointer {
 
-	private final String pointer;
-	private final Timestamp timestamp;
-	
-	public Pointer(String pointer, Timestamp timestamp) {
-		this.pointer = pointer;
-		this.timestamp = timestamp;
-	}
+    /**
+     * String pointing to the journal entry in journal.yml
+     */
+    private final String pointer;
+    /**
+     * Timestamp indicating date of this entry
+     */
+    private final Timestamp timestamp;
 
-	/**
-	 * @return the pointer
-	 */
-	public String getPointer() {
-		return pointer;
-	}
+    /**
+     * Creates a new Pointer from the pointer string and relevant timestamp.
+     * 
+     * @param pointer
+     *            the name of the journal entry
+     * @param timestamp
+     *            exact date this entry was added to journal
+     */
+    public Pointer(String pointer, Timestamp timestamp) {
+        this.pointer = pointer;
+        this.timestamp = timestamp;
+    }
 
-	/**
-	 * @return the timestamp
-	 */
-	public Timestamp getTimestamp() {
-		return timestamp;
-	}
+    /**
+     * Returns the name of the journal entry from journal.yml.
+     * 
+     * @return the name of the journal entry
+     */
+    public String getPointer() {
+        return pointer;
+    }
+
+    /**
+     * Returns the timestamp of the journal entry.
+     * 
+     * @return the timestamp of the journal entry
+     */
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
 }

@@ -20,7 +20,8 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import pl.betoncraft.betonquest.core.QuestEvent;
+
+import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
  * Created by Dzejkop
@@ -38,7 +39,7 @@ public class LightningEvent extends QuestEvent {
     public LightningEvent(String playerID, String instructions) {
         super(playerID, instructions);
 
-        String [] instr = instructions.split(" ");
+        String[] instr = instructions.split(" ");
 
         Location loc = decodeLocation(instr[1]);
 
@@ -51,17 +52,12 @@ public class LightningEvent extends QuestEvent {
 
     private Location decodeLocation(String locStr) {
 
-        String [] coords = locStr.split(";");
+        String[] coords = locStr.split(";");
 
-        Location loc = new Location(
-                Bukkit.getWorld(coords[3]),
-                Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]),
-                Double.parseDouble(coords[2]));
+        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
+                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
 
         return loc;
     }
-
-
 
 }

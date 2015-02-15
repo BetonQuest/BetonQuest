@@ -18,26 +18,26 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
  * 
  * @author Co0sh
  */
 public class PointEvent extends QuestEvent {
-	
-	/**
-	 * Constructor method
-	 * @param playerID
-	 * @param instructions
-	 */
-	public PointEvent(String playerID, String instructions) {
-		super(playerID, instructions);
-		String[] parts = instructions.split(" ");
-		String category = parts[1];
-		int count = Integer.valueOf(parts[2]);
-		BetonQuest.getInstance().addPlayerPoints(playerID, category, count);
-	}
 
-	
+    /**
+     * Constructor method
+     * 
+     * @param playerID
+     * @param instructions
+     */
+    public PointEvent(String playerID, String instructions) {
+        super(playerID, instructions);
+        String[] parts = instructions.split(" ");
+        String category = parts[1];
+        int count = Integer.valueOf(parts[2]);
+        BetonQuest.getInstance().getDBHandler(playerID).addPoints(category, count);
+    }
+
 }

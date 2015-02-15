@@ -21,11 +21,10 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.Pointer;
-import pl.betoncraft.betonquest.core.QuestEvent;
-import pl.betoncraft.betonquest.inout.ConfigInput;
-import pl.betoncraft.betonquest.inout.JournalBook;
-import pl.betoncraft.betonquest.inout.SimpleTextOutput;
+import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.core.JournalHandler;
+import pl.betoncraft.betonquest.core.SimpleTextOutput;
 
 /**
  * 
@@ -33,16 +32,21 @@ import pl.betoncraft.betonquest.inout.SimpleTextOutput;
  */
 public class JournalEvent extends QuestEvent {
 
-	/**
-	 * Constructor method
-	 * @param playerID
-	 * @param instructions
-	 */
-	public JournalEvent(String playerID, String instructions) {
-		super(playerID, instructions);
-		BetonQuest.getInstance().getJournal(playerID).addPointer(new Pointer(instructions.split(" ")[1], new Timestamp(new Date().getTime())));
-		JournalBook.updateJournal(playerID);
-		SimpleTextOutput.sendSystemMessage(playerID, ConfigInput.getString("messages." + ConfigInput.getString("config.language") + ".new_journal_entry"), ConfigInput.getString("config.sounds.journal"));
-	}
-	
+    /**
+     * Constructor method
+     * 
+     * @param playerID
+     * @param instructions
+     */
+    public JournalEvent(String playerID, String instructions) {
+        super(playerID, instructions);
+        BetonQuest.getInstance().getDBHandler(playerID).getJournal()
+                .addPointer(instructions.split(" ")[1], new Timestamp(new Date().getTime()));
+        JournalHandler.updateJournal(playerID);
+        SimpleTextOutput.sendSystemMessage(
+                playerID,
+                ConfigHandler.getString("messages." + ConfigHandler.getString("config.language")
+                    + ".new_journal_entry"), ConfigHandler.getString("config.sounds.journal"));
+    }
+
 }

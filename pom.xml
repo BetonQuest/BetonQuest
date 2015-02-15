@@ -5,6 +5,7 @@
 	<artifactId>BetonQuest</artifactId>
 	<version>1.6</version>
 	<build>
+		<finalName>${artifactId}</finalName>
 		<resources>
 			<resource>
 				<directory>${basedir}</directory>

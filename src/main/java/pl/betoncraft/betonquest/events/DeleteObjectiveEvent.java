@@ -18,7 +18,7 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
  * 
@@ -26,14 +26,15 @@ import pl.betoncraft.betonquest.core.QuestEvent;
  */
 public class DeleteObjectiveEvent extends QuestEvent {
 
-	/**
-	 * Constructor method
-	 * @param playerID
-	 * @param instructions
-	 */
-	public DeleteObjectiveEvent(String playerID, String instructions) {
-		super(playerID, instructions);
-		BetonQuest.getInstance().deleteObjective(playerID, instructions.split(" ")[1]);
-	}
+    /**
+     * Constructor method
+     * 
+     * @param playerID
+     * @param instructions
+     */
+    public DeleteObjectiveEvent(String playerID, String instructions) {
+        super(playerID, instructions);
+        BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(instructions.split(" ")[1]);
+    }
 
 }

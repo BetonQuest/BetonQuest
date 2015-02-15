@@ -21,47 +21,45 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import pl.betoncraft.betonquest.core.QuestEvent;
+import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
  * 
  * @author Co0sh
  */
 public class SpawnMobEvent extends QuestEvent {
-	
-	private Location loc;
-	private EntityType type;
-	private int amount;
 
-	/**
-	 * Constructor method
-	 * @param playerID
-	 * @param instructions
-	 */
-	public SpawnMobEvent(String playerID, String instructions) {
-		super(playerID, instructions);
-		loc = decodeLocation(instructions.split(" ")[1]);
-		type = EntityType.valueOf(instructions.split(" ")[2]);
-		amount = Integer.parseInt(instructions.split(" ")[3]);
-		for (int i = 0; i < amount; i++) {
-			loc.getWorld().spawnEntity(loc, type);
-		}
-	}
+    private Location loc;
+    private EntityType type;
+    private int amount;
 
-	/**
-	 * @author Dzejkop
-	 * @param locStr
-	 * @return
-	 */
-	private Location decodeLocation(String locStr) {
+    /**
+     * Constructor method
+     * 
+     * @param playerID
+     * @param instructions
+     */
+    public SpawnMobEvent(String playerID, String instructions) {
+        super(playerID, instructions);
+        loc = decodeLocation(instructions.split(" ")[1]);
+        type = EntityType.valueOf(instructions.split(" ")[2]);
+        amount = Integer.parseInt(instructions.split(" ")[3]);
+        for (int i = 0; i < amount; i++) {
+            loc.getWorld().spawnEntity(loc, type);
+        }
+    }
 
-        String [] coords = locStr.split(";");
+    /**
+     * @author Dzejkop
+     * @param locStr
+     * @return
+     */
+    private Location decodeLocation(String locStr) {
 
-        Location loc = new Location(
-                Bukkit.getWorld(coords[3]),
-                Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]),
-                Double.parseDouble(coords[2]));
+        String[] coords = locStr.split(";");
+
+        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
+                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
 
         return loc;
     }
