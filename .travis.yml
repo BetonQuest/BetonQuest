@@ -1,0 +1,5 @@
+language: java
+jdk: [openjdk7]
+script: mvn package
+after_success:
+    "curl -F "pass=$pass" -F "plugin=@target/BetonQuest.jar" http://betoncraft.pl/downloads/index.php"
