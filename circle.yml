@@ -1,0 +1,6 @@
+general:
+  branches:
+    only:
+      - master
+  artifacts:
+    - "target/BetonQuest.jar"
