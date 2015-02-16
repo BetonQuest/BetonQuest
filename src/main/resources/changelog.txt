@@ -11,6 +11,8 @@ Fixes (since 1.5.3):
     * /q reload no longer lags the server
     * Corrected description in /q command
 Changes (since 1.5.3):
+    * Inverting condition is now done by prefixing their name with "!" (in the place where you use
+      them, like conversation, not in events.yml)
     * Players can chat while in conversations by prefixing their messages with # character
     * New "sneak" condition (without instruction, just "sneak" and optional --inverted)
     * Added input validation for global locations - if event is incorrect it will display an error

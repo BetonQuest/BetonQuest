@@ -396,6 +396,17 @@ public final class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     public static boolean condition(String playerID, String conditionID) {
+        // null check
+        if (playerID == null || conditionID == null) {
+            Debug.info("Null arguments for the condition!");
+            return false;
+        }
+        // check for inverted condition
+        boolean inverted = false;
+        if (conditionID.startsWith("!")) {
+            conditionID = conditionID.substring(1);
+            inverted = true;
+        }
         // get instruction string
         String conditionInstruction = ConfigHandler.getString("conditions." + conditionID);
         // if it doesn't exist log an error
@@ -404,8 +415,6 @@ public final class BetonQuest extends JavaPlugin {
                 + "\", but it isn't defined! The condition will be false for now.");
             return false;
         }
-        // extracting inverted argument
-        boolean inverted = conditionInstruction.contains("--inverted");
         // get condition's class
         String[] parts = conditionInstruction.split(" ");
         Class<? extends Condition> condition = conditions.get(parts[0]);
@@ -443,6 +452,11 @@ public final class BetonQuest extends JavaPlugin {
      *            ID of the player who the event is firing for
      */
     public static void event(String playerID, String eventID) {
+        // null check
+        if (playerID == null || eventID == null) {
+            Debug.info("Null arguments for the event!");
+            return;
+        }
         // get instruction string
         String eventInstruction = ConfigHandler.getString("events." + eventID);
         // if it's null then log an error
@@ -495,10 +509,9 @@ public final class BetonQuest extends JavaPlugin {
      *            instruction string to instantiate the objective
      */
     public static void objective(String playerID, String instruction) {
-        // check instruction
-        if (instruction == null) {
-            // if it's null then log an error
-            Debug.error("Instruction string for objective was null for player " + playerID);
+        // null check
+        if (playerID == null || instruction == null) {
+            Debug.info("Null arguments for the objective!");
             return;
         }
         // get tag

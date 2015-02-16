@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -63,7 +65,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v2";
+    private final String destination = "v3";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -158,6 +160,279 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    @SuppressWarnings("unused")
+    private void update_from_v2() {
+        Debug.info("Starting update from v2 to v3");
+        try {
+            // start time counting
+            long time = new Date().getTime();
+            // Get all conditions with --inverted tag into the map
+            // <name,instruction> without --inverted tag and remove them form
+            // config
+            ConfigAccessor conditionsAccessor = ConfigHandler.getConfigs().get("conditions");
+            FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
+            // at the beginning trim all conditions, so they won't get
+            // confused later on
+            for (String path : conditionsConfig.getKeys(false)) {
+                conditionsConfig.set(path, conditionsConfig.getString(path).trim());
+            }
+            HashMap<String, String> conditionsInverted = new HashMap<>();
+            Debug.info("Extracting conditions to a map");
+            // for each condition
+            for (String name : conditionsConfig.getKeys(false)) {
+                // get instruction
+                String condition = conditionsConfig.getString(name);
+                boolean wasInverted = false;
+                int i = 1;
+                Debug.info("  Checking condition " + name);
+                // if it is --inverted
+                while (condition.contains("--inverted")) {
+                    Debug.info("    Loop " + i);
+                    i++;
+                    Debug.info("      Instruction: '" + condition + "'");
+                    // get starting index of --inverted
+                    int startingIndex = condition.indexOf(" --inverted");
+                    Debug.info("      First occurence of --inverted tag: " + startingIndex);
+                    // get first half (to cut --inverted)
+                    String firstHalf = condition.substring(0, startingIndex);
+                    Debug.info("      First half is '" + firstHalf + "'");
+                    // get last half (from the end of --inverted string)
+                    String lastHalf = condition.substring(startingIndex + 11);
+                    Debug.info("      Last half is '" + lastHalf + "'");
+                    // get new condition string without --inverted tag
+                    condition = firstHalf + lastHalf;
+                    wasInverted = true;
+                    Debug.info("      And the whole new condition is '" + condition + "'");
+                }
+                if (wasInverted) {
+                    Debug.info("  Removing from config and putting into a map!");
+                    // remove it from config
+                    conditionsConfig.set(name, null);
+                    // put it into the map
+                    conditionsInverted.put(name, condition);
+                }
+            }
+            // for each, check for duplicates
+            Debug.info("Checking for duplicates in config");
+            HashMap<String, String> nameChanging = new HashMap<>();
+            for (String invertedName : conditionsInverted.keySet()) {
+                // check every condition from the map
+                Debug.info("  Checking condition " + invertedName);
+                String duplicateName = null;
+                for (String normalName : conditionsConfig.getKeys(false)) {
+                    // against every condition that is still in the config
+                    if (conditionsConfig.getString(normalName).equals(
+                            conditionsInverted.get(invertedName))) {
+                        // if it is the same, then we have a match; we need to
+                        // mark it as a duplicate
+                        Debug.info("    Found a duplicate: " + normalName);
+                        duplicateName = normalName;
+                    }
+                }
+                if (duplicateName != null) {
+                    // if it still exists in config, put it into map <old
+                    // name, new name> as duplicate and !original
+                    Debug.info("    Inserting into name changing map, from " + invertedName
+                        + " to !" + duplicateName);
+                    nameChanging.put(invertedName, "!" + duplicateName);
+                } else {
+                    // if it doesn't, put into a map as original and !original,
+                    // and reinsert into config
+                    Debug.info("    Inserting into name changing map, from " + invertedName
+                        + " to !" + invertedName);
+                    Debug.info("    Readding to configuration!");
+                    nameChanging.put(invertedName, "!" + invertedName);
+                    conditionsConfig.set(invertedName, conditionsInverted.get(invertedName));
+                }
+            }
+            // save conditions so the changes persist
+            conditionsAccessor.saveConfig();
+            // now we have a map with names which need to be changed across all
+            // configuration; for each conversation, for each NPC option and
+            // player option, replace old names from the map with new names
+            Debug.info("Starting conversation updating");
+            // get every conversation accessor
+            HashMap<String, ConfigAccessor> conversations = ConfigHandler.getConversations();
+            for (String conversationName : conversations.keySet()) {
+                Debug.info("  Processing conversation " + conversationName);
+                ConfigAccessor conversation = conversations.get(conversationName);
+                // this list will store every path to condition list in this
+                // conversation
+                List<String> paths = new ArrayList<>();
+                // for every npc option, check if it contains conditions
+                // variable and add it to the list
+                Debug.info("    Extracting conditions from NPC options");
+                ConfigurationSection npcOptions = conversation.getConfig().getConfigurationSection(
+                        "NPC_options");
+                for (String npcPath : npcOptions.getKeys(false)) {
+                    String conditionPath = "NPC_options." + npcPath + ".conditions";
+                    if (conversation.getConfig().isSet(conditionPath)
+                            && !conversation.getConfig().getString(conditionPath).equals("")) {
+                        Debug.info("      Adding " + conditionPath + " to the list");
+                        paths.add(conditionPath);
+                    }
+                }
+                // for every player option, check if it contains conditions
+                // variable and add it to the list
+                Debug.info("    Extracting conditions from player options");
+                ConfigurationSection playerOptions = conversation.getConfig()
+                        .getConfigurationSection("player_options");
+                for (String playerPath : playerOptions.getKeys(false)) {
+                    String conditionPath = "player_options." + playerPath + ".conditions";
+                    if (conversation.getConfig().isSet(conditionPath)
+                            && !conversation.getConfig().getString(conditionPath).equals("")) {
+                        Debug.info("      Adding " + conditionPath + " to the list");
+                        paths.add(conditionPath);
+                    }
+                }
+                // now we have a list of valid paths to condition variables
+                // in this conversation
+                for (String path : paths) {
+                    Debug.info("    Processing path " + path);
+                    // get the list of conditions (as a single string, separated
+                    // by commas)
+                    String list = conversation.getConfig().getString(path);
+                    Debug.info("      Original conditions list is: " + list);
+                    // split it into an array
+                    String[] conditionArr = list.split(",");
+                    for (int i = 0; i < conditionArr.length; i++) {
+                        // for every condition name in array check if it should
+                        // be replaced
+                        String replacement = nameChanging.get(conditionArr[i]);
+                        if (replacement != null) {
+                            // and replace it
+                            Debug.info("      Replacing " + conditionArr[i] + " with "
+                                + replacement);
+                            conditionArr[i] = replacement;
+                        }
+                    }
+                    // now when everything is replaced generate new list (as a
+                    // single string)
+                    StringBuilder newListBuilder = new StringBuilder();
+                    for (String condition : conditionArr) {
+                        newListBuilder.append(condition + ",");
+                    }
+                    String newList = newListBuilder.toString().substring(0,
+                            newListBuilder.length() - 1);
+                    Debug.info("      Saving new list: " + newList);
+                    // and set it
+                    conversation.getConfig().set(path, newList);
+                }
+                // save conversation so the changes persist
+                conversation.saveConfig();
+            }
+            // now every conversation is processed, time for events
+            // for each event_conditions: and conditions: in events.yml, replace
+            // old names from the map with new names
+            Debug.info("Starting events updating");
+            ConfigAccessor eventsAccessor = ConfigHandler.getConfigs().get("events");
+            for (String eventName : eventsAccessor.getConfig().getKeys(false)) {
+                Debug.info("  Processing event " + eventName);
+                // extract event's instruction
+                String instruction = eventsAccessor.getConfig().getString(eventName);
+                // check if it contains event conditions
+                if (instruction.contains(" event_conditions:")) {
+                    Debug.info("    Found event conditions!");
+                    // extract first half (to the start of condition list
+                    int index = instruction.indexOf(" event_conditions:") + 18;
+                    String firstHalf = instruction.substring(0, index);
+                    Debug.info("      First half is '" + firstHalf + "'");
+                    // extract condition list
+                    int secondIndex = index + instruction.substring(index).indexOf(" ");
+                    String conditionList = instruction.substring(index, secondIndex);
+                    Debug.info("      Condition list is '" + conditionList + "'");
+                    // extract last half (from the end of condition list)
+                    String lastHalf = instruction.substring(secondIndex, instruction.length());
+                    Debug.info("      Last half is '" + lastHalf + "'");
+                    // split conditions into an array
+                    String[] parts = conditionList.split(",");
+                    for (int i = 0; i < parts.length; i++) {
+                        // check each of them if it should be replaced
+                        String replacement = nameChanging.get(parts[i]);
+                        if (replacement != null) {
+                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            parts[i] = replacement;
+                        }
+                    }
+                    // put it all together
+                    StringBuilder newListBuilder = new StringBuilder();
+                    for (String part : parts) {
+                        newListBuilder.append(part + ",");
+                    }
+                    String newList = newListBuilder.toString().substring(0,
+                            newListBuilder.length() - 1);
+                    Debug.info("      New condition list is '" + newList + "'");
+                    // put the event together and save it
+                    String newEvent = firstHalf + newList + lastHalf;
+                    Debug.info("      Saving instruction '" + newEvent + "'");
+                    eventsAccessor.getConfig().set(eventName, newEvent);
+                }
+                // read the instruction again, it could've changed
+                instruction = eventsAccessor.getConfig().getString(eventName);
+                // check if it containt objective conditions
+                if (instruction.contains(" conditions:")) {
+                    Debug.info("    Found objective conditions!");
+                    // extract first half (to the start of condition list
+                    int index = instruction.indexOf(" conditions:") + 12;
+                    String firstHalf = instruction.substring(0, index);
+                    Debug.info("      First half is '" + firstHalf + "'");
+                    // extract condition list
+                    int secondIndex = index + instruction.substring(index).indexOf(" ");
+                    String conditionList = instruction.substring(index, secondIndex);
+                    Debug.info("      Condition list is '" + conditionList + "'");
+                    // extract last half (from the end of condition list)
+                    String lastHalf = instruction.substring(secondIndex, instruction.length());
+                    Debug.info("      Last half is '" + lastHalf + "'");
+                    // split conditions into an array
+                    String[] parts = conditionList.split(",");
+                    for (int i = 0; i < parts.length; i++) {
+                        // check each of them if it should be replaced
+                        String replacement = nameChanging.get(parts[i]);
+                        if (replacement != null) {
+                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            parts[i] = replacement;
+                        }
+                    }
+                    // put it all together
+                    StringBuilder newListBuilder = new StringBuilder();
+                    for (String part : parts) {
+                        newListBuilder.append(part + ",");
+                    }
+                    String newList = newListBuilder.toString().substring(0,
+                            newListBuilder.length() - 1);
+                    Debug.info("      New condition list is '" + newList + "'");
+                    // put the event together and save it
+                    String newEvent = firstHalf + newList + lastHalf;
+                    Debug.info("      Saving instruction '" + newEvent + "'");
+                    eventsAccessor.getConfig().set(eventName, newEvent);
+                }
+                // at this point we finished modifying this one event
+            }
+            // at this point we finished modifying every event, need to save
+            // events
+            eventsAccessor.saveConfig();
+            // every place where conditions are is now updated, finished!
+            Debug.broadcast("Converted inverted conditions to a new format using exclamation marks!");
+            Debug.info("Converting took " + (new Date().getTime() - time) + "ms");
+        } catch (Exception e) {
+            // try-catch block is required - if there is some exception,
+            // the version wouldn't get changed and updater would fall into
+            // an infinite loop of endless exceptiorns
+            e.printStackTrace();
+            Debug.error("There was an error during updating process! (you don't say?) Please "
+                + "downgrade to the previous working version of the plugin and restore your "
+                + "configuration from the backup. Don't forget to send this error to the developer"
+                + ", so he can fix it! Sorry for inconvenience, here's the link:"
+                + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
+                + "<http://i.imgur.com/iR4UMH5.png>");
+        }
+        // set v3 version
+        config.set("version", "v3");
+        instance.saveConfig();
+        // done
+        Debug.info("Conversion to v3 finished!");
     }
 
     @SuppressWarnings("unused")
