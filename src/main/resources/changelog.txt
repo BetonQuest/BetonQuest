@@ -14,6 +14,8 @@ Changes (since 1.5.3):
     * Inverting condition is now done by prefixing their name with "!" (in the place where you use
       them, like conversation, not in events.yml)
     * Players can chat while in conversations by prefixing their messages with # character
+    * New "random" condition - true with specified probability ('random random:4-10' means
+      4 of 10 times true)
     * New "sneak" condition (without instruction, just "sneak" and optional --inverted)
     * Added input validation for global locations - if event is incorrect it will display an error
       instead of breaking the whole functionality
