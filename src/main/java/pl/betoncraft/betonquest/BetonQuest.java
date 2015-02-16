@@ -182,7 +182,7 @@ public final class BetonQuest extends JavaPlugin {
         new JournalHandler();
 
         // start timer for global locations
-        new GlobalLocations().runTaskTimer(this, 0, 20);
+        new GlobalLocations().runTaskTimer(this, 20, 20);
 
         getCommand("q").setExecutor(new QuestCommand());
         getCommand("j").setExecutor(new JournalCommand());

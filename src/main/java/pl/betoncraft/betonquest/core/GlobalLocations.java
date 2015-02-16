@@ -96,8 +96,7 @@ public class GlobalLocations extends BukkitRunnable {
                     continue locations;
                 }
                 // if player is inside location, do stuff
-                if (player.getLocation().getWorld().getName()
-                        .equals(location.getLocation().getWorld())
+                if (player.getLocation().getWorld().equals(location.getLocation().getWorld())
                     && player.getLocation().distance(
                             new Location(location.getLocation().getWorld(), location.getLocation()
                                     .getX(), location.getLocation().getY(), location.getLocation()
@@ -161,7 +160,7 @@ public class GlobalLocations extends BukkitRunnable {
          * Specifies if the GlobalLocation object was correctly initialized and
          * should be used.
          */
-        private boolean valid;
+        private boolean valid = true;
 
         /**
          * Creates new global location using objective event's ID.
@@ -170,7 +169,7 @@ public class GlobalLocations extends BukkitRunnable {
          *            ID of the event
          */
         public GlobalLocation(String event) {
-            Debug.info("Creating new GlobalLocation from " + event + "event.");
+            Debug.info("Creating new GlobalLocation from " + event + " event.");
             String instructions = ConfigHandler.getString("events." + event);
             if (instructions == null || !instructions.startsWith("objective location ")) {
                 Debug.error("Location objective not found in event " + event);

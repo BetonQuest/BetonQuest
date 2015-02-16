@@ -274,6 +274,7 @@ public class DatabaseHandler {
         tags.clear();
         points.clear();
         entries.clear();
+        journal.clear();
         // clear the database
         if (BetonQuest.getInstance().isMySQLUsed()) {
             new BukkitRunnable() {

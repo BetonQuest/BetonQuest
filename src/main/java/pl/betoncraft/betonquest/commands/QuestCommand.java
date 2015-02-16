@@ -70,7 +70,7 @@ public class QuestCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("q")) {
-            Debug.info("Executing /q command with for user " + sender.getName()
+            Debug.info("Executing /q command for user " + sender.getName()
                 + " with arguments: " + Arrays.toString(args));
             // if the command is empty, display help message
             if (args.length < 1) {
