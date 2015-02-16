@@ -45,6 +45,7 @@ import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
+import pl.betoncraft.betonquest.conditions.RandomCondition;
 import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
@@ -93,6 +94,8 @@ import pl.betoncraft.betonquest.utils.Metrics;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
+
+
 
 /**
  * Represents BetonQuest plugin
@@ -205,7 +208,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("effect", EffectCondition.class);
         registerConditions("rating", ArmorRatingCondition.class);
         registerConditions("sneak", SneakCondition.class);
-
+        registerConditions("random", RandomCondition.class);
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
