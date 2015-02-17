@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
@@ -32,8 +35,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class ItemCondition extends Condition {
 
-    private QuestItem questItem;
-    private int amount = 1;
+    private List<Item> questItems = new ArrayList<>();
 
     /**
      * Constructor method
@@ -43,33 +45,63 @@ public class ItemCondition extends Condition {
      */
     public ItemCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("item:")) {
-                questItem = new QuestItem(part.substring(5));
+        String items = instructions.split(" ")[1];
+        for (String item : items.split(",")) {
+            String name = item.split(":")[0];
+            int amount = 1;
+            if (item.split(":").length > 1 && item.split(":")[1].matches("\\d+")) {
+                amount = Integer.parseInt(item.split(":")[1]);
             }
-            if (part.contains("amount:")) {
-                amount = Integer.valueOf(part.substring(7));
-            }
+            QuestItem questItem = new QuestItem(name);
+            questItems.add(new Item(questItem, amount));
         }
     }
 
     @Override
     public boolean isMet() {
-        ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-        for (ItemStack item : items) {
-            if (item == null) {
-                continue;
+        int counter = 0;
+        for (Item questItem : questItems) {
+            ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+            for (ItemStack item : items) {
+                if (item == null) {
+                    continue;
+                }
+                if (!questItem.isItemEqual(item)) {
+                    continue;
+                }
+                questItem.setAmount(questItem.getAmount() - item.getAmount());
+                if (questItem.getAmount() <= 0) {
+                    counter++;
+                    break;
+                }
             }
-            if (!Utils.isItemEqual(item, questItem)) {
-                continue;
-            }
-            amount = amount - item.getAmount();
-            if (amount <= 0) {
-                return true;
-            }
+        }
+        if (counter == questItems.size()) {
+            return true;
         }
         return false;
     }
+    
+    private class Item {
+        
+        private QuestItem questItem;
+        private int amount = 1;
+        
+        public Item(QuestItem questItem, int amount) {
+            this.questItem = questItem;
+            this.amount = amount;
+        }
+        
+        public boolean isItemEqual(ItemStack item) {
+            return Utils.isItemEqual(item, questItem);
+        }
 
+        public int getAmount() {
+            return amount;
+        }
+
+        public void setAmount(int amount) {
+            this.amount = amount;
+        }
+    }
 }

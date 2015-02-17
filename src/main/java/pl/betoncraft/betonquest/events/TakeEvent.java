@@ -44,27 +44,29 @@ public class TakeEvent extends QuestEvent {
         super(playerID, instructions);
 
         String[] parts = instructions.split(" ");
-        questItem = new QuestItem(parts[1]);
-        for (String part : parts) {
-            if (part.contains("amount:")) {
-                amount = Integer.valueOf(part.substring(7));
+        String[] itemsToRemove = parts[1].split(",");
+        for (String rawItem : itemsToRemove) {
+            String itemName = rawItem.split(":")[0];
+            if (rawItem.split(":").length > 1) {
+                amount = Integer.parseInt(rawItem.split(":")[1]);
             }
-        }
-        ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-        for (ItemStack item : items) {
-            if (Utils.isItemEqual(item, questItem)) {
-                if (item.getAmount() - amount <= 0) {
-                    amount = amount - item.getAmount();
-                    item.setType(Material.AIR);
-                } else {
-                    item.setAmount(item.getAmount() - amount);
-                    amount = 0;
-                }
-                if (amount <= 0) {
-                    break;
+            questItem = new QuestItem(itemName);
+            ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+            for (ItemStack item : items) {
+                if (Utils.isItemEqual(item, questItem)) {
+                    if (item.getAmount() - amount <= 0) {
+                        amount = amount - item.getAmount();
+                        item.setType(Material.AIR);
+                    } else {
+                        item.setAmount(item.getAmount() - amount);
+                        amount = 0;
+                    }
+                    if (amount <= 0) {
+                        break;
+                    }
                 }
             }
+            PlayerConverter.getPlayer(playerID).getInventory().setContents(items);
         }
-        PlayerConverter.getPlayer(playerID).getInventory().setContents(items);
     }
 }

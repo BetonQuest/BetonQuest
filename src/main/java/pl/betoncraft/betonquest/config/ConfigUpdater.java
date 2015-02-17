@@ -65,7 +65,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v4";
+    private final String destination = "v5";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -160,6 +160,82 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v4() {
+        Debug.info("Starting update from v4 to v5");
+        try {
+            // update all give/take events and item condition to match new parser
+            ConfigAccessor eventsAccessor = ConfigHandler.getConfigs().get("events");
+            FileConfiguration eventsConfig = eventsAccessor.getConfig();
+            Debug.info("Updating events!");
+            // check every event in configuration
+            for (String key : eventsConfig.getKeys(false)) {
+                Debug.info("  Processing " + key);
+                String instruction = eventsConfig.getString(key);
+                // if the event is of type "give" or "take" then proceed
+                if (instruction.startsWith("give ") || instruction.startsWith("take ")) {
+                    String[] parts = instruction.split(" ");
+                    Debug.info("    Found " + parts[0] + " event");
+                    // get item's amount
+                    int amount = 1;
+                    for (String part : parts) {
+                        if (part.startsWith("amount:")) {
+                            amount = Integer.parseInt(part.substring(7));
+                            Debug.info("    Amount is set to " + amount);
+                        }
+                    }
+                    // generate new instruction
+                    String newInstruction = parts[0] + " " + parts[1] + ((amount != 1) ? ":" + amount : "");
+                    Debug.info("    Saving instruction '" + newInstruction + "'");
+                    // save it
+                    eventsConfig.set(key, newInstruction);
+                }
+            }
+            // when all events are converted, save the file
+            eventsAccessor.saveConfig();
+            // update all item conditions
+            ConfigAccessor conditionsAccessor = ConfigHandler.getConfigs().get("conditions");
+            FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
+            Debug.info("Updatng conditions!");
+            // check every condition in configuration
+            for (String key : conditionsConfig.getKeys(false)) {
+                Debug.info("  Processing " + key);
+                String instruction = conditionsConfig.getString(key);
+                // if the condition is of type "item" then proceed
+                if (instruction.startsWith("item ")) {
+                    String[] parts = instruction.split(" ");
+                    Debug.info("    Found item condition");
+                    // get item name and amount
+                    String name = null;
+                    int amount = 1;
+                    for (String part : parts) {
+                        if (part.startsWith("item:")) {
+                            name = part.substring(5);
+                            Debug.info("    Name is " + name);
+                        } else if (part.startsWith("amount:")) {
+                            amount = Integer.parseInt(part.substring(7));
+                            Debug.info("    Amount is " + amount);
+                        }
+                    }
+                    // generate new instruction
+                    String newInstruction = "item " + name + ((amount != 1) ? ":" + amount : "");
+                    Debug.info("    Saving instruction '" + newInstruction + "'");
+                    // save it
+                    conditionsConfig.set(key, newInstruction);
+                }
+            }
+            // when all conditions are converted, save the file
+            conditionsAccessor.saveConfig();
+            Debug.broadcast("Converted give/take events and item conditions to new format!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayError();
+        }
+        config.set("version", "v5");
+        instance.saveConfig();
+        Debug.info("Conversion to v5 finished!");
     }
     
     @SuppressWarnings("unused")
@@ -431,12 +507,7 @@ public class ConfigUpdater {
             // the version wouldn't get changed and updater would fall into
             // an infinite loop of endless exceptiorns
             e.printStackTrace();
-            Debug.error("There was an error during updating process! (you don't say?) Please "
-                + "downgrade to the previous working version of the plugin and restore your "
-                + "configuration from the backup. Don't forget to send this error to the developer"
-                + ", so he can fix it! Sorry for inconvenience, here's the link:"
-                + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
-                + "<http://i.imgur.com/iR4UMH5.png>");
+            displayError();
         }
         // set v3 version
         config.set("version", "v3");
@@ -948,5 +1019,14 @@ public class ConfigUpdater {
             e.printStackTrace();
         }
 
+    }
+    
+    private void displayError() {
+        Debug.error("There was an error during updating process! (you don't say?) Please "
+                + "downgrade to the previous working version of the plugin and restore your "
+                + "configuration from the backup. Don't forget to send this error to the developer"
+                + ", so he can fix it! Sorry for inconvenience, here's the link:"
+                + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
+                + "<http://i.imgur.com/iR4UMH5.png>");
     }
 }

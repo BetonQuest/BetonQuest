@@ -478,7 +478,7 @@ public class QuestCommand implements CommandExecutor {
         String playerID = PlayerConverter.getID(args[1]);
         sender.sendMessage(getMessage("player_condition").replaceAll("%condition%",
                 ConfigHandler.getString("conditions." + args[2])).replaceAll("%outcome%",
-                BetonQuest.condition(playerID, args[1]) + ""));
+                BetonQuest.condition(playerID, args[2]) + ""));
     }
 
     /**

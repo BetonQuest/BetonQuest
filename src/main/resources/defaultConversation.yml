@@ -6,7 +6,7 @@ stop: 'true'
 NPC_options:
   'start':
     text: 'Welcome to my inn %player%! What can I do for you?'
-    conditions: 'wood_not_started'
+    conditions: '!wood_started'
     events: ''
     pointer: 'questions,quests,bye'
   'back':
@@ -16,7 +16,7 @@ NPC_options:
     pointer: 'questions,quests,wood_questions,wood_done,more_quests,bye'
   'start_wood_started':
     text: 'Welcome back! How is it going with that wood?'
-    conditions: 'wood_started,wood_not_paid'
+    conditions: 'wood_started,!wood_paid'
     events: ''
     pointer: 'questions,wood_questions,wood_done,bye'
   'start_wood_completed':
@@ -41,7 +41,7 @@ NPC_options:
     pointer: 'questions,more_quests,bye'
   'wood_doesnt_have':
     text: 'Where? I can''t see anything in your inventory...'
-    conditions: 'has_not_wood'
+    conditions: '!has_wood'
     events: ''
     pointer: 'now,wood_go,questions'
   'no_quests':
@@ -97,17 +97,17 @@ player_options:
     pointer: 'back'
   'quests':
     text: 'Do you have some quests? I need money.'
-    conditions: 'wood_not_started'
+    conditions: '!wood_started'
     events: ''
     pointer: 'quest_wood'
   'wood_questions':
     text: 'I have some question about this woodcutting.'
-    conditions: 'wood_started,wood_not_paid'
+    conditions: 'wood_started,!wood_paid'
     events: ''
     pointer: 'questions'
   'wood_done':
     text: 'I collected all the wood.'
-    conditions: 'wood_done,has_wood,wood_not_paid'
+    conditions: 'wood_done,has_wood,!wood_paid'
     events: ''
     pointer: 'wood_reward,wood_doesnt_have'
   'more_quests':
