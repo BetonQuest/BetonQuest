@@ -65,7 +65,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v3";
+    private final String destination = "v4";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -160,6 +160,16 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v3() {
+        Debug.info("Starting update from v3 to v4");
+        config.set("mysql.prefix", "");
+        Debug.broadcast("Added prefix option to MySQL settings!");
+        config.set("version", "v4");
+        instance.saveConfig();
+        Debug.info("Conversion to v4 finished!");
     }
 
     @SuppressWarnings("unused")

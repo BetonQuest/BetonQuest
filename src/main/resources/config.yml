@@ -1,10 +1,11 @@
-version: 'v2'
+version: 'v4'
 mysql:
   host: ''
   port: ''
   user: ''
   pass: ''
   base: ''
+  prefix: 'betonquest_'
 language: en
 metrics: 'true'
 autoupdate: 'true'

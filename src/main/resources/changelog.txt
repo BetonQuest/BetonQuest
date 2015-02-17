@@ -11,6 +11,8 @@ Fixes (since 1.5.3):
     * /q reload no longer lags the server
     * Corrected description in /q command
 Changes (since 1.5.3):
+    * Added prefix for the database. New installations will use "betonquest_" prefix for tables,
+      existing configuration will use empty prefix to maintain compatibility with other programs
     * Inverting condition is now done by prefixing their name with "!" (in the place where you use
       them, like conversation, not in events.yml)
     * Players can chat while in conversations by prefixing their messages with # character

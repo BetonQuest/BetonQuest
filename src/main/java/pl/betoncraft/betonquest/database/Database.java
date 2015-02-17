@@ -39,10 +39,12 @@ public abstract class Database {
 
     protected Connection connection;
     protected Plugin plugin;
+    protected String prefix;
 
     protected Database(Plugin plugin) {
         this.plugin = plugin;
         this.connection = null;
+        this.prefix = plugin.getConfig().getString("mysql.prefix", "");
     }
 
     public abstract Connection openConnection();
@@ -64,43 +66,43 @@ public abstract class Database {
             switch (type) {
                 case SELECT_JOURNAL:
                     statement = connection
-                            .prepareStatement("SELECT pointer, date FROM journal WHERE playerID = ?;");
+                            .prepareStatement("SELECT pointer, date FROM " + prefix + "journal WHERE playerID = ?;");
                     break;
                 case SELECT_POINTS:
                     statement = connection
-                            .prepareStatement("SELECT category, count FROM points WHERE playerID = ?;");
+                            .prepareStatement("SELECT category, count FROM " + prefix + "points WHERE playerID = ?;");
                     break;
                 case SELECT_UNUSED_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("SELECT instructions FROM objectives WHERE playerID = ? AND isused= 0;");
+                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ? AND isused= 0;");
                     break;
                 case SELECT_UNUSED_TAGS:
                     statement = connection
-                            .prepareStatement("SELECT tag FROM tags WHERE playerID = ? AND isused = 0;");
+                            .prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ? AND isused = 0;");
                     break;
                 case SELECT_USED_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("SELECT instructions FROM objectives WHERE playerID = ? AND isused= 1;");
+                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ? AND isused= 1;");
                     break;
                 case SELECT_USED_TAGS:
                     statement = connection
-                            .prepareStatement("SELECT tag FROM tags WHERE playerID = ? AND isused = 1;");
+                            .prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ? AND isused = 1;");
                     break;
                 case SELECT_PLAYERS_TAGS:
                     statement = connection
-                            .prepareStatement("SELECT playerID FROM tags GROUP BY playerID;");
+                            .prepareStatement("SELECT playerID FROM " + prefix + "tags GROUP BY playerID;");
                     break;
                 case SELECT_PLAYERS_JOURNAL:
                     statement = connection
-                            .prepareStatement("SELECT playerID FROM journal GROUP BY playerID;");
+                            .prepareStatement("SELECT playerID FROM " + prefix + "journal GROUP BY playerID;");
                     break;
                 case SELECT_PLAYERS_POINTS:
                     statement = connection
-                            .prepareStatement("SELECT playerID FROM points GROUP BY playerID;");
+                            .prepareStatement("SELECT playerID FROM " + prefix + "points GROUP BY playerID;");
                     break;
                 case SELECT_PLAYERS_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("SELECT playerID FROM objectives GROUP BY playerID;");
+                            .prepareStatement("SELECT playerID FROM " + prefix + "objectives GROUP BY playerID;");
                     break;
                 default:
                     statement = null;
@@ -122,62 +124,62 @@ public abstract class Database {
             switch (type) {
                 case DELETE_USED_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("DELETE FROM objectives WHERE playerID = ? AND isused = 1;");
+                            .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ? AND isused = 1;");
                     break;
                 case DELETE_POINTS:
                     statement = connection
-                            .prepareStatement("DELETE FROM points WHERE playerID = ?;");
+                            .prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ?;");
                     break;
                 case ADD_NEW_OBJECTIVE:
                     statement = connection
-                            .prepareStatement("INSERT INTO objectives (playerID, instructions, isused) VALUES (?, ?, 0);");
+                            .prepareStatement("INSERT INTO " + prefix + "objectives (playerID, instructions, isused) VALUES (?, ?, 0);");
                     break;
                 case ADD_POINTS:
                     statement = connection
-                            .prepareStatement("INSERT INTO points (playerID, category, count) VALUES (?, ?, ?);");
+                            .prepareStatement("INSERT INTO " + prefix + "points (playerID, category, count) VALUES (?, ?, ?);");
                     break;
                 case DELETE_TAGS:
-                    statement = connection.prepareStatement("DELETE FROM tags WHERE playerID = ?;");
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE playerID = ?;");
                     break;
                 case ADD_TAGS:
                     statement = connection
-                            .prepareStatement("INSERT INTO tags (playerID, tag) VALUES (?, ?);");
+                            .prepareStatement("INSERT INTO " + prefix + "tags (playerID, tag) VALUES (?, ?);");
                     break;
                 case DELETE_JOURNAL:
                     statement = connection
-                            .prepareStatement("DELETE FROM journal WHERE playerID = ?;");
+                            .prepareStatement("DELETE FROM " + prefix + "journal WHERE playerID = ?;");
                     break;
                 case ADD_JOURNAL:
                     statement = connection
-                            .prepareStatement("INSERT INTO journal (playerID, pointer, date) VALUES (?, ?, ?);");
+                            .prepareStatement("INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?, ?, ?);");
                     break;
                 case DELETE_ALL_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("DELETE FROM objectives WHERE playerID = ?;");
+                            .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ?;");
                     break;
                 case UPDATE_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("UPDATE objectives SET isused = 1 WHERE playerID = ? AND isused = 0;");
+                            .prepareStatement("UPDATE " + prefix + "objectives SET isused = 1 WHERE playerID = ? AND isused = 0;");
                     break;
                 case UPDATE_TAGS:
                     statement = connection
-                            .prepareStatement("UPDATE tags SET isused = 1 WHERE playerID = ? AND isused = 0;");
+                            .prepareStatement("UPDATE " + prefix + "tags SET isused = 1 WHERE playerID = ? AND isused = 0;");
                     break;
                 case UPDATE_PLAYERS_TAGS:
                     statement = connection
-                            .prepareStatement("UPDATE tags SET playerID = ? WHERE playerID = ?;");
+                            .prepareStatement("UPDATE " + prefix + "tags SET playerID = ? WHERE playerID = ?;");
                     break;
                 case UPDATE_PLAYERS_JOURNAL:
                     statement = connection
-                            .prepareStatement("UPDATE journal SET playerID = ? WHERE playerID = ?;");
+                            .prepareStatement("UPDATE " + prefix + "journal SET playerID = ? WHERE playerID = ?;");
                     break;
                 case UPDATE_PLAYERS_POINTS:
                     statement = connection
-                            .prepareStatement("UPDATE points SET playerID = ? WHERE playerID = ?;");
+                            .prepareStatement("UPDATE " + prefix + "points SET playerID = ? WHERE playerID = ?;");
                     break;
                 case UPDATE_PLAYERS_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("UPDATE objectives SET playerID = ? WHERE playerID = ?;");
+                            .prepareStatement("UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;");
                     break;
                 default:
                     statement = null;
@@ -204,23 +206,23 @@ public abstract class Database {
         try {
             Debug.info("Creating objectives table");
             connection.createStatement().executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS objectives (id INTEGER" + " PRIMARY KEY "
+                    "CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER" + " PRIMARY KEY "
                         + autoIncrement + ", playerID " + "VARCHAR(256) NOT NULL, instructions "
                         + "VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL" + " DEFAULT 0);");
             Debug.info("Creating tags table");
             connection.createStatement().executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS tags (id INTEGER " + "PRIMARY KEY " + autoIncrement
+                    "CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER " + "PRIMARY KEY " + autoIncrement
                         + ", playerID " + "VARCHAR(256) NOT NULL, tag TEXT NOT NULL, "
                         + "isused BOOLEAN NOT NULL DEFAULT 0);");
             Debug.info("Creating points table");
             connection.createStatement().executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS points (id INTEGER " + "PRIMARY KEY "
+                    "CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER " + "PRIMARY KEY "
                         + autoIncrement + ", playerID "
                         + "VARCHAR(256) NOT NULL, category VARCHAR(256) "
                         + "NOT NULL, count INT NOT NULL);");
             Debug.info("Creating journal table");
             connection.createStatement().executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS journal (id " + "INTEGER PRIMARY KEY "
+                    "CREATE TABLE IF NOT EXISTS " + prefix + "journal (id " + "INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID VARCHAR(256) NOT NULL, pointer "
                         + "VARCHAR(256) NOT NULL, date TIMESTAMP NOT " + "NULL);");
         } catch (SQLException e) {
