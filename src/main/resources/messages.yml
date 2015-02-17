@@ -109,7 +109,7 @@ de:
   objective_added: '&2Neue Aufgaben gestartet!'
   objective_removed: '&2Aufgabe entfernt!'
   purged: '&4%player% - Alle Dateien zurueckgesetzt!'
-  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Lesen Sie die Änderungen und/oder loeschen/benennen Sie die Datei, um diese Meldung zu schliessen!&e*'
+  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Lesen Sie die Aenderungen und/oder loeschen/benennen Sie die Datei, um diese Meldung zu schliessen!&e*'
   command_reload: 'laedt das Plugin neu'
   command_objectives: 'zeigt aktive Aufgaben'
   command_tags: 'zeigt Ihre Tags'
