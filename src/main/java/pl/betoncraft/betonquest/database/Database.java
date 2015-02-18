@@ -104,6 +104,18 @@ public abstract class Database {
                     statement = connection
                             .prepareStatement("SELECT playerID FROM " + prefix + "objectives GROUP BY playerID;");
                     break;
+                case LOAD_ALL_JOURNALS:
+                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "journal");
+                    break;
+                case LOAD_ALL_OBJECTIVES:
+                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "objectives");
+                    break;
+                case LOAD_ALL_POINTS:
+                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "points");
+                    break;
+                case LOAD_ALL_TAGS:
+                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "tags");
+                    break;
                 default:
                     statement = null;
                     break;
@@ -181,6 +193,34 @@ public abstract class Database {
                     statement = connection
                             .prepareStatement("UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;");
                     break;
+                case DROP_OBJECTIVES:
+                    statement = connection.prepareStatement("DROP TABLE " + prefix + "objectives");
+                    break;
+                case DROP_TAGS:
+                    statement = connection.prepareStatement("DROP TABLE " + prefix + "tags");
+                    break;
+                case DROP_POINTS:
+                    statement = connection.prepareStatement("DROP TABLE " + prefix + "points");
+                    break;
+                case DROP_JOURNALS:
+                    statement = connection.prepareStatement("DROP TABLE " + prefix + "journal");
+                    break;
+                case INSERT_OBJECTIVE:
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "objectives "
+                        + "VALUES (?,?,?,?)");
+                    break;
+                case INSERT_TAG:
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "tags "
+                        + "VALUES (?,?,?,?)");
+                    break;
+                case INSERT_POINT:
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "points "
+                        + "VALUES (?,?,?,?)");
+                    break;
+                case INSERT_JOURNAL:
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "journal "
+                        + "VALUES (?,?,?,?)");
+                    break;
                 default:
                     statement = null;
                     break;
@@ -238,6 +278,8 @@ public abstract class Database {
 
         SELECT_PLAYERS_TAGS, SELECT_PLAYERS_JOURNAL, SELECT_PLAYERS_POINTS,
         SELECT_PLAYERS_OBJECTIVES,
+        
+        LOAD_ALL_OBJECTIVES, LOAD_ALL_TAGS, LOAD_ALL_POINTS, LOAD_ALL_JOURNALS
 
     }
 
@@ -252,5 +294,8 @@ public abstract class Database {
 
         UPDATE_PLAYERS_TAGS, UPDATE_PLAYERS_JOURNAL, UPDATE_PLAYERS_POINTS,
         UPDATE_PLAYERS_OBJECTIVES,
+        
+        DROP_OBJECTIVES, DROP_TAGS, DROP_POINTS, DROP_JOURNALS,
+        INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL
     }
 }

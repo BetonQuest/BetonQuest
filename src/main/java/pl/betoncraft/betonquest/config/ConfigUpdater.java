@@ -92,15 +92,8 @@ public class ConfigUpdater {
             Debug.broadcast("Configuration up to date!");
             return;
         } else {
-            Debug.broadcast("Backing up before conversion!");
-            File backupFolder = new File(instance.getDataFolder(), "backups");
-            if (!backupFolder.isDirectory()) {
-                backupFolder.mkdir();
-            }
-            String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
-                + version;
-            new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
-            Debug.broadcast("Done, you can find the backup in \"backups\" directory.");
+            Debug.broadcast("Configuration needs to be updated.");
+            Utils.backup();
         }
         // if the version is null the plugin is updated from pre-1.3 version
         // (which

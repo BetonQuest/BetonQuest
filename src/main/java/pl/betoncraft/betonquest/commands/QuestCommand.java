@@ -45,6 +45,7 @@ import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Main admin command for quest editing.
@@ -194,6 +195,14 @@ public class QuestCommand implements CommandExecutor {
                     // just reloading
                     reloadPlugin();
                     sender.sendMessage(getMessage("reloaded"));
+                    break;
+                case "backup":
+                    // do a full plugin backup
+                    if (sender instanceof Player || Bukkit.getOnlinePlayers().length > 0) {
+                        sender.sendMessage(getMessage("offline"));
+                        break;
+                    }
+                    Utils.backup();
                     break;
                 default:
                     // there was an unknown argument, so handle this
@@ -701,6 +710,9 @@ public class QuestCommand implements CommandExecutor {
         sender.sendMessage("§c/" + alias + " event <player> <event> §b- " + getMessage("command_event"));
         sender.sendMessage("§c/" + alias + " item <name> §b- " + getMessage("command_item"));
         sender.sendMessage("§c/" + alias + " purge <player> §b- " + getMessage("command_purge"));
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("§c/" + alias + " backup §b- " + getMessage("command_backup"));
+        }
     }
 
     /**

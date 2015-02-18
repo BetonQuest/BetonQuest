@@ -12,6 +12,7 @@ Fixes (since 1.5.3):
     * /q reload no longer lags the server
     * Corrected description in /q command
 Changes (since 1.5.3):
+    * Added database backups
     * Give/take events and item condition can now check for multiple items with syntax 'give
       stick:2,stone:4,sword'
     * Added prefix for the database. New installations will use "betonquest_" prefix for tables,

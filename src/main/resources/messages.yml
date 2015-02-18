@@ -41,6 +41,8 @@ pl:
   command_event: 'uruchamia zdarzenie'
   command_item: 'tworzy nowy przedmiot z trzymanego w rece'
   command_purge: 'czysci wszystkie dane o graczu'
+  command_backup: 'tworzy backup konfiguracji i bazy danych. Uzywac z konsoli na pustym serwerze!'
+  offline: '&4Wszyscy gracze musza byc online aby wykonac backup!'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -80,6 +82,8 @@ en:
   command_event: 'fires an event'
   command_item: 'creates an item from the one you''re holding'
   command_purge: 'deletes all data about the player'
+  command_backup: 'creates configuration and database backup. Use only from console on empty server!'
+  offline: '&4All players must be offline in order to make a backup!'
 de:
   conversation_start: '&e*&bGespraech mit %quester% begonnen!&e*'
   conversation_end: '&e*&Gaesprach mit %quester% beendet!&e*'
@@ -118,6 +122,8 @@ de:
   command_event: 'loest ein Ereignis aus'
   command_item: 'Erstellt einen Gegenstand aus dem in der deiner Hand'
   command_purge: 'Setzt alle Daten uebder den Spieler zurueck'
+  command_backup: 'creates configuration and database backup. Use only from console on empty server!'
+  offline: '&4All players must be offline in order to make a backup!'
 fr:
   conversation_start: '&e*&bLa conversation avec %quester% est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec %quester% est terminee!&e*'
@@ -156,6 +162,8 @@ fr:
   command_event: 'Envoi d''un evenement'
   command_item: 'Creer un objet a partir de celui que vous avez en main'
   command_purge: 'Supprime tout l''historique du joueur'
+  command_backup: 'creates configuration and database backup. Use only from console on empty server!'
+  offline: '&4All players must be offline in order to make a backup!'
 cn:
   conversation_start: '&e====&b与%quester%对话中&e===='
   conversation_end: '&e====&b与%quester%的对话已经结束&e===='
@@ -194,6 +202,8 @@ cn:
   command_event: '手动激活一个事件'
   command_item: '将你手中拿着的物品保存为预置物品'
   command_purge: '删除该玩家的所有任务信息'
+  command_backup: 'creates configuration and database backup. Use only from console on empty server!'
+  offline: '&4All players must be offline in order to make a backup!'
 es:
   conversation_start: '&e*&bLa conversacion con %quester% ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con %quester% ha terminado.&e*'
@@ -232,3 +242,5 @@ es:
   command_event: 'Activa un evento.'
   command_item: 'Crea un objeto a partir del cual estas sosteniendo.'
   command_purge: 'Borra todos los datos de un jugador.'
+  command_backup: 'creates configuration and database backup. Use only from console on empty server!'
+  offline: '&4All players must be offline in order to make a backup!'

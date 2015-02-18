@@ -94,6 +94,7 @@ import pl.betoncraft.betonquest.utils.Metrics;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
+import pl.betoncraft.betonquest.utils.Utils;
 
 
 
@@ -164,6 +165,9 @@ public final class BetonQuest extends JavaPlugin {
 
         // create tables in the database
         database.createTables(isMySQLUsed);
+        
+        // load database backup
+        Utils.loadDatabaseFromBackup();
 
         // update configuration if needed
         new ConfigUpdater();
