@@ -93,7 +93,7 @@ public class JoinQuitListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         // remove journal so there are no bugs
-        JournalHandler.removeJournal(playerID);
+        instance.getDBHandler(playerID).getJournal().removeJournal();
         // if MySQL is used then saving should be done asynchronously
         if (instance.isMySQLUsed()) {
             new BukkitRunnable() {

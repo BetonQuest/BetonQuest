@@ -22,7 +22,9 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -52,7 +54,7 @@ public class ItemCondition extends Condition {
             if (item.split(":").length > 1 && item.split(":")[1].matches("\\d+")) {
                 amount = Integer.parseInt(item.split(":")[1]);
             }
-            QuestItem questItem = new QuestItem(name);
+            QuestItem questItem = new QuestItem(ConfigHandler.getString("items." + name));
             questItems.add(new Item(questItem, amount));
         }
     }
@@ -61,8 +63,22 @@ public class ItemCondition extends Condition {
     public boolean isMet() {
         int counter = 0;
         for (Item questItem : questItems) {
-            ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-            for (ItemStack item : items) {
+            ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+            for (ItemStack item : inventoryItems) {
+                if (item == null) {
+                    continue;
+                }
+                if (!questItem.isItemEqual(item)) {
+                    continue;
+                }
+                questItem.setAmount(questItem.getAmount() - item.getAmount());
+                if (questItem.getAmount() <= 0) {
+                    counter++;
+                    break;
+                }
+            }
+            List<ItemStack> backpackItems = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
+            for (ItemStack item : backpackItems) {
                 if (item == null) {
                     continue;
                 }

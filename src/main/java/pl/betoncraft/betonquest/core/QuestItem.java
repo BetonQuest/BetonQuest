@@ -25,8 +25,6 @@ import java.util.Map;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import pl.betoncraft.betonquest.config.ConfigHandler;
-
 /**
  * Represents an item handled by the configuration
  * 
@@ -68,8 +66,8 @@ public class QuestItem {
      * @param itemID
      *            ID of the item from items.yml
      */
-    public QuestItem(String itemID) {
-        String[] parts = ConfigHandler.getString("items." + itemID).split(" ");
+    public QuestItem(String instruction) {
+        String[] parts = instruction.split(" ");
         // get material type
         material = parts[0];
         for (String part : parts) {

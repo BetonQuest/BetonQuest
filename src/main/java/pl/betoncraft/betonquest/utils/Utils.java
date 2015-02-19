@@ -35,11 +35,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
+import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.config.Zipper;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.database.Database;
@@ -62,8 +64,9 @@ public class Utils {
         BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
             Debug.error("There was an error during backing up the database! This does not affect"
-                + " the configuration files' backup, nor damage your database. You should update"
-                + " your database maually if you want to be extra safe, but it's not necessary.");
+                + " the configuration backup, nor damage your database. You should backup"
+                + " the database maually if you want to be extra safe, but it's not necessary if"
+                + " you don't want to downgrade later.");
         }
         // create backups folder if it does not exist
         File backupFolder = new File(instance.getDataFolder(), "backups");
@@ -301,7 +304,6 @@ public class Utils {
                     objectives.getString(key + ".id"),
                     objectives.getString(key + ".playerID"),
                     objectives.getString(key + ".instructions"),
-                    objectives.getString(key + ".isused"),
                 });
             }
             // load tags
@@ -311,7 +313,6 @@ public class Utils {
                     tags.getString(key + ".id"),
                     tags.getString(key + ".playerID"),
                     tags.getString(key + ".tag"),
-                    tags.getString(key + ".isused"),
                 });
             }
             // load points
@@ -334,6 +335,15 @@ public class Utils {
                     journals.getString(key + ".date"),
                 });
             }
+            ConfigurationSection backpack = config.getConfigurationSection("backpack");
+            if (backpack != null) for (String key : backpack.getKeys(false)) {
+                database.updateSQL(UpdateType.INSERT_BACKPACK, new String[]{
+                    backpack.getString(key + ".id"),
+                    backpack.getString(key + ".playerID"),
+                    backpack.getString(key + ".instruction"),
+                    backpack.getString(key + ".amount"),
+                });
+            }
             database.closeConnection();
             // delete backup file so it doesn't get loaded again
             file.delete();
@@ -352,5 +362,133 @@ public class Utils {
                     + " a solution.");
             }
         }
+    }
+    
+    @SuppressWarnings("deprecation")
+    public static String itemToString(ItemStack item) {
+        String name = "";
+        String lore = "";
+        String enchants = "";
+        String title = "";
+        String text = "";
+        String author = "";
+        String effects = "";
+        ItemMeta meta = item.getItemMeta();
+        // get display name
+        if (meta.hasDisplayName()) {
+            name = " name:" + meta.getDisplayName().replace(" ", "_");
+        }
+        // get lore
+        if (meta.hasLore()) {
+            StringBuilder string = new StringBuilder();
+            for (String line : meta.getLore()) {
+                string.append(line + ";");
+            }
+            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_");
+        }
+        // get enchants
+        if (meta.hasEnchants()) {
+            StringBuilder string = new StringBuilder();
+            for (Enchantment enchant : meta.getEnchants().keySet()) {
+                string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
+            }
+            enchants = " enchants:" + string.substring(0, string.length() - 1);
+        }
+        // check if it's a book and add title, author and text if so
+        if (meta instanceof BookMeta) {
+            BookMeta bookMeta = (BookMeta) meta;
+            if (bookMeta.hasAuthor()) {
+                author = " author:" + bookMeta.getAuthor().replace(" ", "_");
+            }
+            if (bookMeta.hasTitle()) {
+                title = " title:" + bookMeta.getTitle().replace(" ", "_");
+            }
+            if (bookMeta.hasPages()) {
+                text = " text:";
+                for (String page : bookMeta.getPages()) {
+                    if (page.startsWith("\"") && page.endsWith("\"")) {
+                        page = page.substring(1, page.length() - 1);
+                    }
+                    text = text + page.trim().replace(" ", "_") + "|";
+                }
+                text = text.substring(0, text.length() - 1).replaceAll("\\n", "\\\\n");
+            }
+        }
+        // check if it's a potion and add effect type, duration and power if so
+        if (meta instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta) meta;
+            if (potionMeta.hasCustomEffects()) {
+                StringBuilder string = new StringBuilder();
+                for (PotionEffect effect : potionMeta.getCustomEffects()) {
+                    int power = effect.getAmplifier() + 1;
+                    int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
+                    string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
+                }
+                effects = " effects:" + string.substring(0, string.length() - 1);
+            }
+        }
+        // put it all together in a single string
+        return item.getType() + " data:" + item.getData().getData() + name + lore
+            + enchants + title + author + text + effects;
+    }
+    
+    public static ItemStack generateItem(QuestItem questItem, int stackSize) {
+        byte data;
+        if (questItem.getData() < 0) {
+            data = 0;
+        } else {
+            data = (byte) questItem.getData();
+        }
+        ItemStack item = new ItemStack(Material.matchMaterial(questItem.getMaterial()),
+                stackSize, data);
+        ItemMeta meta = item.getItemMeta();
+        if (questItem.getName() != null) {
+            meta.setDisplayName(questItem.getName());
+        }
+        meta.setLore(questItem.getLore());
+        for (String enchant : questItem.getEnchants().keySet()) {
+            meta.addEnchant(Enchantment.getByName(enchant), questItem.getEnchants()
+                    .get(enchant), true);
+        }
+        if (Material.matchMaterial(questItem.getMaterial()).equals(Material.WRITTEN_BOOK)) {
+            BookMeta bookMeta = (BookMeta) meta;
+            if (questItem.getAuthor() != null) {
+                bookMeta.setAuthor(questItem.getAuthor());
+            } else {
+                bookMeta.setAuthor(ConfigHandler.getString("messages."
+                    + ConfigHandler.getString("config.language") + ".unknown_author"));
+            }
+            if (questItem.getText() != null) {
+                bookMeta.setPages(Utils.pagesFromString(questItem.getText(), false));
+            }
+            if (questItem.getTitle() != null) {
+                bookMeta.setTitle(questItem.getTitle());
+            } else {
+                bookMeta.setTitle(ConfigHandler.getString("messages."
+                    + ConfigHandler.getString("config.language") + ".unknown_title"));
+            }
+            item.setItemMeta(bookMeta);
+        }
+        if (Material.matchMaterial(questItem.getMaterial()).equals(Material.POTION)) {
+            PotionMeta potionMeta = (PotionMeta) meta;
+            for (PotionEffect effect : questItem.getEffects()) {
+                potionMeta.addCustomEffect(effect, true);
+            }
+            item.setItemMeta(potionMeta);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static boolean isQuestItem(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+        if (item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore()
+                .contains(ConfigHandler.getString("messages." + ConfigHandler.getString
+                ("config.language") + ".quest_item").replaceAll("&", "§"))) {
+            return true;
+        }
+        return false;
     }
 }

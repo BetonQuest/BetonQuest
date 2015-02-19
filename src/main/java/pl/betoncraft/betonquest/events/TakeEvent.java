@@ -17,10 +17,16 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -50,23 +56,37 @@ public class TakeEvent extends QuestEvent {
             if (rawItem.split(":").length > 1) {
                 amount = Integer.parseInt(rawItem.split(":")[1]);
             }
-            questItem = new QuestItem(itemName);
-            ItemStack[] items = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-            for (ItemStack item : items) {
-                if (Utils.isItemEqual(item, questItem)) {
-                    if (item.getAmount() - amount <= 0) {
-                        amount = amount - item.getAmount();
-                        item.setType(Material.AIR);
-                    } else {
-                        item.setAmount(item.getAmount() - amount);
-                        amount = 0;
-                    }
-                    if (amount <= 0) {
-                        break;
-                    }
+            questItem = new QuestItem(ConfigHandler.getString("items." + itemName));
+            PlayerConverter.getPlayer(playerID).getInventory().setContents(removeItems(
+                    PlayerConverter.getPlayer(playerID).getInventory().getContents()));
+            if (amount > 0) {
+                List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
+                ItemStack[] array = new ItemStack[]{};
+                array = backpack.toArray(array);
+                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array)));
+                BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
+            }     
+        }
+    }
+
+    /**
+     * @param items
+     */
+    private ItemStack[] removeItems(ItemStack[] items) {
+        for (ItemStack item : items) {
+            if (Utils.isItemEqual(item, questItem)) {
+                if (item.getAmount() - amount <= 0) {
+                    amount = amount - item.getAmount();
+                    item.setType(Material.AIR);
+                } else {
+                    item.setAmount(item.getAmount() - amount);
+                    amount = 0;
+                }
+                if (amount <= 0) {
+                    break;
                 }
             }
-            PlayerConverter.getPlayer(playerID).getInventory().setContents(items);
         }
+        return items;
     }
 }

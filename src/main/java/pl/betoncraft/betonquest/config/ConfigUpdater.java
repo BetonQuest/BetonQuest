@@ -67,7 +67,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v6";
+    private final String destination = "v7";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -94,7 +94,6 @@ public class ConfigUpdater {
             Debug.broadcast("Configuration up to date!");
             return;
         } else {
-            Debug.broadcast("Configuration needs to be updated.");
             Utils.backup();
         }
         // if the version is null the plugin is updated from pre-1.3 version
@@ -121,17 +120,26 @@ public class ConfigUpdater {
         } else if (version.equals("1.5.3") || version.equals("1.6")) {
             updateTo1_6();
         } else if (version.matches("^v\\d+$")) {
-            // this is new, post-1.5.3 updating system, where config versions
-            // are
-            // numbered separately from plugin's releases
-            update();
+            performUpdate();
+        } else {
+            Debug.broadcast("Something is not right wit configuration version. Consider fixing this.");
         }
+    }
+    
+    /**
+     * Performes full update in new updating system.
+     */
+    private void performUpdate() {
+        // this is new, post-1.5.3 updating system, where config versions
+        // are numbered separately from plugin's releases
+        Debug.broadcast("Updating configuration to version " + destination);
+        update();
         updateLanguages();
         instance.saveConfig();
         // reload configuration file to apply all possible changes
         ConfigHandler.reload();
+        Debug.broadcast("Successfully updated configuration!");
         addChangelog();
-        Debug.broadcast("Successfully converted configuration to the right format!");
     }
 
     /**
@@ -148,7 +156,9 @@ public class ConfigUpdater {
             // call the right updating method
             Method method = this.getClass().getDeclaredMethod("update_from_" + version);
             method.setAccessible(true);
+            Debug.info("Starting update from " + version + "!");
             method.invoke(this);
+            Debug.info("Update to " + config.getString("version") + " done!");
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException
                 | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
@@ -156,10 +166,16 @@ public class ConfigUpdater {
         // update again until destination is reached
         update();
     }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v6() {
+        Debug.broadcast("Added backpacks to the database!");
+        config.set("version", "v7");
+        instance.saveConfig();
+    }
 
     @SuppressWarnings("unused")
     private void update_from_v5() {
-        Debug.info("Starting update from v4 to v5");
         try {
             // delete isused column from tables objectives and tags
             Database database = instance.getDB();
@@ -202,12 +218,10 @@ public class ConfigUpdater {
         }
         config.set("version", "v6");
         instance.saveConfig();
-        Debug.info("Conversion to v6 finished!");
     }
 
     @SuppressWarnings("unused")
     private void update_from_v4() {
-        Debug.info("Starting update from v4 to v5");
         try {
             // update all give/take events and item condition to match new
             // parser
@@ -280,24 +294,20 @@ public class ConfigUpdater {
         }
         config.set("version", "v5");
         instance.saveConfig();
-        Debug.info("Conversion to v5 finished!");
     }
 
     @SuppressWarnings("unused")
     private void update_from_v3() {
-        Debug.info("Starting update from v3 to v4");
         config.set("mysql.prefix", "");
         Debug.broadcast("Added prefix option to MySQL settings!");
         config.set("version", "v4");
         instance.saveConfig();
-        Debug.info("Conversion to v4 finished!");
     }
 
     @SuppressWarnings("unused")
     private void update_from_v2() {
-        Debug.info("Starting update from v2 to v3");
         try {
-            // start time counting
+            // start time counting, because why not?
             long time = new Date().getTime();
             // Get all conditions with --inverted tag into the map
             // <name,instruction> without --inverted tag and remove them form
@@ -598,23 +608,20 @@ public class ConfigUpdater {
         config.set("version", "v3");
         instance.saveConfig();
         // done
-        Debug.info("Conversion to v3 finished!");
     }
 
     @SuppressWarnings("unused")
     private void update_from_v1() {
-        Debug.info("Starting update from v1 to v2");
         config.set("debug", "false");
-        Debug.broadcast("Added debug option to configuration.");
+        Debug.broadcast("Added debug option to configuration!");
         config.set("version", "v2");
         instance.saveConfig();
-        Debug.info("Conversion to v2 finished!");
     }
 
     private void updateTo1_6() {
         config.set("version", "v1");
         instance.saveConfig();
-        update();
+        performUpdate();
     }
 
     private void updateTo1_5_3() {
@@ -1064,7 +1071,7 @@ public class ConfigUpdater {
         instance.getDB().openConnection();
         // loop all tables
         HashMap<String, String> list = new HashMap<>();
-        String[] tables = new String[] { "OBJECTIVES", "TAGS", "POINTS", "JOURNAL" };
+        String[] tables = new String[] { "OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK" };
         for (String table : tables) {
             ResultSet res = instance.getDB().querySQL(QueryType.valueOf("SELECT_PLAYERS_" + table),
                     new String[] {});

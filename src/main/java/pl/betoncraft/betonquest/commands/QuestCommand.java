@@ -25,13 +25,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -40,7 +35,7 @@ import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.GlobalLocations;
-import pl.betoncraft.betonquest.core.JournalHandler;
+import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -350,78 +345,7 @@ public class QuestCommand implements CommandExecutor {
         }
         // define parts of the final string
         ConfigAccessor config = ConfigHandler.getConfigs().get("items");
-        String name = "";
-        String lore = "";
-        String enchants = "";
-        String title = "";
-        String text = "";
-        String author = "";
-        String effects = "";
-        ItemMeta meta = item.getItemMeta();
-        // get display name
-        if (meta.hasDisplayName()) {
-            Debug.info("Setting item's name");
-            name = " name:" + meta.getDisplayName().replace(" ", "_");
-        }
-        // get lore
-        if (meta.hasLore()) {
-            Debug.info("Setting item's lore");
-            StringBuilder string = new StringBuilder();
-            for (String line : meta.getLore()) {
-                string.append(line + ";");
-            }
-            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_");
-        }
-        // get enchants
-        Debug.info("Setting item's enchants");
-        if (meta.hasEnchants()) {
-            StringBuilder string = new StringBuilder();
-            for (Enchantment enchant : meta.getEnchants().keySet()) {
-                string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
-            }
-            enchants = " enchants:" + string.substring(0, string.length() - 1);
-        }
-        // check if it's a book and add title, author and text if so
-        if (meta instanceof BookMeta) {
-            BookMeta bookMeta = (BookMeta) meta;
-            if (bookMeta.hasAuthor()) {
-                Debug.info("Setting book's author");
-                author = " author:" + bookMeta.getAuthor().replace(" ", "_");
-            }
-            if (bookMeta.hasTitle()) {
-                Debug.info("Setting book's title");
-                title = " title:" + bookMeta.getTitle().replace(" ", "_");
-            }
-            if (bookMeta.hasPages()) {
-                Debug.info("Setting book's pages");
-                text = " text:";
-                for (String page : bookMeta.getPages()) {
-                    if (page.startsWith("\"") && page.endsWith("\"")) {
-                        page = page.substring(1, page.length() - 1);
-                    }
-                    text = text + page.trim().replace(" ", "_") + "|";
-                }
-                text = text.substring(0, text.length() - 1).replaceAll("\\n", "\\\\n");
-            }
-        }
-        // check if it's a potion and add effect type, duration and power if so
-        if (meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-            if (potionMeta.hasCustomEffects()) {
-                Debug.info("Setting potion's effects");
-                StringBuilder string = new StringBuilder();
-                for (PotionEffect effect : potionMeta.getCustomEffects()) {
-                    int power = effect.getAmplifier() + 1;
-                    int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-                    string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
-                }
-                effects = " effects:" + string.substring(0, string.length() - 1);
-            }
-        }
-        // put it all together in a single string
-        @SuppressWarnings("deprecation")
-        String instructions = item.getType() + " data:" + item.getData().getData() + name + lore
-            + enchants + title + author + text + effects;
+        String instructions = Utils.itemToString(item);
         // save it in items.yml
         Debug.info("Saving item to configuration as " + args[1]);
         config.getConfig().set(args[1], instructions.trim());
@@ -687,8 +611,9 @@ public class QuestCommand implements CommandExecutor {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);
             Debug.info("Updating journal for player " + playerID);
-            instance.getDBHandler(playerID).getJournal().generateTexts();
-            JournalHandler.updateJournal(playerID);
+            Journal journal = instance.getDBHandler(playerID).getJournal();
+            journal.generateTexts();
+            journal.updateJournal();
         }
         // kill all conversation
         Conversation.clear();

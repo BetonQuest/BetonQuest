@@ -23,7 +23,6 @@ import java.util.Date;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.ConfigHandler;
-import pl.betoncraft.betonquest.core.JournalHandler;
 import pl.betoncraft.betonquest.core.SimpleTextOutput;
 
 /**
@@ -42,7 +41,7 @@ public class JournalEvent extends QuestEvent {
         super(playerID, instructions);
         BetonQuest.getInstance().getDBHandler(playerID).getJournal()
                 .addPointer(instructions.split(" ")[1], new Timestamp(new Date().getTime()));
-        JournalHandler.updateJournal(playerID);
+        BetonQuest.getInstance().getDBHandler(playerID).getJournal().updateJournal();
         SimpleTextOutput.sendSystemMessage(
                 playerID,
                 ConfigHandler.getString("messages." + ConfigHandler.getString("config.language")

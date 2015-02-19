@@ -19,15 +19,10 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.HashMap;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
@@ -59,7 +54,7 @@ public class GiveEvent extends QuestEvent {
             if (rawItem.split(":").length > 1) {
                 amount = Integer.parseInt(rawItem.split(":")[1]);
             }
-            questItem = new QuestItem(itemName);
+            questItem = new QuestItem(ConfigHandler.getString("items." + itemName));
             while (amount > 0) {
                 int stackSize;
                 if (amount > 64) {
@@ -67,55 +62,19 @@ public class GiveEvent extends QuestEvent {
                 } else {
                     stackSize = amount;
                 }
-                byte data;
-                if (questItem.getData() < 0) {
-                    data = 0;
-                } else {
-                    data = (byte) questItem.getData();
-                }
-                ItemStack item = new ItemStack(Material.matchMaterial(questItem.getMaterial()),
-                        stackSize, data);
-                ItemMeta meta = item.getItemMeta();
-                if (questItem.getName() != null) {
-                    meta.setDisplayName(questItem.getName());
-                }
-                meta.setLore(questItem.getLore());
-                for (String enchant : questItem.getEnchants().keySet()) {
-                    meta.addEnchant(Enchantment.getByName(enchant), questItem.getEnchants()
-                            .get(enchant), true);
-                }
-                if (Material.matchMaterial(questItem.getMaterial()).equals(Material.WRITTEN_BOOK)) {
-                    BookMeta bookMeta = (BookMeta) meta;
-                    if (questItem.getAuthor() != null) {
-                        bookMeta.setAuthor(questItem.getAuthor());
-                    } else {
-                        bookMeta.setAuthor(ConfigHandler.getString("messages."
-                            + ConfigHandler.getString("config.language") + ".unknown_author"));
-                    }
-                    if (questItem.getText() != null) {
-                        bookMeta.setPages(Utils.pagesFromString(questItem.getText(), false));
-                    }
-                    if (questItem.getTitle() != null) {
-                        bookMeta.setTitle(questItem.getTitle());
-                    } else {
-                        bookMeta.setTitle(ConfigHandler.getString("messages."
-                            + ConfigHandler.getString("config.language") + ".unknown_title"));
-                    }
-                    item.setItemMeta(bookMeta);
-                }
-                if (Material.matchMaterial(questItem.getMaterial()).equals(Material.POTION)) {
-                    PotionMeta potionMeta = (PotionMeta) meta;
-                    for (PotionEffect effect : questItem.getEffects()) {
-                        potionMeta.addCustomEffect(effect, true);
-                    }
-                    item.setItemMeta(potionMeta);
-                }
-                item.setItemMeta(meta);
+                ItemStack item = Utils.generateItem(questItem, stackSize);
                 Player player = PlayerConverter.getPlayer(playerID);
                 HashMap<Integer, ItemStack> left = player
                         .getInventory().addItem(item);
                 for (Integer leftNumber : left.keySet()) {
-                    player.getWorld().dropItem(player.getLocation(), left.get(leftNumber));
+                    ItemStack itemStack = left.get(leftNumber);
+                    if (itemStack.getItemMeta().hasLore() && itemStack.getItemMeta().getLore()
+                            .contains(ConfigHandler.getString("messages." + ConfigHandler
+                            .getString("config.language") + ".quest_item").replaceAll("§", "&"))) {
+                        BetonQuest.getInstance().getDBHandler(playerID).addItem(itemStack, stackSize);
+                    } else {
+                        player.getWorld().dropItem(player.getLocation(), itemStack);
+                    }
                 }
                 amount = amount - stackSize;
             }

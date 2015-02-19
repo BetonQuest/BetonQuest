@@ -2,33 +2,37 @@ v1.6 (dev)
 Notes:
   This is a dev version of the plugin. It may contain a lot of bugs, so please report them here:
   <https://github.com/Co0sh/BetonQuest/issues>. Except all uncaught bugs it looks like more stable
-  than 1.5.3 (which is full of bugs), so you theoretically should use it on production server. 
+  than 1.5.3 (which is full of bugs), so you theoretically could use it on production server. 
   The configuration will update automatically between next dev versions, but the plugin will not 
   be autoupdated to next dev version. It will however update when a full version is released.
 Fixes (since 1.5.3):
     * Items given by event that don't fit in the inventory will now drop instead of being deleted
+      This does not apply to quest items, they will be added to backpack
     * Events fired from conversations won't throw async errors
     * Conversation can be started after plugin's reload without relogging
     * /q reload no longer lags the server
     * Corrected description in /q command
-Changes (since 1.5.3):
+    * Added input validation for global locations - if event is incorrect it will display an error
+      instead of breaking the whole functionality
+Additions:
+    * Added backpack for storing quest items, which cannot be dropped in any way
     * Added database backups
-    * Give/take events and item condition can now check for multiple items with syntax 'give
-      stick:2,stone:4,sword'
     * Added prefix for the database. New installations will use "betonquest_" prefix for tables,
       existing configuration will use empty prefix to maintain compatibility with other programs
-    * Inverting condition is now done by prefixing their name with "!" (in the place where you use
-      them, like conversation, not in events.yml)
-    * Players can chat while in conversations by prefixing their messages with # character
+    * Players can chat while in conversations by prefixing their messages with '#' character
     * New "random" condition - true with specified probability ('random random:4-10' means
       4 of 10 times true)
     * New "sneak" condition (without instruction, just "sneak" and optional --inverted)
-    * Added input validation for global locations - if event is incorrect it will display an error
-      instead of breaking the whole functionality
-    * Configuration updater is no longer based on plugin's version
-    * Backup files are now kept in "backups" directory, old ones are moved to it
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml (true/false) for logging plugin's activity to "debug.log" file
+Changes (since 1.5.3):
+    * Changed /j command to open the backpack instead of giving the journal
+    * Give/take events and item condition can now check for multiple items with syntax 'give
+      stick:2,stone:4,sword'
+    * Inverting condition is now done by prefixing their name with "!" (in the place where you use
+      them, like conversation, not in conditions.yml)
+    * Configuration updater is no longer based on plugin's version
+    * Backup files are now kept in "backups" directory, old ones are moved to it
     * Changed internal structure of the code (may matter to developers - QuestEvent, Condition
       and Objective classes has been moved from "core" package to "api", update your imports) 
 

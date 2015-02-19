@@ -95,6 +95,8 @@ public class Debug {
                 e.printStackTrace();
             }
         }
+        // display a message in the console
+        if (debugging) BetonQuest.getInstance().getLogger().info("Debugging is turned on!");
     }
 
     private enum LogType {

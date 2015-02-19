@@ -91,7 +91,8 @@ public class Zipper {
      */
     public void generateFileList(File node) {
 
-        if (node.getName().matches("^backup.*")) {
+        if (node.getName().matches("^backup.*") || node.getName().matches("^database\\.db$")
+                || node.getName().matches("^changelog\\.txt$") || node.getName().matches("^logs$")) {
             return;
         }
 

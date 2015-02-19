@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -45,7 +46,7 @@ public class HandCondition extends Condition {
         String[] parts = instructions.split(" ");
         for (String part : parts) {
             if (part.contains("item:")) {
-                questItem = new QuestItem(part.substring(5));
+                questItem = new QuestItem(ConfigHandler.getString("items." + part.substring(5)));
             }
         }
     }

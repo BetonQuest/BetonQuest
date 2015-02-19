@@ -55,7 +55,7 @@ import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
-import pl.betoncraft.betonquest.core.JournalHandler;
+import pl.betoncraft.betonquest.core.QuestItemHandler;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -186,7 +186,7 @@ public final class BetonQuest extends JavaPlugin {
         new CubeNPCListener();
 
         // instantiate journal handler
-        new JournalHandler();
+        new QuestItemHandler();
 
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
@@ -284,9 +284,13 @@ public final class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // stop global location listener
+        GlobalLocations.stop();
+        // save players' data
         for (Player player : Bukkit.getOnlinePlayers()) {
             dbHandlers.get(PlayerConverter.getID(player)).saveData();
         }
+        // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
             Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT,
                     false);
@@ -296,6 +300,7 @@ public final class BetonQuest extends JavaPlugin {
                     + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
             }
         }
+        // done
         Debug.broadcast("BetonQuest succesfully disabled!");
     }
 

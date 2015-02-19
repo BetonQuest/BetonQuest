@@ -23,18 +23,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.core.Journal;
-import pl.betoncraft.betonquest.core.JournalHandler;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.core.Pointer;
+import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.database.Database.QueryType;
 import pl.betoncraft.betonquest.database.Database.UpdateType;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Represents a handler for all player-related data, which can load and save it.
@@ -71,6 +73,10 @@ public class DatabaseHandler {
      * Stores player's journal.
      */
     private Journal journal;
+    /**
+     * Stores all items in player's backpack
+     */
+    private List<ItemStack> backpack = new ArrayList<>();
 
     /**
      * Creates new DatabaseHandler for the player represented by playerID.
@@ -91,7 +97,7 @@ public class DatabaseHandler {
         try {
             // open connection to the database
             database.openConnection();
-            
+
             // load objectives
             ResultSet res1 = database.querySQL(QueryType.SELECT_OBJECTIVES,
                     new String[] { playerID });
@@ -100,8 +106,7 @@ public class DatabaseHandler {
                 objectives.add(res1.getString("instructions"));
 
             // load tags
-            ResultSet res2 = database.querySQL(QueryType.SELECT_TAGS,
-                    new String[] { playerID });
+            ResultSet res2 = database.querySQL(QueryType.SELECT_TAGS, new String[] { playerID });
             // put them into the list
             while (res2.next())
                 tags.add(res2.getString("tag"));
@@ -118,6 +123,17 @@ public class DatabaseHandler {
             while (res4.next())
                 points.add(new Point(res4.getString("category"), res4.getInt("count")));
 
+            // load backpack
+            ResultSet res5 = database
+                    .querySQL(QueryType.SELECT_BACKPACK, new String[] { playerID });
+            // put items into the list
+            while (res5.next()) {
+                String instruction = res5.getString("instruction");
+                int amount = res5.getInt("amount");
+                ItemStack item = Utils.generateItem(new QuestItem(instruction), amount);
+                backpack.add(item);
+            }
+
             // everything loaded, close the connection
             if (!BetonQuest.getInstance().isMySQLUsed())
                 database.closeConnection();
@@ -125,12 +141,12 @@ public class DatabaseHandler {
             // log data to debugger
             if (Debug.debugging()) {
                 Debug.info("There are " + objectives.size() + " objectives, " + tags.size()
-                    + " tags, " + points.size() + " points and " + entries.size()
-                    + " journal entries loaded for player " + playerID);
+                    + " tags, " + points.size() + " points, " + entries.size() + " journal entries"
+                    + " and " + backpack.size() + " items loaded for player " + playerID);
             }
 
             // generate journal
-            journal = new Journal(entries);
+            journal = new Journal(playerID, entries);
             // entries.clear();
 
         } catch (SQLException e) {
@@ -189,6 +205,7 @@ public class DatabaseHandler {
         database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
         // insert new data
         for (String instruction : objectives) {
             database.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, instruction });
@@ -209,17 +226,24 @@ public class DatabaseHandler {
                     new String[] { playerID, pointer.getPointer(),
                         pointer.getTimestamp().toString() });
         }
+        for (ItemStack itemStack : backpack) {
+            String instruction = Utils.itemToString(itemStack);
+            String amount = String.valueOf(itemStack.getAmount());
+            database.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
+        }
         database.closeConnection();
         // log debug message about saving
         Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
-            + tags.size() + " tags, " + points.size() + " points and "
-            + journal.getPointers().size() + " journal entries for player " + playerID);
+            + tags.size() + " tags, " + points.size() + " points, "
+            + journal.getPointers().size() + " journal entries and " + backpack.size()
+            + " items for player " + playerID);
         // clear all lists
         objectives.clear();
         activeObjectives.clear();
         tags.clear();
         points.clear();
         journal.clear();
+        backpack.clear();
     }
 
     /**
@@ -269,6 +293,7 @@ public class DatabaseHandler {
         points.clear();
         entries.clear();
         journal.clear();
+        backpack.clear();
         // clear the database
         if (BetonQuest.getInstance().isMySQLUsed()) {
             new BukkitRunnable() {
@@ -279,6 +304,7 @@ public class DatabaseHandler {
                     database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
                     database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
                     database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+                    database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
                 }
             }.runTask(BetonQuest.getInstance());
         } else {
@@ -287,11 +313,12 @@ public class DatabaseHandler {
             database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
             database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
             database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+            database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
             database.closeConnection();
         }
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
-            JournalHandler.updateJournal(playerID);
+            journal.updateJournal();
         }
     }
 
@@ -361,9 +388,9 @@ public class DatabaseHandler {
      * be created.
      * 
      * @param category
-     *            - points will be added to this category
+     *            points will be added to this category
      * @param count
-     *            - how much points will be added (or subtracted)
+     *            how much points will be added (or subtracted)
      */
     public void addPoints(String category, int count) {
         // check if the category already exists
@@ -376,5 +403,64 @@ public class DatabaseHandler {
         }
         // if not then create new point category with given amount of points
         points.add(new Point(category, count));
+    }
+
+    /**
+     * Returns player's backpack as the list of itemstacks.
+     * 
+     * @return list of itemstacks
+     */
+    public List<ItemStack> getBackpack() {
+        return backpack;
+    }
+    
+    public void setBackpack(List<ItemStack> list) {
+        this.backpack = list;
+    }
+
+    /**
+     * Adds the item to backpack. The amount of the itemstack doesn't matter,
+     * it's overwritten by amount parameter.
+     * 
+     * @param item
+     *            ItemStack to add to backpack
+     * @param amount
+     *            amount of the items
+     */
+    public void addItem(ItemStack item, int amount) {
+        Debug.info("  Cloned item type: " + item.getType());
+        for (ItemStack itemStack : backpack) {
+            if (item.isSimilar(itemStack)) {
+                // if items are similar they can be joined in a single itemstack
+                if (amount + itemStack.getAmount() <= itemStack.getMaxStackSize()) {
+                    // if they will fit all together, then just add them
+                    itemStack.setAmount(itemStack.getAmount() + amount);
+                    return;
+                } else {
+                    // if the stack will be overflown, set max size and continue
+                    amount -= itemStack.getMaxStackSize() - itemStack.getAmount();
+                    itemStack.setAmount(itemStack.getMaxStackSize());
+                }
+            }
+        }
+        // every item checked, time to add a new itemstack
+        while (amount > 0) {
+            // if the amount is greater than max size of the itemstack, create max
+            // stacks until it's lower
+            ItemStack newItem = item.clone();
+            int maxSize = newItem.getType().getMaxStackSize();
+            if (amount > maxSize) {
+                if (maxSize == 0) {
+                    maxSize = 64;
+                }
+                newItem.setAmount(maxSize);
+                amount -= maxSize;
+            } else {
+                newItem.setAmount(amount);
+                amount = 0;
+            }
+            Debug.info("    Adding item of type " + newItem.getType() + ", amount left to ad is " + amount);
+            backpack.add(newItem);
+        }
     }
 }

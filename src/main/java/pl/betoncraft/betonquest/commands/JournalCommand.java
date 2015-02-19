@@ -22,8 +22,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import pl.betoncraft.betonquest.config.ConfigHandler;
-import pl.betoncraft.betonquest.core.JournalHandler;
+import pl.betoncraft.betonquest.core.BackpackDisplay;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -40,9 +39,10 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 Debug.info("Executing /j command for " + sender.getName());
-                // giving the player his journal
-                JournalHandler.addJournal(PlayerConverter.getID((Player) sender),
-                        Integer.parseInt(ConfigHandler.getString("config.default_journal_slot")));
+//                // giving the player his journal
+//                JournalHandler.addJournal(PlayerConverter.getID((Player) sender),
+//                        Integer.parseInt(ConfigHandler.getString("config.default_journal_slot")));
+                new BackpackDisplay(PlayerConverter.getID((Player) sender));
             }
             return true;
         }
