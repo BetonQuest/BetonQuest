@@ -281,13 +281,16 @@ public class Utils {
             // in a different way...)
             database.createTables(instance.isMySQLUsed());
             // drop all tables
+            database.openConnection();
             database.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
             database.updateSQL(UpdateType.DROP_TAGS, new String[]{});
             database.updateSQL(UpdateType.DROP_POINTS, new String[]{});
             database.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
+            database.closeConnection();
             // create new tables
             database.createTables(instance.isMySQLUsed());
             // load objectives
+            database.openConnection();
             ConfigurationSection objectives = config.getConfigurationSection("objectives");
             for (String key : objectives.getKeys(false)) {
                 database.updateSQL(UpdateType.INSERT_OBJECTIVE, new String[]{
@@ -327,6 +330,7 @@ public class Utils {
                     journals.getString(key + ".date"),
                 });
             }
+            database.closeConnection();
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {
