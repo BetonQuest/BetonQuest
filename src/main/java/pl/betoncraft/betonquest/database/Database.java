@@ -72,21 +72,13 @@ public abstract class Database {
                     statement = connection
                             .prepareStatement("SELECT category, count FROM " + prefix + "points WHERE playerID = ?;");
                     break;
-                case SELECT_UNUSED_OBJECTIVES:
+                case SELECT_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ? AND isused= 0;");
+                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ?;");
                     break;
-                case SELECT_UNUSED_TAGS:
+                case SELECT_TAGS:
                     statement = connection
-                            .prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ? AND isused = 0;");
-                    break;
-                case SELECT_USED_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ? AND isused= 1;");
-                    break;
-                case SELECT_USED_TAGS:
-                    statement = connection
-                            .prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ? AND isused = 1;");
+                            .prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ?;");
                     break;
                 case SELECT_PLAYERS_TAGS:
                     statement = connection
@@ -134,64 +126,52 @@ public abstract class Database {
         try {
             PreparedStatement statement;
             switch (type) {
-                case DELETE_USED_OBJECTIVES:
+                case ADD_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ? AND isused = 1;");
+                            .prepareStatement("INSERT INTO " + prefix + "objectives (playerID, instructions) VALUES (?, ?);");
                     break;
-                case DELETE_POINTS:
+                case ADD_TAGS:
                     statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ?;");
-                    break;
-                case ADD_NEW_OBJECTIVE:
-                    statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "objectives (playerID, instructions, isused) VALUES (?, ?, 0);");
+                    .prepareStatement("INSERT INTO " + prefix + "tags (playerID, tag) VALUES (?, ?);");
                     break;
                 case ADD_POINTS:
                     statement = connection
                             .prepareStatement("INSERT INTO " + prefix + "points (playerID, category, count) VALUES (?, ?, ?);");
                     break;
+                case ADD_JOURNAL:
+                    statement = connection
+                    .prepareStatement("INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?, ?, ?);");
+                    break;
+                case DELETE_OBJECTIVES:
+                    statement = connection
+                    .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ?;");
+                    break;
                 case DELETE_TAGS:
                     statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE playerID = ?;");
                     break;
-                case ADD_TAGS:
+                case DELETE_POINTS:
                     statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "tags (playerID, tag) VALUES (?, ?);");
+                    .prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ?;");
                     break;
                 case DELETE_JOURNAL:
                     statement = connection
                             .prepareStatement("DELETE FROM " + prefix + "journal WHERE playerID = ?;");
                     break;
-                case ADD_JOURNAL:
+                case UPDATE_PLAYERS_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?, ?, ?);");
-                    break;
-                case DELETE_ALL_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ?;");
-                    break;
-                case UPDATE_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "objectives SET isused = 1 WHERE playerID = ? AND isused = 0;");
-                    break;
-                case UPDATE_TAGS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "tags SET isused = 1 WHERE playerID = ? AND isused = 0;");
+                    .prepareStatement("UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;");
                     break;
                 case UPDATE_PLAYERS_TAGS:
                     statement = connection
                             .prepareStatement("UPDATE " + prefix + "tags SET playerID = ? WHERE playerID = ?;");
                     break;
+                case UPDATE_PLAYERS_POINTS:
+                    statement = connection
+                    .prepareStatement("UPDATE " + prefix + "points SET playerID = ? WHERE playerID = ?;");
+                    break;
                 case UPDATE_PLAYERS_JOURNAL:
                     statement = connection
                             .prepareStatement("UPDATE " + prefix + "journal SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_POINTS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "points SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;");
                     break;
                 case DROP_OBJECTIVES:
                     statement = connection.prepareStatement("DROP TABLE " + prefix + "objectives");
@@ -248,12 +228,11 @@ public abstract class Database {
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER" + " PRIMARY KEY "
                         + autoIncrement + ", playerID " + "VARCHAR(256) NOT NULL, instructions "
-                        + "VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL" + " DEFAULT 0);");
+                        + "VARCHAR(2048) NOT NULL);");
             Debug.info("Creating tags table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER " + "PRIMARY KEY " + autoIncrement
-                        + ", playerID " + "VARCHAR(256) NOT NULL, tag TEXT NOT NULL, "
-                        + "isused BOOLEAN NOT NULL DEFAULT 0);");
+                        + ", playerID " + "VARCHAR(256) NOT NULL, tag TEXT NOT NULL);");
             Debug.info("Creating points table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER " + "PRIMARY KEY "
@@ -273,8 +252,7 @@ public abstract class Database {
 
     public enum QueryType {
 
-        SELECT_USED_OBJECTIVES, SELECT_UNUSED_OBJECTIVES, SELECT_USED_TAGS, SELECT_UNUSED_TAGS,
-        SELECT_POINTS, SELECT_JOURNAL,
+        SELECT_OBJECTIVES, SELECT_TAGS, SELECT_POINTS, SELECT_JOURNAL,
 
         SELECT_PLAYERS_TAGS, SELECT_PLAYERS_JOURNAL, SELECT_PLAYERS_POINTS,
         SELECT_PLAYERS_OBJECTIVES,
@@ -285,15 +263,11 @@ public abstract class Database {
 
     public enum UpdateType {
 
-        ADD_NEW_OBJECTIVE, DELETE_USED_OBJECTIVES, DELETE_POINTS, ADD_POINTS, DELETE_TAGS,
-        ADD_TAGS, DELETE_JOURNAL, ADD_JOURNAL,
+        ADD_OBJECTIVES, ADD_TAGS, ADD_POINTS, ADD_JOURNAL,
+        DELETE_OBJECTIVES, DELETE_TAGS, DELETE_POINTS, DELETE_JOURNAL, 
 
-        DELETE_ALL_OBJECTIVES,
-
-        UPDATE_OBJECTIVES, UPDATE_TAGS,
-
-        UPDATE_PLAYERS_TAGS, UPDATE_PLAYERS_JOURNAL, UPDATE_PLAYERS_POINTS,
-        UPDATE_PLAYERS_OBJECTIVES,
+        UPDATE_PLAYERS_OBJECTIVES, UPDATE_PLAYERS_TAGS, UPDATE_PLAYERS_POINTS,
+        UPDATE_PLAYERS_JOURNAL,
         
         DROP_OBJECTIVES, DROP_TAGS, DROP_POINTS, DROP_JOURNALS,
         INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL

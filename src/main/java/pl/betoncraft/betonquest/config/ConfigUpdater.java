@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Database.QueryType;
 import pl.betoncraft.betonquest.database.Database.UpdateType;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -65,7 +67,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v5";
+    private final String destination = "v6";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -154,12 +156,61 @@ public class ConfigUpdater {
         // update again until destination is reached
         update();
     }
-    
+
+    @SuppressWarnings("unused")
+    private void update_from_v5() {
+        Debug.info("Starting update from v4 to v5");
+        try {
+            // delete isused column from tables objectives and tags
+            Database database = instance.getDB();
+            Connection connection = database.openConnection();
+            String[] tables = new String[] { "objectives", "tags" };
+            String prefix = instance.getConfig().getString("mysql.prefix", "");
+            if (instance.isMySQLUsed()) {
+                connection.prepareStatement(
+                        "ALTER TABLE " + prefix + "objectives DROP COLUMN isused;").executeUpdate();
+                connection.prepareStatement("ALTER TABLE " + prefix + "tags DROP COLUMN isused;")
+                        .executeUpdate();
+            } else {
+                // drop column from objectives
+                connection.prepareStatement("BEGIN TRANSACTION").executeUpdate();
+                connection.prepareStatement("ALTER TABLE " + prefix + "objectives RENAME TO "
+                    + prefix + "objectives_old").executeUpdate();
+                connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix + "objectives"
+                    + " (id INTEGER PRIMARY KEY AUTOINCREMENT, playerID VARCHAR(256) NOT NULL, "
+                    + "instructions VARCHAR(2048) NOT NULL);").executeUpdate();
+                connection.prepareStatement("INSERT INTO " + prefix + "objectives SELECT id, "
+                    + "playerID, instructions FROM " + prefix + "objectives_old").executeUpdate();
+                connection.prepareStatement("DROP TABLE " + prefix + "objectives_old").executeUpdate();
+                connection.prepareStatement("COMMIT").executeUpdate();
+                // drop column from tags
+                connection.prepareStatement("BEGIN TRANSACTION").executeUpdate();
+                connection.prepareStatement("ALTER TABLE " + prefix + "tags RENAME TO "
+                    + prefix + "tags_old").executeUpdate();
+                connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix + "tags"
+                    + " (id INTEGER PRIMARY KEY AUTOINCREMENT, playerID VARCHAR(256) NOT NULL, "
+                    + "tag TEXT NOT NULL);").executeUpdate();
+                connection.prepareStatement("INSERT INTO " + prefix + "tags SELECT id, "
+                    + "playerID, tag FROM " + prefix + "tags_old").executeUpdate();
+                connection.prepareStatement("DROP TABLE " + prefix + "tags_old").executeUpdate();
+                connection.prepareStatement("COMMIT").executeUpdate();
+            }
+            database.closeConnection();
+            Debug.broadcast("Updated database format to better one.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        config.set("version", "v6");
+        instance.saveConfig();
+        Debug.info("Conversion to v6 finished!");
+    }
+
     @SuppressWarnings("unused")
     private void update_from_v4() {
         Debug.info("Starting update from v4 to v5");
         try {
-            // update all give/take events and item condition to match new parser
+            // update all give/take events and item condition to match new
+            // parser
             ConfigAccessor eventsAccessor = ConfigHandler.getConfigs().get("events");
             FileConfiguration eventsConfig = eventsAccessor.getConfig();
             Debug.info("Updating events!");
@@ -180,7 +231,8 @@ public class ConfigUpdater {
                         }
                     }
                     // generate new instruction
-                    String newInstruction = parts[0] + " " + parts[1] + ((amount != 1) ? ":" + amount : "");
+                    String newInstruction = parts[0] + " " + parts[1]
+                        + ((amount != 1) ? ":" + amount : "");
                     Debug.info("    Saving instruction '" + newInstruction + "'");
                     // save it
                     eventsConfig.set(key, newInstruction);
@@ -230,7 +282,7 @@ public class ConfigUpdater {
         instance.saveConfig();
         Debug.info("Conversion to v5 finished!");
     }
-    
+
     @SuppressWarnings("unused")
     private void update_from_v3() {
         Debug.info("Starting update from v3 to v4");
@@ -385,7 +437,7 @@ public class ConfigUpdater {
                 for (String npcPath : npcOptions.getKeys(false)) {
                     String conditionPath = "NPC_options." + npcPath + ".conditions";
                     if (conversation.getConfig().isSet(conditionPath)
-                            && !conversation.getConfig().getString(conditionPath).equals("")) {
+                        && !conversation.getConfig().getString(conditionPath).equals("")) {
                         Debug.info("      Adding " + conditionPath + " to the list");
                         paths.add(conditionPath);
                     }
@@ -398,7 +450,7 @@ public class ConfigUpdater {
                 for (String playerPath : playerOptions.getKeys(false)) {
                     String conditionPath = "player_options." + playerPath + ".conditions";
                     if (conversation.getConfig().isSet(conditionPath)
-                            && !conversation.getConfig().getString(conditionPath).equals("")) {
+                        && !conversation.getConfig().getString(conditionPath).equals("")) {
                         Debug.info("      Adding " + conditionPath + " to the list");
                         paths.add(conditionPath);
                     }
@@ -586,22 +638,23 @@ public class ConfigUpdater {
     private void updateTo1_5() {
         Debug.broadcast("Started converting configuration files from v1.4 to v1.5!");
         // add sound settings
-        Debug.broadcast("Adding new sound options...");
         String[] array1 = new String[] { "start", "end", "journal", "update", "full" };
         for (String string : array1) {
             config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
         }
+        Debug.broadcast("Added new sound options!");
         // add colors for journal
-        Debug.broadcast("Adding new journal colors options...");
         String[] array2 = new String[] { "date.day", "date.hour", "line", "text" };
         for (String string : array2) {
             config.set("journal_colors." + string,
                     config.getDefaults().getString("journal_colors." + string));
         }
+        Debug.broadcast("Added new journal color options!");
         // convert conditions in events to event_condition: format
-        Debug.broadcast("Changing 'conditions:' to 'event_conditions:' in events.yml...");
+        Debug.info("Starting updating 'conditions:' argument to 'event_conditions:' in events.yml");
         ConfigAccessor events = ConfigHandler.getConfigs().get("events");
         for (String key : events.getConfig().getKeys(false)) {
+            Debug.info("  Processing event " + key);
             if (events.getConfig().getString(key).contains("conditions:")) {
                 StringBuilder parts = new StringBuilder();
                 for (String part : events.getConfig().getString(key).split(" ")) {
@@ -611,25 +664,27 @@ public class ConfigUpdater {
                         parts.append(part + " ");
                     }
                 }
+                Debug.info("    Found 'conditions:' option, replacing!");
                 events.getConfig().set(key, parts.substring(0, parts.length() - 1));
             }
         }
         Debug.broadcast("Events now use 'event_conditions:' for conditioning.");
         // convert objectives to new format
-        Debug.broadcast("Converting objectives to new format...");
+        Debug.info("Converting objectives to new format...");
         ConfigAccessor objectives = ConfigHandler.getConfigs().get("objectives");
         for (String key : events.getConfig().getKeys(false)) {
+            Debug.info("  Processing objective " + key);
             if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
                 events.getConfig().set(
                         key,
                         "objective "
                             + objectives.getConfig().getString(
                                     events.getConfig().getString(key).split(" ")[1]));
-                Debug.broadcast("Event " + key + " converted!");
+                Debug.info("      Event " + key + " converted!");
             }
         }
-        Debug.broadcast("Objectives converted!");
-        // convert global locations
+        Debug.broadcast("Objectives converted to new, event-powered format!");
+        // convert global locations TODO debugging
         String globalLocations = config.getString("global_locations");
         if (globalLocations != null && !globalLocations.equals("")) {
             StringBuilder configGlobalLocs = new StringBuilder();
@@ -1053,13 +1108,13 @@ public class ConfigUpdater {
         }
 
     }
-    
+
     private void displayError() {
         Debug.error("There was an error during updating process! (you don't say?) Please "
-                + "downgrade to the previous working version of the plugin and restore your "
-                + "configuration from the backup. Don't forget to send this error to the developer"
-                + ", so he can fix it! Sorry for inconvenience, here's the link:"
-                + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
-                + "<http://i.imgur.com/iR4UMH5.png>");
+            + "downgrade to the previous working version of the plugin and restore your "
+            + "configuration from the backup. Don't forget to send this error to the developer"
+            + ", so he can fix it! Sorry for inconvenience, here's the link:"
+            + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
+            + "<http://i.imgur.com/iR4UMH5.png>");
     }
 }

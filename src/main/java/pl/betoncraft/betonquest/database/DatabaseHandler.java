@@ -91,26 +91,20 @@ public class DatabaseHandler {
         try {
             // open connection to the database
             database.openConnection();
+            
             // load objectives
-            ResultSet res1 = database.querySQL(QueryType.SELECT_USED_OBJECTIVES,
+            ResultSet res1 = database.querySQL(QueryType.SELECT_OBJECTIVES,
                     new String[] { playerID });
-            if (!res1.isBeforeFirst())
-                res1 = database.querySQL(QueryType.SELECT_UNUSED_OBJECTIVES,
-                        new String[] { playerID });
             // put them into the list
             while (res1.next())
                 objectives.add(res1.getString("instructions"));
-            database.updateSQL(UpdateType.UPDATE_OBJECTIVES, new String[] { playerID });
 
             // load tags
-            ResultSet res2 = database.querySQL(QueryType.SELECT_USED_TAGS,
+            ResultSet res2 = database.querySQL(QueryType.SELECT_TAGS,
                     new String[] { playerID });
-            if (!res2.isBeforeFirst())
-                res2 = database.querySQL(QueryType.SELECT_UNUSED_TAGS, new String[] { playerID });
             // put them into the list
             while (res2.next())
                 tags.add(res2.getString("tag"));
-            database.updateSQL(UpdateType.UPDATE_TAGS, new String[] { playerID });
 
             // load journals
             ResultSet res3 = database.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
@@ -191,16 +185,16 @@ public class DatabaseHandler {
     public void saveData() {
         database.openConnection();
         // delete old data
-        database.updateSQL(UpdateType.DELETE_USED_OBJECTIVES, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
         // insert new data
         for (String instruction : objectives) {
-            database.updateSQL(UpdateType.ADD_NEW_OBJECTIVE, new String[] { playerID, instruction });
+            database.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, instruction });
         }
         for (Objective objective : activeObjectives) {
-            database.updateSQL(UpdateType.ADD_NEW_OBJECTIVE,
+            database.updateSQL(UpdateType.ADD_OBJECTIVES,
                     new String[] { playerID, objective.getInstructions() });
         }
         for (String tag : tags) {
@@ -281,7 +275,7 @@ public class DatabaseHandler {
                 @Override
                 public void run() {
                     database.openConnection();
-                    database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[] { playerID });
+                    database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
                     database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
                     database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
                     database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
@@ -289,7 +283,7 @@ public class DatabaseHandler {
             }.runTask(BetonQuest.getInstance());
         } else {
             database.openConnection();
-            database.updateSQL(UpdateType.DELETE_ALL_OBJECTIVES, new String[] { playerID });
+            database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
             database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
             database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
             database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
