@@ -100,6 +100,8 @@ public class Utils {
             Database database = instance.getDB();
             HashMap<String, ResultSet> map = new HashMap<>();
             String[] tables = new String[]{"objectives", "tags", "points", "journals"};
+            // open database connection
+            database.openConnection();
             // load resultsets into the map
             for (String table : tables) {
                 Debug.info("Loading " + table);
@@ -133,6 +135,8 @@ public class Utils {
                 }
                 Debug.info("  Saved " + (counter + 1) + " rows");
             }
+            // close connection
+            database.closeConnection();
             // save the config at the end
             accessor.saveConfig();
             return true;
@@ -292,7 +296,7 @@ public class Utils {
             // load objectives
             database.openConnection();
             ConfigurationSection objectives = config.getConfigurationSection("objectives");
-            for (String key : objectives.getKeys(false)) {
+            if (objectives != null) for (String key : objectives.getKeys(false)) {
                 database.updateSQL(UpdateType.INSERT_OBJECTIVE, new String[]{
                     objectives.getString(key + ".id"),
                     objectives.getString(key + ".playerID"),
@@ -302,7 +306,7 @@ public class Utils {
             }
             // load tags
             ConfigurationSection tags = config.getConfigurationSection("tags");
-            for (String key : tags.getKeys(false)) {
+            if (tags != null) for (String key : tags.getKeys(false)) {
                 database.updateSQL(UpdateType.INSERT_TAG, new String[]{
                     tags.getString(key + ".id"),
                     tags.getString(key + ".playerID"),
@@ -312,7 +316,7 @@ public class Utils {
             }
             // load points
             ConfigurationSection points = config.getConfigurationSection("points");
-            for (String key : points.getKeys(false)) {
+            if (points != null) for (String key : points.getKeys(false)) {
                 database.updateSQL(UpdateType.INSERT_POINT, new String[]{
                     points.getString(key + ".id"),
                     points.getString(key + ".playerID"),
@@ -322,7 +326,7 @@ public class Utils {
             }
             // load journals
             ConfigurationSection journals = config.getConfigurationSection("journals");
-            for (String key : journals.getKeys(false)) {
+            if (journals != null) for (String key : journals.getKeys(false)) {
                 database.updateSQL(UpdateType.INSERT_JOURNAL, new String[]{
                     journals.getString(key + ".id"),
                     journals.getString(key + ".playerID"),

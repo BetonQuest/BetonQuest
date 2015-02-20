@@ -526,7 +526,7 @@ public class QuestCommand implements CommandExecutor {
         // if there is not enough arguments, display warning
         if (args.length < 4) {
             Debug.info("Missing tag name");
-            sender.sendMessage("specify_tag");
+            sender.sendMessage(getMessage("specify_tag"));
             return;
         }
         // if there are arguments, handle them
