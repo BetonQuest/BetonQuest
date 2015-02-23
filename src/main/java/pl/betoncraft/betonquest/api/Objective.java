@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Debug;
 
@@ -113,11 +115,16 @@ public abstract class Objective {
         // if there are any events, do something with them
         if (rawEvents != null && !rawEvents.equalsIgnoreCase("")) {
             // split them to separate ids
-            String[] events = rawEvents.split(",");
-            // fire all events
-            for (String eventID : events) {
-                BetonQuest.event(playerID, eventID);
-            }
+            final String[] events = rawEvents.split(",");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // fire all events
+                    for (String eventID : events) {
+                        BetonQuest.event(playerID, eventID);
+                    }
+                }
+            }.runTask(BetonQuest.getInstance());
         }
         // remove the objective from player's list
         Debug.info("Firing events in objective \"" + tag + "\" for player " + playerID

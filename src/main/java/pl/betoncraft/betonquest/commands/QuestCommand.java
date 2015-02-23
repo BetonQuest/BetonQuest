@@ -618,10 +618,9 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // if there is not enough arguments, display warning
-        if (args.length < 4 || ConfigHandler.getString(args[3]) == null
-            || !ConfigHandler.getString(args[3]).startsWith("objective ")) {
-            Debug.info("Missing event name or event not defined");
-            sender.sendMessage("specify_event");
+        if (args.length < 4) {
+            Debug.info("Missing objective instruction string");
+            sender.sendMessage("specify_objective");
             return;
         }
         // if there are arguments, handle them
