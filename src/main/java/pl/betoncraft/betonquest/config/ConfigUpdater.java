@@ -326,6 +326,43 @@ public class ConfigUpdater {
                     conditionsConfig.set(invertedName, conditionsInverted.get(invertedName));
                 }
             }
+            Debug.info("Starting conditions updating!");
+            for (String key : conditionsConfig.getKeys(false)) {
+                String instruction = conditionsConfig.getString(key).trim();
+                Debug.info("  Processing condition " + key);
+                if (instruction.startsWith("or ") || instruction.startsWith("and ")) {
+                    String type = instruction.substring(0, instruction.indexOf(" "));
+                    Debug.info("    Found " + type + " condition!");
+                    int index = instruction.indexOf(" conditions:") + 12;
+                    String firstPart = instruction.substring(0, index);
+                    Debug.info("    First part is '" + firstPart + "'");
+                    int secondIndex = index + instruction.substring(index).indexOf(" ");
+                    if (secondIndex <= index) {
+                        secondIndex = instruction.length();
+                    }
+                    String conditionList = instruction.substring(index, secondIndex);
+                    Debug.info("    List of conditions is '" + conditionList + "'");
+                    String lastPart = instruction.substring(secondIndex);
+                    Debug.info("    Last part is '" + lastPart + "'");
+                    String[] parts = conditionList.split(",");
+                    for (int i = 0; i < parts.length; i++) {
+                        // check each of them if it should be replaced
+                        String replacement = nameChanging.get(parts[i]);
+                        if (replacement != null) {
+                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            parts[i] = replacement;
+                        }
+                    }
+                    StringBuilder newConditionsList = new StringBuilder();
+                    for (String part : parts) {
+                        newConditionsList.append(part + ",");
+                    }
+                    String newInstruction = firstPart + newConditionsList.toString()
+                            .substring(0, newConditionsList.length() - 1) + lastPart;
+                    Debug.info("    New instruction is '" + newInstruction + "'");
+                    conditionsConfig.set(key, newInstruction);
+                }
+            }
             // save conditions so the changes persist
             conditionsAccessor.saveConfig();
             // now we have a map with names which need to be changed across all
@@ -420,6 +457,9 @@ public class ConfigUpdater {
                     Debug.info("      First half is '" + firstHalf + "'");
                     // extract condition list
                     int secondIndex = index + instruction.substring(index).indexOf(" ");
+                    if (secondIndex <= index) {
+                        secondIndex = instruction.length();
+                    }
                     String conditionList = instruction.substring(index, secondIndex);
                     Debug.info("      Condition list is '" + conditionList + "'");
                     // extract last half (from the end of condition list)
