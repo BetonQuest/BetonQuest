@@ -442,7 +442,7 @@ public final class BetonQuest extends JavaPlugin {
         }
         // and check if it's met or not
         boolean isMet = (instance.isMet() && !inverted) || (!instance.isMet() && inverted);
-        Debug.info((isMet ? "TRUE" : "FALSE") + ": condition " + conditionID + " for player "
+        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition " + conditionID + " for player "
             + playerID);
         return isMet;
     }

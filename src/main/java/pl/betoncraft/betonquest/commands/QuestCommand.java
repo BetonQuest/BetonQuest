@@ -441,8 +441,9 @@ public class QuestCommand implements CommandExecutor {
      *            list of command's arguments
      */
     private void handleEvents(CommandSender sender, String[] args) {
+        String playerID = PlayerConverter.getID(args[1]);
         // the player has to be specified every time
-        if (args.length < 2 || PlayerConverter.getPlayer(args[1]) == null) {
+        if (args.length < 2 || PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player's name is missing or he's offline");
             sender.sendMessage(getMessage("specify_player"));
             return;
@@ -453,7 +454,6 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_event"));
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
         // fire the event
         BetonQuest.event(playerID, args[2]);
         sender.sendMessage(getMessage("player_event").replaceAll("%event%",
@@ -471,22 +471,28 @@ public class QuestCommand implements CommandExecutor {
      *            list of arguments
      */
     private void handleConditions(CommandSender sender, String[] args) {
+        String playerID = PlayerConverter.getID(args[1]);
         // the player has to be specified every time
-        if (args.length < 2 || PlayerConverter.getPlayer(args[1]) == null) {
+        if (args.length < 2 || PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player's name is missing or he's offline");
             sender.sendMessage(getMessage("specify_player"));
             return;
         }
         // the condition ID
-        if (args.length < 3 || ConfigHandler.getString("conditions." + args[2]) == null) {
-            Debug.info("Condition's ID is missing or it's not defined");
+        if (args.length < 3) {
+            Debug.info("Condition's ID is missing");
+            sender.sendMessage(getMessage("specify_condition"));
+            return;
+        }
+        String conditionID = (args[2].startsWith("!")) ? args[2].substring(1, args[2].length()): args[2];
+        if (ConfigHandler.getString("conditions." + conditionID) == null) {
+            Debug.info("Condition is not defined");
             sender.sendMessage(getMessage("specify_condition"));
             return;
         }
         // display message about condition
-        String playerID = PlayerConverter.getID(args[1]);
         sender.sendMessage(getMessage("player_condition").replaceAll("%condition%",
-                ConfigHandler.getString("conditions." + args[2])).replaceAll("%outcome%",
+                ConfigHandler.getString("conditions." + conditionID)).replaceAll("%outcome%",
                 BetonQuest.condition(playerID, args[2]) + ""));
     }
 
