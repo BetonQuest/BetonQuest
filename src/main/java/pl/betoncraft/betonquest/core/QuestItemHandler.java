@@ -33,6 +33,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -133,6 +135,21 @@ public class QuestItemHandler implements Listener {
                 BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(event.getEntity()))
                         .addItem(stack.clone(), stack.getAmount());
                 litr.remove();
+            }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onRespawn(PlayerRespawnEvent event) {
+        // some plugins block item dropping after death and add those
+        // items after respawning, so the player doesn't loose his
+        // inventory after death; this aims to force removing quest
+        // items, as they have been added to the backpack already
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        Inventory inv = event.getPlayer().getInventory();
+        for (int i = 0; i < inv.getSize(); i++) {
+            if (Utils.isQuestItem(inv.getItem(i))) {
+                inv.setItem(i, null);
             }
         }
     }

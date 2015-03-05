@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -64,6 +63,7 @@ public class TakeEvent extends QuestEvent {
                 ItemStack[] array = new ItemStack[]{};
                 array = backpack.toArray(array);
                 LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array)));
+                while (list.remove(null))
                 BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
             }     
         }
@@ -73,11 +73,12 @@ public class TakeEvent extends QuestEvent {
      * @param items
      */
     private ItemStack[] removeItems(ItemStack[] items) {
-        for (ItemStack item : items) {
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
             if (Utils.isItemEqual(item, questItem)) {
                 if (item.getAmount() - amount <= 0) {
                     amount = amount - item.getAmount();
-                    item.setType(Material.AIR);
+                    items[i] = null;
                 } else {
                     item.setAmount(item.getAmount() - amount);
                     amount = 0;

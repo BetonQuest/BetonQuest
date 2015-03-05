@@ -134,7 +134,13 @@ public class BackpackDisplay implements Listener {
         // if there are other pages, place the buttons
         Debug.info("  Placing buttons");
         if (page > 0) {
-            ItemStack previous = new ItemStack(Material.GLOWSTONE_DUST);
+            ItemStack previous;
+            String item = ConfigHandler.getString("items.previous_button");
+            if (item != null) {
+                previous = Utils.generateItem(new QuestItem(item), 1);
+            } else {
+                previous = new ItemStack(Material.GLOWSTONE_DUST);
+            }
             ItemMeta meta = previous.getItemMeta();
             meta.setDisplayName(ConfigHandler.getString(
                     "messages." + ConfigHandler.getString("config.language") + ".previous")
@@ -144,7 +150,13 @@ public class BackpackDisplay implements Listener {
             content[48] = previous;
         }
         if (backpack.size() > (page + 1) * 45 - 1) {
-            ItemStack next = new ItemStack(Material.REDSTONE);
+            ItemStack next;
+            String item = ConfigHandler.getString("items.next_button");
+            if (item != null) {
+                next = Utils.generateItem(new QuestItem(item), 1);
+            } else {
+                next = new ItemStack(Material.REDSTONE);
+            }
             ItemMeta meta = next.getItemMeta();
             meta.setDisplayName(ConfigHandler.getString(
                     "messages." + ConfigHandler.getString("config.language") + ".next").replaceAll(

@@ -68,9 +68,7 @@ public class GiveEvent extends QuestEvent {
                         .getInventory().addItem(item);
                 for (Integer leftNumber : left.keySet()) {
                     ItemStack itemStack = left.get(leftNumber);
-                    if (itemStack.getItemMeta().hasLore() && itemStack.getItemMeta().getLore()
-                            .contains(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".quest_item").replaceAll("§", "&"))) {
+                    if (Utils.isQuestItem(itemStack)) {
                         BetonQuest.getInstance().getDBHandler(playerID).addItem(itemStack, stackSize);
                     } else {
                         player.getWorld().dropItem(player.getLocation(), itemStack);
