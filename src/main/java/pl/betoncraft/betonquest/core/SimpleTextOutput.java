@@ -81,18 +81,17 @@ public class SimpleTextOutput {
      * @param message
      *            message
      */
-    public static void sendQuesterReply(String playerID, int number, String quester, String message) {
+    public static void sendQuesterReply(String playerID, int number, String quester, String message, String hash) {
         String finalString = (ConfigHandler.getString("messages.global.quester_reply_format") + message)
                 .replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number))
                 .replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName())
                 .replaceAll("&", "§");
         if (ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true")) {
-            Bukkit.getServer().dispatchCommand(
-                    Bukkit.getConsoleSender(),
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
                     "tellraw " + PlayerConverter.getPlayer(playerID).getName()
                         + " {\"text\":\"\",\"extra\":[{\"text\":\"" + finalString
-                        + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + number
-                        + "\"}}]}");
+                        + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\""
+                        + "/betonquestanswer " + hash + "\"}}]}");
         } else {
             PlayerConverter.getPlayer(playerID).sendMessage(finalString);
         }

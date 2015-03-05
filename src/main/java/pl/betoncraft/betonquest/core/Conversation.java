@@ -18,9 +18,14 @@
 package pl.betoncraft.betonquest.core;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,7 +47,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * 
  * @author Co0sh
  */
-public class Conversation implements Listener {
+public class Conversation implements Listener, CommandExecutor {
 
     /**
      * Contains a list of players in active conversation, described by their
@@ -72,7 +77,15 @@ public class Conversation implements Listener {
     /**
      * Map containing current player answers and their pointers
      */
-    private HashMap<Integer, String> current = new HashMap<Integer, String>();
+    private HashMap<Integer, String> current = new HashMap<>();
+    /**
+     * Map containing hashes for tellraw answers
+     */
+    private HashMap<Integer, String> hashes = new HashMap<>();
+    /**
+     * True if tellraw option is used
+     */
+    private boolean tellraw = ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true");
     /**
      * Defines if the movement during conversation should be blocked
      */
@@ -146,9 +159,10 @@ public class Conversation implements Listener {
             finalEvents = "";
         }
 
-        // everything is ok, register conversation as listener
+        // everything is ok, register conversation as listener and command
         BetonQuest.getInstance().getServer().getPluginManager()
                 .registerEvents(this, BetonQuest.getInstance());
+        if (tellraw) BetonQuest.getInstance().getCommand("betonquestanswer").setExecutor(this);
 
         // add the player to the list of active conversations
         list.put(playerID, this);
@@ -282,6 +296,7 @@ public class Conversation implements Listener {
 
         // clear hashmap
         current.clear();
+        if (tellraw) hashes.clear();
 
         // print to player his answer
         String reply = ConfigHandler.getString("conversations." + conversationID
@@ -382,11 +397,15 @@ public class Conversation implements Listener {
                 endConversation();
                 return;
             }
-            SimpleTextOutput.sendQuesterReply(playerID, i, quester, reply);
+            String randomID = UUID.randomUUID().toString();
+            SimpleTextOutput.sendQuesterReply(playerID, i, quester, reply, randomID);
             // put reply to hashmap in order to find it's ID when player
             // responds by
             // it's i number (id is string, we don't want to print it to player)
             current.put(Integer.valueOf(i), option);
+            if (tellraw) {
+                hashes.put(Integer.valueOf(i), randomID);
+            }
         }
 
         // end conversations if there are no possible options
@@ -544,6 +563,27 @@ public class Conversation implements Listener {
      */
     public static Conversation getConversation(String playerID) {
         return list.get(playerID);
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+     */
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("betonquestanswer")) {
+            if (args.length == 1 && sender instanceof Player && ((Player) sender).equals(player)) {
+                Set<Integer> set = hashes.keySet();
+                for (Integer integer : set) {
+                    if (hashes.get(integer).equals(args[0])) {
+                        Debug.info("Passing player answer " + integer);
+                        passPlayerAnswer(integer.toString());
+                        return true;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 }

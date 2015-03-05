@@ -16,6 +16,8 @@ commands:
     usage: /<command>
     permission: betonquest.journal
     aliases: [bj, journal, bjournal, betonjournal]
+  betonquestanswer:
+    description: Handles tellraw answers
 permissions:
   betonquest.admin:
     default: op
