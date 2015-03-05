@@ -22,6 +22,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Created by Dzejkop
@@ -38,6 +40,11 @@ public class LightningEvent extends QuestEvent {
      */
     public LightningEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
 
         String[] instr = instructions.split(" ");
 

@@ -17,8 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
@@ -35,9 +39,27 @@ public class PointEvent extends QuestEvent {
     public PointEvent(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        String category = parts[1];
-        int count = Integer.valueOf(parts[2]);
-        BetonQuest.getInstance().getDBHandler(playerID).addPoints(category, count);
+        final String category = parts[1];
+        final int count = Integer.valueOf(parts[2]);
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            if (BetonQuest.getInstance().isMySQLUsed()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        addOfflinePoints(category, count);
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
+            } else {
+                addOfflinePoints(category, count);
+            }
+        } else {
+            BetonQuest.getInstance().getDBHandler(playerID).addPoints(category, count);
+        }
     }
 
+    private void addOfflinePoints(String category, int count) {
+        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+        dbHandler.addPoints(category, count);
+        dbHandler.saveData();
+    }
 }

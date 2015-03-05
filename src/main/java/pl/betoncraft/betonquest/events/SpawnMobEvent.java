@@ -22,6 +22,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
@@ -41,6 +43,11 @@ public class SpawnMobEvent extends QuestEvent {
      */
     public SpawnMobEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
         loc = decodeLocation(instructions.split(" ")[1]);
         type = EntityType.valueOf(instructions.split(" ")[2]);
         amount = Integer.parseInt(instructions.split(" ")[3]);

@@ -27,6 +27,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -47,6 +48,11 @@ public class TakeEvent extends QuestEvent {
      */
     public TakeEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
 
         String[] parts = instructions.split(" ");
         String[] itemsToRemove = parts[1].split(",");

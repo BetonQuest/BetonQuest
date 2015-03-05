@@ -31,7 +31,7 @@ pl:
   player_tags: '&aTagi gracza:'
   player_condition: '&aWarunek %condition%: %outcome%'
   player_event: '&aZdarzenie wykonane: %event%'
-  player_points: '&aPunkty %category%: %count%'
+  player_points: '&aPunkty gracza:'
   points_added: '&2Punkty dodane!'
   points_removed: '&2Puntky odjete!'
   tag_added: '&2Tag dodany!'

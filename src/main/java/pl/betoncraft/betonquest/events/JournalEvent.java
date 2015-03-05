@@ -24,6 +24,8 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.SimpleTextOutput;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
@@ -39,6 +41,11 @@ public class JournalEvent extends QuestEvent {
      */
     public JournalEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
         BetonQuest.getInstance().getDBHandler(playerID).getJournal()
                 .addPointer(instructions.split(" ")[1], new Timestamp(new Date().getTime()));
         BetonQuest.getInstance().getDBHandler(playerID).getJournal().updateJournal();

@@ -17,8 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
@@ -34,19 +38,49 @@ public class TagEvent extends QuestEvent {
      */
     public TagEvent(String playerID, String instructions) {
         super(playerID, instructions);
-        String[] parts = instructions.split(" ");
+        final String[] parts = instructions.split(" ");
+        if (PlayerConverter.getPlayer(playerID) != null) {
+            switch (parts[1]) {
+                case "add":
+                    for (String tag : parts[2].split(",")) {
+                        BetonQuest.getInstance().getDBHandler(playerID).addTag(tag);
+                    }
+                    break;
+                default:
+                    for (String tag : parts[2].split(",")) {
+                        BetonQuest.getInstance().getDBHandler(playerID).removeTag(tag);
+                    }
+                    break;
+            }
+        } else {
+            if (BetonQuest.getInstance().isMySQLUsed()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        addOfflineTag(parts);
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
+            } else {
+                addOfflineTag(parts);
+            }
+        }
+        
+    }
+    
+    private void addOfflineTag(String[] parts) {
+        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
         switch (parts[1]) {
             case "add":
                 for (String tag : parts[2].split(",")) {
-                    BetonQuest.getInstance().getDBHandler(playerID).addTag(tag);
+                    dbHandler.addTag(tag);
                 }
                 break;
             default:
                 for (String tag : parts[2].split(",")) {
-                    BetonQuest.getInstance().getDBHandler(playerID).removeTag(tag);
+                    dbHandler.removeTag(tag);
                 }
                 break;
         }
+        dbHandler.saveData();
     }
-
 }

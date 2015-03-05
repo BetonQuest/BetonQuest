@@ -17,8 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * 
@@ -34,7 +38,26 @@ public class DeleteObjectiveEvent extends QuestEvent {
      */
     public DeleteObjectiveEvent(String playerID, String instructions) {
         super(playerID, instructions);
-        BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(instructions.split(" ")[1]);
+        final String tag = instructions.split(" ")[1];
+        if (PlayerConverter.getPlayer(playerID) != null) {
+            BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(tag);
+        } else {
+            if (BetonQuest.getInstance().isMySQLUsed()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        deleteOfflineObjective(tag);
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
+            } else {
+                deleteOfflineObjective(tag);
+            }
+        }
     }
-
+    
+    private void deleteOfflineObjective(String tag) {
+        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+        dbHandler.deleteObjective(tag);
+        dbHandler.saveData();
+    }
 }

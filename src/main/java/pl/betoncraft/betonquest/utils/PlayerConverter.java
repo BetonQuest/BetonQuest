@@ -99,6 +99,16 @@ public class PlayerConverter {
             return null;
         }
     }
+    
+    public static String getName(String playerID) {
+        if (type == PlayerConversionType.NAME) {
+            return playerID;
+        } else if (type == PlayerConversionType.UUID) {
+            return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Returns which conversion type is being used.

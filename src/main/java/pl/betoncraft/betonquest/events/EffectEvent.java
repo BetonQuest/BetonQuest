@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -42,6 +43,11 @@ public class EffectEvent extends QuestEvent {
      */
     public EffectEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
         effect = PotionEffectType.getByName(instructions.split(" ")[1]);
         duration = Integer.parseInt(instructions.split(" ")[2]);
         amplifier = Integer.parseInt(instructions.split(" ")[3]);

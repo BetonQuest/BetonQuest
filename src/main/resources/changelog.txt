@@ -26,6 +26,8 @@ Additions:
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml (true/false) for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):
+    * Folder event now runs these events even after the player logs out: command, tag, objective,
+      delete, point, setblock
     * Changed /j command to open the backpack instead of giving the journal
     * Give/take events and item condition can now check for multiple items with syntax 'give
       stick:2,stone:4,sword'

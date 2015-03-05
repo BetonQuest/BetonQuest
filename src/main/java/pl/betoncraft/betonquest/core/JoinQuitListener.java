@@ -77,7 +77,8 @@ public class JoinQuitListener implements Listener {
             BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
         }
         // start objectives when the data is loaded
-        BetonQuest.getInstance().getDBHandler(playerID).startObjectives();
+        DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+        dbHandler.startObjectives();
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")
             && new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {
@@ -87,23 +88,26 @@ public class JoinQuitListener implements Listener {
                         + ConfigHandler.getString("config.language") + ".changelog"),
                     ConfigHandler.getString("config.sounds.update"));
         }
+        if (Journal.hasJournal(playerID)) {
+            dbHandler.getJournal().updateJournal();
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        // remove journal so there are no bugs
-        instance.getDBHandler(playerID).getJournal().removeJournal();
         // if MySQL is used then saving should be done asynchronously
         if (instance.isMySQLUsed()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     BetonQuest.getInstance().getDBHandler(playerID).saveData();
+                    BetonQuest.getInstance().removeDBHandler(playerID);
                 }
             }.runTaskAsynchronously(instance);
         } else {
             BetonQuest.getInstance().getDBHandler(playerID).saveData();
+            BetonQuest.getInstance().removeDBHandler(playerID);
         }
     }
 }

@@ -277,15 +277,20 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // if there is not enough arguments, display warning
-        if (args.length < 5) {
-            Debug.info("Missing category or amount");
-            sender.sendMessage("specify_category_and_amount");
+        if (args.length < 4) {
+            Debug.info("Missing category");
+            sender.sendMessage(getMessage("specify_category"));
             return;
         }
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
             case "a":
+                if (args.length < 5 || !args[4].matches("-?\\d+")) {
+                    Debug.info("Missing amount");
+                    sender.sendMessage(getMessage("specify_amount"));
+                    return;
+                }
                 // add the point
                 Debug.info("Adding points");
                 dbHandler.addPoints(args[3], Integer.parseInt(args[4]));
@@ -300,8 +305,8 @@ public class QuestCommand implements CommandExecutor {
                 // remove the point (this is unnecessary as adding negative
                 // amounts
                 // subtracts points, but for the sake of users leave it be)
-                Debug.info("Subtracting points");
-                dbHandler.addPoints(args[3], -Integer.parseInt(args[4]));
+                Debug.info("Removing points");
+                dbHandler.removePointsCategory(args[3]);
                 if (!isOnline) dbHandler.saveData();
                 sender.sendMessage(getMessage("points_removed"));
                 break;
@@ -525,7 +530,7 @@ public class QuestCommand implements CommandExecutor {
                 tags = new ArrayList<>();
                 for (String string : dbHandler.getRawObjectives()) {
                     for (String part : string.split(" ")) {
-                        if (part.matches("tag:")) {
+                        if (part.startsWith("tag:")) {
                             tags.add(part.substring(4));
                         }
                     }

@@ -355,6 +355,16 @@ public final class BetonQuest extends JavaPlugin {
     public DatabaseHandler getDBHandler(String playerID) {
         return dbHandlers.get(playerID);
     }
+    
+    /**
+     * Removes the database handler from the map
+     * 
+     * @param playerID
+     *          ID of the player whose handler is to be removed
+     */
+    public void removeDBHandler(String playerID) {
+        dbHandlers.remove(playerID);
+    }
 
     /**
      * Registers new condition classes by their names
@@ -408,6 +418,11 @@ public final class BetonQuest extends JavaPlugin {
         // null check
         if (playerID == null || conditionID == null) {
             Debug.info("Null arguments for the condition!");
+            return false;
+        }
+        // check for online player
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player was offline, returning false");
             return false;
         }
         // check for inverted condition

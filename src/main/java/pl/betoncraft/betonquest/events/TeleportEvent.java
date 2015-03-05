@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -37,6 +38,11 @@ public class TeleportEvent extends QuestEvent {
      */
     public TeleportEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
         Player player = PlayerConverter.getPlayer(playerID);
 
         // Ignoring the first part of instruction

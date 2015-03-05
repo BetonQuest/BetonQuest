@@ -377,8 +377,12 @@ public class DatabaseHandler {
             String[] parts = instruction.split(" ");
             for (String part : parts) {
                 // if it matches then remove it from list
-                if (part.matches("tag:"))
-                    iterator.remove();
+                if (part.startsWith("tag:")) {
+                    String theTag = part.substring(4);
+                    if (theTag.equalsIgnoreCase(tag)) {
+                        iterator.remove();
+                    }
+                }
             }
         }
     }
@@ -403,6 +407,18 @@ public class DatabaseHandler {
         }
         // if not then create new point category with given amount of points
         points.add(new Point(category, count));
+    }
+    
+    public void removePointsCategory(String category) {
+        Point pointToRemove = null;
+        for (Point point : points) {
+            if (point.getCategory().equalsIgnoreCase(category)) {
+                pointToRemove = point;
+            }
+        }
+        if (pointToRemove != null) {
+            points.remove(pointToRemove);
+        }
     }
 
     /**

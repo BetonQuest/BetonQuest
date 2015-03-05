@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -35,6 +36,11 @@ public class ConversationEvent extends QuestEvent {
      */
     public ConversationEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            Debug.info("Player " + playerID + " is offline, cannot fire event");
+            return;
+        }
         new Conversation(playerID, instructions.split(" ")[1], PlayerConverter.getPlayer(playerID)
                 .getLocation());
     }
