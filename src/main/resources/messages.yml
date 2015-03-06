@@ -241,8 +241,7 @@ cn:
 es:
   conversation_start: '&e*&bLa conversacion con %quester% ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con %quester% ha terminado.&e*'
-  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta,
-    ej: 2.'
+  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
   unknown_argument: '&cArgumento incorrecto.'
   no_permission: '&cNo tienes permiso para eso.'
   reloaded: '&cSe ha recargado la configuracion.'
@@ -262,8 +261,7 @@ es:
   player_event: '&aEvento efectuado: %event%'
   player_points: '&a%category% puntos: %count%'
   purged: '&4%player%''s datos borrados.'
-  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin.
-    Borra o cambia el archivo para quitar este mensaje&e*'
+  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
   command_reload: 'Recarga el plugin.'
   command_objectives: 'Muestra los objetivos actuales.'
   command_tags: 'Muestra tus etiquetas.'
