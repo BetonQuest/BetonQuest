@@ -81,6 +81,7 @@ import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
+import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
 import pl.betoncraft.betonquest.objectives.DelayObjective;
@@ -245,6 +246,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("smelt", SmeltingObjective.class);
         registerObjectives("tame", TameObjective.class);
         registerObjectives("delay", DelayObjective.class);
+        registerObjectives("arrow", ArrowShootObjective.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
