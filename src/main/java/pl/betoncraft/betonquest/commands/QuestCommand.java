@@ -607,6 +607,8 @@ public class QuestCommand implements CommandExecutor {
         // reload the configuration
         Debug.info("Reloading configuration");
         ConfigHandler.reload();
+        // update language
+        lang = ConfigHandler.getString("config.language");
         // stop current global locations listener
         Debug.info("Restarting global locations");
         GlobalLocations.stop();

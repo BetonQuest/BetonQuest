@@ -108,6 +108,24 @@ public class ConfigHandler {
             conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
                     new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
         }
+        // load messages safely
+        try {
+            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "messages.yml"), "messages.yml");
+            messages.getConfig().getString("global.plugin_prefix");
+        } catch (Exception e) {
+            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "messages.yml"), "simple-messages.yml");
+        }
+        String simple = BetonQuest.getInstance().getConfig().getString("simple");
+        if (simple != null && simple.equals("true")) {
+            new File(BetonQuest.getInstance().getDataFolder(), "messages.yml").delete();
+            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "messages.yml"), "simple-messages.yml");
+            BetonQuest.getInstance().getConfig().set("simple", null);
+            BetonQuest.getInstance().saveConfig();
+            Debug.broadcast("Using simple language files!");
+        }
         // put config accesors in fields
         conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest
                 .getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
@@ -117,8 +135,6 @@ public class ConfigHandler {
                 .getDataFolder(), "conditions.yml"), "conditions.yml");
         events = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
                 .getDataFolder(), "events.yml"), "events.yml");
-        messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
-                .getDataFolder(), "messages.yml"), "messages.yml");
         npcs = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
                 .getDataFolder(), "npcs.yml"), "npcs.yml");
         journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
@@ -235,6 +251,16 @@ public class ConfigHandler {
         for (File file : instance.folder.listFiles()) {
             instance.conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
                     new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+        }
+        String simple = BetonQuest.getInstance().getConfig().getString("simple");
+        if (simple != null && simple.equals("true")) {
+            new File(BetonQuest.getInstance().getDataFolder(), "messages.yml").delete();
+            instance.messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest
+                    .getInstance().getDataFolder(), "messages.yml"), "simple-messages.yml");
+            BetonQuest.getInstance().getConfig().set("simple", null);
+            BetonQuest.getInstance().saveConfig();
+            instance.messages.saveDefaultConfig();
+            Debug.broadcast("Using simple language files!");
         }
         instance.conditions.reloadConfig();
         instance.events.reloadConfig();
