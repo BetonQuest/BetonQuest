@@ -17,8 +17,11 @@
  */
 package pl.betoncraft.betonquest.commands;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -37,6 +40,7 @@ import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
+import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -153,22 +157,24 @@ public class QuestCommand implements CommandExecutor {
                         handlePoints(sender, args);
                     }
                     break;
-                // case "journals":
-                // case "journal":
-                // case "j":
-                // // and journal entries
-                // if (isMySQLUsed) {
-                // final CommandSender finalSender = sender;
-                // final String[] finalArgs = args;
-                // new BukkitRunnable() {
-                // @Override
-                // public void run() {
-                // handleJournals(finalSender, finalArgs);
-                // }
-                // }.runTask(instance);
-                // } else {
-                // handleJournals(sender, args);
-                // }
+                case "journals":
+                case "journal":
+                case "j":
+                    // and journal entries
+                    if (isMySQLUsed) {
+                        Debug.info("MySQL connection may be required, continuing in async thread");
+                        final CommandSender finalSender = sender;
+                        final String[] finalArgs = args;
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                handleJournals(finalSender, finalArgs);
+                            }
+                        }.runTask(instance);
+                    } else {
+                        handleJournals(sender, args);
+                    }
+                    break;
                 case "purge":
                     // purging an offline player also may require database
                     // connection
@@ -238,6 +244,100 @@ public class QuestCommand implements CommandExecutor {
         dbHandler.purgePlayer();
         // done
         sender.sendMessage(getMessage("purged").replaceAll("%player%", args[1]));
+    }
+    
+    /**
+     * Handles journal command
+     * <p/>
+     * Lists, adds or removes journal entries of certain players
+     * 
+     * @param sender
+     *          CommandSender
+     * @param args
+     *          list of this command's arguments
+     */
+    private void handleJournals(CommandSender sender, String[] args) {
+        // playerID is required
+        if (args.length < 2) {
+            Debug.info("Player's name is missing");
+            sender.sendMessage(getMessage("specify_player"));
+            return;
+        }
+        String playerID = PlayerConverter.getID(args[1]);
+        boolean isOnline = (PlayerConverter.getPlayer(playerID) != null);
+        DatabaseHandler dbHandler = instance.getDBHandler(playerID);
+        // if the player is offline then get his DatabaseHandler outside of the
+        // list
+        if (dbHandler == null) {
+            Debug.info("Player is offline, loading his data");
+            dbHandler = new DatabaseHandler(playerID);
+        }
+        Journal journal = dbHandler.getJournal();
+        // if there are no arguments then list player's pointers
+        if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
+            Debug.info("Listing journal pointers");
+            sender.sendMessage(getMessage("player_journal"));
+            for (Pointer pointer : journal.getPointers()) {
+                String date = new SimpleDateFormat(ConfigHandler.getString(
+                        "messages.global.date_format")).format(new Date(pointer.getTimestamp()));
+                sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
+            }
+            return;
+        }
+        // if there is not enough arguments, display warning
+        if (args.length < 4) {
+            Debug.info("Missing pointer");
+            sender.sendMessage(getMessage("specify_pointer"));
+            return;
+        }
+        // if there are arguments, handle them
+        switch (args[2].toLowerCase()) {
+            case "add":
+            case "a":
+                if (args.length < 5) {
+                    long timestamp = new Date().getTime();
+                    Debug.info("Adding pointer with current date: " + timestamp);
+                    journal.addPointer(new Pointer(args[3], timestamp));
+                } else {
+                    Debug.info("Adding pointer with date " + args[4].replaceAll("_", " "));
+                    try {
+                        journal.addPointer(new Pointer(args[3], new SimpleDateFormat(ConfigHandler
+                                .getString("messages.global.date_format")).parse(args[4].replaceAll("_", " ")).getTime()));
+                    } catch (ParseException e) {
+                        Debug.info("Date was in the wrong format");
+                        sender.sendMessage(getMessage("specify_date"));
+                        return;
+                    }
+                }
+                // add the pointer
+                if (!isOnline) {
+                    dbHandler.saveData();
+                } else {
+                    journal.updateJournal();
+                }
+                sender.sendMessage(getMessage("pointer_added"));
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                // remove the pointer (this is unnecessary as adding negativ
+                Debug.info("Removing pointer");
+                journal.removePointer(args[3]);
+                if (!isOnline) {
+                    dbHandler.saveData();
+                } else {
+                    journal.updateJournal();
+                }
+                sender.sendMessage(getMessage("pointer_removed"));
+                break;
+            default:
+                // if there was something else, display error message
+                Debug.info("The argument was unknown");
+                sender.sendMessage(getMessage("unknown_argument"));
+                break;
+        }
     }
 
     /**
@@ -643,6 +743,7 @@ public class QuestCommand implements CommandExecutor {
         sender.sendMessage("§c/" + alias + " objective <player> [list/add/del] [objective] §b- " + getMessage("command_objectives"));
         sender.sendMessage("§c/" + alias + " tag <player> [list/add/del] [tag] §b- " + getMessage("command_tags"));
         sender.sendMessage("§c/" + alias + " point <player> [list/add/del] [category] [amount] §b- " + getMessage("command_points"));
+        sender.sendMessage("§c/" + alias + " journal <player> [list/add/del] [entry] [date] §b- " + getMessage("command_journal"));
         sender.sendMessage("§c/" + alias + " condition <player> <condition> §b- " + getMessage("command_condition"));
         sender.sendMessage("§c/" + alias + " event <player> <event> §b- " + getMessage("command_event"));
         sender.sendMessage("§c/" + alias + " item <name> §b- " + getMessage("command_item"));

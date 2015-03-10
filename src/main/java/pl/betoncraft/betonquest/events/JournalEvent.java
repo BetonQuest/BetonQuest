@@ -17,12 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.SimpleTextOutput;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -47,7 +47,7 @@ public class JournalEvent extends QuestEvent {
             return;
         }
         BetonQuest.getInstance().getDBHandler(playerID).getJournal()
-                .addPointer(instructions.split(" ")[1], new Timestamp(new Date().getTime()));
+                .addPointer(new Pointer(instructions.split(" ")[1], new Date().getTime()));
         BetonQuest.getInstance().getDBHandler(playerID).getJournal().updateJournal();
         SimpleTextOutput.sendSystemMessage(
                 playerID,

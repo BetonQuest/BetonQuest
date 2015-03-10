@@ -17,9 +17,9 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -27,8 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -84,8 +84,10 @@ public class Journal {
      * @param timestamp
      *            Timestamp object containing the date of aquiring the entry
      */
-    public void addPointer(String pointer, Timestamp timestamp) {
-        pointers.add(new Pointer(pointer, timestamp));
+    public void addPointer(Pointer pointer) {
+        Debug.info("Adding new pointer \"" + pointer.getPointer() + "\" / " + pointer
+                .getTimestamp() + " to journal for player " + playerID);
+        pointers.add(pointer);
         generateTexts();
     }
 
@@ -104,7 +106,8 @@ public class Journal {
     public void generateTexts() {
         texts.clear();
         for (Pointer pointer : pointers) {
-            String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(pointer.getTimestamp());
+            String date = new SimpleDateFormat(ConfigHandler.getString(
+                    "messages.global.date_format")).format(pointer.getTimestamp());
             String day = "§" + ConfigHandler.getString("config.journal_colors.date.day")
                 + date.split(" ")[0];
             String hour = "§" + ConfigHandler.getString("config.journal_colors.date.hour")
@@ -183,7 +186,7 @@ public class Journal {
 
         // logic for converting entries into single text and then to pages
         StringBuilder stringBuilder = new StringBuilder();
-        for (String entry : BetonQuest.getInstance().getDBHandler(playerID).getJournal().getText()) {
+        for (String entry : getText()) {
             stringBuilder.append(entry.replaceAll("&", "§") + "\n§"
                 + ConfigHandler.getString("config.journal_colors.line") + "---------------\n");
         }
@@ -270,5 +273,16 @@ public class Journal {
             }
         }
         return false;
+    }
+    
+    public void removePointer(String pointer) {
+        for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
+            Pointer pointerr = (Pointer) iterator.next();
+            if (pointerr.getPointer().equalsIgnoreCase(pointer)) {
+                iterator.remove();
+                break;
+            }
+        }
+        generateTexts();
     }
 }

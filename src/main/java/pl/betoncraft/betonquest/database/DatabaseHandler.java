@@ -115,7 +115,7 @@ public class DatabaseHandler {
             ResultSet res3 = database.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
             // put them into the list
             while (res3.next())
-                entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date")));
+                entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
 
             // load points
             ResultSet res4 = database.querySQL(QueryType.SELECT_POINTS, new String[] { playerID });
@@ -224,7 +224,7 @@ public class DatabaseHandler {
         for (Pointer pointer : journal.getPointers()) {
             database.updateSQL(UpdateType.ADD_JOURNAL,
                     new String[] { playerID, pointer.getPointer(),
-                        pointer.getTimestamp().toString() });
+                        String.valueOf(pointer.getTimestamp()) });
         }
         for (ItemStack itemStack : backpack) {
             String instruction = Utils.itemToString(itemStack);

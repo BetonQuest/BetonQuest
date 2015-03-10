@@ -14,6 +14,7 @@ Fixes (since 1.5.3):
     * Corrected description in /q command
     * Added input validation for global locations - if event is incorrect it will display an error
       instead of breaking the whole functionality
+    * The plugin should run fine on machines not supporting some special characters
 Additions:
     * Added backpack for storing quest items, which cannot be dropped in any way
     * Added database backups
@@ -26,6 +27,7 @@ Additions:
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):
+    * Added and changed a lot of subcommands in /q command
     * Folder event now runs these events even after the player logs out: command, tag, objective,
       delete, point, setblock
     * Changed /j command to open the backpack instead of giving the journal

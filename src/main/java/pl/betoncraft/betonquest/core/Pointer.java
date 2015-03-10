@@ -17,7 +17,6 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import java.sql.Timestamp;
 
 /**
  * Represents the journal pointer.
@@ -33,7 +32,7 @@ public class Pointer {
     /**
      * Timestamp indicating date of this entry
      */
-    private final Timestamp timestamp;
+    private final long timestamp;
 
     /**
      * Creates a new Pointer from the pointer string and relevant timestamp.
@@ -43,7 +42,7 @@ public class Pointer {
      * @param timestamp
      *            exact date this entry was added to journal
      */
-    public Pointer(String pointer, Timestamp timestamp) {
+    public Pointer(String pointer, long timestamp) {
         this.pointer = pointer;
         this.timestamp = timestamp;
     }
@@ -62,7 +61,7 @@ public class Pointer {
      * 
      * @return the timestamp of the journal entry
      */
-    public Timestamp getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 }

@@ -67,7 +67,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v7";
+    private final String destination = "v8";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -165,6 +165,16 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v7() {
+        ConfigAccessor messages = ConfigHandler.getConfigs().get("messages");
+        messages.getConfig().set("date_format", "dd.MM.yyyy HH:mm");
+        messages.saveConfig();
+        Debug.broadcast("Added date format line to messages.yml");
+        config.set("version", "v8");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
