@@ -520,9 +520,12 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // display message about condition
-        sender.sendMessage(getMessage("player_condition").replaceAll("%condition%",
-                ConfigHandler.getString("conditions." + conditionID)).replaceAll("%outcome%",
-                BetonQuest.condition(playerID, args[2]) + ""));
+        sender.sendMessage(getMessage("player_condition")
+                .replaceAll("%condition%", 
+                        ((args[2].startsWith("!")) ? "! " : "")
+                        + ConfigHandler.getString("conditions." + conditionID))
+                .replaceAll("%outcome%",
+                        BetonQuest.condition(playerID, args[2]) + ""));
     }
 
     /**

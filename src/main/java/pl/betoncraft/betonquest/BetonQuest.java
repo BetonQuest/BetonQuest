@@ -42,6 +42,7 @@ import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
+import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
@@ -86,6 +87,7 @@ import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
 import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
+import pl.betoncraft.betonquest.objectives.ExperienceObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
@@ -214,6 +216,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("rating", ArmorRatingCondition.class);
         registerConditions("sneak", SneakCondition.class);
         registerConditions("random", RandomCondition.class);
+        registerConditions("journal", JournalCondition.class);
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
@@ -247,6 +250,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("tame", TameObjective.class);
         registerObjectives("delay", DelayObjective.class);
         registerObjectives("arrow", ArrowShootObjective.class);
+        registerObjectives("experience", ExperienceObjective.class);
 
         // initialize compatibility with other plugins
         new Compatibility();

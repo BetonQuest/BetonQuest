@@ -15,6 +15,8 @@ Fixes (since 1.5.3):
     * Added input validation for global locations - if event is incorrect it will display an error
       instead of breaking the whole functionality
     * The plugin should run fine on machines not supporting some special characters
+    * Inverted item condition now behave correctly
+    * Time condition now checks time correctly
 Additions:
     * Added backpack for storing quest items, which cannot be dropped in any way
     * Added database backups
@@ -23,7 +25,10 @@ Additions:
     * Players can chat while in conversations by prefixing their messages with '#' character
     * New "random" condition - true with specified probability
     * New "sneak" condition - true if player is sneaking
+    * New "journal" condition - true if player has journal entry
     * New "arrow" objective - completed when arrow hits the target
+    * New "experience" objective - completed when player reaches certain level
+    * New "npcinteract" objective - completed when player right-clicks Citizens NPC
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):

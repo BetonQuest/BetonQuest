@@ -46,17 +46,20 @@ public class TimeCondition extends Condition {
 
     @Override
     public boolean isMet() {
-
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
-        if (time >= 18000 && time < 24000) {
+        if (time >= 18000) {
+            // 18000 minecraft-time is midnight, so there is new
+            // normal-time cycle after that; subtracting 18 hours
+            // from it makes sure that hour is correct in normal-time
             time = (time / 1000) - 18;
         } else {
-            time = (time / 1000) - 6;
+            // if it's less than 18000, then normal-time is in current
+            // minecraft-time cycle, but 6 hours behind, so add 6 hours
+            time = (time / 1000) + 6;
         }
-        if (time > timeMin && time < timeMax) {
+        if (time >= timeMin && time <= timeMax) {
             return true;
         }
-
         return false;
     }
 

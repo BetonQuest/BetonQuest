@@ -63,6 +63,7 @@ public class ItemCondition extends Condition {
     public boolean isMet() {
         int counter = 0;
         for (Item questItem : questItems) {
+            int amount = questItem.getAmount();
             ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
             for (ItemStack item : inventoryItems) {
                 if (item == null) {
@@ -71,8 +72,8 @@ public class ItemCondition extends Condition {
                 if (!questItem.isItemEqual(item)) {
                     continue;
                 }
-                questItem.setAmount(questItem.getAmount() - item.getAmount());
-                if (questItem.getAmount() <= 0) {
+                amount -= item.getAmount();
+                if (amount <= 0) {
                     counter++;
                     break;
                 }
@@ -85,8 +86,8 @@ public class ItemCondition extends Condition {
                 if (!questItem.isItemEqual(item)) {
                     continue;
                 }
-                questItem.setAmount(questItem.getAmount() - item.getAmount());
-                if (questItem.getAmount() <= 0) {
+                amount -= item.getAmount();
+                if (amount <= 0) {
                     counter++;
                     break;
                 }
@@ -114,10 +115,6 @@ public class ItemCondition extends Condition {
 
         public int getAmount() {
             return amount;
-        }
-
-        public void setAmount(int amount) {
-            this.amount = amount;
         }
     }
 }

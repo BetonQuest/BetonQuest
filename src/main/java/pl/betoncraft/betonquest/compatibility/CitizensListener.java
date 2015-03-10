@@ -21,6 +21,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -38,10 +39,13 @@ public class CitizensListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.HIGHEST)
     public void onNPCClick(NPCRightClickEvent event) {
-        new Conversation(PlayerConverter.getID(event.getClicker()), ConfigHandler.getString("npcs."
-            + String.valueOf(event.getNPC().getId())), event.getNPC().getEntity().getLocation());
+        String id = ConfigHandler.getString("npcs." + event.getNPC().getId());
+        if (event.isCancelled() || id == null) {
+            return;
+        }
+        new Conversation(PlayerConverter.getID(event.getClicker()), id, event.getNPC().getEntity().getLocation());
 
     }
 }

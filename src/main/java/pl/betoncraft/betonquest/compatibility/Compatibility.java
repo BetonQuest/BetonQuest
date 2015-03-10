@@ -53,6 +53,7 @@ public class Compatibility {
         if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
             new CitizensListener();
             instance.registerObjectives("npckill", NPCKillObjective.class);
+            instance.registerObjectives("npcinteract", NPCInteractObjective.class);
             hooked.add("Citizens");
         }
 
