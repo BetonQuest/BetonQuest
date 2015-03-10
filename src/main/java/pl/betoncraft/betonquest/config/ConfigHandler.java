@@ -238,6 +238,69 @@ public class ConfigHandler {
                 return null;
         }
     }
+    
+    public static boolean setString(String path, String value) {
+        if (path == null) return false;
+        String[] parts = path.split("\\.");
+        if (parts.length < 2) {
+            Debug.info("Not enough arguments in path");
+            return false;
+        }
+        String ID = parts[0];
+        ConfigAccessor convFile = null;
+        int i = 1;
+        if (ID.equals("conversations")) {
+            if (parts.length < 3) {
+                Debug.info("Not enough arguments in path");
+                return false;
+            }
+            Debug.info("Getting conversation accessor");
+            convFile = instance.conversationsMap.get(parts[1]);
+            i = 2;
+        } else if (ID.equals("config")) {
+            StringBuilder convPath = new StringBuilder();
+            while (i < parts.length) {
+                convPath.append(parts[i] + ".");
+                i++;
+            }
+            if (convPath.length() < 2) {
+                Debug.info("Path was too short");
+                return false;
+            }
+            BetonQuest.getInstance().reloadConfig();
+            BetonQuest.getInstance().getConfig().set(convPath.substring(0, convPath.length() - 1), value);
+            BetonQuest.getInstance().saveConfig();
+            Debug.info("Saved value to config");
+            return true;
+        } else {
+            Debug.info("Getting standard accessor");
+            try {
+                convFile = (ConfigAccessor) instance.getClass().getDeclaredField(ID).get(instance);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+                    | IllegalAccessException e) {
+                Debug.info("Could not get the accessor: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        if (convFile == null) {
+            Debug.info("Accessor was null");
+            return false;
+        }
+        StringBuilder convPath = new StringBuilder();
+        while (i < parts.length) {
+            convPath.append(parts[i] + ".");
+            i++;
+        }
+        if (convPath.length() < 2) {
+            Debug.info("Path was too short");
+            return false;
+        }
+        convFile.reloadConfig();
+        convFile.getConfig().set(convPath.substring(0, convPath.length() - 1), value);
+        convFile.saveConfig();
+        Debug.info("Saved value to config");
+        return true;
+    }
 
     /**
      * Reloads all config files

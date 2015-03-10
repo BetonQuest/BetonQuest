@@ -101,6 +101,10 @@ public class QuestCommand implements CommandExecutor {
                     // should be sync)
                     handleItems(sender, args);
                     break;
+                case "config":
+                    // config is also only synchronous
+                    handleConfig(sender, args);
+                    break;
                 case "objectives":
                 case "objective":
                 case "o":
@@ -244,6 +248,89 @@ public class QuestCommand implements CommandExecutor {
         dbHandler.purgePlayer();
         // done
         sender.sendMessage(getMessage("purged").replaceAll("%player%", args[1]));
+    }
+    
+    /**
+     * Handles config command
+     * <p/>
+     * Reads, sets or appends strings from/to config files
+     * 
+     * @param sender
+     * @param args
+     */
+    private void handleConfig(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            Debug.info("No action specified!");
+            sender.sendMessage(getMessage("specify_action"));
+            return;
+        }
+        String action = args[1];
+        String path = args[2];
+        switch (action) {
+            case "read":
+            case "r":
+                Debug.info("Displaying variable at path " + path);
+                String message = ConfigHandler.getString(path);
+                sender.sendMessage(message == null ? "null" : message);
+                break;
+            case "set":
+            case "s":
+                StringBuilder strBldr = new StringBuilder();
+                for (int i = 3; i < args.length; i++) {
+                    strBldr.append(args[i] + " ");
+                }
+                if (strBldr.length() < 2) {
+                    Debug.info("Wrong path!");
+                    sender.sendMessage(getMessage("specify_path"));
+                    return;
+                }
+                boolean set = ConfigHandler.setString(path, (args[3].equals("null")) ? null : 
+                        strBldr.toString().trim());
+                if (set) {
+                    Debug.info("Displaying variable at path " + path);
+                    String message1 = ConfigHandler.getString(path);
+                    sender.sendMessage(message1 == null ? "null" : message1);
+                } else {
+                    sender.sendMessage(getMessage("config_set_error"));
+                }
+                break;
+            case "add":
+            case "a":
+                StringBuilder strBldr2 = new StringBuilder();
+                for (int i = 3; i < args.length; i++) {
+                    strBldr2.append(args[i] + " ");
+                }
+                if (strBldr2.length() < 2) {
+                    Debug.info("Wrong path!");
+                    sender.sendMessage(getMessage("specify_path"));
+                    return;
+                }
+                String finalString = strBldr2.toString().trim();
+                boolean space = false;
+                if (finalString.startsWith("_")) {
+                    finalString = finalString.substring(1, finalString.length());
+                    space = true;
+                }
+                String oldString = ConfigHandler.getString(path);
+                if (oldString == null) {
+                    oldString = "";
+                }
+                boolean set2 = ConfigHandler.setString(path, oldString + ((space) ? " " : "")
+                        + finalString);
+                if (set2) {
+                    Debug.info("Displaying variable at path " + path);
+                    String message2 = ConfigHandler.getString(path);
+                    sender.sendMessage(message2 == null ? "null" : message2);
+                } else {
+                    sender.sendMessage(getMessage("config_set_error"));
+                }
+                break;
+            default:
+                // if there was something else, display error message
+                Debug.info("The argument was unknown");
+                sender.sendMessage(getMessage("unknown_argument"));
+                break;
+        }
     }
     
     /**
@@ -750,6 +837,7 @@ public class QuestCommand implements CommandExecutor {
         sender.sendMessage("§c/" + alias + " condition <player> <condition> §b- " + getMessage("command_condition"));
         sender.sendMessage("§c/" + alias + " event <player> <event> §b- " + getMessage("command_event"));
         sender.sendMessage("§c/" + alias + " item <name> §b- " + getMessage("command_item"));
+        sender.sendMessage("§c/" + alias + " config <read/set/add> <path> [string] §b- " + getMessage("command_config"));
         sender.sendMessage("§c/" + alias + " purge <player> §b- " + getMessage("command_purge"));
         if (!(sender instanceof Player)) {
             sender.sendMessage("§c/" + alias + " backup §b- " + getMessage("command_backup"));

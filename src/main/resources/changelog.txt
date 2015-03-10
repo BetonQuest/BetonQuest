@@ -32,7 +32,11 @@ Additions:
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):
-    * Added and changed a lot of subcommands in /q command
+    * Added and changed a lot of subcommands in /q command:
+      - event and condition can be run for every online player
+      - tag, point, objective and (new) journal can edit every (even offline) player
+      - config (new) can set configuration files from command line 
+      - backup (new) backups the whole configuration and database
     * Folder event now runs these events even after the player logs out: command, tag, objective,
       delete, point, setblock
     * Changed /j command to open the backpack instead of giving the journal
