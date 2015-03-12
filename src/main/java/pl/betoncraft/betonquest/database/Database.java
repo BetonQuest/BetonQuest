@@ -132,6 +132,34 @@ public abstract class Database {
 			case UPDATE_PLAYERS_OBJECTIVES:
 				statement = connection.prepareStatement("UPDATE objectives SET playerID = ? WHERE playerID = ?;");
 				break;
+	                case DROP_OBJECTIVES:
+	                    statement = connection.prepareStatement("DROP TABLE objectives");
+	                    break;
+	                case DROP_TAGS:
+	                    statement = connection.prepareStatement("DROP TABLE tags");
+	                    break;
+	                case DROP_POINTS:
+	                    statement = connection.prepareStatement("DROP TABLE points");
+	                    break;
+	                case DROP_JOURNALS:
+	                    statement = connection.prepareStatement("DROP TABLE journal");
+	                    break;
+	                case INSERT_OBJECTIVE:
+	                    statement = connection.prepareStatement("INSERT INTO objectives "
+	                        + "VALUES (?,?,?,?)");
+	                    break;
+	                case INSERT_TAG:
+	                    statement = connection.prepareStatement("INSERT INTO tags "
+	                        + "VALUES (?,?,?,?)");
+	                    break;
+	                case INSERT_POINT:
+	                    statement = connection.prepareStatement("INSERT INTO points "
+	                        + "VALUES (?,?,?,?)");
+	                    break;
+	                case INSERT_JOURNAL:
+	                    statement = connection.prepareStatement("INSERT INTO journal "
+	                        + "VALUES (?,?,?,?)");
+	                    break;
 			default:
 				statement = null;
 				break;
@@ -144,4 +172,35 @@ public abstract class Database {
 			e.printStackTrace();
 		}
 	}
+	
+	public void createTables(boolean isMySQLUsed) {
+	        String autoIncrement;
+	        if (isMySQLUsed) {
+	            autoIncrement = "AUTO_INCREMENT";
+	        } else {
+	            autoIncrement = "AUTOINCREMENT";
+	        }
+	        // create tables if they don't exist
+	        Connection connection = openConnection();
+	        try {
+                    connection
+                                    .createStatement()
+                                    .executeUpdate(
+                                                    "CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY "
+                                                                    + autoIncrement
+                                                                    + ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+                    connection.createStatement().executeUpdate(
+                                    "CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement
+                                                    + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+                    connection.createStatement().executeUpdate(
+                                    "CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement
+                                                    + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
+                    connection.createStatement().executeUpdate(
+                                    "CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement
+                                                    + ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
+            } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        closeConnection();
+	    }
 }
