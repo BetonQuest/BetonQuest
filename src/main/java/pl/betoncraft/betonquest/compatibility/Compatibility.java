@@ -27,6 +27,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.compatibility.BQEventSkript.CustomEventForSkript;
+import ch.njol.skript.Skript;
 
 /**
  * @author co0sh
@@ -74,6 +76,15 @@ public class Compatibility {
             instance.registerConditions("money", MoneyCondition.class);
             instance.registerEvents("permission", PermissionEvent.class);
             hooked.add("Vault");
+        }
+        
+        // hook into Skript
+        if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
+            Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
+            Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
+            Skript.registerEvent("betonquest", SkriptEventBQ.class, CustomEventForSkript.class, "[betonquest] event %string%");
+            BetonQuest.getInstance().registerEvents("skript", BQEventSkript.class);
+            hooked.add("Skript");
         }
 
         // log which plugins have been hooked

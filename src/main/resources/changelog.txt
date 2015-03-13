@@ -29,6 +29,7 @@ Additions:
     * New "arrow" objective - completed when arrow hits the target
     * New "experience" objective - completed when player reaches certain level
     * New "npcinteract" objective - completed when player right-clicks Citizens NPC
+    * Skript support (event, effect and condition)
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):
@@ -48,6 +49,11 @@ Changes (since 1.5.3):
     * Backup files are now kept in "backups" directory, old ones are moved to it
     * Changed internal structure of the code (may matter to developers - QuestEvent, Condition
       and Objective classes has been moved from "core" package to "api", update your imports) 
+
+v1.5.4
+This version is almost the same as 1.5.3. The only difference is that it can load database backups
+created by 1.6 version. When updating to 1.6, the database format will change, so it won't be
+possible to go back, unless by loading the backup using this version of the plugin.
 
 v1.5.3
 - Small fix of /q purge command not working on offline players.

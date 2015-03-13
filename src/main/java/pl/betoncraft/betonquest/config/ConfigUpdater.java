@@ -117,7 +117,7 @@ public class ConfigUpdater {
             updateTo1_5_2();
         } else if (version.equals("1.5.2")) {
             updateTo1_5_3();
-        } else if (version.equals("1.5.3") || version.equals("1.6")) {
+        } else if (version.equals("1.5.3") || version.equals("1.5.4")|| version.equals("1.6")) {
             updateTo1_6();
         } else if (version.matches("^v\\d+$")) {
             performUpdate();
