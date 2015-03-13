@@ -49,6 +49,7 @@ import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.RandomCondition;
 import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
+import pl.betoncraft.betonquest.conditions.TestForBlockCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
@@ -217,6 +218,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("sneak", SneakCondition.class);
         registerConditions("random", RandomCondition.class);
         registerConditions("journal", JournalCondition.class);
+        registerConditions("testforblock", TestForBlockCondition.class);
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);

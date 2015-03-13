@@ -26,6 +26,7 @@ Additions:
     * New "random" condition - true with specified probability
     * New "sneak" condition - true if player is sneaking
     * New "journal" condition - true if player has journal entry
+    * New "testforblock" condition - true if block matches given material
     * New "arrow" objective - completed when arrow hits the target
     * New "experience" objective - completed when player reaches certain level
     * New "npcinteract" objective - completed when player right-clicks Citizens NPC
