@@ -30,6 +30,7 @@ Additions:
     * New "experience" objective - completed when player reaches certain level
     * New "npcinteract" objective - completed when player right-clicks Citizens NPC
     * Skript support (event, effect and condition)
+    * WorldGuard support (region condition)
     * Error logging to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
 Changes (since 1.5.3):

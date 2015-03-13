@@ -86,6 +86,12 @@ public class Compatibility {
             BetonQuest.getInstance().registerEvents("skript", BQEventSkript.class);
             hooked.add("Skript");
         }
+        
+        // hook into WorldGuard
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            BetonQuest.getInstance().registerConditions("region", RegionCondition.class);
+            hooked.add("WorldGuard");
+        }
 
         // log which plugins have been hooked
         if (hooked.size() > 0) {

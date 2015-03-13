@@ -85,5 +85,19 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>5.9</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/WorldGuard.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldedit</artifactId>
+			<version>5.6</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/WorldEdit.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>
