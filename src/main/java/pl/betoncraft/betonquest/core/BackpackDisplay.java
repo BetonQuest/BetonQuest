@@ -137,7 +137,7 @@ public class BackpackDisplay implements Listener {
             ItemStack previous;
             String item = ConfigHandler.getString("items.previous_button");
             if (item != null) {
-                previous = Utils.generateItem(new QuestItem(item), 1);
+                previous = new QuestItem(item).generateItem(1);
             } else {
                 previous = new ItemStack(Material.GLOWSTONE_DUST);
             }
@@ -153,7 +153,7 @@ public class BackpackDisplay implements Listener {
             ItemStack next;
             String item = ConfigHandler.getString("items.next_button");
             if (item != null) {
-                next = Utils.generateItem(new QuestItem(item), 1);
+                next = new QuestItem(item).generateItem(1);
             } else {
                 next = new ItemStack(Material.REDSTONE);
             }

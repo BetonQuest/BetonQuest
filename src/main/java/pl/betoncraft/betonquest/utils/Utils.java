@@ -27,9 +27,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -43,7 +41,6 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.config.Zipper;
-import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Database.QueryType;
 import pl.betoncraft.betonquest.database.Database.UpdateType;
@@ -184,72 +181,6 @@ public class Utils {
     }
 
     /**
-     * Compares ItemStack to the quest item from items.yml
-     * 
-     * @param item
-     *            ItemStack to compare
-     * @param questItem
-     *            instance of the QuestItem
-     * @return true if the item matches
-     */
-    @SuppressWarnings("deprecation")
-    public static boolean isItemEqual(ItemStack item, QuestItem questItem) {
-        if (item == null) {
-            return false;
-        }
-        if (item.getType() != Material.matchMaterial(questItem.getMaterial())) {
-            return false;
-        }
-        if (questItem.getData() >= 0 && item.getData().getData() != questItem.getData()) {
-            return false;
-        }
-        if (questItem.getName() != null
-            && (!item.getItemMeta().hasDisplayName() || !item.getItemMeta().getDisplayName()
-                    .equals(questItem.getName()))) {
-            return false;
-        }
-        if (!questItem.getLore().isEmpty()
-            && (!item.getItemMeta().hasLore() || !item.getItemMeta().getLore()
-                    .equals(questItem.getLore()))) {
-            return false;
-        }
-        if (!questItem.getEnchants().isEmpty()) {
-            Map<Enchantment, Integer> enchants = new HashMap<>();
-            for (String enchant : questItem.getEnchants().keySet()) {
-                enchants.put(Enchantment.getByName(enchant), questItem.getEnchants().get(enchant));
-            }
-            if (!item.getEnchantments().equals(enchants)) {
-                return false;
-            }
-        }
-        if (item.getType().equals(Material.WRITTEN_BOOK)) {
-            BookMeta bookMeta = (BookMeta) item.getItemMeta();
-            if (questItem.getAuthor() != null
-                && (!bookMeta.hasAuthor() || !bookMeta.getAuthor().equals(questItem.getAuthor()))) {
-                return false;
-            }
-            if (!questItem.getLore().isEmpty()
-                && (!bookMeta.hasLore() || !bookMeta.getLore().equals(questItem.getLore()))) {
-                return false;
-            }
-            if (questItem.getText() != null
-                && (!bookMeta.hasPages() || !bookMeta.getPages().equals(
-                        pagesFromString(questItem.getText(), false)))) {
-                return false;
-            }
-        } else if (item.getType().equals(Material.POTION)) {
-            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-            List<PotionEffect> effects = questItem.getEffects();
-            if (!questItem.getEffects().isEmpty()
-                && (!potionMeta.hasCustomEffects() || !potionMeta.getCustomEffects()
-                        .equals(effects))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * If the database backup file exists, loads it into the database.
      */
     public static void loadDatabaseFromBackup() {
@@ -364,6 +295,13 @@ public class Utils {
         }
     }
     
+    /**
+     * Converts ItemStack to string, which can be later parsed by QuestItem
+     * 
+     * @param item
+     *          ItemStack to convert
+     * @return converted string
+     */
     @SuppressWarnings("deprecation")
     public static String itemToString(ItemStack item) {
         String name = "";
@@ -430,54 +368,6 @@ public class Utils {
         // put it all together in a single string
         return item.getType() + " data:" + item.getData().getData() + name + lore
             + enchants + title + author + text + effects;
-    }
-    
-    public static ItemStack generateItem(QuestItem questItem, int stackSize) {
-        byte data;
-        if (questItem.getData() < 0) {
-            data = 0;
-        } else {
-            data = (byte) questItem.getData();
-        }
-        ItemStack item = new ItemStack(Material.matchMaterial(questItem.getMaterial()),
-                stackSize, data);
-        ItemMeta meta = item.getItemMeta();
-        if (questItem.getName() != null) {
-            meta.setDisplayName(questItem.getName());
-        }
-        meta.setLore(questItem.getLore());
-        for (String enchant : questItem.getEnchants().keySet()) {
-            meta.addEnchant(Enchantment.getByName(enchant), questItem.getEnchants()
-                    .get(enchant), true);
-        }
-        if (Material.matchMaterial(questItem.getMaterial()).equals(Material.WRITTEN_BOOK)) {
-            BookMeta bookMeta = (BookMeta) meta;
-            if (questItem.getAuthor() != null) {
-                bookMeta.setAuthor(questItem.getAuthor());
-            } else {
-                bookMeta.setAuthor(ConfigHandler.getString("messages."
-                    + ConfigHandler.getString("config.language") + ".unknown_author"));
-            }
-            if (questItem.getText() != null) {
-                bookMeta.setPages(Utils.pagesFromString(questItem.getText(), false));
-            }
-            if (questItem.getTitle() != null) {
-                bookMeta.setTitle(questItem.getTitle());
-            } else {
-                bookMeta.setTitle(ConfigHandler.getString("messages."
-                    + ConfigHandler.getString("config.language") + ".unknown_title"));
-            }
-            item.setItemMeta(bookMeta);
-        }
-        if (Material.matchMaterial(questItem.getMaterial()).equals(Material.POTION)) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-            for (PotionEffect effect : questItem.getEffects()) {
-                potionMeta.addCustomEffect(effect, true);
-            }
-            item.setItemMeta(potionMeta);
-        }
-        item.setItemMeta(meta);
-        return item;
     }
 
     public static boolean isQuestItem(ItemStack item) {

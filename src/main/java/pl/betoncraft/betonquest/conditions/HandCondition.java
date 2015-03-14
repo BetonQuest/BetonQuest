@@ -23,7 +23,6 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Having item in inventory condition, instrucion string:
@@ -54,7 +53,7 @@ public class HandCondition extends Condition {
     @Override
     public boolean isMet() {
         ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
-        if (Utils.isItemEqual(item, questItem)) {
+        if (questItem.equalsI(item)) {
             return true;
         }
         return false;

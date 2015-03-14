@@ -29,7 +29,6 @@ import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * 
@@ -81,7 +80,7 @@ public class TakeEvent extends QuestEvent {
     private ItemStack[] removeItems(ItemStack[] items) {
         for (int i = 0; i < items.length; i++) {
             ItemStack item = items[i];
-            if (Utils.isItemEqual(item, questItem)) {
+            if (questItem.equalsI(item)) {
                 if (item.getAmount() - amount <= 0) {
                     amount = amount - item.getAmount();
                     items[i] = null;

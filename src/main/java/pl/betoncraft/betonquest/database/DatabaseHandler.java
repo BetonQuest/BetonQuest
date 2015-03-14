@@ -130,7 +130,7 @@ public class DatabaseHandler {
             while (res5.next()) {
                 String instruction = res5.getString("instruction");
                 int amount = res5.getInt("amount");
-                ItemStack item = Utils.generateItem(new QuestItem(instruction), amount);
+                ItemStack item = new QuestItem(instruction).generateItem(amount);
                 backpack.add(item);
             }
 

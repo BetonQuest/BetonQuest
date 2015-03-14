@@ -39,6 +39,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestItem;
@@ -833,8 +834,8 @@ public class ConfigUpdater {
                 String conditions = "";
                 String material = null;
                 int data = 0;
-                Map<String, Integer> enchants = new HashMap<>();
-                List<String> lore = new ArrayList<>();
+                Map<String, Integer> enchants = null;
+                List<String> lore = null;
                 String name = null;
                 // for each part of the instruction string check if it
                 // contains some data and if so pu it in variables
@@ -844,11 +845,13 @@ public class ConfigUpdater {
                     } else if (part.contains("data:")) {
                         data = Byte.valueOf(part.substring(5));
                     } else if (part.contains("enchants:")) {
+                        enchants = new HashMap<>();
                         for (String enchant : part.substring(9).split(",")) {
                             enchants.put(enchant.split(":")[0],
                                     Integer.decode(enchant.split(":")[1]));
                         }
                     } else if (part.contains("lore:")) {
+                        lore = new ArrayList<>();
                         for (String loreLine : part.substring(5).split(";")) {
                             lore.add(loreLine.replaceAll("_", " "));
                         }
@@ -865,7 +868,7 @@ public class ConfigUpdater {
                 QuestItem item = new QuestItem(material, data, enchants, name, lore);
                 boolean contains = false;
                 for (String itemKey : items.keySet()) {
-                    if (items.get(itemKey).equalsToItem(item)) {
+                    if (items.get(itemKey).equalsQ(item)) {
                         contains = true;
                         break;
                     }
@@ -877,7 +880,7 @@ public class ConfigUpdater {
                     items.put(newItemID, item);
                 } else {
                     for (String itemName : items.keySet()) {
-                        if (items.get(itemName).equalsToItem(item)) {
+                        if (items.get(itemName).equalsQ(item)) {
                             newItemID = itemName;
                         }
                     }
@@ -938,7 +941,7 @@ public class ConfigUpdater {
                 QuestItem item = new QuestItem(material, data, enchants, name, lore);
                 boolean contains = false;
                 for (String itemKey : items.keySet()) {
-                    if (items.get(itemKey).equalsToItem(item)) {
+                    if (items.get(itemKey).equalsQ(item)) {
                         contains = true;
                         break;
                     }
@@ -950,7 +953,7 @@ public class ConfigUpdater {
                     items.put(newItemID, item);
                 } else {
                     for (String itemName : items.keySet()) {
-                        if (items.get(itemName).equalsToItem(item)) {
+                        if (items.get(itemName).equalsQ(item)) {
                             newItemID = itemName;
                         }
                     }
@@ -968,7 +971,7 @@ public class ConfigUpdater {
         // generated all items, now place them in items.yml
         for (String key : items.keySet()) {
             QuestItem item = items.get(key);
-            String instruction = item.getMaterial().toUpperCase() + " data:" + item.getData();
+            String instruction = item.getMaterial() + " data:" + item.getData();
             if (item.getName() != null) {
                 instruction = instruction + " name:" + item.getName().replace(" ", "_");
             }
@@ -982,8 +985,8 @@ public class ConfigUpdater {
             }
             if (!item.getEnchants().isEmpty()) {
                 StringBuilder enchants = new StringBuilder();
-                for (String enchant : item.getEnchants().keySet()) {
-                    enchants.append(enchant.toUpperCase() + ":" + item.getEnchants().get(enchant)
+                for (Enchantment enchant : item.getEnchants().keySet()) {
+                    enchants.append(enchant.toString() + ":" + item.getEnchants().get(enchant)
                         + ",");
                 }
                 instruction = instruction + " enchants:"

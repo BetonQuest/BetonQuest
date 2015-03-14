@@ -68,7 +68,7 @@ public class GiveEvent extends QuestEvent {
                 } else {
                     stackSize = amount;
                 }
-                ItemStack item = Utils.generateItem(questItem, stackSize);
+                ItemStack item = questItem.generateItem(stackSize);
                 Player player = PlayerConverter.getPlayer(playerID);
                 HashMap<Integer, ItemStack> left = player
                         .getInventory().addItem(item);

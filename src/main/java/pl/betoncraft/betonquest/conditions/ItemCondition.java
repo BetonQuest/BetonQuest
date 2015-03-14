@@ -27,7 +27,6 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Having item in inventory condition, instrucion string:
@@ -110,7 +109,7 @@ public class ItemCondition extends Condition {
         }
         
         public boolean isItemEqual(ItemStack item) {
-            return Utils.isItemEqual(item, questItem);
+            return questItem.equalsI(item);
         }
 
         public int getAmount() {
