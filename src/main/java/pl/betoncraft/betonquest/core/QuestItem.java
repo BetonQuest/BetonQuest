@@ -22,12 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -50,6 +55,8 @@ public class QuestItem {
     private String author = null;
     private String text = null;
     private List<PotionEffect> effects = null;
+    private Color color = null;
+    private String owner = null;
 
     /**
      * Legacy method for the updater, don't use for anything else
@@ -140,6 +147,18 @@ public class QuestItem {
                     int duration = Integer.parseInt(effect.split(":")[2]) * 20;
                     effects.add(new PotionEffect(ID, duration, power));
                 }
+            } else if (part.startsWith("color:")) {
+                if (part.equals("color:none")) {
+                    color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
+                } else {
+                    color = Color.fromRGB(Integer.parseInt(part.substring(6)));
+                }
+            } else if (part.startsWith("owner:")) {
+                if (part.equals("owner:none")) {
+                    owner = "";
+                } else {
+                    owner = part.substring(6);
+                }
             }
         }
     }
@@ -185,6 +204,14 @@ public class QuestItem {
         }
         if (!((item.getTitle() == null && title == null) || (item.getTitle() != null
             && title != null && item.getTitle().equals(title)))) {
+            return false;
+        }
+        if (!((item.getColor() == null && color == null) || (item.getColor() != null
+            && color != null && item.getColor().equals(color)))) {
+            return false;
+        }
+        if (!((item.getOwner() == null && owner == null) || (item.getOwner() != null
+            && owner != null && item.getOwner().equals(owner)))) {
             return false;
         }
         return true;
@@ -240,15 +267,33 @@ public class QuestItem {
         }
         if (enchants != null) {
             if (enchants.isEmpty()) {
-                if (item.getItemMeta().hasEnchants()) {
-                    return false;
+                if (material != Material.ENCHANTED_BOOK) {
+                    if (item.getItemMeta().hasEnchants()) {
+                        return false;
+                    }
+                } else {
+                    EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
+                    if (!storageMeta.getStoredEnchants().equals(enchants)) {
+                        return false;
+                    }
                 }
             } else {
-                if (!item.getItemMeta().hasEnchants()) {
-                    return false;
-                } else {
-                    if (!item.getEnchantments().equals(enchants)) {
+                if (material != Material.ENCHANTED_BOOK) {
+                    if (!item.getItemMeta().hasEnchants()) {
                         return false;
+                    } else {
+                        if (!item.getEnchantments().equals(enchants)) {
+                            return false;
+                        }
+                    }
+                } else {
+                    EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
+                    if (!storageMeta.hasStoredEnchants()) {
+                        return false;
+                    } else {
+                        if (!storageMeta.getStoredEnchants().equals(enchants)) {
+                            return false;
+                        }
                     }
                 }
             }
@@ -282,7 +327,34 @@ public class QuestItem {
                     }
                 }
             }
-        } // TODO other item types
+        } else if (item.getType().equals(Material.LEATHER_BOOTS)      ||
+                   item.getType().equals(Material.LEATHER_CHESTPLATE) ||
+                   item.getType().equals(Material.LEATHER_HELMET)     ||
+                   item.getType().equals(Material.LEATHER_LEGGINGS)) {
+            LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
+            if (color != null) {
+                if (!armorMeta.getColor().equals(color)) {
+                    return false;
+                }
+            }
+        } else if (item.getType() == Material.SKULL_ITEM) {
+            SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+            if (owner != null) {
+                if (owner.equals("")) {
+                    if (skullMeta.hasOwner()) {
+                        return false;
+                    }
+                } else {
+                    if (!skullMeta.hasOwner()) {
+                        return false;
+                    } else {
+                        if (!skullMeta.getOwner().equals(owner)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
         return true;
     }
     
@@ -305,7 +377,7 @@ public class QuestItem {
         if (lore != null && !lore.isEmpty()) {
             meta.setLore(lore);
         }
-        if (enchants != null && !enchants.isEmpty()) {
+        if (enchants != null && material != Material.ENCHANTED_BOOK && !enchants.isEmpty()) {
             for (Enchantment enchant : enchants.keySet()) {
                 meta.addEnchant(enchant, enchants.get(enchant), true);
             }
@@ -335,6 +407,27 @@ public class QuestItem {
                 potionMeta.addCustomEffect(effects.get(i), true);
             }
             item.setItemMeta(potionMeta);
+            return item;
+        } else if ((material.equals(Material.LEATHER_BOOTS)      ||
+                    material.equals(Material.LEATHER_CHESTPLATE) ||
+                    material.equals(Material.LEATHER_HELMET)     ||
+                    material.equals(Material.LEATHER_LEGGINGS))  &&
+                    color != null && !color.equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
+            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+            armorMeta.setColor(color);
+            item.setItemMeta(armorMeta);
+            return item;
+        } else if (enchants != null && material == Material.ENCHANTED_BOOK && !enchants.isEmpty()) {
+            EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
+            for (Enchantment enchant : enchants.keySet()) {
+                storageMeta.addStoredEnchant(enchant, enchants.get(enchant), true);
+            }
+            item.setItemMeta(storageMeta);
+            return item;
+        } else if (material == Material.SKULL_ITEM && owner != null && !owner.equals("")) {
+            SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+            skullMeta.setOwner(owner);
+            item.setItemMeta(skullMeta);
             return item;
         }
         item.setItemMeta(meta);
@@ -420,5 +513,23 @@ public class QuestItem {
      */
     public List<PotionEffect> getEffects() {
         return effects;
+    }
+    
+    /**
+     * Returns color of leather armor
+     * 
+     * @return color of the leather armor
+     */
+    public Color getColor() {
+        return color;
+    }
+    
+    /**
+     * Returns owner of the skull
+     * 
+     * @return owner of the skull
+     */
+    public String getOwner() {
+        return owner;
     }
 }

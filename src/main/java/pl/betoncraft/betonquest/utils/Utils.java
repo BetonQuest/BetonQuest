@@ -28,13 +28,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -311,6 +315,8 @@ public class Utils {
         String text = "";
         String author = "";
         String effects = "";
+        String color = "";
+        String owner = "";
         ItemMeta meta = item.getItemMeta();
         // get display name
         if (meta.hasDisplayName()) {
@@ -365,9 +371,34 @@ public class Utils {
                 effects = " effects:" + string.substring(0, string.length() - 1);
             }
         }
+        // check for leather armor color
+        if (meta instanceof LeatherArmorMeta) {
+            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+            if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
+                color = " color:" + armorMeta.getColor().asRGB();
+            }
+        }
+        // check for enchanted book
+        if (meta instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
+            if (storageMeta.hasStoredEnchants()) {
+                StringBuilder string = new StringBuilder();
+                for (Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                    string.append(enchant.getName() + ":"
+                        + storageMeta.getStoredEnchants().get(enchant) + ",");
+                }
+                enchants = " enchants:" + string.substring(0, string.length() - 1);
+            }
+        }
+        if (meta instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta) meta;
+            if (skullMeta.hasOwner()) {
+                owner = " owner:" + skullMeta.getOwner();
+            }
+        }
         // put it all together in a single string
         return item.getType() + " data:" + item.getData().getData() + name + lore
-            + enchants + title + author + text + effects;
+            + enchants + title + author + text + effects + color + owner;
     }
 
     public static boolean isQuestItem(ItemStack item) {
