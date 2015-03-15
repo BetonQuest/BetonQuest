@@ -348,14 +348,14 @@ public class Utils {
                 title = " title:" + bookMeta.getTitle().replace(" ", "_");
             }
             if (bookMeta.hasPages()) {
-                text = " text:";
+                StringBuilder strBldr = new StringBuilder();
                 for (String page : bookMeta.getPages()) {
                     if (page.startsWith("\"") && page.endsWith("\"")) {
                         page = page.substring(1, page.length() - 1);
                     }
-                    text = text + page.trim().replace(" ", "_") + "|";
+                    strBldr.append(page.replaceAll(" ", "_").replaceAll("\\n", "\\\\n") + "|");
                 }
-                text = text.substring(0, text.length() - 1).replaceAll("\\n", "\\\\n");
+                text = " text:" + strBldr.substring(0, strBldr.length() - 1);
             }
         }
         // check if it's a potion and add effect type, duration and power if so
