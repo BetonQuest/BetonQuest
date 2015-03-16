@@ -64,6 +64,7 @@ import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
+import pl.betoncraft.betonquest.events.DamageEvent;
 import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
@@ -240,6 +241,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("weather", WeatherEvent.class);
         registerEvents("folder", FolderEvent.class);
         registerEvents("setblock", SetBlockEvent.class);
+        registerEvents("damage", DamageEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
