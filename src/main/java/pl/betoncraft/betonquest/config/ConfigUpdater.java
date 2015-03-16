@@ -68,7 +68,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v8";
+    private final String destination = "v9";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -166,6 +166,13 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v8() {
+        Debug.broadcast("Everything in configuration has been updated for 1.6 version!");
+        config.set("version", "v9");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

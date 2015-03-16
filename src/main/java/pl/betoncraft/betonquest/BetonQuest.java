@@ -258,6 +258,9 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize compatibility with other plugins
         new Compatibility();
+        
+        Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events"
+            + " and " + objectives.size() + " objectives loaded.");
 
         // initialize PlayerConverter
         PlayerConverter.getType();

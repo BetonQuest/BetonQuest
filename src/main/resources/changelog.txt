@@ -1,11 +1,10 @@
-v1.6 (dev)
+v1.6
 Notes:
-  This is a dev version of the plugin. It may contain a lot of bugs, so please report them here:
-  <https://github.com/Co0sh/BetonQuest/issues>. Except all uncaught bugs it looks like more stable
-  than 1.5.3 (which is full of bugs), so you theoretically could use it on production server. 
-  The configuration will update automatically between next dev versions, but the plugin will not 
-  be autoupdated to next dev version. It will however update when a full version is released.
-Fixes (since 1.5.3):
+  - There is a bug/feature in 1.8 which adds '§0' at the end of every line in books generated
+    by plugins. This breaks the conditions/events based on books with more than one line of text.
+    The detailed instruction on how to work it around is in "Other important stuff" chapter, in
+    the part about items.
+Fixes:
     * Items given by event that don't fit in the inventory will now drop instead of being deleted
       This does not apply to quest items, they will be added to backpack
     * Events fired from conversations won't throw async errors
@@ -26,15 +25,18 @@ Additions:
     * New "random" condition - true with specified probability
     * New "sneak" condition - true if player is sneaking
     * New "journal" condition - true if player has journal entry
-    * New "testforblock" condition - true if block matches given material
-    * New "arrow" objective - completed when arrow hits the target
+    * New "testforblock" condition - true if block at given location matches given material
+    * New "arrow" objective - completed when arrow hits the specified target
     * New "experience" objective - completed when player reaches certain level
     * New "npcinteract" objective - completed when player right-clicks Citizens NPC
+    * New "damage" event - damages the player
     * Skript support (event, effect and condition)
     * WorldGuard support (region condition)
-    * Error logging to the "error.log" file in "logs" directory
+    * Errors are logged to the "error.log" file in "logs" directory
     * Debug option in config.yml for logging plugin's activity to "debug.log" file
-Changes (since 1.5.3):
+    * New commands for opening backpack: b, bb, backpack, bbackpack or betonbackpack
+    * Items are now aware of leather armor color, head owner and enchantments in books
+Changes:
     * Added and changed a lot of subcommands in /q command:
       - event and condition can be run for every online player
       - tag, point, objective and (new) journal can edit every (even offline) player
@@ -42,15 +44,19 @@ Changes (since 1.5.3):
       - backup (new) backups the whole configuration and database
     * Folder event now runs these events even after the player logs out: command, tag, objective,
       delete, point, setblock
-    * Changed /j command to open the backpack instead of giving the journal
+    * Changed /j command to open the backpack instead of just giving the journal
+    * Tellraw clicking on options in conversation now ignores old (used) options
+    * Using color codes in journal entries is now possible
     * Give/take events and item condition can now check for multiple items with syntax 'give
       stick:2,stone:4,sword'
+    * Give/take events and item/hand conditions can now check for items only without
+      enchantments/effects/name/lore etc.
     * Inverting condition is now done by prefixing their name with "!" (in the place where you use
       them, like conversation, not in conditions.yml)
     * Configuration updater is no longer based on plugin's version
     * Backup files are now kept in "backups" directory, old ones are moved to it
     * Changed internal structure of the code (may matter to developers - QuestEvent, Condition
-      and Objective classes has been moved from "core" package to "api", update your imports) 
+      and Objective classes has been moved from "core" package to "api", update your imports)
 
 v1.5.4
 This version is almost the same as 1.5.3. The only difference is that it can load database backups
