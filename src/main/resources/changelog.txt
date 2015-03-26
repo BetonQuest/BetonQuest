@@ -1,3 +1,6 @@
+v1.6.1
+Fixed errors on updating journals when using MySQL.
+
 v1.6
 Notes:
   - There is a bug/feature in 1.8 which adds '§0' at the end of every line in books generated

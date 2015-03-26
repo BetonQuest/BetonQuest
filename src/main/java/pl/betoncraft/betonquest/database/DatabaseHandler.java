@@ -19,7 +19,9 @@ package pl.betoncraft.betonquest.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -224,7 +226,7 @@ public class DatabaseHandler {
         for (Pointer pointer : journal.getPointers()) {
             database.updateSQL(UpdateType.ADD_JOURNAL,
                     new String[] { playerID, pointer.getPointer(),
-                        String.valueOf(pointer.getTimestamp()) });
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp())) });
         }
         for (ItemStack itemStack : backpack) {
             String instruction = Utils.itemToString(itemStack);
