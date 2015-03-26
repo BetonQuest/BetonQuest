@@ -56,6 +56,7 @@ public class Compatibility {
             new CitizensListener();
             instance.registerObjectives("npckill", NPCKillObjective.class);
             instance.registerObjectives("npcinteract", NPCInteractObjective.class);
+            new CitizensWalkingListener();
             hooked.add("Citizens");
         }
 

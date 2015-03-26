@@ -159,10 +159,12 @@ public class Conversation implements Listener, CommandExecutor {
             finalEvents = "";
         }
 
-        // everything is ok, register conversation as listener and command
+        // everything is ok, register conversation as listener and command and fire an event
         BetonQuest.getInstance().getServer().getPluginManager()
                 .registerEvents(this, BetonQuest.getInstance());
         if (tellraw) BetonQuest.getInstance().getCommand("betonquestanswer").setExecutor(this);
+        
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationStartEvent(player, this));
 
         // add the player to the list of active conversations
         list.put(playerID, this);
@@ -443,6 +445,7 @@ public class Conversation implements Listener, CommandExecutor {
         }.runTask(BetonQuest.getInstance());
         // unregister listener
         HandlerList.unregisterAll(this);
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, this));
     }
 
     /**
@@ -584,6 +587,10 @@ public class Conversation implements Listener, CommandExecutor {
             return true;
         }
         return false;
+    }
+    
+    public enum ConversationHolder {
+        BLOCK, CITIZENS, EVENT, OTHER
     }
 
 }

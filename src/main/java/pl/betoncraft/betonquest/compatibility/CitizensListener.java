@@ -26,7 +26,6 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigHandler;
-import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -45,7 +44,7 @@ public class CitizensListener implements Listener {
         if (event.isCancelled() || id == null) {
             return;
         }
-        new Conversation(PlayerConverter.getID(event.getClicker()), id, event.getNPC().getEntity().getLocation());
-
+        new CitizensConversation(PlayerConverter.getID(event.getClicker()), id,
+                event.getNPC().getEntity().getLocation(), event.getNPC());
     }
 }

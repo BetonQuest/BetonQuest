@@ -131,15 +131,15 @@ public final class BetonQuest extends JavaPlugin {
     /**
      * Stores all condition types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends Condition>> conditions = new HashMap<String, Class<? extends Condition>>();
+    private static HashMap<String, Class<? extends Condition>> conditions = new HashMap<>();
     /**
      * Stores all event types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends QuestEvent>> events = new HashMap<String, Class<? extends QuestEvent>>();
+    private static HashMap<String, Class<? extends QuestEvent>> events = new HashMap<>();
     /**
      * Stores all objective types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends Objective>> objectives = new HashMap<String, Class<? extends Objective>>();
+    private static HashMap<String, Class<? extends Objective>> objectives = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -265,8 +265,8 @@ public final class BetonQuest extends JavaPlugin {
         // initialize compatibility with other plugins
         new Compatibility();
         
-        Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events"
-            + " and " + objectives.size() + " objectives loaded.");
+        Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size()
+                + " events" + " and " + objectives.size() + " objectives loaded.");
 
         // initialize PlayerConverter
         PlayerConverter.getType();
@@ -314,9 +314,8 @@ public final class BetonQuest extends JavaPlugin {
             Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT,
                     false);
             if (updater.getResult().equals(UpdateResult.SUCCESS)) {
-                Debug.broadcast("Found "
-                    + updater.getLatestName()
-                    + " update on DBO and downloaded it! Plugin will be automatically updated on next restart.");
+                Debug.broadcast("Found " + updater.getLatestName() + " update on DBO and "
+                    + "downloaded it! Plugin will be automatically updated on next restart.");
             }
         }
         // done
@@ -481,8 +480,8 @@ public final class BetonQuest extends JavaPlugin {
         }
         // and check if it's met or not
         boolean isMet = (instance.isMet() && !inverted) || (!instance.isMet() && inverted);
-        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition " + conditionID + " for player "
-            + playerID);
+        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition "
+                + conditionID + " for player " + playerID);
         return isMet;
     }
 
