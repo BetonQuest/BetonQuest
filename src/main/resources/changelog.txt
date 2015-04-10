@@ -1,3 +1,8 @@
+﻿v1.6.2
+Fixed errors on data loading when MySQL is being used.
+Changes messages system to use simple file as default. If you want to use advanced translation
+just rename "advanced-messages.yml" to "messages.yml".
+
 v1.6.1
 Fixed errors on updating journals when using MySQL.
 
@@ -43,7 +48,7 @@ Changes:
     * Added and changed a lot of subcommands in /q command:
       - event and condition can be run for every online player
       - tag, point, objective and (new) journal can edit every (even offline) player
-      - config (new) can set configuration files from command line 
+      - config (new) can set configuration files from command line
       - backup (new) backups the whole configuration and database
     * Folder event now runs these events even after the player logs out: command, tag, objective,
       delete, point, setblock
@@ -91,7 +96,7 @@ Changes:
     * Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"
     * Event command now accepts optional <name> argument at the end; this will fire event for <name> player.
       eg. "/q event wood_reward Steve"
-    
+
     * Journal title and lore can now use colors (&4 etc.) and journal is colorful; options in config.yml
     * Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * Added aliases for /j command: bj, journal, bjournal, betonjournal

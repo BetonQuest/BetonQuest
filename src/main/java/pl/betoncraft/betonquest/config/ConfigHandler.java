@@ -1,24 +1,27 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2015  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.config;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.HashMap;
 
@@ -26,7 +29,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Debug;
 
 /**
- * 
+ *
  * @author Co0sh
  */
 public class ConfigHandler {
@@ -108,24 +111,28 @@ public class ConfigHandler {
             conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
                     new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
         }
-        // load messages safely
-        try {
-            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
-                    .getDataFolder(), "messages.yml"), "messages.yml");
-            messages.getConfig().getString("global.plugin_prefix");
-        } catch (Exception e) {
-            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
-                    .getDataFolder(), "messages.yml"), "simple-messages.yml");
+        // load messages
+        messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest
+                .getInstance().getDataFolder(), "messages.yml"), "messages.yml");
+        File advanced = new File(BetonQuest.getInstance().getDataFolder(), "advanced-messages.yml");
+        if (!advanced.exists()) {
+            try {
+                advanced.createNewFile();
+                // this.plugin.saveResource(fileName, false);
+                InputStream in = BetonQuest.getInstance().getResource("advanced-messages.yml");
+                OutputStream out = new FileOutputStream(advanced);
+                byte[] buffer = new byte[1024];
+                int len = in.read(buffer);
+                while (len != -1) {
+                    out.write(buffer, 0, len);
+                    len = in.read(buffer);
+                }
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        String simple = BetonQuest.getInstance().getConfig().getString("simple");
-        if (simple != null && simple.equals("true")) {
-            new File(BetonQuest.getInstance().getDataFolder(), "messages.yml").delete();
-            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
-                    .getDataFolder(), "messages.yml"), "simple-messages.yml");
-            BetonQuest.getInstance().getConfig().set("simple", null);
-            BetonQuest.getInstance().saveConfig();
-            Debug.broadcast("Using simple language files!");
-        }
+
         // put config accesors in fields
         conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest
                 .getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
@@ -156,7 +163,7 @@ public class ConfigHandler {
      * example getting color for day in journal date would be
      * "config.journal_colors.date.day". Everything should be handled as a
      * string for simplicity's sake.
-     * 
+     *
      * @param rawPath
      *            path for the variable
      * @return the String object representing requested variable
@@ -238,7 +245,7 @@ public class ConfigHandler {
                 return null;
         }
     }
-    
+
     public static boolean setString(String path, String value) {
         if (path == null) return false;
         String[] parts = path.split("\\.");
@@ -341,7 +348,7 @@ public class ConfigHandler {
      * getConversations} method for that. Conversations accessor included in
      * this map is just a deprecated old conversations file. The same situation
      * is with unused objectives accessor.
-     * 
+     *
      * @return HashMap containing all config accessors
      */
     public static HashMap<String, ConfigAccessor> getConfigs() {
@@ -359,7 +366,7 @@ public class ConfigHandler {
 
     /**
      * Retrieves map containing all conversation accessors.
-     * 
+     *
      * @return HashMap containing conversation accessors
      */
     public static HashMap<String, ConfigAccessor> getConversations() {

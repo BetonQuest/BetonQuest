@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2015  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,10 +32,11 @@ import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.PlayerConverter.PlayerConversionType;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
- * 
+ *
  * @author Co0sh
  */
 public class JoinQuitListener implements Listener {
@@ -78,6 +79,13 @@ public class JoinQuitListener implements Listener {
         }
         // start objectives when the data is loaded
         DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+		    // if the data still isn't loaded, force loading (this happens sometimes when
+		    // using MySQL, probably because of AsyncPlayerPreLoginEvent not being fired)
+		    if (dbHandler == null) {
+		        dbHandler = new DatabaseHandler(playerID);
+		   	    BetonQuest.getInstance().putDBHandler(playerID, dbHandler);
+            Debug.error("Failed to load data for player " + playerID + ", forcing.");
+		    }
         dbHandler.startObjectives();
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")
