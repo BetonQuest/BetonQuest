@@ -1,4 +1,13 @@
-﻿v1.6.2
+﻿1.7 (dev)
+Notes:
+  - This is a development version, use it with caution.
+  - You should report all bugs on <https://github.com/Co0sh/BetonQuest/issues>
+Fixes:
+    * Finally fixed issues with special characters on some servers
+Additions:
+    * Added the "random" parameter in "folder" event - choose randomly X events to fire 
+
+v1.6.2
 Fixed errors on data loading when MySQL is being used.
 Changes messages system to use simple file as default. If you want to use advanced translation
 just rename "advanced-messages.yml" to "messages.yml".
