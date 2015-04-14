@@ -36,6 +36,11 @@ public class ConversationEvent extends QuestEvent {
      */
     public ConversationEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // check if playerID isn't null, this event cannot be static
+        if (playerID == null) {
+            Debug.error("This event cannot be static: " + instructions);
+            return;
+        }
         // the event cannot be fired for offline players
         if (PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player " + playerID + " is offline, cannot fire event");

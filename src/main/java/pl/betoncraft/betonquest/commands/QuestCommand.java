@@ -41,6 +41,7 @@ import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.core.Pointer;
+import pl.betoncraft.betonquest.core.StaticEvents;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -799,10 +800,12 @@ public class QuestCommand implements CommandExecutor {
         ConfigHandler.reload();
         // update language
         lang = ConfigHandler.getString("config.language");
+        // load new static events
+        new StaticEvents();
         // stop current global locations listener
+        // and start new one with reloaded configs
         Debug.info("Restarting global locations");
         GlobalLocations.stop();
-        // and start new one with reloaded configs
         new GlobalLocations().runTaskTimer(instance, 0, 20);
         // update journals for every online player
         for (Player player : Bukkit.getOnlinePlayers()) {

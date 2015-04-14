@@ -30,6 +30,11 @@ public class DamageEvent extends QuestEvent {
 
     public DamageEvent(String playerID, String instructions) {
         super(playerID, instructions);
+        // check if playerID isn't null, this event cannot be static
+        if (playerID == null) {
+            Debug.error("This event cannot be static: " + instructions);
+            return;
+        }
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             return;

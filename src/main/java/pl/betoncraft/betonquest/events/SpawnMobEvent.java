@@ -44,7 +44,7 @@ public class SpawnMobEvent extends QuestEvent {
     public SpawnMobEvent(String playerID, String instructions) {
         super(playerID, instructions);
         // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
+        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player " + playerID + " is offline, cannot fire event");
             return;
         }

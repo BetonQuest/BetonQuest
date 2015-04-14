@@ -94,7 +94,11 @@ public class FolderEvent extends QuestEvent {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Debug.info("Running folder events for player " + player);
+                if (player == null) {
+                    Debug.info("Running static folder event!");
+                } else {
+                    Debug.info("Running folder events for player " + player);
+                }
                 for (String event : finalEvents) {
                     BetonQuest.event(player, event);
                 }

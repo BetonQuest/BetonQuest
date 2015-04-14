@@ -58,6 +58,7 @@ import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
 import pl.betoncraft.betonquest.core.QuestItemHandler;
+import pl.betoncraft.betonquest.core.StaticEvents;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -192,6 +193,9 @@ public final class BetonQuest extends JavaPlugin {
 
         // instantiate journal handler
         new QuestItemHandler();
+        
+        // initialize static events
+        new StaticEvents();
 
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
@@ -490,8 +494,8 @@ public final class BetonQuest extends JavaPlugin {
      */
     public static void event(String playerID, String eventID) {
         // null check
-        if (playerID == null || eventID == null) {
-            Debug.info("Null arguments for the event!");
+        if (eventID == null) {
+            Debug.info("Null argument for the event!");
             return;
         }
         // get instruction string
@@ -506,6 +510,10 @@ public final class BetonQuest extends JavaPlugin {
         String[] parts = eventInstruction.split(" ");
         for (String part : parts) {
             if (part.startsWith("event_conditions:")) {
+                if (playerID == null) {
+                    Debug.error("Cannot check conditions in static event: " + eventID);
+                    return;
+                }
                 String[] conditions = part.substring(17).split(",");
                 for (String condition : conditions) {
                     if (!condition(playerID, condition)) {
@@ -530,7 +538,11 @@ public final class BetonQuest extends JavaPlugin {
             // fire an event
             event.getConstructor(String.class, String.class)
                     .newInstance(playerID, eventInstruction);
-            Debug.info("Event " + eventID + " fired for " + playerID);
+            if (playerID == null) {
+                Debug.info("Static event " + eventID + " fired!");
+            } else {
+                Debug.info("Event " + eventID + " fired for " + playerID);
+            }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             e.printStackTrace();

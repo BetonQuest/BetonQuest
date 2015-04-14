@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -38,8 +39,19 @@ public class CommandEvent extends QuestEvent {
         super(playerID, instructions);
         String commands = instructions.substring(instructions.indexOf(" ") + 1);
         for (String command : commands.split("\\|")) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-                    command.replaceAll("%player%", PlayerConverter.getName(playerID)));
+            if (playerID == null) {
+                if (command.contains("%player%")) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+                                command.replaceAll("%player%", player.getName()));
+                    }
+                } else {
+                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                }
+            } else {
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+                        command.replaceAll("%player%", PlayerConverter.getName(playerID)));
+            }
         }
     }
 }

@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,15 +39,22 @@ public class MessageEvent extends QuestEvent {
     public MessageEvent(String playerID, String instructions) {
         super(playerID, instructions);
         // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
+        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player " + playerID + " is offline, cannot fire event");
             return;
         }
         String message = super.instructions
                 .substring(super.instructions.split(" ")[0].length() + 1);
-        PlayerConverter.getPlayer(playerID).sendMessage(
-                message.replaceAll("&", "§").replaceAll("%player%",
-                        PlayerConverter.getPlayer(playerID).getName()));
+        if (playerID == null) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(message.replaceAll("&", "§").replaceAll("%player%",
+                        player.getName()));
+            }
+        } else {
+            PlayerConverter.getPlayer(playerID).sendMessage(
+                    message.replaceAll("&", "§").replaceAll("%player%",
+                    PlayerConverter.getPlayer(playerID).getName()));
+        }
     }
 
 }
