@@ -55,37 +55,29 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
-        // if MySQL is used then the data needs to be loaded asynchronously
-        if (instance.isMySQLUsed()) {
-            // data loading should be handled differently if UUID are used
-            // rather than
-            // names
-            if (PlayerConverter.getType() == PlayerConversionType.UUID) {
-                String playerID = event.getUniqueId().toString();
-                BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
-            } else if (PlayerConverter.getType() == PlayerConversionType.NAME) {
-                String playerID = event.getName();
-                BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
-            }
+        // data loading should be handled differently if UUID are used
+        // rather than names
+        if (PlayerConverter.getType() == PlayerConversionType.UUID) {
+            String playerID = event.getUniqueId().toString();
+            BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
+        } else if (PlayerConverter.getType() == PlayerConversionType.NAME) {
+            String playerID = event.getName();
+            BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
         }
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
-        // load data if SQLite is used
-        if (!instance.isMySQLUsed()) {
-            BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
-        }
         // start objectives when the data is loaded
         DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-		    // if the data still isn't loaded, force loading (this happens sometimes when
-		    // using MySQL, probably because of AsyncPlayerPreLoginEvent not being fired)
-		    if (dbHandler == null) {
-		        dbHandler = new DatabaseHandler(playerID);
-		   	    BetonQuest.getInstance().putDBHandler(playerID, dbHandler);
+        // if the data still isn't loaded, force loading (this happens sometimes
+        // probably because AsyncPlayerPreLoginEvent does not fire)
+        if (dbHandler == null) {
+            dbHandler = new DatabaseHandler(playerID);
+            BetonQuest.getInstance().putDBHandler(playerID, dbHandler);
             Debug.error("Failed to load data for player " + playerID + ", forcing.");
-		    }
+        }
         dbHandler.startObjectives();
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")
@@ -104,18 +96,13 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        // if MySQL is used then saving should be done asynchronously
-        if (instance.isMySQLUsed()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    BetonQuest.getInstance().getDBHandler(playerID).saveData();
-                    BetonQuest.getInstance().removeDBHandler(playerID);
-                }
-            }.runTaskAsynchronously(instance);
-        } else {
-            BetonQuest.getInstance().getDBHandler(playerID).saveData();
-            BetonQuest.getInstance().removeDBHandler(playerID);
-        }
+        // save in async thread
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                BetonQuest.getInstance().getDBHandler(playerID).saveData();
+                BetonQuest.getInstance().removeDBHandler(playerID);
+            }
+        }.runTaskAsynchronously(instance);
     }
 }

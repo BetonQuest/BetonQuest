@@ -45,9 +45,10 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.config.Zipper;
+import pl.betoncraft.betonquest.database.Connector.QueryType;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.Database.QueryType;
-import pl.betoncraft.betonquest.database.Database.UpdateType;
 
 /**
  * Various utilities.
@@ -101,11 +102,10 @@ public class Utils {
                     databaseBackupFile, databaseBackupFile.getName());
             FileConfiguration config = accessor.getConfig(); 
             // prepare the database and map
-            Database database = instance.getDB();
             HashMap<String, ResultSet> map = new HashMap<>();
             String[] tables = new String[]{"objectives", "tags", "points", "journals"};
             // open database connection
-            database.openConnection();
+            Connector database = new Connector();
             // load resultsets into the map
             for (String table : tables) {
                 Debug.info("Loading " + table);
@@ -140,7 +140,7 @@ public class Utils {
                 Debug.info("  Saved " + (counter + 1) + " rows");
             }
             // close connection
-            database.closeConnection();
+            database.close();
             // save the config at the end
             accessor.saveConfig();
             return true;
@@ -223,19 +223,17 @@ public class Utils {
             // in a different way...)
             database.createTables(instance.isMySQLUsed());
             // drop all tables
-            database.openConnection();
-            database.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
-            database.updateSQL(UpdateType.DROP_TAGS, new String[]{});
-            database.updateSQL(UpdateType.DROP_POINTS, new String[]{});
-            database.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
-            database.closeConnection();
+            Connector con = new Connector();
+            con.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
+            con.updateSQL(UpdateType.DROP_TAGS, new String[]{});
+            con.updateSQL(UpdateType.DROP_POINTS, new String[]{});
+            con.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
             // create new tables
             database.createTables(instance.isMySQLUsed());
             // load objectives
-            database.openConnection();
             ConfigurationSection objectives = config.getConfigurationSection("objectives");
             if (objectives != null) for (String key : objectives.getKeys(false)) {
-                database.updateSQL(UpdateType.INSERT_OBJECTIVE, new String[]{
+                con.updateSQL(UpdateType.INSERT_OBJECTIVE, new String[]{
                     objectives.getString(key + ".id"),
                     objectives.getString(key + ".playerID"),
                     objectives.getString(key + ".instructions"),
@@ -244,7 +242,7 @@ public class Utils {
             // load tags
             ConfigurationSection tags = config.getConfigurationSection("tags");
             if (tags != null) for (String key : tags.getKeys(false)) {
-                database.updateSQL(UpdateType.INSERT_TAG, new String[]{
+                con.updateSQL(UpdateType.INSERT_TAG, new String[]{
                     tags.getString(key + ".id"),
                     tags.getString(key + ".playerID"),
                     tags.getString(key + ".tag"),
@@ -253,7 +251,7 @@ public class Utils {
             // load points
             ConfigurationSection points = config.getConfigurationSection("points");
             if (points != null) for (String key : points.getKeys(false)) {
-                database.updateSQL(UpdateType.INSERT_POINT, new String[]{
+                con.updateSQL(UpdateType.INSERT_POINT, new String[]{
                     points.getString(key + ".id"),
                     points.getString(key + ".playerID"),
                     points.getString(key + ".category"),
@@ -263,7 +261,7 @@ public class Utils {
             // load journals
             ConfigurationSection journals = config.getConfigurationSection("journals");
             if (journals != null) for (String key : journals.getKeys(false)) {
-                database.updateSQL(UpdateType.INSERT_JOURNAL, new String[]{
+                con.updateSQL(UpdateType.INSERT_JOURNAL, new String[]{
                     journals.getString(key + ".id"),
                     journals.getString(key + ".playerID"),
                     journals.getString(key + ".pointer"),
@@ -272,14 +270,14 @@ public class Utils {
             }
             ConfigurationSection backpack = config.getConfigurationSection("backpack");
             if (backpack != null) for (String key : backpack.getKeys(false)) {
-                database.updateSQL(UpdateType.INSERT_BACKPACK, new String[]{
+                con.updateSQL(UpdateType.INSERT_BACKPACK, new String[]{
                     backpack.getString(key + ".id"),
                     backpack.getString(key + ".playerID"),
                     backpack.getString(key + ".instruction"),
                     backpack.getString(key + ".amount"),
                 });
             }
-            database.closeConnection();
+            con.close();
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {

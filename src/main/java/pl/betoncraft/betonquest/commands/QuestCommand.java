@@ -61,11 +61,6 @@ public class QuestCommand implements CommandExecutor {
      * Keeps the pointer to BetonQuest's instance.
      */
     private BetonQuest instance = BetonQuest.getInstance();
-    /**
-     * Tells if MySQL is being used (if database calls need to be done in an
-     * async thread.
-     */
-    private boolean isMySQLUsed = instance.isMySQLUsed();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
@@ -109,93 +104,65 @@ public class QuestCommand implements CommandExecutor {
                 case "objectives":
                 case "objective":
                 case "o":
-                    // objectives may have to be read from database, so run them
-                    // async in
-                    // case of MySQL usage
-                    if (isMySQLUsed) {
-                        Debug.info("MySQL connection may be required, continuing in async thread");
-                        final CommandSender finalSender = sender;
-                        final String[] finalArgs = args;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                handleObjectives(finalSender, finalArgs);
-                            }
-                        }.runTask(instance);
-                    } else {
-                        handleObjectives(sender, args);
-                    }
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender1 = sender;
+                    final String[] finalArgs1 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            handleObjectives(finalSender1, finalArgs1);
+                        }
+                    }.runTask(instance);
                     break;
                 case "tags":
                 case "tag":
                 case "t":
-                    // tags also may have to be read from database
-                    if (isMySQLUsed) {
-                        Debug.info("MySQL connection may be required, continuing in async thread");
-                        final CommandSender finalSender = sender;
-                        final String[] finalArgs = args;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                handleTags(finalSender, finalArgs);
-                            }
-                        }.runTask(instance);
-                    } else {
-                        handleTags(sender, args);
-                    }
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender2 = sender;
+                    final String[] finalArgs2 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            handleTags(finalSender2, finalArgs2);
+                        }
+                    }.runTask(instance);
                     break;
                 case "points":
                 case "point":
                 case "p":
-                    // the same situation is with points
-                    if (isMySQLUsed) {
-                        Debug.info("MySQL connection may be required, continuing in async thread");
-                        final CommandSender finalSender = sender;
-                        final String[] finalArgs = args;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                handlePoints(finalSender, finalArgs);
-                            }
-                        }.runTask(instance);
-                    } else {
-                        handlePoints(sender, args);
-                    }
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender3 = sender;
+                    final String[] finalArgs3 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            handlePoints(finalSender3, finalArgs3);
+                        }
+                    }.runTask(instance);
                     break;
                 case "journals":
                 case "journal":
                 case "j":
-                    // and journal entries
-                    if (isMySQLUsed) {
-                        Debug.info("MySQL connection may be required, continuing in async thread");
-                        final CommandSender finalSender = sender;
-                        final String[] finalArgs = args;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                handleJournals(finalSender, finalArgs);
-                            }
-                        }.runTask(instance);
-                    } else {
-                        handleJournals(sender, args);
-                    }
+                    Debug.info("MySQL connection may be required, continuing in async thread");
+                    final CommandSender finalSender4 = sender;
+                    final String[] finalArgs4 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            handleJournals(finalSender4, finalArgs4);
+                        }
+                    }.runTask(instance);
                     break;
                 case "purge":
-                    // purging an offline player also may require database
-                    // connection
-                    if (isMySQLUsed) {
-                        Debug.info("MySQL connection may be required, continuing in async thread");
-                        final CommandSender finalSender = sender;
-                        final String[] finalArgs = args;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                purgePlayer(finalSender, finalArgs);
-                            }
-                        }.runTask(instance);
-                    } else {
-                        purgePlayer(sender, args);
-                    }
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender5 = sender;
+                    final String[] finalArgs5 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            purgePlayer(finalSender5, finalArgs5);
+                        }
+                    }.runTask(instance);
                     break;
                 case "reload":
                     // just reloading

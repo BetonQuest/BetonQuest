@@ -60,6 +60,7 @@ public class SQLite extends Database {
                 plugin.getLogger().log(Level.SEVERE, "Unable to create database!");
             }
         }
+        Connection connection = null;
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:"

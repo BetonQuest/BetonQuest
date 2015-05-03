@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
@@ -34,8 +33,8 @@ import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.database.Database.QueryType;
-import pl.betoncraft.betonquest.database.Database.UpdateType;
+import pl.betoncraft.betonquest.database.Connector.QueryType;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -48,7 +47,6 @@ import pl.betoncraft.betonquest.utils.Utils;
 public class DatabaseHandler {
 
     private String playerID;
-    private Database database = BetonQuest.getInstance().getDB();
 
     /**
      * Stores player's tags.
@@ -98,7 +96,7 @@ public class DatabaseHandler {
     public void loadAllPlayerData() {
         try {
             // open connection to the database
-            database.openConnection();
+            Connector database = new Connector();
 
             // load objectives
             ResultSet res1 = database.querySQL(QueryType.SELECT_OBJECTIVES,
@@ -137,8 +135,7 @@ public class DatabaseHandler {
             }
 
             // everything loaded, close the connection
-            if (!BetonQuest.getInstance().isMySQLUsed())
-                database.closeConnection();
+            database.close();
 
             // log data to debugger
             if (Debug.debugging()) {
@@ -201,7 +198,7 @@ public class DatabaseHandler {
      * ends all objectives.
      */
     public void saveData() {
-        database.openConnection();
+        Connector database = new Connector();
         // delete old data
         database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
@@ -233,7 +230,7 @@ public class DatabaseHandler {
             String amount = String.valueOf(itemStack.getAmount());
             database.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
         }
-        database.closeConnection();
+        database.close();
         // log debug message about saving
         Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
@@ -297,27 +294,13 @@ public class DatabaseHandler {
         journal.clear();
         backpack.clear();
         // clear the database
-        if (BetonQuest.getInstance().isMySQLUsed()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    database.openConnection();
-                    database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-                    database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-                    database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-                    database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-                    database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-                }
-            }.runTask(BetonQuest.getInstance());
-        } else {
-            database.openConnection();
-            database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-            database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-            database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-            database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-            database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-            database.closeConnection();
-        }
+        Connector database = new Connector();
+        database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+        database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
+        database.close();
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
             journal.updateJournal();
@@ -326,7 +309,6 @@ public class DatabaseHandler {
 
     /**
      * Checks if the player has specified tag.
-     * 
      * @param tag
      *            tag to check
      * @return true if the player has this tag

@@ -43,9 +43,10 @@ import org.bukkit.enchantments.Enchantment;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.database.Connector;
+import pl.betoncraft.betonquest.database.Connector.QueryType;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.Database.QueryType;
-import pl.betoncraft.betonquest.database.Database.UpdateType;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -229,7 +230,7 @@ public class ConfigUpdater {
                 connection.prepareStatement("DROP TABLE " + prefix + "tags_old").executeUpdate();
                 connection.prepareStatement("COMMIT").executeUpdate();
             }
-            database.closeConnection();
+            database.closeConnection(connection);
             Debug.broadcast("Updated database format to better one.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1092,8 +1093,9 @@ public class ConfigUpdater {
         // loop all tables
         HashMap<String, String> list = new HashMap<>();
         String[] tables = new String[] { "OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK" };
+        Connector con = new Connector();
         for (String table : tables) {
-            ResultSet res = instance.getDB().querySQL(QueryType.valueOf("SELECT_PLAYERS_" + table),
+            ResultSet res = con.querySQL(QueryType.valueOf("SELECT_PLAYERS_" + table),
                     new String[] {});
             try {
                 while (res.next()) {
@@ -1111,11 +1113,11 @@ public class ConfigUpdater {
         // convert all player names in all tables
         for (String table : tables) {
             for (String playerID : list.keySet()) {
-                instance.getDB().updateSQL(UpdateType.valueOf("UPDATE_PLAYERS_" + table),
+                con.updateSQL(UpdateType.valueOf("UPDATE_PLAYERS_" + table),
                         new String[] { list.get(playerID), playerID });
             }
         }
-        instance.getDB().closeConnection();
+        con.close();
         Debug.broadcast("Names conversion finished!");
     }
 

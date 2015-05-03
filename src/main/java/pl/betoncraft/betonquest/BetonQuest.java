@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -158,10 +159,11 @@ public final class BetonQuest extends JavaPlugin {
                 "mysql.user"), getConfig().getString("mysql.pass"));
 
         // try to connect to MySQL
-        if (database.openConnection() != null) {
+        Connection con = database.openConnection();
+        if (con != null) {
             Debug.broadcast("Using MySQL for storing data!");
             isMySQLUsed = true;
-            database.closeConnection();
+            database.closeConnection(con);
             // if it fails use SQLite
         } else {
             this.database = new SQLite(this, "database.db");
