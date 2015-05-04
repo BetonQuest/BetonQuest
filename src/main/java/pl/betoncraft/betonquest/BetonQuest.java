@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
+import pl.betoncraft.betonquest.commands.TellrawCommand;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
@@ -202,8 +203,9 @@ public final class BetonQuest extends JavaPlugin {
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
 
-        getCommand("q").setExecutor(new QuestCommand());
-        getCommand("j").setExecutor(new JournalCommand());
+        new QuestCommand();
+        new JournalCommand();
+        new TellrawCommand();
 
         // register conditions
         registerConditions("health", HealthCondition.class);

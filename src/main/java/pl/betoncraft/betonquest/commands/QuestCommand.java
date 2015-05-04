@@ -53,6 +53,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Co0sh
  */
 public class QuestCommand implements CommandExecutor {
+    
     /**
      * Language string.
      */
@@ -61,6 +62,13 @@ public class QuestCommand implements CommandExecutor {
      * Keeps the pointer to BetonQuest's instance.
      */
     private BetonQuest instance = BetonQuest.getInstance();
+    
+    /**
+     * Registers a new executor of the /q command
+     */
+    public QuestCommand() {
+        BetonQuest.getInstance().getCommand("q").setExecutor(this);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {

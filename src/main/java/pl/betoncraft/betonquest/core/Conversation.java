@@ -18,14 +18,10 @@
 package pl.betoncraft.betonquest.core;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,7 +43,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * 
  * @author Co0sh
  */
-public class Conversation implements Listener, CommandExecutor {
+public class Conversation implements Listener {
 
     /**
      * Contains a list of players in active conversation, described by their
@@ -162,7 +158,6 @@ public class Conversation implements Listener, CommandExecutor {
         // everything is ok, register conversation as listener and command and fire an event
         BetonQuest.getInstance().getServer().getPluginManager()
                 .registerEvents(this, BetonQuest.getInstance());
-        if (tellraw) BetonQuest.getInstance().getCommand("betonquestanswer").setExecutor(this);
         
         Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationStartEvent(player, this));
 
@@ -567,30 +562,13 @@ public class Conversation implements Listener, CommandExecutor {
     public static Conversation getConversation(String playerID) {
         return list.get(playerID);
     }
-
-    /* (non-Javadoc)
-     * @see org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
-     */
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("betonquestanswer")) {
-            if (args.length == 1 && sender instanceof Player && ((Player) sender).equals(player)) {
-                Set<Integer> set = hashes.keySet();
-                for (Integer integer : set) {
-                    if (hashes.get(integer).equals(args[0])) {
-                        Debug.info("Passing player answer " + integer);
-                        passPlayerAnswer(integer.toString());
-                        return true;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
-    }
     
     public enum ConversationHolder {
         BLOCK, CITIZENS, EVENT, OTHER
+    }
+    
+    public HashMap<Integer, String> getHashes() {
+        return hashes;
     }
 
 }

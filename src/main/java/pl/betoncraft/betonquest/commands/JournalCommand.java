@@ -22,6 +22,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.core.BackpackDisplay;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,6 +33,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Co0sh
  */
 public class JournalCommand implements CommandExecutor {
+    
+    /**
+     * Registers a new executor of the /j command
+     */
+    public JournalCommand() {
+        BetonQuest.getInstance().getCommand("j").setExecutor(this);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

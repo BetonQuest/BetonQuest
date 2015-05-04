@@ -29,11 +29,15 @@ import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Starts new conversations with NPCs
  * 
  * @author Co0sh
  */
 public class CitizensListener implements Listener {
 
+    /**
+     * Initializes the listener
+     */
     public CitizensListener() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }

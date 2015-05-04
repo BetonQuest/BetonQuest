@@ -24,8 +24,9 @@ import org.bukkit.Location;
 import pl.betoncraft.betonquest.core.Conversation;
 
 /**
+ * Represents a conversation with NPC
+ * 
  * @author Coosh
- *
  */
 public class CitizensConversation extends Conversation {
     
@@ -36,6 +37,13 @@ public class CitizensConversation extends Conversation {
         this.n = npc;
     }
     
+    /**
+     * This will return the NPC associated with this conversation only
+     * after the coversation is created (all player options are listed
+     * and ready to receive player input)
+     * 
+     * @return the NPC or null if it's too early
+     */
     public NPC getNPC() {
         return n;
     }
