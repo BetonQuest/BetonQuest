@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -806,19 +807,35 @@ public class QuestCommand implements CommandExecutor {
      */
     private void displayHelp(CommandSender sender, String alias) {
         Debug.info("Just displaying help");
+        // specify all commands
+        HashMap<String, String> cmds = new HashMap<>();
+        cmds.put("reload", "reload");
+        cmds.put("objectives", "objective <player> [list/add/del] [objective]");
+        cmds.put("tags", "tag <player> [list/add/del] [tag]");
+        cmds.put("points", "point <player> [list/add/del] [category] [amount]");
+        cmds.put("journal", "journal <player> [list/add/del] [entry] [date]");
+        cmds.put("condition", "condition <player> <condition>");
+        cmds.put("event", "event <player> <event>");
+        cmds.put("item", "item <name>");
+        cmds.put("config", "config <read/set/add> <path> [string]");
+        cmds.put("purge", "purge <player>");
+        if (!(sender instanceof Player)) cmds.put("backup", "backup");
+        // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
-        sender.sendMessage("§c/" + alias + " reload §b- " + getMessage("command_reload"));
-        sender.sendMessage("§c/" + alias + " objective <player> [list/add/del] [objective] §b- " + getMessage("command_objectives"));
-        sender.sendMessage("§c/" + alias + " tag <player> [list/add/del] [tag] §b- " + getMessage("command_tags"));
-        sender.sendMessage("§c/" + alias + " point <player> [list/add/del] [category] [amount] §b- " + getMessage("command_points"));
-        sender.sendMessage("§c/" + alias + " journal <player> [list/add/del] [entry] [date] §b- " + getMessage("command_journal"));
-        sender.sendMessage("§c/" + alias + " condition <player> <condition> §b- " + getMessage("command_condition"));
-        sender.sendMessage("§c/" + alias + " event <player> <event> §b- " + getMessage("command_event"));
-        sender.sendMessage("§c/" + alias + " item <name> §b- " + getMessage("command_item"));
-        sender.sendMessage("§c/" + alias + " config <read/set/add> <path> [string] §b- " + getMessage("command_config"));
-        sender.sendMessage("§c/" + alias + " purge <player> §b- " + getMessage("command_purge"));
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("§c/" + alias + " backup §b- " + getMessage("command_backup"));
+        if (ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true")
+            && sender instanceof Player) {
+            for (String command : cmds.keySet()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
+                        "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\""
+                        + "§c/" + alias + " " + cmds.get(command)
+                        + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\""
+                        + "§b" + getMessage("command_" + command) + "\"}}]}");
+            }
+        } else {
+            for (String command : cmds.keySet()) {
+                sender.sendMessage("§c/" + alias + " " + cmds.get(command));
+                sender.sendMessage("§b- " + getMessage("command_" + command));
+            }
         }
     }
 

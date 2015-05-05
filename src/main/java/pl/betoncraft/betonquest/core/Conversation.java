@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -491,6 +492,16 @@ public class Conversation implements Listener {
         }
         return;
     }
+    
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        // prevent damage to (or from) player while in conversation
+        if ((event.getEntity() instanceof Player && PlayerConverter.getID((Player) event
+                .getEntity()).equals(playerID)) || (event.getDamager() instanceof Player &&
+                PlayerConverter.getID((Player) event.getDamager()).equals(playerID)) ) {
+            event.setCancelled(true);
+        }
+    }
 
     /**
      * Moves the player back a few blocks in the conversation's center
@@ -520,6 +531,9 @@ public class Conversation implements Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
+        if (ConfigHandler.getString("config.notify_pullback").equalsIgnoreCase("true")) {
+            event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler.getString("config.language") + ".pullback").replaceAll("&", "§"));
+        }
     }
 
     @EventHandler

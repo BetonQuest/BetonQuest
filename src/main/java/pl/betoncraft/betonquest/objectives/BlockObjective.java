@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -27,6 +28,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -41,6 +43,7 @@ public class BlockObjective extends Objective implements Listener {
     private byte data = -1;
     private int neededAmount;
     private int currentAmount = 0;
+    private boolean notify = false;
 
     /**
      * Constructor method
@@ -66,6 +69,9 @@ public class BlockObjective extends Objective implements Listener {
             if (part.contains("events:")) {
                 events = part;
             }
+            if (part.equalsIgnoreCase("notify")) {
+                notify = true;
+            }
         }
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -79,6 +85,19 @@ public class BlockObjective extends Objective implements Listener {
             if (currentAmount == neededAmount) {
                 HandlerList.unregisterAll(this);
                 completeObjective();
+            } else if (notify) {
+                Player player = PlayerConverter.getPlayer(playerID);
+                if (currentAmount > neededAmount) {
+                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                            .getString("config.language") + ".blocks_to_break")
+                            .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
+                            .replaceAll("&", "§"));
+                } else {
+                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                            .getString("config.language") + ".blocks_to_place")
+                            .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
+                            .replaceAll("&", "§"));
+                }
             }
         }
     }
@@ -92,6 +111,19 @@ public class BlockObjective extends Objective implements Listener {
             if (currentAmount == neededAmount) {
                 HandlerList.unregisterAll(this);
                 completeObjective();
+            } else if (notify) {
+                Player player = PlayerConverter.getPlayer(playerID);
+                if (currentAmount > neededAmount) {
+                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                            .getString("config.language") + ".blocks_to_break")
+                            .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
+                            .replaceAll("&", "§"));
+                } else {
+                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                            .getString("config.language") + ".blocks_to_place")
+                            .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
+                            .replaceAll("&", "§"));
+                }
             }
         }
     }

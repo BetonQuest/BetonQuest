@@ -66,6 +66,14 @@ public class GiveEvent extends QuestEvent {
                 amount = Integer.parseInt(rawItem.split(":")[1]);
             }
             questItem = new QuestItem(ConfigHandler.getString("items." + itemName));
+            Player player = PlayerConverter.getPlayer(playerID);
+            if (parts.length > 2 && parts[2].equalsIgnoreCase("notify")) {
+                player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                        .getString("config.language") + ".items_given").replaceAll("%name%",
+                        (questItem.getName() != null) ? questItem.getName() : questItem
+                        .getMaterial().toString()).replaceAll("%amount%", String.valueOf(amount))
+                        .replaceAll("&", "§"));
+            }
             while (amount > 0) {
                 int stackSize;
                 if (amount > 64) {
@@ -74,7 +82,6 @@ public class GiveEvent extends QuestEvent {
                     stackSize = amount;
                 }
                 ItemStack item = questItem.generateItem(stackSize);
-                Player player = PlayerConverter.getPlayer(playerID);
                 HashMap<Integer, ItemStack> left = player
                         .getInventory().addItem(item);
                 for (Integer leftNumber : left.keySet()) {
@@ -88,5 +95,6 @@ public class GiveEvent extends QuestEvent {
                 amount = amount - stackSize;
             }
         }
+        
     }
 }

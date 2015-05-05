@@ -13,6 +13,7 @@ uuid: 'false'
 default_journal_slot: '-1'
 max_npc_distance: '5'
 tellraw: 'false'
+combat_delay: '10'
 journal_colors:
   date:
     day: '9'

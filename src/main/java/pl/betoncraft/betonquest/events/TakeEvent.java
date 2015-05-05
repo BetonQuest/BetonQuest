@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -66,8 +67,16 @@ public class TakeEvent extends QuestEvent {
                 amount = Integer.parseInt(rawItem.split(":")[1]);
             }
             questItem = new QuestItem(ConfigHandler.getString("items." + itemName));
-            PlayerConverter.getPlayer(playerID).getInventory().setContents(removeItems(
-                    PlayerConverter.getPlayer(playerID).getInventory().getContents()));
+            Player player = PlayerConverter.getPlayer(playerID);
+            if (parts.length > 2 && parts[2].equalsIgnoreCase("notify")) {
+                player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                        .getString("config.language") + ".items_taken").replaceAll("%name%",
+                        (questItem.getName() != null) ? questItem.getName() : questItem
+                        .getMaterial().toString()).replaceAll("%amount%", String.valueOf(amount))
+                        .replaceAll("&", "§"));
+            }
+            player.getInventory().setContents(removeItems(
+                    player.getInventory().getContents()));
             if (amount > 0) {
                 List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
                 ItemStack[] array = new ItemStack[]{};

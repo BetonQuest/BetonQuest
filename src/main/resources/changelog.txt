@@ -8,8 +8,17 @@ Fixes:
 Additions:
     * Added the "random" parameter in "folder" event - choose randomly X events to fire
     * Added "static events" mechanism for firing events at specified time of the day
+    * Optional message when the player is pulled back by stop option
+    * Optional message for take and give events
+    * Optional message when advancing in "block" and "mobkill" objectives
+    * New "empty" condition - amount of empty inventory slots
 Changes:
     * Citizens NPC will stop when talked to (at their current target)
+    * Quest blocks cannot be placed
+    * Conversations cannot be started while in combat
+    * Cannot fight while in combat
+    * Mobs can be spawned with a name (spawnmob event, "name:" argument)
+    * /q command is now more beautiful
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

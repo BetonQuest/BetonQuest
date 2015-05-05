@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.core.CombatTagger;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -46,6 +47,11 @@ public class CitizensListener implements Listener {
     public void onNPCClick(NPCRightClickEvent event) {
         String id = ConfigHandler.getString("npcs." + event.getNPC().getId());
         if (event.isCancelled() || id == null) {
+            return;
+        }
+        if (CombatTagger.isTagged(PlayerConverter.getID(event.getClicker()))) {
+            event.getClicker().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                    .getString("config.language") + ".busy").replaceAll("&", "§"));
             return;
         }
         new CitizensConversation(PlayerConverter.getID(event.getClicker()), id,

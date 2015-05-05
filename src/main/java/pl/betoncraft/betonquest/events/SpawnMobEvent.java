@@ -19,13 +19,16 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Spawns mobs at given location
  * 
  * @author Co0sh
  */
@@ -34,13 +37,8 @@ public class SpawnMobEvent extends QuestEvent {
     private Location loc;
     private EntityType type;
     private int amount;
+    private String name;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public SpawnMobEvent(String playerID, String instructions) {
         super(playerID, instructions);
         // the event cannot be fired for offline players
@@ -48,26 +46,21 @@ public class SpawnMobEvent extends QuestEvent {
             Debug.info("Player " + playerID + " is offline, cannot fire event");
             return;
         }
-        loc = decodeLocation(instructions.split(" ")[1]);
-        type = EntityType.valueOf(instructions.split(" ")[2]);
-        amount = Integer.parseInt(instructions.split(" ")[3]);
-        for (int i = 0; i < amount; i++) {
-            loc.getWorld().spawnEntity(loc, type);
-        }
-    }
-
-    /**
-     * @author Dzejkop
-     * @param locStr
-     * @return
-     */
-    private Location decodeLocation(String locStr) {
-
-        String[] coords = locStr.split(";");
-
-        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
+        String[] parts = instructions.split(" ");
+        String[] coords = parts[1].split(";");
+        loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
                 Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-
-        return loc;
+        type = EntityType.valueOf(parts[2]);
+        amount = Integer.parseInt(parts[3]);
+        if (parts.length == 5) {
+            name = parts[4].replaceAll("_", " ");
+        }
+        for (int i = 0; i < amount; i++) {
+            Entity entity = loc.getWorld().spawnEntity(loc, type);
+            if (entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                livingEntity.setCustomName(name);
+            }
+        }
     }
 }

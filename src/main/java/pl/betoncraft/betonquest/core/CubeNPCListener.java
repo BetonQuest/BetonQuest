@@ -60,10 +60,8 @@ public class CubeNPCListener implements Listener {
             // if the player doesn't have the required permission deny the
             // editing
             event.setCancelled(true);
-            event.getPlayer().sendMessage(
-                    ConfigHandler.getString(
-                            "messages." + ConfigHandler.getString("config.language")
-                                + ".no_permission").replaceAll("&", "§"));
+            event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                    .getString("config.language") + ".no_permission").replaceAll("&", "§"));
         }
     }
 
@@ -106,8 +104,14 @@ public class CubeNPCListener implements Listener {
         }
         // if the conversation ID was extracted from NPC then start the
         // conversation
-        if (conversationID != null)
+        if (conversationID != null) {
+            if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
+                event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
+                        .getString("config.language") + ".busy"));
+                return;
+            }
             new Conversation(PlayerConverter.getID(event.getPlayer()), conversationID, event
                     .getClickedBlock().getLocation().add(0.5, -1, 0.5));
+        }
     }
 }

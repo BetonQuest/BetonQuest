@@ -54,7 +54,6 @@ public class CitizensWalkingListener implements Listener {
                 public void run() {
                     CitizensConversation conv = (CitizensConversation) event.getConversation();
                     NPC npc = conv.getNPC();
-                    event.getPlayer().sendMessage("NPC " + npc.getFullName() + " was clicked!");
                     if (!npcs.containsKey(npc)) {
                         npcs.put(npc, new Integer(1));
                         npc.getNavigator().setPaused(true);

@@ -39,6 +39,7 @@ import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
+import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
@@ -56,6 +57,7 @@ import pl.betoncraft.betonquest.conditions.TimeCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
+import pl.betoncraft.betonquest.core.CombatTagger;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
@@ -199,6 +201,9 @@ public final class BetonQuest extends JavaPlugin {
         
         // initialize static events
         new StaticEvents();
+        
+        // initialize combat tagging
+        new CombatTagger();
 
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
@@ -228,6 +233,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("random", RandomCondition.class);
         registerConditions("journal", JournalCondition.class);
         registerConditions("testforblock", TestForBlockCondition.class);
+        registerConditions("empty", EmptySlotsCondition.class);
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);

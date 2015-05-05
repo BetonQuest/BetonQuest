@@ -26,6 +26,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -163,6 +164,17 @@ public class QuestItemHandler implements Listener {
         if (event.getRightClicked() instanceof ItemFrame
             && (Journal.isJournal(event.getPlayer().getItemInHand()) || Utils.isQuestItem(event
                     .getPlayer().getItemInHand()))) {
+            event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        // this prevents players from placing "quest item" blocks
+        if (Utils.isQuestItem(event.getItemInHand())) {
             event.setCancelled(true);
         }
     }

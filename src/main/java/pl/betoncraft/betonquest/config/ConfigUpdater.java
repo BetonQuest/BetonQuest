@@ -69,7 +69,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v9";
+    private final String destination = "v10";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -170,8 +170,16 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v9() {
+        config.set("combat_delay", "10");
+        config.set("notify_pullback", "false");
+        Debug.broadcast("Added combat delay and pullback notify options!");
+        config.set("version", "v10");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v8() {
-        Debug.broadcast("Everything in configuration has been updated for 1.6 version!");
         config.set("version", "v9");
         instance.saveConfig();
     }
