@@ -1,4 +1,4 @@
-version: 'v9'
+version: 'v10'
 mysql:
   host: ''
   port: ''
@@ -14,6 +14,7 @@ default_journal_slot: '-1'
 max_npc_distance: '5'
 tellraw: 'false'
 combat_delay: '10'
+notify_pullback: 'true'
 journal_colors:
   date:
     day: '9'
