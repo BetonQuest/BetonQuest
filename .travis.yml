@@ -2,4 +2,4 @@ language: java
 jdk:
 - openjdk7
 script: mvn package
-after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"plugin=@target/BetonQuest.jar\" http://betoncraft.pl/downloads/index.php"
+after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"plugin=@target/BetonQuest.jar\" http://betonquest.betoncraft.pl/index.php"

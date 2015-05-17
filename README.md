@@ -1,4 +1,4 @@
-![BetonQuest](http://i.imgur.com/Gy9ORlk.png)
+![BetonQuest](http://betonquest.betoncraft.pl/logo.png)
 
 BetonQuest
 ==========                                 
@@ -33,7 +33,7 @@ Download
 If you prefer already compiled builds head to the
 [DBO page](http://dev.bukkit.org/bukkit-plugins/betonquest/)
 or [Spigot page](http://www.spigotmc.org/resources/betonquest.2117/).
-Development builds can be found [here](http://betoncraft.pl/downloads).
+Development builds can be found [here](http://betonquest.betoncraft.pl).
 Use it with caution and report all bugs on 
 [Issues](https://github.com/Co0sh/BetonQuest/issues)!
 
