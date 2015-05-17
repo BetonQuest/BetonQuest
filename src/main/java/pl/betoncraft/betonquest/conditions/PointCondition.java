@@ -20,8 +20,11 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.core.Point;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
+ * Requires the player to have specified amount of points (or more)
+ * in specified category
  * 
  * @author Co0sh
  */
@@ -30,30 +33,30 @@ public class PointCondition extends Condition {
     private String category = null;
     private int count = 0;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public PointCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("category:")) {
-                category = part.substring(9);
-            }
-            if (part.contains("count:")) {
-                count = Integer.valueOf(part.substring(6));
-            }
+        if (parts.length < 3) {
+            Debug.error("Not enough arguments for a point condition in: " + instructions);
+            isOk = false;
+            return;
         }
-        if (category == null) {
-            category = "global";
+        category = parts[1];
+        try {
+            count = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse point amount in: " + instructions);
+            isOk = false;
+            return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         int points = 0;
         for (Point point : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
             if (point.getCategory().equalsIgnoreCase(category)) {

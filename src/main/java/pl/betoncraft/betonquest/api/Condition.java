@@ -37,6 +37,10 @@ abstract public class Condition {
      * Stores instruction string for the condition.
      */
     protected String instructions;
+    /**
+     * True if the condition was prepared correctly.
+     */
+    protected boolean isOk = true;
 
     /**
      * Creates new instance of the condition. The condition should parse

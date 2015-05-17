@@ -22,8 +22,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+/**
+ * Requires the player to have specific armor rating
+ * 
+ * @author Coosh
+ */
 public class ArmorRatingCondition extends Condition {
 
     private int rating = 0;
@@ -34,10 +40,18 @@ public class ArmorRatingCondition extends Condition {
 
         String[] parts = instructions.split(" ");
 
-        for (String part : parts) {
-            if (part.contains("rating:")) {
-                required = Integer.parseInt(part.split(":")[1]);
-            }
+        if (parts.length < 2) {
+            Debug.error("Armor rating not defined in rating condition: " + instructions);
+            isOk = false;
+            return;
+        }
+        
+        try {
+            required = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse rating amount in: " + instructions);
+            isOk = false;
+            return;
         }
 
         PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
@@ -92,6 +106,10 @@ public class ArmorRatingCondition extends Condition {
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (rating >= required) {
             return true;
         }

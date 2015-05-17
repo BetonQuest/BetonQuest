@@ -22,36 +22,43 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Having item in inventory condition, instrucion string:
- * "hand type:DIAMOND_SWORD enchants:DAMAGE_ALL:3,KNOCKBACK:1 name:Siekacz"
+ * Holding item in hand condition
  * 
  * @author Co0sh
  */
 public class HandCondition extends Condition {
 
     private QuestItem questItem;
+    private String itemName;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public HandCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("item:")) {
-                questItem = new QuestItem(ConfigHandler.getString("items." + part.substring(5)));
-            }
+        if (parts.length < 2) {
+            Debug.error("Item name not defined in hand condition: " + instructions);
+            isOk = false;
+            return;
         }
+        itemName = parts[1];
+        String itemInstruction = ConfigHandler.getString("items." + itemName);
+        if (itemInstruction == null) {
+            Debug.error("Item not defined: " + itemName);
+            isOk = false;
+            return;
+        }
+        questItem = new QuestItem(itemInstruction);
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
         if (questItem.equalsI(item)) {
             return true;

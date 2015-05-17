@@ -18,8 +18,14 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+/**
+ * Requires the player to have specified level of experience (or more)
+ * 
+ * @author Coosh
+ */
 public class ExperienceCondition extends Condition {
 
     private int experience;
@@ -27,15 +33,26 @@ public class ExperienceCondition extends Condition {
     public ExperienceCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("exp:")) {
-                experience = Integer.valueOf(part.substring(4));
-            }
+        if (parts.length < 2) {
+            Debug.error("Experience levek not defined in experience condition: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            experience = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse experience level: " + instructions);
+            isOk = false;
+            return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (PlayerConverter.getPlayer(playerID).getLevel() > experience) {
             return true;
         }

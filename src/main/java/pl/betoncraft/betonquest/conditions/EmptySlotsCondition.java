@@ -35,10 +35,18 @@ public class EmptySlotsCondition extends Condition {
 
     public EmptySlotsCondition(String playerID, String instructions) {
         super(playerID, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Empty space amount not defined in empty condition: " + instructions);
+            isOk = false;
+            return;
+        }
         try {
-            needed = Integer.parseInt(instructions.split(" ")[1]);
+            needed = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
             Debug.error("Cannot parse an integer in: " + instructions);
+            isOk = false;
+            return;
         }
         for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
             if (item == null) empty++;

@@ -19,8 +19,10 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
+ * All of specified conditions have to be true
  * 
  * @author Co0sh
  */
@@ -28,24 +30,24 @@ public class ConjunctionCondition extends Condition {
 
     private String[] conditions;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public ConjunctionCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("conditions:")) {
-                conditions = part.substring(11).split(",");
-            }
+        if (parts.length < 2) {
+            Debug.error("Conditions not defined in: " + instructions);
+            isOk = false;
+            return;
         }
+        conditions = parts[1].split(",");
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
+        
         for (String condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;

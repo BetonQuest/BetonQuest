@@ -19,6 +19,7 @@ Changes:
     * Cannot fight while in combat
     * Mobs can be spawned with a name (spawnmob event, "name:" argument)
     * /q command is now more beautiful
+    * Removed unnecessary argument prefixes from conditions and events
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

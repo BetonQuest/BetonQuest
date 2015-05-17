@@ -27,14 +27,6 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class SneakCondition extends Condition {
 
-    /**
-     * Returns true if the player is sneaking
-     * 
-     * @param String
-     *            playerID - id of the player
-     * @param String
-     *            instructions - instruction string
-     */
     public SneakCondition(String playerID, String instructions) {
         super(playerID, instructions);
     }

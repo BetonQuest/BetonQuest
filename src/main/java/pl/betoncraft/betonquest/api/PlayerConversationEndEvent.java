@@ -15,34 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.core;
+package pl.betoncraft.betonquest.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
+import pl.betoncraft.betonquest.core.Conversation;
+
 /**
- * Fires when player ends a conversation with an NPC
+ * Fires when a player starts a conversation with an NPC
  * 
  * @author Coosh
  */
-public class PlayerConversationStartEvent extends PlayerEvent {
+public class PlayerConversationEndEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
     private Conversation conversation;
 
     /**
-     * Creates new conversation end event
+     * Creates new conversation start event
      * 
-     * @param who
+     * @param who player
+     * @param conversation conversation which has been started
      */
-    public PlayerConversationStartEvent(Player who, Conversation conversation) {
+    public PlayerConversationEndEvent(Player who, Conversation conversation) {
         super(who);
         this.conversation = conversation;
     }
-
+    
     /**
-     * @return the conversation which has been ended
+     * @return the conversation which has been started
      */
     public Conversation getConversation() {
         return conversation;

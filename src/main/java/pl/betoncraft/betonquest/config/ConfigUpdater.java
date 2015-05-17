@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,11 +52,21 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Updates configuration files to newest version.
+ * Updates configuration files to the newest version.
  * 
- * @author co0sh
+ * @author Co0sh
  */
 public class ConfigUpdater {
+    
+    /**
+     * Error which should be displayed to the player when 
+     */
+    private final String ERROR = "There was an error during updating process! Please "
+            + "downgrade to the previous working version of the plugin and restore your "
+            + "configuration from the backup. Don't forget to send this error to the developer"
+            + ", so he can fix it! Sorry for inconvenience, here's the link:"
+            + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
+            + "<http://i.imgur.com/iR4UMH5.png>";
 
     /**
      * BetonQuest's instance
@@ -69,7 +80,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v10";
+    private final String destination = "v11";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -170,6 +181,401 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v10() {
+        try {
+            Debug.info("Updating instruction strings");
+            Debug.info("  Updating conditions");
+            ConfigAccessor conditions = ConfigHandler.getConfigs().get("conditions");
+            conditions:
+            for (String key : conditions.getConfig().getKeys(false)) {
+                Debug.info("    Processing " + key + " condition");
+                String instruction = conditions.getConfig().getString(key).trim();
+                String[] parts = instruction.split(" ");
+                String type = parts[0].toLowerCase();
+                ArrayList<String> newParts = new ArrayList<>();
+                newParts.add(type);
+                switch (type) {
+                    case "hand":
+                        Debug.info("      Found hand type");
+                        String item = null;
+                        for (String part : parts) {
+                            if (part.startsWith("item:")) {
+                                item = part.substring(5);
+                            }
+                        }
+                        if (item != null) {
+                            newParts.add(item);
+                        } else {
+                            Debug.info("      There is no item defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "or":
+                    case "and":
+                        Debug.info("      Found or/and type");
+                        String orAndConditions = null;
+                        for (String part : parts) {
+                            if (part.startsWith("conditions:")) {
+                                orAndConditions = part.substring(11);
+                            }
+                        }
+                        if (orAndConditions != null) {
+                            newParts.add(orAndConditions);
+                        } else {
+                            Debug.info("      There are no conditions defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "location":
+                        Debug.info("      Found location type");
+                        String location = null;
+                        for (String part : parts) {
+                            if (part.startsWith("loc:")) {
+                                location = part.substring(4);
+                            }
+                        }
+                        if (location != null) {
+                            newParts.add(location);
+                        } else {
+                            Debug.info("      There is no location defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "health":
+                        Debug.info("      Found health type");
+                        String health = null;
+                        for (String part : parts) {
+                            if (part.startsWith("health:")) {
+                                health = part.substring(7);
+                            }
+                        }
+                        if (health != null) {
+                            newParts.add(health);
+                        } else {
+                            Debug.info("      There is no health amount defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "experience":
+                        Debug.info("      Found experience type");
+                        String exp = null;
+                        for (String part : parts) {
+                            if (part.startsWith("exp:")) {
+                                exp = part.substring(4);
+                            }
+                        }
+                        if (exp != null) {
+                            newParts.add(exp);
+                        } else {
+                            Debug.info("      There is no experience level defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "permission":
+                        Debug.info("      Found permission type");
+                        String perm = null;
+                        for (String part : parts) {
+                            if (part.contains("perm:")) {
+                                perm = part.substring(5);
+                            }
+                        }
+                        if (perm != null) {
+                            newParts.add(perm);
+                        } else {
+                            Debug.info("      There is no permission defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "point":
+                        Debug.info("      Found point type");
+                        String category = null;
+                        String amount = null;
+                        for (String part : parts) {
+                            if (part.startsWith("category:")) {
+                                category = part.substring(9);
+                            } else if (part.startsWith("count:")) {
+                                amount = part.substring(6);
+                            }
+                        }
+                        if (category != null && amount != null) {
+                            newParts.add(category);
+                            newParts.add(amount);
+                        } else {
+                            Debug.info("      There is no category/amount defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "tag":
+                        Debug.info("      Found tag type");
+                        String tag = null;
+                        for (String part : parts) {
+                            if (part.startsWith("tag:")) {
+                                tag = part.substring(4);
+                            }
+                        }
+                        if (tag != null) {
+                            newParts.add(tag);
+                        } else {
+                            Debug.info("      There is no tag defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "armor":
+                        Debug.info("      Found armor type");
+                        String material = null;
+                        String armorType = null;
+                        String enchants = null;
+                        for (String part : parts) {
+                            if (part.startsWith("material:")) {
+                                material = part.substring(9);
+                            }
+                            if (part.startsWith("type:")) {
+                                armorType = part.substring(5);
+                            }
+                            if (part.startsWith("enchants:")) {
+                                enchants = part;
+                            }
+                        }
+                        if (material != null && type != null) {
+                            Material armor = null;
+                            try {
+                                armor = Material.matchMaterial(material + "_" + armorType);
+                            } catch (Exception e) {
+                                Debug.info("      Could not read armor type, skipping");
+                                continue conditions;
+                            }
+                            String itemInstruction = armor.toString();
+                            if (enchants != null) {
+                                itemInstruction = itemInstruction + " " + enchants;
+                            }
+                            ConfigAccessor itemsConfig = ConfigHandler.getConfigs().get("items");
+                            int i = 0;
+                            while (itemsConfig.getConfig().contains("armor" + i)) {
+                                i++;
+                            }
+                            itemsConfig.getConfig().set("armor" + i, itemInstruction);
+                            itemsConfig.saveConfig();
+                            newParts.add("armor" + i);
+                        } else {
+                            Debug.info("      There is no armor defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "effect":
+                        Debug.info("      Found effect type");
+                        String effect = null;
+                        for (String part : parts) {
+                            if (part.startsWith("type:")) {
+                                effect = part.substring(5);
+                            }
+                        }
+                        if (effect != null) {
+                            newParts.add(effect);
+                        } else {
+                            Debug.info("      There is no effect defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "time":
+                        Debug.info("      Found time type");
+                        String time = null;
+                        for (String part : parts) {
+                            if (part.startsWith("time:")) {
+                                time = part.substring(5);
+                            }
+                        }
+                        if (time != null) {
+                            newParts.add(time);
+                        } else {
+                            Debug.info("      There is no time defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "weather":
+                        Debug.info("      Found weather type");
+                        String weather = null;
+                        for (String part : parts) {
+                            if (part.startsWith("type:")) {
+                                weather = part.substring(5);
+                            }
+                        }
+                        if (weather != null) {
+                            newParts.add(weather);
+                        } else {
+                            Debug.info("      There is no weather defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "height":
+                        Debug.info("      Found height type");
+                        String height = null;
+                        for (String part : parts) {
+                            if (part.startsWith("height:")) {
+                                height = part.substring(7);
+                            }
+                        }
+                        if (height != null) {
+                            newParts.add(height);
+                        } else {
+                            Debug.info("      There is no height defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "rating":
+                        Debug.info("      Found rating type");
+                        String rating = null;
+                        for (String part : parts) {
+                            if (part.startsWith("rating:")) {
+                                rating = part.substring(7);
+                            }
+                        }
+                        if (rating != null) {
+                            newParts.add(rating);
+                        } else {
+                            Debug.info("      There is no rating defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "random":
+                        Debug.info("      Found random type");
+                        String random = null;
+                        for (String part : parts) {
+                            if (part.startsWith("random:")) {
+                                random = part.substring(7);
+                            }
+                        }
+                        if (random != null) {
+                            newParts.add(random);
+                        } else {
+                            Debug.info("      There is no random defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    case "money":
+                        Debug.info("      Found money type");
+                        String money = null;
+                        for (String part : parts) {
+                            if (part.startsWith("money:")) {
+                                money = part.substring(6);
+                            }
+                        }
+                        if (money != null) {
+                            newParts.add(money);
+                        } else {
+                            Debug.info("      There is no amount defined, skipping");
+                            continue conditions;
+                        }
+                        break;
+                    default:
+                        Debug.info("      This one does not need updating");
+                        continue conditions;
+                }
+                StringBuilder builder = new StringBuilder();
+                for (String part : newParts) {
+                    builder.append(part);
+                    builder.append(' ');
+                }
+                String newInstruction = builder.toString().trim();
+                Debug.info("      Processing done, instruction: '" + newInstruction + "'");
+                conditions.getConfig().set(key, newInstruction);
+            }
+            Debug.info("  All conditions updated successfully, saving to the file");
+            conditions.saveConfig();
+            
+            Debug.info("  Updating events");
+            ConfigAccessor events = ConfigHandler.getConfigs().get("events");
+            events:
+            for (String key : events.getConfig().getKeys(false)) {
+                Debug.info("    Processing " + key + " event");
+                String instruction = events.getConfig().getString(key).trim();
+                String[] parts = instruction.split(" ");
+                String type = parts[0].toLowerCase();
+                ArrayList<String> newParts = new ArrayList<>();
+                newParts.add(type);
+                switch (type) {
+                    case "folder":
+                        Debug.info("      Found folder type");
+                        String folderEvents = null;
+                        String delay = null;
+                        String random = null;
+                        for (String part : parts) {
+                            if (part.startsWith("events:")) {
+                                folderEvents = part.substring(7);
+                            }
+                            if (part.startsWith("delay:")) {
+                                delay = part;
+                            }
+                            if (part.startsWith("random:")) {
+                                random = part;
+                            }
+                        }
+                        if (events != null) {
+                            newParts.add(folderEvents);
+                            if (delay != null) {
+                                newParts.add(delay);
+                            }
+                            if (random != null) {
+                                newParts.add(random);
+                            }
+                        } else {
+                            Debug.info("      There are no events defined, skipping");
+                            continue events;
+                        }
+                        break;
+                    case "setblock":
+                        Debug.info("      Found setblock type");
+                        String block = null;
+                        String loc = null;
+                        String data = null;
+                        for (String part : parts) {
+                            if (part.startsWith("block:")) {
+                                block = part.substring(6);
+                            }
+                            if (part.startsWith("loc:")) {
+                                loc = part.substring(4);
+                            }
+                            if (part.startsWith("data:")) {
+                                data = part;
+                            }
+                        }
+                        if (block != null && loc != null) {
+                            newParts.add(block);
+                            newParts.add(loc);
+                            if (data != null) {
+                                newParts.add(data);
+                            }
+                        } else {
+                            Debug.info("      There is no block/location defined, skipping");
+                            continue events;
+                        }
+                        break;
+                    default:
+                        Debug.info("      This one does not need updating");
+                        continue events;
+                }
+                StringBuilder builder = new StringBuilder();
+                for (String part : newParts) {
+                    builder.append(part);
+                    builder.append(' ');
+                }
+                String newInstruction = builder.toString().trim();
+                Debug.info("      Processing done, instruction: '" + newInstruction + "'");
+                events.getConfig().set(key, newInstruction);
+            }
+            Debug.info("  All events updated successfully, saving to the file");
+            events.saveConfig();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Made instruction strings more beautiful! Please read the"
+            + " documentation again.");
+        config.set("version", "v11");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v9() {
         config.set("combat_delay", "10");
         config.set("notify_pullback", "false");
@@ -242,6 +648,7 @@ public class ConfigUpdater {
             Debug.broadcast("Updated database format to better one.");
         } catch (Exception e) {
             e.printStackTrace();
+            Debug.error(ERROR);
         }
         config.set("version", "v6");
         instance.saveConfig();
@@ -317,7 +724,7 @@ public class ConfigUpdater {
             Debug.broadcast("Converted give/take events and item conditions to new format!");
         } catch (Exception e) {
             e.printStackTrace();
-            displayError();
+            Debug.error(ERROR);
         }
         config.set("version", "v5");
         instance.saveConfig();
@@ -629,7 +1036,7 @@ public class ConfigUpdater {
             // the version wouldn't get changed and updater would fall into
             // an infinite loop of endless exceptiorns
             e.printStackTrace();
-            displayError();
+            Debug.error(ERROR);
         }
         // set v3 version
         config.set("version", "v3");
@@ -1144,14 +1551,5 @@ public class ConfigUpdater {
             e.printStackTrace();
         }
 
-    }
-
-    private void displayError() {
-        Debug.error("There was an error during updating process! (you don't say?) Please "
-            + "downgrade to the previous working version of the plugin and restore your "
-            + "configuration from the backup. Don't forget to send this error to the developer"
-            + ", so he can fix it! Sorry for inconvenience, here's the link:"
-            + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: "
-            + "<http://i.imgur.com/iR4UMH5.png>");
     }
 }

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -32,20 +33,35 @@ public class TimeCondition extends Condition {
 
     public TimeCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        String theTime = null;
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("time:")) {
-                theTime = part.substring(5);
-            }
+        String[] theTime = null;
+        if (parts.length < 2) {
+            Debug.error("Time not defined in time condition: " + instructions);
+            isOk = false;
+            return;
         }
-        parts = theTime.split("-");
-        timeMin = Double.parseDouble(parts[0]);
-        timeMax = Double.parseDouble(parts[1]);
+        theTime = parts[1].split("-");
+        if (theTime.length != 2) {
+            Debug.error("Wrong time format in: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            timeMin = Double.parseDouble(theTime[0]);
+            timeMax = Double.parseDouble(theTime[1]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse time in: " + instructions);
+            isOk = false;
+            return;
+        }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
         if (time >= 18000) {
             // 18000 minecraft-time is midnight, so there is new

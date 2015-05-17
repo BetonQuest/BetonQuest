@@ -25,17 +25,12 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Sends a message to the player
  * 
  * @author Co0sh
  */
 public class MessageEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public MessageEvent(String playerID, String instructions) {
         super(playerID, instructions);
         // the event cannot be fired for offline players
@@ -43,8 +38,7 @@ public class MessageEvent extends QuestEvent {
             Debug.info("Player " + playerID + " is offline, cannot fire event");
             return;
         }
-        String message = super.instructions
-                .substring(super.instructions.split(" ")[0].length() + 1);
+        String message = super.instructions.substring(super.instructions.split(" ")[0].length() + 1);
         if (playerID == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(message.replaceAll("&", "§").replaceAll("%player%",

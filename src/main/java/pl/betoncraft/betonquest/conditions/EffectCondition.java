@@ -20,10 +20,11 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * instructions: effect:POISON
+ * Requires the player to have active potion effect
  * 
  * @author Co0sh
  */
@@ -31,23 +32,28 @@ public class EffectCondition extends Condition {
 
     private PotionEffectType type;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public EffectCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        for (String part : instructions.split(" ")) {
-            if (part.contains("type:")) {
-                type = PotionEffectType.getByName(part.substring(5).toUpperCase());
-            }
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Effect type not defined in effect condition: " + instructions);
+            isOk = false;
+            return;
+        }
+        type = PotionEffectType.getByName(parts[1]);
+        if (type == null) {
+            Debug.error("Effect does not exist: " + parts[1]);
+            isOk = false;
+            return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (PlayerConverter.getPlayer(playerID).hasPotionEffect(type)) {
             return true;
         }

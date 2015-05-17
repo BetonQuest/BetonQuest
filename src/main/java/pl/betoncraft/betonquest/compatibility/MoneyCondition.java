@@ -18,36 +18,45 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * @author co0sh
- *
+ * Checks if the player has specified amount of Vault money
+ * 
+ * @author Co0sh
  */
 public class MoneyCondition extends Condition {
 
     private double amount = 0;
 
-    /**
-     * @param playerID
-     * @param instructions
-     */
     public MoneyCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("amount:")) {
-                amount = Double.parseDouble(part.substring(7));
-                if (amount < 0) {
-                    amount = 0;
-                }
+        if (parts.length < 2) {
+            Debug.error("Money amount not specified in: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            amount = Double.parseDouble(parts[1]);
+            if (amount < 0) {
+                amount = 0;
             }
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse money amount in: " + instructions);
+            isOk = false;
+            return;
         }
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         return Compatibility.getEconomy()
                 .has(PlayerConverter.getPlayer(playerID).getName(), amount);
     }

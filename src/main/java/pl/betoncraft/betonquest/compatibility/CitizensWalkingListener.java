@@ -27,8 +27,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.PlayerConversationEndEvent;
-import pl.betoncraft.betonquest.core.PlayerConversationStartEvent;
+import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
+import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 
 /**

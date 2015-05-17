@@ -26,11 +26,11 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Having item in inventory condition, instrucion string:
- * "item type:DIAMOND_SWORD amount:1 enchants:DAMAGE_ALL:3,KNOCKBACK:1 name:Siekacz --inverted"
+ * Requires the player to have specified amount of items in the inventory
  * 
  * @author Co0sh
  */
@@ -38,28 +38,43 @@ public class ItemCondition extends Condition {
 
     private List<Item> questItems = new ArrayList<>();
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public ItemCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        String items = instructions.split(" ")[1];
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Items not defined in item condition: " + instructions);
+            isOk = false;
+            return;
+        }
+        String items = parts[1];
         for (String item : items.split(",")) {
-            String name = item.split(":")[0];
+            String[] itemParts = item.split(":");
+            String name = itemParts[0];
             int amount = 1;
-            if (item.split(":").length > 1 && item.split(":")[1].matches("\\d+")) {
-                amount = Integer.parseInt(item.split(":")[1]);
+            if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
+                try {
+                    amount = Integer.parseInt(item.split(":")[1]);
+                } catch (NumberFormatException e) {
+                    Debug.error("Cannot parse item amount in: " + item);
+                    break;
+                }
             }
-            QuestItem questItem = new QuestItem(ConfigHandler.getString("items." + name));
+            String itemInstruction = ConfigHandler.getString("items." + name);
+            if (itemInstruction == null) {
+                Debug.error("Item not defined: " + name);
+                break;
+            }
+            QuestItem questItem = new QuestItem(itemInstruction);
             questItems.add(new Item(questItem, amount));
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         int counter = 0;
         for (Item questItem : questItems) {
             int amount = questItem.getAmount();

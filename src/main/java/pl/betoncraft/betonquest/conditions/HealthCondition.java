@@ -18,25 +18,41 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+/**
+ * Requires the player to have specified amount of health (or more)
+ * 
+ * @author Coosh
+ */
 public class HealthCondition extends Condition {
 
-    private Double health = null;
+    private double health;
 
     public HealthCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("health:")) {
-                health = Double.parseDouble(part.substring(7));
-            }
-
+        if (parts.length < 2) {
+            Debug.error("Amount not specified in: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            health = Double.parseDouble(parts[1]);
+        } catch (Exception e) {
+            Debug.error("Could not parse health amount: " + instructions);
+            isOk = false;
+            return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (PlayerConverter.getPlayer(playerID).getHealth() >= health) {
             return true;
         }

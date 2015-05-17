@@ -82,7 +82,7 @@ public class QuestItem {
     }
 
     /**
-     * Creates new instance of the quest item using the itemID in items.yml
+     * Creates new instance of the quest item using the instruction string
      * 
      * @param itemID
      *            ID of the item from items.yml

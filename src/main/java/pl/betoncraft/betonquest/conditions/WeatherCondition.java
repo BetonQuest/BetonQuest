@@ -20,9 +20,11 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Requires the weather to be of specific type
  * 
  * @author Co0sh
  */
@@ -31,25 +33,21 @@ public class WeatherCondition extends Condition {
     private String weather;
     private World world;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public WeatherCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        for (String part : instructions.split(" ")) {
-            if (part.contains("type:")) {
-                weather = part.substring(5);
-            }
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Weather type not defined in weather condition: " + instructions);
+            isOk = false;
+            return;
         }
+        weather = parts[1];
         world = PlayerConverter.getPlayer(playerID).getWorld();
     }
 
     @Override
     public boolean isMet() {
-        switch (weather) {
+        switch (weather.toLowerCase().trim()) {
             case "sun":
                 if (!world.isThundering() && !world.hasStorm()) {
                     return true;
@@ -66,6 +64,7 @@ public class WeatherCondition extends Condition {
                 }
                 break;
             default:
+                Debug.error("Weather type '" + weather + "' not defined!");
                 break;
         }
         return false;

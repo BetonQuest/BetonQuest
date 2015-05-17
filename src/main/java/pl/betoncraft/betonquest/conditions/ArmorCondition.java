@@ -17,67 +17,44 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Instruction string: type:leggings material:iron
+ * Player has to wear this item as an armor
  * 
  * @author Co0sh
  */
 public class ArmorCondition extends Condition {
 
-    private Material armor;
-    private String type;
-    private String material;
-    private Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+    private QuestItem item;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public ArmorCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        for (String part : instructions.split(" ")) {
-            if (part.contains("type:")) {
-                type = part.substring(5).toUpperCase();
-            } else if (part.contains("material:")) {
-                material = part.substring(9).toUpperCase();
-            } else if (part.contains("enchants:")) {
-                for (String enchant : part.substring(9).split(",")) {
-                    enchants.put(Enchantment.getByName(enchant.split(":")[0]),
-                            Integer.decode(enchant.split(":")[1]));
-                }
-            }
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Armor not defined in: " + instructions);
+            isOk = false;
+            return;
         }
-        if (type != null && material != null) {
-            armor = Material.matchMaterial(material + "_" + type);
+        String itemInstruction = ConfigHandler.getString("items." + parts[1]);
+        if (itemInstruction == null) {
+            Debug.error("No such item: " + parts[1]);
+            isOk = false;
+            return;
         }
+        item = new QuestItem(itemInstruction);
     }
 
     @Override
     public boolean isMet() {
-        for (ItemStack item : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
-            if (item.getType().equals(armor)) {
-                if (enchants != null) {
-                    for (Enchantment enchant : enchants.keySet()) {
-                        if (item.getEnchantments().get(enchant) == null) {
-                            return false;
-                        }
-                        if (item.getEnchantments().get(enchant) < enchants.get(enchant)) {
-                            return false;
-                        }
-                    }
-                }
+        for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
+            if (item.equalsI(armor)) {
                 return true;
             }
         }

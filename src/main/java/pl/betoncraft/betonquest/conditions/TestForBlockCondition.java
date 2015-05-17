@@ -41,11 +41,13 @@ public class TestForBlockCondition extends Condition {
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             Debug.error("Error in instruction string in: " + instructions);
+            isOk = false;
             return;
         }
         String[] location = parts[1].split(";");
         if (location.length != 4) {
             Debug.error("Error in location in: " + instructions);
+            isOk = false;
             return;
         }
         double y = 0, x = 0, z = 0;
@@ -55,26 +57,35 @@ public class TestForBlockCondition extends Condition {
             z = Double.parseDouble(location[2]);
         } catch (NumberFormatException e) {
             Debug.error("Wrong number format in: " + instructions);
+            isOk = false;
+            return;
         }
         World world = Bukkit.getWorld(location[3]);
         if (world == null) {
             Debug.error("World does not exist in: " + instructions);
+            isOk = false;
             return;
         }
         block = new Location(world, x, y, z).getBlock();
         if (block == null) {
             Debug.error("Error with block in: " + instructions);
+            isOk = false;
             return;
         }
         material = Material.matchMaterial(parts[2]);
         if (material == null) {
             Debug.error("Undefined material type in: " + instructions);
+            isOk = false;
             return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (material == null || block == null) {
             return false;
         }

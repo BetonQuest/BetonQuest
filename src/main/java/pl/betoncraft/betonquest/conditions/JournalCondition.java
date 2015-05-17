@@ -29,16 +29,14 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class JournalCondition extends Condition {
     
-    /**
-     * Name of the pointer we're looking for.
-     */
     private String targetPointer = null;
 
     public JournalCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            // if the string is incorrect, leave targetPointer as null
+            Debug.error("Journal entry not defined in journal condition: " + instructions);
+            isOk = false;
             return;
         }
         targetPointer = parts[1];
@@ -46,9 +44,8 @@ public class JournalCondition extends Condition {
     
     @Override
     public boolean isMet() {
-        if (targetPointer == null) {
-            // if targetPointer is null, there was an error in instruction string
-            Debug.error("There was an error in journal condition: " + instructions);
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
             return false;
         }
         for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID).getJournal().getPointers()) {

@@ -21,51 +21,47 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.Random;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
- * Check that generate number match to the condition in the instruction.
+ * The condition that is met randomly
  * 
  * @author BYK
- *
  */
 public class RandomCondition extends Condition {
-    /**
-     * private fields: valueMax-keep the last number match to the condition.
-     * rangeOfRandom-keep the range of integer number which draw one number.
-     */
+
     private int valueMax = 0;
     private int rangeOfRandom = 0;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public RandomCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        String value = null;
+        String[] values = null;
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("random:")) {
-                value = part.substring(7);
-            }
+        if (parts.length < 2) {
+            Debug.error("Randomness not defined in random condition: " + instructions);
+            isOk = false;
+            return;
         }
-        parts = value.split("-");
-        valueMax = Integer.parseInt(parts[0]);
-        rangeOfRandom = Integer.parseInt(parts[1]);
+        values = parts[1].split("-");
+        if (values.length != 2) {
+            Debug.error("Wrong randomness format in: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            valueMax = Integer.parseInt(values[0]);
+            rangeOfRandom = Integer.parseInt(values[1]);
+        } catch (NumberFormatException e) {
+            Debug.error("Cannot parse randomness values in: " + instructions);
+            isOk = false;
+            return;
+        }
     }
 
     @Override
-    /**
-     * Method check that the condition is met-return true
-     * else if is not met return false.
-     */
     public boolean isMet() {
-
         Random generator = new Random();
-        int temp = 0;
-        temp = generator.nextInt(rangeOfRandom) + 1;
+        int temp = generator.nextInt(rangeOfRandom) + 1;
         if (temp <= valueMax) {
             return true;
         } else {

@@ -42,11 +42,13 @@ public class FolderEvent extends QuestEvent {
         int delay = 0;
         int random = 0;
         // parse the instuction string
+        if (parts.length < 2) {
+            Debug.error("Events not defined in folder event: " + instructions);
+            return;
+        }
+        events = parts[1].split(",");
         for (String part : parts) {
-            if (part.contains("events:")) {
-                events = part.substring(7).split(",");
-            }
-            if (part.contains("delay:")) {
+            if (part.startsWith("delay:")) {
                 try {
                     delay = Integer.parseInt(part.substring(6));
                 } catch (NumberFormatException e) {
@@ -54,8 +56,7 @@ public class FolderEvent extends QuestEvent {
                     Debug.error("Wrong number format in folder event! " + instructions);
                     return;
                 }
-            }
-            if (part.contains("random:")) {
+            } else if (part.startsWith("random:")) {
                 try {
                     random = Integer.parseInt(part.substring(7));
                 } catch (NumberFormatException e) {
@@ -64,12 +65,6 @@ public class FolderEvent extends QuestEvent {
                     return;
                 }
             }
-        }
-        // if there are no events, there is an error
-        if (events == null) {
-            BetonQuest.getInstance().getLogger()
-                    .severe("Error in folder event: events not defined! " + instructions);
-            return;
         }
         // choose randomly which events should be fired
         if (random > 0 && random <= events.length) {

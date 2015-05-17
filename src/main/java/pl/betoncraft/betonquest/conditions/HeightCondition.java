@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -32,15 +33,26 @@ public class HeightCondition extends Condition {
     public HeightCondition(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
-        for (String part : parts) {
-            if (part.contains("height:")) {
-                height = Double.parseDouble(part.substring(7));
-            }
+        if (parts.length < 2) {
+            Debug.error("Height not defined in height condition: " + instructions);
+            isOk = false;
+            return;
+        }
+        try {
+            height = Double.parseDouble(parts[1]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse height in: " + instructions);
+            isOk = false;
+            return;
         }
     }
 
     @Override
     public boolean isMet() {
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
+            return false;
+        }
         if (PlayerConverter.getPlayer(playerID).getLocation().getY() <= height) {
             return true;
         }

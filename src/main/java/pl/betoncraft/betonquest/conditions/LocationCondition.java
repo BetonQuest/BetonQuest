@@ -19,12 +19,15 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Requires the player to be in specified distance from a location
  * 
  * @author Co0sh
  */
@@ -33,34 +36,51 @@ public class LocationCondition extends Condition {
     private Location location;
     private double distance;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public LocationCondition(String playerID, String instructions) {
         super(playerID, instructions);
-        String[] partsOfLoc = null;
-        for (String part : instructions.split(" ")) {
-            if (part.contains("loc:")) {
-                partsOfLoc = part.substring(4).split(";");
-            }
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            Debug.error("Not enough arguments in: " + instructions);
+            isOk = false;
+            return;
         }
-        if (partsOfLoc != null) {
-            location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]),
-                    Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
-            distance = Double.valueOf(partsOfLoc[4]);
+        String[] partsOfLoc = parts[1].split(",");
+        if (partsOfLoc.length != 5) {
+            Debug.error("Wrong location format in: " + instructions);
+            isOk = false;
+            return;
         }
+        World world = Bukkit.getWorld(partsOfLoc[3]);
+        if (world == null) {
+            Debug.error("World " + partsOfLoc[3] + " does not exists.");
+            isOk = false;
+            return;
+        }
+        double x,y,z;
+        try {
+            x = Integer.parseInt(partsOfLoc[0]);
+            y = Integer.parseInt(partsOfLoc[1]);
+            z = Integer.parseInt(partsOfLoc[2]);
+            distance = Integer.parseInt(partsOfLoc[4]);
+        } catch (NumberFormatException e) {
+            Debug.error("Could not parse location coordinates");
+            isOk = false;
+            return;
+        }
+        location = new Location(world, x, y, z);
     }
 
     @Override
     public boolean isMet() {
-        if (location == null) {
-            BetonQuest.getInstance().getLogger().severe("Location invalid at: " + instructions);
+        if (!isOk) {
+            Debug.error("There was an error, returning false.");
             return false;
         }
-        if (PlayerConverter.getPlayer(playerID).getLocation().distance(location) <= distance) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        if (!location.getWorld().equals(player.getWorld())) {
+            return false;
+        }
+        if (player.getLocation().distance(location) <= distance) {
             return true;
         }
         return false;

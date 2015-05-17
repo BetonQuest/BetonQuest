@@ -20,8 +20,10 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
 
 public class SetBlockEvent extends QuestEvent {
 
@@ -33,30 +35,52 @@ public class SetBlockEvent extends QuestEvent {
     public SetBlockEvent(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
+        if (parts.length < 3) {
+            Debug.error("Not enough arguments in setblock event: " + instructions);
+            return;
+        }
+        block = Material.matchMaterial(parts[1]);
+        loc = decodeLocation(parts[2]);
+        if (block == null) {
+            Debug.error("Could not parse block: " + parts[1]);
+            return;
+        }
+        if (loc == null) {
+            Debug.error("Could not parse location: " + parts[2]);
+            return;
+        }
         for (String part : parts) {
-            if (part.contains("block:")) {
-                block = Material.matchMaterial(part.substring(6));
-            }
             if (part.contains("data:")) {
-                data = Byte.parseByte(part.substring(5));
-            }
-            if (part.contains("loc:")) {
-                loc = decodeLocation(part.substring(4));
+                try {
+                    data = Byte.parseByte(part.substring(5));
+                } catch (NumberFormatException e) {
+                    Debug.error("Could not parse data value in: " + instructions);
+                    return;
+                }
             }
         }
-        if (block != null && loc != null) {
-            loc.getBlock().setType(block);
-            loc.getBlock().setData(data);
-        }
+        loc.getBlock().setType(block);
+        loc.getBlock().setData(data);
     }
 
     private Location decodeLocation(String locStr) {
-
         String[] coords = locStr.split(";");
-
-        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-
+        if (coords.length != 4) {
+            return null;
+        }
+        double x, y, z;
+        World world = Bukkit.getWorld(coords[3]);
+        if (world == null) {
+            return null;
+        }
+        try {
+            x = Double.parseDouble(coords[0]);
+            y = Double.parseDouble(coords[1]);
+            z = Double.parseDouble(coords[2]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        Location loc = new Location(world, x, y, z);
         return loc;
     }
 
