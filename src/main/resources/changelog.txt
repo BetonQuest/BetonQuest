@@ -20,6 +20,7 @@ Changes:
     * Mobs can be spawned with a name (spawnmob event, "name:" argument)
     * /q command is now more beautiful
     * Removed unnecessary argument prefixes from conditions and events
+    * Changed keyword "tag:" to "label:" in objectives, to distinguish it from regular tags
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

@@ -361,8 +361,8 @@ public class DatabaseHandler {
             String[] parts = instruction.split(" ");
             for (String part : parts) {
                 // if it matches then remove it from list
-                if (part.startsWith("tag:")) {
-                    String theTag = part.substring(4);
+                if (part.startsWith("label:")) {
+                    String theTag = part.substring(6);
                     if (theTag.equalsIgnoreCase(tag)) {
                         iterator.remove();
                     }

@@ -78,8 +78,8 @@ public abstract class Objective {
         this.instructions = instructions;
         // extract tag, events and conditions
         for (String part : instructions.split(" ")) {
-            if (part.contains("tag:")) {
-                tag = part.substring(4);
+            if (part.contains("label:")) {
+                tag = part.substring(6);
             }
             if (part.contains("events:")) {
                 events = part;

@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v11";
+    private final String destination = "v12";
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -178,6 +179,108 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v11() {
+        try {
+            Debug.info("Updating objectives in configuration");
+            ConfigAccessor events = ConfigHandler.getConfigs().get("events");
+            ArrayList<String> labels = new ArrayList<>();
+            boolean notified = false;
+            // for every event check if it's objective
+            for (String key : events.getConfig().getKeys(false)) {
+                String value = events.getConfig().getString(key);
+                if (value.startsWith("objective ")) {
+                    Debug.info("  Found " + key + " objective event");
+                    // replace "tag:" with "label:" in all found objectives
+                    String[] parts = value.split(" ");
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < parts.length; i++) {
+                        if (parts[i].startsWith("tag:")) {
+                            String label = parts[i].substring(4);
+                            if (!notified && labels.contains(label)) {
+                                notified = true;
+                                Debug.error("You have multiple objectives with the same label!"
+                                    + " That is an error, because the player cannot have"
+                                    + " active more than one objective with the same label");
+                            }
+                            labels.add(label);
+                            parts[i] = "label:" + label;
+                        }
+                        builder.append(parts[i]);
+                        builder.append(" ");
+                    }
+                    String newValue = builder.toString().trim();
+                    Debug.info("    After processing: " + newValue);
+                    events.getConfig().set(key, newValue);
+                }
+            }
+            events.saveConfig();
+            Debug.info("Converted all objectives in configuration");
+            // update all objectives in the database
+            Debug.info("Converting objectives in the database");
+            Connection con = instance.getDB().openConnection();
+            String prefix = instance.getConfig().getString("mysql.prefix", "");
+            ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix
+                    + "objectives");
+            HashMap<String,ArrayList<String>> objectives = new HashMap<>();
+            HashMap<String,ArrayList<String>> labels2 = new HashMap<>();
+            // iterate over every objective string in the database
+            while (res.next()) {
+                String playerID = res.getString("playerID");
+                String objective = res.getString("instructions");
+                String label = null;
+                for (String part : objective.split(" ")) {
+                    if (part.startsWith("tag:")) {
+                        label = part.substring(4);
+                    }
+                }
+                if (label == null) {
+                    Debug.info("  Found objective without a label, that's strange... Anyway,"
+                        + " skipping. Player: " + playerID);
+                    continue;
+                }
+                Debug.info("  Found objective for player " + playerID + " with label " + label);
+                ArrayList<String> oList = objectives.get(playerID);
+                ArrayList<String> lList = labels2.get(playerID);
+                if (oList == null) {
+                    oList = new ArrayList<>();
+                    lList = new ArrayList<>();
+                }
+                // cannot have two objectives with the same tag
+                if (lList.contains(label)) {
+                    Debug.info("    Label already exists, skipping this one!");
+                    continue;
+                }
+                String converted = convertObjective(objective);
+                Debug.info("    Objective converted: " + converted);
+                oList.add(converted);
+                lList.add(label);
+                objectives.put(playerID, oList);
+                labels2.put(playerID, lList);
+            }
+            // everything is extracted from the database and converted
+            // time to put it back
+            Debug.info("Inserting everything into the database...");
+            con.createStatement().executeUpdate("DELETE FROM " + prefix + "objectives");
+            for (String playerID : objectives.keySet()) {
+                for (String objective : objectives.get(playerID)) {
+                    PreparedStatement stmt = con.prepareStatement("INSERT INTO " + prefix
+                            + "objectives (playerID, instructions) VALUES (?,?);");
+                    stmt.setString(1, playerID);
+                    stmt.setString(2, objective);
+                    stmt.executeUpdate();
+                }
+            }
+            Debug.info("Done! Everything converted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Changed keyword \"tag:\" to \"label:\" in all objectives!");
+        config.set("version", "v12");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
@@ -1551,5 +1654,18 @@ public class ConfigUpdater {
             e.printStackTrace();
         }
 
+    }
+    
+    private String convertObjective(String obj) {
+        StringBuilder builder = new StringBuilder();
+        for (String part : obj.split(" ")) {
+            if (part.startsWith("tag:")) {
+                builder.append("label:" + part.substring(4));
+            } else {
+                builder.append(part);
+            }
+            builder.append(' ');
+        }
+        return builder.toString().trim();
     }
 }

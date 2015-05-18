@@ -573,20 +573,27 @@ public final class BetonQuest extends JavaPlugin {
             Debug.info("Null arguments for the objective!");
             return;
         }
-        // get tag
+        // get tag (known as label)
         String[] parts = instruction.split(" ");
         String tag = null;
         for (String part : parts) {
-            if (part.contains("tag:")) {
-                tag = part.substring(4);
+            if (part.contains("label:")) {
+                tag = part.substring(6);
                 break;
             }
         }
+        // the tag is required, log an error if it's not supplied
         if (tag == null) {
-            // the tag is required, so log an error if it's not supplied
             Debug.error("Tag was not found in an objective, it's required. Player: " + playerID
                 + ", instruction: " + instruction);
             return;
+        }
+        // check if there is already an objective with that tag
+        for (Objective obj : instance.dbHandlers.get(playerID).getObjectives()) {
+            if (obj.getTag().equalsIgnoreCase(tag)) {
+                Debug.info("The objective with tag '" + tag + "' already exists, skipping.");
+                return;
+            }
         }
         // get objective's class
         Class<? extends Objective> objective = objectives.get(parts[0]);
