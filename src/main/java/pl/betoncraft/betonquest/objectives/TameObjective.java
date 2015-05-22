@@ -90,7 +90,7 @@ public class TameObjective extends Objective implements Listener {
     @Override
     public String getInstructions() {
         HandlerList.unregisterAll(this);
-        return "tame " + type + " " + amount + " " + conditions + " " + events + " tag:" + tag;
+        return "tame " + type + " " + amount + " " + conditions + " " + events + " label:" + tag;
     }
 
 }

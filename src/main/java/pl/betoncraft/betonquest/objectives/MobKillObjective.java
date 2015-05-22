@@ -117,7 +117,7 @@ public class MobKillObjective extends Objective implements Listener {
             namePart = " name:" + name + " ";
         }
         return "mobkill " + mobType.toString() + " " + amount + namePart + " " + conditions + " "
-            + events + " tag:" + tag;
+            + events + " label:" + tag;
     }
 
 }

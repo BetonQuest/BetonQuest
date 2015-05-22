@@ -138,7 +138,7 @@ public class ActionObjective extends Objective implements Listener {
     public String getInstructions() {
         HandlerList.unregisterAll(this);
         return "action " + action + " " + type + ":" + data + " " + rawLoc + " " + conditions + " "
-            + events + " tag:" + tag;
+            + events + " label:" + tag;
     }
 
 }

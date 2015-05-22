@@ -87,7 +87,7 @@ public class SmeltingObjective extends Objective implements Listener {
     @Override
     public String getInstructions() {
         HandlerList.unregisterAll(this);
-        return "smelt " + material + " " + amount + " " + conditions + " " + events + " tag:" + tag;
+        return "smelt " + material + " " + amount + " " + conditions + " " + events + " label:" + tag;
     }
 
 }

@@ -56,6 +56,6 @@ public class DelayObjective extends Objective {
     @Override
     public String getInstructions() {
         runnable.cancel();
-        return "delay stamp:" + stamp + " " + events + " " + conditions + " tag:" + tag;
+        return "delay stamp:" + stamp + " " + events + " " + conditions + " label:" + tag;
     }
 }

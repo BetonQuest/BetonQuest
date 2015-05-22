@@ -132,7 +132,7 @@ public class BlockObjective extends Objective implements Listener {
     public String getInstructions() {
         String instruction = new String("block " + material.toString() + ":" + data + " "
             + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events
-            + " tag:" + tag);
+            + " label:" + tag);
         HandlerList.unregisterAll(this);
         return instruction;
     }

@@ -97,7 +97,7 @@ public class CraftingObjective extends Objective implements Listener {
     public String getInstructions() {
         HandlerList.unregisterAll(this);
         return "craft " + material + ":" + data + " " + amount + " " + conditions + " " + events
-            + " tag:" + tag;
+            + " label:" + tag;
     }
 
 }
