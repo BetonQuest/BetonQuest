@@ -36,15 +36,15 @@ public class LocationCondition extends Condition {
     private Location location;
     private double distance;
 
-    public LocationCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public LocationCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Not enough arguments in: " + instructions);
             isOk = false;
             return;
         }
-        String[] partsOfLoc = parts[1].split(",");
+        String[] partsOfLoc = parts[1].split(";");
         if (partsOfLoc.length != 5) {
             Debug.error("Wrong location format in: " + instructions);
             isOk = false;

@@ -1,4 +1,4 @@
-version: 'v12'
+version: 'v13'
 mysql:
   host: ''
   port: ''
@@ -27,4 +27,3 @@ sounds:
   journal: 'BAT_TAKEOFF'
   update: 'false'
   full: 'false'
-global_locations: ''

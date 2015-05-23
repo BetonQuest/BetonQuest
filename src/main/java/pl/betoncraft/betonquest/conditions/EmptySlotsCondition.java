@@ -33,8 +33,8 @@ public class EmptySlotsCondition extends Condition {
     private int needed = 0;
     private int empty = 0;
 
-    public EmptySlotsCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public EmptySlotsCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Empty space amount not defined in empty condition: " + instructions);

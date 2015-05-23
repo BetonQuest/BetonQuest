@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
+
 /**
  * Superclass for all events. You need to extend it in order to create new
  * custom events.
@@ -37,6 +40,14 @@ public abstract class QuestEvent {
      * Stores instruction string for the event.
      */
     protected String instructions;
+    /**
+     * Stores the package name from which this event fired
+     */
+    protected String packName;
+    /**
+     * ConfigPackage in which this event is defined
+     */
+    protected ConfigPackage pack;
 
     /**
      * Creates new instance of the event. The event should parse instruction
@@ -51,8 +62,10 @@ public abstract class QuestEvent {
      *            required data from it and display errors if there is anything
      *            wrong.
      */
-    public QuestEvent(String playerID, String instructions) {
+    public QuestEvent(String playerID, String pack, String instructions) {
         this.playerID = playerID;
         this.instructions = instructions;
+        this.packName = pack;
+        this.pack = Config.getPackage(packName);
     }
 }

@@ -32,8 +32,8 @@ public class SetBlockEvent extends QuestEvent {
     private Location loc;
 
     @SuppressWarnings("deprecation")
-    public SetBlockEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public SetBlockEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             Debug.error("Not enough arguments in setblock event: " + instructions);

@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
+
 /**
  * Superclass for all conditions. You need to extend it in order to create new
  * custom conditions.
@@ -41,6 +44,14 @@ abstract public class Condition {
      * True if the condition was prepared correctly.
      */
     protected boolean isOk = true;
+    /**
+     * Stores the package name from which this condition was checked
+     */
+    protected String packName;
+    /**
+     * ConfigPackage in which this condition is defined
+     */
+    protected ConfigPackage pack;
 
     /**
      * Creates new instance of the condition. The condition should parse
@@ -55,9 +66,11 @@ abstract public class Condition {
      *            required data from it and display errors if there is anything
      *            wrong.
      */
-    public Condition(String playerID, String instructions) {
+    public Condition(String playerID, String pack, String instructions) {
         this.playerID = playerID;
+        this.packName = pack;
         this.instructions = instructions;
+        this.pack = Config.getPackage(packName);
     }
 
     /**

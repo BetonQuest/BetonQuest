@@ -30,8 +30,8 @@ public class AlternativeCondition extends Condition {
 
     private String[] conditions;
 
-    public AlternativeCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public AlternativeCondition(String playerID, String pack, String instructions) {
+        super(playerID, pack, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Conditions not defined in: " + instructions);
@@ -48,7 +48,17 @@ public class AlternativeCondition extends Condition {
             return false;
         }
         for (String condition : conditions) {
-            if (BetonQuest.condition(playerID, condition)) {
+            String condName;
+            String packName;
+            if (condition.contains(".")) {
+                String[] parts = condition.split("\\.");
+                condName = parts[1];
+                packName = parts[0];
+            } else {
+                condName = condition;
+                packName = super.packName;
+            }
+            if (BetonQuest.condition(playerID, packName, condName)) {
                 return true;
             }
         }

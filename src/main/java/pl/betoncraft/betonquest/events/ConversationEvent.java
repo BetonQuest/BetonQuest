@@ -34,8 +34,8 @@ public class ConversationEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public ConversationEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ConversationEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);
@@ -46,7 +46,7 @@ public class ConversationEvent extends QuestEvent {
             Debug.info("Player " + playerID + " is offline, cannot fire event");
             return;
         }
-        new Conversation(playerID, instructions.split(" ")[1], PlayerConverter.getPlayer(playerID)
-                .getLocation());
+        new Conversation(playerID, packName, instructions.split(" ")[1],
+                PlayerConverter.getPlayer(playerID).getLocation());
     }
 }

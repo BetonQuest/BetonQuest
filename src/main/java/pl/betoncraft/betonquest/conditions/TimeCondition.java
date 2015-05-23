@@ -31,8 +31,8 @@ public class TimeCondition extends Condition {
     private double timeMin = 0;
     private double timeMax = 0;
 
-    public TimeCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public TimeCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         String[] theTime = null;
         if (parts.length < 2) {

@@ -40,6 +40,16 @@ public class ConfigAccessor {
     private File configFile;
     private FileConfiguration fileConfiguration;
 
+    /**
+     * Creates a new configuration accessor.
+     * 
+     * @param plugin
+     *          instance of the plugin
+     * @param file
+     *          the file in which the configuration is stored
+     * @param fileName
+     *          the name of the resource in plugin jar
+     */
     public ConfigAccessor(JavaPlugin plugin, File file, String fileName) {
         if (plugin == null)
             throw new IllegalArgumentException("plugin cannot be null");
@@ -88,8 +98,10 @@ public class ConfigAccessor {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-//            this.plugin.saveResource(fileName, false);
                 InputStream in = plugin.getResource(fileName);
+                if (in == null) {
+                    return;
+                }
                 OutputStream out = new FileOutputStream(configFile);
                 byte[] buffer = new byte[1024];
                 int len = in.read(buffer);

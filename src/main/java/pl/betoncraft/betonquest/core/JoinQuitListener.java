@@ -28,11 +28,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.PlayerConverter.PlayerConversionType;
-import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -84,9 +84,8 @@ public class JoinQuitListener implements Listener {
             && new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {
             SimpleTextOutput.sendSystemMessage(
                     PlayerConverter.getID(event.getPlayer()),
-                    ConfigHandler.getString("messages."
-                        + ConfigHandler.getString("config.language") + ".changelog"),
-                    ConfigHandler.getString("config.sounds.update"));
+                    Config.getMessage("changelog"),
+                    Config.getString("config.sounds.update"));
         }
         if (Journal.hasJournal(playerID)) {
             dbHandler.getJournal().updateJournal();

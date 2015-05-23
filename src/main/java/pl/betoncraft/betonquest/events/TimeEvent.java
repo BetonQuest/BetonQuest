@@ -35,8 +35,8 @@ public class TimeEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public TimeEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public TimeEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);
@@ -50,8 +50,8 @@ public class TimeEvent extends QuestEvent {
         World world = PlayerConverter.getPlayer(playerID).getWorld();
         String string = instructions.split(" ")[1];
         long time;
-        if (string.matches("/+//d+")) {
-            time = world.getTime() + Long.valueOf(string) * 1000 + 18000;
+        if (string.matches("^\\+\\d+$")) {
+            time = world.getTime() + Long.valueOf(string.substring(1, string.length())) * 1000;
         } else {
             time = Long.valueOf(string) * 1000 + 18000;
         }

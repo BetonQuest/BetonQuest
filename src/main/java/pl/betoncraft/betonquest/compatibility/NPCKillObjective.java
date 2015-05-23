@@ -70,7 +70,7 @@ public class NPCKillObjective extends Objective implements Listener {
 
     @Override
     public String getInstructions() {
-        return "npckill " + ID + " amount:" + amount + " " + events + " " + conditions + " tag:"
+        return "npckill " + ID + " amount:" + amount + " " + events + " " + conditions + " label:"
             + tag;
     }
 

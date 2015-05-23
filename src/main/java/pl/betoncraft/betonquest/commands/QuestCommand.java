@@ -35,8 +35,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.Journal;
@@ -55,10 +56,6 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class QuestCommand implements CommandExecutor {
     
-    /**
-     * Language string.
-     */
-    private String lang = ConfigHandler.getString("config.language");
     /**
      * Keeps the pointer to BetonQuest's instance.
      */
@@ -121,7 +118,7 @@ public class QuestCommand implements CommandExecutor {
                         public void run() {
                             handleObjectives(finalSender1, finalArgs1);
                         }
-                    }.runTask(instance);
+                    }.runTaskAsynchronously(instance);
                     break;
                 case "tags":
                 case "tag":
@@ -134,7 +131,7 @@ public class QuestCommand implements CommandExecutor {
                         public void run() {
                             handleTags(finalSender2, finalArgs2);
                         }
-                    }.runTask(instance);
+                    }.runTaskAsynchronously(instance);
                     break;
                 case "points":
                 case "point":
@@ -147,7 +144,7 @@ public class QuestCommand implements CommandExecutor {
                         public void run() {
                             handlePoints(finalSender3, finalArgs3);
                         }
-                    }.runTask(instance);
+                    }.runTaskAsynchronously(instance);
                     break;
                 case "journals":
                 case "journal":
@@ -160,7 +157,7 @@ public class QuestCommand implements CommandExecutor {
                         public void run() {
                             handleJournals(finalSender4, finalArgs4);
                         }
-                    }.runTask(instance);
+                    }.runTaskAsynchronously(instance);
                     break;
                 case "purge":
                     Debug.info("Loading data asynchronously");
@@ -171,7 +168,7 @@ public class QuestCommand implements CommandExecutor {
                         public void run() {
                             purgePlayer(finalSender5, finalArgs5);
                         }
-                    }.runTask(instance);
+                    }.runTaskAsynchronously(instance);
                     break;
                 case "reload":
                     // just reloading
@@ -186,6 +183,10 @@ public class QuestCommand implements CommandExecutor {
                     }
                     Utils.backup();
                     break;
+                case "create":
+                case "package":
+                    createNewPackage(sender, args);
+                    break;
                 default:
                     // there was an unknown argument, so handle this
                     sender.sendMessage(getMessage("unknown_argument"));
@@ -196,14 +197,25 @@ public class QuestCommand implements CommandExecutor {
         }
         return false;
     }
+    
+    /**
+     * Creates new package
+     */
+    public void createNewPackage(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            Debug.info("Package name is missing");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        if (Config.createPackage(args[1])) {
+            sender.sendMessage(getMessage("package_created"));
+        } else {
+            sender.sendMessage(getMessage("package_exists"));
+        }
+    }
 
     /**
      * Purges player's data
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            command arguments
      */
     private void purgePlayer(CommandSender sender, String[] args) {
         // playerID is required
@@ -228,12 +240,7 @@ public class QuestCommand implements CommandExecutor {
     }
     
     /**
-     * Handles config command
-     * <p/>
      * Reads, sets or appends strings from/to config files
-     * 
-     * @param sender
-     * @param args
      */
     private void handleConfig(CommandSender sender, String[] args) {
         if (args.length < 3) {
@@ -247,7 +254,7 @@ public class QuestCommand implements CommandExecutor {
             case "read":
             case "r":
                 Debug.info("Displaying variable at path " + path);
-                String message = ConfigHandler.getString(path);
+                String message = Config.getString(path);
                 sender.sendMessage(message == null ? "null" : message);
                 break;
             case "set":
@@ -261,11 +268,10 @@ public class QuestCommand implements CommandExecutor {
                     sender.sendMessage(getMessage("specify_path"));
                     return;
                 }
-                boolean set = ConfigHandler.setString(path, (args[3].equals("null")) ? null : 
-                        strBldr.toString().trim());
+                boolean set = Config.setString(path, (args[3].equals("null")) ? null : strBldr.toString().trim());
                 if (set) {
                     Debug.info("Displaying variable at path " + path);
-                    String message1 = ConfigHandler.getString(path);
+                    String message1 = Config.getString(path);
                     sender.sendMessage(message1 == null ? "null" : message1);
                 } else {
                     sender.sendMessage(getMessage("config_set_error"));
@@ -288,15 +294,14 @@ public class QuestCommand implements CommandExecutor {
                     finalString = finalString.substring(1, finalString.length());
                     space = true;
                 }
-                String oldString = ConfigHandler.getString(path);
+                String oldString = Config.getString(path);
                 if (oldString == null) {
                     oldString = "";
                 }
-                boolean set2 = ConfigHandler.setString(path, oldString + ((space) ? " " : "")
-                        + finalString);
+                boolean set2 = Config.setString(path, oldString + ((space) ? " " : "") + finalString);
                 if (set2) {
                     Debug.info("Displaying variable at path " + path);
-                    String message2 = ConfigHandler.getString(path);
+                    String message2 = Config.getString(path);
                     sender.sendMessage(message2 == null ? "null" : message2);
                 } else {
                     sender.sendMessage(getMessage("config_set_error"));
@@ -311,14 +316,7 @@ public class QuestCommand implements CommandExecutor {
     }
     
     /**
-     * Handles journal command
-     * <p/>
      * Lists, adds or removes journal entries of certain players
-     * 
-     * @param sender
-     *          CommandSender
-     * @param args
-     *          list of this command's arguments
      */
     private void handleJournals(CommandSender sender, String[] args) {
         // playerID is required
@@ -342,8 +340,8 @@ public class QuestCommand implements CommandExecutor {
             Debug.info("Listing journal pointers");
             sender.sendMessage(getMessage("player_journal"));
             for (Pointer pointer : journal.getPointers()) {
-                String date = new SimpleDateFormat(ConfigHandler.getString(
-                        "messages.global.date_format")).format(new Date(pointer.getTimestamp()));
+                String date = new SimpleDateFormat(Config.getString("messages.global.date_format"))
+                        .format(new Date(pointer.getTimestamp()));
                 sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
             }
             return;
@@ -365,8 +363,9 @@ public class QuestCommand implements CommandExecutor {
                 } else {
                     Debug.info("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        journal.addPointer(new Pointer(args[3], new SimpleDateFormat(ConfigHandler
-                                .getString("messages.global.date_format")).parse(args[4].replaceAll("_", " ")).getTime()));
+                        journal.addPointer(new Pointer(args[3], new SimpleDateFormat(
+                                Config.getString("messages.global.date_format"))
+                                .parse(args[4].replaceAll("_", " ")).getTime()));
                     } catch (ParseException e) {
                         Debug.info("Date was in the wrong format");
                         sender.sendMessage(getMessage("specify_date"));
@@ -405,14 +404,7 @@ public class QuestCommand implements CommandExecutor {
     }
 
     /**
-     * Handles points command
-     * <p/>
      * Lists, adds or removes points of certain player
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            list of this command's arguments
      */
     private void handlePoints(CommandSender sender, String[] args) {
         // playerID is required
@@ -483,14 +475,7 @@ public class QuestCommand implements CommandExecutor {
     }
 
     /**
-     * Handles items command
-     * <p/>
      * Adds item held in hand to items.yml file
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            List of command's arguments
      */
     private void handleItems(CommandSender sender, String[] args) {
         // sender must be a player
@@ -504,6 +489,14 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_item"));
             return;
         }
+        if (!args[1].contains(".")) {
+            Debug.info("Cannot continue, package must be specified");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        String[] parts = args[1].split("\\.");
+        String pack = parts[0];
+        String itemName = parts[1];
         Player player = (Player) sender;
         ItemStack item = player.getItemInHand();
         // if item is air then there is nothing to add to items.yml
@@ -513,25 +506,24 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // define parts of the final string
-        ConfigAccessor config = ConfigHandler.getConfigs().get("items");
+        ConfigPackage configPack = Config.getPackage(pack);
+        if (configPack == null) {
+            Debug.info("Cannot continue, package does not exist");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        ConfigAccessor config = configPack.getItems();
         String instructions = Utils.itemToString(item);
         // save it in items.yml
         Debug.info("Saving item to configuration as " + args[1]);
-        config.getConfig().set(args[1], instructions.trim());
+        config.getConfig().set(itemName, instructions.trim());
         config.saveConfig();
         // done
         sender.sendMessage(getMessage("item_created").replace("%item%", args[1]));
     }
 
     /**
-     * Handler events command
-     * <p/>
      * Fires an event for an online player. It cannot work for offline players!
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            list of command's arguments
      */
     private void handleEvents(CommandSender sender, String[] args) {
         String playerID = PlayerConverter.getID(args[1]);
@@ -541,27 +533,34 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_player"));
             return;
         }
+        if (!args[2].contains(".")) {
+            Debug.info("Cannot continue, package must be specified");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        String[] parts = args[2].split("\\.");
+        String pack = parts[0];
+        String name = parts[1];
+        ConfigPackage configPack = Config.getPackage(pack);
+        if (configPack == null) {
+            Debug.info("Cannot continue, package does not exist");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
         // the event ID
-        if (args.length < 3 || ConfigHandler.getString("events." + args[2]) == null) {
+        if (args.length < 3 || configPack.getEvents().getConfig().getString(name) == null) {
             Debug.info("Event's ID is missing or it's not defined");
             sender.sendMessage(getMessage("specify_event"));
             return;
         }
         // fire the event
-        BetonQuest.event(playerID, args[2]);
+        BetonQuest.event(playerID, pack, name);
         sender.sendMessage(getMessage("player_event").replaceAll("%event%",
-                ConfigHandler.getString("events." + args[2])));
+                configPack.getEvents().getConfig().getString(name)));
     }
 
     /**
-     * Handles conditions command
-     * <p/>
      * Checks if specified player meets condition described by ID
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            list of arguments
      */
     private void handleConditions(CommandSender sender, String[] args) {
         String playerID = PlayerConverter.getID(args[1]);
@@ -577,8 +576,29 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_condition"));
             return;
         }
-        String conditionID = (args[2].startsWith("!")) ? args[2].substring(1, args[2].length()): args[2];
-        if (ConfigHandler.getString("conditions." + conditionID) == null) {
+        String conditionID = null;
+        boolean inverted = false;
+        if (args[2].startsWith("!")) {
+            conditionID = args[2].substring(1, args[2].length());
+            inverted = true;
+        } else {
+            conditionID = args[2];
+        }
+        if (!conditionID.contains(".")) {
+            Debug.info("Cannot continue, package must be specified");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        String[] parts = conditionID.split("\\.");
+        String pack = parts[0];
+        String name = parts[1];
+        ConfigPackage configPack = Config.getPackage(pack);
+        if (configPack == null) {
+            Debug.info("Cannot continue, package does not exist");
+            sender.sendMessage(getMessage("specify_package"));
+            return;
+        }
+        if (configPack.getConditions().getConfig().getString(name) == null) {
             Debug.info("Condition is not defined");
             sender.sendMessage(getMessage("specify_condition"));
             return;
@@ -586,18 +606,14 @@ public class QuestCommand implements CommandExecutor {
         // display message about condition
         sender.sendMessage(getMessage("player_condition")
                 .replaceAll("%condition%", 
-                        ((args[2].startsWith("!")) ? "! " : "")
-                        + ConfigHandler.getString("conditions." + conditionID))
+                        (inverted ? "! " : "")
+                        + configPack.getConditions().getConfig().getString(name))
                 .replaceAll("%outcome%",
-                        BetonQuest.condition(playerID, args[2]) + ""));
+                        BetonQuest.condition(playerID, pack, name) + ""));
     }
 
     /**
-     * Handles tags command
-     * <p/>
      * Lists, adds or removes tags
-     * 
-     * @param sender
      */
     private void handleTags(CommandSender sender, String[] args) {
         // playerID is required
@@ -663,14 +679,7 @@ public class QuestCommand implements CommandExecutor {
     }
 
     /**
-     * Handles objectives command
-     * <p/>
      * Lists, adds or removes objectives.
-     * 
-     * @param sender
-     *            CommandSender
-     * @param args
-     *            list of command's arguments
      */
     private void handleObjectives(CommandSender sender, String[] args) {
         // playerID is required
@@ -692,12 +701,11 @@ public class QuestCommand implements CommandExecutor {
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
             List<String> tags;
             if (!isOnline) {
-                // if player is offline then convert his raw objective strings
-                // to tags
+                // if player is offline then convert his raw objective strings to tags
                 tags = new ArrayList<>();
                 for (String string : dbHandler.getRawObjectives()) {
                     for (String part : string.split(" ")) {
-                        if (part.startsWith("tag:")) {
+                        if (part.startsWith("label:")) {
                             tags.add(part.substring(4));
                         }
                     }
@@ -773,11 +781,11 @@ public class QuestCommand implements CommandExecutor {
     private void reloadPlugin() {
         // reload the configuration
         Debug.info("Reloading configuration");
-        ConfigHandler.reload();
-        // update language
-        lang = ConfigHandler.getString("config.language");
+        new Config();
         // load new static events
         new StaticEvents();
+        // reload tellraw command executor
+        new TellrawCommand();
         // stop current global locations listener
         // and start new one with reloaded configs
         Debug.info("Restarting global locations");
@@ -799,11 +807,6 @@ public class QuestCommand implements CommandExecutor {
 
     /**
      * Displays help to the user.
-     * 
-     * @param sender
-     *            CommandSender
-     * @param alias
-     *            used command alias
      */
     private void displayHelp(CommandSender sender, String alias) {
         Debug.info("Just displaying help");
@@ -822,8 +825,7 @@ public class QuestCommand implements CommandExecutor {
         if (!(sender instanceof Player)) cmds.put("backup", "backup");
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
-        if (ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true")
-            && sender instanceof Player) {
+        if (Config.getString("config.tellraw").equalsIgnoreCase("true") && sender instanceof Player) {
             for (String command : cmds.keySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\""
@@ -847,6 +849,6 @@ public class QuestCommand implements CommandExecutor {
      * @return the message
      */
     private String getMessage(String name) {
-        return ConfigHandler.getString("messages." + lang + "." + name).replaceAll("&", "§");
+        return Config.getMessage(name).replaceAll("&", "§");
     }
 }

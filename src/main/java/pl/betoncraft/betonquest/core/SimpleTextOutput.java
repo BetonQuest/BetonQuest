@@ -21,7 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -42,7 +42,7 @@ public class SimpleTextOutput {
      */
     public static void sendSystemMessage(String playerID, String message, String soundName) {
         Player player = PlayerConverter.getPlayer(playerID);
-        String finalString = (ConfigHandler.getString("messages.global.plugin_prefix") + message)
+        String finalString = (Config.getString("messages.global.plugin_prefix") + message)
                 .replaceAll("&", "§");
         player.sendMessage(finalString);
         if (!soundName.equalsIgnoreCase("false")) {
@@ -63,7 +63,7 @@ public class SimpleTextOutput {
      *            message
      */
     public static void sendQuesterMessage(String playerID, String quester, String message) {
-        String finalString = (ConfigHandler.getString("messages.global.quester_line_format") + message)
+        String finalString = (Config.getString("messages.global.quester_line_format") + message)
                 .replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName())
                 .replaceAll("%quester%", quester).replaceAll("&", "§");
         PlayerConverter.getPlayer(playerID).sendMessage(finalString);
@@ -82,11 +82,11 @@ public class SimpleTextOutput {
      *            message
      */
     public static void sendQuesterReply(String playerID, int number, String quester, String message, String hash) {
-        String finalString = (ConfigHandler.getString("messages.global.quester_reply_format") + message)
+        String finalString = (Config.getString("messages.global.quester_reply_format") + message)
                 .replaceAll("%quester%", quester).replaceAll("%number%", String.valueOf(number))
                 .replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName())
                 .replaceAll("&", "§");
-        if (ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true")) {
+        if (Config.getString("config.tellraw").equalsIgnoreCase("true")) {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
                     "tellraw " + PlayerConverter.getPlayer(playerID).getName()
                         + " {\"text\":\"\",\"extra\":[{\"text\":\"" + finalString
@@ -107,7 +107,7 @@ public class SimpleTextOutput {
      * @param message
      */
     public static void sendPlayerReply(String playerID, String quester, String message) {
-        String finalString = (ConfigHandler.getString("messages.global.player_reply_format") + message)
+        String finalString = (Config.getString("messages.global.player_reply_format") + message)
                 .replaceAll("%player%", PlayerConverter.getPlayer(playerID).getName())
                 .replaceAll("%quester%", quester).replaceAll("&", "§");
         PlayerConverter.getPlayer(playerID).sendMessage(finalString);

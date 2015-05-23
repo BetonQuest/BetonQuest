@@ -23,9 +23,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.CombatTagger;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -44,17 +45,28 @@ public class CitizensListener implements Listener {
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
-    public void onNPCClick(NPCRightClickEvent event) {
-        String id = ConfigHandler.getString("npcs." + event.getNPC().getId());
-        if (event.isCancelled() || id == null) {
+    public void onNPCClick(final NPCRightClickEvent event) {
+        if (event.isCancelled()) {
             return;
         }
         if (CombatTagger.isTagged(PlayerConverter.getID(event.getClicker()))) {
-            event.getClicker().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                    .getString("config.language") + ".busy").replaceAll("&", "§"));
+            event.getClicker().sendMessage(Config.getMessage("busy").replaceAll("&", "§"));
             return;
         }
-        new CitizensConversation(PlayerConverter.getID(event.getClicker()), id,
-                event.getNPC().getEntity().getLocation(), event.getNPC());
+        String id = String.valueOf(event.getNPC().getId());
+        String assignment = Config.getNpc(id);
+        if (assignment != null) {
+            String[] parts = assignment.split("\\.");
+            final String convName = parts[1];
+            final String packName = parts[0];
+            event.setCancelled(true);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    new CitizensConversation(PlayerConverter.getID(event.getClicker()), packName,
+                            convName, event.getNPC().getEntity().getLocation(), event.getNPC());
+                }
+            }.runTaskAsynchronously(BetonQuest.getInstance());
+        }
     }
 }

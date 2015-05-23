@@ -37,7 +37,8 @@ import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -84,7 +85,7 @@ public class Conversation implements Listener {
     /**
      * True if tellraw option is used
      */
-    private boolean tellraw = ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true");
+    private boolean tellraw;
     /**
      * Defines if the movement during conversation should be blocked
      */
@@ -101,6 +102,10 @@ public class Conversation implements Listener {
      * First options for this conversation, separated by commas
      */
     private String startingOptions;
+    /**
+     * Package in which this conversation is defined
+     */
+    private ConfigPackage pack;
 
     /**
      * Constructor method, starts a new conversation between player and npc at
@@ -109,12 +114,13 @@ public class Conversation implements Listener {
      * @param playerID
      * @param conversationID
      */
-    public Conversation(String playerID, String conversationID, Location location) {
+    public Conversation(String playerID, String packName, String conversationID, Location location) {
 
         this.playerID = playerID;
         this.conversationID = conversationID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.location = location;
+        this.tellraw = Config.getString("config.tellraw").equalsIgnoreCase("true");
 
         Debug.info("Starting conversation " + conversationID + " for player " + playerID);
 
@@ -129,16 +135,21 @@ public class Conversation implements Listener {
             Debug.info("Player " + playerID + " is in conversation right now, returning.");
             return;
         }
+        
+        // check if the package is alright
+        pack = Config.getPackage(packName);
+        if (pack == null) {
+            Debug.error("Package " + packName + " is not defined!");
+            return;
+        }
 
         // Check if everything is defined correctly, so the conversation doesn't
         // start with invalid data
-        this.quester = ConfigHandler.getString("conversations." + conversationID + ".quester");
-        this.finalEvents = ConfigHandler.getString("conversations." + conversationID
-            + ".final_events");
-        this.unknown = ConfigHandler.getString("conversations." + conversationID + ".unknown");
+        this.quester = pack.getString("conversations." + conversationID + ".quester");
+        this.finalEvents = pack.getString("conversations." + conversationID + ".final_events");
+        this.unknown = pack.getString("conversations." + conversationID + ".unknown");
         // get initial npc's options
-        this.startingOptions = ConfigHandler
-                .getString("conversations." + conversationID + ".first");
+        this.startingOptions = pack.getString("conversations." + conversationID + ".first");
 
         // check if all data is valid (or at least exist)
         if (quester == null || quester.equals("")) {
@@ -168,15 +179,11 @@ public class Conversation implements Listener {
         list.put(playerID, this);
 
         // print message about starting a conversation
-        SimpleTextOutput.sendSystemMessage(
-                playerID,
-                ConfigHandler.getString(
-                        "messages." + ConfigHandler.getString("config.language")
-                            + ".conversation_start").replaceAll("%quester%", quester),
-                ConfigHandler.getString("config.sounds.start"));
+        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("conversation_start")
+                .replaceAll("%quester%", quester), Config.getString("config.sounds.start"));
 
         // if stop is true stop the player from moving away
-        String stop = ConfigHandler.getString("conversations." + conversationID + ".stop");
+        String stop = pack.getString("conversations." + conversationID + ".stop");
         if (stop != null && stop.equalsIgnoreCase("true")) {
             movementBlock = true;
         } else {
@@ -205,8 +212,8 @@ public class Conversation implements Listener {
         // get npc's text
         String option = null;
         options: for (String NPCoption : options.split(",")) {
-            String rawConditions = ConfigHandler.getString("conversations." + this.conversationID
-                + ".NPC_options." + NPCoption + ".conditions");
+            String rawConditions = pack.getString("conversations." + this.conversationID
+                    + ".NPC_options." + NPCoption + ".conditions");
             if (rawConditions == null) {
                 endConversation();
                 Debug.error("Conversation " + conversationID
@@ -219,7 +226,17 @@ public class Conversation implements Listener {
                     option = NPCoption;
                     break options;
                 }
-                if (!BetonQuest.condition(this.playerID, condition)) {
+                String conditionID;
+                String packageName;
+                if (condition.contains(".")) {
+                    String[] parts = condition.split("\\.");
+                    conditionID = parts[1];
+                    packageName = parts[0];
+                } else {
+                    conditionID = condition;
+                    packageName = pack.getName();
+                }
+                if (!BetonQuest.condition(this.playerID, packageName, conditionID)) {
                     continue options;
                 }
             }
@@ -234,31 +251,25 @@ public class Conversation implements Listener {
         }
 
         // and print it to player
-        String text = ConfigHandler.getString("conversations." + this.conversationID
-            + ".NPC_options." + option + ".text");
+        String text = pack.getString("conversations." + this.conversationID  + ".NPC_options." + option + ".text");
         if (text == null) {
-            Debug.error("Conversation " + conversationID + " is missing NPC text in option "
-                + option);
+            Debug.error("Conversation " + conversationID + " is missing NPC text in option " + option);
             endConversation();
             return;
         }
         SimpleTextOutput.sendQuesterMessage(this.playerID, quester, text);
 
-        String events = ConfigHandler.getString("conversations." + this.conversationID
-            + ".NPC_options." + option + ".events");
+        String events = pack.getString("conversations." + this.conversationID + ".NPC_options." + option + ".events");
         if (events == null) {
-            Debug.error("Conversation " + conversationID + " is missing events in NPC option "
-                + option);
+            Debug.error("Conversation " + conversationID + " is missing events in NPC option " + option);
             endConversation();
             return;
         }
         fireEvents(events);
 
-        String pointers = ConfigHandler.getString("conversations." + this.conversationID
-            + ".NPC_options." + option + ".pointer");
+        String pointers = pack.getString("conversations." + this.conversationID + ".NPC_options." + option + ".pointer");
         if (pointers == null) {
-            Debug.error("Conversation " + conversationID + " is missing pointer in NPC option "
-                + option);
+            Debug.error("Conversation " + conversationID + " is missing pointer in NPC option " + option);
             endConversation();
             return;
         }
@@ -282,11 +293,7 @@ public class Conversation implements Listener {
             // some text from npc saying that he doesn't understand player
             SimpleTextOutput.sendQuesterMessage(playerID, quester, unknown);
             // and instructions from plugin about answering npcs
-            SimpleTextOutput.sendSystemMessage(
-                    playerID,
-                    ConfigHandler.getString("messages."
-                        + ConfigHandler.getString("config.language") + ".help_with_answering"),
-                    "false");
+            SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("help_with_answering"), "false");
             return;
         }
 
@@ -299,27 +306,22 @@ public class Conversation implements Listener {
         if (tellraw) hashes.clear();
 
         // print to player his answer
-        String reply = ConfigHandler.getString("conversations." + conversationID
-            + ".player_options." + choosenAnswerID + ".text");
+        String reply = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".text");
         SimpleTextOutput.sendPlayerReply(playerID, quester, reply);
 
         // fire events
-        String events = ConfigHandler.getString("conversations." + conversationID
-            + ".player_options." + choosenAnswerID + ".events");
+        String events = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".events");
         if (events == null) {
-            Debug.error("Conversation " + conversationID + " is missing events in player option "
-                + choosenAnswerID);
+            Debug.error("Conversation " + conversationID + " is missing events in player option " + choosenAnswerID);
             endConversation();
             return;
         }
         fireEvents(events);
 
         // print to player npc's answer
-        String NPCanswer = ConfigHandler.getString("conversations." + conversationID
-            + ".player_options." + choosenAnswerID + ".pointer");
+        String NPCanswer = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".pointer");
         if (NPCanswer == null) {
-            Debug.error("Conversation " + conversationID + " is missing pointer in player option "
-                + choosenAnswerID);
+            Debug.error("Conversation " + conversationID + " is missing pointer in player option " + choosenAnswerID);
             endConversation();
             return;
         }
@@ -339,7 +341,17 @@ public class Conversation implements Listener {
             String[] events = rawEvents.split(",");
             // foreach eventID fire an event
             for (String event : events) {
-                BetonQuest.event(playerID, event);
+                String eventID;
+                String packageName;
+                if (event.contains(".")) {
+                    String[] parts = event.split("\\.");
+                    eventID = parts[1];
+                    packageName = parts[0];
+                } else {
+                    eventID = event;
+                    packageName = pack.getName();
+                }
+                BetonQuest.event(playerID, packageName, eventID);
             }
         }
     }
@@ -365,11 +377,9 @@ public class Conversation implements Listener {
         int i = 0;
         answers: for (String option : options) {
             // get conditions from config
-            String rawConditions = ConfigHandler.getString("conversations." + conversationID
-                + ".player_options." + option + ".conditions");
+            String rawConditions = pack.getString("conversations." + conversationID + ".player_options." + option + ".conditions");
             if (rawConditions == null) {
-                Debug.error("Conversation " + conversationID
-                    + " is missing conditions in player option " + option);
+                Debug.error("Conversation " + conversationID + " is missing conditions in player option " + option);
                 endConversation();
                 return;
             }
@@ -377,10 +387,19 @@ public class Conversation implements Listener {
             if (!rawConditions.equalsIgnoreCase("")) {
                 // split them to separate ids
                 String[] conditions = rawConditions.split(",");
-                // if some condition is not met, skip printing this option and
-                // move on
-                for (String conditionID : conditions) {
-                    if (!BetonQuest.condition(playerID, conditionID)) {
+                // if some condition is not met, skip printing this option and move on
+                for (String condition : conditions) {
+                    String conditionID;
+                    String packageName;
+                    if (condition.contains(".")) {
+                        String[] parts = condition.split("\\.");
+                        conditionID = parts[1];
+                        packageName = parts[0];
+                    } else {
+                        conditionID = condition;
+                        packageName = pack.getName();
+                    }
+                    if (!BetonQuest.condition(playerID, packageName, conditionID)) {
                         continue answers;
                     }
                 }
@@ -389,8 +408,7 @@ public class Conversation implements Listener {
             // etc.
             i++;
             // print reply
-            String reply = ConfigHandler.getString("conversations." + conversationID
-                + ".player_options." + option + ".text");
+            String reply = pack.getString("conversations." + conversationID + ".player_options." + option + ".text");
             if (reply == null) {
                 Debug.error("Conversation " + conversationID + " is missing text in player option "
                     + option);
@@ -399,8 +417,7 @@ public class Conversation implements Listener {
             }
             String randomID = UUID.randomUUID().toString();
             SimpleTextOutput.sendQuesterReply(playerID, i, quester, reply, randomID);
-            // put reply to hashmap in order to find it's ID when player
-            // responds by
+            // put reply to hashmap in order to find it's ID when player responds by
             // it's i number (id is string, we don't want to print it to player)
             current.put(Integer.valueOf(i), option);
             if (tellraw) {
@@ -424,16 +441,22 @@ public class Conversation implements Listener {
         if (!finalEvents.equals("")) {
             String[] splitFinalEvents = finalEvents.split(",");
             for (String event : splitFinalEvents) {
-                BetonQuest.event(playerID, event);
+                String eventID;
+                String packageName;
+                if (event.contains(".")) {
+                    String[] parts = event.split("\\.");
+                    eventID = parts[1];
+                    packageName = parts[0];
+                } else {
+                    eventID = event;
+                    packageName = pack.getName();
+                }
+                BetonQuest.event(playerID, packageName, eventID);
             }
         }
         // print message
-        SimpleTextOutput.sendSystemMessage(
-                playerID,
-                ConfigHandler.getString(
-                        "messages." + ConfigHandler.getString("config.language")
-                            + ".conversation_end").replaceAll("%quester%", quester),
-                ConfigHandler.getString("config.sounds.end"));
+        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("conversation_end")
+                .replaceAll("%quester%", quester), Config.getString("config.sounds.end"));
         // delete conversation on the next tick to prevent errors
         new BukkitRunnable() {
             @Override
@@ -482,9 +505,8 @@ public class Conversation implements Listener {
             return;
         }
         // if player passes max distance
-        if (!event.getTo().getWorld().equals(location.getWorld())
-            || event.getTo().distance(location) > Integer.valueOf(ConfigHandler
-                    .getString("config.max_npc_distance"))) {
+        if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location)
+                > Integer.valueOf(Config.getString("config.max_npc_distance"))) {
             // we can stop the player or end conversation
             if (isMovementBlock()) {
                 moveBack(event);
@@ -515,9 +537,8 @@ public class Conversation implements Listener {
     private void moveBack(PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(location.getWorld())
-            || event.getTo().distance(location) > Integer.valueOf(ConfigHandler
-                    .getString("config.max_npc_distance")) * 2) {
+        if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location)
+                > Integer.valueOf(Config.getString("config.max_npc_distance")) * 2) {
             event.getPlayer().teleport(location);
             return;
         }
@@ -533,8 +554,8 @@ public class Conversation implements Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (ConfigHandler.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler.getString("config.language") + ".pullback").replaceAll("&", "§"));
+        if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
+            event.getPlayer().sendMessage(Config.getMessage("pullback").replaceAll("&", "§"));
         }
     }
 

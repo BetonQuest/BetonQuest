@@ -40,8 +40,8 @@ public class RegionCondition extends Condition {
     private ProtectedRegion region;
     private Player player;
     
-    public RegionCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public RegionCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Error in instruction string in: " + instructions);

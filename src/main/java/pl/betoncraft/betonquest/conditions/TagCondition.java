@@ -30,8 +30,8 @@ public class TagCondition extends Condition {
 
     private String tag;
 
-    public TagCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public TagCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("There is no tag defined in: " + instructions);

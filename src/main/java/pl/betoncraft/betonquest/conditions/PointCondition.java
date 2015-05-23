@@ -33,8 +33,8 @@ public class PointCondition extends Condition {
     private String category = null;
     private int count = 0;
 
-    public PointCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public PointCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             Debug.error("Not enough arguments for a point condition in: " + instructions);

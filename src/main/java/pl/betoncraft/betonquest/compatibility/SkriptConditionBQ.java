@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
@@ -53,7 +54,18 @@ public class SkriptConditionBQ extends Condition {
 
     @Override
     public boolean check(Event e) {
-        return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), condition.getSingle(e));
+        String conditionID = condition.getSingle(e);
+        String condName;
+        String packName;
+        if (conditionID.contains(".")) {
+            String[] parts = conditionID.split("\\.");
+            condName = parts[1];
+            packName = parts[0];
+        } else {
+            Debug.error("No package specified for skript condition: " + toString());
+            return false;
+        }
+        return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), packName, condName);
     }
 
 }

@@ -42,12 +42,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
-import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.config.Zipper;
+import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
-import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Database;
 
 /**
@@ -404,8 +404,7 @@ public class Utils {
             return false;
         }
         if (item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore()
-                .contains(ConfigHandler.getString("messages." + ConfigHandler.getString
-                ("config.language") + ".quest_item").replaceAll("&", "§"))) {
+                .contains(Config.getMessage("quest_item").replaceAll("&", "§"))) {
             return true;
         }
         return false;

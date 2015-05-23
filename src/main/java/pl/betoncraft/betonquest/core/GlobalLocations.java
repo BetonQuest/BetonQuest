@@ -26,7 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -57,16 +58,18 @@ public class GlobalLocations extends BukkitRunnable {
     public GlobalLocations() {
         instance = this;
         // get list of global locations and make it final
-        String rawGlobalLocations = ConfigHandler.getString("config.global_locations");
-        if (rawGlobalLocations.equals("")) {
-            finalLocations = null;
-            return;
-        }
-        String[] parts = rawGlobalLocations.split(",");
-        for (String event : parts) {
-            GlobalLocation gL = new GlobalLocation(event);
-            if (gL.isValid())
-                locations.add(gL);
+        for (String packName : Config.getPackageNames()) {
+            ConfigPackage pack = Config.getPackage(packName);
+            String rawGlobalLocations = pack.getString("main.global_locations");
+            if (rawGlobalLocations == null) {
+                continue;
+            }
+            String[] parts = rawGlobalLocations.split(",");
+            for (String event : parts) {
+                GlobalLocation gL = new GlobalLocation(pack, event);
+                if (gL.isValid())
+                    locations.add(gL);
+            }
         }
         finalLocations = locations;
     }
@@ -109,9 +112,18 @@ public class GlobalLocations extends BukkitRunnable {
                     // check all conditions
                     if (location.getConditions() != null) {
                         for (String condition : location.getConditions()) {
-                            if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                                // if some conditions are not met, skip to next
-                                // location
+                            String conditionID;
+                            String packageName;
+                            if (condition.contains(".")) {
+                                String[] parts = condition.split("\\.");
+                                conditionID = parts[1];
+                                packageName = parts[0];
+                            } else {
+                                Debug.error("Package not defined in global location condition: " + condition);
+                                continue;
+                            }
+                            if (!BetonQuest.condition(PlayerConverter.getID(player), packageName, conditionID)) {
+                                // if some conditions are not met, skip to next location
                                 continue locations;
                             }
                         }
@@ -121,7 +133,17 @@ public class GlobalLocations extends BukkitRunnable {
                             .addTag("global_" + location.getTag());
                     // fire all events for the location
                     for (String event : location.getEvents()) {
-                        BetonQuest.event(PlayerConverter.getID(player), event);
+                        String eventID;
+                        String packageName;
+                        if (event.contains(".")) {
+                            String[] parts = event.split("\\.");
+                            eventID = parts[1];
+                            packageName = parts[0];
+                        } else {
+                            Debug.error("Package not defined in global location event: " + event);
+                            continue;
+                        }
+                        BetonQuest.event(PlayerConverter.getID(player), packageName, eventID);
                     }
                 }
             }
@@ -168,9 +190,9 @@ public class GlobalLocations extends BukkitRunnable {
          * @param event
          *            ID of the event
          */
-        public GlobalLocation(String event) {
-            Debug.info("Creating new GlobalLocation from " + event + " event.");
-            String instructions = ConfigHandler.getString("events." + event);
+        public GlobalLocation(ConfigPackage pack, String event) {
+            Debug.info("Creating new GlobalLocation from " + pack.getName() + "." + event + " event.");
+            String instructions = pack.getString("events." + event);
             if (instructions == null || !instructions.startsWith("objective location ")) {
                 Debug.error("Location objective not found in event " + event);
                 valid = false;

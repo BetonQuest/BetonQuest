@@ -24,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -38,8 +37,8 @@ public class ItemCondition extends Condition {
 
     private List<Item> questItems = new ArrayList<>();
 
-    public ItemCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ItemCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Items not defined in item condition: " + instructions);
@@ -59,7 +58,7 @@ public class ItemCondition extends Condition {
                     break;
                 }
             }
-            String itemInstruction = ConfigHandler.getString("items." + name);
+            String itemInstruction = pack.getString("items." + name);
             if (itemInstruction == null) {
                 Debug.error("Item not defined: " + name);
                 break;

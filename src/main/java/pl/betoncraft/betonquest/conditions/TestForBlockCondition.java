@@ -36,8 +36,8 @@ public class TestForBlockCondition extends Condition {
     private Block block;
     private Material material;
     
-    public TestForBlockCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public TestForBlockCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             Debug.error("Error in instruction string in: " + instructions);

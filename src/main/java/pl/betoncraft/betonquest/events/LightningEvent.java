@@ -37,8 +37,8 @@ public class LightningEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public LightningEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public LightningEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // the event cannot be fired for offline players
         if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player " + playerID + " is offline, cannot fire event");

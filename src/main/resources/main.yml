@@ -1,0 +1,8 @@
+variables:
+  block: LOG
+npcs:
+  'Innkeeper': innkeeper
+  '0': innkeeper
+#static:
+#  '03:45': example
+#global_locations: 'example,beton'

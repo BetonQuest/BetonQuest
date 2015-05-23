@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -35,8 +34,8 @@ public class HandCondition extends Condition {
     private QuestItem questItem;
     private String itemName;
 
-    public HandCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public HandCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Item name not defined in hand condition: " + instructions);
@@ -44,7 +43,7 @@ public class HandCondition extends Condition {
             return;
         }
         itemName = parts[1];
-        String itemInstruction = ConfigHandler.getString("items." + itemName);
+        String itemInstruction = pack.getString("items." + itemName);
         if (itemInstruction == null) {
             Debug.error("Item not defined: " + itemName);
             isOk = false;

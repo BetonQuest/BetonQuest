@@ -33,8 +33,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class BQEventSkript extends QuestEvent {
     
-    public BQEventSkript(String playerID, String instructions) {
-        super(playerID, instructions);
+    public BQEventSkript(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         Player player = PlayerConverter.getPlayer(playerID);
         if (player == null) {
             Debug.error("Player " + playerID  + " is offline, terminating event!");

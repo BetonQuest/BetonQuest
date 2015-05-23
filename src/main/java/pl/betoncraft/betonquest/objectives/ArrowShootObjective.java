@@ -26,6 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
@@ -81,24 +82,28 @@ public class ArrowShootObjective extends Objective implements Listener {
     @EventHandler
     public void onArrowHit(ProjectileHitEvent event) {
         // check if it's the arrow shot by the player
-        Projectile arrow = event.getEntity();
+        final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
             return;
         }
         if (!(arrow.getShooter() instanceof Player)) {
             return;
         }
-        Player player = (Player) arrow.getShooter();
+        final Player player = (Player) arrow.getShooter();
         if (!PlayerConverter.getID(player).equals(playerID)) {
             return;
         }
-        // check if the arrow is in the right place
-        Location arrowLocation = arrow.getLocation();
-        if (arrowLocation.getWorld().equals(location.getWorld()) && arrowLocation
-                .distance(location) < precision && checkConditions()) {
-            completeObjective();
-        }
-        
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // check if the arrow is in the right place in the next tick, let the arrow land
+                Location arrowLocation = arrow.getLocation();
+                if (arrowLocation.getWorld().equals(location.getWorld())
+                    && arrowLocation.distance(location) < precision && checkConditions()) {
+                    completeObjective();
+                }
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     @Override

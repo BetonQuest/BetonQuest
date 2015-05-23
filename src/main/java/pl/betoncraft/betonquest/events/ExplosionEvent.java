@@ -38,8 +38,8 @@ public class ExplosionEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public ExplosionEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ExplosionEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // the event cannot be fired for offline players
         if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
             Debug.info("Player " + playerID + " is offline, cannot fire event");

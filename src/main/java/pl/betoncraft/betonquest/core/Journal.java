@@ -27,7 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -106,15 +107,18 @@ public class Journal {
     public void generateTexts() {
         texts.clear();
         for (Pointer pointer : pointers) {
-            String date = new SimpleDateFormat(ConfigHandler.getString(
-                    "messages.global.date_format")).format(pointer.getTimestamp());
-            String day = "§" + ConfigHandler.getString("config.journal_colors.date.day")
-                + date.split(" ")[0];
-            String hour = "§" + ConfigHandler.getString("config.journal_colors.date.hour")
-                + date.split(" ")[1];
-            texts.add(day + " " + hour + "§"
-                + ConfigHandler.getString("config.journal_colors.text") + "\n"
-                + ConfigHandler.getString("journal." + pointer.getPointer()));
+            String date = new SimpleDateFormat(Config.getString("messages.global.date_format")).format(pointer.getTimestamp());
+            String day = "§" + Config.getString("config.journal_colors.date.day") + date.split(" ")[0];
+            String hour = "§" + Config.getString("config.journal_colors.date.hour") + date.split(" ")[1];
+            String[] parts = pointer.getPointer().split("\\.");
+            String packName = parts[0];
+            ConfigPackage pack = Config.getPackage(packName);
+            if (pack == null) {
+                continue;
+            }
+            String pointerName = parts[1];
+            texts.add(day + " " + hour + "§" + Config.getString("config.journal_colors.text") + "\n" 
+                    + pack.getString("journal." + pointerName));
         }
     }
 
@@ -155,11 +159,8 @@ public class Journal {
             }
         } else {
             // if there is no place for the item then print a message about it
-            SimpleTextOutput.sendSystemMessage(
-                    playerID,
-                    ConfigHandler.getString("messages."
-                        + ConfigHandler.getString("config.language") + ".inventory_full"),
-                    ConfigHandler.getString("config.sounds.full"));
+            SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("inventory_full"),
+                    Config.getString("config.sounds.full"));
         }
     }
     
@@ -174,21 +175,17 @@ public class Journal {
         // create the book with default title/author
         ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.setTitle(ConfigHandler.getString(
-                "messages." + ConfigHandler.getString("config.language") + ".journal_title")
-                .replaceAll("&", "§"));
+        meta.setTitle(Config.getMessage("journal_title").replaceAll("&", "§"));
         meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
         List<String> lore = new ArrayList<String>();
-        lore.add(ConfigHandler.getString(
-                "messages." + ConfigHandler.getString("config.language") + ".journal_lore")
-                .replaceAll("&", "§"));
+        lore.add(Config.getMessage("journal_lore").replaceAll("&", "§"));
         meta.setLore(lore);
 
         // logic for converting entries into single text and then to pages
         StringBuilder stringBuilder = new StringBuilder();
         for (String entry : getText()) {
             stringBuilder.append(entry.replaceAll("&", "§") + "\n§"
-                + ConfigHandler.getString("config.journal_colors.line") + "---------------\n");
+                + Config.getString("config.journal_colors.line") + "---------------\n");
         }
         String wholeString = stringBuilder.toString().trim();
 
@@ -246,17 +243,9 @@ public class Journal {
         // check all properties of the item and return the result
         return (item.getType().equals(Material.WRITTEN_BOOK)
             && ((BookMeta) item.getItemMeta()).hasTitle()
-            && ((BookMeta) item.getItemMeta()).getTitle().equals(
-                    ConfigHandler.getString(
-                            "messages." + ConfigHandler.getString("config.language")
-                                + ".journal_title").replaceAll("&", "§"))
-            && item.getItemMeta().hasLore() && item
-                .getItemMeta()
-                .getLore()
-                .contains(
-                        ConfigHandler.getString(
-                                "messages." + ConfigHandler.getString("config.language")
-                                    + ".journal_lore").replaceAll("&", "§")));
+            && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage("journal_title").replaceAll("&", "§"))
+            && item.getItemMeta().hasLore()
+            && item.getItemMeta().getLore().contains(Config.getMessage("journal_lore").replaceAll("&", "§")));
     }
     
     /**

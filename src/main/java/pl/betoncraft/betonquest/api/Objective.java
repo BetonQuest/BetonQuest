@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import java.util.UUID;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -35,6 +37,10 @@ import pl.betoncraft.betonquest.utils.Debug;
 public abstract class Objective {
 
     /**
+     * Unique identifier of the objective
+     */
+    protected final UUID id;
+    /**
      * Stores ID of the player.
      */
     protected String playerID;
@@ -51,7 +57,7 @@ public abstract class Objective {
      */
     protected String events;
     /**
-     * Stores objective's tag (without leading "tag:" label!)
+     * Stores objective's tag (without leading "label:" label!)
      */
     protected String tag;
     /**
@@ -74,6 +80,7 @@ public abstract class Objective {
      *            wrong.
      */
     public Objective(String playerID, String instructions) {
+        this.id = UUID.randomUUID();
         this.playerID = playerID;
         this.instructions = instructions;
         // extract tag, events and conditions
@@ -100,7 +107,7 @@ public abstract class Objective {
      */
     protected void completeObjective() {
         Debug.info("Objective \"" + tag + "\" has been completed for player " + playerID
-            + ", firing final events");
+            + ", firing final events. ID='" + id.toString() + "'");
         // split instructions
         String[] parts = instructions.split(" ");
         String rawEvents = null;
@@ -121,7 +128,16 @@ public abstract class Objective {
                 public void run() {
                     // fire all events
                     for (String eventID : events) {
-                        BetonQuest.event(playerID, eventID);
+                        String eventPack;
+                        if (eventID.contains(".")) {
+                            String[] eventParts = eventID.split("\\.");
+                            eventPack = eventParts[0];
+                            eventID = eventParts[1];
+                        } else {
+                            Debug.error("Package not specified for event " + eventID);
+                            continue;
+                        }
+                        BetonQuest.event(playerID, eventPack, eventID);
                     }
                 }
             }.runTask(BetonQuest.getInstance());
@@ -159,7 +175,16 @@ public abstract class Objective {
             String[] conditions = rawConditions.split(",");
             // if some condition is not met, return false
             for (String conditionID : conditions) {
-                if (!BetonQuest.condition(playerID, conditionID)) {
+                String conditionPack;
+                if (conditionID.contains(".")) {
+                    String[] conditionParts = conditionID.split("\\.");
+                    conditionPack = conditionParts[0];
+                    conditionID = conditionParts[1];
+                } else {
+                    Debug.error("Package not specified for condition " + conditionID);
+                    continue;
+                }
+                if (!BetonQuest.condition(playerID, conditionPack, conditionID)) {
                     return false;
                 }
             }

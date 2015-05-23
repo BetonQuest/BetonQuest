@@ -32,8 +32,8 @@ public class EffectCondition extends Condition {
 
     private PotionEffectType type;
 
-    public EffectCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public EffectCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Effect type not defined in effect condition: " + instructions);

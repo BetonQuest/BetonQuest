@@ -30,8 +30,8 @@ public class ExperienceCondition extends Condition {
 
     private int experience;
 
-    public ExperienceCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ExperienceCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Experience levek not defined in experience condition: " + instructions);
@@ -53,7 +53,7 @@ public class ExperienceCondition extends Condition {
             Debug.error("There was an error, returning false.");
             return false;
         }
-        if (PlayerConverter.getPlayer(playerID).getLevel() > experience) {
+        if (PlayerConverter.getPlayer(playerID).getLevel() >= experience) {
             return true;
         }
         return false;

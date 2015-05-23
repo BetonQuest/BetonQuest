@@ -33,8 +33,8 @@ public class RandomCondition extends Condition {
     private int valueMax = 0;
     private int rangeOfRandom = 0;
 
-    public RandomCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public RandomCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] values = null;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {

@@ -36,8 +36,8 @@ public class TeleportEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public TeleportEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public TeleportEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);

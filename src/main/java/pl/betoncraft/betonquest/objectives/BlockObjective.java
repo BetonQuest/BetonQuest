@@ -28,7 +28,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -88,13 +88,11 @@ public class BlockObjective extends Objective implements Listener {
             } else if (notify) {
                 Player player = PlayerConverter.getPlayer(playerID);
                 if (currentAmount > neededAmount) {
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".blocks_to_break")
+                    player.sendMessage(Config.getMessage("blocks_to_break")
                             .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
                             .replaceAll("&", "§"));
                 } else {
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".blocks_to_place")
+                    player.sendMessage(Config.getMessage("blocks_to_place")
                             .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
                             .replaceAll("&", "§"));
                 }
@@ -114,13 +112,11 @@ public class BlockObjective extends Objective implements Listener {
             } else if (notify) {
                 Player player = PlayerConverter.getPlayer(playerID);
                 if (currentAmount > neededAmount) {
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".blocks_to_break")
+                    player.sendMessage(Config.getMessage("blocks_to_break")
                             .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
                             .replaceAll("&", "§"));
                 } else {
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".blocks_to_place")
+                    player.sendMessage(Config.getMessage("blocks_to_place")
                             .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
                             .replaceAll("&", "§"));
                 }

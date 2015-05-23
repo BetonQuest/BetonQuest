@@ -30,8 +30,8 @@ public class HeightCondition extends Condition {
 
     private double height;
 
-    public HeightCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public HeightCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Height not defined in height condition: " + instructions);

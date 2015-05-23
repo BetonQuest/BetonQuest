@@ -30,8 +30,8 @@ public class MoneyCondition extends Condition {
 
     private double amount = 0;
 
-    public MoneyCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public MoneyCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Money amount not specified in: " + instructions);

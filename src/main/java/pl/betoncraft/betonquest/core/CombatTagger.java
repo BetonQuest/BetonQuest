@@ -28,7 +28,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -47,7 +47,7 @@ public class CombatTagger implements Listener {
      */
     public CombatTagger() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        delay = Integer.parseInt(ConfigHandler.getString("config.combat_delay"));
+        delay = Integer.parseInt(Config.getString("config.combat_delay"));
     }
     
     /**

@@ -30,8 +30,8 @@ public class HealthCondition extends Condition {
 
     private double health;
 
-    public HealthCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public HealthCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Amount not specified in: " + instructions);

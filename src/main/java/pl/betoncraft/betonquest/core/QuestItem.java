@@ -36,7 +36,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
@@ -387,8 +387,7 @@ public class QuestItem {
             if (author != null) {
                 bookMeta.setAuthor(author);
             } else {
-                bookMeta.setAuthor(ConfigHandler.getString("messages."
-                    + ConfigHandler.getString("config.language") + ".unknown_author"));
+                bookMeta.setAuthor(Config.getMessage("unknown_author"));
             }
             if (text != null) {
                 bookMeta.setPages(Utils.pagesFromString(text, false));
@@ -396,8 +395,7 @@ public class QuestItem {
             if (title != null) {
                 bookMeta.setTitle(title);
             } else {
-                bookMeta.setTitle(ConfigHandler.getString("messages."
-                    + ConfigHandler.getString("config.language") + ".unknown_title"));
+                bookMeta.setTitle(Config.getMessage("unknown_title"));
             }
             item.setItemMeta(bookMeta);
             return item;

@@ -37,27 +37,65 @@ public class ObjectiveEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public ObjectiveEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ObjectiveEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);
             return;
         }
-        final String objective = instructions.substring(instructions.indexOf(" ") + 1);
+        int index = instructions.trim().indexOf(" ") + 1;
+        if (index == 0) {
+            Debug.error("Objective not defined in event: " + instructions);
+            return;
+        }
+        String objective = instructions.substring(index);
+        String[] parts = objective.split(" ");
+        StringBuilder builder = new StringBuilder();
+        for (String part : parts) {
+            if (part.startsWith("events:")) {
+                builder.append("events:");
+                String[] events = part.substring(7).split(",");
+                for (String event : events) {
+                    if (!event.contains(".")) {
+                        builder.append(packName + "." + event);
+                    } else {
+                        builder.append(event);
+                    }
+                    builder.append(",");
+                }
+                builder.deleteCharAt(builder.length() - 1);
+            } else if (part.startsWith("conditions:")) {
+                builder.append("conditions:");
+                String[] conditions = part.substring(11).split(",");
+                for (String condition : conditions) {
+                    if (!condition.contains(".")) {
+                        builder.append(packName + "." + condition);
+                    } else {
+                        builder.append(condition);
+                    }
+                    builder.append(",");
+                }
+                builder.deleteCharAt(builder.length() - 1);
+            } else {
+                builder.append(part);
+            }
+            builder.append(' ');
+        }
+        final String finalObjective = builder.toString().trim();
         if (PlayerConverter.getPlayer(playerID) == null) {
             if (BetonQuest.getInstance().isMySQLUsed()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        addOfflineObjective(objective);
+                        addOfflineObjective(finalObjective);
                     }
                 }.runTaskAsynchronously(BetonQuest.getInstance());
             } else {
-                addOfflineObjective(objective);
+                addOfflineObjective(finalObjective);
             }
         } else {
-            BetonQuest.objective(playerID, objective);
+            BetonQuest.objective(playerID, finalObjective);
         }
     }
 

@@ -33,8 +33,8 @@ public class PermissionEvent extends QuestEvent {
      * @param instructions
      */
     @SuppressWarnings("deprecation")
-    public PermissionEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public PermissionEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 4) {
             BetonQuest.getInstance().getLogger()

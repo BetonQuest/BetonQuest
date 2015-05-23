@@ -31,8 +31,8 @@ public class JournalCondition extends Condition {
     
     private String targetPointer = null;
 
-    public JournalCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public JournalCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Journal entry not defined in journal condition: " + instructions);

@@ -27,9 +27,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -55,13 +57,10 @@ public class CubeNPCListener implements Listener {
      */
     @EventHandler
     public void onSignPlace(SignChangeEvent event) {
-        if (event.getLine(0).equalsIgnoreCase("[NPC]")
-            && !event.getPlayer().hasPermission("betonquest.admin")) {
-            // if the player doesn't have the required permission deny the
-            // editing
+        if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
+            // if the player doesn't have the required permission deny the editing
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                    .getString("config.language") + ".no_permission").replaceAll("&", "§"));
+            event.getPlayer().sendMessage(Config.getMessage("no_permission").replaceAll("&", "§"));
         }
     }
 
@@ -73,7 +72,10 @@ public class CubeNPCListener implements Listener {
      *            PlayerInteractEvent
      */
     @EventHandler
-    public void onNPCClick(PlayerInteractEvent event) {
+    public void onNPCClick(final PlayerInteractEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         // check if the player has required permission
         if (!event.getPlayer().hasPermission("betonquest.conversation")) {
             return;
@@ -102,16 +104,29 @@ public class CubeNPCListener implements Listener {
             }
 
         }
-        // if the conversation ID was extracted from NPC then start the
-        // conversation
+        // if the conversation ID was extracted from NPC then start the conversation
         if (conversationID != null) {
-            if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
-                event.getPlayer().sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                        .getString("config.language") + ".busy"));
+            String assignment = Config.getNpc(conversationID);
+            if (assignment != null) {
+                if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
+                    event.getPlayer().sendMessage(Config.getMessage("busy"));
+                    return;
+                }
+                String[] parts = assignment.split("\\.");
+                final String convName = parts[1];
+                final String packName = parts[0];
+                event.setCancelled(true);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        new Conversation(PlayerConverter.getID(event.getPlayer()), packName,
+                                convName, event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
+            } else {
+                Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
                 return;
             }
-            new Conversation(PlayerConverter.getID(event.getPlayer()), conversationID, event
-                    .getClickedBlock().getLocation().add(0.5, -1, 0.5));
         }
     }
 }

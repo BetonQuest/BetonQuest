@@ -30,8 +30,8 @@ public class PermissionCondition extends Condition {
 
     private String permission;
 
-    public PermissionCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public PermissionCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("There is no permission defined in: " + instructions);

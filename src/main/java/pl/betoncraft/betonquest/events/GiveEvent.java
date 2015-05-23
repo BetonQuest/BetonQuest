@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -45,8 +45,8 @@ public class GiveEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public GiveEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public GiveEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);
@@ -65,11 +65,10 @@ public class GiveEvent extends QuestEvent {
             if (rawItem.split(":").length > 1) {
                 amount = Integer.parseInt(rawItem.split(":")[1]);
             }
-            questItem = new QuestItem(ConfigHandler.getString("items." + itemName));
+            questItem = new QuestItem(pack.getString("items." + itemName));
             Player player = PlayerConverter.getPlayer(playerID);
             if (parts.length > 2 && parts[2].equalsIgnoreCase("notify")) {
-                player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                        .getString("config.language") + ".items_given").replaceAll("%name%",
+                player.sendMessage(Config.getMessage("items_given").replaceAll("%name%",
                         (questItem.getName() != null) ? questItem.getName() : questItem
                         .getMaterial().toString()).replaceAll("%amount%", String.valueOf(amount))
                         .replaceAll("&", "§"));

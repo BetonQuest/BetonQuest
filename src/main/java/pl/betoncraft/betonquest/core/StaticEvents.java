@@ -28,6 +28,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 
 /**
@@ -57,25 +59,29 @@ public class StaticEvents {
         if (deleted) {
             Debug.info("Previous timers has been canceled");
         }
-        // get those hours and events
-        ConfigurationSection config = BetonQuest.getInstance().getConfig()
-                .getConfigurationSection("static");
-        if (config == null) {
-            Debug.info("There are no static events defined, skipping");
-            return;
-        }
-        // for each hour, create an event timer
-        for (String key : config.getKeys(false)) {
-            final String value = config.getString(key);
-            long timeStamp = getTimestamp(key);
-            if (timeStamp < 0) {
-                Debug.error("Incorrect time value in static event declaration (" + key + "), skipping this one");
-                continue;
+        for (String packName : Config.getPackageNames()) {
+            Debug.info("Searching package " + packName);
+            ConfigPackage pack = Config.getPackage(packName);
+            // get those hours and events
+            ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
+            if (config == null) {
+                Debug.info("There are no static events defined, skipping");
+                return;
             }
-            Debug.info("Scheduling static event " + value + " at hour " + key + ". Current "
-                + "timestamp: " + new Date().getTime() + ", target timestamp: " + timeStamp);
-            // add the timer to static list, so it can be canceled if needed
-            timers.add(new EventTimer(timeStamp, value));
+            // for each hour, create an event timer
+            for (String key : config.getKeys(false)) {
+                final String value = config.getString(key);
+                long timeStamp = getTimestamp(key);
+                if (timeStamp < 0) {
+                    Debug.error("Incorrect time value in static event declaration (" + key
+                        + "), skipping this one");
+                    continue;
+                }
+                Debug.info("Scheduling static event " + value + " at hour " + key + ". Current "
+                    + "timestamp: " + new Date().getTime() + ", target timestamp: " + timeStamp);
+                // add the timer to static list, so it can be canceled if needed
+                timers.add(new EventTimer(timeStamp, value));
+            }
         }
         Debug.info("Static events initialization done");
     }
@@ -122,6 +128,7 @@ public class StaticEvents {
     private class EventTimer extends TimerTask {
         
         protected final String event;
+        protected final String pack;
         
         /**
          * Creates and schedules a new timer for specified event, based on given timeStamp
@@ -129,8 +136,10 @@ public class StaticEvents {
          * @param timeStamp
          * @param event
          */
-        public EventTimer(long timeStamp, String event) {
-            this.event = event;
+        public EventTimer(long timeStamp, String eventID) {
+            String[] parts = eventID.split("\\.");
+            this.event = parts[1];
+            this.pack = parts[0];
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24*60*60*1000);
         }
 
@@ -140,8 +149,8 @@ public class StaticEvents {
                 @Override
                 public void run() {
                     // run the event in sync
-                    Debug.info("Firing static event " + event);
-                    BetonQuest.event(null, event);
+                    Debug.info("Firing static event " + pack + "." + event);
+                    BetonQuest.event(null, pack, event);
                 }
             }.runTask(BetonQuest.getInstance());
         }

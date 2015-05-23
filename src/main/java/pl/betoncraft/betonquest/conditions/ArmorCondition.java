@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.config.ConfigHandler;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -34,15 +33,15 @@ public class ArmorCondition extends Condition {
 
     private QuestItem item;
 
-    public ArmorCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ArmorCondition(String playerID, String pack, String instructions) {
+        super(playerID, pack, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Armor not defined in: " + instructions);
             isOk = false;
             return;
         }
-        String itemInstruction = ConfigHandler.getString("items." + parts[1]);
+        String itemInstruction = super.pack.getString("items." + parts[1]);
         if (itemInstruction == null) {
             Debug.error("No such item: " + parts[1]);
             isOk = false;
@@ -54,7 +53,7 @@ public class ArmorCondition extends Condition {
     @Override
     public boolean isMet() {
         for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
-            if (item.equalsI(armor)) {
+            if (item != null && item.equalsI(armor)) {
                 return true;
             }
         }

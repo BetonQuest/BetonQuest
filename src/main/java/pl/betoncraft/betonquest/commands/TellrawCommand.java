@@ -26,7 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -42,7 +42,7 @@ public class TellrawCommand implements CommandExecutor {
      * Registers a new executor of the /betonquestanswer command
      */
     public TellrawCommand() {
-        if (ConfigHandler.getString("config.tellraw").equalsIgnoreCase("true"))
+        if (Config.getString("config.tellraw").equalsIgnoreCase("true"))
             BetonQuest.getInstance().getCommand("betonquestanswer").setExecutor(this);
     }
 

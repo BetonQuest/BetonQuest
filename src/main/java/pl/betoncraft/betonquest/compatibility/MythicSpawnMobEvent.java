@@ -39,8 +39,8 @@ public class MythicSpawnMobEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public MythicSpawnMobEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public MythicSpawnMobEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         loc = decodeLocation(parts[1]);
         mob = parts[2].split(":")[0];

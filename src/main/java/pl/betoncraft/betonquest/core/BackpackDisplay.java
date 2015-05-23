@@ -33,7 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -105,8 +105,7 @@ public class BackpackDisplay implements Listener {
                 .size() + 1) / 45 : (int) Math.floor((backpack.size() + 1) / 45) + 1));
         Debug.info("Generating backpack for " + playerID + ", page " + page);
         // prepare the inventory
-        inv = Bukkit.createInventory(null, 54, ConfigHandler.getString("messages." + ConfigHandler
-                .getString("config.language")+ ".backpack_title") + (pages == 1 ? "" : " ("
+        inv = Bukkit.createInventory(null, 54, Config.getMessage("backpack_title") + (pages == 1 ? "" : " ("
                 + (page + 1) + "/" + pages + ")"));
         ItemStack[] content = new ItemStack[54];
         int i = 0;
@@ -135,32 +134,28 @@ public class BackpackDisplay implements Listener {
         Debug.info("  Placing buttons");
         if (page > 0) {
             ItemStack previous;
-            String item = ConfigHandler.getString("items.previous_button");
+            String item = Config.getMessage("previous_button");
             if (item != null) {
                 previous = new QuestItem(item).generateItem(1);
             } else {
                 previous = new ItemStack(Material.GLOWSTONE_DUST);
             }
             ItemMeta meta = previous.getItemMeta();
-            meta.setDisplayName(ConfigHandler.getString(
-                    "messages." + ConfigHandler.getString("config.language") + ".previous")
-                    .replaceAll("&", "§"));
+            meta.setDisplayName(Config.getMessage("previous").replaceAll("&", "§"));
             previous.setItemMeta(meta);
             Debug.info("    There is a previous button");
             content[48] = previous;
         }
         if (backpack.size() > (page + 1) * 45 - 1) {
             ItemStack next;
-            String item = ConfigHandler.getString("items.next_button");
+            String item = Config.getString("general.items.next_button");
             if (item != null) {
                 next = new QuestItem(item).generateItem(1);
             } else {
                 next = new ItemStack(Material.REDSTONE);
             }
             ItemMeta meta = next.getItemMeta();
-            meta.setDisplayName(ConfigHandler.getString(
-                    "messages." + ConfigHandler.getString("config.language") + ".next").replaceAll(
-                    "&", "§"));
+            meta.setDisplayName(Config.getMessage("next").replaceAll("&", "§"));
             next.setItemMeta(meta);
             Debug.info("    There is a next button");
             content[50] = next;
@@ -186,8 +181,7 @@ public class BackpackDisplay implements Listener {
             if (page == 0 && event.getRawSlot() == 0) {
                 // first page on first slot should contain the journal
                 Debug.info("  Journal slot was clicked, adding journal");
-                dbHandler.getJournal().addJournal(Integer.parseInt(ConfigHandler
-                        .getString("config.default_journal_slot")));
+                dbHandler.getJournal().addJournal(Integer.parseInt(Config.getString("config.default_journal_slot")));
                 new BackpackDisplay(playerID, page);
             } else if (event.getRawSlot() < 45) {
                 // raw slot lower than 45 is a quest item

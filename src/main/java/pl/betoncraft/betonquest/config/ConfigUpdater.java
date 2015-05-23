@@ -81,7 +81,11 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v12";
+    private final String destination = "v13";
+    /**
+     * Deprecated ConfigHandler, used fo updating older configuration files
+     */
+    private ConfigHandler ch;
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -110,9 +114,10 @@ public class ConfigUpdater {
         } else {
             Utils.backup();
         }
+        // instanitiate old configuration handler
+        ch = new ConfigHandler();
         // if the version is null the plugin is updated from pre-1.3 version
-        // (which
-        // can be 1.0, 1.1 or 1.2)
+        // (which can be 1.0, 1.1 or 1.2)
         if (version == null) {
             updateTo1_3();
         } else if (version.equals("1.3")) {
@@ -151,7 +156,7 @@ public class ConfigUpdater {
         updateLanguages();
         instance.saveConfig();
         // reload configuration file to apply all possible changes
-        ConfigHandler.reload();
+        new Config();
         Debug.broadcast("Successfully updated configuration!");
         addChangelog();
     }
@@ -182,10 +187,130 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v12() {
+        try {
+            Debug.info("Moving all configuration to \"default\" package");
+            // clear the default package, which contains only default quest
+            File defPkg = Config.getPackage("default").getFolder();
+            Debug.info("  Deleting default files");
+            for (File file : defPkg.listFiles()) {
+                file.delete();
+            }
+            // move files that can be moved without modifications
+            File root = instance.getDataFolder();
+            String[] filesToMove = new String[]{"events", "conditions", "items", "journal"};
+            for (String fileToMove : filesToMove) {
+                Debug.info("  Moving " + fileToMove + ".yml file");
+                new File(root, fileToMove + ".yml").renameTo(new File(defPkg, fileToMove + ".yml"));
+            }
+            // move all conversations
+            File newConversationFolder = new File(defPkg, "conversations");
+            File oldConversationFolder = new File(root, "conversations");
+            newConversationFolder.mkdir();
+            for (File conversation : oldConversationFolder.listFiles()) {
+                Debug.info("  Moving " + conversation.getName() + " conversation file");
+                conversation.renameTo(new File(newConversationFolder, conversation.getName()));
+            }
+            // generate main.yml file
+            Debug.info("  Generating main.yml file");
+            File mainFile = new File(defPkg, "main.yml");
+            mainFile.createNewFile();
+            FileConfiguration main = YamlConfiguration.loadConfiguration(mainFile);
+            // copy the data
+            String globalLocations = config.getString("global_locations");
+            ConfigurationSection staticEvents = config.getConfigurationSection("static");
+            ConfigurationSection npcs = ch.getConfigs().get("npcs").getConfig().getRoot();
+            main.set("global_locations", globalLocations);
+            if (staticEvents != null) {
+                for (String key : staticEvents.getKeys(false)) {
+                    main.set("static." + key, staticEvents.getString(key));
+                }
+            }
+            if (npcs != null) {
+                for (String key : npcs.getKeys(false)) {
+                    main.set("npcs." + key, npcs.getString(key));
+                }
+                for (File conv : newConversationFolder.listFiles()) {
+                    main.set("npcs." + conv.getName().replace(".yml", ""), conv.getName().replace(".yml", ""));
+                }
+            }
+            main.save(mainFile);
+            // remove old values from configuration
+            Debug.info("  Removing old files and config values");
+            oldConversationFolder.delete();
+            config.set("global_locations", null);
+            config.set("static", null);
+            new File(root, "npcs.yml").delete();
+            Debug.info("Configuration updated!");
+            Debug.broadcast("Updating the database, it may take a long time!");
+            Connection con = instance.getDB().openConnection();
+            String prefix = instance.getConfig().getString("mysql.prefix", "");
+            ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix + "objectives");
+            ArrayList<String[]> objectives = new ArrayList<>();
+            // iterate over every objective string in the database
+            while (res.next()) {
+                String[] parts = res.getString("instructions").split(" ");
+                StringBuilder newInstruction = new StringBuilder();
+                for (String part : parts) {
+                    if (part.startsWith("events:")) {
+                        newInstruction.append("events:");
+                        String[] events = part.substring(7).split(",");
+                        for (String event : events) {
+                            newInstruction.append("default." + event + ",");
+                        }
+                        newInstruction.deleteCharAt(newInstruction.length() - 1);
+                    } else if (part.startsWith("conditions:")) {
+                        newInstruction.append("conditions:");
+                        String[] conditions = part.substring(11).split(",");
+                        for (String condition : conditions) {
+                            newInstruction.append("default." + condition + ",");
+                        }
+                        newInstruction.deleteCharAt(newInstruction.length() - 1);
+                    } else {
+                        newInstruction.append(part);
+                    }
+                    newInstruction.append(' ');
+                }
+                objectives.add(new String[]{res.getString("playerID"), newInstruction.toString().trim()});
+            }
+            res = con.createStatement().executeQuery("SELECT * FROM " + prefix + "journal");
+            ArrayList<String[]> pointers = new ArrayList<>();
+            // iterate over every journal pointer in the database
+            while (res.next()) {
+                pointers.add(new String[]{res.getString("playerID"), "default."
+                        + res.getString("pointer"), res.getString("date")});
+            }
+            for (String[] objective : objectives) {
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO " + prefix + "objectives "
+                        + "(playerID, instructions) VALUES (?,?)");
+                stmt.setString(1, objective[0]);
+                stmt.setString(2, objective[1]);
+                stmt.executeUpdate();
+            }
+            for (String[] pointer : pointers) {
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO " + prefix + "journal "
+                        + "(playerID, pointer, date) VALUES (?,?,?)");
+                stmt.setString(1, pointer[0]);
+                stmt.setString(2, pointer[1]);
+                stmt.setString(3, pointer[2]);
+                stmt.executeUpdate();
+            }
+            instance.getDB().closeConnection(con);
+            Debug.info("Done! Everything converted.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Introduced new packaging system and moved configuration to \"default\" package!");
+        config.set("version", "v13");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v11() {
         try {
             Debug.info("Updating objectives in configuration");
-            ConfigAccessor events = ConfigHandler.getConfigs().get("events");
+            ConfigAccessor events = ch.getConfigs().get("events");
             ArrayList<String> labels = new ArrayList<>();
             boolean notified = false;
             // for every event check if it's objective
@@ -219,7 +344,7 @@ public class ConfigUpdater {
             events.saveConfig();
             Debug.info("Converted all objectives in configuration");
             // update all objectives in the database
-            Debug.info("Converting objectives in the database");
+            Debug.broadcast("Converting objectives in the database, it may take a long time");
             Connection con = instance.getDB().openConnection();
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix
@@ -273,6 +398,7 @@ public class ConfigUpdater {
                     stmt.executeUpdate();
                 }
             }
+            instance.getDB().closeConnection(con);
             Debug.info("Done! Everything converted");
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,7 +414,7 @@ public class ConfigUpdater {
         try {
             Debug.info("Updating instruction strings");
             Debug.info("  Updating conditions");
-            ConfigAccessor conditions = ConfigHandler.getConfigs().get("conditions");
+            ConfigAccessor conditions = ch.getConfigs().get("conditions");
             conditions:
             for (String key : conditions.getConfig().getKeys(false)) {
                 Debug.info("    Processing " + key + " condition");
@@ -451,7 +577,7 @@ public class ConfigUpdater {
                             if (enchants != null) {
                                 itemInstruction = itemInstruction + " " + enchants;
                             }
-                            ConfigAccessor itemsConfig = ConfigHandler.getConfigs().get("items");
+                            ConfigAccessor itemsConfig = ch.getConfigs().get("items");
                             int i = 0;
                             while (itemsConfig.getConfig().contains("armor" + i)) {
                                 i++;
@@ -586,7 +712,7 @@ public class ConfigUpdater {
             conditions.saveConfig();
             
             Debug.info("  Updating events");
-            ConfigAccessor events = ConfigHandler.getConfigs().get("events");
+            ConfigAccessor events = ch.getConfigs().get("events");
             events:
             for (String key : events.getConfig().getKeys(false)) {
                 Debug.info("    Processing " + key + " event");
@@ -695,7 +821,7 @@ public class ConfigUpdater {
     
     @SuppressWarnings("unused")
     private void update_from_v7() {
-        ConfigAccessor messages = ConfigHandler.getConfigs().get("messages");
+        ConfigAccessor messages = ch.getConfigs().get("messages");
         messages.getConfig().set("date_format", "dd.MM.yyyy HH:mm");
         messages.saveConfig();
         Debug.broadcast("Added date format line to messages.yml");
@@ -762,7 +888,7 @@ public class ConfigUpdater {
         try {
             // update all give/take events and item condition to match new
             // parser
-            ConfigAccessor eventsAccessor = ConfigHandler.getConfigs().get("events");
+            ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
             FileConfiguration eventsConfig = eventsAccessor.getConfig();
             Debug.info("Updating events!");
             // check every event in configuration
@@ -792,7 +918,7 @@ public class ConfigUpdater {
             // when all events are converted, save the file
             eventsAccessor.saveConfig();
             // update all item conditions
-            ConfigAccessor conditionsAccessor = ConfigHandler.getConfigs().get("conditions");
+            ConfigAccessor conditionsAccessor = ch.getConfigs().get("conditions");
             FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
             Debug.info("Updatng conditions!");
             // check every condition in configuration
@@ -849,7 +975,7 @@ public class ConfigUpdater {
             // Get all conditions with --inverted tag into the map
             // <name,instruction> without --inverted tag and remove them form
             // config
-            ConfigAccessor conditionsAccessor = ConfigHandler.getConfigs().get("conditions");
+            ConfigAccessor conditionsAccessor = ch.getConfigs().get("conditions");
             FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
             // at the beginning trim all conditions, so they won't get
             // confused later on
@@ -969,7 +1095,7 @@ public class ConfigUpdater {
             // player option, replace old names from the map with new names
             Debug.info("Starting conversation updating");
             // get every conversation accessor
-            HashMap<String, ConfigAccessor> conversations = ConfigHandler.getConversations();
+            HashMap<String, ConfigAccessor> conversations = ch.getConversations();
             for (String conversationName : conversations.keySet()) {
                 Debug.info("  Processing conversation " + conversationName);
                 ConfigAccessor conversation = conversations.get(conversationName);
@@ -1042,7 +1168,7 @@ public class ConfigUpdater {
             // for each event_conditions: and conditions: in events.yml, replace
             // old names from the map with new names
             Debug.info("Starting events updating");
-            ConfigAccessor eventsAccessor = ConfigHandler.getConfigs().get("events");
+            ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
             for (String eventName : eventsAccessor.getConfig().getKeys(false)) {
                 Debug.info("  Processing event " + eventName);
                 // extract event's instruction
@@ -1196,7 +1322,7 @@ public class ConfigUpdater {
         Debug.broadcast("Added new journal color options!");
         // convert conditions in events to event_condition: format
         Debug.info("Starting updating 'conditions:' argument to 'event_conditions:' in events.yml");
-        ConfigAccessor events = ConfigHandler.getConfigs().get("events");
+        ConfigAccessor events = ch.getConfigs().get("events");
         for (String key : events.getConfig().getKeys(false)) {
             Debug.info("  Processing event " + key);
             if (events.getConfig().getString(key).contains("conditions:")) {
@@ -1215,7 +1341,7 @@ public class ConfigUpdater {
         Debug.broadcast("Events now use 'event_conditions:' for conditioning.");
         // convert objectives to new format
         Debug.info("Converting objectives to new format...");
-        ConfigAccessor objectives = ConfigHandler.getConfigs().get("objectives");
+        ConfigAccessor objectives = ch.getConfigs().get("objectives");
         for (String key : events.getConfig().getKeys(false)) {
             Debug.info("  Processing objective " + key);
             if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
@@ -1228,7 +1354,7 @@ public class ConfigUpdater {
             }
         }
         Debug.broadcast("Objectives converted to new, event-powered format!");
-        // convert global locations TODO debugging
+        // convert global locations
         String globalLocations = config.getString("global_locations");
         if (globalLocations != null && !globalLocations.equals("")) {
             StringBuilder configGlobalLocs = new StringBuilder();
@@ -1250,7 +1376,7 @@ public class ConfigUpdater {
         new File(instance.getDataFolder(), "objectives.yml").delete();
         // convert books to new format
         Debug.broadcast("Converting books to new format!");
-        ConfigAccessor items = ConfigHandler.getConfigs().get("items");
+        ConfigAccessor items = ch.getConfigs().get("items");
         for (String key : items.getConfig().getKeys(false)) {
             String string = items.getConfig().getString(key);
             if (string.split(" ")[0].equalsIgnoreCase("WRITTEN_BOOK")) {
@@ -1317,7 +1443,7 @@ public class ConfigUpdater {
         instance.getConfig().set("autoupdate", "false");
         Debug.broadcast("Added AutoUpdate option to config. It's DISABLED by default!");
         Debug.broadcast("Moving conversation to separate files...");
-        ConfigAccessor convOld = ConfigHandler.getConfigs().get("conversations");
+        ConfigAccessor convOld = ch.getConfigs().get("conversations");
         Set<String> keys = convOld.getConfig().getKeys(false);
         File folder = new File(instance.getDataFolder(), "conversations");
         for (File file : folder.listFiles()) {
@@ -1349,8 +1475,8 @@ public class ConfigUpdater {
         // this is counter for a number in item names (in items.yml)
         int number = 0;
         // check every event
-        for (String key : ConfigHandler.getConfigs().get("events").getConfig().getKeys(false)) {
-            String instructions = ConfigHandler.getString("events." + key);
+        for (String key : ch.getConfigs().get("events").getConfig().getKeys(false)) {
+            String instructions = ch.getString("events." + key);
             String[] parts = instructions.split(" ");
             String type = parts[0];
             // if this event has items in it do the thing
@@ -1411,11 +1537,8 @@ public class ConfigUpdater {
                         }
                     }
                 }
-                ConfigHandler
-                        .getConfigs()
-                        .get("events")
-                        .getConfig()
-                        .set(key, (type + " " + newItemID + " " + amount + " " + conditions).trim());
+                ch.getConfigs().get("events").getConfig().set(key, (type + " " + newItemID + " "
+                        + amount + " " + conditions).trim());
 
                 // replace event with updated version
                 Debug.broadcast("Extracted " + newItemID + " from " + key + " event!");
@@ -1424,8 +1547,8 @@ public class ConfigUpdater {
         // check every condition (it's almost the same code, I didn't know how
         // to do
         // it better
-        for (String key : ConfigHandler.getConfigs().get("conditions").getConfig().getKeys(false)) {
-            String instructions = ConfigHandler.getString("conditions." + key);
+        for (String key : ch.getConfigs().get("conditions").getConfig().getKeys(false)) {
+            String instructions = ch.getString("conditions." + key);
             String[] parts = instructions.split(" ");
             String type = parts[0];
             // if this condition has items do the thing
@@ -1484,13 +1607,8 @@ public class ConfigUpdater {
                         }
                     }
                 }
-                ConfigHandler
-                        .getConfigs()
-                        .get("conditions")
-                        .getConfig()
-                        .set(key,
-                                (type + " item:" + newItemID + " " + amount + " " + inverted)
-                                        .trim());
+                ch.getConfigs().get("conditions").getConfig().set(key,(type + " item:" + newItemID
+                        + " " + amount + " " + inverted).trim());
                 Debug.broadcast("Extracted " + newItemID + " from " + key + " condition!");
             }
         }
@@ -1518,11 +1636,11 @@ public class ConfigUpdater {
                 instruction = instruction + " enchants:"
                     + enchants.substring(0, enchants.length() - 1);
             }
-            ConfigHandler.getConfigs().get("items").getConfig().set(key, instruction);
+            ch.getConfigs().get("items").getConfig().set(key, instruction);
         }
-        ConfigHandler.getConfigs().get("items").saveConfig();
-        ConfigHandler.getConfigs().get("events").saveConfig();
-        ConfigHandler.getConfigs().get("conditions").saveConfig();
+        ch.getConfigs().get("items").saveConfig();
+        ch.getConfigs().get("events").saveConfig();
+        ch.getConfigs().get("conditions").saveConfig();
         Debug.broadcast("All extracted items has been successfully saved to items.yml!");
         // end of updating to 1.4
         instance.getConfig().set("version", "1.4");
@@ -1548,7 +1666,7 @@ public class ConfigUpdater {
         // add stop to conversation if not done already
         Debug.broadcast("Adding stop nodes to conversations...");
         int count = 0;
-        ConfigAccessor conversations = ConfigHandler.getConfigs().get("conversations");
+        ConfigAccessor conversations = ch.getConfigs().get("conversations");
         Set<String> convNodes = conversations.getConfig().getKeys(false);
         for (String convNode : convNodes) {
             if (!conversations.getConfig().isSet(convNode + ".stop")) {
@@ -1570,7 +1688,7 @@ public class ConfigUpdater {
     private void updateLanguages() {
         // add new languages
         boolean isUpdated = false;
-        ConfigAccessor messages = ConfigHandler.getConfigs().get("messages");
+        ConfigAccessor messages = ch.getConfigs().get("messages");
         // check every language if it exists
         for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
             if (messages.getConfig().isSet(path)) {
@@ -1667,5 +1785,202 @@ public class ConfigUpdater {
             builder.append(' ');
         }
         return builder.toString().trim();
+    }
+    
+    /**
+     * Deprecated config handler, used only for configuration updating process
+     * 
+     * @author Jakub Sapalski
+     */
+    private class ConfigHandler {
+
+        /**
+         * Map containing accessors for every conversation.
+         */
+        private HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
+        /**
+         * Deprecated accessor for single conversations file, used only for updating
+         * configuration.
+         */
+        private ConfigAccessor conversations;
+        /**
+         * Deprecated accessor for objectives file, used only for updating
+         * configuration.
+         */
+        private ConfigAccessor objectives;
+        /**
+         * Accessor for conditions file.
+         */
+        private ConfigAccessor conditions;
+        /**
+         * Accessor for events file.
+         */
+        private ConfigAccessor events;
+        /**
+         * Accessor for messages file.
+         */
+        private ConfigAccessor messages;
+        /**
+         * Accessor for npcs file.
+         */
+        private ConfigAccessor npcs;
+        /**
+         * Accessor for journal file.
+         */
+        private ConfigAccessor journal;
+        /**
+         * Accessor for items file.
+         */
+        private ConfigAccessor items;
+
+        /**
+         * Legacy configuration handler, only used for updating purposes. Do not use!!!
+         */
+        public ConfigHandler() {
+            // put config accesors in fields
+            conversations = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest
+                    .getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
+            objectives = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "objectives.yml"), "objectives.yml");
+            conditions = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "conditions.yml"), "conditions.yml");
+            events = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "events.yml"), "events.yml");
+            npcs = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "npcs.yml"), "npcs.yml");
+            journal = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "journal.yml"), "journal.yml");
+            items = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "items.yml"), "items.yml");
+            messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
+                    .getDataFolder(), "messages.yml"), "messages.yml");
+            // put conversations accessors in the hashmap
+            for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
+                conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
+                        new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+            }
+        }
+
+        /**
+         * Retireves from configuration the string at supplied path. The path should
+         * follow this syntax: "filename.branch.(moreBranches).branch.variable". For
+         * example getting color for day in journal date would be
+         * "config.journal_colors.date.day". Everything should be handled as a
+         * string for simplicity's sake.
+         *
+         * @param rawPath
+         *            path for the variable
+         * @return the String object representing requested variable
+         */
+        public String getString(String rawPath) {
+            
+            // get parts of path
+            String[] parts = rawPath.split("\\.");
+            String first = parts[0];
+            String path = rawPath.substring(first.length() + 1);
+            String object;
+            // for every possible file try to access the path and return String
+            // object
+            switch (first) {
+                case "config":
+                    object = BetonQuest.getInstance().getConfig().getString(path);
+                    if (object == null) {
+                        // if object is null then there is no such variable at
+                        // specified path
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "conversations":
+                    object = null;
+                    // conversations should be handled with one more level, as they
+                    // are in
+                    // multiple files
+                    String conversationID = path.split("\\.")[0];
+                    String rest = path.substring(path.indexOf(".") + 1);
+                    if (conversationsMap.get(conversationID) != null) {
+                        object = conversationsMap.get(conversationID).getConfig()
+                                .getString(rest);
+                    }
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "objectives":
+                    object = objectives.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "conditions":
+                    object = conditions.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "events":
+                    object = events.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "messages":
+                    object = messages.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "npcs":
+                    object = npcs.getConfig().getString(path);
+                    return object;
+                case "journal":
+                    object = journal.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                case "items":
+                    object = items.getConfig().getString(path);
+                    if (object == null) {
+                        Debug.info("Error while accessing path: " + rawPath);
+                    }
+                    return object;
+                default:
+                    Debug.info("Fatal error while accessing path: " + rawPath
+                        + " (there is no such file)");
+                    return null;
+            }
+        }
+
+        /**
+         * Retrieves a map containing all config accessors. Should be used for more
+         * advanced tasks than simply getting a String. Note that conversations are
+         * not included in this map. See {@link #getConversations()
+         * getConversations} method for that. Conversations accessor included in
+         * this map is just a deprecated old conversations file. The same situation
+         * is with unused objectives accessor.
+         *
+         * @return HashMap containing all config accessors
+         */
+        public HashMap<String, ConfigAccessor> getConfigs() {
+            HashMap<String, ConfigAccessor> map = new HashMap<>();
+            map.put("conversations", conversations);
+            map.put("conditions", conditions);
+            map.put("events", events);
+            map.put("objectives", objectives);
+            map.put("journal", journal);
+            map.put("messages", messages);
+            map.put("npcs", npcs);
+            map.put("items", items);
+            return map;
+        }
+
+        /**
+         * Retrieves map containing all conversation accessors.
+         *
+         * @return HashMap containing conversation accessors
+         */
+        public HashMap<String, ConfigAccessor> getConversations() {
+            return conversationsMap;
+        }
     }
 }

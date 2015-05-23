@@ -37,8 +37,8 @@ public class DeleteObjectiveEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public DeleteObjectiveEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public DeleteObjectiveEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
             Debug.error("This event cannot be static: " + instructions);

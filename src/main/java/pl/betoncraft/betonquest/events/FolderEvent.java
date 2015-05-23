@@ -34,8 +34,8 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class FolderEvent extends QuestEvent {
 
-    public FolderEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public FolderEvent(String playerID, final String packName, String instructions) {
+        super(playerID, packName, instructions);
         // declare variables used later
         String[] parts = instructions.split(" ");
         String[] events = null;
@@ -95,7 +95,17 @@ public class FolderEvent extends QuestEvent {
                     Debug.info("Running folder events for player " + player);
                 }
                 for (String event : finalEvents) {
-                    BetonQuest.event(player, event);
+                    String packageName;
+                    String eventName;
+                    if (event.contains(".")) {
+                        String[] parts = event.split("\\.");
+                        packageName = parts[0];
+                        eventName = parts[1];
+                    } else {
+                        packageName = packName;
+                        eventName = event;
+                    }
+                    BetonQuest.event(player, packageName, eventName);
                 }
             }
         }.runTaskLater(BetonQuest.getInstance(), delay * 20); // 20 ticks is a second

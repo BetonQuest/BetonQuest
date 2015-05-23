@@ -33,8 +33,8 @@ public class WeatherCondition extends Condition {
     private String weather;
     private World world;
 
-    public WeatherCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public WeatherCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Weather type not defined in weather condition: " + instructions);

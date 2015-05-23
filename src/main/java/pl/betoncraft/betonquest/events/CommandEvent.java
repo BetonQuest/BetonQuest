@@ -35,8 +35,8 @@ public class CommandEvent extends QuestEvent {
      * @param playerID
      * @param instructions
      */
-    public CommandEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public CommandEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         String commands = instructions.substring(instructions.indexOf(" ") + 1);
         for (String command : commands.split("\\|")) {
             if (playerID == null) {

@@ -30,7 +30,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.config.ConfigHandler;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -84,8 +84,7 @@ public class MobKillObjective extends Objective implements Listener {
                     completeObjective();
                 } else if (notify) {
                     Player player = PlayerConverter.getPlayer(playerID);
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".mobs_to_kill")
+                    player.sendMessage(Config.getMessage("mobs_to_kill")
                             .replaceAll("%amount%", String.valueOf(amount)).replaceAll("&", "§"));
                 }
             }
@@ -101,8 +100,7 @@ public class MobKillObjective extends Objective implements Listener {
                     completeObjective();
                 } else if (notify) {
                     Player player = PlayerConverter.getPlayer(playerID);
-                    player.sendMessage(ConfigHandler.getString("messages." + ConfigHandler
-                            .getString("config.language") + ".mobs_to_kill")
+                    player.sendMessage(Config.getMessage("mobs_to_kill")
                             .replaceAll("%amount%", String.valueOf(amount)));
                 }
             }

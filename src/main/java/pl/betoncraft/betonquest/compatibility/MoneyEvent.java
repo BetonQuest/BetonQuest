@@ -33,8 +33,8 @@ public class MoneyEvent extends QuestEvent {
      * @param instructions
      */
     @SuppressWarnings("deprecation")
-    public MoneyEvent(String playerID, String instructions) {
-        super(playerID, instructions);
+    public MoneyEvent(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
         double amount = Double.parseDouble(instructions.split(" ")[1]);
         Player player = PlayerConverter.getPlayer(playerID);
         if (amount > 0) {

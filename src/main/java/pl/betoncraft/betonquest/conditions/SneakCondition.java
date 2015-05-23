@@ -27,8 +27,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class SneakCondition extends Condition {
 
-    public SneakCondition(String playerID, String instructions) {
-        super(playerID, instructions);
+    public SneakCondition(String playerID, String packName, String instructions) {
+        super(playerID, packName, instructions);
     }
 
     @Override
