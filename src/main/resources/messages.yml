@@ -4,6 +4,7 @@ global:
   player_reply_format: '&2%player%&f: &7'
   plugin_prefix: '&e[&2BetonQuest&e]&r '
   date_format: 'dd.MM.yyyy HH:mm'
+  cancel_color: '&2'
 pl:
   conversation_start: '&e*&bRozpoczales rozmowe z %quester%!&e*'
   conversation_end: '&e*&bZakonczyles rozmowe z %quester%!&e*'
@@ -71,6 +72,9 @@ pl:
   blocks_to_place: '&2Pozostalo %amount% blokow do postawienia'
   mobs_to_kill: '&2Pozostalo %amount% stworzen do zabicia'
   busy: '&cTa postac jest zajeta'
+  quest_canceled: '&2Zadanie %quest% anulowane!'
+  cancel: '&cAnuluj zadanie'
+  cancel_page: 'Anulowanie zadania'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -138,6 +142,9 @@ en:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 de:
   conversation_start: '&e*&bGesprach mit %quester% begonnen!&e*'
   conversation_end: '&e*&Gesprach mit %quester% beendet!&e*'
@@ -205,6 +212,9 @@ de:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 fr:
   conversation_start: '&e*&bLa conversation avec %quester% est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec %quester% est terminee!&e*'
@@ -272,6 +282,9 @@ fr:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 es:
   conversation_start: '&e*&bLa conversacion con %quester% ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con %quester% ha terminado.&e*'
@@ -337,3 +350,6 @@ es:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'

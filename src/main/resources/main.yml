@@ -3,6 +3,8 @@ variables:
 npcs:
   'Innkeeper': innkeeper
   '0': innkeeper
+cancel:
+  wood: name:Wood_for_Innkeeper conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
 #static:
 #  '03:45': example
 #global_locations: 'example,beton'

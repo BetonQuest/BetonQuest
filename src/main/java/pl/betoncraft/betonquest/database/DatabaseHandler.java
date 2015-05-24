@@ -25,10 +25,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.core.Pointer;
@@ -462,5 +466,132 @@ public class DatabaseHandler {
             Debug.info("    Adding item of type " + newItem.getType() + ", amount left to ad is " + amount);
             backpack.add(newItem);
         }
+    }
+    
+    /**
+     * Cancels the quest by removing all defined tags, objectives
+     * 
+     * @param name
+     */
+    public void cancelQuest(String name) {
+        Debug.info("Canceling the quest " + name + " for player " + playerID);
+        // get the instruction
+        String[] parts = name.split("\\.");
+        String packName = parts[0];
+        String cancelerName = parts[1];
+        String instruction = Config.getPackage(packName).getMain().getConfig().getString("cancel." + cancelerName);
+        String[] events     = null,
+                 tags       = null,
+                 objectives = null,
+                 points     = null,
+                 journal    = null,
+                 loc        = null;
+        String questName = null;
+        // parse it to get the data
+        for (String part : instruction.split(" ")) {
+            if (part.startsWith("name:")) {
+                questName = part.substring(5).replace("_", " ");
+            } else if (part.startsWith("events:")) {
+                events = part.substring(7).split(",");
+            } else if (part.startsWith("tags:")) {
+                tags = part.substring(5).split(",");
+            } else if (part.startsWith("objectives:")) {
+                objectives = part.substring(11).split(",");
+            } else if (part.startsWith("points:")) {
+                points = part.substring(7).split(",");
+            } else if (part.startsWith("journal:")) {
+                journal = part.substring(8).split(",");
+            } else if (part.startsWith("loc:")) {
+                loc = part.substring(4).split(";");
+            }
+        }
+        // remove tags, points, objectives and journals
+        if (tags != null) {
+            for (String tag : tags) {
+                Debug.info("  Removing tag " + tag);
+                removeTag(tag);
+            }
+        }
+        if (points != null) {
+            for (String point : points) {
+                Debug.info("  Removing points " + point);
+                removePointsCategory(point);
+            }
+        }
+        if (objectives != null) {
+            for (String obj : objectives) {
+                Debug.info("  Removing objective " + obj);
+                deleteObjective(obj);
+            }
+        }
+        if (journal != null) {
+            Journal j = getJournal();
+            for (String entry : journal) {
+                Debug.info("  Removing entry " + entry);
+                String pointer;
+                if (entry.contains(".")) {
+                    pointer = entry;
+                } else {
+                    pointer = packName + "." + entry;
+                }
+                j.removePointer(pointer);
+            }
+            j.updateJournal();
+        }
+        // teleport player to the location
+        if (loc != null) {
+            if (loc.length != 4 && loc.length != 6) {
+                Debug.error("Wrong location format in quest canceler " + name);
+                return;
+            }
+            double x, y, z;
+            try {
+                x = Double.parseDouble(loc[0]);
+                y = Double.parseDouble(loc[1]);
+                z = Double.parseDouble(loc[2]);
+            } catch (NumberFormatException e) {
+                Debug.error("Could not parse location in quest canceler " + name);
+                return;
+            }
+            World world = Bukkit.getWorld(loc[3]);
+            if (world == null) {
+                Debug.error("The world doesn't exist in quest canceler " + name);
+                return;
+            }
+            float yaw = 0, pitch = 0;
+            if (loc.length == 6) {
+                try {
+                    yaw = Float.parseFloat(loc[4]);
+                    pitch = Float.parseFloat(loc[5]);
+                } catch (NumberFormatException e) {
+                    Debug.error("Could not parse yaw/pitch in quest canceler " + name
+                        + ", setting to 0");
+                    yaw = 0;
+                    pitch = 0;
+                }
+            }
+            Debug.info("  Teleporting to new location");
+            Location location = new Location(world, x, y, z, yaw, pitch);
+            PlayerConverter.getPlayer(playerID).teleport(location);
+        }
+        // fire all events
+        if (events != null) {
+            for (String event : events) {
+                String packageName;
+                String eventName;
+                if (event.contains(".")) {
+                    String[] eventParts = event.split("\\.");
+                    packageName = eventParts[0];
+                    eventName = eventParts[1];
+                } else {
+                    packageName = packName;
+                    eventName = event;
+                }
+                BetonQuest.event(playerID, packageName, eventName);
+            }
+        }
+        // done
+        Debug.info("Quest removed!");
+        PlayerConverter.getPlayer(playerID).sendMessage(Config.getMessage("quest_canceled").replace("&", "§").replace("%quest%", questName));
     }
 }

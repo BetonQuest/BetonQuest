@@ -4,6 +4,7 @@ global:
   player_reply_format: '&2%player%&f: &7'
   plugin_prefix: '&e[&2BetonQuest&e]&r '
   date_format: 'dd.MM.yyyy HH:mm'
+  cancel_color: '&2'
 pl:
   conversation_start: '&e*&bRozpocząłeś rozmowę z %quester%!&e*'
   conversation_end: '&e*&bZakończyłeś rozmowę z %quester%!&e*'
@@ -30,6 +31,9 @@ pl:
   specify_date: '&cPodaj datę wskaźnika (sformatowaną tak jak w date_format)'
   specify_action: '&cPodaj akcję (read, set lub add)'
   specify_path: '&cPodaj ścieżkę (rozdzielaną kropkami)'
+  specify_package: '&cPodaj nazwę paczki'
+  package_created: '&2Paczka utworzona'
+  package_exists: '&cPaczka już istnieje'
   config_set_error: '&cNie udało się ustawić podanej ścieżki.'
   no_item: '&cNie trzymasz żadnego przedmiotu!'
   item_created: '&2Przedmiot zapisany w konfiguracji jako %item%.'
@@ -68,6 +72,7 @@ pl:
   blocks_to_place: '&2Pozostało %amount% bloków do postawienia'
   mobs_to_kill: '&2Pozostało %amount% stworzeń do zabicia'
   busy: '&cTa postać jest zajęta'
+  quest_canceled: '&2Zadanie %quest% anulowane!'
 en:
   conversation_start: '&e*&bConversation with %quester% started!&e*'
   conversation_end: '&e*&bConversation with %quester% finished!&e*'
@@ -135,6 +140,9 @@ en:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 de:
   conversation_start: '&e*&bGespräch mit %quester% begonnen!&e*'
   conversation_end: '&e*&Gespräch mit %quester% beendet!&e*'
@@ -202,6 +210,9 @@ de:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 fr:
   conversation_start: '&e*&bLa conversation avec %quester% est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec %quester% est terminee!&e*'
@@ -269,6 +280,9 @@ fr:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 cn:
   conversation_start: '&e====&b与%quester%对话中&e===='
   conversation_end: '&e====&b与%quester%的对话已经结束&e===='
@@ -336,6 +350,9 @@ cn:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
 es:
   conversation_start: '&e*&bLa conversacion con %quester% ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con %quester% ha terminado.&e*'
@@ -401,3 +418,6 @@ es:
   blocks_to_place: '&2%amount% blocks left to place'
   mobs_to_kill: '&2%amount% mobs left to kill'
   busy: '&cThis person is busy'
+  quest_canceled: '&2Quest %quest% canceled!'
+  cancel: '&cCancel the quest'
+  cancel_page: 'Canceling quests'
