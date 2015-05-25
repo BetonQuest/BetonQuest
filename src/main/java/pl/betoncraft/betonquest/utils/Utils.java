@@ -29,9 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -399,6 +401,13 @@ public class Utils {
             + enchants + title + author + text + effects + color + owner;
     }
 
+    /**
+     * Checks if the ItemStack is a quest item
+     * 
+     * @param item
+     *          ItemStack to check
+     * @return true if the supplied ItemStack is a quest item, false otherwise
+     */
     public static boolean isQuestItem(ItemStack item) {
         if (item == null) {
             return false;
@@ -408,5 +417,38 @@ public class Utils {
             return true;
         }
         return false;
+    }
+    
+    public static ArrayList<String> getParty(String playerID, double range, String pack, String[] conditions) {
+        final ArrayList<String> list = new ArrayList<>();
+        Player player = PlayerConverter.getPlayer(playerID);
+        Location loc = player.getLocation();
+        double squared = range*range;
+        for (Player otherPlayer : loc.getWorld().getPlayers()) {
+            if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
+                String otherPlayerID = PlayerConverter.getID(otherPlayer);
+                boolean meets = true;
+                for (String condition : conditions) {
+                    String condName;
+                    String packName;
+                    if (condition.contains(".")) {
+                        String[] parts = condition.split("\\.");
+                        condName = parts[1];
+                        packName = parts[0];
+                    } else {
+                        condName = condition;
+                        packName = pack;
+                    }
+                    if (!BetonQuest.condition(otherPlayerID, packName, condName)) {
+                        meets = false;
+                        break;
+                    }
+                }
+                if (meets) {
+                    list.add(otherPlayerID);
+                }
+            }
+        }
+        return list;
     }
 }

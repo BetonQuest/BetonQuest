@@ -100,10 +100,12 @@ public class GlobalLocations extends BukkitRunnable {
                 }
                 // if player is inside location, do stuff
                 if (player.getLocation().getWorld().equals(location.getLocation().getWorld())
-                    && player.getLocation().distance(
-                            new Location(location.getLocation().getWorld(), location.getLocation()
+                    && player.getLocation().distanceSquared(
+                            new Location(
+                                    location.getLocation().getWorld(), location.getLocation()
                                     .getX(), location.getLocation().getY(), location.getLocation()
-                                    .getZ())) < location.getDistance()) {
+                                    .getZ())
+                            ) <= location.getDistance()*location.getDistance()) {
                     // check if player has already triggered this location
                     if (BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
                             .hasTag("global_" + location.getTag())) {

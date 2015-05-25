@@ -47,6 +47,7 @@ import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
+import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.RandomCondition;
@@ -81,6 +82,7 @@ import pl.betoncraft.betonquest.events.KillEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.PartyEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
@@ -235,6 +237,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("journal", JournalCondition.class);
         registerConditions("testforblock", TestForBlockCondition.class);
         registerConditions("empty", EmptySlotsCondition.class);
+        registerConditions("party", PartyCondition.class);
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
@@ -257,6 +260,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("folder", FolderEvent.class);
         registerEvents("setblock", SetBlockEvent.class);
         registerEvents("damage", DamageEvent.class);
+        registerEvents("party", PartyEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

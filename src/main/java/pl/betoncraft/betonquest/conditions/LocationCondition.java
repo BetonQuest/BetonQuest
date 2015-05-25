@@ -80,7 +80,7 @@ public class LocationCondition extends Condition {
         if (!location.getWorld().equals(player.getWorld())) {
             return false;
         }
-        if (player.getLocation().distance(location) <= distance) {
+        if (player.getLocation().distanceSquared(location) <= distance*distance) {
             return true;
         }
         return false;
