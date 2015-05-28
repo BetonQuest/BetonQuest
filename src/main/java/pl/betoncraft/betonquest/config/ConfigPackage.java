@@ -180,7 +180,7 @@ public class ConfigPackage {
         }
         // handle "$this$" variables
         value = value.replace("$this$", name);
-        // handle standard variables
+        // handle the rest
         while (true) {
             int start = value.indexOf('$');
             int end = value.indexOf('$', start+1);
@@ -190,11 +190,75 @@ public class ConfigPackage {
             String varName = value.substring(start+1, end);
             String varVal = main.getConfig().getString("variables." + varName);
             if (varVal == null) {
-                Debug.error("Variable not defined in package " + name + ": " + varName);
+                Debug.error(String.format(
+                        "Variable %s not defined in package %s",
+                        varName, name));
                 return null;
+            } else if (varVal.matches(
+                    "^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+,\\-?\\d+,\\-?\\d+\\)$")) {
+                // handle location variables
+                // parse the inner location
+                String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
+                String innerVarVal = main.getConfig().getString("variables."
+                        + innerVarName);
+                if (innerVarVal == null) {
+                    Debug.error(String.format(
+                            "Location variable %s is not defined, in variable"
+                            + " %s, package %s.",
+                            innerVarName, varName, name));
+                    return null;
+                }
+                if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
+                    Debug.error(String.format(
+                            "Inner variable %s is not valid location, in"
+                            + " variable %s, package %s.",
+                            innerVarName, varName, name));
+                    return null;
+                }
+                double x1, y1, z1;
+                String rest;
+                try {
+                    int i = innerVarVal.indexOf(';');
+                    x1 = Double.parseDouble(innerVarVal.substring(0, i));
+                    int j = innerVarVal.indexOf(';', i+1);
+                    y1 = Double.parseDouble(innerVarVal.substring(i+1, j));
+                    int k = innerVarVal.indexOf(';', j+1);
+                    z1 = Double.parseDouble(innerVarVal.substring(j+1, k));
+                    // rest is world + possible other arguments
+                    rest = innerVarVal.substring(k, innerVarVal.length());
+                } catch (NumberFormatException e) {
+                    Debug.error(String.format("Could not parse coordinates in "
+                            + "inner variable %s in variable %s in package %s",
+                            innerVarName, varName, name));
+                    return null;
+                }
+                // parse the vector
+                double x2, y2, z2;
+                try {
+                    int s = varVal.indexOf('(');
+                    int i = varVal.indexOf(',');
+                    int j = varVal.indexOf(',', i+1);
+                    int e = varVal.indexOf(')');
+                    x2 = Double.parseDouble(varVal.substring(s+1, i));
+                    y2 = Double.parseDouble(varVal.substring(i+1, j));
+                    z2 = Double.parseDouble(varVal.substring(j+1, e));
+                } catch (NumberFormatException e) {
+                    Debug.error(String.format("Could not parse vector in"
+                            + "location variable %s in package %s",
+                            varName, name));
+                    return null;
+                }
+                double x3 = x1 + x2,
+                       y3 = y1 + y2,
+                       z3 = z1 + z2;
+                value = value.replace("$" + varName + "$",
+                        String.format("%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
+            } else {
+                value = value.replace("$" + varName + "$", varVal);
             }
-            value = value.replace("$" + varName + "$", varVal);
         }
+        Debug.info(String.format("Variables in %s changed, result: %s",
+                address, value));
         return value;
     }
     

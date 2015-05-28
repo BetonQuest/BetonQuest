@@ -62,9 +62,9 @@ public class ExplosionEvent extends QuestEvent {
         }
         double x, y, z;
         try {
-            x = Integer.parseInt(partsOfLoc[0]);
-            y = Integer.parseInt(partsOfLoc[1]);
-            z = Integer.parseInt(partsOfLoc[2]);
+            x = Double.parseDouble(partsOfLoc[0]);
+            y = Double.parseDouble(partsOfLoc[1]);
+            z = Double.parseDouble(partsOfLoc[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse coordinates");
         }
