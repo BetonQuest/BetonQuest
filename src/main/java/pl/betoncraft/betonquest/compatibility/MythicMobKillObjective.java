@@ -71,10 +71,14 @@ public class MythicMobKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        HandlerList.unregisterAll(this);
+    public String getInstruction() {
         return "mmobkill " + name + " amount:" + amount + " " + events + " " + conditions + " tag:"
             + tag;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

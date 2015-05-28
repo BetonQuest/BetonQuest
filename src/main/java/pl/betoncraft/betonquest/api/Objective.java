@@ -17,8 +17,6 @@
  */
 package pl.betoncraft.betonquest.api;
 
-import java.util.UUID;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -32,38 +30,30 @@ import pl.betoncraft.betonquest.utils.Debug;
  * pl.betoncraft.betonquest.BetonQuest#registerObjectives(String, Class<?
  * extends Objective>) registerObjectives} method.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public abstract class Objective {
 
     /**
-     * Unique identifier of the objective
-     */
-    protected final UUID id;
-    /**
      * Stores ID of the player.
      */
-    protected String playerID;
+    protected final String playerID;
     /**
      * Stores instruction string for the objective.
      */
-    protected String instructions;
+    protected final String instructions;
     /**
      * Stores conditions string with leading "conditions:" label.
      */
-    protected String conditions;
+    protected final String conditions;
     /**
      * Stores events string with leading "events:" label.
      */
-    protected String events;
+    protected final String events;
     /**
-     * Stores objective's tag (without leading "label:" label!)
+     * Stores objective's label (without leading "label:" label!)
      */
-    protected String tag;
-    /**
-     * Determines if debugging should be turned on for this objective or not
-     */
-    protected boolean debug = false;
+    protected final String tag;
 
     /**
      * Creates new instance of the objective. The objective should parse
@@ -80,24 +70,27 @@ public abstract class Objective {
      *            wrong.
      */
     public Objective(String playerID, String instructions) {
-        this.id = UUID.randomUUID();
         this.playerID = playerID;
         this.instructions = instructions;
         // extract tag, events and conditions
+        String tempTag        = "",
+               tempEvents     = "",
+               tempConditions = "";
         for (String part : instructions.split(" ")) {
             if (part.contains("label:")) {
-                tag = part.substring(6);
+                tempTag = part.substring(6);
             }
             if (part.contains("events:")) {
-                events = part;
+                tempEvents = part;
             }
             if (part.contains("conditions:")) {
-                conditions = part;
-            }
-            if (part.equals("--debug")) {
-                debug =  true;
+                tempConditions = part;
             }
         }
+        // make them final
+        tag        = tempTag;
+        events     = tempEvents;
+        conditions = tempConditions;
     }
 
     /**
@@ -105,9 +98,9 @@ public abstract class Objective {
      * list of active objectives. Use it when you detect that the objective has
      * been completed. Remember to unregister all Listeners you registered!
      */
-    protected void completeObjective() {
-        Debug.info("Objective \"" + tag + "\" has been completed for player " + playerID
-            + ", firing final events. ID='" + id.toString() + "'");
+    protected final void completeObjective() {
+        Debug.info("Objective \"" + tag + "\" has been completed for player "
+        	+ playerID + ", firing final events.");
         // split instructions
         String[] parts = instructions.split(" ");
         String rawEvents = null;
@@ -128,16 +121,11 @@ public abstract class Objective {
                 public void run() {
                     // fire all events
                     for (String eventID : events) {
-                        String eventPack;
-                        if (eventID.contains(".")) {
-                            String[] eventParts = eventID.split("\\.");
-                            eventPack = eventParts[0];
-                            eventID = eventParts[1];
-                        } else {
+                        if (!eventID.contains(".")) {
                             Debug.error("Package not specified for event " + eventID);
                             continue;
                         }
-                        BetonQuest.event(playerID, eventPack, eventID);
+                        BetonQuest.event(playerID, eventID);
                     }
                 }
             }.runTask(BetonQuest.getInstance());
@@ -155,7 +143,7 @@ public abstract class Objective {
      * 
      * @return if all conditions of this objective has been met
      */
-    protected boolean checkConditions() {
+    protected final boolean checkConditions() {
         Debug.info("Condition check in \"" + tag + "\" objective for player "
                 + playerID);
         // split instructions
@@ -175,16 +163,11 @@ public abstract class Objective {
             String[] conditions = rawConditions.split(",");
             // if some condition is not met, return false
             for (String conditionID : conditions) {
-                String conditionPack;
-                if (conditionID.contains(".")) {
-                    String[] conditionParts = conditionID.split("\\.");
-                    conditionPack = conditionParts[0];
-                    conditionID = conditionParts[1];
-                } else {
+                if (!conditionID.contains(".")) {
                     Debug.error("Package not specified for condition " + conditionID);
                     continue;
                 }
-                if (!BetonQuest.condition(playerID, conditionPack, conditionID)) {
+                if (!BetonQuest.condition(playerID, conditionID)) {
                     return false;
                 }
             }
@@ -195,13 +178,18 @@ public abstract class Objective {
 
     /**
      * This method is called by the plugin when the objective needs to be
-     * deleted or saved to the database. You must return a valid instruction
-     * string with updated data (if the player killed 4 of 10 zombies, it needs
-     * to return 6 more zombies). You also have to unregister all Listeners
-     * 
-     * @return the instruction string
+     * deleted. You have to unregister all Listeners here.
      */
-    abstract public String getInstructions();
+    public abstract void delete();
+    
+    /**
+     * In this method you must return a valid instruction
+     * string with updated data (if the player killed 4 of 10 zombies, it needs
+     * to return 6 more zombies). Do not delete the objective here!
+     * 
+     * @return the valid instruction string
+     */
+    public abstract String getInstruction();
 
     /**
      * Returns the tag of this objective. Don't worry about it, it's only used
@@ -209,7 +197,7 @@ public abstract class Objective {
      * 
      * @return the tag
      */
-    public String getTag() {
+    public final String getTag() {
         return tag;
     }
 

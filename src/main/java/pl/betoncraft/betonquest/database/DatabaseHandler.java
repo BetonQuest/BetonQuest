@@ -215,7 +215,8 @@ public class DatabaseHandler {
         }
         for (Objective objective : activeObjectives) {
             database.updateSQL(UpdateType.ADD_OBJECTIVES,
-                    new String[] { playerID, objective.getInstructions() });
+                    new String[] { playerID, objective.getInstruction() });
+            objective.delete();
         }
         for (String tag : tags) {
             database.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
@@ -355,7 +356,8 @@ public class DatabaseHandler {
             Objective objective = iterator.next();
             // if it matches then delete the objective and remove it from list
             if (objective.getTag().equalsIgnoreCase(tag)) {
-                objective.getInstructions();
+                objective.getInstruction();
+                objective.delete();
                 iterator.remove();
             }
         }
@@ -577,17 +579,10 @@ public class DatabaseHandler {
         // fire all events
         if (events != null) {
             for (String event : events) {
-                String packageName;
-                String eventName;
-                if (event.contains(".")) {
-                    String[] eventParts = event.split("\\.");
-                    packageName = eventParts[0];
-                    eventName = eventParts[1];
-                } else {
-                    packageName = packName;
-                    eventName = event;
+                if (!event.contains(".")) {
+                    event = packName + "." + event;
                 }
-                BetonQuest.event(playerID, packageName, eventName);
+                BetonQuest.event(playerID, event);
             }
         }
         // done

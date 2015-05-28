@@ -22,46 +22,40 @@ import java.util.Date;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.SimpleTextOutput;
-import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Adds the entry to player's journal
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class JournalEvent extends QuestEvent {
+    
+    private final String name;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public JournalEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
-        }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
-        }
+    public JournalEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Pointer name not specified!");
-            return;
+            throw new InstructionParseException("Pointer name not specified!");
         }
-        String name = packName + "." + parts[1];
-        Journal journal = BetonQuest.getInstance().getDBHandler(playerID).getJournal();
+        name = packName + "." + parts[1];
+    }
+
+    @Override
+    public void run(String playerID) {
+        Journal journal = BetonQuest.getInstance().getDBHandler(playerID)
+                .getJournal();
         journal.addPointer(new Pointer(name, new Date().getTime()));
         journal.updateJournal();
-        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("new_journal_entry"), Config.getString("config.sounds.journal"));
+        SimpleTextOutput.sendSystemMessage(
+                playerID,
+                Config.getMessage("new_journal_entry"),
+                Config.getString("config.sounds.journal"));
     }
 
 }

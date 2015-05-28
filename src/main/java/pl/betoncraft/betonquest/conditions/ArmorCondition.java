@@ -20,39 +20,38 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Player has to wear this item as an armor
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ArmorCondition extends Condition {
 
-    private QuestItem item;
+    private final QuestItem item;
 
-    public ArmorCondition(String playerID, String pack, String instructions) {
-        super(playerID, pack, instructions);
+    public ArmorCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Armor not defined in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Armor not defined in: "
+                    + instructions);
         }
-        String itemInstruction = super.pack.getString("items." + parts[1]);
+        String itemInstruction = pack.getString("items." + parts[1]);
         if (itemInstruction == null) {
-            Debug.error("No such item: " + parts[1]);
-            isOk = false;
-            return;
+            throw new InstructionParseException("No such item: " + parts[1]);
         }
         item = new QuestItem(itemInstruction);
     }
 
     @Override
-    public boolean isMet() {
-        for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
+    public boolean check(String playerID) {
+        for (ItemStack armor : PlayerConverter.getPlayer(playerID)
+                .getEquipment().getArmorContents()) {
             if (item != null && item.equalsI(armor)) {
                 return true;
             }

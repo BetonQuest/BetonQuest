@@ -17,8 +17,12 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.core.InstructionParseException;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Superclass for all events. You need to extend it in order to create new
@@ -28,32 +32,37 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
  * pl.betoncraft.betonquest.BetonQuest#registerEvents(String, Class<? extends
  * QuestEvent>) registerEvents} method.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public abstract class QuestEvent {
 
     /**
-     * Stores ID of the player.
-     */
-    protected String playerID;
-    /**
      * Stores instruction string for the event.
      */
-    protected String instructions;
+    protected final String instructions;
     /**
-     * Stores the package name from which this event fired
+     * Stores conditions that must be met when firing this event
      */
-    protected String packName;
+    protected final String[] conditions;
     /**
      * ConfigPackage in which this event is defined
      */
-    protected ConfigPackage pack;
+    protected final ConfigPackage pack;
+    /**
+     * Describes if the event is static
+     */
+    protected boolean staticness = false;
+    /**
+     * Describes if the event is persistent
+     */
+    protected boolean persistent = false;
 
     /**
      * Creates new instance of the event. The event should parse instruction
-     * string and immediately do it's job.
+     * string without doing anything else. If anything goes wrong, throw
+     * {@link InstructionParseException} with error message describing the problem.
      * 
-     * @param playerID
+     * @param packName
      *            ID of the player this event is related to. It will be passed
      *            at runtime, you only need to use it according to what your
      *            event does.
@@ -62,10 +71,63 @@ public abstract class QuestEvent {
      *            required data from it and display errors if there is anything
      *            wrong.
      */
-    public QuestEvent(String playerID, String pack, String instructions) {
-        this.playerID = playerID;
+    public QuestEvent(String packName, String instructions) throws InstructionParseException {
         this.instructions = instructions;
-        this.packName = pack;
         this.pack = Config.getPackage(packName);
+        String[] tempConditions = new String[]{};
+        String[] parts = instructions.split(" ");
+        for (String part : parts) {
+            if (part.startsWith("event_conditions:")) {
+        	tempConditions = part.substring(17).split(",");
+            }
+        }
+        for (int i = 0; i < tempConditions.length; i++) {
+            if (!tempConditions[i].contains(".")) {
+        	tempConditions[i] = pack.getName() + "." + tempConditions[i];
+            }
+        }
+        conditions = tempConditions;
+    }
+    
+    /**
+     * This method should contain all logic for firing the event and use the
+     * data parsed by the condtructor. When this method is called
+     * all the required data is present and parsed correctly.
+     * 
+     * @param playerID
+     * 		ID of the player for whom the event will fire
+     */
+    abstract public void run(String playerID);
+    
+    /**
+     * Fires an event for the player. The event conditions are checked, so it's
+     * not needed to check them explicitly.
+     * 
+     * @param playerID
+     * 		ID of the player for whom the event will fire
+     */
+    public final void fire(String playerID) {
+        // check if playerID isn't null, this event cannot be static
+        if (playerID == null) {
+            if (!staticness) {
+                Debug.error("This event cannot be static: " + instructions);
+                return;
+            }
+        }
+        // check if the event cannot be fired for offline players
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            if (!persistent) {
+		Debug.info("Player " + playerID + " is offline, cannot fire event");
+		return;
+	    }
+        }
+        // check event conditions before firing the event
+	for (String condition : conditions) {
+	    if (!BetonQuest.condition(playerID, condition)) {
+		Debug.info("Event conditions were not met.");
+		return;
+	    }
+	}
+	run(playerID);
     }
 }

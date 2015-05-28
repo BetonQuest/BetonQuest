@@ -18,36 +18,38 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Damages the player
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class DamageEvent extends QuestEvent {
+    
+    private final double damage;
 
-    public DamageEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
-        }
+    public DamageEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
-        double damage = -1;
         try {
             damage = Double.parseDouble(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Wrong number format in: " + instructions);
+            throw new InstructionParseException("Wrong number format");
         }
-        if (damage > 0) {
-            PlayerConverter.getPlayer(playerID).damage(damage);
+        if (damage <= 0) {
+            throw new InstructionParseException("Wrong damage amount");
         }
+    }
+    
+    @Override
+    public void run(String playerID) {
+        PlayerConverter.getPlayer(playerID).damage(damage);
     }
 
 }

@@ -20,40 +20,32 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have active potion effect
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class EffectCondition extends Condition {
 
-    private PotionEffectType type;
+    private final PotionEffectType type;
 
-    public EffectCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public EffectCondition(String packName, String instructions) throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Effect type not defined in effect condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Effect type not defined");
         }
         type = PotionEffectType.getByName(parts[1]);
         if (type == null) {
-            Debug.error("Effect does not exist: " + parts[1]);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Effect " + parts[1] + " does not exist");
         }
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         if (PlayerConverter.getPlayer(playerID).hasPotionEffect(type)) {
             return true;
         }

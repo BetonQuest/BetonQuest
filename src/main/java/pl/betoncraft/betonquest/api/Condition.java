@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.api;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Superclass for all conditions. You need to extend it in order to create new
@@ -28,26 +29,14 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
  * pl.betoncraft.betonquest.BetonQuest#registerConditions( String, Class<?
  * extends Condition>) registerConditions} method.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 abstract public class Condition {
 
     /**
-     * Stores ID of the player.
-     */
-    protected String playerID;
-    /**
      * Stores instruction string for the condition.
      */
     protected String instructions;
-    /**
-     * True if the condition was prepared correctly.
-     */
-    protected boolean isOk = true;
-    /**
-     * Stores the package name from which this condition was checked
-     */
-    protected String packName;
     /**
      * ConfigPackage in which this condition is defined
      */
@@ -56,29 +45,42 @@ abstract public class Condition {
     /**
      * Creates new instance of the condition. The condition should parse
      * instruction string at this point and extract all the data from it.
+     * If anything goes wrong, throw {@link InstructionParseException}
+     * with an error message describing the problem.
      * 
-     * @param playerID
-     *            ID of the player this condition is related to. It will be
-     *            passed at runtime, you only need to use it according to what
-     *            your condition checks.
+     * @param packName
+     *            name of the package in which this condition is defined
      * @param instructions
-     *            instruction string passed at runtime. You need to extract all
+     *            instruction string passed at runtime; you need to extract all
      *            required data from it and display errors if there is anything
      *            wrong.
      */
-    public Condition(String playerID, String pack, String instructions) {
-        this.playerID = playerID;
-        this.packName = pack;
+    public Condition(String packName, String instructions) throws InstructionParseException {
         this.instructions = instructions;
         this.pack = Config.getPackage(packName);
     }
 
+
     /**
-     * Checks if the condition is met. It should contain all logic for the
-     * condition and use data parsed by the constructor. Don't worry about
-     * inverting the condition, it's done by the rest of BetonQuest's logic.
+     * This method should contain all logic for the condition and use data
+     * parsed by the constructor. Don't worry about inverting the condition,
+     * it's done by the rest of BetonQuest's logic. When this method is called
+     * all the required data is present and parsed correctly.
      * 
+     * @param playerID
+     * 		ID of the player for whom the condition will be checked
+     * @return the result of the check
+     */
+    abstract public boolean check(String playerID);
+
+    /**
+     * Checks if the condition is met.
+     * 
+     * @param playerID
+     * 		ID of the player for whom the condition will be checked
      * @return if the condition is met
      */
-    abstract public boolean isMet();
+    public final boolean isMet(String playerID) {
+	return check(playerID);
+    }
 }

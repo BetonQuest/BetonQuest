@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,70 +28,89 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Removes items from player's inventory and/or backpack
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class TakeEvent extends QuestEvent {
 
-    private QuestItem questItem;
-    private int amount = 1;
+    private final Item[]  questItems;
+    private final boolean notify;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public TakeEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
-        }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
-        }
-
+    public TakeEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not eoungh arguments");
+        }
+        notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
         String[] itemsToRemove = parts[1].split(",");
+        ArrayList<Item> list = new ArrayList<>();
         for (String rawItem : itemsToRemove) {
-            String itemName = rawItem.split(":")[0];
-            if (rawItem.split(":").length > 1) {
-                amount = Integer.parseInt(rawItem.split(":")[1]);
+            String[] rawItemParts = rawItem.split(":");
+            String itemName = rawItemParts[0];
+            int amount = 1;
+            if (rawItemParts.length > 1) {
+                try {
+                    amount = Integer.parseInt(rawItemParts[1]);
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException(
+                            "Could not parse item amount");
+                }
             }
-            questItem = new QuestItem(pack.getString("items." + itemName));
-            Player player = PlayerConverter.getPlayer(playerID);
-            if (parts.length > 2 && parts[2].equalsIgnoreCase("notify")) {
-                player.sendMessage(Config.getMessage("items_taken").replaceAll("%name%",
-                        (questItem.getName() != null) ? questItem.getName() : questItem
-                        .getMaterial().toString()).replaceAll("%amount%", String.valueOf(amount))
+            String itemInstruction = pack.getString("items." + itemName);
+            if (itemInstruction == null) {
+                throw new InstructionParseException("Item not defined");
+            }
+            QuestItem questItem = new QuestItem(itemInstruction);
+            list.add(new Item(questItem, amount));
+        }
+        Item[] tempQuestItems = new Item[list.size()];
+        tempQuestItems = list.toArray(tempQuestItems);
+        questItems = tempQuestItems;
+    }
+
+    @Override
+    public void run(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        for (Item item : questItems) {
+            QuestItem questItem = item.getItem();
+            int amount = item.getAmount();
+            if (notify) {
+                player.sendMessage(Config.getMessage("items_taken").replaceAll(
+                        "%name%",
+                        (questItem.getName() != null) ? questItem.getName()
+                                : questItem.getMaterial().toString())
+                        .replaceAll("%amount%", String.valueOf(amount))
                         .replaceAll("&", "§"));
             }
-            player.getInventory().setContents(removeItems(
-                    player.getInventory().getContents()));
+            player.getInventory().setContents(
+                    removeItems(player.getInventory().getContents(), questItem,
+                            amount));
             if (amount > 0) {
-                List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
-                ItemStack[] array = new ItemStack[]{};
+                List<ItemStack> backpack =
+                        BetonQuest.getInstance().getDBHandler(playerID)
+                                .getBackpack();
+                ItemStack[] array = new ItemStack[] {};
                 array = backpack.toArray(array);
-                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array)));
+                LinkedList<ItemStack> list =
+                        new LinkedList<>(Arrays.asList(removeItems(array,
+                                questItem, amount)));
                 while (list.remove(null))
-                BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
-            }     
+                    BetonQuest.getInstance().getDBHandler(playerID)
+                            .setBackpack(list);
+            }
         }
     }
 
-    /**
-     * @param items
-     */
-    private ItemStack[] removeItems(ItemStack[] items) {
+    private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem,
+            int amount) {
         for (int i = 0; i < items.length; i++) {
             ItemStack item = items[i];
             if (questItem.equalsI(item)) {
@@ -107,5 +127,24 @@ public class TakeEvent extends QuestEvent {
             }
         }
         return items;
+    }
+
+    private class Item {
+
+        private final QuestItem item;
+        private final int       amount;
+
+        public Item(QuestItem item, int amount) {
+            this.item = item;
+            this.amount = amount;
+        }
+
+        public QuestItem getItem() {
+            return item;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
     }
 }

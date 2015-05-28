@@ -21,49 +21,43 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Deletes the objective with specified label
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class DeleteObjectiveEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public DeleteObjectiveEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    private final String tag;
+
+    public DeleteObjectiveEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        persistent = true;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        final String tag = instructions.split(" ")[1];
+        tag = parts[1];
+    }
+
+    @Override
+    public void run(final String playerID) {
         if (PlayerConverter.getPlayer(playerID) != null) {
             BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(tag);
         } else {
-            if (BetonQuest.getInstance().isMySQLUsed()) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        deleteOfflineObjective(tag);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            } else {
-                deleteOfflineObjective(tag);
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+                    dbHandler.deleteObjective(tag);
+                    dbHandler.saveData();
+                }
+            }.runTaskAsynchronously(BetonQuest.getInstance());
         }
-    }
-    
-    private void deleteOfflineObjective(String tag) {
-        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-        dbHandler.deleteObjective(tag);
-        dbHandler.saveData();
     }
 }

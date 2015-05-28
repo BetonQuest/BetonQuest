@@ -21,102 +21,97 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Checks the conditions for the whole party
- * (including the player that started the checking)
+ * Checks the conditions for the whole party (including the player that started
+ * the checking)
  * 
  * @author Jakub Sapalski
  */
 public class PartyCondition extends Condition {
-    
-    private double   distance;
-    private String[] conditions;
-    private String[] everyone   = new String[]{};
-    private String[] anyone     = new String[]{};
-    private int      count      = 0;
 
-    public PartyCondition(String playerID, String pack, String instructions) {
-        super(playerID, pack, instructions);
+    private final double   distance;
+    private final String[] conditions;
+    private final String[] everyone;
+    private final String[] anyone;
+    private final int      count;
+
+    public PartyCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 4) {
-            Debug.error("Not enough arguments in party condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         // first argument is the distance
         try {
             distance = Double.parseDouble(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Could not parse distance in party condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Could not parse distance");
         }
         // next are conditions
         conditions = parts[2].split(",");
+        for (int i = 0; i < conditions.length; i++) {
+            if (!conditions[i].contains(".")) {
+                conditions[i] = pack.getName() + "." + conditions[i];
+            }
+        }
         // now time for everything else
+        String[] tempEvery = new String[] {}, tempAny = new String[] {};
+        int tempCount = 0;
         for (String part : parts) {
             if (part.startsWith("every:")) {
-                everyone = part.substring(6).split(",");
+                tempEvery = part.substring(6).split(",");
+                for (int i = 0; i < tempEvery.length; i++) {
+                    if (!tempEvery[i].contains(".")) {
+                        tempEvery[i] = pack.getName() + "." + tempEvery[i];
+                    }
+                }
             } else if (part.startsWith("any:")) {
-                anyone = part.substring(4).split(",");
+                tempAny = part.substring(4).split(",");
+                for (int i = 0; i < tempAny.length; i++) {
+                    if (!tempAny[i].contains(".")) {
+                        tempAny[i] = pack.getName() + "." + tempAny[i];
+                    }
+                }
             } else if (part.startsWith("count:")) {
                 try {
-                    count = Integer.parseInt(part.substring(6));
+                    tempCount = Integer.parseInt(part.substring(6));
                 } catch (NumberFormatException e) {
-                    Debug.error("Could not parse \"count\" argument in party condition: " + instructions);
-                    isOk = false;
-                    return;
+                    throw new InstructionParseException(
+                            "Could not parse \"count\" argument");
                 }
             }
         }
+        everyone = tempEvery;
+        anyone = tempAny;
+        count = tempCount;
         // everything loaded
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false");
-            return false;
-        }
+    public boolean check(String playerID) {
         // get the party
-        ArrayList<String> members = Utils.getParty(playerID, distance, pack.getName(), conditions);
-        // check every condition against every player - all of them must meet those conditions
+        ArrayList<String> members =
+                Utils.getParty(playerID, distance, pack.getName(), conditions);
+        // check every condition against every player - all of them must meet
+        // those conditions
         for (String condition : everyone) {
-            String condName;
-            String packName;
-            if (condition.contains(".")) {
-                String[] parts = condition.split("\\.");
-                condName = parts[1];
-                packName = parts[0];
-            } else {
-                condName = condition;
-                packName = super.packName;
-            }
             for (String memberID : members) {
                 // if this condition wasn't met by someone, return false
-                if (!BetonQuest.condition(memberID, packName, condName)) {
+                if (!BetonQuest.condition(memberID, condition)) {
                     return false;
                 }
             }
         }
-        // check every condition against every player - at least one of them must meet each of those
+        // check every condition against every player - at least one of them
+        // must meet each of those
         for (String condition : anyone) {
             boolean met = false;
-            String condName;
-            String packName;
-            if (condition.contains(".")) {
-                String[] parts = condition.split("\\.");
-                condName = parts[1];
-                packName = parts[0];
-            } else {
-                condName = condition;
-                packName = super.packName;
-            }
             for (String memberID : members) {
-                if (BetonQuest.condition(memberID, packName, condName)) {
+                if (BetonQuest.condition(memberID, condition)) {
                     met = true;
                     break;
                 }
@@ -126,8 +121,8 @@ public class PartyCondition extends Condition {
                 return false;
             }
         }
-        // if the count is more than 0, we need to check if there are more players
-        // in the party than required minimum
+        // if the count is more than 0, we need to check if there are more
+        // players in the party than required minimum
         if (count > 0 && members.size() < count) {
             return false;
         }

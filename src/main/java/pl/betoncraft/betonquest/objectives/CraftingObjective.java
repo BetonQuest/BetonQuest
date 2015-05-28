@@ -94,10 +94,14 @@ public class CraftingObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        HandlerList.unregisterAll(this);
+    public String getInstruction() {
         return "craft " + material + ":" + data + " " + amount + " " + conditions + " " + events
             + " label:" + tag;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

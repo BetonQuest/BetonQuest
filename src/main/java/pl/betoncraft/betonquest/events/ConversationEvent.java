@@ -19,34 +19,40 @@ package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.core.Conversation;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Fires the conversation for the player
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ConversationEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public ConversationEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    private final String pack;
+    private final String conv;
+    
+    public ConversationEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Conversation not defined");
         }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+        String convID = parts[1];
+        if (convID.contains(".")) {
+            String[] parts2 = convID.split("\\.");
+            pack = parts2[0];
+            conv = parts2[1];
+        } else {
+            pack = super.pack.getName();
+            conv = convID;
         }
-        new Conversation(playerID, packName, instructions.split(" ")[1],
+    }
+    
+    @Override
+    public void run(String playerID) {
+        new Conversation(playerID, pack, conv,
                 PlayerConverter.getPlayer(playerID).getLocation());
     }
 }

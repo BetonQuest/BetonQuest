@@ -24,31 +24,28 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Checks block at specified location against specified Material
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class TestForBlockCondition extends Condition {
 
-    private Block block;
-    private Material material;
+    private final Block block;
+    private final Material material;
     
-    public TestForBlockCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public TestForBlockCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
-            Debug.error("Error in instruction string in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         String[] location = parts[1].split(";");
         if (location.length != 4) {
-            Debug.error("Error in location in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Wrong location format");
         }
         double y = 0, x = 0, z = 0;
         try {
@@ -56,39 +53,24 @@ public class TestForBlockCondition extends Condition {
             y = Double.parseDouble(location[1]);
             z = Double.parseDouble(location[2]);
         } catch (NumberFormatException e) {
-            Debug.error("Wrong number format in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Cannot parse coordinates");
         }
         World world = Bukkit.getWorld(location[3]);
         if (world == null) {
-            Debug.error("World does not exist in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("World does not exist");
         }
         block = new Location(world, x, y, z).getBlock();
         if (block == null) {
-            Debug.error("Error with block in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Error with the block");
         }
         material = Material.matchMaterial(parts[2]);
         if (material == null) {
-            Debug.error("Undefined material type in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Undefined material type");
         }
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
-        if (material == null || block == null) {
-            return false;
-        }
+    public boolean check(String playerID) {
         return block.getType().equals(material);
     }
 

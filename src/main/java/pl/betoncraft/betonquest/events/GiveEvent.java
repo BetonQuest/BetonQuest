@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
@@ -25,52 +26,68 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
+ * Gives the player specified items
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class GiveEvent extends QuestEvent {
 
-    private QuestItem questItem;
-    private int amount = 1;
+    private final Item[]  questItems;
+    private final boolean notify;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public GiveEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
-        }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
-        }
-
+    public GiveEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
+        }
         String[] items = parts[1].split(",");
-        for (String rawItem : items) {
-            String itemName = rawItem.split(":")[0];
-            if (rawItem.split(":").length > 1) {
-                amount = Integer.parseInt(rawItem.split(":")[1]);
+        notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
+        ArrayList<Item> list = new ArrayList<>();
+        for (int i = 0; i < items.length; i++) {
+            String rawItem = items[i];
+            String[] itemParts = rawItem.split(":");
+            String name = itemParts[0];
+            int amount;
+            if (itemParts.length == 1) {
+                amount = 1;
+            } else {
+                try {
+                    amount = Integer.parseInt(itemParts[1]);
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException("Wrong number format");
+                }
             }
-            questItem = new QuestItem(pack.getString("items." + itemName));
-            Player player = PlayerConverter.getPlayer(playerID);
-            if (parts.length > 2 && parts[2].equalsIgnoreCase("notify")) {
-                player.sendMessage(Config.getMessage("items_given").replaceAll("%name%",
-                        (questItem.getName() != null) ? questItem.getName() : questItem
-                        .getMaterial().toString()).replaceAll("%amount%", String.valueOf(amount))
+            String itemInstruction = pack.getString("items." + name);
+            if (itemInstruction == null) {
+                throw new InstructionParseException("Item not defined: " + name);
+            }
+            list.add(new Item(new QuestItem(itemInstruction), amount));
+        }
+        Item[] tempQuestItems = new Item[list.size()];
+        tempQuestItems = list.toArray(tempQuestItems);
+        questItems = tempQuestItems;
+    }
+
+    @Override
+    public void run(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        for (Item theItem : questItems) {
+            QuestItem questItem = theItem.getItem();
+            int amount = theItem.getAmount();
+            if (notify) {
+                player.sendMessage(Config.getMessage("items_given").replaceAll(
+                        "%name%",
+                        (questItem.getName() != null) ? questItem.getName()
+                                : questItem.getMaterial().toString())
+                        .replaceAll("%amount%", String.valueOf(amount))
                         .replaceAll("&", "§"));
             }
             while (amount > 0) {
@@ -81,19 +98,39 @@ public class GiveEvent extends QuestEvent {
                     stackSize = amount;
                 }
                 ItemStack item = questItem.generateItem(stackSize);
-                HashMap<Integer, ItemStack> left = player
-                        .getInventory().addItem(item);
+                HashMap<Integer, ItemStack> left =
+                        player.getInventory().addItem(item);
                 for (Integer leftNumber : left.keySet()) {
                     ItemStack itemStack = left.get(leftNumber);
                     if (Utils.isQuestItem(itemStack)) {
-                        BetonQuest.getInstance().getDBHandler(playerID).addItem(itemStack, stackSize);
+                        BetonQuest.getInstance().getDBHandler(playerID)
+                                .addItem(itemStack, stackSize);
                     } else {
-                        player.getWorld().dropItem(player.getLocation(), itemStack);
+                        player.getWorld().dropItem(player.getLocation(),
+                                itemStack);
                     }
                 }
                 amount = amount - stackSize;
             }
         }
-        
+    }
+
+    private class Item {
+
+        private final QuestItem item;
+        private final int       amount;
+
+        public Item(QuestItem item, int amount) {
+            this.item = item;
+            this.amount = amount;
+        }
+
+        public QuestItem getItem() {
+            return item;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
     }
 }

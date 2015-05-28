@@ -18,7 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -28,40 +28,31 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class TimeCondition extends Condition {
 
-    private double timeMin = 0;
-    private double timeMax = 0;
+    private final double timeMin;
+    private final double timeMax;
 
-    public TimeCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public TimeCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         String[] theTime = null;
         if (parts.length < 2) {
-            Debug.error("Time not defined in time condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Time not defined");
         }
         theTime = parts[1].split("-");
         if (theTime.length != 2) {
-            Debug.error("Wrong time format in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Wrong time format");
         }
         try {
             timeMin = Double.parseDouble(theTime[0]);
             timeMax = Double.parseDouble(theTime[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Could not parse time in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Could not parse time");
         }
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
         if (time >= 18000) {
             // 18000 minecraft-time is midnight, so there is new

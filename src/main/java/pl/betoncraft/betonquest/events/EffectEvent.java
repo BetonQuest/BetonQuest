@@ -21,46 +21,47 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Gives the player specified potion effect
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class EffectEvent extends QuestEvent {
 
-    private PotionEffectType effect;
-    private int duration;
-    private int amplifier;
-    private boolean ambient = false;
+    private final PotionEffectType effect;
+    private final int duration;
+    private final int amplifier;
+    private final boolean ambient;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public EffectEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    public EffectEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 4) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+        effect = PotionEffectType.getByName(parts[1]);
+        if (effect == null) {
+            throw new InstructionParseException("Effect type does not exist");
         }
-        effect = PotionEffectType.getByName(instructions.split(" ")[1]);
-        duration = Integer.parseInt(instructions.split(" ")[2]);
-        amplifier = Integer.parseInt(instructions.split(" ")[3]);
-        if (instructions.contains("--ambient")) {
-            ambient = true;
-        }
+        try {
+	    duration = Integer.parseInt(parts[2]);
+	    amplifier = Integer.parseInt(parts[3]);
+	} catch (NumberFormatException e) {
+	    throw new InstructionParseException(
+	            "Could not parse number arguments");
+	}
+	ambient = instructions.contains("--ambient");
+    }
+
+    @Override
+    public void run(String playerID) {
         PlayerConverter.getPlayer(playerID).addPotionEffect(
-                new PotionEffect(effect, duration * 20, amplifier - 1, ambient));
+                new PotionEffect(effect, duration * 20, amplifier - 1, ambient)
+        );
     }
 
 }

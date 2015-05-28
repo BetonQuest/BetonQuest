@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -27,12 +28,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class SneakCondition extends Condition {
 
-    public SneakCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public SneakCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
     }
 
     @Override
-    public boolean isMet() {
+    public boolean check(String playerID) {
         if (PlayerConverter.getPlayer(playerID).isSneaking()) {
             return true;
         }

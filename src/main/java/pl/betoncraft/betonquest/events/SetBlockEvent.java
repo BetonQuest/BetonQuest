@@ -23,65 +23,71 @@ import org.bukkit.Material;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
+/**
+ * Sets the block at specified location
+ * 
+ * @author Jakub Sapalski
+ */
 public class SetBlockEvent extends QuestEvent {
 
-    private Material block;
-    private byte data = 0;
-    private Location loc;
+    private final Material block;
+    private final byte     data;
+    private final Location loc;
 
-    @SuppressWarnings("deprecation")
-    public SetBlockEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public SetBlockEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
-            Debug.error("Not enough arguments in setblock event: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
+        // match material
         block = Material.matchMaterial(parts[1]);
-        loc = decodeLocation(parts[2]);
         if (block == null) {
-            Debug.error("Could not parse block: " + parts[1]);
-            return;
+            throw new InstructionParseException("Block type " + parts[1]
+                    + " does not exist");
         }
-        if (loc == null) {
-            Debug.error("Could not parse location: " + parts[2]);
-            return;
-        }
-        for (String part : parts) {
-            if (part.contains("data:")) {
-                try {
-                    data = Byte.parseByte(part.substring(5));
-                } catch (NumberFormatException e) {
-                    Debug.error("Could not parse data value in: " + instructions);
-                    return;
-                }
-            }
-        }
-        loc.getBlock().setType(block);
-        loc.getBlock().setData(data);
-    }
-
-    private Location decodeLocation(String locStr) {
-        String[] coords = locStr.split(";");
+        // parse location
+        String[] coords = parts[2].split(";");
         if (coords.length != 4) {
-            return null;
+            throw new InstructionParseException("Wrong locatio format");
         }
-        double x, y, z;
         World world = Bukkit.getWorld(coords[3]);
         if (world == null) {
-            return null;
+            throw new InstructionParseException("World "
+                    + coords[3] + " does not exist");
         }
+        double x, y, z;
         try {
             x = Double.parseDouble(coords[0]);
             y = Double.parseDouble(coords[1]);
             z = Double.parseDouble(coords[2]);
         } catch (NumberFormatException e) {
-            return null;
+            throw new InstructionParseException("Could not parse coordinates");
         }
-        Location loc = new Location(world, x, y, z);
-        return loc;
+        loc = new Location(world, x, y, z);
+        // get data value
+        byte tempData = 0;
+        for (String part : parts) {
+            if (part.contains("data:")) {
+                try {
+                    tempData = Byte.parseByte(part.substring(5));
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException(
+                            "Could not parse data value");
+                }
+            }
+        }
+        data = tempData;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void run(String playerID) {
+        loc.getBlock().setType(block);
+        loc.getBlock().setData(data);
     }
 
 }

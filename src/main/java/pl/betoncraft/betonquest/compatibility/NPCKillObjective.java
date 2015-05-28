@@ -69,9 +69,14 @@ public class NPCKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
+    public String getInstruction() {
         return "npckill " + ID + " amount:" + amount + " " + events + " " + conditions + " label:"
             + tag;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

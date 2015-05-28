@@ -18,35 +18,30 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have specified permission node
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class PermissionCondition extends Condition {
 
-    private String permission;
+    private final String permission;
 
-    public PermissionCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public PermissionCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("There is no permission defined in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("There is no permission defined");
         }
         permission = parts[1];
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         if (PlayerConverter.getPlayer(playerID).hasPermission(permission)) {
             return true;
         }

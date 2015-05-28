@@ -20,29 +20,40 @@ package pl.betoncraft.betonquest.compatibility;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * @author co0sh
- *
+ * Modifies player's balance
+ * 
+ * @author Jakub Sapalski
  */
 public class MoneyEvent extends QuestEvent {
+    
+    private final double amount;
 
-    /**
-     * @param playerID
-     * @param instructions
-     */
+    public MoneyEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        try {
+            amount = Double.parseDouble(parts[1]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse money amount");
+        }
+    }
+
     @SuppressWarnings("deprecation")
-    public MoneyEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        double amount = Double.parseDouble(instructions.split(" ")[1]);
+    @Override
+    public void run(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
         if (amount > 0) {
             Compatibility.getEconomy().depositPlayer(player.getName(), amount);
         } else if (amount < 0) {
-            amount = -amount;
-            Compatibility.getEconomy().withdrawPlayer(player.getName(), amount);
+            Compatibility.getEconomy().withdrawPlayer(player.getName(), -amount);
         }
     }
-
 }

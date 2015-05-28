@@ -15,30 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.events;
-
-import org.bukkit.entity.Player;
-
-import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+package pl.betoncraft.betonquest.core;
 
 /**
- * Simply kills the player.
+ * Exception thrown by events and conditions when the instruction
+ * string has wrong format.
  * 
  * @author Jakub Sapalski
  */
-public class KillEvent extends QuestEvent {
+public class InstructionParseException extends Exception {
 
-    public KillEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
+    private static final long serialVersionUID = 1L;
+    private final String message;
+    
+    public InstructionParseException(final String message) {
+	this.message = message;
     }
-
+    
     @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        player.damage(player.getHealth() + 1);
+    public String getMessage() {
+        return message;
     }
 
 }

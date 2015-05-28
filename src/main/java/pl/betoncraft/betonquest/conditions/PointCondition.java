@@ -19,52 +19,42 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Point;
-import pl.betoncraft.betonquest.utils.Debug;
 
 /**
- * Requires the player to have specified amount of points (or more)
- * in specified category
+ * Requires the player to have specified amount of points (or more) in specified
+ * category
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class PointCondition extends Condition {
 
-    private String category = null;
-    private int count = 0;
+    private final String category;
+    private final int    count;
 
-    public PointCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public PointCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
-            Debug.error("Not enough arguments for a point condition in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         category = parts[1];
         try {
             count = Integer.parseInt(parts[2]);
         } catch (NumberFormatException e) {
-            Debug.error("Could not parse point amount in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Could not parse point amount");
         }
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
-        int points = 0;
-        for (Point point : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
+    public boolean check(String playerID) {
+        for (Point point : BetonQuest.getInstance().getDBHandler(playerID)
+                .getPoints()) {
             if (point.getCategory().equalsIgnoreCase(category)) {
-                points = point.getCount();
+                return count >= point.getCount();
             }
-        }
-        if (points >= count) {
-            return true;
         }
         return false;
     }

@@ -22,39 +22,40 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have specific armor rating
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class ArmorRatingCondition extends Condition {
 
-    private int rating = 0;
-    private int required;
+    private final int required;
 
-    public ArmorRatingCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public ArmorRatingCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
 
         String[] parts = instructions.split(" ");
 
         if (parts.length < 2) {
-            Debug.error("Armor rating not defined in rating condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Armor rating not defined");
         }
-        
+
         try {
             required = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Could not parse rating amount in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Could not parse rating amount");
         }
+    }
 
-        PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+    @Override
+    public boolean check(String playerID) {
+        PlayerInventory inv =
+                PlayerConverter.getPlayer(playerID).getInventory();
+        int rating = 0;
         ItemStack boots = inv.getBoots();
         ItemStack helmet = inv.getHelmet();
         ItemStack chest = inv.getChestplate();
@@ -72,7 +73,6 @@ public class ArmorRatingCondition extends Condition {
                 rating += 3;
         }
         if (boots != null) {
-            //
             if (boots.getType() == Material.LEATHER_BOOTS)
                 rating += 1;
             else if (boots.getType() == Material.GOLD_BOOTS)
@@ -85,7 +85,6 @@ public class ArmorRatingCondition extends Condition {
                 rating += 3;
         }
         if (leggings != null) {
-            //
             if (leggings.getType() == Material.LEATHER_LEGGINGS)
                 rating += 2;
             else if (leggings.getType() == Material.GOLD_LEGGINGS)
@@ -98,7 +97,6 @@ public class ArmorRatingCondition extends Condition {
                 rating += 6;
         }
         if (chest != null) {
-            //
             if (chest.getType() == Material.LEATHER_CHESTPLATE)
                 rating += 3;
             else if (chest.getType() == Material.GOLD_CHESTPLATE)
@@ -109,14 +107,6 @@ public class ArmorRatingCondition extends Condition {
                 rating += 6;
             else if (chest.getType() == Material.DIAMOND_CHESTPLATE)
                 rating += 8;
-        }
-    }
-
-    @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
         }
         if (rating >= required) {
             return true;

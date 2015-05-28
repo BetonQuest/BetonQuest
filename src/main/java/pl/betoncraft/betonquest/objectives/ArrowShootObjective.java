@@ -107,10 +107,14 @@ public class ArrowShootObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        HandlerList.unregisterAll(this);
+    public String getInstruction() {
         // the instructions don't change over time in this objective
         return instructions;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

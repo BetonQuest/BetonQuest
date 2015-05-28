@@ -23,7 +23,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -33,21 +33,16 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class BQEventSkript extends QuestEvent {
     
-    public BQEventSkript(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        Player player = PlayerConverter.getPlayer(playerID);
-        if (player == null) {
-            Debug.error("Player " + playerID  + " is offline, terminating event!");
-            return;
-        }
+    private final String id;
+    
+    public BQEventSkript(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String [] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Error in Skript event: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
-        String id = parts[1];
-        CustomEventForSkript event = new CustomEventForSkript(player, id);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        id = parts[1];
     }
     
     /**
@@ -87,5 +82,12 @@ public class BQEventSkript extends QuestEvent {
             return handlers;
         }
 
+    }
+
+    @Override
+    public void run(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        CustomEventForSkript event = new CustomEventForSkript(player, id);
+        Bukkit.getServer().getPluginManager().callEvent(event);
     }
 }

@@ -21,28 +21,35 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Sends a message to the player
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class MessageEvent extends QuestEvent {
+    
+    private final String message;
 
-    public MessageEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // the event cannot be fired for offline players
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+    public MessageEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        staticness = true;
+        try {
+            message = super.instructions.substring(13);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InstructionParseException("Message not defined");
         }
-        String message = super.instructions.substring(super.instructions.split(" ")[0].length() + 1);
-        if (playerID == null) {
+    }
+    
+    @Override
+    public void run(String playerID) {
+	if (playerID == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(message.replaceAll("&", "§").replaceAll("%player%",
-                        player.getName()));
+                player.sendMessage(message.replaceAll("&", "§")
+                        .replaceAll("%player%", player.getName()));
             }
         } else {
             PlayerConverter.getPlayer(playerID).sendMessage(

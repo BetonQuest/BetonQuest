@@ -19,34 +19,29 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Requires the player to have specified tag
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class TagCondition extends Condition {
 
-    private String tag;
+    private final String tag;
 
-    public TagCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public TagCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("There is no tag defined in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("There is no tag defined");
         }
         tag = parts[1];
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         if (BetonQuest.getInstance().getDBHandler(playerID).hasTag(tag)) {
             return true;
         }

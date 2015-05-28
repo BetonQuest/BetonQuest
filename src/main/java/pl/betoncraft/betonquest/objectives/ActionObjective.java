@@ -43,12 +43,6 @@ public class ActionObjective extends Objective implements Listener {
     private Location loc = null;
     double range = 0;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public ActionObjective(String playerID, String instructions) {
         super(playerID, instructions);
         String[] parts = instructions.split(" ");
@@ -135,10 +129,14 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        HandlerList.unregisterAll(this);
+    public String getInstruction() {
         return "action " + action + " " + type + ":" + data + " " + rawLoc + " " + conditions + " "
             + events + " label:" + tag;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

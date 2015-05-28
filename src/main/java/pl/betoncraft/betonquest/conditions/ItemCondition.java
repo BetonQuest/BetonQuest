@@ -24,26 +24,25 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have specified amount of items in the inventory
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ItemCondition extends Condition {
 
-    private List<Item> questItems = new ArrayList<>();
+    private final List<Item> questItems = new ArrayList<>();
 
-    public ItemCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public ItemCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Items not defined in item condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Items not defined");
         }
         String items = parts[1];
         for (String item : items.split(",")) {
@@ -54,14 +53,13 @@ public class ItemCondition extends Condition {
                 try {
                     amount = Integer.parseInt(item.split(":")[1]);
                 } catch (NumberFormatException e) {
-                    Debug.error("Cannot parse item amount in: " + item);
-                    break;
+                    throw new InstructionParseException(
+                            "Cannot parse item amount");
                 }
             }
             String itemInstruction = pack.getString("items." + name);
             if (itemInstruction == null) {
-                Debug.error("Item not defined: " + name);
-                break;
+                throw new InstructionParseException("Item not defined: " + name);
             }
             QuestItem questItem = new QuestItem(itemInstruction);
             questItems.add(new Item(questItem, amount));
@@ -69,11 +67,7 @@ public class ItemCondition extends Condition {
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         int counter = 0;
         for (Item questItem : questItems) {
             int amount = questItem.getAmount();
@@ -121,7 +115,7 @@ public class ItemCondition extends Condition {
             this.questItem = questItem;
             this.amount = amount;
         }
-        
+
         public boolean isItemEqual(ItemStack item) {
             return questItem.equalsI(item);
         }

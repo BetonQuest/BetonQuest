@@ -22,7 +22,6 @@ import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -32,7 +31,7 @@ import ch.njol.util.Kleenean;
 /**
  * Skript effect, which fires specified BetonQuest's event
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class SkriptEffectBQ extends Effect {
 
@@ -58,19 +57,8 @@ public class SkriptEffectBQ extends Effect {
     protected void execute(final Event e) {
         new BukkitRunnable() {
             public void run() {
-                String eventID = event.getSingle(e);
-                String eventName;
-                String packName;
-                if (eventID.contains(".")) {
-                    String[] parts = eventID.split("\\.");
-                    eventName = parts[1];
-                    packName = parts[0];
-                } else {
-                    Debug.error("No package specified for skript effect: " + toString());
-                    this.cancel();
-                    return;
-                }
-                BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), packName, eventName);
+                BetonQuest.event(PlayerConverter.getID(player.getSingle(e)),
+                        event.getSingle(e));
             }
         }.runTask(BetonQuest.getInstance());
     }

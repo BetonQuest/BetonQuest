@@ -63,12 +63,6 @@ public class BlockObjective extends Objective implements Listener {
         }
         neededAmount = Integer.valueOf(parts[2]);
         for (String part : parts) {
-            if (part.contains("conditions:")) {
-                conditions = part;
-            }
-            if (part.contains("events:")) {
-                events = part;
-            }
             if (part.equalsIgnoreCase("notify")) {
                 notify = true;
             }
@@ -125,12 +119,15 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        String instruction = new String("block " + material.toString() + ":" + data + " "
+    public String getInstruction() {
+        return "block " + material.toString() + ":" + data + " "
             + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events
-            + " label:" + tag);
+            + " label:" + tag;
+    }
+
+    @Override
+    public void delete() {
         HandlerList.unregisterAll(this);
-        return instruction;
     }
 
 }

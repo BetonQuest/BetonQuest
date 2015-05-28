@@ -19,47 +19,51 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
- * Created by Dzejkop
+ * Strikes a lightning at specified location
+ * 
+ * @author Dzejkop
  */
 public class LightningEvent extends QuestEvent {
+    
+    private final Location loc;
 
-    /**
-     * Spawns a lightning in a given location
-     *
-     * Takes in instructions in format: location(x;y;z;world)
-     *
-     * @param playerID
-     * @param instructions
-     */
-    public LightningEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // the event cannot be fired for offline players
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+    public LightningEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
-
-        String[] instr = instructions.split(" ");
-
-        Location loc = decodeLocation(instr[1]);
-
-        loc.getWorld().strikeLightning(loc);
+        String[] partsOfLoc = parts[1].split(";");
+        if (partsOfLoc.length != 4) {
+            throw new InstructionParseException("Wrong location format");
+        }
+        World world = Bukkit.getWorld(partsOfLoc[3]);
+        if (world == null) {
+            throw new InstructionParseException("World " + partsOfLoc[3]
+                    + " does not exists.");
+        }
+        double x, y, z;
+        try {
+            x = Double.parseDouble(partsOfLoc[0]);
+            y = Double.parseDouble(partsOfLoc[1]);
+            z = Double.parseDouble(partsOfLoc[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException(
+                    "Could not parse location coordinates");
+        }
+        loc = new Location(world, x, y, z);
     }
 
-    private Location decodeLocation(String locStr) {
-
-        String[] coords = locStr.split(";");
-
-        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-
-        return loc;
+    @Override
+    public void run(String playerID) {
+        loc.getWorld().strikeLightning(loc);
     }
 
 }

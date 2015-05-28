@@ -18,45 +18,39 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the player has specified amount of Vault money
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class MoneyCondition extends Condition {
 
-    private double amount = 0;
+    private final double amount;
 
-    public MoneyCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public MoneyCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Money amount not specified in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Money amount not specified");
         }
         try {
-            amount = Double.parseDouble(parts[1]);
-            if (amount < 0) {
-                amount = 0;
+            double tempAmount = Double.parseDouble(parts[1]);
+            if (tempAmount < 0) {
+                tempAmount = 0;
             }
+            amount = tempAmount;
         } catch (NumberFormatException e) {
-            Debug.error("Could not parse money amount in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Could not parse money amount");
         }
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         return Compatibility.getEconomy()
                 .has(PlayerConverter.getPlayer(playerID).getName(), amount);
     }

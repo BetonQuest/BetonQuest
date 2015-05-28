@@ -111,7 +111,8 @@ public class BackpackDisplay implements Listener {
             // for every package
             for (String packName : Config.getPackageNames()) {
                 // loop all quest cancelers
-                ConfigurationSection s = Config.getPackage(packName).getMain().getConfig().getConfigurationSection("cancel");
+                ConfigurationSection s = Config.getPackage(packName).getMain()
+                        .getConfig().getConfigurationSection("cancel");
                 for (String key : s.getKeys(false)) {
                     // and for each canceler
                     String canceler = s.getString(key);
@@ -121,17 +122,10 @@ public class BackpackDisplay implements Listener {
                         // check conditions
                         if (part.startsWith("conditions:")) {
                             for (String condition : part.substring(11).split(",")) {
-                                String condName;
-                                String packName2;
-                                if (condition.contains(".")) {
-                                    String[] parts = condition.split("\\.");
-                                    condName = parts[1];
-                                    packName2 = parts[0];
-                                } else {
-                                    condName = condition;
-                                    packName2 = packName;
+                                if (!condition.contains(".")) {
+                                    condition = packName + "." + condition;
                                 }
-                                if (!BetonQuest.condition(playerID, packName2, condName)) {
+                                if (!BetonQuest.condition(playerID, condition)) {
                                     isMet = false;
                                     break;
                                 }

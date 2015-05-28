@@ -21,36 +21,31 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Starts an objective for the player
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ObjectiveEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public ObjectiveEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    private final String objective;
+    
+    public ObjectiveEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        persistent = true;
+        String tempObjective;
+        try {
+            tempObjective = instructions.trim().substring(10);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InstructionParseException(
+                    "Objective instruction not defined");
         }
-        int index = instructions.trim().indexOf(" ") + 1;
-        if (index == 0) {
-            Debug.error("Objective not defined in event: " + instructions);
-            return;
-        }
-        String objective = instructions.substring(index);
-        String[] parts = objective.split(" ");
+        String[] parts = tempObjective.split(" ");
         StringBuilder builder = new StringBuilder();
         for (String part : parts) {
             if (part.startsWith("events:")) {
@@ -82,26 +77,23 @@ public class ObjectiveEvent extends QuestEvent {
             }
             builder.append(' ');
         }
-        final String finalObjective = builder.toString().trim();
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            if (BetonQuest.getInstance().isMySQLUsed()) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        addOfflineObjective(finalObjective);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            } else {
-                addOfflineObjective(finalObjective);
-            }
-        } else {
-            BetonQuest.objective(playerID, finalObjective);
-        }
+        objective = builder.toString().trim();
+        
     }
 
-    private void addOfflineObjective(String objective) {
-        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-        dbHandler.addRawObjective(objective);
-        dbHandler.saveData();
+    @Override
+    public void run(final String playerID) {
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+                    dbHandler.addRawObjective(objective);
+                    dbHandler.saveData();
+                }
+            }.runTaskAsynchronously(BetonQuest.getInstance());
+        } else {
+            BetonQuest.objective(playerID, objective);
+        }
     }
 }

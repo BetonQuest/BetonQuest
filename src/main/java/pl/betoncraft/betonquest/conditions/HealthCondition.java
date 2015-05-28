@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -30,29 +31,22 @@ public class HealthCondition extends Condition {
 
     private double health;
 
-    public HealthCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public HealthCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             Debug.error("Amount not specified in: " + instructions);
-            isOk = false;
-            return;
         }
         try {
             health = Double.parseDouble(parts[1]);
         } catch (Exception e) {
             Debug.error("Could not parse health amount: " + instructions);
-            isOk = false;
-            return;
         }
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         if (PlayerConverter.getPlayer(playerID).getHealth() >= health) {
             return true;
         }

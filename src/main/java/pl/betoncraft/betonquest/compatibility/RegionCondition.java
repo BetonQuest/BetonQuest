@@ -21,7 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -32,34 +32,32 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 /**
  * Checks if the player is in specified region
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class RegionCondition extends Condition {
 
-    private WorldGuardPlugin worldGuard;
-    private ProtectedRegion region;
-    private Player player;
+    private final String name;
     
-    public RegionCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public RegionCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Error in instruction string in: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
-        player = PlayerConverter.getPlayer(playerID);
-        worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
-        region = manager.getRegion(parts[1]);
+        name = parts[1];
     }
 
     @Override
-    public boolean isMet() {
-        if (region != null) {
-            ApplicableRegionSet set = worldGuard.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
-            for (ProtectedRegion compare : set) {
-                if (compare.equals(region)) return true;
-            }
+    public boolean check(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        WorldGuardPlugin worldGuard = (WorldGuardPlugin)
+                Bukkit.getPluginManager().getPlugin("WorldGuard");
+        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
+        ProtectedRegion region = manager.getRegion(name);
+        ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
+        for (ProtectedRegion compare : set) {
+            if (compare.equals(region)) return true;
         }
         return false;
     }

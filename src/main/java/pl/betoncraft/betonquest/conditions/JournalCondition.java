@@ -19,36 +19,32 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Pointer;
-import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Checks if the player has specified pointer in his journal
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class JournalCondition extends Condition {
-    
-    private String targetPointer = null;
 
-    public JournalCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    private final String targetPointer;
+
+    public JournalCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Journal entry not defined in journal condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Journal entry not defined");
         }
         targetPointer = parts[1];
     }
-    
+
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
-        for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID).getJournal().getPointers()) {
+    public boolean check(String playerID) {
+        for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID)
+                .getJournal().getPointers()) {
             if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
                 return true;
             }

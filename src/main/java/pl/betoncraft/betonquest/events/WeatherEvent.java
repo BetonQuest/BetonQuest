@@ -20,49 +20,53 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Changes the weather on the server
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class WeatherEvent extends QuestEvent {
+    
+    private final boolean storm;
+    private final boolean thunder;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public WeatherEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    public WeatherEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
-        }
-        String weather = instructions.split(" ")[1];
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
-        switch (weather) {
+        switch (parts[1]) {
             case "sun":
-                world.setThundering(false);
-                world.setStorm(false);
+            case "clear":
+                storm = false;
+                thunder = false;
                 break;
             case "rain":
-                world.setStorm(true);
+            case "rainy":
+                storm = true;
+                thunder = false;
                 break;
             case "storm":
-                world.setThundering(true);
+            case "thunder":
+                storm = false;
+                thunder = true;
                 break;
             default:
-                break;
+                throw new InstructionParseException(
+                        "Weather type does not exist");
         }
+    }
+
+    @Override
+    public void run(String playerID) {
+        World world = PlayerConverter.getPlayer(playerID).getWorld();
+        world.setStorm(storm);
+        world.setThundering(thunder);
     }
 
 }

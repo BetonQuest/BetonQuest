@@ -19,78 +19,54 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * @author Dzejkop
+ * Teleports the player to specified location
+ * 
+ * @author Jakub Sapalski
  */
 public class TeleportEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public TeleportEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    private final Location loc;
+    
+    public TeleportEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Location not specified");
         }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+        String[] location = parts[1].split(";");
+        if (location.length < 4) {
+            throw new InstructionParseException("Wrong location format");
         }
-        Player player = PlayerConverter.getPlayer(playerID);
-
-        // Ignoring the first part of instruction
-        String locationString = instructions.substring(instructions.indexOf(" ") + 1);
-
-        // Get the location
-        Location loc = decodeLocation(locationString);
-
-        player.teleport(loc);
+        World world = Bukkit.getWorld(location[3]);
+        if (world == null) {
+            throw new InstructionParseException("World does not exists");
+        }
+        double x, y, z;
+        float yaw   = 0,
+              pitch = 0;
+        try {
+            x = Double.parseDouble(location[0]);
+            y = Double.parseDouble(location[1]);
+            z = Double.parseDouble(location[2]);
+            if (location.length == 6) {
+        	yaw = Float.parseFloat(location[4]);
+        	pitch = Float.parseFloat(location[5]);
+            }
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse coordinates");
+        }
+        loc = new Location(world, x, y, z, yaw, pitch);
     }
 
-    /**
-     * Parses a location from string
-     * 
-     * @param str
-     * @return
-     */
-    private Location decodeLocation(String str) {
-
-        String[] locArgs = str.split(";");
-
-        Location loc = null;
-
-        if (locArgs.length == 4) {
-            // Location without head alignment
-            loc = new Location(Bukkit.getWorld(locArgs[3]), // World
-                    Double.parseDouble(locArgs[0]), // X
-                    Double.parseDouble(locArgs[1]), // Y
-                    Double.parseDouble(locArgs[2]) // Z
-            );
-        } else {
-            // Location with head alignment
-            loc = new Location(Bukkit.getWorld(locArgs[3]), // World
-                    Double.parseDouble(locArgs[0]), // X
-                    Double.parseDouble(locArgs[1]), // Y
-                    Double.parseDouble(locArgs[2]), // Z
-                    Float.parseFloat(locArgs[4]), // Yaw
-                    Float.parseFloat(locArgs[5]) // Pitch
-            );
-        }
-
-        return loc;
-
+    public void run(String playerID) {
+	PlayerConverter.getPlayer(playerID).teleport(loc);
     }
-
 }

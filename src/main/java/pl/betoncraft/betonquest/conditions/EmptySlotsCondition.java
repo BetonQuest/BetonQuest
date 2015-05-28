@@ -20,41 +20,41 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the player has required amount of empty slots in his inventory
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class EmptySlotsCondition extends Condition {
-    
-    private int needed = 0;
-    private int empty = 0;
 
-    public EmptySlotsCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    private final int needed;
+
+    public EmptySlotsCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Empty space amount not defined in empty condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException(
+                    "Empty space amount not defined");
         }
         try {
             needed = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Cannot parse an integer in: " + instructions);
-            isOk = false;
-            return;
-        }
-        for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
-            if (item == null) empty++;
+            throw new InstructionParseException("Cannot parse an integer");
         }
     }
 
     @Override
-    public boolean isMet() {
+    public boolean check(String playerID) {
+        int empty = 0;
+        for (ItemStack item : PlayerConverter.getPlayer(playerID)
+                .getInventory().getContents()) {
+            if (item == null)
+                empty++;
+        }
         return empty >= needed;
     }
 

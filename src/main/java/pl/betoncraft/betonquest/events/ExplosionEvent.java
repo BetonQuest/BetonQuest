@@ -19,54 +19,62 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
- * Created by Dzejkop
+ * Spawns an explosion in a given location and with given flags
+ * 
+ * @author Dzejkop
  */
 public class ExplosionEvent extends QuestEvent {
 
-    /**
-     * Spawns an explosion in a given location and with given flags
-     *
-     * Takes instructions in format: setsFireFlag(1 : 0) breaksBlockFlag(1 : 0)
-     * power location(x;y;z;world)
-     *
-     * @param playerID
-     * @param instructions
-     */
-    public ExplosionEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // the event cannot be fired for offline players
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+    private final boolean  setsFire;
+    private final boolean  breaksBlocks;
+    private final float    power;
+    private final Location loc;
+
+    public ExplosionEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        staticness = true;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 5) {
+            throw new InstructionParseException("Not enough arguments");
         }
-
-        String[] s = instructions.split(" ");
-
-        boolean setsFire = s[1].equals("1") ? true : false;
-        boolean breaksBlocks = s[2].equals("1") ? true : false;
-
-        float power = Float.parseFloat(s[3]);
-
-        Location loc = decodeLocation(s[4]);
-
-        loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), power, setsFire,
-                breaksBlocks);
+        setsFire = parts[1].equals("1") ? true : false;
+        breaksBlocks = parts[2].equals("1") ? true : false;
+        try {
+            power = Float.parseFloat(parts[3]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse power");
+        }
+        String[] partsOfLoc = parts[4].split(";");
+        if (partsOfLoc.length != 4) {
+            throw new InstructionParseException("Wrong location format");
+        }
+        World world = Bukkit.getWorld(partsOfLoc[3]);
+        if (world == null) {
+            throw new InstructionParseException("World " + partsOfLoc[3]
+                    + " does not exists.");
+        }
+        double x, y, z;
+        try {
+            x = Integer.parseInt(partsOfLoc[0]);
+            y = Integer.parseInt(partsOfLoc[1]);
+            z = Integer.parseInt(partsOfLoc[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse coordinates");
+        }
+        loc = new Location(world, x, y, z);
 
     }
 
-    private Location decodeLocation(String locStr) {
-
-        String[] coords = locStr.split(";");
-
-        Location loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-
-        return loc;
+    @Override
+    public void run(String playerID) {
+        loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(),
+                power, setsFire, breaksBlocks);
     }
 }

@@ -429,17 +429,10 @@ public class Utils {
                 String otherPlayerID = PlayerConverter.getID(otherPlayer);
                 boolean meets = true;
                 for (String condition : conditions) {
-                    String condName;
-                    String packName;
-                    if (condition.contains(".")) {
-                        String[] parts = condition.split("\\.");
-                        condName = parts[1];
-                        packName = parts[0];
-                    } else {
-                        condName = condition;
-                        packName = pack;
+                    if (!condition.contains(".")) {
+                        condition = pack + "." + condition;
                     }
-                    if (!BetonQuest.condition(otherPlayerID, packName, condName)) {
+                    if (!BetonQuest.condition(otherPlayerID, condition)) {
                         meets = false;
                         break;
                     }

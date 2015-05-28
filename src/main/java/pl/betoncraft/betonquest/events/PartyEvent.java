@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
@@ -31,44 +31,47 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyEvent extends QuestEvent {
     
-    private String[] conditions;
-    private String[] events;
-    private double   range;
+    private final String[] conditions;
+    private final String[] events;
+    private final double   range;
 
-    public PartyEvent(String playerID, String pack, String instructions) {
-        super(playerID, pack, instructions);
+    public PartyEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 4) {
-            Debug.error("Not enough arguments in party event: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         // load conditions and events
-        conditions = parts[2].split(",");
-        events     = parts[3].split(",");
+        String[] tempConditions = parts[2].split(",");
+        for (int i = 0; i < tempConditions.length; i++) {
+            if (!tempConditions[i].contains(".")) {
+                tempConditions[i] = packName + "." + tempConditions[i];
+            }
+        }
+        conditions = tempConditions;
+        String[] tempEvents = parts[3].split(",");
+        for (int i = 0; i < tempEvents.length; i++) {
+            if (!tempEvents[i].contains(".")) {
+                tempEvents[i] = packName + "." + tempEvents[i];
+            }
+        }
+        events = tempEvents;
         // load the range
         try {
             range = Double.parseDouble(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Cannot parse range in party event: " + instructions);
-            return;
+            throw new InstructionParseException("Cannot parse range");
         }
-        // everything loaded
-        
-        // firing the event
-        ArrayList<String> members = Utils.getParty(playerID, range, pack, conditions);
+    }
+
+    @Override
+    public void run(String playerID) {
+        ArrayList<String> members = Utils.getParty(playerID, range,
+                pack.getName(), conditions);
         for (String memberID : members) {
             for (String event : events) {
-                String eventName;
-                String packName;
-                if (event.contains(".")) {
-                    String[] eventParts = event.split("\\.");
-                    eventName = eventParts[1];
-                    packName = eventParts[0];
-                } else {
-                    eventName = event;
-                    packName = super.packName;
-                }
-                BetonQuest.event(memberID, packName, eventName);
+                BetonQuest.event(memberID, event);
             }
         }
     }

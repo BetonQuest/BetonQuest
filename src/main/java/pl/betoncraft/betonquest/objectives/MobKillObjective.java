@@ -108,14 +108,18 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstructions() {
-        HandlerList.unregisterAll(this);
+    public String getInstruction() {
         String namePart = "";
         if (name != null) {
             namePart = " name:" + name + " ";
         }
         return "mobkill " + mobType.toString() + " " + amount + namePart + " " + conditions + " "
             + events + " label:" + tag;
+    }
+
+    @Override
+    public void delete() {
+        HandlerList.unregisterAll(this);
     }
 
 }

@@ -226,17 +226,10 @@ public class Conversation implements Listener {
                     option = NPCoption;
                     break options;
                 }
-                String conditionID;
-                String packageName;
-                if (condition.contains(".")) {
-                    String[] parts = condition.split("\\.");
-                    conditionID = parts[1];
-                    packageName = parts[0];
-                } else {
-                    conditionID = condition;
-                    packageName = pack.getName();
+                if (!condition.contains(".")) {
+                    condition = pack.getName() + "." + condition;
                 }
-                if (!BetonQuest.condition(this.playerID, packageName, conditionID)) {
+                if (!BetonQuest.condition(this.playerID, condition)) {
                     continue options;
                 }
             }
@@ -341,17 +334,10 @@ public class Conversation implements Listener {
             String[] events = rawEvents.split(",");
             // foreach eventID fire an event
             for (String event : events) {
-                String eventID;
-                String packageName;
-                if (event.contains(".")) {
-                    String[] parts = event.split("\\.");
-                    eventID = parts[1];
-                    packageName = parts[0];
-                } else {
-                    eventID = event;
-                    packageName = pack.getName();
-                }
-                BetonQuest.event(playerID, packageName, eventID);
+        	if (!event.contains(".")) {
+        	    event = pack.getName() + "." + event;
+        	}
+                BetonQuest.event(playerID, event);
             }
         }
     }
@@ -389,17 +375,10 @@ public class Conversation implements Listener {
                 String[] conditions = rawConditions.split(",");
                 // if some condition is not met, skip printing this option and move on
                 for (String condition : conditions) {
-                    String conditionID;
-                    String packageName;
-                    if (condition.contains(".")) {
-                        String[] parts = condition.split("\\.");
-                        conditionID = parts[1];
-                        packageName = parts[0];
-                    } else {
-                        conditionID = condition;
-                        packageName = pack.getName();
+                    if (!condition.contains(".")) {
+                	condition = pack.getName() + "." + condition;
                     }
-                    if (!BetonQuest.condition(playerID, packageName, conditionID)) {
+                    if (!BetonQuest.condition(playerID, condition)) {
                         continue answers;
                     }
                 }
@@ -441,17 +420,10 @@ public class Conversation implements Listener {
         if (!finalEvents.equals("")) {
             String[] splitFinalEvents = finalEvents.split(",");
             for (String event : splitFinalEvents) {
-                String eventID;
-                String packageName;
-                if (event.contains(".")) {
-                    String[] parts = event.split("\\.");
-                    eventID = parts[1];
-                    packageName = parts[0];
-                } else {
-                    eventID = event;
-                    packageName = pack.getName();
+                if (!event.contains(".")) {
+                    event = pack.getName() + "." + event;
                 }
-                BetonQuest.event(playerID, packageName, eventID);
+                BetonQuest.event(playerID, event);
             }
         }
         // print message

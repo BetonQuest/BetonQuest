@@ -21,51 +21,50 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Modified player's points
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class PointEvent extends QuestEvent {
+    
+    final int    count;
+    final String category; 
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public PointEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
-        }
+    public PointEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        persistent = true;
         String[] parts = instructions.split(" ");
-        final String category = parts[1];
-        final int count = Integer.valueOf(parts[2]);
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            if (BetonQuest.getInstance().isMySQLUsed()) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        addOfflinePoints(category, count);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            } else {
-                addOfflinePoints(category, count);
-            }
-        } else {
-            BetonQuest.getInstance().getDBHandler(playerID).addPoints(category, count);
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        category = parts[1];
+        try {
+            count = Integer.valueOf(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse point count");
         }
     }
 
-    private void addOfflinePoints(String category, int count) {
-        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-        dbHandler.addPoints(category, count);
-        dbHandler.saveData();
+    @Override
+    public void run(final String playerID) {
+        if (PlayerConverter.getPlayer(playerID) == null) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+                    dbHandler.addPoints(category, count);
+                    dbHandler.saveData();
+                }
+            }.runTaskAsynchronously(BetonQuest.getInstance());
+        } else {
+            BetonQuest.getInstance().getDBHandler(playerID)
+                    .addPoints(category, count);
+        }
     }
 }

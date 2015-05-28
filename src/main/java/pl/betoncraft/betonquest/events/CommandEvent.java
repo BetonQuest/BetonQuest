@@ -21,36 +21,50 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Fires a list of commands for the player
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class CommandEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public CommandEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        String commands = instructions.substring(instructions.indexOf(" ") + 1);
-        for (String command : commands.split("\\|")) {
+    private final String[] commands;
+
+    public CommandEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        staticness = true;
+        persistent = true;
+        try {
+            commands = instructions.trim()
+                    .substring(instructions.indexOf(" ") + 1).split("\\|");
+        } catch (Exception e) {
+            throw new InstructionParseException("Could not parse commands");
+        }
+    }
+
+    @Override
+    public void run(String playerID) {
+        for (String command : commands) {
             if (playerID == null) {
                 if (command.contains("%player%")) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-                                command.replaceAll("%player%", player.getName()));
+                        Bukkit.getServer().dispatchCommand(
+                                Bukkit.getConsoleSender(), command.replaceAll(
+                                        "%player%", player.getName()));
                     }
                 } else {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                    Bukkit.getServer().dispatchCommand(
+                            Bukkit.getConsoleSender(), command);
                 }
             } else {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-                        command.replaceAll("%player%", PlayerConverter.getName(playerID)));
+                Bukkit.getServer().dispatchCommand(
+                        Bukkit.getConsoleSender(),
+                        command.replaceAll(
+                                "%player%", PlayerConverter.getName(playerID)));
             }
         }
     }

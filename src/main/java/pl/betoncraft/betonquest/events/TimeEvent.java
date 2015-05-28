@@ -20,40 +20,44 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Changes time on the server
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class TimeEvent extends QuestEvent {
+    
+    private final long    amount;
+    private final boolean add;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public TimeEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    public TimeEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        // the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
+        try {
+            if (add = parts[1].matches("^\\+\\d+$")) {
+                amount = Long.valueOf(parts[1].substring(1, parts[1].length()))
+                        * 1000;
+            } else {
+                amount = Long.valueOf(parts[1]) * 1000 + 18000;
+            }
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse time amount");
         }
+    }
+
+    @Override
+    public void run(String playerID) {
         World world = PlayerConverter.getPlayer(playerID).getWorld();
-        String string = instructions.split(" ")[1];
-        long time;
-        if (string.matches("^\\+\\d+$")) {
-            time = world.getTime() + Long.valueOf(string.substring(1, string.length())) * 1000;
-        } else {
-            time = Long.valueOf(string) * 1000 + 18000;
+        long time = amount;
+        if (add) {
+            time += world.getTime();
         }
         world.setTime(time % 24000);
     }

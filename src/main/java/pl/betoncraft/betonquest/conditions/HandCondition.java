@@ -20,44 +20,36 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Holding item in hand condition
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class HandCondition extends Condition {
 
-    private QuestItem questItem;
-    private String itemName;
+    private final QuestItem questItem;
 
-    public HandCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public HandCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Item name not defined in hand condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Item name not defined");
         }
-        itemName = parts[1];
+        String itemName = parts[1];
         String itemInstruction = pack.getString("items." + itemName);
         if (itemInstruction == null) {
-            Debug.error("Item not defined: " + itemName);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Item not defined: " + itemName);
         }
         questItem = new QuestItem(itemInstruction);
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
+    public boolean check(String playerID) {
         ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
         if (questItem.equalsI(item)) {
             return true;

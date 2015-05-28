@@ -128,7 +128,6 @@ public class StaticEvents {
     private class EventTimer extends TimerTask {
         
         protected final String event;
-        protected final String pack;
         
         /**
          * Creates and schedules a new timer for specified event, based on given timeStamp
@@ -137,9 +136,7 @@ public class StaticEvents {
          * @param event
          */
         public EventTimer(long timeStamp, String eventID) {
-            String[] parts = eventID.split("\\.");
-            this.event = parts[1];
-            this.pack = parts[0];
+            event = eventID;
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24*60*60*1000);
         }
 
@@ -149,8 +146,8 @@ public class StaticEvents {
                 @Override
                 public void run() {
                     // run the event in sync
-                    Debug.info("Firing static event " + pack + "." + event);
-                    BetonQuest.event(null, pack, event);
+                    Debug.info("Firing static event " + event);
+                    BetonQuest.event(null, event);
                 }
             }.runTask(BetonQuest.getInstance());
         }

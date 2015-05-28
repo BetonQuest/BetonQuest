@@ -24,48 +24,63 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
- * Folder event is a collection of other events, that can be run after
- * a delay and the events can be randomly choosen to run or not
+ * Folder event is a collection of other events, that can be run after a delay
+ * and the events can be randomly choosen to run or not
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class FolderEvent extends QuestEvent {
 
-    public FolderEvent(String playerID, final String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public final int      delay;
+    public final int      random;
+    public final String[] events;
+
+    public FolderEvent(final String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        staticness = true;
+        persistent = true;
         // declare variables used later
         String[] parts = instructions.split(" ");
-        String[] events = null;
-        int delay = 0;
-        int random = 0;
         // parse the instuction string
         if (parts.length < 2) {
-            Debug.error("Events not defined in folder event: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
-        events = parts[1].split(",");
+        // get those events
+        String[] tempEvents = parts[1].split(",");
+        for (int i = 0; i < tempEvents.length; i++) {
+            if (!tempEvents[i].contains(".")) {
+                tempEvents[i] = pack.getName() + "." + tempEvents[i];
+            }
+        }
+        events = tempEvents;
+        // parse the rest of arguments
+        int tempDelay = 0, tempRandom = 0;
         for (String part : parts) {
             if (part.startsWith("delay:")) {
                 try {
-                    delay = Integer.parseInt(part.substring(6));
+                    tempDelay = Integer.parseInt(part.substring(6));
                 } catch (NumberFormatException e) {
-                    // if the delay is incorrect, there is an error
-                    Debug.error("Wrong number format in folder event! " + instructions);
-                    return;
+                    throw new InstructionParseException("Wrong number format");
                 }
             } else if (part.startsWith("random:")) {
                 try {
-                    random = Integer.parseInt(part.substring(7));
+                    tempRandom = Integer.parseInt(part.substring(7));
                 } catch (NumberFormatException e) {
-                    // if the random number is incorrect, there is an error
-                    Debug.error("Wrong number format in folder event! " + instructions);
-                    return;
+                    throw new InstructionParseException("Wrong number format");
                 }
             }
         }
+        random = tempRandom;
+        delay = tempDelay;
+    }
+
+    @Override
+    public void run(final String playerID) {
+        final ArrayList<String> chosenList = new ArrayList<>();
         // choose randomly which events should be fired
         if (random > 0 && random <= events.length) {
             // copy events into the modifyable ArrayList
@@ -73,42 +88,21 @@ public class FolderEvent extends QuestEvent {
             for (String event : events) {
                 eventsList.add(event);
             }
-            // remove choosen events from that ArrayList and place them in a new list
-            ArrayList<String> chosenList = new ArrayList<>();
+            // remove choosen events from that ArrayList and place them in
+            // a new list
             for (int i = random; i > 0; i--) {
                 int chosen = new Random().nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
             }
-            // convert that new list into the array and replace "events" with it
-            events = new String[chosenList.size()];
-            events = chosenList.toArray(events);
         }
-        // execute events after the delay
-        final String[] finalEvents = events;
-        final String player = playerID;
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player == null) {
-                    Debug.info("Running static folder event!");
-                } else {
-                    Debug.info("Running folder events for player " + player);
+                for (String event : chosenList) {
+                    BetonQuest.event(playerID, event);
                 }
-                for (String event : finalEvents) {
-                    String packageName;
-                    String eventName;
-                    if (event.contains(".")) {
-                        String[] parts = event.split("\\.");
-                        packageName = parts[0];
-                        eventName = parts[1];
-                    } else {
-                        packageName = packName;
-                        eventName = event;
-                    }
-                    BetonQuest.event(player, packageName, eventName);
-                }
-            }
-        }.runTaskLater(BetonQuest.getInstance(), delay * 20); // 20 ticks is a second
+            }                                         // 20 ticks is a second
+        }.runTaskLater(BetonQuest.getInstance(), delay * 20);
     }
 
 }

@@ -21,7 +21,7 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.Random;
 
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * The condition that is met randomly
@@ -30,36 +30,32 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class RandomCondition extends Condition {
 
-    private int valueMax = 0;
-    private int rangeOfRandom = 0;
+    private final int valueMax;
+    private final int rangeOfRandom;
 
-    public RandomCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public RandomCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] values = null;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Randomness not defined in random condition: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Randomness not defined");
         }
         values = parts[1].split("-");
         if (values.length != 2) {
-            Debug.error("Wrong randomness format in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Wrong randomness format");
         }
         try {
             valueMax = Integer.parseInt(values[0]);
             rangeOfRandom = Integer.parseInt(values[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Cannot parse randomness values in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException(
+                    "Cannot parse randomness values");
         }
     }
 
     @Override
-    public boolean isMet() {
+    public boolean check(String playerID) {
         Random generator = new Random();
         int temp = generator.nextInt(rangeOfRandom) + 1;
         if (temp <= valueMax) {

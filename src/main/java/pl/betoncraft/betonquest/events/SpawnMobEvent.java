@@ -19,45 +19,75 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Spawns mobs at given location
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class SpawnMobEvent extends QuestEvent {
 
-    private Location loc;
-    private EntityType type;
-    private int amount;
-    private String name;
+    private final Location loc;
+    private final EntityType type;
+    private final int amount;
+    private final String name;
 
-    public SpawnMobEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // the event cannot be fired for offline players
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player " + playerID + " is offline, cannot fire event");
-            return;
-        }
+    public SpawnMobEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        staticness = true;
         String[] parts = instructions.split(" ");
-        String[] coords = parts[1].split(";");
-        loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
-                Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-        type = EntityType.valueOf(parts[2]);
-        amount = Integer.parseInt(parts[3]);
-        if (parts.length == 5) {
-            name = parts[4].replaceAll("_", " ");
+        if (parts.length < 4) {
+            throw new InstructionParseException("Not enough arguments");
         }
+        String[] coords = parts[1].split(";");
+        if (coords.length < 4) {
+            throw new InstructionParseException("Wrong location format");
+        }
+        World world = Bukkit.getWorld(coords[3]);
+        if (world == null) {
+            throw new InstructionParseException("World does not exist");
+        }
+        double x, y, z;
+        try {
+            x = Double.parseDouble(coords[0]);
+            y = Double.parseDouble(coords[1]);
+            z = Double.parseDouble(coords[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse coordinates");
+        }
+        loc = new Location(world, x, y, z);
+        type = EntityType.valueOf(parts[2].toUpperCase());
+        if (type == null) {
+            throw new InstructionParseException("Entity type does not exist");
+        }
+        try {
+            amount = Integer.parseInt(parts[3]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse amount");
+        }
+        String tempName = null;
+        for (String part : parts) {
+            if (part.startsWith("name:")) {
+                tempName = part.substring(5);
+                break;
+            }
+        }
+        name = tempName;
+    }
+
+    @Override
+    public void run(String playerID) {
         for (int i = 0; i < amount; i++) {
             Entity entity = loc.getWorld().spawnEntity(loc, type);
-            if (entity instanceof LivingEntity) {
+            if (name != null && entity instanceof LivingEntity) {
                 LivingEntity livingEntity = (LivingEntity) entity;
                 livingEntity.setCustomName(name);
             }

@@ -88,6 +88,7 @@ public class QuestItem {
      *            ID of the item from items.yml
      */
     public QuestItem(String instruction) {
+        // TODO validation with exception throwing
         String[] parts = instruction.split(" ");
         // get material type
         material = Material.matchMaterial(parts[0]);

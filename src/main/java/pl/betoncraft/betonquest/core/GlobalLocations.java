@@ -114,17 +114,7 @@ public class GlobalLocations extends BukkitRunnable {
                     // check all conditions
                     if (location.getConditions() != null) {
                         for (String condition : location.getConditions()) {
-                            String conditionID;
-                            String packageName;
-                            if (condition.contains(".")) {
-                                String[] parts = condition.split("\\.");
-                                conditionID = parts[1];
-                                packageName = parts[0];
-                            } else {
-                                Debug.error("Package not defined in global location condition: " + condition);
-                                continue;
-                            }
-                            if (!BetonQuest.condition(PlayerConverter.getID(player), packageName, conditionID)) {
+                            if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
                                 // if some conditions are not met, skip to next location
                                 continue locations;
                             }
@@ -135,17 +125,7 @@ public class GlobalLocations extends BukkitRunnable {
                             .addTag("global_" + location.getTag());
                     // fire all events for the location
                     for (String event : location.getEvents()) {
-                        String eventID;
-                        String packageName;
-                        if (event.contains(".")) {
-                            String[] parts = event.split("\\.");
-                            eventID = parts[1];
-                            packageName = parts[0];
-                        } else {
-                            Debug.error("Package not defined in global location event: " + event);
-                            continue;
-                        }
-                        BetonQuest.event(PlayerConverter.getID(player), packageName, eventID);
+                        BetonQuest.event(PlayerConverter.getID(player), event);
                     }
                 }
             }
@@ -237,17 +217,27 @@ public class GlobalLocations extends BukkitRunnable {
             for (String part : parts) {
                 if (part.contains("conditions:")) {
                     conditions = part.substring(11).split(",");
+                    for (int i = 0; i < conditions.length; i++) {
+                	if (!conditions[i].contains(".")) {
+                	    conditions[i] = pack.getName() + "." + conditions[i];
+                	}
+                    }
                 }
                 if (part.contains("events:")) {
                     events = part.substring(7).split(",");
+                    for (int i = 0; i < events.length; i++) {
+                	if (!events[i].contains(".")) {
+                	    events[i] = pack.getName() + "." + events[i];
+                	}
+                    }
                 }
-                if (part.contains("tag:")) {
-                    tag = part.substring(4);
+                if (part.contains("label:")) {
+                    tag = part.substring(6);
                 }
             }
             // check if the tag is present
             if (tag == null || tag.equals("")) {
-                Debug.error("Missing tag in global location's event " + event);
+                Debug.error("Missing label in global location's event " + event);
                 valid = false;
                 return;
             }

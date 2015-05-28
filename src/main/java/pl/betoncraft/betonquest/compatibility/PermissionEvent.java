@@ -18,36 +18,42 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import net.milkbowl.vault.permission.Permission;
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * @author co0sh
- *
+ * Manages player's permissions
+ * 
+ * @author Jakub Sapalski
  */
 public class PermissionEvent extends QuestEvent {
+    
+    private final String  world,
+                          permission;
+    private final boolean add,
+                          perm;
 
-    /**
-     * @param playerID
-     * @param instructions
-     */
-    @SuppressWarnings("deprecation")
-    public PermissionEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public PermissionEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 4) {
-            BetonQuest.getInstance().getLogger()
-                    .info("Error in permission event syntax: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
-        boolean add = parts[1].equalsIgnoreCase("add");
-        boolean perm = parts[2].equalsIgnoreCase("perm");
-        String permission = parts[3];
-        String world = null;
-        if (parts.length == 5) {
+        add = parts[1].equalsIgnoreCase("add");
+        perm = parts[2].equalsIgnoreCase("perm");
+        permission = parts[3];
+        if (parts.length >= 5) {
             world = parts[4];
+        } else {
+            world = null;
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void run(String playerID) {
         Permission vault = Compatibility.getPermission();
         String player = PlayerConverter.getPlayer(playerID).getName();
         if (add) {

@@ -538,7 +538,8 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_package"));
             return;
         }
-        String[] parts = args[2].split("\\.");
+        String eventID = args[2];
+        String[] parts = eventID.split("\\.");
         String pack = parts[0];
         String name = parts[1];
         ConfigPackage configPack = Config.getPackage(pack);
@@ -554,9 +555,9 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // fire the event
-        BetonQuest.event(playerID, pack, name);
+        BetonQuest.event(playerID, eventID);
         sender.sendMessage(getMessage("player_event").replaceAll("%event%",
-                configPack.getEvents().getConfig().getString(name)));
+                configPack.getString("events." + name)));
     }
 
     /**
@@ -576,20 +577,14 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(getMessage("specify_condition"));
             return;
         }
-        String conditionID = null;
-        boolean inverted = false;
-        if (args[2].startsWith("!")) {
-            conditionID = args[2].substring(1, args[2].length());
-            inverted = true;
-        } else {
-            conditionID = args[2];
-        }
+        String conditionID = args[2];
+        boolean inverted = args[2].contains("!");
         if (!conditionID.contains(".")) {
             Debug.info("Cannot continue, package must be specified");
             sender.sendMessage(getMessage("specify_package"));
             return;
         }
-        String[] parts = conditionID.split("\\.");
+        String[] parts = conditionID.replace("!", "").split("\\.");
         String pack = parts[0];
         String name = parts[1];
         ConfigPackage configPack = Config.getPackage(pack);
@@ -604,12 +599,9 @@ public class QuestCommand implements CommandExecutor {
             return;
         }
         // display message about condition
-        sender.sendMessage(getMessage("player_condition")
-                .replaceAll("%condition%", 
-                        (inverted ? "! " : "")
-                        + configPack.getConditions().getConfig().getString(name))
-                .replaceAll("%outcome%",
-                        BetonQuest.condition(playerID, pack, name) + ""));
+        sender.sendMessage(getMessage("player_condition").replaceAll("%condition%", (inverted ? "! " : "")
+                + configPack.getString("conditions." + name)).replaceAll("%outcome%", BetonQuest
+                .condition(playerID, conditionID) + ""));
     }
 
     /**
@@ -791,6 +783,8 @@ public class QuestCommand implements CommandExecutor {
         Debug.info("Restarting global locations");
         GlobalLocations.stop();
         new GlobalLocations().runTaskTimer(instance, 0, 20);
+        // load all events and conditions
+        instance.loadEventsAndConditions();
         // update journals for every online player
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);

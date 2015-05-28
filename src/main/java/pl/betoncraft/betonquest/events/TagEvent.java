@@ -21,72 +21,63 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Adds or removes tags from the player
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class TagEvent extends QuestEvent {
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public TagEvent(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
-        // check if playerID isn't null, this event cannot be static
-        if (playerID == null) {
-            Debug.error("This event cannot be static: " + instructions);
-            return;
+    private final String[] tags;
+    private final boolean  add;
+
+    public TagEvent(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
+        persistent = true;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        final String[] parts = instructions.split(" ");
-        if (PlayerConverter.getPlayer(playerID) != null) {
-            switch (parts[1]) {
-                case "add":
-                    for (String tag : parts[2].split(",")) {
-                        BetonQuest.getInstance().getDBHandler(playerID).addTag(tag);
-                    }
-                    break;
-                default:
-                    for (String tag : parts[2].split(",")) {
-                        BetonQuest.getInstance().getDBHandler(playerID).removeTag(tag);
-                    }
-                    break;
-            }
-        } else {
-            if (BetonQuest.getInstance().isMySQLUsed()) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        addOfflineTag(parts);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            } else {
-                addOfflineTag(parts);
-            }
-        }
-        
+        add = parts[1].equalsIgnoreCase("add");
+        tags = parts[2].split(",");
     }
-    
-    private void addOfflineTag(String[] parts) {
-        DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-        switch (parts[1]) {
-            case "add":
-                for (String tag : parts[2].split(",")) {
+
+    @Override
+    public void run(final String playerID) {
+        if (PlayerConverter.getPlayer(playerID) != null) {
+            DatabaseHandler dbHandler = BetonQuest.getInstance()
+                    .getDBHandler(playerID);
+            if (add) {
+                for (String tag : tags) {
                     dbHandler.addTag(tag);
                 }
-                break;
-            default:
-                for (String tag : parts[2].split(",")) {
+            } else {
+                for (String tag : tags) {
                     dbHandler.removeTag(tag);
                 }
-                break;
+            }
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+                    if (add) {
+                        for (String tag : tags) {
+                            dbHandler.addTag(tag);
+                        }
+                    } else {
+                        for (String tag : tags) {
+                            dbHandler.removeTag(tag);
+                        }
+                    }
+                    dbHandler.saveData();
+                }
+            }.runTaskAsynchronously(BetonQuest.getInstance());
         }
-        dbHandler.saveData();
     }
 }

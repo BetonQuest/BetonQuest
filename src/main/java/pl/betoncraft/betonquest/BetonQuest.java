@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -62,6 +63,7 @@ import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.core.CombatTagger;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
 import pl.betoncraft.betonquest.core.QuestItemHandler;
 import pl.betoncraft.betonquest.core.StaticEvents;
@@ -137,15 +139,23 @@ public final class BetonQuest extends JavaPlugin {
     /**
      * Stores all condition types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends Condition>> conditions = new HashMap<>();
+    private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
     /**
      * Stores all event types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends QuestEvent>> events = new HashMap<>();
+    private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
     /**
      * Stores all objective types with their corresponding classes
      */
-    private static HashMap<String, Class<? extends Objective>> objectives = new HashMap<>();
+    private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
+    /**
+     * Stores all conditions
+     */
+    private static HashMap<String, Condition> conditions = new HashMap<>();
+    /**
+     * Stores all events
+     */
+    private static HashMap<String, QuestEvent> events = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -277,12 +287,12 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize compatibility with other plugins
         new Compatibility();
-        
-        Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size()
-                + " events" + " and " + objectives.size() + " objectives loaded.");
 
         // initialize PlayerConverter
         PlayerConverter.getType();
+        
+        // Load all events and conditions
+        loadEventsAndConditions();
 
         // load data for all online players
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -314,6 +324,91 @@ public final class BetonQuest extends JavaPlugin {
 
         // done
         Debug.broadcast("BetonQuest succesfully enabled!");
+    }
+
+    /**
+     * Loads events and conditions to the maps
+     */
+    public void loadEventsAndConditions() {
+	events.clear();
+	conditions.clear();
+	for (String packName : Config.getPackageNames()) {
+            Debug.info("Loading stuff in package " + packName);
+            ConfigPackage pack = Config.getPackage(packName);
+            FileConfiguration eConfig = Config.getPackage(packName).getEvents().getConfig();
+            for (String key : eConfig.getKeys(false)) {
+        	String ID = packName + "." + key;
+                String instruction = pack.getString("events." + key);
+                String[] parts = instruction.split(" ");
+        	if (parts.length < 1) {
+        	    Debug.error("Not enough arguments in event " + ID);
+        	    continue;
+        	}
+        	Class<? extends QuestEvent> eventClass = eventTypes.get(parts[0]);
+                if (eventClass == null) {
+                    // if it's null then there is no such type registered, log an error
+                    Debug.error(
+                	    "Event type " + parts[0] + " is not registered, check if it's"
+                    	    + " spelled correctly in " + ID + " event."
+                    );
+                    continue;
+                }
+                try {
+                    QuestEvent event = eventClass.getConstructor(String.class, String.class)
+                	    .newInstance(packName, instruction);
+                    events.put(ID, event);
+                    Debug.info("  Event " + ID + " loaded");
+                } catch (InvocationTargetException e) {
+                    if (e.getCause() instanceof InstructionParseException) {
+                	Debug.error("Error in " + ID + " event: " + e.getCause().getMessage());
+                    } else {
+                        e.printStackTrace();
+                        Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                }
+            }
+            FileConfiguration cConfig = pack.getConditions().getConfig();
+            for (String key : cConfig.getKeys(false)) {
+        	String ID = packName + "." + key;
+                String instruction = pack.getString("conditions." + key);
+                String[] parts = instruction.split(" ");
+        	if (parts.length < 1) {
+        	    Debug.error("Not enough arguments in condition " + ID);
+        	    continue;
+        	}
+        	Class<? extends Condition> conditionClass = conditionTypes.get(parts[0]);
+                // if it's null then there is no such type registered, log an error
+                if (conditionClass == null) {
+                    Debug.error(
+                	    "Condition type " + parts[0] + " is not registered, check if it's"
+                    	    + " spelled correctly in " + ID + " condition."
+                    );
+                    continue;
+                }
+                try {
+                    Condition condition = conditionClass.getConstructor(String.class, String.class)
+                	    .newInstance(packName, instruction);
+                    conditions.put(ID, condition);
+                    Debug.info("  Condition " + ID + " loaded");
+                } catch (InvocationTargetException e) {
+                    if (e.getCause() instanceof InstructionParseException) {
+                	Debug.error("Error in " + ID + " condition: " + e.getCause().getMessage());
+                    } else {
+                        e.printStackTrace();
+                        Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                }
+            }
+            Debug.info("Everything in package " + packName + " loaded");
+        }
+        Debug.broadcast("There are " + conditions.size() + " conditions and "
+                + events.size() + " events loaded.");
     }
 
     @Override
@@ -409,7 +504,7 @@ public final class BetonQuest extends JavaPlugin {
      */
     public void registerConditions(String name, Class<? extends Condition> conditionClass) {
         Debug.info("Registering " + name + " condition type");
-        conditions.put(name, conditionClass);
+        conditionTypes.put(name, conditionClass);
     }
 
     /**
@@ -422,7 +517,7 @@ public final class BetonQuest extends JavaPlugin {
      */
     public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
         Debug.info("Registering " + name + " event type");
-        events.put(name, eventClass);
+        eventTypes.put(name, eventClass);
     }
 
     /**
@@ -435,7 +530,7 @@ public final class BetonQuest extends JavaPlugin {
      */
     public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
         Debug.info("Registering " + name + " objective type");
-        objectives.put(name, objectiveClass);
+        objectiveTypes.put(name, objectiveClass);
     }
 
     /**
@@ -447,9 +542,9 @@ public final class BetonQuest extends JavaPlugin {
      *            ID of the player which should be checked
      * @return if the condition is met
      */
-    public static boolean condition(String playerID, String pack, String conditionID) {
+    public static boolean condition(String playerID, String conditionID) {
         // null check
-        if (playerID == null || pack == null ||  conditionID == null) {
+        if (playerID == null || conditionID == null) {
             Debug.info("Null arguments for the condition!");
             return false;
         }
@@ -460,46 +555,18 @@ public final class BetonQuest extends JavaPlugin {
         }
         // check for inverted condition
         boolean inverted = false;
-        if (conditionID.startsWith("!")) {
-            conditionID = conditionID.substring(1);
+        if (conditionID.contains("!")) {
+            conditionID = conditionID.replace("!", "");
             inverted = true;
         }
-        // get instruction string
-        ConfigPackage configPack = Config.getPackage(pack);
-        if (configPack == null) {
-            Debug.error("Tried to access package " + pack + ", but it does not exist!");
-            return false;
-        }
-        String conditionInstruction = configPack.getString("conditions." + conditionID);
-        // if it doesn't exist log an error
-        if (conditionInstruction == null) {
-            Debug.error("Tried to access condition with ID \"" + conditionID
-                    + "\" in package \"" + pack + "\", but it isn't defined!"
-                    + " The condition will be false for now.");
-            return false;
-        }
-        // get condition's class
-        String[] parts = conditionInstruction.split(" ");
-        Class<? extends Condition> condition = conditions.get(parts[0]);
-        Condition instance = null;
-        // if it's null then there is no such type registered, log an error
+        // get the condition
+        Condition condition = conditions.get(conditionID);
         if (condition == null) {
-            Debug.error("Condition type \"" + parts[0]
-                + "\" is not registered, check if it's spelled " + "correctly in \"" + conditionID
-                + "\" condition.");
-            return false;
-        }
-        // instantiate condition
-        try {
-            instance = condition.getConstructor(String.class, String.class, String.class)
-                    .newInstance(playerID, pack, conditionInstruction);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+            Debug.error("The condition " + conditionID + " is not defined!");
             return false;
         }
         // and check if it's met or not
-        boolean outcome = instance.isMet();
+        boolean outcome = condition.isMet(playerID);
         boolean isMet = (outcome && !inverted) || (!outcome && inverted);
         Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition "
                 + conditionID + " for player " + playerID);
@@ -514,72 +581,20 @@ public final class BetonQuest extends JavaPlugin {
      * @param playerID
      *            ID of the player who the event is firing for
      */
-    public static void event(String playerID, String pack, String eventID) {
+    public static void event(String playerID, String eventID) {
         // null check
         if (eventID == null) {
             Debug.info("Null argument for the event!");
             return;
         }
-        // get instruction string
-        ConfigPackage configPack = Config.getPackage(pack);
-        if (configPack == null) {
-            Debug.error("Tried to access package " + pack + ", but it does not exist!");
-            return;
-        }
-        String eventInstruction = configPack.getString("events." + eventID);
-        // if it's null then log an error
-        if (eventInstruction == null) {
-            Debug.error("Tried to access event with ID \"" + eventID
-                + "\" in package \"" + pack + "\", but it isn't defined! The event won't fire.");
-            return;
-        }
-        // check conditions
-        String[] parts = eventInstruction.split(" ");
-        for (String part : parts) {
-            if (part.startsWith("event_conditions:")) {
-                if (playerID == null) {
-                    Debug.error("Cannot check conditions in static event: " + eventID);
-                    return;
-                }
-                String[] conditions = part.substring(17).split(",");
-                for (String conditionID : conditions) {
-                    String conditionPack = pack;
-                    if (conditionID.contains(".")) {
-                        String[] conditionParts = conditionID.split("\\.");
-                        conditionPack = conditionParts[0];
-                        conditionID = conditionParts[1];
-                    }
-                    if (!condition(playerID, conditionPack, conditionID)) {
-                        Debug.info("Conditions for event " + eventID + " were not met for "
-                            + playerID);
-                        return;
-                    }
-                }
-                break;
-            }
-        }
-        // get event's class
-        Class<? extends QuestEvent> event = events.get(parts[0]);
+        // get the event
+        QuestEvent event = events.get(eventID);
         if (event == null) {
-            // if it's null then there is no such type registered, log an error
-            Debug.error("Event type \"" + parts[0]
-                + "\" is not registered, check if it's spelled correctly in \"" + eventID
-                + "\" event.");
+            Debug.error("Event " + eventID + " is not defined");
             return;
         }
-        try {
-            // fire an event
-            event.getConstructor(String.class, String.class, String.class)
-                    .newInstance(playerID, pack, eventInstruction);
-            if (playerID == null) {
-                Debug.info("Static event " + eventID + " fired!");
-            } else {
-                Debug.info("Event " + eventID + " fired for " + playerID);
-            }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
-        }
+        // fire the event
+        event.fire(playerID);
     }
 
     /**
@@ -605,7 +620,7 @@ public final class BetonQuest extends JavaPlugin {
                 break;
             }
         }
-        // the tag is required, log an error if it's not supplied
+        // the label is required, log an error if it's not supplied
         if (tag == null) {
             Debug.error("Label was not found in an objective, it's required. Player: " + playerID
                 + ", instruction: " + instruction);
@@ -619,7 +634,7 @@ public final class BetonQuest extends JavaPlugin {
             }
         }
         // get objective's class
-        Class<? extends Objective> objective = objectives.get(parts[0]);
+        Class<? extends Objective> objective = objectiveTypes.get(parts[0]);
         if (objective == null) {
             // if it's null then objective type has not been registered, log an
             // error
@@ -630,14 +645,21 @@ public final class BetonQuest extends JavaPlugin {
         }
         try {
             // start the objective
-            getInstance().getDBHandler(playerID).addObjective(
-                    objective.getConstructor(String.class, String.class)
-                    .newInstance(playerID, instruction));
+            Objective objInstance = objective.getConstructor(String.class, String.class)
+                    .newInstance(playerID, instruction);
+            getInstance().getDBHandler(playerID).addObjective(objInstance);
             Debug.info("Created new objective from instruction \"" + instruction + "\" with \""
                 + tag + "\" tag for player " + playerID);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof InstructionParseException) {
+                Debug.error("Error in " + tag + " objective: " + e.getCause().getMessage());
+            } else {
+                e.printStackTrace();
+                Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+            Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
         }
     }
 }

@@ -19,47 +19,37 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * All of specified conditions have to be true
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ConjunctionCondition extends Condition {
 
-    private String[] conditions;
+    private final String[] conditions;
 
-    public ConjunctionCondition(String playerID, String packName, String instructions) {
-        super(playerID, packName, instructions);
+    public ConjunctionCondition(String packName, String instructions)
+            throws InstructionParseException {
+        super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Conditions not defined in: " + instructions);
-            isOk = false;
-            return;
+            throw new InstructionParseException("Conditions not defined");
         }
-        conditions = parts[1].split(",");
+        String[] tempConditions = parts[1].split(",");
+        for (int i = 0; i < tempConditions.length; i++) {
+            if (!tempConditions[i].contains(".")) {
+                tempConditions[i] = packName + "." + tempConditions[i];
+            }
+        }
+        conditions = tempConditions;
     }
 
     @Override
-    public boolean isMet() {
-        if (!isOk) {
-            Debug.error("There was an error, returning false.");
-            return false;
-        }
-        
+    public boolean check(String playerID) {
         for (String condition : conditions) {
-            String condName;
-            String packName;
-            if (condition.contains(".")) {
-                String[] parts = condition.split("\\.");
-                condName = parts[1];
-                packName = parts[0];
-            } else {
-                condName = condition;
-                packName = super.packName;
-            }
-            if (!BetonQuest.condition(playerID, packName, condName)) {
+            if (!BetonQuest.condition(playerID, condition)) {
                 return false;
             }
         }
