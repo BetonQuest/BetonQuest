@@ -27,6 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
@@ -111,8 +112,6 @@ import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
 import pl.betoncraft.betonquest.utils.Utils;
 
-
-
 /**
  * Represents BetonQuest plugin
  * 
@@ -156,6 +155,10 @@ public final class BetonQuest extends JavaPlugin {
      * Stores all events
      */
     private static HashMap<String, QuestEvent> events = new HashMap<>();
+    /**
+     * Saves the data of all players to the database every minute
+     */
+    private BukkitRunnable saver;
 
     @Override
     public void onEnable() {
@@ -248,6 +251,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("testforblock", TestForBlockCondition.class);
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
+        
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
@@ -301,6 +305,17 @@ public final class BetonQuest extends JavaPlugin {
             dbHandlers.put(playerID, dbh);
             dbh.startObjectives();
         }
+        
+        // schedule periodic data saving
+        saver = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (DatabaseHandler dbHandler : dbHandlers.values()) {
+                    dbHandler.saveData();
+                }
+            }
+        };
+        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
 
         // metrics!
         if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
@@ -413,11 +428,15 @@ public final class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // cancel database saver
+        saver.cancel();
         // stop global location listener
         GlobalLocations.stop();
         // save players' data
         for (Player player : Bukkit.getOnlinePlayers()) {
-            dbHandlers.get(PlayerConverter.getID(player)).saveData();
+            DatabaseHandler dbHandler = dbHandlers.get(PlayerConverter.getID(player));
+            dbHandler.saveData();
+            dbHandler.removeData();
         }
         // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {

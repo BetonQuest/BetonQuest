@@ -76,6 +76,7 @@ public class TagEvent extends QuestEvent {
                         }
                     }
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         }

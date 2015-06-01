@@ -19,9 +19,11 @@ package pl.betoncraft.betonquest.compatibility;
 
 import java.util.HashMap;
 
+import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.npc.NPC;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,7 +40,8 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class CitizensWalkingListener implements Listener {
     
-    private HashMap<NPC, Integer> npcs = new HashMap<>();
+    private HashMap<NPC, Integer>  npcs = new HashMap<>();
+    private HashMap<NPC, Location> locs = new HashMap<>();
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around when in conversation
@@ -55,8 +58,11 @@ public class CitizensWalkingListener implements Listener {
                     CitizensConversation conv = (CitizensConversation) event.getConversation();
                     NPC npc = conv.getNPC();
                     if (!npcs.containsKey(npc)) {
+                        Navigator nav = npc.getNavigator();
                         npcs.put(npc, new Integer(1));
-                        npc.getNavigator().setPaused(true);
+                        locs.put(npc, nav.getTargetAsLocation());
+                        nav.setTarget(conv.getNPC().getEntity().getLocation());
+                        nav.setPaused(true);
                         Debug.info("Stopping the NPC");
                     } else {
                         npcs.put(npc, npcs.get(npc) + 1);
@@ -78,7 +84,9 @@ public class CitizensWalkingListener implements Listener {
                     i--;
                     if (i == 0) {
                         npcs.remove(npc);
-                        npc.getNavigator().setPaused(false);
+                        Navigator nav = npc.getNavigator();
+                        nav.setPaused(false);
+                        nav.setTarget(locs.remove(npc));
                         Debug.info("Resuming NPC");
                     } else {
                         npcs.put(npc, i);

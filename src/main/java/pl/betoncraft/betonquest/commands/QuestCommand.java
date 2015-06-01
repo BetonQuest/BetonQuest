@@ -375,6 +375,7 @@ public class QuestCommand implements CommandExecutor {
                 // add the pointer
                 if (!isOnline) {
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 } else {
                     journal.updateJournal();
                 }
@@ -390,6 +391,7 @@ public class QuestCommand implements CommandExecutor {
                 journal.removePointer(args[3]);
                 if (!isOnline) {
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 } else {
                     journal.updateJournal();
                 }
@@ -450,7 +452,10 @@ public class QuestCommand implements CommandExecutor {
                 // add the point
                 Debug.info("Adding points");
                 dbHandler.addPoints(args[3], Integer.parseInt(args[4]));
-                if (!isOnline) dbHandler.saveData();
+                if (!isOnline) {
+                    dbHandler.saveData();
+                    dbHandler.removeData();
+                }
                 sender.sendMessage(getMessage("points_added"));
                 break;
             case "remove":
@@ -463,7 +468,10 @@ public class QuestCommand implements CommandExecutor {
                 // subtracts points, but for the sake of users leave it be)
                 Debug.info("Removing points");
                 dbHandler.removePointsCategory(args[3]);
-                if (!isOnline) dbHandler.saveData();
+                if (!isOnline) {
+                    dbHandler.saveData();
+                    dbHandler.removeData();
+                }
                 sender.sendMessage(getMessage("points_removed"));
                 break;
             default:
@@ -646,7 +654,10 @@ public class QuestCommand implements CommandExecutor {
                 // add the point
                 Debug.info("Adding tag " + args[3] + " for player " + playerID);
                 dbHandler.addTag(args[3]);
-                if (!isOnline) dbHandler.saveData();
+                if (!isOnline) {
+                    dbHandler.saveData();
+                    dbHandler.removeData();
+                }
                 sender.sendMessage(getMessage("tag_added"));
                 break;
             case "remove":
@@ -659,7 +670,10 @@ public class QuestCommand implements CommandExecutor {
                 // subtracts points, but for the sake of users leave it be)
                 Debug.info("Removing tag " + args[3] + " for player " + playerID);
                 dbHandler.removeTag(args[3]);
-                if (!isOnline) dbHandler.saveData();
+                if (!isOnline) {
+                    dbHandler.saveData();
+                    dbHandler.removeData();
+                }
                 sender.sendMessage(getMessage("tag_removed"));
                 break;
             default:
@@ -742,6 +756,7 @@ public class QuestCommand implements CommandExecutor {
                 } else {
                     dbHandler.addRawObjective(objectiveInstruction);
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 }
                 sender.sendMessage(getMessage("objective_added"));
                 break;
@@ -756,6 +771,7 @@ public class QuestCommand implements CommandExecutor {
                 if (!isOnline) {
                     // if the player is offline then save the data
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 }
                 sender.sendMessage(getMessage("objective_removed"));
                 break;

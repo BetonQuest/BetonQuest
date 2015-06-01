@@ -171,7 +171,8 @@ public class Config {
      * @return message String or null if it does not exist
      */
     public static String getMessage(String message) {
-        return messages.getConfig().getString(lang + "." + message);
+        return messages.getConfig().getString(lang + "." + message)
+                .replace('&', '§');
     }
     
     /**

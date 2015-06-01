@@ -90,6 +90,7 @@ public class ObjectiveEvent extends QuestEvent {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
                     dbHandler.addRawObjective(objective);
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {

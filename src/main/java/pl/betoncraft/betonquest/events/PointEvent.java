@@ -60,6 +60,7 @@ public class PointEvent extends QuestEvent {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
                     dbHandler.addPoints(category, count);
                     dbHandler.saveData();
+                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {

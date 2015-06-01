@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,7 +48,7 @@ public class JoinQuitListener implements Listener {
     private BetonQuest instance = BetonQuest.getInstance();
 
     /**
-     * Constructor method, this listener loads all objectives for joining player
+     * Creates new listener, which will handle the data loading/saving
      */
     public JoinQuitListener() {
         Bukkit.getPluginManager().registerEvents(this, instance);
@@ -55,15 +56,20 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
-        // data loading should be handled differently if UUID are used
-        // rather than names
+        // playerID is different when using UUID
+        String playerID;
         if (PlayerConverter.getType() == PlayerConversionType.UUID) {
-            String playerID = event.getUniqueId().toString();
-            BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
-        } else if (PlayerConverter.getType() == PlayerConversionType.NAME) {
-            String playerID = event.getName();
-            BetonQuest.getInstance().putDBHandler(playerID, new DatabaseHandler(playerID));
+            playerID = event.getUniqueId().toString();
+        } else {
+            playerID = event.getName();
         }
+        // kick the player if his data is already loaded
+        BetonQuest plugin = BetonQuest.getInstance();
+        if (plugin.getDBHandler(playerID) != null) {
+            event.setLoginResult(Result.KICK_OTHER);
+            return;
+        }
+        plugin.putDBHandler(playerID, new DatabaseHandler(playerID));
     }
 
     @EventHandler
@@ -99,7 +105,9 @@ public class JoinQuitListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                BetonQuest.getInstance().getDBHandler(playerID).saveData();
+                DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+                dbHandler.saveData();
+                dbHandler.removeData();
                 BetonQuest.getInstance().removeDBHandler(playerID);
             }
         }.runTaskAsynchronously(instance);

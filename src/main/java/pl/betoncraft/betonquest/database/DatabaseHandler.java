@@ -198,8 +198,8 @@ public class DatabaseHandler {
     }
 
     /**
-     * Saves all data to the database and removes it from handler. This also
-     * ends all objectives.
+     * Saves all data to the database. It does not remove the data, you need to
+     * use {@link removeData() removeDate} for that.
      */
     public void saveData() {
         Connector database = new Connector();
@@ -216,7 +216,6 @@ public class DatabaseHandler {
         for (Objective objective : activeObjectives) {
             database.updateSQL(UpdateType.ADD_OBJECTIVES,
                     new String[] { playerID, objective.getInstruction() });
-            objective.delete();
         }
         for (String tag : tags) {
             database.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
@@ -241,6 +240,13 @@ public class DatabaseHandler {
             + tags.size() + " tags, " + points.size() + " points, "
             + journal.getPointers().size() + " journal entries and " + backpack.size()
             + " items for player " + playerID);
+    }
+    
+    /**
+     * Removes the data of the player. It does not save anything, you need to
+     * use {@link saveData() saveData}
+     */
+    public void removeData() {
         // clear all lists
         objectives.clear();
         activeObjectives.clear();
@@ -248,6 +254,9 @@ public class DatabaseHandler {
         points.clear();
         journal.clear();
         backpack.clear();
+        for (Objective objective : activeObjectives) {
+            objective.delete();
+        }
     }
 
     /**
