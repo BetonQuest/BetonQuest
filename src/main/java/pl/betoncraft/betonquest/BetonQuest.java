@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+// import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
@@ -155,10 +155,10 @@ public final class BetonQuest extends JavaPlugin {
      * Stores all events
      */
     private static HashMap<String, QuestEvent> events = new HashMap<>();
-    /**
-     * Saves the data of all players to the database every minute
-     */
-    private BukkitRunnable saver;
+//    /**
+//     * Saves the data of all players to the database every minute
+//     */
+//    private BukkitRunnable saver;
 
     @Override
     public void onEnable() {
@@ -429,8 +429,8 @@ public final class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // cancel database saver
-        saver.cancel();
+//        // cancel database saver
+//        saver.cancel();
         // stop global location listener
         GlobalLocations.stop();
         // save players' data
