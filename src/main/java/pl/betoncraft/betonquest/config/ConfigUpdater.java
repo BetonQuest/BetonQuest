@@ -280,6 +280,8 @@ public class ConfigUpdater {
                 pointers.add(new String[]{res.getString("playerID"), "default."
                         + res.getString("pointer"), res.getString("date")});
             }
+            con.createStatement().executeUpdate("DELETE FROM " + prefix + "objectives");
+            con.createStatement().executeUpdate("DELETE FROM " + prefix + "journal");
             for (String[] objective : objectives) {
                 PreparedStatement stmt = con.prepareStatement("INSERT INTO " + prefix + "objectives "
                         + "(playerID, instructions) VALUES (?,?)");
@@ -1725,7 +1727,6 @@ public class ConfigUpdater {
     @SuppressWarnings("deprecation")
     private void convertNamesToUUID() {
         Debug.broadcast("Converting names to UUID...");
-        instance.getDB().openConnection();
         // loop all tables
         HashMap<String, String> list = new HashMap<>();
         String[] tables = new String[] { "OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK" };

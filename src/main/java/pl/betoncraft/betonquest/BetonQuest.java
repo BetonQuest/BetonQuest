@@ -305,17 +305,18 @@ public final class BetonQuest extends JavaPlugin {
             dbHandlers.put(playerID, dbh);
             dbh.startObjectives();
         }
-        
-        // schedule periodic data saving
-        saver = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (DatabaseHandler dbHandler : dbHandlers.values()) {
-                    dbHandler.saveData();
-                }
-            }
-        };
-        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
+
+// This probably locks the database if using SQLite        
+//        // schedule periodic data saving
+//        saver = new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                for (DatabaseHandler dbHandler : dbHandlers.values()) {
+//                    dbHandler.saveData();
+//                }
+//            }
+//        };
+//        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
 
         // metrics!
         if (getConfig().getString("metrics").equalsIgnoreCase("true")) {

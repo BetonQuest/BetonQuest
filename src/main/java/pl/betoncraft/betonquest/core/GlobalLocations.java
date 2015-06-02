@@ -61,7 +61,7 @@ public class GlobalLocations extends BukkitRunnable {
         for (String packName : Config.getPackageNames()) {
             ConfigPackage pack = Config.getPackage(packName);
             String rawGlobalLocations = pack.getString("main.global_locations");
-            if (rawGlobalLocations == null) {
+            if (rawGlobalLocations == null || rawGlobalLocations.equals("")) {
                 continue;
             }
             String[] parts = rawGlobalLocations.split(",");

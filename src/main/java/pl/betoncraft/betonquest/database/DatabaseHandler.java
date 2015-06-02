@@ -199,42 +199,42 @@ public class DatabaseHandler {
 
     /**
      * Saves all data to the database. It does not remove the data, you need to
-     * use {@link removeData() removeDate} for that.
+     * use {@link #removeData() removeDate} for that.
      */
     public void saveData() {
-        Connector database = new Connector();
+        Connector con = new Connector();
         // delete old data
-        database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-        database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-        database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-        database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-        database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
         // insert new data
         for (String instruction : objectives) {
-            database.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, instruction });
+            con.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, instruction });
         }
         for (Objective objective : activeObjectives) {
-            database.updateSQL(UpdateType.ADD_OBJECTIVES,
+            con.updateSQL(UpdateType.ADD_OBJECTIVES,
                     new String[] { playerID, objective.getInstruction() });
         }
         for (String tag : tags) {
-            database.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
+            con.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
         }
         for (Point point : points) {
-            database.updateSQL(UpdateType.ADD_POINTS, new String[] { playerID, point.getCategory(),
+            con.updateSQL(UpdateType.ADD_POINTS, new String[] { playerID, point.getCategory(),
                 String.valueOf(point.getCount()) });
         }
         for (Pointer pointer : journal.getPointers()) {
-            database.updateSQL(UpdateType.ADD_JOURNAL,
+            con.updateSQL(UpdateType.ADD_JOURNAL,
                     new String[] { playerID, pointer.getPointer(),
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp())) });
         }
         for (ItemStack itemStack : backpack) {
             String instruction = Utils.itemToString(itemStack);
             String amount = String.valueOf(itemStack.getAmount());
-            database.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
+            con.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
         }
-        database.close();
+        con.close();
         // log debug message about saving
         Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
@@ -244,7 +244,7 @@ public class DatabaseHandler {
     
     /**
      * Removes the data of the player. It does not save anything, you need to
-     * use {@link saveData() saveData}
+     * use {@link #saveData() saveData} for that.
      */
     public void removeData() {
         // clear all lists
