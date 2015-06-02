@@ -1,5 +1,6 @@
 language: java
 jdk:
 - openjdk7
+before_script: "sed -i \"s@{build}@$TRAVIS_BUILD_NUMBER@\" src/main/resources/plugin.yml"
 script: mvn package
 after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"plugin=@target/BetonQuest.jar\" http://betonquest.betoncraft.pl/index.php"
