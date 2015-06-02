@@ -693,8 +693,8 @@ public class Updater {
         }
         
         // if it's a dev version then we want tu update the same numbers
-        // (1.6-dev is behind 1.6); we also want to update it if it's behind
-        if (localVersion.endsWith("-dev")) {
+        // (1.6-dev is ahead 1.6); we also want to update it if it's behind
+        if (localVersion.contains("-dev")) {
             localVersion = localVersion.substring(0, localVersion.indexOf('-'));
             if (localVersion.equals(remoteVersion)) {
                 return true;
