@@ -53,7 +53,7 @@ public class PointCondition extends Condition {
         for (Point point : BetonQuest.getInstance().getDBHandler(playerID)
                 .getPoints()) {
             if (point.getCategory().equalsIgnoreCase(category)) {
-                return count >= point.getCount();
+                return point.getCount() >= count;
             }
         }
         return false;

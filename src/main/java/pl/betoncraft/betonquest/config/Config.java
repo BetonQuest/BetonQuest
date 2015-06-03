@@ -165,14 +165,21 @@ public class Config {
      * Retrieves the message from the configuration in specified language
      * 
      * @param message
-     *          name of the message to retrieve
+     *            name of the message to retrieve
      * @param lang
-     *          language in which the message should be retrieved
-     * @return message String or null if it does not exist
+     *            language in which the message should be retrieved
+     * @return message in that language, or message in English, or null if it
+     *         does not exist
      */
     public static String getMessage(String message) {
-        return messages.getConfig().getString(lang + "." + message)
-                .replace('&', '§');
+        String result = messages.getConfig().getString(lang + "." + message);
+        if (result == null) {
+            result = messages.getConfig().getString("en." + message);
+        }
+        if (result != null) {
+            result = result.replace('&', '§');
+        }
+        return result;
     }
     
     /**
