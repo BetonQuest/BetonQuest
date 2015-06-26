@@ -90,9 +90,18 @@ public class TakeEvent extends QuestEvent {
                         .replaceAll("%amount%", String.valueOf(amount))
                         .replaceAll("&", "§"));
             }
+
+            //Remove Quest items from player's inventory
             player.getInventory().setContents(
                     removeItems(player.getInventory().getContents(), questItem,
                             amount));
+
+            //Remove Quest items from player's armor slots
+            player.getInventory().setArmorContents(
+                    removeItems(player.getInventory().getArmorContents(),
+                            questItem, amount));
+
+            //Remove Quest items from player's backpack
             if (amount > 0) {
                 List<ItemStack> backpack =
                         BetonQuest.getInstance().getDBHandler(playerID)
