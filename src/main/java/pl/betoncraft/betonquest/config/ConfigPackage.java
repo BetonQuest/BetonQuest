@@ -86,7 +86,7 @@ public class ConfigPackage {
             }
         }
         if (isValid()) {
-            Debug.broadcast("Package " + pack.getName() + " loaded!");
+            Debug.info("Package " + pack.getName() + " loaded!");
         } else {
             Debug.error(pack.getName() + " is not a valid package!");
         }

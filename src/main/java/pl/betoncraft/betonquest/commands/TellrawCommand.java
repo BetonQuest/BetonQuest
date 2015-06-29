@@ -24,6 +24,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -51,14 +52,18 @@ public class TellrawCommand implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("betonquestanswer")) {
             if (args.length == 1 && sender instanceof Player) {
                 Player player = (Player) sender;
-                Conversation con = Conversation.getConversation(PlayerConverter.getID(player));
+                final Conversation con = Conversation.getConversation(PlayerConverter.getID(player));
                 if (con == null) return true;
                 HashMap<Integer, String> hashes = con.getHashes();
                 Set<Integer> set = hashes.keySet();
-                for (Integer integer : set) {
+                for (final Integer integer : set) {
                     if (hashes.get(integer).equals(args[0])) {
                         Debug.info("Passing player answer " + integer);
-                        con.passPlayerAnswer(integer.toString());
+                        new BukkitRunnable() {
+                            public void run() {
+                                con.passPlayerAnswer(integer.toString());
+                            }
+                        }.runTaskAsynchronously(BetonQuest.getInstance());
                         return true;
                     }
                 }

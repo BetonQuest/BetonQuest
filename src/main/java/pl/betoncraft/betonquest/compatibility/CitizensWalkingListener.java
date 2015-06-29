@@ -53,23 +53,19 @@ public class CitizensWalkingListener implements Listener {
     @EventHandler
     public void onConversationStart(final PlayerConversationStartEvent event) {
         if (event.getConversation() instanceof CitizensConversation) {
-            new BukkitRunnable() {
-                public void run() {
-                    CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    NPC npc = conv.getNPC();
-                    if (!npcs.containsKey(npc)) {
-                        Navigator nav = npc.getNavigator();
-                        npcs.put(npc, new Integer(1));
-                        locs.put(npc, nav.getTargetAsLocation());
-                        nav.setTarget(conv.getNPC().getEntity().getLocation());
-                        nav.setPaused(true);
-                        Debug.info("Stopping the NPC");
-                    } else {
-                        npcs.put(npc, npcs.get(npc) + 1);
-                        Debug.info("NPC is already stopped");
-                    }
-                }
-            }.runTask(BetonQuest.getInstance());
+            CitizensConversation conv = (CitizensConversation) event.getConversation();
+            NPC npc = conv.getNPC();
+            if (!npcs.containsKey(npc)) {
+                Navigator nav = npc.getNavigator();
+                npcs.put(npc, new Integer(1));
+                locs.put(npc, nav.getTargetAsLocation());
+                nav.setTarget(conv.getNPC().getEntity().getLocation());
+                nav.setPaused(true);
+                Debug.info("Stopping the NPC");
+            } else {
+                npcs.put(npc, npcs.get(npc) + 1);
+                Debug.info("NPC is already stopped");
+            }
         }
     }
     

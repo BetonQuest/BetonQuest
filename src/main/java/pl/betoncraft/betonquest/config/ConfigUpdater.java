@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v13";
+    private final String destination = "v14";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -184,6 +184,35 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v13() {
+        try {
+            Debug.info("Removing empty lines in conversation files");
+            new Config();
+            for (String packName : Config.getPackageNames()) {
+                Debug.info("  Package " + packName);
+                ConfigPackage pack = Config.getPackage(packName);
+                for (String convName : pack.getConversationNames()) {
+                    Debug.info("    Conversation " + convName);
+                    ConfigAccessor conv = pack.getConversation(convName);
+                    for (String key : conv.getConfig().getKeys(true)) {
+                        if (conv.getConfig().getString(key).equals("")) {
+                            Debug.info("      Key removed: " + key);
+                            conv.getConfig().set(key, null);
+                        }
+                    }
+                    conv.saveConfig();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Removed unnecessary empty lines in conversation config files.");
+        config.set("version", "v14");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
@@ -1855,10 +1884,14 @@ public class ConfigUpdater {
                     .getDataFolder(), "items.yml"), "items.yml");
             messages = new ConfigAccessor(BetonQuest.getInstance(), new File(BetonQuest.getInstance()
                     .getDataFolder(), "messages.yml"), "messages.yml");
-            // put conversations accessors in the hashmap
-            for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
-                conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
-                        new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+            if (new File(BetonQuest.getInstance().getDataFolder(), "conversations").exists()) {
+                // put conversations accessors in the hashmap
+                for (File file : new File(BetonQuest.getInstance()
+                        .getDataFolder(), "conversations").listFiles()) {
+                    conversationsMap.put(file.getName().substring(0,
+                            file.getName().indexOf(".")), new ConfigAccessor(
+                            BetonQuest.getInstance(), file, file.getName()));
+                }
             }
         }
 

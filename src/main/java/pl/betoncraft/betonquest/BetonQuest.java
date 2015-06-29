@@ -62,6 +62,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.core.CombatTagger;
+import pl.betoncraft.betonquest.core.ConversationData;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.InstructionParseException;
@@ -118,43 +119,19 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @authors Co0sh, Dzejkop, BYK
  */
 public final class BetonQuest extends JavaPlugin {
-    /**
-     * The plugin's instance
-     */
+    
     private static BetonQuest instance;
-    /**
-     * Instance of the Database object, which handles the database connection
-     */
     private Database database;
-    /**
-     * This is true if MySQL is used for data storing
-     */
     private boolean isMySQLUsed;
-    /**
-     * Handler for storing data in the database (does not handle the connection
-     * itself)
-     */
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
-    /**
-     * Stores all condition types with their corresponding classes
-     */
+
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
-    /**
-     * Stores all event types with their corresponding classes
-     */
     private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
-    /**
-     * Stores all objective types with their corresponding classes
-     */
     private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
-    /**
-     * Stores all conditions
-     */
+    
     private static HashMap<String, Condition> conditions = new HashMap<>();
-    /**
-     * Stores all events
-     */
     private static HashMap<String, QuestEvent> events = new HashMap<>();
+    private static HashMap<String, ConversationData> conversations = new HashMap<>();
 //    /**
 //     * Saves the data of all players to the database every minute
 //     */
@@ -296,7 +273,7 @@ public final class BetonQuest extends JavaPlugin {
         PlayerConverter.getType();
         
         // Load all events and conditions
-        loadEventsAndConditions();
+        loadData();
 
         // load data for all online players
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -345,9 +322,12 @@ public final class BetonQuest extends JavaPlugin {
     /**
      * Loads events and conditions to the maps
      */
-    public void loadEventsAndConditions() {
+    public void loadData() {
+        // clear previously loaded data
 	events.clear();
 	conditions.clear();
+	conversations.clear();
+	// load new data
 	for (String packName : Config.getPackageNames()) {
             Debug.info("Loading stuff in package " + packName);
             ConfigPackage pack = Config.getPackage(packName);
@@ -421,10 +401,23 @@ public final class BetonQuest extends JavaPlugin {
                     Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
                 }
             }
+            for (String convName : pack.getConversationNames()) {
+                try {
+                    conversations.put(pack.getName() + "." + convName,
+                            new ConversationData(packName, convName));
+                } catch (InstructionParseException e) {
+                    Debug.error("Error in " + convName + " conversation from "
+                            + packName + " package: " + e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                }
+            }
             Debug.info("Everything in package " + packName + " loaded");
         }
-        Debug.broadcast("There are " + conditions.size() + " conditions and "
-                + events.size() + " events loaded.");
+        Debug.broadcast("There are " + conditions.size() + " conditions, "
+                + events.size() + " events and " + conversations.size()
+                + " conversations loaded from " + Config.getPackageNames().size() + " packages.");
     }
 
     @Override
@@ -611,7 +604,6 @@ public final class BetonQuest extends JavaPlugin {
         QuestEvent event = events.get(eventID);
         if (event == null) {
             Debug.error("Event " + eventID + " is not defined");
-            return;
         }
         // fire the event
         event.fire(playerID);
@@ -681,5 +673,15 @@ public final class BetonQuest extends JavaPlugin {
             e.printStackTrace();
             Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
         }
+    }
+    
+    /**
+     * @param name
+     *          package name, dot and name of the conversation
+     * @return ConversationData object for this conversation or null if it does
+     *         not exist
+     */
+    public ConversationData getConversation(String name) {
+        return conversations.get(name);
     }
 }

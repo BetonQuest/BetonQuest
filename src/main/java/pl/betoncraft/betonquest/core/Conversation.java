@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.core;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +39,8 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.core.ConversationData.OptionType;
+import pl.betoncraft.betonquest.core.ConversationData.RequestType;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -49,63 +51,16 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class Conversation implements Listener {
 
-    /**
-     * Contains a list of players in active conversation, described by their
-     * playerID, and their active conversation.
-     */
-    private static HashMap<String, Conversation> list = new HashMap<>();
-    /**
-     * Represents name of the NPC
-     */
-    private String quester;
-    /**
-     * ID of the player
-     */
+    private static ConcurrentHashMap<String, Conversation> list =
+            new ConcurrentHashMap<>();
+    
     private final String playerID;
-    /**
-     * Player object for the player
-     */
     private final Player player;
-    /**
-     * ID of the conversation
-     */
-    private final String conversationID;
-    /**
-     * Location, at which this conversation is centered
-     */
+    private final ConversationData data;
     private final Location location;
-    /**
-     * Map containing current player answers and their pointers
-     */
     private HashMap<Integer, String> current = new HashMap<>();
-    /**
-     * Map containing hashes for tellraw answers
-     */
     private HashMap<Integer, String> hashes = new HashMap<>();
-    /**
-     * True if tellraw option is used
-     */
     private boolean tellraw;
-    /**
-     * Defines if the movement during conversation should be blocked
-     */
-    private boolean movementBlock;
-    /**
-     * Raw list of final events, separated by commas
-     */
-    private String finalEvents;
-    /**
-     * "Unknown" message said by NPC when he doesn't understand player's input
-     */
-    private String unknown;
-    /**
-     * First options for this conversation, separated by commas
-     */
-    private String startingOptions;
-    /**
-     * Package in which this conversation is defined
-     */
-    private ConfigPackage pack;
 
     /**
      * Constructor method, starts a new conversation between player and npc at
@@ -114,84 +69,61 @@ public class Conversation implements Listener {
      * @param playerID
      * @param conversationID
      */
-    public Conversation(String playerID, String packName, String conversationID, Location location) {
+    public Conversation(final String playerID, final String packName,
+            final String conversationID, final Location location) {
 
         this.playerID = playerID;
-        this.conversationID = conversationID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.location = location;
-        this.tellraw = Config.getString("config.tellraw").equalsIgnoreCase("true");
-
-        Debug.info("Starting conversation " + conversationID + " for player " + playerID);
-
-        // end this conversation if it's not started properly
-        if (playerID == null || conversationID == null || location == null || player == null) {
-            Debug.error("Error in conversation initialization! Check your spelling!");
+        this.tellraw = Config.getString("config.tellraw")
+                .equalsIgnoreCase("true");
+        this.data = BetonQuest.getInstance().getConversation(
+                packName + "." + conversationID);
+        
+        // check if data is present
+        if (data == null) {
+            Debug.error("Conversation doesn't exist: " + packName + "."
+                    + conversationID);
             return;
         }
-
+        
         // if the player has active conversation, terminate this one
         if (list.containsKey(playerID)) {
-            Debug.info("Player " + playerID + " is in conversation right now, returning.");
+            Debug.info("Player " + playerID +
+                    " is in conversation right now, returning.");
             return;
         }
         
-        // check if the package is alright
-        pack = Config.getPackage(packName);
-        if (pack == null) {
-            Debug.error("Package " + packName + " is not defined!");
-            return;
-        }
+        // start the conversation asynchronously
+        final Conversation conv = this;
+        new BukkitRunnable() {
+            public void run() {
+                
+                // the conversation start event must be run on next tick
+                PlayerConversationStartEvent event =
+                        new PlayerConversationStartEvent(player, conv);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+                
+                // stop the conversation if it's canceled
+                if (event.isCancelled()) return;
+                
+                // everything is ok, register conversation as listener
+                BetonQuest.getInstance().getServer().getPluginManager()
+                        .registerEvents(conv, BetonQuest.getInstance());
 
-        // Check if everything is defined correctly, so the conversation doesn't
-        // start with invalid data
-        this.quester = pack.getString("conversations." + conversationID + ".quester");
-        this.finalEvents = pack.getString("conversations." + conversationID + ".final_events");
-        this.unknown = pack.getString("conversations." + conversationID + ".unknown");
-        // get initial npc's options
-        this.startingOptions = pack.getString("conversations." + conversationID + ".first");
+                // add the player to the list of active conversations
+                list.put(playerID, conv);
 
-        // check if all data is valid (or at least exist)
-        if (quester == null || quester.equals("")) {
-            Debug.error("Quester's name is not defined in " + conversationID + " conversation!");
-            return;
-        }
-        if (unknown == null || unknown.equals("")) {
-            Debug.error("\"Unknown\" text is not defined in " + conversationID + " conversation!");
-            return;
-        }
-        if (startingOptions == null || startingOptions.equals("")) {
-            Debug.error("Starting options are not defined in " + conversationID + " conversation!");
-            return;
-        }
-        // if final events are not defined then set them to none
-        if (finalEvents == null) {
-            finalEvents = "";
-        }
-
-        // everything is ok, register conversation as listener and command and fire an event
-        BetonQuest.getInstance().getServer().getPluginManager()
-                .registerEvents(this, BetonQuest.getInstance());
-        
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationStartEvent(player, this));
-
-        // add the player to the list of active conversations
-        list.put(playerID, this);
-
-        // print message about starting a conversation
-        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("conversation_start")
-                .replaceAll("%quester%", quester), Config.getString("config.sounds.start"));
-
-        // if stop is true stop the player from moving away
-        String stop = pack.getString("conversations." + conversationID + ".stop");
-        if (stop != null && stop.equalsIgnoreCase("true")) {
-            movementBlock = true;
-        } else {
-            movementBlock = false;
-        }
-
-        // print one of them
-        printNPCText(startingOptions);
+                // print message about starting a conversation
+                SimpleTextOutput.sendSystemMessage(playerID,
+                        Config.getMessage("conversation_start")
+                        .replaceAll("%quester%", data.getQuester()),
+                        Config.getString("config.sounds.start"));
+                
+                // print NPC's text
+                printNPCText(data.getStartingOptions());
+            }
+        }.runTaskAsynchronously(BetonQuest.getInstance());
     }
 
     /**
@@ -201,34 +133,13 @@ public class Conversation implements Listener {
      * @param options
      *            list of option pointers separated by commas
      */
-    private void printNPCText(String options) {
-
-        // if options are empty end conversation
-        if (options.equals("")) {
-            endConversation();
-            return;
-        }
+    private void printNPCText(String[] options) {
 
         // get npc's text
         String option = null;
-        options: for (String NPCoption : options.split(",")) {
-            String rawConditions = pack.getString("conversations." + this.conversationID
-                    + ".NPC_options." + NPCoption + ".conditions");
-            if (rawConditions == null) {
-                endConversation();
-                Debug.error("Conversation " + conversationID
-                    + " is missing conditions in NPC option " + NPCoption);
-                return;
-            }
-            String[] conditions = rawConditions.split(",");
-            for (String condition : conditions) {
-                if (condition.equals("")) {
-                    option = NPCoption;
-                    break options;
-                }
-                if (!condition.contains(".")) {
-                    condition = pack.getName() + "." + condition;
-                }
+        options: for (String NPCoption : options) {
+            for (String condition : data.getData(NPCoption, OptionType.NPC,
+                    RequestType.CONDITION)) {
                 if (!BetonQuest.condition(this.playerID, condition)) {
                     continue options;
                 }
@@ -237,36 +148,37 @@ public class Conversation implements Listener {
             break;
         }
 
-        // if there are no possible options end conversation
+        // if there are no possible options, end conversation
         if (option == null) {
-            endConversation();
+            new BukkitRunnable() {
+                public void run() {
+                    endConversation();
+                }
+            }.runTask(BetonQuest.getInstance());
             return;
         }
 
-        // and print it to player
-        String text = pack.getString("conversations." + this.conversationID  + ".NPC_options." + option + ".text");
-        if (text == null) {
-            Debug.error("Conversation " + conversationID + " is missing NPC text in option " + option);
-            endConversation();
-            return;
-        }
-        SimpleTextOutput.sendQuesterMessage(this.playerID, quester, text);
+        // print option to the player
+        SimpleTextOutput.sendQuesterMessage(this.playerID, data.getQuester(),
+                data.getText(option, OptionType.NPC));
 
-        String events = pack.getString("conversations." + this.conversationID + ".NPC_options." + option + ".events");
-        if (events == null) {
-            Debug.error("Conversation " + conversationID + " is missing events in NPC option " + option);
-            endConversation();
-            return;
-        }
-        fireEvents(events);
-
-        String pointers = pack.getString("conversations." + this.conversationID + ".NPC_options." + option + ".pointer");
-        if (pointers == null) {
-            Debug.error("Conversation " + conversationID + " is missing pointer in NPC option " + option);
-            endConversation();
-            return;
-        }
-        printOptions(pointers);
+        final String fOption = option;
+        new BukkitRunnable() {
+            public void run() {
+                // fire events
+                for (String event : data.getData(fOption, OptionType.NPC,
+                        RequestType.EVENT)) {
+                    BetonQuest.event(playerID, event);
+                }
+                new BukkitRunnable() {
+                    public void run() {
+                        // print options
+                        printOptions(data.getData(fOption, OptionType.NPC,
+                                RequestType.POINTER));
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     /**
@@ -284,129 +196,78 @@ public class Conversation implements Listener {
         if (answer.equalsIgnoreCase("0") || !answer.matches("\\d+")
             || Integer.valueOf(answer) > current.size()) {
             // some text from npc saying that he doesn't understand player
-            SimpleTextOutput.sendQuesterMessage(playerID, quester, unknown);
+            SimpleTextOutput.sendQuesterMessage(playerID, data.getQuester(),
+                    data.getUnknown());
             // and instructions from plugin about answering npcs
-            SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("help_with_answering"), "false");
+            SimpleTextOutput.sendSystemMessage(playerID,
+                    Config.getMessage("help_with_answering"), "false");
             return;
         }
 
         // get the answer ID from player's response
         Integer number = new Integer(answer);
-        String choosenAnswerID = current.get(number);
+        final String choosenAnswerID = current.get(number);
 
         // clear hashmap
         current.clear();
         if (tellraw) hashes.clear();
 
         // print to player his answer
-        String reply = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".text");
-        SimpleTextOutput.sendPlayerReply(playerID, quester, reply);
+        SimpleTextOutput.sendPlayerReply(playerID, data.getQuester(),
+                data.getText(choosenAnswerID, OptionType.PLAYER));
 
-        // fire events
-        String events = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".events");
-        if (events == null) {
-            Debug.error("Conversation " + conversationID + " is missing events in player option " + choosenAnswerID);
-            endConversation();
-            return;
-        }
-        fireEvents(events);
-
-        // print to player npc's answer
-        String NPCanswer = pack.getString("conversations." + conversationID + ".player_options." + choosenAnswerID + ".pointer");
-        if (NPCanswer == null) {
-            Debug.error("Conversation " + conversationID + " is missing pointer in player option " + choosenAnswerID);
-            endConversation();
-            return;
-        }
-        printNPCText(NPCanswer);
-    }
-
-    /**
-     * Fires events from the string.
-     * 
-     * @param rawEvents
-     *            list of event IDs separated by commas
-     */
-    private void fireEvents(String rawEvents) {
-        // do nothing if its empty
-        if (!rawEvents.equalsIgnoreCase("")) {
-            // split it to individual event ids
-            String[] events = rawEvents.split(",");
-            // foreach eventID fire an event
-            for (String event : events) {
-        	if (!event.contains(".")) {
-        	    event = pack.getName() + "." + event;
-        	}
-                BetonQuest.event(playerID, event);
+        new BukkitRunnable() {
+            public void run() {
+                // fire events
+                for (String event : data.getData(choosenAnswerID,
+                        OptionType.PLAYER, RequestType.EVENT)) {
+                    BetonQuest.event(playerID, event);
+                }
+                new BukkitRunnable() {
+                    public void run() {
+                        // print to player npc's answer
+                        printNPCText(data.getData(choosenAnswerID,
+                                OptionType.PLAYER, RequestType.POINTER));
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
             }
-        }
+        }.runTask(BetonQuest.getInstance());
     }
 
     /**
      * Prints answers the player can choose.
      * 
-     * @param rawOptions
+     * @param options
      *            list of pointers to player options separated by commas
      */
-    private void printOptions(String rawOptions) {
-
-        // if rawOptions are empty
-        if (rawOptions.equals("")) {
-            endConversation();
-            return;
-        }
-
-        // get IDs
-        String[] options = rawOptions.split(",");
-
-        // print them
+    private void printOptions(String[] options) {
+        // i is for counting replies, like 1. something, 2. something else
         int i = 0;
         answers: for (String option : options) {
-            // get conditions from config
-            String rawConditions = pack.getString("conversations." + conversationID + ".player_options." + option + ".conditions");
-            if (rawConditions == null) {
-                Debug.error("Conversation " + conversationID + " is missing conditions in player option " + option);
-                endConversation();
-                return;
-            }
-            // if there are any conditions, do something with them
-            if (!rawConditions.equalsIgnoreCase("")) {
-                // split them to separate ids
-                String[] conditions = rawConditions.split(",");
-                // if some condition is not met, skip printing this option and move on
-                for (String condition : conditions) {
-                    if (!condition.contains(".")) {
-                	condition = pack.getName() + "." + condition;
-                    }
-                    if (!BetonQuest.condition(playerID, condition)) {
-                        continue answers;
-                    }
+            for (String condition : data.getData(option, OptionType.PLAYER,
+                    RequestType.CONDITION)) {
+                if (!BetonQuest.condition(playerID, condition)) {
+                    continue answers;
                 }
             }
-            // i is for counting replies, like 1. something, 2. something else
-            // etc.
             i++;
             // print reply
-            String reply = pack.getString("conversations." + conversationID + ".player_options." + option + ".text");
-            if (reply == null) {
-                Debug.error("Conversation " + conversationID + " is missing text in player option "
-                    + option);
-                endConversation();
-                return;
-            }
             String randomID = UUID.randomUUID().toString();
-            SimpleTextOutput.sendQuesterReply(playerID, i, quester, reply, randomID);
-            // put reply to hashmap in order to find it's ID when player responds by
-            // it's i number (id is string, we don't want to print it to player)
+            SimpleTextOutput.sendQuesterReply(playerID, i, data.getQuester(),
+                    data.getText(option, OptionType.PLAYER), randomID);
+            // put reply to hashmap
             current.put(Integer.valueOf(i), option);
             if (tellraw) {
                 hashes.put(Integer.valueOf(i), randomID);
             }
         }
-
         // end conversations if there are no possible options
         if (current.isEmpty()) {
-            endConversation();
+            new BukkitRunnable() {
+                public void run() {
+                    endConversation();
+                }
+            }.runTask(BetonQuest.getInstance());
             return;
         }
     }
@@ -417,28 +278,19 @@ public class Conversation implements Listener {
      */
     public void endConversation() {
         // fire final events
-        if (!finalEvents.equals("")) {
-            String[] splitFinalEvents = finalEvents.split(",");
-            for (String event : splitFinalEvents) {
-                if (!event.contains(".")) {
-                    event = pack.getName() + "." + event;
-                }
-                BetonQuest.event(playerID, event);
-            }
+        for (String event : data.getFinalEvents()) {
+            BetonQuest.event(playerID, event);
         }
         // print message
-        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("conversation_end")
-                .replaceAll("%quester%", quester), Config.getString("config.sounds.end"));
-        // delete conversation on the next tick to prevent errors
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                list.remove(playerID);
-            }
-        }.runTask(BetonQuest.getInstance());
+        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage(
+                "conversation_end").replaceAll("%quester%", data.getQuester()),
+                Config.getString("config.sounds.end"));
+        // delete conversation
+        list.remove(playerID);
         // unregister listener
         HandlerList.unregisterAll(this);
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, this));
+        Bukkit.getServer().getPluginManager().callEvent(
+                new PlayerConversationEndEvent(player, this));
     }
 
     /**
@@ -447,7 +299,7 @@ public class Conversation implements Listener {
      * @return true if the movement should be blocked, false otherwise
      */
     public boolean isMovementBlock() {
-        return movementBlock;
+        return data.isMovementBlocked();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -460,13 +312,7 @@ public class Conversation implements Listener {
             event.setMessage(event.getMessage().substring(1).trim());
         } else {
             event.setCancelled(true);
-            // processing the answer should be done in a sync thread
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    passPlayerAnswer(event.getMessage());
-                }
-            }.runTask(BetonQuest.getInstance());
+            passPlayerAnswer(event.getMessage());
         }
     }
 
@@ -477,8 +323,9 @@ public class Conversation implements Listener {
             return;
         }
         // if player passes max distance
-        if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location)
-                > Integer.valueOf(Config.getString("config.max_npc_distance"))) {
+        if (!event.getTo().getWorld().equals(location.getWorld()) ||
+                event.getTo().distance(location) > Integer.valueOf(
+                        Config.getString("config.max_npc_distance"))) {
             // we can stop the player or end conversation
             if (isMovementBlock()) {
                 moveBack(event);
@@ -492,10 +339,24 @@ public class Conversation implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         // prevent damage to (or from) player while in conversation
-        if ((event.getEntity() instanceof Player && PlayerConverter.getID((Player) event
-                .getEntity()).equals(playerID)) || (event.getDamager() instanceof Player &&
-                PlayerConverter.getID((Player) event.getDamager()).equals(playerID)) ) {
+        if ((event.getEntity() instanceof Player && PlayerConverter.getID(
+                (Player) event.getEntity()).equals(playerID)) ||
+                (event.getDamager() instanceof Player && PlayerConverter
+                        .getID((Player) event.getDamager()).equals(playerID))) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        // if player quits, end conversation (why keep listeners running?)
+        if (event.getPlayer().equals(player)) {
+            // delete conversation
+            list.remove(playerID);
+            // unregister listener
+            HandlerList.unregisterAll(this);
+            Bukkit.getServer().getPluginManager().callEvent(
+                    new PlayerConversationEndEvent(player, this));
         }
     }
 
@@ -509,16 +370,18 @@ public class Conversation implements Listener {
     private void moveBack(PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(location.getWorld()) || event.getTo().distance(location)
-                > Integer.valueOf(Config.getString("config.max_npc_distance")) * 2) {
+        if (!event.getTo().getWorld().equals(location.getWorld()) ||
+                event.getTo().distance(location) > Integer.valueOf(
+                        Config.getString("config.max_npc_distance")) * 2) {
             event.getPlayer().teleport(location);
             return;
         }
         // if not, then calculate the vector
         float yaw = event.getTo().getYaw();
         float pitch = event.getTo().getPitch();
-        Vector vector = new Vector(location.getX() - event.getTo().getX(), location.getY()
-            - event.getTo().getY(), location.getZ() - event.getTo().getZ());
+        Vector vector = new Vector(location.getX() - event.getTo().getX(),
+                location.getY() - event.getTo().getY(), location.getZ()
+                - event.getTo().getZ());
         vector = vector.multiply(1 / vector.length());
         // and teleport him back using this vector
         Location newLocation = event.getTo().clone();
@@ -527,15 +390,8 @@ public class Conversation implements Listener {
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
         if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            event.getPlayer().sendMessage(Config.getMessage("pullback").replaceAll("&", "§"));
-        }
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        // if player quits, end conversation (why keep listeners running?)
-        if (event.getPlayer().equals(player)) {
-            endConversation();
+            event.getPlayer().sendMessage(Config.getMessage("pullback")
+                    .replaceAll("&", "§"));
         }
     }
 
@@ -556,9 +412,15 @@ public class Conversation implements Listener {
     public static void clear() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);
-            if (list.containsKey(playerID))
-                list.get(playerID).endConversation();
+            if (list.containsKey(playerID)) {
+                Conversation conv = list.get(playerID);
+                // unregister listener
+                HandlerList.unregisterAll(conv);
+                Bukkit.getServer().getPluginManager().callEvent(
+                        new PlayerConversationEndEvent(player, conv));
+            }
         }
+        list.clear();
     }
 
     /**
@@ -570,10 +432,6 @@ public class Conversation implements Listener {
      */
     public static Conversation getConversation(String playerID) {
         return list.get(playerID);
-    }
-    
-    public enum ConversationHolder {
-        BLOCK, CITIZENS, EVENT, OTHER
     }
     
     public HashMap<Integer, String> getHashes() {

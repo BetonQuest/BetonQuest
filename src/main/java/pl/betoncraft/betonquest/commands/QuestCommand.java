@@ -800,7 +800,7 @@ public class QuestCommand implements CommandExecutor {
         GlobalLocations.stop();
         new GlobalLocations().runTaskTimer(instance, 0, 20);
         // load all events and conditions
-        instance.loadEventsAndConditions();
+        instance.loadData();
         // update journals for every online player
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);

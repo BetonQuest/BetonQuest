@@ -67,6 +67,7 @@ public class Config {
         
         // load messages
         messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
+        messages.saveDefaultConfig();
         saveResource(root, "advanced-messages.yml");
         
         // save example package
