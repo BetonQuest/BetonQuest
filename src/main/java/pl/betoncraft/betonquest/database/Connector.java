@@ -43,7 +43,7 @@ public class Connector {
         plugin = BetonQuest.getInstance();
         prefix = plugin.getConfig().getString("mysql.prefix", "");
         db = plugin.getDB();
-        connection = db.openConnection();
+        connection = db.getConnection();
     }
     
     /**
@@ -246,13 +246,6 @@ public class Connector {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Closes the connection, finishing this object's job 
-     */
-    public void close() {
-        db.closeConnection(connection);
-    }
 
     /**
      * Type of the query
@@ -266,7 +259,6 @@ public class Connector {
         
         LOAD_ALL_OBJECTIVES, LOAD_ALL_TAGS, LOAD_ALL_POINTS, LOAD_ALL_JOURNALS,
         LOAD_ALL_BACKPACK
-
     }
 
     /**

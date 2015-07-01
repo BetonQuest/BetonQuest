@@ -36,21 +36,29 @@ public abstract class Database {
 
     protected Plugin plugin;
     protected String prefix;
+    protected Connection con;
 
     protected Database(Plugin plugin) {
         this.plugin = plugin;
         this.prefix = plugin.getConfig().getString("mysql.prefix", "");
     }
 
-    public abstract Connection openConnection();
+    public Connection getConnection() {
+        if (con == null) {
+            con = openConnection();
+        }
+        return con;
+    }
+    
+    protected abstract Connection openConnection();
 
-    public void closeConnection(Connection connection) {
+    public void closeConnection() {
         try {
-            connection.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connection = null;
+        con = null;
     }
 
     public void createTables(boolean isMySQLUsed) {
@@ -61,7 +69,7 @@ public abstract class Database {
             autoIncrement = "AUTOINCREMENT";
         }
         // create tables if they don't exist
-        Connection connection = openConnection();
+        Connection connection = getConnection();
         try {
             Debug.info("Creating objectives table");
             connection.createStatement().executeUpdate(
@@ -91,6 +99,5 @@ public abstract class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        closeConnection(connection);
     }
 }

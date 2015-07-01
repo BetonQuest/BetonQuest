@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,7 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-// import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
@@ -132,10 +133,8 @@ public final class BetonQuest extends JavaPlugin {
     private static HashMap<String, Condition> conditions = new HashMap<>();
     private static HashMap<String, QuestEvent> events = new HashMap<>();
     private static HashMap<String, ConversationData> conversations = new HashMap<>();
-//    /**
-//     * Saves the data of all players to the database every minute
-//     */
-//    private BukkitRunnable saver;
+    
+    private BukkitRunnable saver;
 
     @Override
     public void onEnable() {
@@ -155,11 +154,10 @@ public final class BetonQuest extends JavaPlugin {
                 "mysql.user"), getConfig().getString("mysql.pass"));
 
         // try to connect to MySQL
-        Connection con = database.openConnection();
+        Connection con = database.getConnection();
         if (con != null) {
             Debug.broadcast("Using MySQL for storing data!");
             isMySQLUsed = true;
-            database.closeConnection(con);
             // if it fails use SQLite
         } else {
             this.database = new SQLite(this, "database.db");
@@ -283,17 +281,24 @@ public final class BetonQuest extends JavaPlugin {
             dbh.startObjectives();
         }
 
-// This probably locks the database if using SQLite        
-//        // schedule periodic data saving
-//        saver = new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                for (DatabaseHandler dbHandler : dbHandlers.values()) {
-//                    dbHandler.saveData();
-//                }
-//            }
-//        };
-//        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
+        // This probably locks the database if using SQLite
+        // schedule periodic data saving
+        saver = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (dbHandlers.isEmpty()) {
+                    try {
+                        database.getConnection().prepareStatement("SELECT 1").executeQuery();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                for (DatabaseHandler dbHandler : dbHandlers.values()) {
+                    dbHandler.saveData();
+                }
+            }
+        };
+        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
 
         // metrics!
         if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
@@ -422,8 +427,8 @@ public final class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
-//        // cancel database saver
-//        saver.cancel();
+        // cancel database saver
+        saver.cancel();
         // stop global location listener
         GlobalLocations.stop();
         // save players' data
@@ -432,6 +437,7 @@ public final class BetonQuest extends JavaPlugin {
             dbHandler.saveData();
             dbHandler.removeData();
         }
+        database.closeConnection();
         // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
             Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT,

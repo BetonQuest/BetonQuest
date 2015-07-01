@@ -191,6 +191,7 @@ public class ConfigUpdater {
         try {
             Debug.info("Removing empty lines in conversation files");
             new Config();
+            config = instance.getConfig();
             for (String packName : Config.getPackageNames()) {
                 Debug.info("  Package " + packName);
                 ConfigPackage pack = Config.getPackage(packName);
@@ -272,7 +273,7 @@ public class ConfigUpdater {
             new File(root, "npcs.yml").delete();
             Debug.info("Configuration updated!");
             Debug.broadcast("Updating the database, it may take a long time!");
-            Connection con = instance.getDB().openConnection();
+            Connection con = instance.getDB().getConnection();
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix + "objectives");
             ArrayList<String[]> objectives = new ArrayList<>();
@@ -326,7 +327,6 @@ public class ConfigUpdater {
                 stmt.setString(3, pointer[2]);
                 stmt.executeUpdate();
             }
-            instance.getDB().closeConnection(con);
             Debug.info("Done! Everything converted.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,7 +376,7 @@ public class ConfigUpdater {
             Debug.info("Converted all objectives in configuration");
             // update all objectives in the database
             Debug.broadcast("Converting objectives in the database, it may take a long time");
-            Connection con = instance.getDB().openConnection();
+            Connection con = instance.getDB().getConnection();
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix
                     + "objectives");
@@ -429,7 +429,6 @@ public class ConfigUpdater {
                     stmt.executeUpdate();
                 }
             }
-            instance.getDB().closeConnection(con);
             Debug.info("Done! Everything converted");
         } catch (Exception e) {
             e.printStackTrace();
@@ -872,7 +871,7 @@ public class ConfigUpdater {
         try {
             // delete isused column from tables objectives and tags
             Database database = instance.getDB();
-            Connection connection = database.openConnection();
+            Connection connection = database.getConnection();
             String[] tables = new String[] { "objectives", "tags" };
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             if (instance.isMySQLUsed()) {
@@ -904,7 +903,6 @@ public class ConfigUpdater {
                 connection.prepareStatement("DROP TABLE " + prefix + "tags_old").executeUpdate();
                 connection.prepareStatement("COMMIT").executeUpdate();
             }
-            database.closeConnection(connection);
             Debug.broadcast("Updated database format to better one.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1783,7 +1781,6 @@ public class ConfigUpdater {
                         new String[] { list.get(playerID), playerID });
             }
         }
-        con.close();
         Debug.broadcast("Names conversion finished!");
     }
 

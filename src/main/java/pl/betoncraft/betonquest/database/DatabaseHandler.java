@@ -138,9 +138,6 @@ public class DatabaseHandler {
                 backpack.add(item);
             }
 
-            // everything loaded, close the connection
-            database.close();
-
             // log data to debugger
             if (Debug.debugging()) {
                 Debug.info("There are " + objectives.size() + " objectives, " + tags.size()
@@ -234,7 +231,6 @@ public class DatabaseHandler {
             String amount = String.valueOf(itemStack.getAmount());
             con.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
         }
-        con.close();
         // log debug message about saving
         Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
@@ -314,7 +310,6 @@ public class DatabaseHandler {
         database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-        database.close();
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
             journal.updateJournal();

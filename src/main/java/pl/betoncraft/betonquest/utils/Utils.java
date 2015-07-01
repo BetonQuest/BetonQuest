@@ -141,8 +141,6 @@ public class Utils {
                 }
                 Debug.info("  Saved " + (counter + 1) + " rows");
             }
-            // close connection
-            database.close();
             // save the config at the end
             accessor.saveConfig();
             return true;
@@ -279,7 +277,6 @@ public class Utils {
                     backpack.getString(key + ".amount"),
                 });
             }
-            con.close();
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {
