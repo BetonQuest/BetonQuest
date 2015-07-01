@@ -82,7 +82,6 @@ public class TameObjective extends Objective implements Listener {
                 break;
         }
         if (amount <= 0) {
-            HandlerList.unregisterAll(this);
             completeObjective();
         }
     }

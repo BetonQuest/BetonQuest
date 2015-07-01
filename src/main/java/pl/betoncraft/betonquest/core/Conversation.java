@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.core;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,6 +31,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -58,9 +60,11 @@ public class Conversation implements Listener {
     private final Player player;
     private final ConversationData data;
     private final Location location;
+    private final boolean tellraw;
+    private final List<String> blacklist;
+    
     private HashMap<Integer, String> current = new HashMap<>();
     private HashMap<Integer, String> hashes = new HashMap<>();
-    private boolean tellraw;
 
     /**
      * Constructor method, starts a new conversation between player and npc at
@@ -79,6 +83,8 @@ public class Conversation implements Listener {
                 .equalsIgnoreCase("true");
         this.data = BetonQuest.getInstance().getConversation(
                 packName + "." + conversationID);
+        this.blacklist = BetonQuest.getInstance().getConfig()
+                .getStringList("cmd_blacklist");
         
         // check if data is present
         if (data == null) {
@@ -89,7 +95,7 @@ public class Conversation implements Listener {
         
         // if the player has active conversation, terminate this one
         if (list.containsKey(playerID)) {
-            Debug.info("Player " + playerID +
+            Debug.info("Player " + PlayerConverter.getName(playerID) +
                     " is in conversation right now, returning.");
             return;
         }
@@ -357,6 +363,19 @@ public class Conversation implements Listener {
             HandlerList.unregisterAll(this);
             Bukkit.getServer().getPluginManager().callEvent(
                     new PlayerConversationEndEvent(player, this));
+        }
+    }
+    
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+        if (!event.getPlayer().equals(player)) {
+            return;
+        }
+        if (event.getMessage() == null) return;
+        String cmdName = event.getMessage().split(" ")[0].substring(1);
+        if (blacklist.contains(cmdName)) {
+            event.setCancelled(true);
+            player.sendMessage(Config.getMessage("command_blocked"));
         }
     }
 

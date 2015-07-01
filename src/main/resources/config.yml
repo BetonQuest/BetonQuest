@@ -1,20 +1,19 @@
-version: 'v14'
+version: v15
 mysql:
   host: ''
   port: ''
   user: ''
   pass: ''
   base: ''
-  prefix: 'betonquest_'
+  prefix: betonquest_
 language: en
-metrics: 'true'
 autoupdate: 'true'
-uuid: 'false'
 default_journal_slot: '-1'
 max_npc_distance: '5'
 tellraw: 'false'
 combat_delay: '10'
 notify_pullback: 'true'
+default_package: default
 journal_colors:
   date:
     day: '9'
@@ -22,8 +21,16 @@ journal_colors:
   line: '4'
   text: '0'
 sounds:
-  start: 'VILLAGER_HAGGLE'
-  end: 'VILLAGER_YES'
-  journal: 'BAT_TAKEOFF'
+  start: VILLAGER_HAGGLE
+  end: VILLAGER_YES
+  journal: BAT_TAKEOFF
   update: 'false'
   full: 'false'
+cmd_blacklist:
+- spawn
+hook:
+  citizens: 'true'
+  mythicmobs: 'true'
+  vault: 'true'
+  worldguard: 'true'
+  skript: 'true'

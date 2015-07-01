@@ -72,7 +72,6 @@ public class CraftingObjective extends Objective implements Listener {
                 && checkConditions()) {
                 this.amount = amount - event.getRecipe().getResult().getAmount();
                 if (amount <= 0) {
-                    HandlerList.unregisterAll(this);
                     completeObjective();
                 } else {
                 }

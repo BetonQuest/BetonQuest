@@ -57,8 +57,7 @@ public class LocationObjective extends Objective implements Listener {
         if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID))
             && event.getPlayer().getWorld().equals(location.getWorld())) {
             if (event.getTo().distanceSquared(location) <= distance*distance && super.checkConditions()) {
-                HandlerList.unregisterAll(this);
-                super.completeObjective();
+                completeObjective();
             }
         }
     }

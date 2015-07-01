@@ -180,7 +180,7 @@ public class BackpackDisplay implements Listener {
         // items and all others 45
         int pages = (backpack.size() < 45 ? 1 : (backpack.size() + 1 % 45 == 0 ? (int) (backpack
                 .size() + 1) / 45 : (int) Math.floor((backpack.size() + 1) / 45) + 1));
-        Debug.info("Generating backpack for " + playerID + ", page " + page);
+        Debug.info("Generating backpack for " + PlayerConverter.getName(playerID) + ", page " + page);
         // prepare the inventory
         inv = Bukkit.createInventory(null, 54, Config.getMessage("backpack_title") + (pages == 1 ? "" : " ("
                 + (page + 1) + "/" + pages + ")"));
@@ -266,7 +266,7 @@ public class BackpackDisplay implements Listener {
             if (event.getRawSlot() < 0) {
                 return;
             }
-            Debug.info("Player " + playerID + " clicked in backpack");
+            Debug.info("Player " + PlayerConverter.getName(playerID) + " clicked in backpack");
             if (page == -1) {
                 String address = map.get(event.getRawSlot());
                 if (address == null) {
@@ -378,7 +378,7 @@ public class BackpackDisplay implements Listener {
     @EventHandler
     public void onInventoryClosing(InventoryCloseEvent event) {
         if (event.getPlayer().equals(player)) {
-            Debug.info("Player " + playerID + " closed his backpack, terminating");
+            Debug.info("Player " + PlayerConverter.getName(playerID) + " closed his backpack, terminating");
             HandlerList.unregisterAll(this);
         }
     }

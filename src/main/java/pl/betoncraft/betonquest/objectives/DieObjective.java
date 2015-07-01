@@ -78,7 +78,6 @@ public class DieObjective extends Objective implements Listener {
         if (event.getEntity() instanceof Player
             && ((Player) event.getEntity()).equals(PlayerConverter.getPlayer(playerID))
             && checkConditions()) {
-            HandlerList.unregisterAll(this);
             completeObjective();
         }
     }
@@ -103,9 +102,7 @@ public class DieObjective extends Objective implements Listener {
                 if (location != null) {
                     player.teleport(location);
                 }
-                HandlerList.unregisterAll(this);
                 new BukkitRunnable() {
-
                     @Override
                     public void run() {
                         player.setFireTicks(0);

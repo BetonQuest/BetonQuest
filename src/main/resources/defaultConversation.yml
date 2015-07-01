@@ -1,7 +1,7 @@
 quester: 'Innkeeper'
 unknown: 'I''m sorry, I didn''t understand. Can you repeat?'
 first: 'start,start_wood_started,start_wood_completed'
-stop: 'true'
+stop: 'false'
 NPC_options:
   'start':
     text: 'Welcome to my inn %player%! What can I do for you?'

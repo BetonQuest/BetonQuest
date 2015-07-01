@@ -142,7 +142,7 @@ public class DatabaseHandler {
             if (Debug.debugging()) {
                 Debug.info("There are " + objectives.size() + " objectives, " + tags.size()
                     + " tags, " + points.size() + " points, " + entries.size() + " journal entries"
-                    + " and " + backpack.size() + " items loaded for player " + playerID);
+                    + " and " + backpack.size() + " items loaded for player " + PlayerConverter.getName(playerID));
             }
 
             // generate journal
@@ -235,7 +235,7 @@ public class DatabaseHandler {
         Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
             + journal.getPointers().size() + " journal entries and " + backpack.size()
-            + " items for player " + playerID);
+            + " items for player " + PlayerConverter.getName(playerID));
     }
     
     /**
@@ -243,6 +243,10 @@ public class DatabaseHandler {
      * use {@link #saveData() saveData} for that.
      */
     public void removeData() {
+        // unregister objectives
+        for (Objective objective : activeObjectives) {
+            objective.delete();
+        }
         // clear all lists
         objectives.clear();
         activeObjectives.clear();
@@ -250,9 +254,6 @@ public class DatabaseHandler {
         points.clear();
         journal.clear();
         backpack.clear();
-        for (Objective objective : activeObjectives) {
-            objective.delete();
-        }
     }
 
     /**
@@ -296,6 +297,9 @@ public class DatabaseHandler {
      * Purges all player's data from the database and from this handler.
      */
     public void purgePlayer() {
+        for (Objective obj : activeObjectives) {
+            obj.delete();
+        }
         // clear all lists
         activeObjectives.clear();
         tags.clear();
@@ -469,7 +473,8 @@ public class DatabaseHandler {
                 newItem.setAmount(amount);
                 amount = 0;
             }
-            Debug.info("    Adding item of type " + newItem.getType() + ", amount left to ad is " + amount);
+            Debug.info("    Adding item of type " + newItem.getType()
+                    + ", amount left to ad is " + amount);
             backpack.add(newItem);
         }
     }
@@ -480,7 +485,7 @@ public class DatabaseHandler {
      * @param name
      */
     public void cancelQuest(String name) {
-        Debug.info("Canceling the quest " + name + " for player " + playerID);
+        Debug.info("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
         // get the instruction
         String[] parts = name.split("\\.");
         String packName = parts[0];

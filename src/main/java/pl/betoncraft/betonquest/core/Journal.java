@@ -87,7 +87,7 @@ public class Journal {
      */
     public void addPointer(Pointer pointer) {
         Debug.info("Adding new pointer \"" + pointer.getPointer() + "\" / " + pointer
-                .getTimestamp() + " to journal for player " + playerID);
+                .getTimestamp() + " to journal for player " + PlayerConverter.getName(playerID));
         pointers.add(pointer);
         generateTexts();
     }
@@ -108,8 +108,12 @@ public class Journal {
         texts.clear();
         for (Pointer pointer : pointers) {
             String date = new SimpleDateFormat(Config.getString("messages.global.date_format")).format(pointer.getTimestamp());
-            String day = "§" + Config.getString("config.journal_colors.date.day") + date.split(" ")[0];
-            String hour = "§" + Config.getString("config.journal_colors.date.hour") + date.split(" ")[1];
+            String[] dateParts = date.split(" ");
+            String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
+            String hour = "";
+            if (dateParts.length > 1) {
+                hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
+            }
             String[] parts = pointer.getPointer().split("\\.");
             String packName = parts[0];
             ConfigPackage pack = Config.getPackage(packName);

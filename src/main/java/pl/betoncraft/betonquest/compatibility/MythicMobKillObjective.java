@@ -66,13 +66,12 @@ public class MythicMobKillObjective extends Objective implements Listener {
         }
         if (amount <= 0) {
             completeObjective();
-            HandlerList.unregisterAll(this);
         }
     }
 
     @Override
     public String getInstruction() {
-        return "mmobkill " + name + " amount:" + amount + " " + events + " " + conditions + " tag:"
+        return "mmobkill " + name + " amount:" + amount + " " + events + " " + conditions + " label:"
             + tag;
     }
 

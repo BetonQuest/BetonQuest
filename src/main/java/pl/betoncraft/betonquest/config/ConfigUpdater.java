@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v14";
+    private final String destination = "v15";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -172,6 +172,9 @@ public class ConfigUpdater {
         if (version == null || version.equals(destination))
             return;
         try {
+            // reload existing configuration
+            new Config();
+            config = instance.getConfig();
             // call the right updating method
             Method method = this.getClass().getDeclaredMethod("update_from_" + version);
             method.setAccessible(true);
@@ -187,11 +190,34 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v14() {
+        try {
+            if (config.getString("uuid").equals("false")) {
+                convertNamesToUUID();
+            }
+            config.set("default_package", "default");
+            config.set("cmd_blacklist", new String[]{"spawn"});
+            config.set("uuid", null);
+            config.set("metrics", null);
+            config.set("hook.citizens", "true");
+            config.set("hook.mythicmobs", "true");
+            config.set("hook.vault", "true");
+            config.set("hook.worldguard", "true");
+            config.set("hook.skript", "true");
+            Debug.broadcast("Added default_package, hook and cmd_blacklist"
+                    + " options to main config, removed metrics and uuid!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        config.set("version", "v15");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v13() {
         try {
             Debug.info("Removing empty lines in conversation files");
-            new Config();
-            config = instance.getConfig();
             for (String packName : Config.getPackageNames()) {
                 Debug.info("  Package " + packName);
                 ConfigPackage pack = Config.getPackage(packName);

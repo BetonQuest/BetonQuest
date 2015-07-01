@@ -77,7 +77,6 @@ public class BlockObjective extends Objective implements Listener {
             && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
             currentAmount++;
             if (currentAmount == neededAmount) {
-                HandlerList.unregisterAll(this);
                 completeObjective();
             } else if (notify) {
                 Player player = PlayerConverter.getPlayer(playerID);
@@ -101,7 +100,6 @@ public class BlockObjective extends Objective implements Listener {
             && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
             currentAmount--;
             if (currentAmount == neededAmount) {
-                HandlerList.unregisterAll(this);
                 completeObjective();
             } else if (notify) {
                 Player player = PlayerConverter.getPlayer(playerID);

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -89,7 +90,7 @@ public class GlobalLocations extends BukkitRunnable {
             return;
         }
         // loop all online players
-        Player[] players = Bukkit.getOnlinePlayers();
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         for (Player player : players) {
             // for each player loop all available locations
             locations: for (GlobalLocation location : finalLocations) {

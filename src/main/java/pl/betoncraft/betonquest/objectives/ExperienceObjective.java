@@ -59,7 +59,6 @@ public class ExperienceObjective extends Objective implements Listener {
             return;
         }
         if (event.getNewLevel() >= level && checkConditions()) {
-            HandlerList.unregisterAll(this);
             completeObjective();
         }
     }

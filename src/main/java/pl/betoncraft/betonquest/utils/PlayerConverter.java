@@ -22,8 +22,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import pl.betoncraft.betonquest.BetonQuest;
-
 /**
  * Converts playerIDs to Player objects and back to playerIDs.
  * 
@@ -31,23 +29,6 @@ import pl.betoncraft.betonquest.BetonQuest;
  */
 @SuppressWarnings("deprecation")
 public class PlayerConverter {
-
-    private static PlayerConversionType type;
-
-    static {
-        String uuid = BetonQuest.getInstance().getConfig().getString("uuid");
-        if (uuid != null && uuid.equals("true")) {
-            type = PlayerConversionType.UUID;
-            BetonQuest.getInstance().getLogger().info("Using UUID!");
-        } else {
-            type = PlayerConversionType.NAME;
-            BetonQuest.getInstance().getLogger().info("Using Names!");
-        }
-    }
-
-    public enum PlayerConversionType {
-        UUID, NAME
-    }
 
     /**
      * Returns playerID of the passed Player.
@@ -57,13 +38,7 @@ public class PlayerConverter {
      * @return playerID of the player
      */
     public static String getID(Player player) {
-        if (type == PlayerConversionType.NAME) {
-            return player.getName();
-        } else if (type == PlayerConversionType.UUID) {
-            return player.getUniqueId().toString();
-        } else {
-            return null;
-        }
+        return player.getUniqueId().toString();
     }
 
     /**
@@ -74,13 +49,7 @@ public class PlayerConverter {
      * @return playerID of the player
      */
     public static String getID(String name) {
-        if (type == PlayerConversionType.NAME) {
-            return name;
-        } else if (type == PlayerConversionType.UUID) {
-            return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
-        } else {
-            return null;
-        }
+        return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
     }
 
     /**
@@ -91,32 +60,11 @@ public class PlayerConverter {
      * @return the Player object
      */
     public static Player getPlayer(String ID) {
-        if (type == PlayerConversionType.NAME) {
-            return Bukkit.getPlayer(ID);
-        } else if (type == PlayerConversionType.UUID) {
-            return Bukkit.getPlayer(UUID.fromString(ID));
-        } else {
-            return null;
-        }
+        return Bukkit.getPlayer(UUID.fromString(ID));
     }
     
     public static String getName(String playerID) {
-        if (type == PlayerConversionType.NAME) {
-            return playerID;
-        } else if (type == PlayerConversionType.UUID) {
-            return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Returns which conversion type is being used.
-     * 
-     * @return PlayerConversionType type of the conversion
-     */
-    public static PlayerConversionType getType() {
-        return type;
+        return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
     }
 
 }

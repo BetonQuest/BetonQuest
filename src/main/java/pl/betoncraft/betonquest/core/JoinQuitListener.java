@@ -33,7 +33,6 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.PlayerConverter.PlayerConversionType;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -57,16 +56,12 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
         // playerID is different when using UUID
-        String playerID;
-        if (PlayerConverter.getType() == PlayerConversionType.UUID) {
-            playerID = event.getUniqueId().toString();
-        } else {
-            playerID = event.getName();
-        }
+        String playerID = event.getUniqueId().toString();
         // kick the player if his data is already loaded
         BetonQuest plugin = BetonQuest.getInstance();
         if (plugin.getDBHandler(playerID) != null) {
             event.setLoginResult(Result.KICK_OTHER);
+            event.setKickMessage("Error while logging in, please try again.");
             return;
         }
         plugin.putDBHandler(playerID, new DatabaseHandler(playerID));
@@ -82,7 +77,7 @@ public class JoinQuitListener implements Listener {
         if (dbHandler == null) {
             dbHandler = new DatabaseHandler(playerID);
             BetonQuest.getInstance().putDBHandler(playerID, dbHandler);
-            Debug.error("Failed to load data for player " + playerID + ", forcing.");
+            Debug.error("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }
         dbHandler.startObjectives();
         // display changelog message to the admins

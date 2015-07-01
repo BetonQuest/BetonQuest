@@ -21,6 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Superclass for all objectives. You need to extend it in order to create new
@@ -96,11 +97,11 @@ public abstract class Objective {
     /**
      * This method fires events for the objective and removes it from player's
      * list of active objectives. Use it when you detect that the objective has
-     * been completed. Remember to unregister all Listeners you registered!
+     * been completed. It deletes the objective using delete() method.
      */
     protected final void completeObjective() {
         Debug.info("Objective \"" + tag + "\" has been completed for player "
-        	+ playerID + ", firing final events.");
+        	+ PlayerConverter.getName(playerID) + ", firing final events.");
         // split instructions
         String[] parts = instructions.split(" ");
         String rawEvents = null;
@@ -131,9 +132,10 @@ public abstract class Objective {
             }.runTask(BetonQuest.getInstance());
         }
         // remove the objective from player's list
-        Debug.info("Firing events in objective \"" + tag + "\" for player " + playerID
+        Debug.info("Firing events in objective \"" + tag + "\" for player " + PlayerConverter.getName(playerID)
             + " finished");
         BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(tag);
+        delete();
     }
 
     /**
@@ -145,7 +147,7 @@ public abstract class Objective {
      */
     protected final boolean checkConditions() {
         Debug.info("Condition check in \"" + tag + "\" objective for player "
-                + playerID);
+                + PlayerConverter.getName(playerID));
         // split instructions
         String[] parts = instructions.split(" ");
         // find part with conditions

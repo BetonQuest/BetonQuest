@@ -46,7 +46,6 @@ public class DelayObjective extends Objective {
             @Override
             public void run() {
                 if (new Date().getTime() >= finalStamp && checkConditions()) {
-                    this.cancel();
                     completeObjective();
                 }
             }

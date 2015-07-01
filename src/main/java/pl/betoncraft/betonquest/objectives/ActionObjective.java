@@ -81,14 +81,12 @@ public class ActionObjective extends Objective implements Listener {
                     if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
                             .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
                         completeObjective();
-                        HandlerList.unregisterAll(this);
                     }
                     break;
                 case "left":
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction()
                             .equals(Action.LEFT_CLICK_BLOCK)) && checkConditions()) {
                         completeObjective();
-                        HandlerList.unregisterAll(this);
                     }
                     break;
                 default:
@@ -97,7 +95,6 @@ public class ActionObjective extends Objective implements Listener {
                         || event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
                             .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
                         completeObjective();
-                        HandlerList.unregisterAll(this);
                     }
                     break;
             }
@@ -123,7 +120,6 @@ public class ActionObjective extends Objective implements Listener {
                 && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range)
                 && checkConditions()) {
                 completeObjective();
-                HandlerList.unregisterAll(this);
             }
         }
     }

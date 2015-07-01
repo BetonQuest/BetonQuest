@@ -72,6 +72,11 @@ public class MobKillObjective extends Objective implements Listener {
                 .getCustomName().equals(name.replaceAll("_", " ")))) {
             return;
         }
+        if (event.getEntity() == null
+                || event.getEntity().getLastDamageCause() == null
+                || event.getEntity().getLastDamageCause().getCause() == null) {
+            return;
+        }
         if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
             EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getEntity()
                     .getLastDamageCause();
@@ -80,7 +85,6 @@ public class MobKillObjective extends Objective implements Listener {
                     .equals(mobType) && checkConditions()) {
                 amount--;
                 if (amount == 0) {
-                    HandlerList.unregisterAll(this);
                     completeObjective();
                 } else if (notify) {
                     Player player = PlayerConverter.getPlayer(playerID);
@@ -96,7 +100,6 @@ public class MobKillObjective extends Objective implements Listener {
                 && event.getEntity().getType().equals(mobType) && checkConditions()) {
                 amount--;
                 if (amount == 0) {
-                    HandlerList.unregisterAll(this);
                     completeObjective();
                 } else if (notify) {
                     Player player = PlayerConverter.getPlayer(playerID);

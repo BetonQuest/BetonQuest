@@ -64,7 +64,6 @@ public class NPCKillObjective extends Objective implements Listener {
         }
         if (amount <= 0) {
             completeObjective();
-            HandlerList.unregisterAll(this);
         }
     }
 

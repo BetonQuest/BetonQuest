@@ -149,7 +149,7 @@ public class QuestCommand implements CommandExecutor {
                 case "journals":
                 case "journal":
                 case "j":
-                    Debug.info("MySQL connection may be required, continuing in async thread");
+                    Debug.info("Loading data asynchronously");
                     final CommandSender finalSender4 = sender;
                     final String[] finalArgs4 = args;
                     new BukkitRunnable() {
@@ -177,7 +177,7 @@ public class QuestCommand implements CommandExecutor {
                     break;
                 case "backup":
                     // do a full plugin backup
-                    if (sender instanceof Player || Bukkit.getOnlinePlayers().length > 0) {
+                    if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
                         sender.sendMessage(Config.getMessage("offline"));
                         break;
                     }
@@ -497,14 +497,22 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(Config.getMessage("specify_item"));
             return;
         }
+        String itemID = args[1];
+        String pack;
+        String name;
+        if (itemID.contains(".")) {
+            String[] parts = itemID.split("\\.");
+            pack = parts[0];
+            name = parts[1];
+        } else {
+            pack = Config.getString("config.default_package");
+            name = itemID;
+        }
         if (!args[1].contains(".")) {
             Debug.info("Cannot continue, package must be specified");
             sender.sendMessage(Config.getMessage("specify_package"));
             return;
         }
-        String[] parts = args[1].split("\\.");
-        String pack = parts[0];
-        String itemName = parts[1];
         Player player = (Player) sender;
         ItemStack item = player.getItemInHand();
         // if item is air then there is nothing to add to items.yml
@@ -524,7 +532,7 @@ public class QuestCommand implements CommandExecutor {
         String instructions = Utils.itemToString(item);
         // save it in items.yml
         Debug.info("Saving item to configuration as " + args[1]);
-        config.getConfig().set(itemName, instructions.trim());
+        config.getConfig().set(name, instructions.trim());
         config.saveConfig();
         // done
         sender.sendMessage(Config.getMessage("item_created").replace("%item%", args[1]));
@@ -541,15 +549,18 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(Config.getMessage("specify_player"));
             return;
         }
-        if (!args[2].contains(".")) {
-            Debug.info("Cannot continue, package must be specified");
-            sender.sendMessage(Config.getMessage("specify_package"));
-            return;
-        }
         String eventID = args[2];
-        String[] parts = eventID.split("\\.");
-        String pack = parts[0];
-        String name = parts[1];
+        String pack;
+        String name;
+        if (eventID.contains(".")) {
+            String[] parts = eventID.split("\\.");
+            pack = parts[0];
+            name = parts[1];
+        } else {
+            pack = Config.getString("config.default_package");
+            name = eventID;
+            eventID = pack + "." + name;
+        }
         ConfigPackage configPack = Config.getPackage(pack);
         if (configPack == null) {
             Debug.info("Cannot continue, package does not exist");
@@ -585,16 +596,19 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(Config.getMessage("specify_condition"));
             return;
         }
-        String conditionID = args[2];
+        String conditionID = args[2].replace("!", "");
         boolean inverted = args[2].contains("!");
-        if (!conditionID.contains(".")) {
-            Debug.info("Cannot continue, package must be specified");
-            sender.sendMessage(Config.getMessage("specify_package"));
-            return;
+        String pack;
+        String name;
+        if (conditionID.contains(".")) {
+            String[] parts = conditionID.split("\\.");
+            pack = parts[0];
+            name = parts[1];
+        } else {
+            pack = Config.getString("config.default_package");
+            name = conditionID;
+            conditionID = pack + "." + name;
         }
-        String[] parts = conditionID.replace("!", "").split("\\.");
-        String pack = parts[0];
-        String name = parts[1];
         ConfigPackage configPack = Config.getPackage(pack);
         if (configPack == null) {
             Debug.info("Cannot continue, package does not exist");
@@ -652,7 +666,7 @@ public class QuestCommand implements CommandExecutor {
             case "add":
             case "a":
                 // add the point
-                Debug.info("Adding tag " + args[3] + " for player " + playerID);
+                Debug.info("Adding tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
                 dbHandler.addTag(args[3]);
                 if (!isOnline) {
                     dbHandler.saveData();
@@ -668,7 +682,7 @@ public class QuestCommand implements CommandExecutor {
                 // remove the point (this is unnecessary as adding negative
                 // amounts
                 // subtracts points, but for the sake of users leave it be)
-                Debug.info("Removing tag " + args[3] + " for player " + playerID);
+                Debug.info("Removing tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
                 dbHandler.removeTag(args[3]);
                 if (!isOnline) {
                     dbHandler.saveData();
@@ -744,7 +758,7 @@ public class QuestCommand implements CommandExecutor {
             case "add":
             case "a":
                 // get the instruction
-                Debug.info("Adding new objective for player " + playerID);
+                Debug.info("Adding new objective for player " + PlayerConverter.getName(playerID));
                 StringBuilder instruction = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
                     instruction.append(args[i] + " ");
@@ -766,7 +780,7 @@ public class QuestCommand implements CommandExecutor {
             case "r":
             case "d":
                 // remove the objective
-                Debug.info("Deleting objective with tag " + args[3] + " for player " + playerID);
+                Debug.info("Deleting objective with tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
                 dbHandler.deleteObjective(args[3]);
                 if (!isOnline) {
                     // if the player is offline then save the data
@@ -804,7 +818,7 @@ public class QuestCommand implements CommandExecutor {
         // update journals for every online player
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);
-            Debug.info("Updating journal for player " + playerID);
+            Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
             Journal journal = instance.getDBHandler(playerID).getJournal();
             journal.generateTexts();
             journal.updateJournal();

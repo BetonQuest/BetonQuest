@@ -41,7 +41,7 @@ Compiling the plugin
 --------------------
 
 You need to have JDK for version 1.7 or above and Maven installed. Download
-BetonQuest source code to some directory and issue command `mvn package`
+BetonQuest source code to some directory and issue command `mvn install`
 inside it. The .jar package should appear in _target_ directory.
 
 License

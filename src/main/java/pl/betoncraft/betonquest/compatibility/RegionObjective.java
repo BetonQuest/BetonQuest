@@ -18,9 +18,14 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 
-import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -30,36 +35,61 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 /**
- * Checks if the player is in specified region
+ * Requires the player to enter the WorldGuard region
  * 
  * @author Jakub Sapalski
  */
-public class RegionCondition extends Condition {
+public class RegionObjective extends Objective implements Listener {
 
     private final String name;
     private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
             Bukkit.getPluginManager().getPlugin("WorldGuard");
     
-    public RegionCondition(String packName, String instructions)
+    /**
+     * @param playerID
+     * @param instructions
+     * @throws InstructionParseException 
+     */
+    public RegionObjective(String playerID, String instructions)
             throws InstructionParseException {
-        super(packName, instructions);
+        super(playerID, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
         name = parts[1];
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+    
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (!PlayerConverter.getID(event.getPlayer()).equals(playerID)) {
+            return;
+        }
+        Location loc = event.getTo();
+        RegionManager manager = worldGuard.getRegionManager(loc.getWorld());
+        ProtectedRegion region = manager.getRegion(name);
+        ApplicableRegionSet set = manager.getApplicableRegions(loc);
+        for (ProtectedRegion compare : set) {
+            if (compare.equals(region)) {
+                if (checkConditions()) {
+                    completeObjective();
+                } else {
+                    return;
+                }
+            }
+        }
+        
     }
 
     @Override
-    public boolean check(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) return true;
-        }
-        return false;
+    public void delete() {
+        HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getInstruction() {
+        return instructions;
     }
 
 }

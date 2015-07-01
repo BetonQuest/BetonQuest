@@ -266,9 +266,6 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize compatibility with other plugins
         new Compatibility();
-
-        // initialize PlayerConverter
-        PlayerConverter.getType();
         
         // Load all events and conditions
         loadData();
@@ -300,20 +297,19 @@ public final class BetonQuest extends JavaPlugin {
         };
         saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
 
-        // metrics!
-        if (getConfig().getString("metrics").equalsIgnoreCase("true")) {
-            try {
-                Metrics metrics = new Metrics(this);
-                metrics.start();
+        // metrics
+        try {
+            Metrics metrics = new Metrics(this);
+            if (metrics.start()) {
                 Debug.broadcast("Metrics enabled!");
-            } catch (IOException e) {
-                Debug.broadcast("Metrics faild to enable!");
+            } else {
+                Debug.broadcast("Metrics disabled!");
             }
-        } else {
-            Debug.broadcast("Metrics are not used!");
+        } catch (IOException e) {
+            Debug.broadcast("Metrics faild to enable!");
         }
 
-        // updater!
+        // updater
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
             Debug.broadcast("AutoUpdater enabled!");
         } else {
@@ -488,7 +484,7 @@ public final class BetonQuest extends JavaPlugin {
      *            DatabaseHandler object to store
      */
     public void putDBHandler(String playerID, DatabaseHandler handler) {
-        Debug.info("Inserting data for " + playerID);
+        Debug.info("Inserting data for " + PlayerConverter.getName(playerID));
         dbHandlers.put(playerID, handler);
     }
 
@@ -588,7 +584,7 @@ public final class BetonQuest extends JavaPlugin {
         boolean outcome = condition.isMet(playerID);
         boolean isMet = (outcome && !inverted) || (!outcome && inverted);
         Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition "
-                + conditionID + " for player " + playerID);
+                + conditionID + " for player " + PlayerConverter.getName(playerID));
         return isMet;
     }
 
@@ -610,6 +606,7 @@ public final class BetonQuest extends JavaPlugin {
         QuestEvent event = events.get(eventID);
         if (event == null) {
             Debug.error("Event " + eventID + " is not defined");
+            return;
         }
         // fire the event
         event.fire(playerID);
@@ -640,7 +637,7 @@ public final class BetonQuest extends JavaPlugin {
         }
         // the label is required, log an error if it's not supplied
         if (tag == null) {
-            Debug.error("Label was not found in an objective, it's required. Player: " + playerID
+            Debug.error("Label was not found in an objective, it's required. Player: " + PlayerConverter.getName(playerID)
                 + ", instruction: " + instruction);
             return;
         }
@@ -667,7 +664,7 @@ public final class BetonQuest extends JavaPlugin {
                     .newInstance(playerID, instruction);
             getInstance().getDBHandler(playerID).addObjective(objInstance);
             Debug.info("Created new objective from instruction \"" + instruction + "\" with \""
-                + tag + "\" tag for player " + playerID);
+                + tag + "\" tag for player " + PlayerConverter.getName(playerID));
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 Debug.error("Error in " + tag + " objective: " + e.getCause().getMessage());

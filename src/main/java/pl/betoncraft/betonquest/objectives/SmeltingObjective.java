@@ -33,24 +33,15 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Requires the player to smelt some amount of items
  * 
- */
-
-/**
- * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class SmeltingObjective extends Objective implements Listener {
 
     private Material material;
     private int amount;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
     public SmeltingObjective(String playerID, String instructions) {
         super(playerID, instructions);
         material = Material.matchMaterial(instructions.split(" ")[1]);
@@ -65,7 +56,6 @@ public class SmeltingObjective extends Objective implements Listener {
             && event.getItemType().equals(material) && checkConditions()) {
             amount = amount - event.getItemAmount();
             if (amount <= 0) {
-                HandlerList.unregisterAll(this);
                 completeObjective();
             }
         }

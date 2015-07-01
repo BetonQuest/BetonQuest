@@ -31,8 +31,9 @@ import pl.betoncraft.betonquest.compatibility.BQEventSkript.CustomEventForSkript
 import ch.njol.skript.Skript;
 
 /**
- * @author co0sh
- *
+ * Compatibility with other plugins
+ * 
+ * @author Jakub Sapalski
  */
 public class Compatibility {
 
@@ -45,23 +46,29 @@ public class Compatibility {
     public Compatibility() {
 
         // hook into MythicMobs
-        if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")
+                && instance.getConfig().getString("hook.mythicmobs")
+                .equalsIgnoreCase("true")) {
             instance.registerObjectives("mmobkill", MythicMobKillObjective.class);
             instance.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
             hooked.add("MythicMobs");
         }
 
         // hook into Citizens
-        if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Citizens")
+                && instance.getConfig().getString("hook.citizens")
+                .equalsIgnoreCase("true")) {
             new CitizensListener();
+            new CitizensWalkingListener();
             instance.registerObjectives("npckill", NPCKillObjective.class);
             instance.registerObjectives("npcinteract", NPCInteractObjective.class);
-            new CitizensWalkingListener();
             hooked.add("Citizens");
         }
 
         // hook into Vault
-        if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault")
+                && instance.getConfig().getString("hook.vault")
+                .equalsIgnoreCase("true")) {
             RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer()
                     .getServicesManager()
                     .getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -80,7 +87,9 @@ public class Compatibility {
         }
         
         // hook into Skript
-        if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Skript")
+                && instance.getConfig().getString("hook.skript")
+                .equalsIgnoreCase("true")) {
             Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
             Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
             Skript.registerEvent("betonquest", SkriptEventBQ.class, CustomEventForSkript.class, "[betonquest] event %string%");
@@ -89,8 +98,11 @@ public class Compatibility {
         }
         
         // hook into WorldGuard
-        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")
+                && instance.getConfig().getString("hook.worldguard")
+                .equalsIgnoreCase("true")) {
             BetonQuest.getInstance().registerConditions("region", RegionCondition.class);
+            BetonQuest.getInstance().registerObjectives("region", RegionObjective.class);
             hooked.add("WorldGuard");
         }
 

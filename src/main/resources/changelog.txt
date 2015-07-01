@@ -1,10 +1,13 @@
 ﻿1.7 (dev)
 Notes:
   - This is a development version, use it with caution.
+  - BetonQuest no longer supports servers without UUID handling
   - There were a lot of changes since previous version, check carefully if everything is working
-  - You should report all bugs on <https://github.com/Co0sh/BetonQuest/issues>
   - Compatibility with plugins hooking INTO BetonQuest is broken, they need to update
+  - Dependencies updated: WorldGuard/WorldEdit 6.1, MythicMobs 2.0.4
+  - You should report all bugs on <https://github.com/Co0sh/BetonQuest/issues>
 Fixes:
+    * Objectives no longer mysteriously double events
     * Greatly improved performance in almost every aspect
     * Finally fixed issues with special characters on some servers
     * Fixed database saving/loading issues
@@ -17,6 +20,9 @@ Additions:
     * Optional message for take and give events
     * Optional message when advancing in "block" and "mobkill" objectives
     * New "empty" condition - amount of empty inventory slots
+    * New "region" objective - reach WorldGuard region
+    * Blacklist of commands which cannot be used while in conversation
+    * Option to disable compatibility with other plugins
 Changes:
     * The plugin now uses package system: configuration has been moved into "default" package
     * All conditions and events are loaded when the plugin starts/reloads
@@ -28,6 +34,7 @@ Changes:
     * /q command is now more beautiful
     * Removed unnecessary argument prefixes from conditions and events
     * Changed keyword "tag:" to "label:" in objectives, to distinguish it from regular tags
+    * Conversations no longer need those empty lines ('')
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

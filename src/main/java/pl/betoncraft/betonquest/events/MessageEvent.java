@@ -38,7 +38,7 @@ public class MessageEvent extends QuestEvent {
         super(packName, instructions);
         staticness = true;
         try {
-            message = super.instructions.substring(13);
+            message = super.instructions.substring(8);
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new InstructionParseException("Message not defined");
         }
