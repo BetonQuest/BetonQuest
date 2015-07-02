@@ -336,6 +336,9 @@ public final class BetonQuest extends JavaPlugin {
             for (String key : eConfig.getKeys(false)) {
         	String ID = packName + "." + key;
                 String instruction = pack.getString("events." + key);
+                if (instruction == null) {
+                    continue;
+                }
                 String[] parts = instruction.split(" ");
         	if (parts.length < 1) {
         	    Debug.error("Not enough arguments in event " + ID);
@@ -371,6 +374,9 @@ public final class BetonQuest extends JavaPlugin {
             for (String key : cConfig.getKeys(false)) {
         	String ID = packName + "." + key;
                 String instruction = pack.getString("conditions." + key);
+                if (instruction == null) {
+                    continue;
+                }
                 String[] parts = instruction.split(" ");
         	if (parts.length < 1) {
         	    Debug.error("Not enough arguments in condition " + ID);

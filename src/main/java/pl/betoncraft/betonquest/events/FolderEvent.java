@@ -94,6 +94,11 @@ public class FolderEvent extends QuestEvent {
                 int chosen = new Random().nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
             }
+        } else {
+            // add all events if it's not random
+            for (String event : events) {
+                chosenList.add(event);
+            }
         }
         new BukkitRunnable() {
             @Override

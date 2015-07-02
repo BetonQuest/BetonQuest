@@ -37,10 +37,22 @@ public class HeightCondition extends Condition {
         if (parts.length < 2) {
             throw new InstructionParseException("Height not defined");
         }
-        try {
-            height = Double.parseDouble(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse height");
+        if (parts[1].matches("\\-?\\d+\\.?\\d*")) {
+            try {
+                height = Double.parseDouble(parts[1]);
+            } catch (NumberFormatException e) {
+                throw new InstructionParseException("Could not parse height");
+            }
+        } else {
+            String[] locParts = parts[1].split(";");
+            if (locParts.length < 4) {
+                throw new InstructionParseException("Could not parse height");
+            }
+            try {
+                height = Double.parseDouble(locParts[1]);
+            } catch (NumberFormatException e) {
+                throw new InstructionParseException("Could not parse height");
+            }
         }
     }
 

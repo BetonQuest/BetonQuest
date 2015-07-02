@@ -82,6 +82,12 @@ public class ConversationData {
         } else {
             finalEvents = new String[]{};
         }
+        // attach package names
+        for (int i = 0; i < finalEvents.length; i++) {
+            if (!finalEvents[i].contains(".")) {
+                finalEvents[i] = pack.getName() + "." + finalEvents[i];
+            }
+        }
         // load all NPC options
         ConfigurationSection NPCSection = pack.getConversation(name)
                 .getConfig().getConfigurationSection("NPC_options");
@@ -205,12 +211,10 @@ public class ConversationData {
         
         public NPCOption(String name) throws InstructionParseException {
             this.name = name;
-            ConfigurationSection section = pack.getConversation(convName)
-                    .getConfig().getConfigurationSection("NPC_options." + name);
-            text = section.getString("text");
+            text = pack.getString("conversations." + convName + ".NPC_options." + name + ".text");
             if (text == null || text.equals("")) throw new InstructionParseException(String.format(
                     "Text not defined in NPC option %s", name));
-            String rawConditions = section.getString("conditions");
+            String rawConditions = pack.getString("conversations." + convName + ".NPC_options." + name + ".conditions");
             if (rawConditions != null && !rawConditions.equals("")) {
                 conditions = rawConditions.split(",");
             } else {
@@ -221,7 +225,7 @@ public class ConversationData {
                     conditions[i] = pack.getName() + "." + conditions[i];
                 }
             }
-            String rawEvents = section.getString("events");
+            String rawEvents = pack.getString("conversations." + convName + ".NPC_options." + name + ".events");
             if (rawEvents != null && !rawEvents.equals("")) {
                 events = rawEvents.split(",");
             } else {
@@ -232,7 +236,7 @@ public class ConversationData {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = section.getString("pointer");
+            String rawPointers = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointer");
             if (rawPointers != null && !rawPointers.equals("")) {
                 pointers = rawPointers.split(",");
             } else {
@@ -275,12 +279,10 @@ public class ConversationData {
         
         public PlayerOption(String name) throws InstructionParseException {
             this.name = name;
-            ConfigurationSection section = pack.getConversation(convName)
-                    .getConfig().getConfigurationSection("player_options." + name);
-            text = section.getString("text");
+            text = pack.getString("conversations." + convName + ".player_options." + name + ".text");
             if (text == null || text.equals("")) throw new InstructionParseException(String.format(
                     "Text not defined in player option %s", name));
-            String rawConditions = section.getString("conditions");
+            String rawConditions = pack.getString("conversations." + convName + ".player_options." + name + ".conditions");
             if (rawConditions != null && !rawConditions.equals("")) {
                 conditions = rawConditions.split(",");
             } else {
@@ -291,7 +293,7 @@ public class ConversationData {
                     conditions[i] = pack.getName() + "." + conditions[i];
                 }
             }
-            String rawEvents = section.getString("events");
+            String rawEvents = pack.getString("conversations." + convName + ".player_options." + name + ".events");
             if (rawEvents != null && !rawEvents.equals("")) {
                 events = rawEvents.split(",");
             } else {
@@ -302,7 +304,7 @@ public class ConversationData {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = section.getString("pointer");
+            String rawPointers = pack.getString("conversations." + convName + ".player_options." + name + ".pointer");
             if (rawPointers != null && !rawPointers.equals("")) {
                 pointers = rawPointers.split(",");
             } else {

@@ -195,7 +195,7 @@ public class ConfigPackage {
                         varName, name));
                 return null;
             } else if (varVal.matches(
-                    "^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+,\\-?\\d+,\\-?\\d+\\)$")) {
+                    "^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*\\)$")) {
                 // handle location variables
                 // parse the inner location
                 String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
