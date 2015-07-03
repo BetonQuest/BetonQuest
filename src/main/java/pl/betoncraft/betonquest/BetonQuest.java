@@ -615,6 +615,8 @@ public final class BetonQuest extends JavaPlugin {
             return;
         }
         // fire the event
+        Debug.info("Firing event " + eventID + " for "
+                + PlayerConverter.getName(playerID));
         event.fire(playerID);
     }
 

@@ -490,7 +490,7 @@ public class DatabaseHandler {
         String[] parts = name.split("\\.");
         String packName = parts[0];
         String cancelerName = parts[1];
-        String instruction = Config.getPackage(packName).getMain().getConfig().getString("cancel." + cancelerName);
+        String instruction = Config.getPackage(packName).getString("main.cancel." + cancelerName);
         String[] events     = null,
                  tags       = null,
                  objectives = null,

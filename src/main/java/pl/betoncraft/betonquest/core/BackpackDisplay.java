@@ -268,6 +268,7 @@ public class BackpackDisplay implements Listener {
             }
             Debug.info("Player " + PlayerConverter.getName(playerID) + " clicked in backpack");
             if (page == -1) {
+                // handle quest canceling
                 String address = map.get(event.getRawSlot());
                 if (address == null) {
                     return;

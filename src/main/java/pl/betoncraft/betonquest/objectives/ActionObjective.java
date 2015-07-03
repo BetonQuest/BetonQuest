@@ -39,9 +39,9 @@ public class ActionObjective extends Objective implements Listener {
     private String action;
     private Material type;
     private byte data = -1;
-    private String rawLoc;
     private Location loc = null;
-    double range = 0;
+    private double range = 0;
+    private boolean cancel = false;
 
     public ActionObjective(String playerID, String instructions) {
         super(playerID, instructions);
@@ -59,11 +59,13 @@ public class ActionObjective extends Objective implements Listener {
         }
         for (String part : parts) {
             if (part.contains("loc:")) {
-                rawLoc = part;
                 String[] coords = part.substring(4).split(";");
                 loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
                         Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
                 range = Double.parseDouble(coords[4]);
+            }
+            if (part.equalsIgnoreCase("cancel")) {
+                cancel = true;
             }
         }
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -80,12 +82,14 @@ public class ActionObjective extends Objective implements Listener {
                 case "right":
                     if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
                             .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+                        if (cancel) event.setCancelled(true);
                         completeObjective();
                     }
                     break;
                 case "left":
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction()
                             .equals(Action.LEFT_CLICK_BLOCK)) && checkConditions()) {
+                        if (cancel) event.setCancelled(true);
                         completeObjective();
                     }
                     break;
@@ -94,6 +98,7 @@ public class ActionObjective extends Objective implements Listener {
                         || event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                         || event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
                             .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+                        if (cancel) event.setCancelled(true);
                         completeObjective();
                     }
                     break;
@@ -119,6 +124,7 @@ public class ActionObjective extends Objective implements Listener {
                 && (data < 0 || event.getClickedBlock().getData() == data)
                 && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range)
                 && checkConditions()) {
+                if (cancel) event.setCancelled(true);
                 completeObjective();
             }
         }
@@ -126,8 +132,7 @@ public class ActionObjective extends Objective implements Listener {
 
     @Override
     public String getInstruction() {
-        return "action " + action + " " + type + ":" + data + " " + rawLoc + " " + conditions + " "
-            + events + " label:" + tag;
+        return instructions;
     }
 
     @Override

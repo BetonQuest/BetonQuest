@@ -1,4 +1,4 @@
-version: v15
+version: v16
 mysql:
   host: ''
   port: ''
@@ -14,6 +14,7 @@ tellraw: 'false'
 combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
+remove_items_after_respawn: true
 journal_colors:
   date:
     day: '9'

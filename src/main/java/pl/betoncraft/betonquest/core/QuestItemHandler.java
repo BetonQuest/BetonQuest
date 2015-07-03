@@ -34,11 +34,13 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -132,6 +134,7 @@ public class QuestItemHandler implements Listener {
             if (Journal.isJournal(stack)) {
                 litr.remove();
             }
+            // remove all quest items and add them to backpack
             if (Utils.isQuestItem(stack)) {
                 BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(event.getEntity()))
                         .addItem(stack.clone(), stack.getAmount());
@@ -142,6 +145,7 @@ public class QuestItemHandler implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRespawn(PlayerRespawnEvent event) {
+        if (Config.getString("config.remove_items_after_respawn").equals("false")) return;
         // some plugins block item dropping after death and add those
         // items after respawning, so the player doesn't loose his
         // inventory after death; this aims to force removing quest
@@ -176,6 +180,14 @@ public class QuestItemHandler implements Listener {
         // this prevents players from placing "quest item" blocks
         if (Utils.isQuestItem(event.getItemInHand())) {
             event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler
+    public void onItemBreak(PlayerItemBreakEvent event) {
+        // prevent quest items from breaking
+        if (Utils.isQuestItem(event.getBrokenItem())) {
+            event.getBrokenItem().setAmount(1);
         }
     }
 }

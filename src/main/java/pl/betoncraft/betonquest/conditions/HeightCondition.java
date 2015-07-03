@@ -58,7 +58,7 @@ public class HeightCondition extends Condition {
 
     @Override
     public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).getLocation().getY() <= height) {
+        if (PlayerConverter.getPlayer(playerID).getLocation().getY() < height) {
             return true;
         }
         return false;
