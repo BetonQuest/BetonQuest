@@ -21,6 +21,7 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
@@ -53,17 +54,20 @@ public class JoinQuitListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, instance);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
-        // playerID is different when using UUID
-        String playerID = event.getUniqueId().toString();
-        // kick the player if his data is already loaded
-        BetonQuest plugin = BetonQuest.getInstance();
-        if (plugin.getDBHandler(playerID) != null) {
-            event.setLoginResult(Result.KICK_OTHER);
-            event.setKickMessage("Error while logging in, please try again.");
+        // if player was kicked, don't load the data
+        if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
+        String playerID = event.getUniqueId().toString();
+        // if player is already on the server, don't let him in
+        if (PlayerConverter.getPlayer(playerID) != null) {
+            event.setLoginResult(Result.KICK_OTHER);
+            event.setKickMessage("You are already logged in!");
+            return;
+        }
+        BetonQuest plugin = BetonQuest.getInstance();
         plugin.putDBHandler(playerID, new DatabaseHandler(playerID));
     }
 

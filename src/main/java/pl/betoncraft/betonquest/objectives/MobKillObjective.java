@@ -31,98 +31,161 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Player has to kill specified amount of specified mobs.
+ * It can also require the player to kill specifically named mobs
+ * and notify them about the required amount.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class MobKillObjective extends Objective implements Listener {
 
-    private EntityType mobType;
-    private int amount;
-    private String name;
-    private boolean notify;
+    private final EntityType mobType;
+    private final int amount;
+    private final String name;
+    private final boolean notify;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public MobKillObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public MobKillObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = MobData.class;
         String[] parts = instructions.split(" ");
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
+        }
         mobType = EntityType.valueOf(parts[1]);
-        amount = Integer.valueOf(parts[2]);
+        if (mobType == null) {
+            throw new InstructionParseException("Unknown entity type: " + parts[1]);
+        }
+        try {
+            amount = Integer.valueOf(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse amount");
+        }
+        if (amount < 1) {
+            throw new InstructionParseException("Amount cannot be less than 1");
+        }
+        String tempName = null;
+        boolean tempNotify = false;
         for (String part : parts) {
-            if (part.contains("name:")) {
-                name = part.substring(5);
-            }
-            if (part.equalsIgnoreCase("notify")) {
-                notify = true;
+            if (part.startsWith("name:")) {
+                tempName = part.substring(5).replace("_", " ");
+            } else if (part.equalsIgnoreCase("notify")) {
+                tempNotify = true;
             }
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        name = tempName;
+        notify = tempNotify;
     }
 
     @EventHandler
     public void onEntityKill(EntityDeathEvent event) {
-        if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity()
-                .getCustomName().equals(name.replaceAll("_", " ")))) {
+        // check if the damage cause actually exists; if it does not,
+        // the whole checking is pointless
+        if (event.getEntity() == null || event.getEntity().getLastDamageCause()
+                == null || event.getEntity().getLastDamageCause().getCause()
+                == null) {
             return;
         }
-        if (event.getEntity() == null
-                || event.getEntity().getLastDamageCause() == null
-                || event.getEntity().getLastDamageCause().getCause() == null) {
+        // check if it's the right entity type
+        if (!event.getEntity().getType().equals(mobType)) {
             return;
         }
-        if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
-            EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getEntity()
-                    .getLastDamageCause();
-            if (damage.getDamager() instanceof Player && ((Player) damage.getDamager())
-                    .equals(PlayerConverter.getPlayer(playerID)) && damage.getEntity().getType()
-                    .equals(mobType) && checkConditions()) {
-                amount--;
-                if (amount == 0) {
-                    completeObjective();
-                } else if (notify) {
-                    Player player = PlayerConverter.getPlayer(playerID);
-                    player.sendMessage(Config.getMessage("mobs_to_kill")
-                            .replaceAll("%amount%", String.valueOf(amount)).replaceAll("&", "§"));
+        // if the entity should have a name and it does not match, return
+        if (name != null && (event.getEntity().getCustomName() == null ||
+                !event.getEntity().getCustomName().equals(name))) {
+            return;
+        }
+        // handle the normal attack
+        if (event.getEntity().getLastDamageCause().getCause()
+                .equals(DamageCause.ENTITY_ATTACK)) {
+            EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent)
+                    event.getEntity().getLastDamageCause();
+            // if the damager is player, check if he has this objective
+            if (damage.getDamager() instanceof Player) {
+                String playerID = PlayerConverter.getID((Player) damage
+                        .getDamager());
+                if (containsPlayer(playerID) && checkConditions(playerID)) {
+                    // the right mob was killed, handle data update
+                    MobData playerData = (MobData) dataMap.get(playerID);
+                    playerData.subtract();
+                    if (playerData.isZero()) {
+                        completeObjective(playerID);
+                    } else if (notify) {
+                        // send a notification
+                        Player player = PlayerConverter.getPlayer(playerID);
+                        player.sendMessage(Config.getMessage("mobs_to_kill")
+                                .replaceAll("%amount%", String.valueOf(amount))
+                                .replaceAll("&", "§"));
+                    }
                 }
             }
-        } else if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
-            Projectile projectile = (Projectile) ((EntityDamageByEntityEvent) event.getEntity()
-                    .getLastDamageCause()).getDamager();
-            if (projectile.getShooter() instanceof Player
-                && ((Player) projectile.getShooter()).equals(PlayerConverter.getPlayer(playerID))
-                && event.getEntity().getType().equals(mobType) && checkConditions()) {
-                amount--;
-                if (amount == 0) {
-                    completeObjective();
-                } else if (notify) {
-                    Player player = PlayerConverter.getPlayer(playerID);
-                    player.sendMessage(Config.getMessage("mobs_to_kill")
-                            .replaceAll("%amount%", String.valueOf(amount)));
+        // handle projectile attack
+        } else if (event.getEntity().getLastDamageCause().getCause()
+                .equals(DamageCause.PROJECTILE)) {
+            Projectile projectile = (Projectile) ((EntityDamageByEntityEvent)
+                    event.getEntity().getLastDamageCause()).getDamager();
+            // check if the shooter was a player
+            if (projectile.getShooter() instanceof Player) {
+                String playerID = PlayerConverter.getID((Player) projectile
+                        .getShooter());
+                // check if that player has this objective
+                if (containsPlayer(playerID) && checkConditions(playerID)) {
+                    // handle data update
+                    MobData playerData = (MobData) dataMap.get(playerID);
+                    playerData.subtract();
+                    if (playerData.isZero()) {
+                        completeObjective(playerID);
+                    } else if (notify) {
+                        // send a notification
+                        Player player = PlayerConverter.getPlayer(playerID);
+                        player.sendMessage(Config.getMessage("mobs_to_kill")
+                                .replaceAll("%amount%", String.valueOf(amount)));
+                    }
                 }
             }
         }
     }
-
+    
     @Override
-    public String getInstruction() {
-        String namePart = "";
-        if (name != null) {
-            namePart = " name:" + name + " ";
-        }
-        return "mobkill " + mobType.toString() + " " + amount + namePart + " " + conditions + " "
-            + events + " label:" + tag;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
     }
 
+    @Override
+    public String getDefaultDataInstruction() {
+        return Integer.toString(amount);
+    }
+
+    public static class MobData extends ObjectiveData {
+
+        private int amount;
+
+        public MobData(String instruction) {
+            super(instruction);
+            amount = Integer.parseInt(instruction);
+        }
+        
+        private void subtract() {
+            amount--;
+        }
+        
+        private boolean isZero() {
+            return amount <= 0;
+        }
+
+        @Override
+        public String toString() {
+            return Integer.toString(amount);
+        }
+        
+    }
 }

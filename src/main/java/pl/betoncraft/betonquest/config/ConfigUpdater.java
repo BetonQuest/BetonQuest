@@ -55,7 +55,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Updates configuration files to the newest version.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ConfigUpdater {
     
@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v16";
+    private final String destination = "v17";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -187,6 +187,196 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v16() {
+        try {
+            // move objectives from events.yml to objectives.yml
+            Debug.info("Moving objectives to objectives.yml");
+            for (String packName : Config.getPackageNames()) {
+                Debug.info("  Package " + packName);
+                ConfigPackage pack = Config.getPackage(packName);
+                ConfigAccessor events = pack.getEvents();
+                ConfigAccessor objectives = pack.getObjectives();
+                ConfigAccessor main = pack.getMain();
+                for (String event : events.getConfig().getKeys(false)) {
+                    // extract label and build the new instruction
+                    int i = 0; // counts unnamed objectives
+                    String instruction = events.getConfig().getString(event);
+                    if (instruction.startsWith("objective ")) {
+                        Debug.info("    Starting event " + event);
+                        String[] parts = instruction.substring(10).split(" ");
+                        StringBuilder string = new StringBuilder();
+                        String label = null;
+                        String conditions = "";
+                        for (String part : parts) {
+                            if (part.startsWith("label:")) {
+                                label = part.substring(6);
+                            } else if (part.startsWith("event_conditions:")) {
+                                conditions = part;
+                            } else if (parts[0].equalsIgnoreCase("delay") && 
+                                    part.startsWith("delay:")) {
+                                string.append(part.substring(6));
+                                string.append(' ');
+                            } else {
+                                string.append(part);
+                                string.append(' ');
+                            }
+                        }
+                        String newInstruction = string.toString().trim();
+                        // if label is not present, skip this one
+                        if (label == null) {
+                            Debug.info("      There is no label, generating one");
+                            label = "objective" + i;
+                            i++;
+                        }
+                        Debug.info("      Saving the objective as " + label
+                                + ", instruction: " + newInstruction);
+                        // save objective and generate label
+                        objectives.getConfig().set(label, newInstruction);
+                        events.getConfig().set(event, ("objective start "
+                                + label + " " + conditions).trim());
+                    } else if (instruction.startsWith("delete ")) {
+                        // update delete events
+                        Debug.info("    Delete event " + event);
+                        events.getConfig().set(event, "objective " + instruction);
+                    }
+                }
+                // rename event_conditions to conditions
+                for (String event : events.getConfig().getKeys(false)) {
+                    String instruction = events.getConfig().getString(event);
+                    events.getConfig().set(event, instruction
+                            .replace("event_conditions:", "conditions:"));
+                }
+                // update global locations
+                String raw = main.getConfig().getString("global_locations");
+                if (raw != null && !raw.equals("")) {
+                    StringBuilder string = new StringBuilder();
+                    String[] parts = raw.split(",");
+                    for (String event : parts) {
+                        String inst = events.getConfig().getString(event);
+                        if (inst == null) {
+                            continue;
+                        }
+                        String[] instParts = inst.split(" ");
+                        if (instParts.length > 2
+                                && inst.startsWith("objective start ")) {
+                            string.append(instParts[2] + ",");
+                        }
+                    }
+                    main.getConfig().set("global_locations", string.substring(0,
+                            string.length()-1));
+                }
+                events.saveConfig();
+                objectives.saveConfig();
+                main.saveConfig();
+            }
+            Debug.broadcast("Moved objectives to a separate file and renamed"
+                    + " 'event_conditions:' argument to 'conditions:'");
+            Debug.info("Updating the database");
+            Connection con = instance.getDB().getConnection();
+            String prefix = Config.getString("config.mysql.prefix");
+            // update database format
+            Debug.info("Updating the database format");
+            if (instance.isMySQLUsed()) {
+                con.prepareStatement("ALTER TABLE " + prefix +
+                        "objectives CREATE COLUMN objective VARCHAR(512) NOT"
+                        + " NULL AFTER playerID;")
+                        .executeUpdate();
+            } else {
+                con.prepareStatement("BEGIN TRANSACTION").executeUpdate();
+                con.prepareStatement("ALTER TABLE " + prefix +
+                        "objectives RENAME TO " + prefix + "objectives_old")
+                        .executeUpdate();
+                con.prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix +
+                        "objectives (id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + " playerID VARCHAR(256) NOT NULL, objective VARCHAR(512)"
+                        + " NOT NULL, instructions VARCHAR(2048) NOT NULL);")
+                        .executeUpdate();
+                con.prepareStatement("INSERT INTO " + prefix + "objectives"
+                        + " SELECT id, playerID, 'null', instructions"
+                        + " FROM " + prefix + "objectives_old")
+                        .executeUpdate();
+                con.prepareStatement("COMMIT").executeUpdate();
+            }
+            // update each entry
+            Debug.info("Updating entries");
+            ResultSet res = con.prepareStatement("SELECT * FROM " + prefix +
+                    "objectives").executeQuery();
+            while (res.next()) {
+                String oldInst = res.getString("instructions");
+                Debug.info("  Loaded instruction: " + oldInst);
+                String label = null;
+                String[] parts = oldInst.split(" ");
+                String newInst;
+                for (String part : parts) {
+                    if (part.startsWith("label:")) {
+                        label = part.substring(6);
+                        break;
+                    }
+                }
+                if (label == null) {
+                    Debug.info("    The objective without label, removing");
+                    PreparedStatement stmt = con.prepareStatement("DELETE FROM "
+                            + prefix + "objectives WHERE id = ?");
+                    stmt.setInt(1, res.getInt("id"));
+                    stmt.executeUpdate();
+                    continue;
+                }
+                // attack correct package in front of the label
+                for (String packName : Config.getPackageNames()) {
+                    ConfigPackage pack = Config.getPackage(packName);
+                    if (pack.getObjectives().getConfig().contains(label)) {
+                        label = packName + "." + label;
+                        break;
+                    }
+                }
+                try {
+                    switch (parts[0].toLowerCase()) {
+                        case "tame":
+                        case "block":
+                        case "smelt":
+                        case "craft":
+                        case "mobkill":
+                            newInst = parts[2];
+                            break;
+                        case "delay":
+                            newInst = parts[1].substring(6);
+                            break;
+                        case "npckill":
+                        case "mmobkill":
+                            newInst = parts[2].substring(7);
+                            break;
+                        default:
+                            newInst = "";
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Debug.info("    Could not read data from objective " + label
+                            + ", removing");
+                    PreparedStatement stmt = con.prepareStatement("DELETE FROM "
+                            + prefix + "objectives " + "WHERE id = ?");
+                    stmt.setInt(1, res.getInt("id"));
+                    stmt.executeUpdate();
+                    continue;
+                }
+                Debug.info("    Updating the " + label + " objective: '"
+                        + newInst + "'");
+                PreparedStatement stmt = con.prepareStatement("UPDATE "
+                        + prefix + "objectives SET objective=?, instructions=?"
+                        + " WHERE id = ?");
+                stmt.setString(1, label);
+                stmt.setString(2, newInst);
+                stmt.setInt(3, res.getInt("id"));
+                stmt.executeUpdate();
+            }
+            Debug.broadcast("Updated objective instruction strings in the database");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        config.set("version", "v17");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

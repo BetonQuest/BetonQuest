@@ -23,6 +23,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -33,52 +34,31 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ObjectiveEvent extends QuestEvent {
 
     private final String objective;
+    private final String action;
     
     public ObjectiveEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
-        persistent = true;
-        String tempObjective;
-        try {
-            tempObjective = instructions.trim().substring(10);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InstructionParseException(
-                    "Objective instruction not defined");
+        String[] parts = instructions.split(" ");
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        String[] parts = tempObjective.split(" ");
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            if (part.startsWith("events:")) {
-                builder.append("events:");
-                String[] events = part.substring(7).split(",");
-                for (String event : events) {
-                    if (!event.contains(".")) {
-                        builder.append(packName + "." + event);
-                    } else {
-                        builder.append(event);
-                    }
-                    builder.append(",");
-                }
-                builder.deleteCharAt(builder.length() - 1);
-            } else if (part.startsWith("conditions:")) {
-                builder.append("conditions:");
-                String[] conditions = part.substring(11).split(",");
-                for (String condition : conditions) {
-                    if (!condition.contains(".")) {
-                        builder.append(packName + "." + condition);
-                    } else {
-                        builder.append(condition);
-                    }
-                    builder.append(",");
-                }
-                builder.deleteCharAt(builder.length() - 1);
-            } else {
-                builder.append(part);
-            }
-            builder.append(' ');
+        action = parts[1];
+        if (!parts[2].contains(".")) {
+            objective = packName + "." + parts[2];
+        } else {
+            objective = parts[2];
         }
-        objective = builder.toString().trim();
-        
+        if (!action.equalsIgnoreCase("start")  &&
+            !action.equalsIgnoreCase("delete") &&
+            !action.equalsIgnoreCase("complete")) {
+            throw new InstructionParseException("Unknown action " + action);
+        }
+        if (action.equalsIgnoreCase("complete")) {
+            persistent = false;
+        } else {
+            persistent = true;
+        }
     }
 
     @Override
@@ -88,13 +68,27 @@ public class ObjectiveEvent extends QuestEvent {
                 @Override
                 public void run() {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-                    dbHandler.addRawObjective(objective);
+                    if (action.equals("start")) {
+                        dbHandler.addNewRawObjective(objective);
+                    } else if (action.equals("delete")) {
+                        dbHandler.getRawObjectives().remove(objective);
+                    } else {
+                        Debug.error("Cannot complete objective for offline player!");
+                    }
                     dbHandler.saveData();
                     dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            BetonQuest.objective(playerID, objective);
+            if (action.equalsIgnoreCase("start")) {
+                BetonQuest.newObjective(playerID, objective);
+            } else if (action.equalsIgnoreCase("complete")) {
+                BetonQuest.getInstance().getObjective(objective)
+                        .completeObjective(playerID);
+            } else {
+                BetonQuest.getInstance().getObjective(objective)
+                        .removePlayer(playerID);
+            }
         }
     }
 }

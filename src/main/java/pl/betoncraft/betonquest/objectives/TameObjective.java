@@ -28,72 +28,119 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * The player must tame specified amount of specified mobs
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class TameObjective extends Objective implements Listener {
 
-    public enum TamableMobs {
+    private enum TamableMobs {
         WOLF, OCELOT, HORSE;
     }
 
-    private TamableMobs type;
-    private int amount;
+    private final TamableMobs type;
+    private final int amount;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public TameObjective(String playerID, String instructions) {
-        super(playerID, instructions);
-        type = TamableMobs.valueOf(instructions.split(" ")[1]);
-        amount = Integer.parseInt(instructions.split(" ")[2]);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    public TameObjective(String packName, String label, String instructions)
+            throws InstructionParseException {
+        super(packName, label, instructions);
+        template = TameData.class;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        type = TamableMobs.valueOf(parts[1].toUpperCase());
+        if (type == null) {
+            throw new InstructionParseException("Unknown type: " + parts[1]);
+        }
+        try {
+            amount = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse amount");
+        }
+        if (amount < 1) {
+            throw new InstructionParseException("Amount cannot be less than 1");
+        }
     }
 
     @EventHandler
     public void onTaming(EntityTameEvent event) {
-        if (!((Player) event.getOwner()).equals(PlayerConverter.getPlayer(playerID))) {
-            return;
+        if (event.getOwner() instanceof Player) {
+            String playerID = PlayerConverter.getID((Player) event.getOwner());
+            if (!dataMap.containsKey(playerID)) {
+                return;
+            }
+            LivingEntity entity = event.getEntity();
+            TameData playerData = (TameData) dataMap.get(playerID);
+            switch (type) {
+                case WOLF:
+                    if (entity.getType().equals(EntityType.WOLF)
+                            && checkConditions(playerID)) {
+                        playerData.subtract();
+                    }
+                    break;
+                case OCELOT:
+                    if (entity.getType().equals(EntityType.OCELOT)
+                            && checkConditions(playerID)) {
+                        playerData.subtract();
+                    }
+                    break;
+                case HORSE:
+                    if (entity.getType().equals(EntityType.HORSE)
+                            && checkConditions(playerID)) {
+                        playerData.subtract();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (playerData.isZero()) {
+                completeObjective(playerID);
+            }
         }
-        LivingEntity entity = event.getEntity();
-        switch (type) {
-            case WOLF:
-                if (entity.getType().equals(EntityType.WOLF) && checkConditions()) {
-                    amount--;
-                }
-                break;
-            case OCELOT:
-                if (entity.getType().equals(EntityType.OCELOT) && checkConditions()) {
-                    amount--;
-                }
-                break;
-            case HORSE:
-                if (entity.getType().equals(EntityType.HORSE) && checkConditions()) {
-                    amount--;
-                }
-                break;
-            default:
-                break;
-        }
-        if (amount <= 0) {
-            completeObjective();
-        }
+    }
+    
+    @Override
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public String getInstruction() {
-        return "tame " + type + " " + amount + " " + conditions + " " + events + " label:" + tag;
-    }
-
-    @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return Integer.toString(amount);
+    }
+    
+    public static class TameData extends ObjectiveData {
+        
+        private int amount;
+
+        public TameData(String instruction) {
+            super(instruction);
+            amount = Integer.parseInt(instruction);
+        }
+
+        @Override
+        public String toString() {
+            return Integer.toString(amount);
+        }
+        
+        private void subtract() {
+            amount--;
+        }
+        
+        private boolean isZero() {
+            return amount <= 0;
+        }
+        
     }
 
 }

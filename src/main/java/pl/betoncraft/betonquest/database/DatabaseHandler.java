@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -68,11 +68,7 @@ public class DatabaseHandler {
      * Temporarily stores player's objective strings, ready to start by
      * startObjectives() method. They are deleted after starting.
      */
-    private List<String> objectives = new ArrayList<>();
-    /**
-     * Stores active Objectives' instances.
-     */
-    private List<Objective> activeObjectives = new ArrayList<>();
+    private HashMap<String, String> objectives = new HashMap<>();
     /**
      * Stores player's journal.
      */
@@ -107,7 +103,7 @@ public class DatabaseHandler {
                     new String[] { playerID });
             // put them into the list
             while (res1.next())
-                objectives.add(res1.getString("instructions"));
+                objectives.put(res1.getString("objective"), res1.getString("instructions"));
 
             // load tags
             ResultSet res2 = database.querySQL(QueryType.SELECT_TAGS, new String[] { playerID });
@@ -159,39 +155,10 @@ public class DatabaseHandler {
      * deleted afterwards.
      */
     public void startObjectives() {
-        for (String instruction : objectives) {
-            BetonQuest.objective(playerID, instruction);
+        for (String objective : objectives.keySet()) {
+            BetonQuest.resumeObjective(playerID, objective, objectives.get(objective));
         }
         objectives.clear();
-    }
-
-    /**
-     * Returns the list of objective strings in this handler
-     * 
-     * @return list of objective strings
-     */
-    public List<String> getRawObjectives() {
-        return objectives;
-    }
-
-    /**
-     * Adds an objective to the list.
-     * 
-     * @param objective
-     *            objective to add
-     */
-    public void addObjective(Objective objective) {
-        activeObjectives.add(objective);
-    }
-
-    /**
-     * Adds objective string to list of objective strings
-     * 
-     * @param instruction
-     *            instruction string to add
-     */
-    public void addRawObjective(String instruction) {
-        objectives.add(instruction);
     }
 
     /**
@@ -207,32 +174,33 @@ public class DatabaseHandler {
         con.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
         con.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
         // insert new data
-        for (String instruction : objectives) {
-            con.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, instruction });
+        for (String objective : new HashMap<>(objectives).keySet()) {
+            con.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objective, objectives.get(objective) });
         }
-        for (Objective objective : activeObjectives) {
+        ArrayList<Objective> objectivesList = getObjectives();
+        for (Objective objective : new ArrayList<>(objectivesList)) {
             con.updateSQL(UpdateType.ADD_OBJECTIVES,
-                    new String[] { playerID, objective.getInstruction() });
+                    new String[] { playerID, objective.getLabel(), objective.getData(playerID) });
         }
-        for (String tag : tags) {
+        for (String tag : new ArrayList<>(tags)) {
             con.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
         }
-        for (Point point : points) {
+        for (Point point : new ArrayList<>(points)) {
             con.updateSQL(UpdateType.ADD_POINTS, new String[] { playerID, point.getCategory(),
                 String.valueOf(point.getCount()) });
         }
-        for (Pointer pointer : journal.getPointers()) {
+        for (Pointer pointer : new ArrayList<>(journal.getPointers())) {
             con.updateSQL(UpdateType.ADD_JOURNAL,
                     new String[] { playerID, pointer.getPointer(),
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp())) });
         }
-        for (ItemStack itemStack : backpack) {
+        for (ItemStack itemStack : new ArrayList<>(backpack)) {
             String instruction = Utils.itemToString(itemStack);
             String amount = String.valueOf(itemStack.getAmount());
             con.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
         }
         // log debug message about saving
-        Debug.info("Saved " + (objectives.size() + activeObjectives.size()) + " objectives, "
+        Debug.info("Saved " + (objectives.size() + objectivesList.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
             + journal.getPointers().size() + " journal entries and " + backpack.size()
             + " items for player " + PlayerConverter.getName(playerID));
@@ -244,16 +212,45 @@ public class DatabaseHandler {
      */
     public void removeData() {
         // unregister objectives
-        for (Objective objective : activeObjectives) {
-            objective.delete();
+        for (Objective objective : getObjectives()) {
+            objective.removePlayer(playerID);;
         }
         // clear all lists
         objectives.clear();
-        activeObjectives.clear();
         tags.clear();
         points.clear();
         journal.clear();
         backpack.clear();
+    }
+    
+    public HashMap<String, String> getRawObjectives() {
+        return objectives;
+    }
+    
+    /**
+     * Adds new objective to a list of not initialized objectives,
+     * ready to be started or saved to the database.
+     * 
+     * @param objectiveID
+     *          ID of the objective
+     */
+    public void addNewRawObjective(String objectiveID) {
+        String data = BetonQuest.getInstance().getObjective(objectiveID)
+                .getDefaultDataInstruction();
+        addRawObjective(objectiveID, data);
+    }
+    
+    /**
+     * Adds objective to a list of not initialized objectives,
+     * ready to be started or saved to the database.
+     * 
+     * @param objectiveID
+     *          ID of the objective
+     * @param data
+     *          data instruction string to use
+     */
+    public void addRawObjective(String objectiveID, String data) {
+        objectives.put(objectiveID, data);
     }
 
     /**
@@ -261,8 +258,8 @@ public class DatabaseHandler {
      * 
      * @return the List of active Objectives
      */
-    public List<Objective> getObjectives() {
-        return activeObjectives;
+    public ArrayList<Objective> getObjectives() {
+        return BetonQuest.getInstance().getPlayerObjectives(playerID);
     }
 
     /**
@@ -297,11 +294,11 @@ public class DatabaseHandler {
      * Purges all player's data from the database and from this handler.
      */
     public void purgePlayer() {
-        for (Objective obj : activeObjectives) {
-            obj.delete();
+        for (Objective obj : getObjectives()) {
+            obj.removePlayer(playerID);
         }
         // clear all lists
-        activeObjectives.clear();
+        objectives.clear();
         tags.clear();
         points.clear();
         entries.clear();
@@ -358,31 +355,15 @@ public class DatabaseHandler {
      * @param tag
      *            objective's tag
      */
-    public void deleteObjective(String tag) {
+    public void deleteObjective(String label) {
         // search active objectives
-        for (Iterator<Objective> iterator = activeObjectives.iterator(); iterator.hasNext();) {
-            Objective objective = iterator.next();
-            // if it matches then delete the objective and remove it from list
-            if (objective.getTag().equalsIgnoreCase(tag)) {
-                objective.getInstruction();
-                objective.delete();
-                iterator.remove();
+        for (Objective objective : getObjectives()) {
+            if (objective.getLabel().equalsIgnoreCase(label)) {
+                objective.removePlayer(playerID);
             }
         }
         // search inactive objectives
-        for (Iterator<String> iterator = objectives.iterator(); iterator.hasNext();) {
-            String instruction = iterator.next();
-            String[] parts = instruction.split(" ");
-            for (String part : parts) {
-                // if it matches then remove it from list
-                if (part.startsWith("label:")) {
-                    String theTag = part.substring(6);
-                    if (theTag.equalsIgnoreCase(tag)) {
-                        iterator.remove();
-                    }
-                }
-            }
-        }
+        objectives.remove(label);
     }
 
     /**

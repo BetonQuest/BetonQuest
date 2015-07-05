@@ -77,8 +77,8 @@ public abstract class QuestEvent {
         String[] tempConditions = new String[]{};
         String[] parts = instructions.split(" ");
         for (String part : parts) {
-            if (part.startsWith("event_conditions:")) {
-        	tempConditions = part.substring(17).split(",");
+            if (part.startsWith("conditions:")) {
+        	tempConditions = part.substring(11).split(",");
             }
         }
         for (int i = 0; i < tempConditions.length; i++) {

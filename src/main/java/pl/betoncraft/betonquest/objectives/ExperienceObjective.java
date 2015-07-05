@@ -25,52 +25,60 @@ import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Objective for getting specified experience level.
+ * Player needs to get specified experience level
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class ExperienceObjective extends Objective implements Listener {
     
-    private int level = 0;
+    private final int level;
 
-    public ExperienceObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ExperienceObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Error in objective string: " + instructions);
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         try {
             level = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Error in objective string: " + instructions);
-            return;
+            throw new InstructionParseException("Could not parse level");
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (level < 1) {
+            throw new InstructionParseException("Level cannot be less than 1");
+        }
     }
     
     @EventHandler
     public void onLevelUp(PlayerLevelChangeEvent event) {
-        if (level == 0 || !PlayerConverter.getID(event.getPlayer()).equals(playerID)) {
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(playerID)) {
             return;
         }
-        if (event.getNewLevel() >= level && checkConditions()) {
-            completeObjective();
+        if (event.getNewLevel() >= level && checkConditions(playerID)) {
+            completeObjective(playerID);
         }
     }
-
+    
     @Override
-    public String getInstruction() {
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

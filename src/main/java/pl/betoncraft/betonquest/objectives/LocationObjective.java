@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -26,50 +27,81 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Player has to reach certain radius around the specified location
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class LocationObjective extends Objective implements Listener {
 
-    private Location location;
-    private double distance;
+    private final Location location;
+    private final double distance;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public LocationObjective(String playerID, String instructions) {
-        super(playerID, instructions);
-        String[] partsOfLoc = instructions.split(" ")[1].split(";");
-        location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]),
-                Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
-        distance = Double.valueOf(partsOfLoc[4]);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    public LocationObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        String[] partsOfLoc = parts[1].split(";");
+        if (partsOfLoc.length < 5) {
+            throw new InstructionParseException("Wrong location format");
+        }
+        World world = Bukkit.getWorld(partsOfLoc[3]);
+        if (world == null) {
+            throw new InstructionParseException("World does not exist: "
+                    + partsOfLoc[3]);
+        }
+        double x, y, z;
+        try {
+            x = Double.valueOf(partsOfLoc[0]);
+            y = Double.valueOf(partsOfLoc[1]);
+            z = Double.valueOf(partsOfLoc[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse coordinates");
+        }
+        location = new Location(world, x, y, z);
+        try {
+            distance = Double.valueOf(partsOfLoc[4]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse distance");
+        }
+        if (distance <= 0) {
+            throw new InstructionParseException(
+                    "Distance cannot be less or equal to 0");
+        }
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID))
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(playerID)
             && event.getPlayer().getWorld().equals(location.getWorld())) {
-            if (event.getTo().distanceSquared(location) <= distance*distance && super.checkConditions()) {
-                completeObjective();
+            if (event.getTo().distanceSquared(location) <= distance*distance
+                    && super.checkConditions(playerID)) {
+                completeObjective(playerID);
             }
         }
     }
-
+    
     @Override
-    public String getInstruction() {
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

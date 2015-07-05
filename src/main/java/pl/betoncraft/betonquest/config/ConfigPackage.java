@@ -39,6 +39,7 @@ public class ConfigPackage {
     private ConfigAccessor conditions;
     private ConfigAccessor journal;
     private ConfigAccessor items;
+    private ConfigAccessor objectives;
     private HashMap<String, ConfigAccessor> conversations;
 
     /**
@@ -70,6 +71,9 @@ public class ConfigPackage {
                     case "items.yml":
                         items = new ConfigAccessor(plugin, file, name);
                         break;
+                    case "objectives.yml":
+                        objectives = new ConfigAccessor(plugin, file, name);
+                        break;
                     default:
                         break;
                 }
@@ -88,7 +92,7 @@ public class ConfigPackage {
         if (isValid()) {
             Debug.info("Package " + pack.getName() + " loaded!");
         } else {
-            Debug.error(pack.getName() + " is not a valid package!");
+            Debug.info(pack.getName() + " is not a valid package!");
         }
     }
     
@@ -96,12 +100,20 @@ public class ConfigPackage {
      * @return true if every part of the package exists and has been loaded, false otherwise
      */
     public boolean isValid() {
-        return  main          != null &&
-                events        != null &&
-                conditions    != null &&
-                journal       != null &&
-                items         != null &&
-                conversations != null;
+        if (main          != null &&
+            events        != null &&
+            conditions    != null &&
+            journal       != null &&
+            items         != null &&
+            conversations != null) {
+            if (objectives == null) {
+                File newFile = new File(folder, "objectives.yml");
+                objectives = new ConfigAccessor(BetonQuest.getInstance(),
+                        newFile, "objectives.yml");
+            }
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -136,6 +148,9 @@ public class ConfigPackage {
                 break;
             case "items":
                 config = items;
+                break;
+            case "objectives":
+                config = objectives;
                 break;
             case "conversations":
                 // conversations go one level deeper
@@ -288,6 +303,9 @@ public class ConfigPackage {
             case "items":
                 config = items;
                 break;
+            case "objectives":
+                config = objectives;
+                break;
             case "conversations":
                 // conversations go one level deeper
                 if (parts.length < 3) {
@@ -299,7 +317,7 @@ public class ConfigPackage {
             default:
                 break;
         }
-        // if config accessor wasn't found, return null
+        // if config accessor wasn't found, return false
         if (config == null) {
             return false;
         }
@@ -349,6 +367,13 @@ public class ConfigPackage {
      */
     public ConfigAccessor getItems() {
         return items;
+    }
+    
+    /**
+     * @return the objectives config
+     */
+    public ConfigAccessor getObjectives() {
+        return objectives;
     }
     
     /**

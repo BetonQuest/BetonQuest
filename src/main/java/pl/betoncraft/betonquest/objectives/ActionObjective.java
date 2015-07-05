@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.objectives;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -28,78 +29,138 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Player has to click on block (or air). Left click, right click and
+ * any one of them is supported.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class ActionObjective extends Objective implements Listener {
 
-    private String action;
-    private Material type;
-    private byte data = -1;
-    private Location loc = null;
-    private double range = 0;
-    private boolean cancel = false;
+    private final String action;
+    private final Material type;
+    private final byte data;
+    private final Location loc;
+    private final double range;
+    private final boolean cancel;
 
-    public ActionObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public ActionObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
         String[] parts = instructions.split(" ");
-        action = parts[1];
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        if (parts[1].equalsIgnoreCase("right")|| parts[1]
+                .equalsIgnoreCase("left")) {
+            action = parts[1].toLowerCase();
+        } else {
+            action = "any";
+        }
         if (parts[2].equalsIgnoreCase("any")) {
             type = Material.AIR;
+            data = -1;
         } else {
             if (parts[2].contains(":")) {
-                type = Material.matchMaterial(parts[2].split(":")[0]);
-                data = Byte.valueOf(parts[2].split(":")[1]);
+                String[] materialParts = parts[2].split(":");
+                type = Material.matchMaterial(materialParts[0]);
+                if (materialParts.length > 1) {
+                    try {
+                        data = Byte.valueOf(materialParts[1]);
+                    } catch (NumberFormatException e) {
+                        throw new InstructionParseException(
+                                "Could not parse data value");
+                    }
+                } else {
+                    data = -1;
+                }
             } else {
                 type = Material.matchMaterial(parts[2]);
+                data = -1;
             }
         }
+        if (type == null) {
+            throw new InstructionParseException("Unknown material type");
+        }
+        Location tempLoc = null;
+        double tempRange = 0;
+        boolean tempCancel = false;
         for (String part : parts) {
             if (part.contains("loc:")) {
-                String[] coords = part.substring(4).split(";");
-                loc = new Location(Bukkit.getWorld(coords[3]), Double.parseDouble(coords[0]),
-                        Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-                range = Double.parseDouble(coords[4]);
+                String[] partsOfLoc = part.substring(4).split(";");
+                if (partsOfLoc.length < 5) {
+                    throw new InstructionParseException("Wrong location format");
+                }
+                World world = Bukkit.getWorld(partsOfLoc[3]);
+                if (world == null) {
+                    throw new InstructionParseException("World does not exist: "
+                            + partsOfLoc[3]);
+                }
+                double x, y, z;
+                try {
+                    x = Double.valueOf(partsOfLoc[0]);
+                    y = Double.valueOf(partsOfLoc[1]);
+                    z = Double.valueOf(partsOfLoc[2]);
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException(
+                            "Could not parse coordinates");
+                }
+                tempLoc = new Location(world, x, y, z);
+                try {
+                    tempRange = Double.parseDouble(partsOfLoc[4]);
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException("Could not parse range");
+                }
             }
             if (part.equalsIgnoreCase("cancel")) {
-                cancel = true;
+                tempCancel = true;
             }
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (tempLoc != null && tempRange <= 0) {
+            throw new InstructionParseException("Range cannot less or equal to 0");
+        }
+        loc = tempLoc;
+        range = tempRange;
+        cancel = tempCancel;
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (!event.getPlayer().equals(PlayerConverter.getPlayer(playerID))) {
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(playerID)) {
             return;
         }
         if (type == Material.AIR) {
             switch (action) {
                 case "right":
-                    if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
-                            .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+                    if ((event.getAction().equals(Action.RIGHT_CLICK_AIR)
+                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+                            && checkConditions(playerID)) {
                         if (cancel) event.setCancelled(true);
-                        completeObjective();
+                        completeObjective(playerID);
                     }
                     break;
                 case "left":
-                    if ((event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction()
-                            .equals(Action.LEFT_CLICK_BLOCK)) && checkConditions()) {
+                    if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
+                            || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
+                            && checkConditions(playerID)) {
                         if (cancel) event.setCancelled(true);
-                        completeObjective();
+                        completeObjective(playerID);
                     }
                     break;
                 default:
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
                         || event.getAction().equals(Action.LEFT_CLICK_BLOCK)
-                        || event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
-                            .equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions()) {
+                        || event.getAction().equals(Action.RIGHT_CLICK_AIR)
+                        || event.getAction() .equals(Action.RIGHT_CLICK_BLOCK))
+                        && checkConditions(playerID)) {
                         if (cancel) event.setCancelled(true);
-                        completeObjective();
+                        completeObjective(playerID);
                     }
                     break;
             }
@@ -116,28 +177,35 @@ public class ActionObjective extends Objective implements Listener {
                     actionEnum = null;
                     break;
             }
-            if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event
-                    .getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(
-                    actionEnum))
-                && (event.getClickedBlock() != null && event.getClickedBlock().getType()
-                        .equals(type))
-                && (data < 0 || event.getClickedBlock().getData() == data)
-                && (loc == null || event.getClickedBlock().getLocation().distance(loc) <= range)
-                && checkConditions()) {
+            if (((actionEnum == null
+                    && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                    || event.getAction().equals(Action.LEFT_CLICK_BLOCK)))
+                    || event.getAction().equals(actionEnum))
+                    && (event.getClickedBlock() != null
+                    && event.getClickedBlock().getType().equals(type))
+                    && (data < 0 || event.getClickedBlock().getData() == data)
+                    && (loc == null || event.getClickedBlock().getLocation()
+                        .distance(loc) <= range)
+                    && checkConditions(playerID)) {
                 if (cancel) event.setCancelled(true);
-                completeObjective();
+                completeObjective(playerID);
             }
         }
     }
 
     @Override
-    public String getInstruction() {
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

@@ -27,57 +27,92 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * @author co0sh
- *
+ * Player has to kill MythicMobs monster
+ * 
+ * @author Jakub Sapalski
  */
 public class MythicMobKillObjective extends Objective implements Listener {
 
-    private String name;
-    private int amount = 1;
+    private final String name;
+    private final int amount;
 
-    /**
-     * @param playerID
-     * @param instructions
-     */
-    public MythicMobKillObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public MythicMobKillObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = MMData.class;
         String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
+        }
         name = parts[1];
+        int tempAmount = 1;
         for (String part : parts) {
             if (part.contains("amount:")) {
-                amount = Integer.parseInt(part.substring(7));
+                try {
+                    tempAmount = Integer.parseInt(part.substring(7));
+                } catch (NumberFormatException e) {
+                    throw new InstructionParseException("Could not parse amount");
+                }
                 break;
             }
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (tempAmount < 1) {
+            throw new InstructionParseException("Amount cannot be less than 1");
+        }
+        amount = tempAmount;
     }
 
     @EventHandler
     public void onBossKill(MythicMobDeathEvent event) {
         if (event.getMobType().getInternalName().equals(name)
             && event.getKiller() instanceof Player) {
-            Player player = (Player) event.getKiller();
-            if (player.equals(PlayerConverter.getPlayer(playerID)) && checkConditions()) {
-                amount--;
+            String playerID = PlayerConverter.getID((Player) event.getKiller());
+            if (containsPlayer(playerID) && checkConditions(playerID)) {
+                MMData playerData = (MMData) dataMap.get(playerID);
+                playerData.kill();
+                if (playerData.killed()) {
+                    completeObjective(playerID);
+                }
             }
         }
-        if (amount <= 0) {
-            completeObjective();
-        }
     }
 
     @Override
-    public String getInstruction() {
-        return "mmobkill " + name + " amount:" + amount + " " + events + " " + conditions + " label:"
-            + tag;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return Integer.toString(amount);
+    }
+    
+    public static class MMData extends ObjectiveData {
+        
+        private int amount;
+
+        public MMData(String instruction) {
+            super(instruction);
+            amount = Integer.parseInt(instruction);
+        }
+        
+        private void kill() {
+            amount--;
+        }
+        
+        private boolean killed() {
+            return amount <= 0;
+        }
+        
     }
 
 }

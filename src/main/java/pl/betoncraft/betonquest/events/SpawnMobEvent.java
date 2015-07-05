@@ -76,7 +76,7 @@ public class SpawnMobEvent extends QuestEvent {
         String tempName = null;
         for (String part : parts) {
             if (part.startsWith("name:")) {
-                tempName = part.substring(5);
+                tempName = part.substring(5).replace("_", " ");
                 break;
             }
         }

@@ -74,8 +74,8 @@ public abstract class Database {
             Debug.info("Creating objectives table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER" + " PRIMARY KEY "
-                        + autoIncrement + ", playerID " + "VARCHAR(256) NOT NULL, instructions "
-                        + "VARCHAR(2048) NOT NULL);");
+                        + autoIncrement + ", playerID " + "VARCHAR(256) NOT NULL, objective VARCHAR(512)"
+                        + " NOT NULL, instructions VARCHAR(2048) NOT NULL);");
             Debug.info("Creating tags table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER " + "PRIMARY KEY " + autoIncrement

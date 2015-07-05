@@ -24,41 +24,75 @@ import org.bukkit.scheduler.BukkitTask;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 
+/**
+ * Player has to wait specified amount of time. He may logout, the objective
+ * will be completed as soon as the time is up and he logs in again.
+ * 
+ * @author Jakub Sapalski
+ */
 public class DelayObjective extends Objective {
 
-    private long stamp = -1;
+    private final long delay;
     private BukkitTask runnable;
 
-    public DelayObjective(String playerID, String instructions) {
-        super(playerID, instructions);
-        // if you don't define stamp: or delay: then objective will be completed
-        // immediately after creating, just like folder event
-        for (String part : instructions.split(" ")) {
-            if (part.contains("delay:")) {
-                stamp = new Date().getTime() + (Integer.parseInt(part.substring(6)) * 1000 * 60);
-            } else if (part.contains("stamp:")) {
-                stamp = Long.parseLong(part.substring(6));
-            }
+    public DelayObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = DelayData.class;
+        String[] parts = instructions.split(" ");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
-        final long finalStamp = stamp;
+        try {
+            delay = Long.parseLong(parts[1]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse delay");
+        }
+        if (delay < 1) {
+            throw new InstructionParseException("Delay cannot be less than 1");
+        }
+    }
+
+    @Override
+    public void start() {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                if (new Date().getTime() >= finalStamp && checkConditions()) {
-                    completeObjective();
+                for (String playerID : dataMap.keySet()) {
+                    DelayData playerData = (DelayData) dataMap.get(playerID);
+                    if (new Date().getTime() >= playerData.getTime() &&
+                            checkConditions(playerID)) {
+                        completeObjective(playerID);
+                    }
                 }
             }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, 20 * 60);
+        }.runTaskTimer(BetonQuest.getInstance(), 0, 20 * 10);
     }
 
     @Override
-    public String getInstruction() {
-        return "delay stamp:" + stamp + " " + events + " " + conditions + " label:" + tag;
+    public void stop() {
+        if (runnable != null) runnable.cancel();
     }
 
     @Override
-    public void delete() {
-        runnable.cancel();
+    public String getDefaultDataInstruction() {
+        return Long.toString(new Date().getTime() + delay*1000*60);
+    }
+    
+    public static class DelayData extends ObjectiveData {
+        
+        private final long timestamp;
+
+        public DelayData(String instruction) {
+            super(instruction);
+            timestamp = Long.parseLong(instruction);
+        }
+        
+        private long getTime() {
+            return timestamp;
+        }
+        
     }
 }

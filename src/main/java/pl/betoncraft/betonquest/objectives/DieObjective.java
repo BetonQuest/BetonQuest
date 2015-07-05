@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -30,44 +31,64 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * Player needs to die. Death can be canceled, also respawn location can be set
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class DieObjective extends Objective implements Listener {
 
-    private boolean cancel = false;
-    private Location location = null;
+    private final boolean cancel;
+    private final Location location;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public DieObjective(String playerID, String instructions) {
-        super(playerID, instructions);
-        if (instructions.contains("cancel")) {
-            cancel = true;
-        }
+    public DieObjective(String packName, String label, String instruction) 
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
+        boolean tempCancel = false;
+        Location tempLoc = null;
         for (String part : instructions.split(" ")) {
-            if (part.contains("respawn:")) {
+            if (part.startsWith("respawn:")) {
                 String[] rawLocParts = part.substring(8).split(";");
-                if (rawLocParts.length == 4) {
-                    location = new Location(Bukkit.getWorld(rawLocParts[3]),
-                            Double.parseDouble(rawLocParts[0]), Double.parseDouble(rawLocParts[1]),
-                            Double.parseDouble(rawLocParts[2]));
-                } else if (rawLocParts.length == 6) {
-                    location = new Location(Bukkit.getWorld(rawLocParts[3]),
-                            Double.parseDouble(rawLocParts[0]), Double.parseDouble(rawLocParts[1]),
-                            Double.parseDouble(rawLocParts[2]), Float.parseFloat(rawLocParts[4]),
-                            Float.parseFloat(rawLocParts[5]));
+                if (rawLocParts.length == 4 || rawLocParts.length == 6) {
+                    World world = Bukkit.getWorld(rawLocParts[3]);
+                    if (world == null) {
+                        throw new InstructionParseException("World "
+                                + rawLocParts[3] + " does not exist");
+                    }
+                    double x, y, z;
+                    try {
+                        x = Double.parseDouble(rawLocParts[0]);
+                        y = Double.parseDouble(rawLocParts[1]);
+                        z = Double.parseDouble(rawLocParts[2]);
+                    } catch (NumberFormatException e) {
+                        throw new InstructionParseException(
+                                "Could not parse coordinated");
+                    }
+                    float yaw = 0, pitch = 0;
+                    if (rawLocParts.length == 6) {
+                        try {
+                            yaw   = Float.parseFloat(rawLocParts[4]);
+                            pitch = Float.parseFloat(rawLocParts[5]);
+                        } catch (NumberFormatException e) {
+                            throw new InstructionParseException(
+                                    "Could not parse direction");
+                        }
+                    }
+                    tempLoc = new Location(world, x, y, z, yaw, pitch);
+                } else {
+                    throw new InstructionParseException(
+                            "Could not parse location");
                 }
+            } else if (part.equalsIgnoreCase("cancel")) {
+                tempCancel = true;
             }
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        cancel = tempCancel;
+        location = tempLoc;
     }
 
     @EventHandler
@@ -75,10 +96,11 @@ public class DieObjective extends Objective implements Listener {
         if (cancel) {
             return;
         }
-        if (event.getEntity() instanceof Player
-            && ((Player) event.getEntity()).equals(PlayerConverter.getPlayer(playerID))
-            && checkConditions()) {
-            completeObjective();
+        if (event.getEntity() instanceof Player) {
+            String playerID = PlayerConverter.getID((Player) event.getEntity());
+            if (containsPlayer(playerID) && checkConditions(playerID)) {
+                completeObjective(playerID);
+            }
         }
     }
 
@@ -89,8 +111,10 @@ public class DieObjective extends Objective implements Listener {
         }
         if (event.getEntity() instanceof Player) {
             final Player player = (Player) event.getEntity();
-            if (player.equals(PlayerConverter.getPlayer(playerID))
-                && player.getHealth() - event.getDamage() <= 0 && checkConditions()) {
+            final String playerID = PlayerConverter.getID(player);
+            if (containsPlayer(playerID) &&
+                    player.getHealth() - event.getDamage() <= 0 &&
+                    checkConditions(playerID)) {
                 event.setCancelled(true);
                 player.setHealth(player.getMaxHealth());
                 player.setFoodLevel(20);
@@ -109,19 +133,24 @@ public class DieObjective extends Objective implements Listener {
 
                     }
                 }.runTaskLater(BetonQuest.getInstance(), 1);
-                completeObjective();
+                completeObjective(playerID);
             }
         }
     }
-
+    
     @Override
-    public String getInstruction() {
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

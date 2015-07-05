@@ -91,6 +91,9 @@ public class ConversationData {
         // load all NPC options
         ConfigurationSection NPCSection = pack.getConversation(name)
                 .getConfig().getConfigurationSection("NPC_options");
+        if (NPCSection == null) {
+            throw new InstructionParseException("NPC_options section not defined");
+        }
         NPCOptions = new HashMap<>();
         for (String key : NPCSection.getKeys(false)) {
             NPCOptions.put(key, new NPCOption(key));
@@ -99,8 +102,10 @@ public class ConversationData {
         ConfigurationSection playerSection = pack.getConversation(name)
                 .getConfig().getConfigurationSection("player_options");
         playerOptions = new HashMap<>();
-        for (String key : playerSection.getKeys(false)) {
-            playerOptions.put(key, new PlayerOption(key));
+        if (playerSection != null) {
+            for (String key : playerSection.getKeys(false)) {
+                playerOptions.put(key, new PlayerOption(key));
+            }
         }
         // check if every pointer points to existing option
         for (Option option : NPCOptions.values()) {

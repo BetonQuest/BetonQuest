@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -121,6 +122,9 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public final class BetonQuest extends JavaPlugin {
     
+    private final static String ERROR = "There was some error. Please send it to the"
+            + " developer: <coosheck@gmail.com>";
+    
     private static BetonQuest instance;
     private Database database;
     private boolean isMySQLUsed;
@@ -132,6 +136,7 @@ public final class BetonQuest extends JavaPlugin {
     
     private static HashMap<String, Condition> conditions = new HashMap<>();
     private static HashMap<String, QuestEvent> events = new HashMap<>();
+    private static HashMap<String, Objective> objectives = new HashMap<>();
     private static HashMap<String, ConversationData> conversations = new HashMap<>();
     
     private BukkitRunnable saver;
@@ -285,7 +290,8 @@ public final class BetonQuest extends JavaPlugin {
             public void run() {
                 if (dbHandlers.isEmpty()) {
                     try {
-                        database.getConnection().prepareStatement("SELECT 1").executeQuery();
+                        database.getConnection().prepareStatement("SELECT 1")
+                                .executeQuery();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -324,15 +330,21 @@ public final class BetonQuest extends JavaPlugin {
      * Loads events and conditions to the maps
      */
     public void loadData() {
+        // save data of all objectives to the players
+        for (Objective objective : objectives.values()) {
+            objective.close();
+        }
         // clear previously loaded data
 	events.clear();
 	conditions.clear();
 	conversations.clear();
+	objectives.clear();
 	// load new data
 	for (String packName : Config.getPackageNames()) {
             Debug.info("Loading stuff in package " + packName);
             ConfigPackage pack = Config.getPackage(packName);
-            FileConfiguration eConfig = Config.getPackage(packName).getEvents().getConfig();
+            FileConfiguration eConfig = Config.getPackage(packName).getEvents()
+                    .getConfig();
             for (String key : eConfig.getKeys(false)) {
         	String ID = packName + "." + key;
                 String instruction = pack.getString("events." + key);
@@ -363,11 +375,11 @@ public final class BetonQuest extends JavaPlugin {
                 	Debug.error("Error in " + ID + " event: " + e.getCause().getMessage());
                     } else {
                         e.printStackTrace();
-                        Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                        Debug.error(ERROR);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                    Debug.error(ERROR);
                 }
             }
             FileConfiguration cConfig = pack.getConditions().getConfig();
@@ -401,11 +413,49 @@ public final class BetonQuest extends JavaPlugin {
                 	Debug.error("Error in " + ID + " condition: " + e.getCause().getMessage());
                     } else {
                         e.printStackTrace();
-                        Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                        Debug.error(ERROR);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                    Debug.error(ERROR);
+                }
+            }
+            FileConfiguration oConfig = pack.getObjectives().getConfig();
+            for (String key : oConfig.getKeys(false)) {
+                String ID = packName + "." + key;
+                String instruction = pack.getString("objectives." + key);
+                if (instruction == null) {
+                    continue;
+                }
+                String[] parts = instruction.split(" ");
+                if (parts.length < 1) {
+                    Debug.error("Not enough arguments in objectives " + ID);
+                    continue;
+                }
+                Class<? extends Objective> objectiveClass = objectiveTypes.get(parts[0]);
+                // if it's null then there is no such type registered, log an error
+                if (objectiveClass == null) {
+                    Debug.error("Objective type " + parts[0] +
+                            " is not registered, check if it's" + 
+                            " spelled correctly in " + ID + " objective.");
+                    continue;
+                }
+                try {
+                    Objective objective = objectiveClass.getConstructor(
+                            String.class, String.class, String.class)
+                            .newInstance(packName, ID, instruction);
+                    objectives.put(ID, objective);
+                    Debug.info("  Objective " + ID + " loaded");
+                } catch (InvocationTargetException e) {
+                    if (e.getCause() instanceof InstructionParseException) {
+                        Debug.error("Error in " + ID + " objective: " + e.getCause().getMessage());
+                    } else {
+                        e.printStackTrace();
+                        Debug.error(ERROR);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.error(ERROR);
                 }
             }
             for (String convName : pack.getConversationNames()) {
@@ -417,14 +467,20 @@ public final class BetonQuest extends JavaPlugin {
                             + packName + " package: " + e.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+                    Debug.error(ERROR);
                 }
             }
             Debug.info("Everything in package " + packName + " loaded");
         }
         Debug.broadcast("There are " + conditions.size() + " conditions, "
-                + events.size() + " events and " + conversations.size()
-                + " conversations loaded from " + Config.getPackageNames().size() + " packages.");
+                + events.size() + " events, " + objectives.size()
+                + " objectives and " + conversations.size()
+                + " conversations loaded from " + Config.getPackageNames().size()
+                + " packages.");
+        // start those freshly loaded objectives for all players
+        for (DatabaseHandler dbHandler : dbHandlers.values()) {
+            dbHandler.startObjectives();
+        }
     }
 
     @Override
@@ -624,66 +680,69 @@ public final class BetonQuest extends JavaPlugin {
      * Creates new objective for given player
      * 
      * @param playerID
-     *            ID of the player who should receive this objective
-     * @param instruction
-     *            instruction string to instantiate the objective
+     *            ID of the player
+     * @param objectiveID
+     *          ID of the objective
      */
-    public static void objective(String playerID, String instruction) {
+    public static void newObjective(String playerID, String objectiveID) {
         // null check
-        if (playerID == null || instruction == null) {
+        if (playerID == null || objectiveID == null) {
             Debug.info("Null arguments for the objective!");
             return;
         }
-        // get tag (known as label)
-        String[] parts = instruction.split(" ");
-        String tag = null;
-        for (String part : parts) {
-            if (part.contains("label:")) {
-                tag = part.substring(6);
-                break;
-            }
-        }
-        // the label is required, log an error if it's not supplied
-        if (tag == null) {
-            Debug.error("Label was not found in an objective, it's required. Player: " + PlayerConverter.getName(playerID)
-                + ", instruction: " + instruction);
+        Objective objective = objectives.get(objectiveID);
+        if (objective.containsPlayer(playerID)) {
+            Debug.error("Player " + PlayerConverter.getName(playerID) +
+                    " already has the " + objectiveID + " objective!");
             return;
         }
-        // check if there is already an objective with that tag
-        for (Objective obj : instance.dbHandlers.get(playerID).getObjectives()) {
-            if (obj.getTag().equalsIgnoreCase(tag)) {
-                Debug.info("The objective with tag '" + tag + "' already exists, skipping.");
-                return;
-            }
+        objective.newPlayer(playerID);
+    }
+    
+    /**
+     * Resumes the existing objective for given player
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param objectiveID
+     *          ID of the objective
+     * @param instruction
+     *          data instruction string
+     */
+    public static void resumeObjective(String playerID, String objectiveID, String instruction) {
+        // null check
+        if (playerID == null || objectiveID == null || instruction == null) {
+            Debug.info("Null arguments for the objective!");
+            return;
         }
-        // get objective's class
-        Class<? extends Objective> objective = objectiveTypes.get(parts[0]);
+        Objective objective = objectives.get(objectiveID);
         if (objective == null) {
-            // if it's null then objective type has not been registered, log an
-            // error
-            Debug.error("Objective type \"" + parts[0]
-                + "\" is not registered, check if it's spelled correctly in \"" + instruction
-                + "\".");
+            Debug.error("Objective " + objectiveID + " does not exist");
             return;
         }
-        try {
-            // start the objective
-            Objective objInstance = objective.getConstructor(String.class, String.class)
-                    .newInstance(playerID, instruction);
-            getInstance().getDBHandler(playerID).addObjective(objInstance);
-            Debug.info("Created new objective from instruction \"" + instruction + "\" with \""
-                + tag + "\" tag for player " + PlayerConverter.getName(playerID));
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                Debug.error("Error in " + tag + " objective: " + e.getCause().getMessage());
-            } else {
-                e.printStackTrace();
-                Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Debug.error("There was some error. Please send it to the developer: <coosheck@gmail.com>");
+        if (objective.containsPlayer(playerID)) {
+            Debug.info("Player " + PlayerConverter.getName(playerID) +
+                    " already has the " + objectiveID + " objective!");
+            return;
         }
+        objective.addPlayer(playerID, instruction);
+    }
+    
+    /**
+     * Returns the list of objectives of this player
+     * 
+     * @param playerID
+     *          ID of the player
+     * @return list of this player's active objectives
+     */
+    public ArrayList<Objective> getPlayerObjectives(String playerID) {
+        ArrayList<Objective> list = new ArrayList<>();
+        for (String objective : objectives.keySet()) {
+            if (objectives.get(objective).containsPlayer(playerID)) {
+                list.add(objectives.get(objective));
+            }
+        }
+        return list;
     }
     
     /**
@@ -694,5 +753,14 @@ public final class BetonQuest extends JavaPlugin {
      */
     public ConversationData getConversation(String name) {
         return conversations.get(name);
+    }
+    
+    /**
+     * @param objectiveID
+     *          package name, dot and ID of the objective
+     * @return Objective object or null if it does not exist
+     */
+    public Objective getObjective(String objectiveID) {
+        return objectives.get(objectiveID);
     }
 }

@@ -104,6 +104,7 @@ public class Config {
             saveResource(def, "conditions.yml");
             saveResource(def, "journal.yml");
             saveResource(def, "items.yml");
+            saveResource(def, "objectives.yml");
             File conversations = new File(def, "conversations");
             conversations.mkdir();
             saveResource(conversations, "defaultConversation.yml", "innkeeper.yml");

@@ -27,61 +27,69 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Objective for right-clicking on Citizens NPC
+ * Player has to right click the NPC
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class NPCInteractObjective extends Objective implements Listener {
     
-    private int id = -1;
-    private boolean cancel = false;
+    private final int id;
+    private final boolean cancel;
 
-    public NPCInteractObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public NPCInteractObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
         String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            Debug.error("Error in objective string: " + instructions);
-            return;
+        if (parts.length < 2) {
+            throw new InstructionParseException("Not enough arguments");
         }
         try {
             id = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            Debug.error("Error in objective string: " + instructions);
-            return;
+            throw new InstructionParseException("Could not parse ID");
         }
-        if (parts[2].equalsIgnoreCase("cancel")) {
-            cancel = true;
+        if (id < 0) {
+            throw new InstructionParseException("ID cannot be negative");
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        boolean tempCancel = false;
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("cancel")) {
+                tempCancel = true;
+            }
+        }
+        cancel = tempCancel;
     }
     
     @EventHandler(priority=EventPriority.LOWEST)
     public void onNPCClick(NPCRightClickEvent event) {
-        if (id < 0 || !PlayerConverter.getID(event.getClicker()).equals(playerID) || event
-                .getNPC().getId() != id) {
+        String playerID = PlayerConverter.getID(event.getClicker());
+        if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
             return;
         }
-        if (checkConditions()) {
-            HandlerList.unregisterAll(this);
-            if (cancel) {
-                event.setCancelled(true);
-            }
-            completeObjective();
+        if (checkConditions(playerID)) {
+            if (cancel) event.setCancelled(true);
+            completeObjective(playerID);
         }
     }
 
     @Override
-    public String getInstruction() {
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

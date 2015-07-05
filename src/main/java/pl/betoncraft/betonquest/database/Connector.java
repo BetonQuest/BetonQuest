@@ -69,7 +69,7 @@ public class Connector {
                     break;
                 case SELECT_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("SELECT instructions FROM " + prefix + "objectives WHERE playerID = ?;");
+                            .prepareStatement("SELECT objective, instructions FROM " + prefix + "objectives WHERE playerID = ?;");
                     break;
                 case SELECT_TAGS:
                     statement = connection
@@ -142,7 +142,7 @@ public class Connector {
             switch (type) {
                 case ADD_OBJECTIVES:
                     statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "objectives (playerID, instructions) VALUES (?, ?);");
+                            .prepareStatement("INSERT INTO " + prefix + "objectives (playerID, objective, instructions) VALUES (?, ?, ?);");
                     break;
                 case ADD_TAGS:
                     statement = connection

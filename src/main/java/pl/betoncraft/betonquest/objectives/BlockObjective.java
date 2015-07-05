@@ -29,64 +29,93 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Block place/break objective
+ * Player has to break/place specified amount of blocks.
+ * Doing opposite thing (breaking when should be placing)
+ * will reverse the progress.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 @SuppressWarnings("deprecation")
 public class BlockObjective extends Objective implements Listener {
 
-    private Material material;
-    private byte data = -1;
-    private int neededAmount;
-    private int currentAmount = 0;
-    private boolean notify = false;
+    private final Material material;
+    private final byte data;
+    private final int neededAmount;
+    private final boolean notify;
 
-    /**
-     * Constructor method
-     * 
-     * @param playerID
-     * @param instructions
-     */
-    public BlockObjective(String playerID, String instructions) {
-        super(playerID, instructions);
+    public BlockObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = BlockData.class;
         String[] parts = instructions.split(" ");
-        String blockType = parts[1];
-        if (blockType.contains(":")) {
-            material = Material.matchMaterial(blockType.split(":")[0]);
-            data = Byte.valueOf(blockType.split(":")[1]);
+        if (parts.length < 3) {
+            throw new InstructionParseException("Not enough arguments");
+        }
+        if (parts[1].contains(":")) {
+            String[] materialParts = parts[1].split(":");
+            material = Material.matchMaterial(materialParts[0]);
+            if (material == null) {
+                throw new InstructionParseException("Unknown block type: "
+                        + materialParts[0]);
+            }
+            try {
+                data = Byte.valueOf(materialParts[1]);
+            } catch (NumberFormatException e) {
+                throw new InstructionParseException("Could not parse data value");
+            }
         } else {
             material = Material.matchMaterial(parts[1]);
+            if (material == null) {
+                throw new InstructionParseException("Unknown block type: "
+                        + parts[1]);
+            }
+            data = -1;
         }
-        neededAmount = Integer.valueOf(parts[2]);
+        try {
+            neededAmount = Integer.valueOf(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse amount");
+        }
+        boolean tempNotify = false;
         for (String part : parts) {
             if (part.equalsIgnoreCase("notify")) {
-                notify = true;
+                tempNotify = true;
             }
         }
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        notify = tempNotify;
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && !event.isCancelled()
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        // if the player has this objective, the event isn't canceled,
+        // the block is correct and conditions are met
+        if (containsPlayer(playerID) && !event.isCancelled()
             && event.getBlock().getType().equals(material)
-            && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
-            currentAmount++;
-            if (currentAmount == neededAmount) {
-                completeObjective();
+            && (data < 0 || event.getBlock().getData() == data)
+            && checkConditions(playerID)) {
+            // add the block to the total amount
+            BlockData playerData = (BlockData) dataMap.get(playerID);
+            playerData.add();
+            // complete the objective
+            if (playerData.getAmount() == neededAmount) {
+                completeObjective(playerID);
             } else if (notify) {
+                // or maybe display a notification
                 Player player = PlayerConverter.getPlayer(playerID);
-                if (currentAmount > neededAmount) {
+                if (playerData.getAmount() > neededAmount) {
                     player.sendMessage(Config.getMessage("blocks_to_break")
-                            .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
+                            .replaceAll("%amount%", String.valueOf(playerData
+                                    .getAmount() - neededAmount))
                             .replaceAll("&", "§"));
                 } else {
                     player.sendMessage(Config.getMessage("blocks_to_place")
-                            .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
+                            .replaceAll("%amount%", String.valueOf(neededAmount
+                                    - playerData.getAmount()))
                             .replaceAll("&", "§"));
                 }
             }
@@ -95,21 +124,31 @@ public class BlockObjective extends Objective implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.getPlayer().equals(PlayerConverter.getPlayer(playerID)) && !event.isCancelled()
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        // if the player has this objective, the event isn't canceled,
+        // the block is correct and conditions are met
+        if (containsPlayer(playerID) && !event.isCancelled()
             && event.getBlock().getType().equals(material)
-            && (data < 0 || event.getBlock().getData() == data) && checkConditions()) {
-            currentAmount--;
-            if (currentAmount == neededAmount) {
-                completeObjective();
+            && (data < 0 || event.getBlock().getData() == data)
+            && checkConditions(playerID)) {
+            // remove the block from the total amount
+            BlockData playerData = (BlockData) dataMap.get(playerID);
+            playerData.remove();
+            // complete the objective
+            if (playerData.getAmount() == neededAmount) {
+                completeObjective(playerID);
             } else if (notify) {
+                // or maybe display a notification
                 Player player = PlayerConverter.getPlayer(playerID);
-                if (currentAmount > neededAmount) {
+                if (playerData.getAmount() > neededAmount) {
                     player.sendMessage(Config.getMessage("blocks_to_break")
-                            .replaceAll("%amount%", String.valueOf(currentAmount - neededAmount))
+                            .replaceAll("%amount%", String.valueOf(playerData
+                                    .getAmount() - neededAmount))
                             .replaceAll("&", "§"));
                 } else {
                     player.sendMessage(Config.getMessage("blocks_to_place")
-                            .replaceAll("%amount%", String.valueOf(neededAmount - currentAmount))
+                            .replaceAll("%amount%", String.valueOf(neededAmount
+                                    - playerData.getAmount()))
                             .replaceAll("&", "§"));
                 }
             }
@@ -117,15 +156,39 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getInstruction() {
-        return "block " + material.toString() + ":" + data + " "
-            + String.valueOf(neededAmount - currentAmount) + " " + conditions + " " + events
-            + " label:" + tag;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
     }
 
+    @Override
+    public String getDefaultDataInstruction() {
+        return "0";
+    }
+
+    public static class BlockData extends ObjectiveData {
+
+        private int amount;
+        
+        public BlockData(String instruction) {
+            super(instruction);
+            amount = Integer.parseInt(instruction);
+        }
+        
+        private void add() {
+            amount++;
+        }
+        
+        private void remove() {
+            amount--;
+        }
+        
+        private int getAmount() {
+            return amount;
+        }
+    }
 }

@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -30,58 +31,58 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Target shooting objective
+ * Requires the player to shoot a target with a bow
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class ArrowShootObjective extends Objective implements Listener {
     
-    /**
-     * Location the player needs to hit with the arrow
-     */
-    private Location location = null;
-    /**
-     * The max distance from location, where the arrow can land
-     */
-    private double precision = 0;
+    private final Location location;
+    private final double precision;
 
-    public ArrowShootObjective(String playerID, String instructions) {
-        super(playerID, instructions);
-        // extract data from instruction
+    public ArrowShootObjective(String packName, String label, String instruction)
+            throws InstructionParseException {
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Incorrect amount of arguments in " + tag + " objective!");
-            return;
+            throw new InstructionParseException("Not enough arguments");
         }
         String[] partsOfLoc = parts[1].split(";");
         if (partsOfLoc.length < 5) {
-            Debug.error("Incorrect amount of arguments in location definition in " + tag
-                    + " objective!");
+            throw new InstructionParseException("Wrong location format");
         }
-        if (Bukkit.getWorld(partsOfLoc[3]) == null) {
-            Debug.error("There is no such world in " + tag + " objective!");
-            return;
+        World world = Bukkit.getWorld(partsOfLoc[3]);
+        if (world == null) {
+            throw new InstructionParseException("World does not exist: "
+                    + partsOfLoc[3]);
         }
+        double x, y, z;
         try {
-            location = new Location(Bukkit.getWorld(partsOfLoc[3]), Double.valueOf(partsOfLoc[0]),
-                    Double.valueOf(partsOfLoc[1]), Double.valueOf(partsOfLoc[2]));
+            x = Double.valueOf(partsOfLoc[0]);
+            y = Double.valueOf(partsOfLoc[1]);
+            z = Double.valueOf(partsOfLoc[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse coordinates");
+        }
+        location = new Location(world, x, y, z);
+        try {
             precision = Double.valueOf(partsOfLoc[4]);
         } catch (NumberFormatException e) {
-            Debug.error("Numbers are incorrect in location definition in " + tag + " objective!");
+            throw new InstructionParseException("Could not parse precision");
         }
-        // if the objective was instanciated incorrectly, ignore event
-        if (location != null && precision != 0) {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (precision <= 0) {
+            throw new InstructionParseException("Precision cannot be less or equal to 0");
         }
     }
     
     @EventHandler
     public void onArrowHit(ProjectileHitEvent event) {
-        // check if it's the arrow shot by the player
+        // check if it's the arrow shot by the player with active objectve
         final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
             return;
@@ -90,31 +91,41 @@ public class ArrowShootObjective extends Objective implements Listener {
             return;
         }
         final Player player = (Player) arrow.getShooter();
-        if (!PlayerConverter.getID(player).equals(playerID)) {
+        final String playerID = PlayerConverter.getID(player);
+        if (!containsPlayer(playerID)) {
             return;
         }
+        // check if the arrow is in the right place in the next tick
+        // wait one tick, let the arrow land completely
         new BukkitRunnable() {
             @Override
             public void run() {
-                // check if the arrow is in the right place in the next tick, let the arrow land
                 Location arrowLocation = arrow.getLocation();
+                if (arrowLocation == null) {
+                    return;
+                }
                 if (arrowLocation.getWorld().equals(location.getWorld())
-                    && arrowLocation.distance(location) < precision && checkConditions()) {
-                    completeObjective();
+                    && arrowLocation.distanceSquared(location) < precision*precision
+                    && checkConditions(playerID)) {
+                    completeObjective(playerID);
                 }
             }
         }.runTask(BetonQuest.getInstance());
     }
 
     @Override
-    public String getInstruction() {
-        // the instructions don't change over time in this objective
-        return instructions;
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void delete() {
+    public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }

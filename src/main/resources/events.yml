@@ -1,4 +1,4 @@
-wood_start: 'objective block $block$ -16 events:tag_wood_done,entry_wood_done label:wood'
+wood_start: 'objective start wood'
 tag_wood_started: 'tag add wood_started'
 tag_wood_done: 'tag add wood_done'
 tag_wood_paid: 'tag add wood_paid'

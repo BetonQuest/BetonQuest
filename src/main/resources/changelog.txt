@@ -23,18 +23,21 @@ Additions:
     * New "region" objective - reach WorldGuard region
     * Blacklist of commands which cannot be used while in conversation
     * Option to disable compatibility with other plugins
+    * Action objective can be "canceled" - the click will not do anything
+    * Added remove_items_after_respawn option - for servers using keepInventory gamerule
 Changes:
     * The plugin now uses package system: configuration has been moved into "default" package
-    * All conditions and events are loaded when the plugin starts/reloads
-    * Citizens NPC will stop when talked to (at their current target)
-    * Quest blocks cannot be placed
+    * Objectives has returned to "objectives.yml" - it's improving performance
+    * All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads
+    * Citizens NPC will stop when talked to
+    * Quest blocks cannot be placed, quest items will not break
     * Conversations cannot be started while in combat
-    * Cannot fight while in combat
+    * Cannot fight while in conversation
     * Mobs can be spawned with a name (spawnmob event, "name:" argument)
     * /q command is now more beautiful
     * Removed unnecessary argument prefixes from conditions and events
-    * Changed keyword "tag:" to "label:" in objectives, to distinguish it from regular tags
-    * Conversations no longer need those empty lines ('')
+    * Removed "tag:" from objective instruction strings
+    * Conversations no longer need those empty lines everywhere ('')
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

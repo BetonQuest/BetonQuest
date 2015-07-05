@@ -17,9 +17,13 @@
  */
 package pl.betoncraft.betonquest.api;
 
-import org.bukkit.scheduler.BukkitRunnable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -34,108 +38,102 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public abstract class Objective {
-
-    /**
-     * Stores ID of the player.
-     */
-    protected final String playerID;
-    /**
-     * Stores instruction string for the objective.
-     */
+    
     protected final String instructions;
+    protected final ConfigPackage pack;
+    protected final String[] conditions;
+    protected final String[] events;
+    protected final String label;
+    
     /**
-     * Stores conditions string with leading "conditions:" label.
+     * Contains all data objects of the players with this objective active
      */
-    protected final String conditions;
+    protected HashMap<String, ObjectiveData> dataMap = new HashMap<>();
     /**
-     * Stores events string with leading "events:" label.
+     * Should be set with the data class used to hold players' information
      */
-    protected final String events;
-    /**
-     * Stores objective's label (without leading "label:" label!)
-     */
-    protected final String tag;
+    protected Class<? extends ObjectiveData> template;
 
     /**
      * Creates new instance of the objective. The objective should parse
-     * instruction string at this point and extract all the data from it. It
-     * should also register needed Listeners.
+     * instruction string at this point and extract all the data from it.
+     * </p>
+     * <b>Do not register listeners here!</b> There is a {@link #start()}
+     * method for it.
      * 
-     * @param playerID
-     *            ID of the player this objective is related to. It will be
-     *            passed at runtime, you only need to use it according to what
-     *            your objective does.
      * @param instructions
      *            instruction string passed at runtime. You need to extract all
      *            required data from it and display errors if there is anything
      *            wrong.
+     * @throws InstructionParseException if the syntax is wrong
      */
-    public Objective(String playerID, String instructions) {
-        this.playerID = playerID;
+    public Objective(String packName, String label, String instructions)
+            throws InstructionParseException {
         this.instructions = instructions;
-        // extract tag, events and conditions
-        String tempTag        = "",
-               tempEvents     = "",
-               tempConditions = "";
+        this.pack = Config.getPackage(packName);
+        this.label = label;
+        // extract events and conditions
+        String[] tempEvents     = new String[]{},
+                 tempConditions = new String[]{};
         for (String part : instructions.split(" ")) {
-            if (part.contains("label:")) {
-                tempTag = part.substring(6);
+            if (part.startsWith("events:")) {
+                tempEvents = part.substring(7).split(",");
+                for (int i = 0; i < tempEvents.length; i++) {
+                    if (!tempEvents[i].contains(".")) {
+                        tempEvents[i] = packName + "." + tempEvents[i];
+                    }
+                }
             }
-            if (part.contains("events:")) {
-                tempEvents = part;
-            }
-            if (part.contains("conditions:")) {
-                tempConditions = part;
+            if (part.startsWith("conditions:")) {
+                tempConditions = part.substring(11).split(",");
+                for (int i = 0; i < tempConditions.length; i++) {
+                    if (!tempConditions[i].contains(".")) {
+                        tempConditions[i] = packName + "." + tempConditions[i];
+                    }
+                }
             }
         }
         // make them final
-        tag        = tempTag;
         events     = tempEvents;
         conditions = tempConditions;
     }
+    
+    /**
+     * This method is called by the plugin when the objective needs to
+     * start listening for events. Register your Listeners here!
+     */
+    public abstract void start();
+
+    /**
+     * This method is called by the plugin when the objective needs to be
+     * stopped. You have to unregister all Listeners here.
+     */
+    public abstract void stop();
+    
+    /**
+     * This method should return the default data instruction for the objective,
+     * ready to be parsed by the ObjectiveData class.
+     * 
+     * @return the default data instruction string
+     */
+    public abstract String getDefaultDataInstruction();
 
     /**
      * This method fires events for the objective and removes it from player's
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      */
-    protected final void completeObjective() {
-        Debug.info("Objective \"" + tag + "\" has been completed for player "
-        	+ PlayerConverter.getName(playerID) + ", firing final events.");
-        // split instructions
-        String[] parts = instructions.split(" ");
-        String rawEvents = null;
-        // find part with events
-        for (String part : parts) {
-            if (part.contains("events:")) {
-                // extract events
-                rawEvents = part.substring(7);
-                break;
-            }
-        }
-        // if there are any events, do something with them
-        if (rawEvents != null && !rawEvents.equalsIgnoreCase("")) {
-            // split them to separate ids
-            final String[] events = rawEvents.split(",");
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    // fire all events
-                    for (String eventID : events) {
-                        if (!eventID.contains(".")) {
-                            Debug.error("Package not specified for event " + eventID);
-                            continue;
-                        }
-                        BetonQuest.event(playerID, eventID);
-                    }
-                }
-            }.runTask(BetonQuest.getInstance());
-        }
+    public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        Debug.info("Firing events in objective \"" + tag + "\" for player " + PlayerConverter.getName(playerID)
-            + " finished");
-        BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(tag);
-        delete();
+        removePlayer(playerID);
+        Debug.info("Objective \"" + label + "\" has been completed for player "
+        	+ PlayerConverter.getName(playerID) + ", firing final events.");
+        // fire all events
+        for (String event : events) {
+            BetonQuest.event(playerID, event);
+        }
+        Debug.info("Firing events in objective \"" + label + "\" for player "
+                + PlayerConverter.getName(playerID) + " finished");
     }
 
     /**
@@ -145,62 +143,151 @@ public abstract class Objective {
      * 
      * @return if all conditions of this objective has been met
      */
-    protected final boolean checkConditions() {
-        Debug.info("Condition check in \"" + tag + "\" objective for player "
+    public final boolean checkConditions(final String playerID) {
+        Debug.info("Condition check in \"" + label + "\" objective for player "
                 + PlayerConverter.getName(playerID));
-        // split instructions
-        String[] parts = instructions.split(" ");
-        // find part with conditions
-        String rawConditions = null;
-        for (String part : parts) {
-            if (part.contains("conditions:")) {
-                // extract conditions
-                rawConditions = part.substring(11);
-                break;
-            }
-        }
-        // if there are any conditions, do something with them
-        if (rawConditions != null && !rawConditions.equalsIgnoreCase("")) {
-            // split them to separate ids
-            String[] conditions = rawConditions.split(",");
-            // if some condition is not met, return false
-            for (String conditionID : conditions) {
-                if (!conditionID.contains(".")) {
-                    Debug.error("Package not specified for condition " + conditionID);
-                    continue;
-                }
-                if (!BetonQuest.condition(playerID, conditionID)) {
-                    return false;
-                }
+        for (String condition : conditions) {
+            if (!BetonQuest.condition(playerID, condition)) {
+                return false;
             }
         }
         // if there are no conditions or all of them are met return true
         return true;
     }
-
-    /**
-     * This method is called by the plugin when the objective needs to be
-     * deleted. You have to unregister all Listeners here.
-     */
-    public abstract void delete();
     
     /**
-     * In this method you must return a valid instruction
-     * string with updated data (if the player killed 4 of 10 zombies, it needs
-     * to return 6 more zombies). Do not delete the objective here!
+     * Adds this new objective to the player. 
      * 
-     * @return the valid instruction string
+     * @param playerID
      */
-    public abstract String getInstruction();
+    public final void newPlayer(String playerID) {
+        addPlayer(playerID, getDefaultDataInstruction());
+    }
+    
+    /**
+     * Adds this objective to the player.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param instruction
+     *          instruction string for player's data
+     */
+    public final void addPlayer(String playerID, String instruction) {
+        final String ERROR = "There was some error. Please send it to the"
+                + " developer: <coosheck@gmail.com>";
+        ObjectiveData data = null;
+        try {
+            data = template.getConstructor(String.class).newInstance(instruction);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof InstructionParseException) {
+                Debug.error("Error while loading " + label +
+                        " objective data for player " + PlayerConverter
+                        .getName(playerID) +": " + e.getCause().getMessage());
+            } else {
+                e.printStackTrace();
+                Debug.error(ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        if (dataMap.isEmpty()) {
+            start();
+        }
+        dataMap.put(playerID, data);
+    }
+    
+    /**
+     * Removes the objective from the player without completing it.
+     * 
+     * @param playerID
+     *          ID of the player
+     */
+    public final void removePlayer(String playerID) {
+        dataMap.remove(playerID);
+        if (dataMap.isEmpty()) {
+            stop();
+        }
+    }
+    
+    /**
+     * Checks if the player has this objective
+     * 
+     * @param playerID
+     *          ID of the player
+     * @return true if the player has this objective
+     */
+    public final boolean containsPlayer(String playerID) {
+        return dataMap.containsKey(playerID);
+    }
+    
+    /**
+     * Returns the data of the specified player
+     * 
+     * @param playerID
+     *          ID of the player
+     * @return the data string for this objective
+     */
+    public final String getData(String playerID) {
+        ObjectiveData data = dataMap.get(playerID);
+        if (data == null) {
+            return null;
+        }
+        return dataMap.get(playerID).toString();
+    }
 
     /**
-     * Returns the tag of this objective. Don't worry about it, it's only used
+     * Returns the label of this objective. Don't worry about it, it's only used
      * by the rest of BetonQuest's logic.
      * 
-     * @return the tag
+     * @return the label of the objective
      */
-    public final String getTag() {
-        return tag;
+    public final String getLabel() {
+        return label;
+    }
+    
+    /**
+     * Should be called at the end of the use of this objective, for example
+     * when reloading the plugin. It will unregister listeners and save all
+     * player's data to their "inactive" map.
+     */
+    public void close() {
+        stop();
+        for (String playerID : dataMap.keySet()) {
+            BetonQuest.getInstance().getDBHandler(playerID)
+                    .addRawObjective(label, dataMap.get(playerID).toString());
+        }
+    }
+    
+    /**
+     * Stores player's data for the objective
+     * 
+     * @author Jakub Sapalski
+     */
+    protected static class ObjectiveData {
+        
+        private String instruction;
+        
+        /**
+         * The constructor needs to parse the data in instruction string
+         * and place it the fields.
+         * 
+         * @param instruction
+         */
+        public ObjectiveData(String instruction) {
+            this.instruction = instruction;
+        }
+
+        /**
+         * This method should return the whole instruction string, which can be
+         * successfully parsed by the constructor.
+         * 
+         * @return the instruction string
+         */
+        public String toString() {
+            return instruction;
+        }
+        
     }
 
 }

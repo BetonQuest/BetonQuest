@@ -52,7 +52,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Main admin command for quest editing.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class QuestCommand implements CommandExecutor {
     
@@ -549,6 +549,11 @@ public class QuestCommand implements CommandExecutor {
             sender.sendMessage(Config.getMessage("specify_player"));
             return;
         }
+        if (args.length < 3) {
+            Debug.info("Event's ID is missing");
+            sender.sendMessage(Config.getMessage("specify_event"));
+            return;
+        }
         String eventID = args[2];
         String pack;
         String name;
@@ -723,12 +728,8 @@ public class QuestCommand implements CommandExecutor {
             if (!isOnline) {
                 // if player is offline then convert his raw objective strings to tags
                 tags = new ArrayList<>();
-                for (String string : dbHandler.getRawObjectives()) {
-                    for (String part : string.split(" ")) {
-                        if (part.startsWith("label:")) {
-                            tags.add(part.substring(4));
-                        }
-                    }
+                for (String string : dbHandler.getRawObjectives().keySet()) {
+                    tags.add(string);
                 }
             } else {
                 // if the player is online then just retrieve tags from his
@@ -736,7 +737,7 @@ public class QuestCommand implements CommandExecutor {
                 // objectives
                 tags = new ArrayList<>();
                 for (Objective objective : dbHandler.getObjectives()) {
-                    tags.add(objective.getTag());
+                    tags.add(objective.getLabel());
                 }
             }
             // display objectives
@@ -759,16 +760,15 @@ public class QuestCommand implements CommandExecutor {
             case "a":
                 // get the instruction
                 Debug.info("Adding new objective for player " + PlayerConverter.getName(playerID));
-                StringBuilder instruction = new StringBuilder();
-                for (int i = 3; i < args.length; i++) {
-                    instruction.append(args[i] + " ");
+                String objectiveID = args[3];
+                if (!objectiveID.contains(".")) {
+                    objectiveID = Config.getString("config.default_package") + "." + args[3];
                 }
-                String objectiveInstruction = instruction.toString().trim();
                 // add the objective
                 if (isOnline) {
-                    BetonQuest.objective(playerID, objectiveInstruction);
+                    BetonQuest.newObjective(playerID, objectiveID);
                 } else {
-                    dbHandler.addRawObjective(objectiveInstruction);
+                    dbHandler.addNewRawObjective(objectiveID);
                     dbHandler.saveData();
                     dbHandler.removeData();
                 }
@@ -813,9 +813,9 @@ public class QuestCommand implements CommandExecutor {
         Debug.info("Restarting global locations");
         GlobalLocations.stop();
         new GlobalLocations().runTaskTimer(instance, 0, 20);
-        // load all events and conditions
+        // load all events, conditions, objectives, conversations etc.
         instance.loadData();
-        // update journals for every online player
+        // start objectives and update journals for every online player
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);
             Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));

@@ -35,7 +35,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 /**
- * Requires the player to enter the WorldGuard region
+ * Player has to enter the WorldGuard region
  * 
  * @author Jakub Sapalski
  */
@@ -45,25 +45,21 @@ public class RegionObjective extends Objective implements Listener {
     private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
             Bukkit.getPluginManager().getPlugin("WorldGuard");
     
-    /**
-     * @param playerID
-     * @param instructions
-     * @throws InstructionParseException 
-     */
-    public RegionObjective(String playerID, String instructions)
+    public RegionObjective(String packName, String label, String instruction)
             throws InstructionParseException {
-        super(playerID, instructions);
+        super(packName, label, instruction);
+        template = ObjectiveData.class;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
         name = parts[1];
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
     
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (!PlayerConverter.getID(event.getPlayer()).equals(playerID)) {
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(playerID)) {
             return;
         }
         Location loc = event.getTo();
@@ -72,8 +68,8 @@ public class RegionObjective extends Objective implements Listener {
         ApplicableRegionSet set = manager.getApplicableRegions(loc);
         for (ProtectedRegion compare : set) {
             if (compare.equals(region)) {
-                if (checkConditions()) {
-                    completeObjective();
+                if (checkConditions(playerID)) {
+                    completeObjective(playerID);
                 } else {
                     return;
                 }
@@ -83,13 +79,18 @@ public class RegionObjective extends Objective implements Listener {
     }
 
     @Override
-    public void delete() {
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    @Override
+    public void stop() {
         HandlerList.unregisterAll(this);
     }
 
     @Override
-    public String getInstruction() {
-        return instructions;
+    public String getDefaultDataInstruction() {
+        return "";
     }
 
 }
