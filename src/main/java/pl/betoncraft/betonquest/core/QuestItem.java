@@ -67,8 +67,8 @@ public class QuestItem {
      * @param name
      * @param lore
      */
-    public QuestItem(String material, int data, Map<String, Integer> enchants, String name,
-            List<String> lore) {
+    public QuestItem(String material, int data, Map<String, Integer> enchants,
+            String name, List<String> lore){
         this.material = Material.matchMaterial(material);
         this.data = (short) data;
         if (enchants != null) {
@@ -87,15 +87,23 @@ public class QuestItem {
      * @param itemID
      *            ID of the item from items.yml
      */
-    public QuestItem(String instruction) {
-        // TODO validation with exception throwing
+    public QuestItem(String instruction) throws InstructionParseException {
         String[] parts = instruction.split(" ");
+        if (parts.length < 1) {
+            throw new InstructionParseException("Item type not defined");
+        }
         // get material type
         material = Material.matchMaterial(parts[0]);
+        if (material == null) {
+            throw new InstructionParseException("Unknown item type: " + parts[0]);
+        }
         for (String part : parts) {
             if (part.startsWith("data:")) {
                 // get data if exists
                 data = Short.parseShort(part.substring(5));
+                if (data < 0) {
+                    throw new InstructionParseException("Item data cannot be negative");
+                }
             } else if (part.startsWith("enchants:")) {
                 // get enchantments: if it is set, then enchantments should
                 // be considered in checks
@@ -106,8 +114,23 @@ public class QuestItem {
                     continue;
                 }
                 for (String enchant : part.substring(9).split(",")) {
-                    Enchantment ID = Enchantment.getByName(enchant.split(":")[0]);
-                    Integer level = new Integer(enchant.split(":")[1]);
+                    String[] enchParts = enchant.split(":");
+                    if (enchParts.length != 2) {
+                        throw new InstructionParseException(
+                                "Wrong enchantment format: " + enchant);
+                    }
+                    Enchantment ID = Enchantment.getByName(enchParts[0]);
+                    if (ID == null) {
+                        throw new InstructionParseException(
+                                "Unknown enchantment type: " + enchParts[0]);
+                    }
+                    Integer level;
+                    try {
+                        level = new Integer(enchParts[1]);
+                    } catch (NumberFormatException e) {
+                        throw new InstructionParseException(
+                                "Could not parse level in enchant: " + enchant);
+                    }
                     enchants.put(ID, level);
                 }
             } else if (part.startsWith("name:")) {
@@ -143,16 +166,33 @@ public class QuestItem {
                     continue;
                 }
                 for (String effect : part.substring(8).split(",")) {
-                    PotionEffectType ID = PotionEffectType.getByName(effect.split(":")[0]);
-                    int power = Integer.parseInt(effect.split(":")[1]) - 1;
-                    int duration = Integer.parseInt(effect.split(":")[2]) * 20;
+                    String[] effParts = effect.split(":");
+                    PotionEffectType ID = PotionEffectType.getByName(effParts[0]);
+                    if (ID == null) {
+                        throw new InstructionParseException("Unknown potion type"
+                                + effParts[0]);
+                    }
+                    int power, duration;
+                    try {
+                        power = Integer.parseInt(effect.split(":")[1]) - 1;
+                        duration = Integer.parseInt(effect.split(":")[2]) * 20;
+                    } catch (NumberFormatException e) {
+                        throw new InstructionParseException(
+                                "Could not parse potion power/duration: " + effect);
+                    }
                     effects.add(new PotionEffect(ID, duration, power));
                 }
             } else if (part.startsWith("color:")) {
                 if (part.equals("color:none")) {
-                    color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
+                    color = Bukkit.getServer().getItemFactory()
+                            .getDefaultLeatherColor();
                 } else {
-                    color = Color.fromRGB(Integer.parseInt(part.substring(6)));
+                    try {
+                        color = Color.fromRGB(Integer.parseInt(part.substring(6)));
+                    } catch (NumberFormatException e) {
+                        throw new InstructionParseException(
+                                "Could not parse leather armor color");
+                    }
                 }
             } else if (part.startsWith("owner:")) {
                 if (part.equals("owner:none")) {
@@ -172,35 +212,35 @@ public class QuestItem {
      * @return if both items are equal
      */
     public boolean equalsQ(QuestItem item) {
-        if (!((item.getAuthor() == null && author == null) || (item.getAuthor() != null
-            && author != null && item.getAuthor().equals(author)))) {
+        if (!((item.getAuthor() == null && author == null) || (item.getAuthor()
+                != null && author != null && item.getAuthor().equals(author)))) {
             return false;
         }
         if (item.getData() != data) {
             return false;
         }
-        if (!((item.getEffects() == null && effects == null) || (item.getEffects() != null
-            && effects != null && item.getEffects().equals(effects)))) {
+        if (!((item.getEffects() == null && effects == null) || (item.getEffects()
+                != null && effects != null && item.getEffects().equals(effects)))) {
             return false;
         }
-        if (!((item.getEnchants() == null && enchants == null) || (item.getEnchants() != null
-            && enchants != null && item.getEnchants().equals(enchants)))) {
+        if (!((item.getEnchants() == null && enchants == null) || (item.getEnchants()
+                != null && enchants != null && item.getEnchants().equals(enchants)))) {
             return false;
         }
-        if (!((item.getLore() == null && lore == null) || (item.getLore() != null && lore != null && item
-                .getLore().equals(lore)))) {
+        if (!((item.getLore() == null && lore == null) || (item.getLore() != null
+                && lore != null && item.getLore().equals(lore)))) {
             return false;
         }
-        if (!((item.getMaterial() == null && material == null) || (item.getMaterial() != null
-            && material != null && item.getMaterial() == material))) {
+        if (!((item.getMaterial() == null && material == null) || (item.getMaterial()
+                != null && material != null && item.getMaterial() == material))) {
             return false;
         }
-        if (!((item.getName() == null && name == null) || (item.getName() != null && name != null && item
-                .getName().equals(name)))) {
+        if (!((item.getName() == null && name == null) || (item.getName() != null
+                && name != null && item.getName().equals(name)))) {
             return false;
         }
-        if (!((item.getText() == null && text == null) || (item.getText() != null && text != null && item
-                .getText().equals(text)))) {
+        if (!((item.getText() == null && text == null) || (item.getText() != null
+                && text != null && item.getText().equals(text)))) {
             return false;
         }
         if (!((item.getTitle() == null && title == null) || (item.getTitle() != null

@@ -94,7 +94,7 @@ public class ClearEvent extends QuestEvent {
         boolean tempKill = false;
         for (String part : parts) {
             if (part.startsWith("name:")) {
-                tempName = part.substring(5);
+                tempName = part.substring(5).replace("_", " ").trim();
             } else if (part.equalsIgnoreCase("kill")) {
                 tempKill = true;
             }

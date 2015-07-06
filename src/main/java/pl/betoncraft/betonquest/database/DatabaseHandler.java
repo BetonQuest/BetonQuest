@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
 import pl.betoncraft.betonquest.core.Pointer;
@@ -130,7 +131,13 @@ public class DatabaseHandler {
             while (res5.next()) {
                 String instruction = res5.getString("instruction");
                 int amount = res5.getInt("amount");
-                ItemStack item = new QuestItem(instruction).generateItem(amount);
+                ItemStack item;
+                try {
+                    item = new QuestItem(instruction).generateItem(amount);
+                } catch (InstructionParseException e) {
+                    Debug.error("Could not load item: " + e.getCause().getMessage());
+                    continue;
+                }
                 backpack.add(item);
             }
 

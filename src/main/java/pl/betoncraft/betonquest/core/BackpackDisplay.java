@@ -155,10 +155,15 @@ public class BackpackDisplay implements Listener {
             int i = 0;
             for (String address : cancelers.keySet()) {
                 String name = cancelers.get(address);
-                ItemStack canceler;
+                ItemStack canceler = null;
                 String item = Config.getString("default.items.cancel_button");
                 if (item != null) {
-                    canceler = new QuestItem(item).generateItem(1);
+                    try {
+                        canceler = new QuestItem(item).generateItem(1);
+                    } catch (InstructionParseException e) {
+                        Debug.error("Could not load cancel button: " + e.getCause().getMessage());
+                        return;
+                    }
                 } else {
                     canceler = new ItemStack(Material.BONE);
                 }
@@ -210,10 +215,15 @@ public class BackpackDisplay implements Listener {
         // if there are other pages, place the buttons
         Debug.info("  Placing buttons");
         if (page > 0) {
-            ItemStack previous;
+            ItemStack previous = null;
             String item = Config.getString("default.items.previous_button");
             if (item != null) {
-                previous = new QuestItem(item).generateItem(1);
+                try {
+                    previous = new QuestItem(item).generateItem(1);
+                } catch (InstructionParseException e) {
+                    Debug.error("Could not load previous button: " + e.getCause().getMessage());
+                    return;
+                }
             } else {
                 previous = new ItemStack(Material.GLOWSTONE_DUST);
             }
@@ -227,7 +237,12 @@ public class BackpackDisplay implements Listener {
             ItemStack next;
             String item = Config.getString("default.items.next_button");
             if (item != null) {
-                next = new QuestItem(item).generateItem(1);
+                try {
+                    next = new QuestItem(item).generateItem(1);
+                } catch (InstructionParseException e) {
+                    Debug.error("Could not load next button: " + e.getCause().getMessage());
+                    return;
+                }
             } else {
                 next = new ItemStack(Material.REDSTONE);
             }
@@ -241,7 +256,12 @@ public class BackpackDisplay implements Listener {
         ItemStack cancel;
         String item = Config.getString("default.items.cancel_button");
         if (item != null) {
-            cancel = new QuestItem(item).generateItem(1);
+            try {
+                cancel = new QuestItem(item).generateItem(1);
+            } catch (InstructionParseException e) {
+                Debug.error("Could not load cancel button: " + e.getCause().getMessage());
+                return;
+            }
         } else {
             cancel = new ItemStack(Material.BONE);
         }
