@@ -64,8 +64,9 @@ public class SpawnMobEvent extends QuestEvent {
             throw new InstructionParseException("Could not parse coordinates");
         }
         loc = new Location(world, x, y, z);
-        type = EntityType.valueOf(parts[2].toUpperCase());
-        if (type == null) {
+        try {
+            type = EntityType.valueOf(parts[2].toUpperCase());
+        } catch (IllegalArgumentException e) {
             throw new InstructionParseException("Entity type does not exist");
         }
         try {

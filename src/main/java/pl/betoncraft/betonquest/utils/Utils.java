@@ -98,6 +98,7 @@ public class Utils {
     public static boolean backupDatabase(File databaseBackupFile) {
         BetonQuest instance = BetonQuest.getInstance();
         try {
+            boolean done = true;
             // prepare the config file
             databaseBackupFile.createNewFile();
             ConfigAccessor accessor = new ConfigAccessor(instance,
@@ -134,8 +135,15 @@ public class Utils {
                 while (res.next()) {
                     // for each column add a value to a config
                     for (String columnName : columns) {
-                        String value = res.getString(columnName);
-                        config.set(key + "." + counter + "." + columnName, value);
+                        try {
+                            String value = res.getString(columnName);
+                            config.set(key + "." + counter + "." + columnName, value);
+                        } catch (SQLException e) {
+                            done = false;
+                            // do nothing, as there can be nothing done
+                            // error while loading the string means the
+                            // database entry is broken
+                        }
                     }
                     counter++;
                 }
@@ -143,7 +151,7 @@ public class Utils {
             }
             // save the config at the end
             accessor.saveConfig();
-            return true;
+            return done;
         } catch (IOException | SQLException e) {
             e.printStackTrace();
             File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");

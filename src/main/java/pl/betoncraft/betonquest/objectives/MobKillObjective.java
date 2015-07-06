@@ -56,8 +56,9 @@ public class MobKillObjective extends Objective implements Listener {
         if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
-        mobType = EntityType.valueOf(parts[1]);
-        if (mobType == null) {
+        try {
+            mobType = EntityType.valueOf(parts[1].toUpperCase());
+        } catch (IllegalArgumentException e) {
             throw new InstructionParseException("Unknown entity type: " + parts[1]);
         }
         try {
