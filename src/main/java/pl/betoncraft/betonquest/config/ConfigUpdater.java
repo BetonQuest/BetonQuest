@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v17";
+    private final String destination = "v18";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -187,6 +187,23 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    @SuppressWarnings("unused")
+    private void update_from_v17() {
+        try {
+            for (String packName : Config.getPackageNames()) {
+                ConfigAccessor main = Config.getPackage(packName).getMain();
+                main.getConfig().set("tag_point_prefix", "false");
+                main.saveConfig();
+            }
+            Debug.broadcast("Added prefix option to all packages.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        config.set("version", "v18");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

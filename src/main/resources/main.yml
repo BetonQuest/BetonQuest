@@ -1,3 +1,4 @@
+tag_point_prefix: 'default'
 variables:
   block: LOG
 npcs:

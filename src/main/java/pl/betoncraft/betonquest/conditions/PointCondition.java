@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Point;
 
@@ -40,7 +41,14 @@ public class PointCondition extends Condition {
         if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
-        category = parts[1];
+        String prefix = Config.getPackage(packName).getMain().getConfig()
+                .getString("tag_point_prefix");
+        if (prefix != null && prefix.equalsIgnoreCase("true") && !parts[1]
+                .contains(".")) {
+            category = packName + "." + parts[1];
+        } else {
+            category = parts[1];
+        }
         try {
             count = Integer.parseInt(parts[2]);
         } catch (NumberFormatException e) {
