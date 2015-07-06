@@ -57,12 +57,19 @@ public class LocationCondition extends Condition {
             x = Double.parseDouble(partsOfLoc[0]);
             y = Double.parseDouble(partsOfLoc[1]);
             z = Double.parseDouble(partsOfLoc[2]);
-            distance = Double.parseDouble(partsOfLoc[4]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException(
                     "Could not parse location coordinates");
         }
         location = new Location(world, x, y, z);
+        try {
+            distance = Double.parseDouble(partsOfLoc[4]);
+            if (distance <= 0) {
+                throw new InstructionParseException("Distance must be positive");
+            }
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse distance");
+        }
     }
 
     @Override

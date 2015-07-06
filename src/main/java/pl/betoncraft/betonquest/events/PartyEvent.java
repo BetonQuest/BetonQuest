@@ -60,6 +60,9 @@ public class PartyEvent extends QuestEvent {
         // load the range
         try {
             range = Double.parseDouble(parts[1]);
+            if (range <= 0) {
+                throw new InstructionParseException("Range must be positive");
+            }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Cannot parse range");
         }

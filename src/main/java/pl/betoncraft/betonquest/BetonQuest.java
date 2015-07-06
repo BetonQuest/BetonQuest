@@ -51,6 +51,7 @@ import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
+import pl.betoncraft.betonquest.conditions.MonstersCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
@@ -75,6 +76,7 @@ import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
+import pl.betoncraft.betonquest.events.ClearEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
@@ -231,6 +233,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("testforblock", TestForBlockCondition.class);
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
+        registerConditions("monsters", MonstersCondition.class);
         
         // register events
         registerEvents("message", MessageEvent.class);
@@ -255,6 +258,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("setblock", SetBlockEvent.class);
         registerEvents("damage", DamageEvent.class);
         registerEvents("party", PartyEvent.class);
+        registerEvents("clear", ClearEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

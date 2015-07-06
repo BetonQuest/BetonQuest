@@ -20,6 +20,9 @@ Additions:
     * Optional message for take and give events
     * Optional message when advancing in "block" and "mobkill" objectives
     * New "empty" condition - amount of empty inventory slots
+    * New "party" condition - manages the conditions in the party
+    * New "monsters" condition - true if there are monsters in the area
+    * New "clear" event - kills specified monsters in the area
     * New "region" objective - reach WorldGuard region
     * Blacklist of commands which cannot be used while in conversation
     * Option to disable compatibility with other plugins
@@ -28,6 +31,7 @@ Additions:
 Changes:
     * The plugin now uses package system: configuration has been moved into "default" package
     * Objectives has returned to "objectives.yml" - it's improving performance
+    * Metrics are now toggled in PluginMetrics/config.yml
     * All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads
     * Citizens NPC will stop when talked to
     * Quest blocks cannot be placed, quest items will not break

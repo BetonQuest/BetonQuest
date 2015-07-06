@@ -112,6 +112,9 @@ public class ActionObjective extends Objective implements Listener {
                 tempLoc = new Location(world, x, y, z);
                 try {
                     tempRange = Double.parseDouble(partsOfLoc[4]);
+                    if (tempRange <= 0) {
+                        throw new InstructionParseException("Range must be positive");
+                    }
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException("Could not parse range");
                 }
@@ -119,9 +122,6 @@ public class ActionObjective extends Objective implements Listener {
             if (part.equalsIgnoreCase("cancel")) {
                 tempCancel = true;
             }
-        }
-        if (tempLoc != null && tempRange <= 0) {
-            throw new InstructionParseException("Range cannot less or equal to 0");
         }
         loc = tempLoc;
         range = tempRange;

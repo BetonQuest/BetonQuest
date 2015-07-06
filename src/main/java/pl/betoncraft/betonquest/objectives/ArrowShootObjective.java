@@ -72,11 +72,11 @@ public class ArrowShootObjective extends Objective implements Listener {
         location = new Location(world, x, y, z);
         try {
             precision = Double.valueOf(partsOfLoc[4]);
+            if (precision <= 0) {
+                throw new InstructionParseException("Precision must be positive");
+            }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse precision");
-        }
-        if (precision <= 0) {
-            throw new InstructionParseException("Precision cannot be less or equal to 0");
         }
     }
     

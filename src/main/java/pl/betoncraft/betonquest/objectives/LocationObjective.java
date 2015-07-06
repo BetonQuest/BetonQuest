@@ -68,12 +68,12 @@ public class LocationObjective extends Objective implements Listener {
         location = new Location(world, x, y, z);
         try {
             distance = Double.valueOf(partsOfLoc[4]);
+            if (distance <= 0) {
+                throw new InstructionParseException(
+                        "Distance must be positive");
+            }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse distance");
-        }
-        if (distance <= 0) {
-            throw new InstructionParseException(
-                    "Distance cannot be less or equal to 0");
         }
     }
 

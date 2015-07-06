@@ -32,7 +32,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyCondition extends Condition {
 
-    private final double   distance;
+    private final double   range;
     private final String[] conditions;
     private final String[] everyone;
     private final String[] anyone;
@@ -47,7 +47,10 @@ public class PartyCondition extends Condition {
         }
         // first argument is the distance
         try {
-            distance = Double.parseDouble(parts[1]);
+            range = Double.parseDouble(parts[1]);
+            if (range <= 0) {
+                throw new InstructionParseException("Range must be positive");
+            }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse distance");
         }
@@ -95,7 +98,7 @@ public class PartyCondition extends Condition {
     public boolean check(String playerID) {
         // get the party
         ArrayList<String> members =
-                Utils.getParty(playerID, distance, pack.getName(), conditions);
+                Utils.getParty(playerID, range, pack.getName(), conditions);
         // check every condition against every player - all of them must meet
         // those conditions
         for (String condition : everyone) {

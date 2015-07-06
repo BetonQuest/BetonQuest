@@ -19,7 +19,6 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -29,19 +28,19 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HealthCondition extends Condition {
 
-    private double health;
+    private final double health;
 
     public HealthCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            Debug.error("Amount not specified in: " + instructions);
+            throw new InstructionParseException("Not enough arguments");
         }
         try {
             health = Double.parseDouble(parts[1]);
-        } catch (Exception e) {
-            Debug.error("Could not parse health amount: " + instructions);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse health amount");
         }
     }
 

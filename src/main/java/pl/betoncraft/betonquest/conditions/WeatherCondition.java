@@ -21,7 +21,6 @@ import org.bukkit.World;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -31,7 +30,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class WeatherCondition extends Condition {
 
-    private String weather;
+    private final String weather;
 
     public WeatherCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -40,13 +39,22 @@ public class WeatherCondition extends Condition {
         if (parts.length < 2) {
             throw new InstructionParseException("Weather type not defined");
         }
-        weather = parts[1];
+        weather = parts[1].toLowerCase().trim();
+        if (!weather.equals("sun") &&
+            !weather.equals("clear") &&
+            !weather.equals("rain") &&
+            !weather.equals("rainy") &&
+            !weather.equals("storm") &&
+            !weather.equals("thunder")) {
+            throw new InstructionParseException(
+                    "Weather type '" + weather + "' not defined!");
+        }
     }
 
     @Override
     public boolean check(String playerID) {
         World world = PlayerConverter.getPlayer(playerID).getWorld();
-        switch (weather.toLowerCase().trim()) {
+        switch (weather) {
             case "sun":
             case "clear":
                 if (!world.isThundering() && !world.hasStorm()) {
@@ -64,9 +72,6 @@ public class WeatherCondition extends Condition {
                 if (world.isThundering()) {
                     return true;
                 }
-                break;
-            default:
-                Debug.error("Weather type '" + weather + "' not defined!");
                 break;
         }
         return false;
