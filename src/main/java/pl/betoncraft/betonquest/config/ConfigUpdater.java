@@ -281,7 +281,7 @@ public class ConfigUpdater {
             Debug.info("Updating the database format");
             if (instance.isMySQLUsed()) {
                 con.prepareStatement("ALTER TABLE " + prefix +
-                        "objectives CREATE COLUMN objective VARCHAR(512) NOT"
+                        "objectives ADD objective VARCHAR(512) NOT"
                         + " NULL AFTER playerID;")
                         .executeUpdate();
             } else {
