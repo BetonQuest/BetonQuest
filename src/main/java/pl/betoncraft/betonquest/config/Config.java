@@ -25,10 +25,13 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Handles the configuration of the plugin
@@ -165,6 +168,36 @@ public class Config {
     
     /**
      * Retrieves the message from the configuration in specified language
+     * and replaces the variables
+     * 
+     * @param lang
+     *            language in which the message should be retrieved
+     * @param message
+     *            name of the message to retrieve
+     * @param variables
+     *            array of variables to replace
+     * @return message in that language, or message in English, or null if it
+     *         does not exist
+     */
+    public static String getMessage(String lang, String message, String[] variables) {
+        String result = messages.getConfig().getString(lang + "." + message);
+        if (result == null) {
+            result = messages.getConfig().getString(Config.getLanguage() + "." + message);
+        }
+        if (result == null) {
+            result = messages.getConfig().getString("en." + message);
+        }
+        if (result != null) {
+            if (variables != null) for (int i = 0; i < variables.length; i++) {
+                result = result.replace("{" + (i+1) + "}", variables[i]);
+            }
+            result = result.replace('&', '§');
+        }
+        return result;
+    }
+    
+    /**
+     * Retrieves the message from the configuration in specified language
      * 
      * @param message
      *            name of the message to retrieve
@@ -173,15 +206,8 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      *         does not exist
      */
-    public static String getMessage(String message) {
-        String result = messages.getConfig().getString(lang + "." + message);
-        if (result == null) {
-            result = messages.getConfig().getString("en." + message);
-        }
-        if (result != null) {
-            result = result.replace('&', '§');
-        }
-        return result;
+    public static String getMessage(String lang, String message) {
+        return getMessage(lang, message, null);
     }
     
     /**
@@ -250,6 +276,13 @@ public class Config {
     }
     
     /**
+     * @return messages configuration
+     */
+    public static ConfigAccessor getMessages() {
+        return messages;
+    }
+    
+    /**
      * @return the default language
      */
     public static String getLanguage() {
@@ -272,5 +305,69 @@ public class Config {
             }
         }
         return null;
+    }
+    
+    /**
+     * Sends a message to player in his choosen language or default
+     * or English (if previous not found).
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param messageName
+     *          ID of the message
+     */
+    public static void sendMessage(String playerID, String messageName) {
+        sendMessage(playerID, messageName, null, null);
+    }
+    
+    /**
+     * Sends a message to player in his choosen language or default
+     * or English (if previous not found). It will replace all {x}
+     * sequences with the variables.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param messageName
+     *          ID of the message
+     * @param variables
+     *          array of variables which will be inserted into the string
+     */
+    public static void sendMessage(String playerID, String messageName,
+            String[] variables) {
+        sendMessage(playerID, messageName, variables, null);
+    }
+    
+    /**
+     * Sends a message to player in his choosen language or default
+     * or English (if previous not found). It will replace all {x}
+     * sequences with the variables and play the sound.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param messageName
+     *          ID of the message
+     * @param variables
+     *          array of variables which will be inserted into the string
+     * @param sound
+     *          name of the sound to play to the player
+     */
+    public static void sendMessage(String playerID, String messageName,
+            String[] variables, String soundName) {
+        String language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+        String message = getMessage(language, messageName, variables);
+        Player player = PlayerConverter.getPlayer(playerID);
+        player.sendMessage(message);
+        if (soundName != null) {
+            String rawSound = BetonQuest.getInstance().getConfig().getString(
+                    "sounds." + soundName);
+            if (!rawSound.equalsIgnoreCase("false")) {
+                try {
+                    player.playSound(player.getLocation(),
+                            Sound.valueOf(rawSound), 1F, 1F);
+                } catch (IllegalArgumentException e) {
+                    Debug.error("Unknown sound type: " + rawSound);
+                }
+            }
+        }
     }
 }

@@ -1,11 +1,11 @@
-tag_point_prefix: 'default'
+tag_point_prefix: 'true'
 variables:
   block: LOG
 npcs:
   'Innkeeper': innkeeper
   '0': innkeeper
 cancel:
-  wood: name:Wood_for_Innkeeper conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
+  wood: name_en:Wood_for_Innkeeper name_pl:Drewno_dla_Karczmarza conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
 #static:
 #  '03:45': example
 #global_locations: 'example,beton'

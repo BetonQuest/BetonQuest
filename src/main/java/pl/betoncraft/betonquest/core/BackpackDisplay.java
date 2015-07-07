@@ -76,6 +76,7 @@ public class BackpackDisplay implements Listener {
      * Stores assignments of quest cancelers to inventory slots
      */
     private HashMap<Integer,String> map;
+    private String lang;
 
     /**
      * Creates new GUI for the specified player and displays it to them.
@@ -100,6 +101,7 @@ public class BackpackDisplay implements Listener {
     public BackpackDisplay(String playerID, int page) {
         // fill those fields
         this.playerID = playerID;
+        this.lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
         this.page = page;
         player = PlayerConverter.getPlayer(playerID);
         instance = BetonQuest.getInstance();
@@ -118,6 +120,7 @@ public class BackpackDisplay implements Listener {
                     String canceler = s.getString(key);
                     boolean isMet = true;
                     String name = null;
+                    String defName = null;
                     for (String part : canceler.split(" ")) {
                         // check conditions
                         if (part.startsWith("conditions:")) {
@@ -131,9 +134,23 @@ public class BackpackDisplay implements Listener {
                                 }
                             }
                         // and parse the name
-                        } else if (part.startsWith("name:")) {
-                            name = part.substring(5);
+                        } else if (part.startsWith("name_" + lang + ":")) {
+                            name = part.substring(6 + lang.length());
+                        } else {
+                            if (part.startsWith("name_" + Config.getLanguage() + ":")) {
+                                defName = part.substring(6 + Config.getLanguage().length());
+                            } else if (part.startsWith("name:")) {
+                                defName = part.substring(5);
+                            }
                         }
+                    }
+                    if (name == null) {
+                        name = defName;
+                    }
+                    if (name == null) {
+                        Debug.error("Default name not defined in quest canceler: "
+                                + packName + "." + key);
+                        continue;
                     }
                     // now if canceler meets the conditions
                     if (isMet) {
@@ -150,7 +167,7 @@ public class BackpackDisplay implements Listener {
                 Debug.error("Player " + player.getName() + " has too many active quests, please"
                     + " don't allow for so many of them. It slows down your server!");
             }
-            inv = Bukkit.createInventory(null, numberOfRows*9, Config.getMessage("cancel_page"));
+            inv = Bukkit.createInventory(null, numberOfRows*9, Config.getMessage(lang, "cancel_page"));
             ItemStack[] content = new ItemStack[numberOfRows*9];
             int i = 0;
             for (String address : cancelers.keySet()) {
@@ -187,7 +204,7 @@ public class BackpackDisplay implements Listener {
                 .size() + 1) / 45 : (int) Math.floor((backpack.size() + 1) / 45) + 1));
         Debug.info("Generating backpack for " + PlayerConverter.getName(playerID) + ", page " + page);
         // prepare the inventory
-        inv = Bukkit.createInventory(null, 54, Config.getMessage("backpack_title") + (pages == 1 ? "" : " ("
+        inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title") + (pages == 1 ? "" : " ("
                 + (page + 1) + "/" + pages + ")"));
         ItemStack[] content = new ItemStack[54];
         int i = 0;
@@ -196,7 +213,7 @@ public class BackpackDisplay implements Listener {
             Debug.info("  First page, checking journal");
             if (!Journal.hasJournal(playerID)) {
                 Debug.info("    Adding the journal");
-                content[0] = dbHandler.getJournal().generateJournal();
+                content[0] = dbHandler.getJournal().getAsItem();
             } else {
                 Debug.info("    Player has his journal, not adding");
                 content[0] = null;
@@ -228,7 +245,7 @@ public class BackpackDisplay implements Listener {
                 previous = new ItemStack(Material.GLOWSTONE_DUST);
             }
             ItemMeta meta = previous.getItemMeta();
-            meta.setDisplayName(Config.getMessage("previous").replaceAll("&", "§"));
+            meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
             previous.setItemMeta(meta);
             Debug.info("    There is a previous button");
             content[48] = previous;
@@ -247,7 +264,7 @@ public class BackpackDisplay implements Listener {
                 next = new ItemStack(Material.REDSTONE);
             }
             ItemMeta meta = next.getItemMeta();
-            meta.setDisplayName(Config.getMessage("next").replaceAll("&", "§"));
+            meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
             next.setItemMeta(meta);
             Debug.info("    There is a next button");
             content[50] = next;
@@ -266,7 +283,7 @@ public class BackpackDisplay implements Listener {
             cancel = new ItemStack(Material.BONE);
         }
         ItemMeta meta = cancel.getItemMeta();
-        meta.setDisplayName(Config.getMessage("cancel").replaceAll("&", "§"));
+        meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
         cancel.setItemMeta(meta);
         content[45] = cancel;
         // set the inventory and display it
@@ -299,7 +316,7 @@ public class BackpackDisplay implements Listener {
             } else if (page == 0 && event.getRawSlot() == 0) {
                 // first page on first slot should contain the journal
                 Debug.info("  Journal slot was clicked, adding journal");
-                dbHandler.getJournal().addJournal(Integer.parseInt(Config.getString("config.default_journal_slot")));
+                dbHandler.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
                 new BackpackDisplay(playerID, page);
             } else if (event.getRawSlot() < 45) {
                 // raw slot lower than 45 is a quest item
@@ -375,9 +392,9 @@ public class BackpackDisplay implements Listener {
                             item.setAmount(item.getAmount() - amount);
                             player.getInventory().setItem(slot, item);
                         }
-                    } else if (Journal.isJournal(item)) {
+                    } else if (Journal.isJournal(playerID, item)) {
                         // if it's a journal, remove it so it appears in backpack again
-                        dbHandler.getJournal().removeJournal();
+                        dbHandler.getJournal().removeFromInv();
                     }
                     new BackpackDisplay(playerID, page);
                 }

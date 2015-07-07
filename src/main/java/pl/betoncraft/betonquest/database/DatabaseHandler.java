@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
@@ -47,37 +48,20 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Represents a handler for all player-related data, which can load and save it.
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class DatabaseHandler {
 
     private String playerID;
 
-    /**
-     * Stores player's tags.
-     */
     private List<String> tags = new ArrayList<>();
-    /**
-     * Temporarily stores player's pointers to journal entries.
-     */
     private List<Pointer> entries = new ArrayList<>();
-    /**
-     * Stores player's Points.
-     */
     private List<Point> points = new ArrayList<>();
-    /**
-     * Temporarily stores player's objective strings, ready to start by
-     * startObjectives() method. They are deleted after starting.
-     */
-    private HashMap<String, String> objectives = new HashMap<>();
-    /**
-     * Stores player's journal.
-     */
+    private HashMap<String, String> objectives = new HashMap<>(); // not active ones
     private Journal journal;
-    /**
-     * Stores all items in player's backpack
-     */
     private List<ItemStack> backpack = new ArrayList<>();
+
+    private String lang; // the player's language
 
     /**
      * Creates new DatabaseHandler for the player represented by playerID.
@@ -97,36 +81,35 @@ public class DatabaseHandler {
     public void loadAllPlayerData() {
         try {
             // open connection to the database
-            Connector database = new Connector();
+            Connector con = new Connector();
 
             // load objectives
-            ResultSet res1 = database.querySQL(QueryType.SELECT_OBJECTIVES,
+            ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES,
                     new String[] { playerID });
             // put them into the list
             while (res1.next())
                 objectives.put(res1.getString("objective"), res1.getString("instructions"));
 
             // load tags
-            ResultSet res2 = database.querySQL(QueryType.SELECT_TAGS, new String[] { playerID });
+            ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[] { playerID });
             // put them into the list
             while (res2.next())
                 tags.add(res2.getString("tag"));
 
             // load journals
-            ResultSet res3 = database.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
+            ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
             // put them into the list
             while (res3.next())
                 entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
 
             // load points
-            ResultSet res4 = database.querySQL(QueryType.SELECT_POINTS, new String[] { playerID });
+            ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[] { playerID });
             // put them into the list
             while (res4.next())
                 points.add(new Point(res4.getString("category"), res4.getInt("count")));
 
             // load backpack
-            ResultSet res5 = database
-                    .querySQL(QueryType.SELECT_BACKPACK, new String[] { playerID });
+            ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, new String[] { playerID });
             // put items into the list
             while (res5.next()) {
                 String instruction = res5.getString("instruction");
@@ -140,6 +123,15 @@ public class DatabaseHandler {
                 }
                 backpack.add(item);
             }
+            
+            // load language
+            ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, new String[]{ playerID });
+            // put it there
+            if (res6.next()) {
+                lang = res6.getString("language");
+            } else {
+                lang = Config.getLanguage();
+            }
 
             // log data to debugger
             if (Debug.debugging()) {
@@ -149,7 +141,7 @@ public class DatabaseHandler {
             }
 
             // generate journal
-            journal = new Journal(playerID, entries);
+            journal = new Journal(playerID, lang, entries);
             // entries.clear();
 
         } catch (SQLException e) {
@@ -180,6 +172,7 @@ public class DatabaseHandler {
         con.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
         con.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
         con.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
+        con.updateSQL(UpdateType.DELETE_PLAYER, new String[]{ playerID });
         // insert new data
         for (String objective : new HashMap<>(objectives).keySet()) {
             con.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objective, objectives.get(objective) });
@@ -206,6 +199,7 @@ public class DatabaseHandler {
             String amount = String.valueOf(itemStack.getAmount());
             con.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
         }
+        con.updateSQL(UpdateType.ADD_PLAYER, new String[]{playerID, lang});
         // log debug message about saving
         Debug.info("Saved " + (objectives.size() + objectivesList.size()) + " objectives, "
             + tags.size() + " tags, " + points.size() + " points, "
@@ -242,9 +236,11 @@ public class DatabaseHandler {
      *          ID of the objective
      */
     public void addNewRawObjective(String objectiveID) {
-        String data = BetonQuest.getInstance().getObjective(objectiveID)
-                .getDefaultDataInstruction();
-        addRawObjective(objectiveID, data);
+        Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
+        if (obj == null) {
+            return;
+        }
+        addRawObjective(objectiveID, obj.getDefaultDataInstruction());
     }
     
     /**
@@ -257,6 +253,9 @@ public class DatabaseHandler {
      *          data instruction string to use
      */
     public void addRawObjective(String objectiveID, String data) {
+        if (objectives.containsKey(objectiveID)) {
+            return;
+        }
         objectives.put(objectiveID, data);
     }
 
@@ -320,7 +319,7 @@ public class DatabaseHandler {
         database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
-            journal.updateJournal();
+            journal.update();
         }
     }
 
@@ -478,7 +477,10 @@ public class DatabaseHandler {
         String[] parts = name.split("\\.");
         String packName = parts[0];
         String cancelerName = parts[1];
-        String instruction = Config.getPackage(packName).getString("main.cancel." + cancelerName);
+        ConfigPackage pack = Config.getPackage(packName);
+        String rawPrefix = pack.getMain().getConfig().getString("tag_point_prefix");
+        boolean prefix = rawPrefix != null && rawPrefix.equalsIgnoreCase("true");
+        String instruction = pack.getString("main.cancel." + cancelerName);
         String[] events     = null,
                  tags       = null,
                  objectives = null,
@@ -508,34 +510,44 @@ public class DatabaseHandler {
         if (tags != null) {
             for (String tag : tags) {
                 Debug.info("  Removing tag " + tag);
-                removeTag(tag);
+                if (prefix && !tag.contains(".")) {
+                    removeTag(packName + "." + tag);
+                } else {
+                    removeTag(tag);
+                }
             }
         }
         if (points != null) {
             for (String point : points) {
                 Debug.info("  Removing points " + point);
-                removePointsCategory(point);
+                if (prefix && !point.contains(".")) {
+                    removePointsCategory(packName + "." + point);
+                } else {
+                    removePointsCategory(point);
+                }
             }
         }
         if (objectives != null) {
             for (String obj : objectives) {
                 Debug.info("  Removing objective " + obj);
-                deleteObjective(obj);
+                if (!obj.contains(".")) {
+                    deleteObjective(packName + "." + obj);
+                } else {
+                    deleteObjective(obj);
+                }
             }
         }
         if (journal != null) {
             Journal j = getJournal();
             for (String entry : journal) {
                 Debug.info("  Removing entry " + entry);
-                String pointer;
                 if (entry.contains(".")) {
-                    pointer = entry;
+                    j.removePointer(entry);
                 } else {
-                    pointer = packName + "." + entry;
+                    j.removePointer(packName + "." + entry);
                 }
-                j.removePointer(pointer);
             }
-            j.updateJournal();
+            j.update();
         }
         // teleport player to the location
         if (loc != null) {
@@ -584,6 +596,17 @@ public class DatabaseHandler {
         }
         // done
         Debug.info("Quest removed!");
-        PlayerConverter.getPlayer(playerID).sendMessage(Config.getMessage("quest_canceled").replace("&", "§").replace("%quest%", questName));
+        Config.sendMessage(playerID, "quest_canceled", new String[]{questName});
+    }
+
+    /**
+     * @return the language this player uses
+     */
+    public String getLanguage() {
+        return lang;
+    }
+    
+    public void setLanguage(String lang) {
+        this.lang = lang;
     }
 }

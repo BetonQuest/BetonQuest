@@ -83,12 +83,10 @@ public class GiveEvent extends QuestEvent {
             QuestItem questItem = theItem.getItem();
             int amount = theItem.getAmount();
             if (notify) {
-                player.sendMessage(Config.getMessage("items_given").replaceAll(
-                        "%name%",
-                        (questItem.getName() != null) ? questItem.getName()
-                                : questItem.getMaterial().toString())
-                        .replaceAll("%amount%", String.valueOf(amount))
-                        .replaceAll("&", "§"));
+                Config.sendMessage(playerID, "items_given", new String[]{
+                        (questItem.getName() != null) ? questItem.getName() :
+                        questItem.getMaterial().toString().toLowerCase()
+                        .replace("_", " "), String.valueOf(amount)});
             }
             while (amount > 0) {
                 int stackSize;

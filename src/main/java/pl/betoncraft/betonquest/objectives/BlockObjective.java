@@ -19,7 +19,6 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -106,17 +105,12 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify) {
                 // or maybe display a notification
-                Player player = PlayerConverter.getPlayer(playerID);
                 if (playerData.getAmount() > neededAmount) {
-                    player.sendMessage(Config.getMessage("blocks_to_break")
-                            .replaceAll("%amount%", String.valueOf(playerData
-                                    .getAmount() - neededAmount))
-                            .replaceAll("&", "§"));
+                    Config.sendMessage(playerID, "blocks_to_break",
+                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)});
                 } else {
-                    player.sendMessage(Config.getMessage("blocks_to_place")
-                            .replaceAll("%amount%", String.valueOf(neededAmount
-                                    - playerData.getAmount()))
-                            .replaceAll("&", "§"));
+                    Config.sendMessage(playerID, "blocks_to_place",
+                            new String[]{String.valueOf(neededAmount - playerData.getAmount())});
                 }
             }
         }
@@ -139,17 +133,12 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify) {
                 // or maybe display a notification
-                Player player = PlayerConverter.getPlayer(playerID);
                 if (playerData.getAmount() > neededAmount) {
-                    player.sendMessage(Config.getMessage("blocks_to_break")
-                            .replaceAll("%amount%", String.valueOf(playerData
-                                    .getAmount() - neededAmount))
-                            .replaceAll("&", "§"));
+                    Config.sendMessage(playerID, "blocks_to_break",
+                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)});
                 } else {
-                    player.sendMessage(Config.getMessage("blocks_to_place")
-                            .replaceAll("%amount%", String.valueOf(neededAmount
-                                    - playerData.getAmount()))
-                            .replaceAll("&", "§"));
+                    Config.sendMessage(playerID, "blocks_to_place",
+                            new String[]{String.valueOf(neededAmount - playerData.getAmount())});
                 }
             }
         }

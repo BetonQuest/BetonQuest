@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v18";
+    private final String destination = "v19";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -187,6 +187,38 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v18() {
+        try {
+            FileConfiguration messages = Config.getMessages().getConfig();
+            for (String lang : messages.getKeys(false)) {
+                if (lang.equalsIgnoreCase("global")) continue;
+                try {
+                    messages.set(lang + ".purged", messages.getString(lang + ".purged").replace("%player%", "{1}"));
+                    messages.set(lang + ".item_created", messages.getString(lang + ".item_created").replace("%item%", "{1}"));
+                    messages.set(lang + ".player_event", messages.getString(lang + ".player_event").replace("%event%", "{1}"));
+                    messages.set(lang + ".player_condition", messages.getString(lang + ".player_condition").replace("%condition%", "{1}").replace("%outcome%", "{2}"));
+                    messages.set(lang + ".quest_canceled", messages.getString(lang + ".quest_canceled").replace("%quest%", "{1}"));
+                    messages.set(lang + ".items_given", messages.getString(lang + ".items_given").replace("%name%", "{1}").replace("%amount%", "{2}"));
+                    messages.set(lang + ".items_taken", messages.getString(lang + ".items_taken").replace("%name%", "{1}").replace("%amount%", "{2}"));
+                    messages.set(lang + ".blocks_to_break", messages.getString(lang + ".blocks_to_break").replace("%amount%", "{1}"));
+                    messages.set(lang + ".blocks_to_place", messages.getString(lang + ".blocks_to_place").replace("%amount%", "{1}"));
+                    messages.set(lang + ".conversation_start", messages.getString(lang + ".conversation_start").replace("%quester%", "{1}"));
+                    messages.set(lang + ".conversation_end", messages.getString(lang + ".conversation_end").replace("%quester%", "{1}"));
+                } catch (NullPointerException e) {
+                    Debug.error("The language " + lang + " is not present in the defaults, please update it manually.");
+                }
+            }
+            Config.getMessages().saveConfig();
+            Debug.broadcast("Updated messages to new replace format");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        config.set("version", "v19");
+        instance.saveConfig();
     }
 
     @SuppressWarnings("unused")

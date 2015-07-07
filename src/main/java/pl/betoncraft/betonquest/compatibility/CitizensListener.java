@@ -33,7 +33,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Starts new conversations with NPCs
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class CitizensListener implements Listener {
 
@@ -49,8 +49,9 @@ public class CitizensListener implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        if (CombatTagger.isTagged(PlayerConverter.getID(event.getClicker()))) {
-            event.getClicker().sendMessage(Config.getMessage("busy").replaceAll("&", "§"));
+        final String playerID = PlayerConverter.getID(event.getClicker());
+        if (CombatTagger.isTagged(playerID)) {
+            Config.sendMessage(playerID, "busy");
             return;
         }
         String id = String.valueOf(event.getNPC().getId());
@@ -63,7 +64,7 @@ public class CitizensListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    new CitizensConversation(PlayerConverter.getID(event.getClicker()), packName,
+                    new CitizensConversation(playerID, packName,
                             convName, event.getNPC().getEntity().getLocation(), event.getNPC());
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());

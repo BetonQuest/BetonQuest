@@ -1,3 +1,9 @@
-wood_started: 'The Innkeeper asked me to bring him 16 blocks of wood from nearby forest.'
-wood_done: 'I colected 16 block of wood. I should return to the Innkeeper.'
-wood_paid: 'I brought wood to the Innkeeper and he gave me 5 emeralds.'
+wood_started:
+  en: 'The Innkeeper asked me to bring him 16 blocks of wood from nearby forest.'
+  pl: 'Karczmarz poprosil mnie abym przyniosl mu 16 blokow drewna z pobliskiego lasu.'
+wood_done:
+  en: 'I colected 16 block of wood. I should return to the Innkeeper.'
+  pl: 'Zebralem 16 blokow drewna. Powinienem wrocic do Karczmarza.'
+wood_paid:
+  en: 'I brought wood to the Innkeeper and he gave me 5 emeralds.'
+  pl: 'Zanioslem drewno Karczmarzowi, a on dal mi 5 szmaragdow.'

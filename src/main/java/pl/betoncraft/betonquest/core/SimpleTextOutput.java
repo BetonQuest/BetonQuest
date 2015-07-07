@@ -18,8 +18,6 @@
 package pl.betoncraft.betonquest.core;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -30,25 +28,6 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Co0sh
  */
 public class SimpleTextOutput {
-
-    /**
-     * Sends player a message that is supposed to look like a plugin
-     * notification
-     * 
-     * @param playerID
-     *            ID of the player
-     * @param message
-     *            message
-     */
-    public static void sendSystemMessage(String playerID, String message, String soundName) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        String finalString = (Config.getString("messages.global.plugin_prefix") + message)
-                .replaceAll("&", "§");
-        player.sendMessage(finalString);
-        if (!soundName.equalsIgnoreCase("false")) {
-            player.playSound(player.getLocation(), Sound.valueOf(soundName), 1F, 1F);
-        }
-    }
 
     /**
      * Sends player a message that looks like NPC said it. All "%player%" in

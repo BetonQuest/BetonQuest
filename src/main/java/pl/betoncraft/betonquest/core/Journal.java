@@ -27,6 +27,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -42,18 +43,10 @@ import com.google.common.collect.Lists;
  */
 public class Journal {
 
-    /**
-     * Owner of this journal
-     */
     private String playerID;
-    /**
-     * List of pointers in this Journal.
-     */
     private List<Pointer> pointers;
-    /**
-     * List of texts generated from pointers.
-     */
-    private List<String> texts = new ArrayList<String>();
+    private List<String> texts = new ArrayList<>();
+    private String lang;
 
     /**
      * Creates new Journal instance from List of Pointers.
@@ -61,11 +54,12 @@ public class Journal {
      * @param list
      *            list of pointers to journal entries
      */
-    public Journal(String playerID, List<Pointer> list) {
+    public Journal(String playerID, String lang, List<Pointer> list) {
         // generate texts from list of pointers
         this.playerID = playerID;
+        this.lang = lang;
         pointers = list;
-        generateTexts();
+        generateTexts(lang);
     }
 
     /**
@@ -89,7 +83,24 @@ public class Journal {
         Debug.info("Adding new pointer \"" + pointer.getPointer() + "\" / " + pointer
                 .getTimestamp() + " to journal for player " + PlayerConverter.getName(playerID));
         pointers.add(pointer);
-        generateTexts();
+        generateTexts(lang);
+    }
+
+    /**
+     * Removes the pointer from journal and regenerates it
+     * 
+     * @param pointer
+     *          the pointer to remove
+     */
+    public void removePointer(String pointer) {
+        for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
+            Pointer pointerr = (Pointer) iterator.next();
+            if (pointerr.getPointer().equalsIgnoreCase(pointer)) {
+                iterator.remove();
+                break;
+            }
+        }
+        generateTexts(lang);
     }
 
     /**
@@ -104,8 +115,9 @@ public class Journal {
     /**
      * Generates texts for every pointer and places them inside a List
      */
-    public void generateTexts() {
+    public void generateTexts(String lang) {
         texts.clear();
+        this.lang = lang; 
         for (Pointer pointer : pointers) {
             String date = new SimpleDateFormat(Config.getString("messages.global.date_format")).format(pointer.getTimestamp());
             String[] dateParts = date.split(" ");
@@ -121,8 +133,21 @@ public class Journal {
                 continue;
             }
             String pointerName = parts[1];
-            texts.add(day + " " + hour + "§" + Config.getString("config.journal_colors.text") + "\n" 
-                    + pack.getString("journal." + pointerName));
+            String text;
+            if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
+                text = pack.getString("journal." + pointerName + "." + lang);
+                if (text == null) {
+                    text = pack.getString("journal." + pointerName + "." + Config.getLanguage());
+                }
+                if (text == null) {
+                    Debug.error("No default language defined for journal pointer " + pointerName);
+                    text = "error";
+                }
+            } else {
+                text = pack.getString("journal." + pointerName);
+            }
+            texts.add(day + " " + hour + "§" + Config.getString("config.journal_colors.text")
+                    + "\n" + text);
         }
     }
 
@@ -137,12 +162,10 @@ public class Journal {
     /**
      * Adds journal to player inventory.
      * 
-     * @param playerID
-     *            ID of the player
      * @param slot
      *            slot number for adding the journal
      */
-    public void addJournal(int slot) {
+    public void addToInv(int slot) {
         // do nothing if the player already has a journal
         if (hasJournal(playerID)) {
             return;
@@ -153,7 +176,7 @@ public class Journal {
             slot = 8;
         }
         // generate journal and place it in the slot
-        ItemStack item = generateJournal();
+        ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             ItemStack oldItem = inventory.getItem(slot);
             inventory.setItem(slot, item);
@@ -163,26 +186,25 @@ public class Journal {
             }
         } else {
             // if there is no place for the item then print a message about it
-            SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage("inventory_full"),
-                    Config.getString("config.sounds.full"));
+            Config.sendMessage(playerID, "inventory_full", null, "full");
         }
     }
     
     /**
-     * Generates the journal using specified player's Journal object
+     * Generates the journal as ItemStack
      * 
      * @param playerID
      *            ID of the player
      * @return the journal ItemStack
      */
-    public ItemStack generateJournal() {
+    public ItemStack getAsItem() {
         // create the book with default title/author
         ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.setTitle(Config.getMessage("journal_title").replaceAll("&", "§"));
+        meta.setTitle(Config.getMessage(lang, "journal_title").replaceAll("&", "§"));
         meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
         List<String> lore = new ArrayList<String>();
-        lore.add(Config.getMessage("journal_lore").replaceAll("&", "§"));
+        lore.add(Config.getMessage(lang, "journal_lore").replaceAll("&", "§"));
         meta.setLore(lore);
 
         // logic for converting entries into single text and then to pages
@@ -205,10 +227,11 @@ public class Journal {
      * @param playerID
      *            ID of the player
      */
-    public void updateJournal() {
+    public void update() {
         if (hasJournal(playerID)) {
-            int slot = removeJournal();
-            addJournal(slot);
+            int slot = removeFromInv();
+            generateTexts(lang);
+            addToInv(slot);
         }
 
     }
@@ -220,11 +243,11 @@ public class Journal {
      *            ID of the player
      * @return the slot from which the journal was removed
      */
-    public int removeJournal() {
+    public int removeFromInv() {
         // loop all items and check if any of them is a journal
         Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (isJournal(inventory.getItem(i))) {
+            if (isJournal(playerID, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));
                 return i;
             }
@@ -239,17 +262,19 @@ public class Journal {
      *            ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
-    public static boolean isJournal(ItemStack item) {
+    public static boolean isJournal(String playerID, ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
             return false;
         }
+        // get language
+        String playerLang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
         // check all properties of the item and return the result
         return (item.getType().equals(Material.WRITTEN_BOOK)
             && ((BookMeta) item.getItemMeta()).hasTitle()
-            && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage("journal_title").replaceAll("&", "§"))
+            && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
             && item.getItemMeta().hasLore()
-            && item.getItemMeta().getLore().contains(Config.getMessage("journal_lore").replaceAll("&", "§")));
+            && item.getItemMeta().getLore().contains(Config.getMessage(playerLang, "journal_lore")));
     }
     
     /**
@@ -261,21 +286,10 @@ public class Journal {
      */
     public static boolean hasJournal(String playerID) {
         for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
-            if (isJournal(item)) {
+            if (isJournal(playerID, item)) {
                 return true;
             }
         }
         return false;
-    }
-    
-    public void removePointer(String pointer) {
-        for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
-            Pointer pointerr = (Pointer) iterator.next();
-            if (pointerr.getPointer().equalsIgnoreCase(pointer)) {
-                iterator.remove();
-                break;
-            }
-        }
-        generateTexts();
     }
 }

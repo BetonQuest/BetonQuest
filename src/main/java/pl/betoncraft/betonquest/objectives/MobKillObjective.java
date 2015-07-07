@@ -117,10 +117,8 @@ public class MobKillObjective extends Objective implements Listener {
                         completeObjective(playerID);
                     } else if (notify) {
                         // send a notification
-                        Player player = PlayerConverter.getPlayer(playerID);
-                        player.sendMessage(Config.getMessage("mobs_to_kill")
-                                .replaceAll("%amount%", String.valueOf(amount))
-                                .replaceAll("&", "§"));
+                        Config.sendMessage(playerID, "mobs_to_kill",
+                                new String[]{String.valueOf(amount)});
                     }
                 }
             }
@@ -142,9 +140,8 @@ public class MobKillObjective extends Objective implements Listener {
                         completeObjective(playerID);
                     } else if (notify) {
                         // send a notification
-                        Player player = PlayerConverter.getPlayer(playerID);
-                        player.sendMessage(Config.getMessage("mobs_to_kill")
-                                .replaceAll("%amount%", String.valueOf(amount)));
+                        Config.sendMessage(playerID, "mobs_to_kill",
+                                new String[]{String.valueOf(amount)});
                     }
                 }
             }

@@ -55,7 +55,7 @@ import pl.betoncraft.betonquest.database.Database;
 /**
  * Various utilities.
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class Utils {
 
@@ -106,7 +106,7 @@ public class Utils {
             FileConfiguration config = accessor.getConfig(); 
             // prepare the database and map
             HashMap<String, ResultSet> map = new HashMap<>();
-            String[] tables = new String[]{"objectives", "tags", "points", "journals"};
+            String[] tables = new String[]{"objectives", "tags", "points", "journals", "player"};
             // open database connection
             Connector database = new Connector();
             // load resultsets into the map
@@ -236,6 +236,7 @@ public class Utils {
             con.updateSQL(UpdateType.DROP_TAGS, new String[]{});
             con.updateSQL(UpdateType.DROP_POINTS, new String[]{});
             con.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
+            con.updateSQL(UpdateType.DROP_PLAYER, new String[]{});
             // create new tables
             database.createTables(instance.isMySQLUsed());
             // load objectives
@@ -244,6 +245,7 @@ public class Utils {
                 con.updateSQL(UpdateType.INSERT_OBJECTIVE, new String[]{
                     objectives.getString(key + ".id"),
                     objectives.getString(key + ".playerID"),
+                    objectives.getString(key + ".objective"),
                     objectives.getString(key + ".instructions"),
                 });
             }
@@ -276,6 +278,7 @@ public class Utils {
                     journals.getString(key + ".date"),
                 });
             }
+            // load backpack
             ConfigurationSection backpack = config.getConfigurationSection("backpack");
             if (backpack != null) for (String key : backpack.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_BACKPACK, new String[]{
@@ -283,6 +286,15 @@ public class Utils {
                     backpack.getString(key + ".playerID"),
                     backpack.getString(key + ".instruction"),
                     backpack.getString(key + ".amount"),
+                });
+            }
+            // load player
+            ConfigurationSection player = config.getConfigurationSection("player");
+            if (player != null) for (String key : player.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_PLAYER, new String[]{
+                    player.getString(key + ".id"),
+                    player.getString(key + ".playerID"),
+                    player.getString(key + ".language"),
                 });
             }
             // delete backup file so it doesn't get loaded again
@@ -418,7 +430,7 @@ public class Utils {
             return false;
         }
         if (item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore()
-                .contains(Config.getMessage("quest_item").replaceAll("&", "§"))) {
+                .contains(Config.getMessage(Config.getLanguage(), "quest_item"))) {
             return true;
         }
         return false;

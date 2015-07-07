@@ -55,8 +55,9 @@ public class ClearEvent extends QuestEvent {
             String[] rawTypes = parts[1].split(",");
             EntityType[] tempTypes = new EntityType[rawTypes.length];
             for (int i = 0; i < rawTypes.length; i++) {
-                tempTypes[i] = EntityType.valueOf(rawTypes[i]);
-                if (tempTypes[i] == null) {
+                try {
+                    tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
+                } catch (IllegalArgumentException e) {
                     throw new InstructionParseException("Unknown mob type: "
                             + rawTypes[i]);
                 }

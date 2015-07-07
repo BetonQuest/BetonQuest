@@ -42,7 +42,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Represents an item handled by the configuration
  * 
- * @author co0sh
+ * @author Jakub Sapalski
  */
 public class QuestItem {
 
@@ -428,7 +428,7 @@ public class QuestItem {
             if (author != null) {
                 bookMeta.setAuthor(author);
             } else {
-                bookMeta.setAuthor(Config.getMessage("unknown_author"));
+                bookMeta.setAuthor(Config.getMessage(Config.getLanguage(), "unknown_author"));
             }
             if (text != null) {
                 bookMeta.setPages(Utils.pagesFromString(text, false));
@@ -436,7 +436,7 @@ public class QuestItem {
             if (title != null) {
                 bookMeta.setTitle(title);
             } else {
-                bookMeta.setTitle(Config.getMessage("unknown_title"));
+                bookMeta.setTitle(Config.getMessage(Config.getLanguage(), "unknown_title"));
             }
             item.setItemMeta(bookMeta);
             return item;

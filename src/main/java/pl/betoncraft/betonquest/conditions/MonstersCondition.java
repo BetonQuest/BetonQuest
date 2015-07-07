@@ -54,27 +54,28 @@ public class MonstersCondition extends Condition {
         EntityType[] tempTypes = new EntityType[rawTypes.length];
         int[] tempAmounts = new int[rawTypes.length];
         for (int i = 0; i < rawTypes.length; i++) {
-            if (rawTypes[i].contains(":")) {
-                String[] typeParts = rawTypes[i].split(":");
-                if (typeParts.length == 0) {
-                    throw new InstructionParseException("Type not defined");
-                } else if (typeParts.length < 2) {
-                    tempTypes[i] = EntityType.valueOf(typeParts[0]);
-                    tempAmounts[i] = 1;
-                } else {
-                    tempTypes[i] = EntityType.valueOf(typeParts[0]);
-                    try {
-                        tempAmounts[i] = Integer.parseInt(typeParts[1]);
-                    } catch (NumberFormatException e) {
-                        throw new InstructionParseException(
-                                "Could not parse amount");
+            try {
+                if (rawTypes[i].contains(":")) {
+                    String[] typeParts = rawTypes[i].split(":");
+                    if (typeParts.length == 0) {
+                        throw new InstructionParseException("Type not defined");
+                    } else if (typeParts.length < 2) {
+                        tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+                        tempAmounts[i] = 1;
+                    } else {
+                        tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+                        try {
+                            tempAmounts[i] = Integer.parseInt(typeParts[1]);
+                        } catch (NumberFormatException e) {
+                            throw new InstructionParseException(
+                                    "Could not parse amount");
+                        }
                     }
+                } else {
+                    tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
+                    tempAmounts[i] = 1;
                 }
-            } else {
-                tempTypes[i] = EntityType.valueOf(rawTypes[i]);
-                tempAmounts[i] = 1;
-            }
-            if (tempTypes[i] == null) {
+            } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown mob type: "
                         + rawTypes[i]);
             }

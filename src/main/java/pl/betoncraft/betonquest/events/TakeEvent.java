@@ -83,12 +83,10 @@ public class TakeEvent extends QuestEvent {
             QuestItem questItem = item.getItem();
             int amount = item.getAmount();
             if (notify) {
-                player.sendMessage(Config.getMessage("items_taken").replaceAll(
-                        "%name%",
-                        (questItem.getName() != null) ? questItem.getName()
-                                : questItem.getMaterial().toString())
-                        .replaceAll("%amount%", String.valueOf(amount))
-                        .replaceAll("&", "§"));
+                Config.sendMessage(playerID, "items_taken", new String[]{
+                        (questItem.getName() != null) ? questItem.getName() :
+                                questItem.getMaterial().toString().toLowerCase()
+                                .replace("_", " "), String.valueOf(amount)});
             }
 
             //Remove Quest items from player's inventory

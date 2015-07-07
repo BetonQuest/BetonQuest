@@ -35,6 +35,7 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.commands.JournalCommand;
+import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
 import pl.betoncraft.betonquest.commands.TellrawCommand;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -130,6 +131,7 @@ public final class BetonQuest extends JavaPlugin {
     private static BetonQuest instance;
     private Database database;
     private boolean isMySQLUsed;
+    private ArrayList<String> languages;
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
@@ -150,9 +152,13 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize debugger
         new Debug();
-
+        
         // load configuration
         new Config();
+        languages = new ArrayList<>();
+        for (String key : Config.getMessages().getConfig().getKeys(false)) {
+            if (!key.equals("global")) languages.add(key);
+        }
 
         // try to connect to database
         Debug.info("Connecting to MySQL database");
@@ -209,6 +215,7 @@ public final class BetonQuest extends JavaPlugin {
         new QuestCommand();
         new JournalCommand();
         new TellrawCommand();
+        new LangCommand();
 
         // register conditions
         registerConditions("health", HealthCondition.class);
@@ -696,8 +703,8 @@ public final class BetonQuest extends JavaPlugin {
         }
         Objective objective = objectives.get(objectiveID);
         if (objective.containsPlayer(playerID)) {
-            Debug.error("Player " + PlayerConverter.getName(playerID) +
-                    " already has the " + objectiveID + " objective!");
+            Debug.info("Player " + PlayerConverter.getName(playerID) +
+                    " already has the " + objectiveID + " objective");
             return;
         }
         objective.newPlayer(playerID);
@@ -766,5 +773,13 @@ public final class BetonQuest extends JavaPlugin {
      */
     public Objective getObjective(String objectiveID) {
         return objectives.get(objectiveID);
+    }
+
+    
+    /**
+     * @return the languages defined for this plugin
+     */
+    public ArrayList<String> getLanguages() {
+        return new ArrayList<>(languages);
     }
 }

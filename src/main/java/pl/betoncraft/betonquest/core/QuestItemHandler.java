@@ -23,6 +23,7 @@ import java.util.ListIterator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -64,14 +65,15 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
+        String playerID = PlayerConverter.getID((Player) event.getPlayer());
         ItemStack item = event.getItemDrop().getItemStack();
         // if journal is dropped, remove it so noone else can pick it up
-        if (Journal.isJournal(item)) {
+        if (Journal.isJournal(playerID, item)) {
             event.getItemDrop().remove();
         } else if (Utils.isQuestItem(item)) {
             Debug.info("Player " + event.getPlayer().getName() + " dropped " + item.getAmount()
                 + " quest items, adding them to backpack");
-            BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(event.getPlayer()))
+            BetonQuest.getInstance().getDBHandler(playerID)
                     .addItem(item.clone(), item.getAmount());
             event.getItemDrop().remove();
         }
@@ -79,14 +81,18 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler
     public void onItemMove(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
         if (event.getView().getType().equals(InventoryType.CREATIVE)) {
             return;
         }
+        String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         // canceling all action that could lead to transfering the journal
-        if (Journal.isJournal(event.getCursor()) || Utils.isQuestItem(event.getCursor())) {
+        if (Journal.isJournal(playerID, event.getCursor()) || Utils.isQuestItem(event.getCursor())) {
             if (event.getAction().equals(InventoryAction.PLACE_ALL)
                 || event.getAction().equals(InventoryAction.PLACE_ONE) || event.getAction().equals(
                     InventoryAction.PLACE_SOME)) {
@@ -97,7 +103,7 @@ public class QuestItemHandler implements Listener {
                 }
             }
         } else if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
-            if (Journal.isJournal(event.getCurrentItem()) || Utils.isQuestItem(event.getCurrentItem())) {
+            if (Journal.isJournal(playerID, event.getCurrentItem()) || Utils.isQuestItem(event.getCurrentItem())) {
                 event.setCancelled(true);
             }
         }
@@ -105,12 +111,16 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler
     public void onItemDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
+        String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         // this is moving the item across the inventory outside of Player's
         // inventory
-        if (Journal.isJournal(event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
+        if (Journal.isJournal(playerID, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
             for (Integer slot : event.getRawSlots()) {
                 if (slot < (event.getView().countSlots() - 36)) {
                     event.setCancelled(true);
@@ -129,14 +139,15 @@ public class QuestItemHandler implements Listener {
         // the list of drops
         List<ItemStack> drops = event.getDrops();
         ListIterator<ItemStack> litr = drops.listIterator();
+        String playerID = PlayerConverter.getID((Player) event.getEntity());
         while (litr.hasNext()) {
             ItemStack stack = litr.next();
-            if (Journal.isJournal(stack)) {
+            if (Journal.isJournal(playerID, stack)) {
                 litr.remove();
             }
             // remove all quest items and add them to backpack
             if (Utils.isQuestItem(stack)) {
-                BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(event.getEntity()))
+                BetonQuest.getInstance().getDBHandler(playerID)
                         .addItem(stack.clone(), stack.getAmount());
                 litr.remove();
             }
@@ -166,7 +177,8 @@ public class QuestItemHandler implements Listener {
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getRightClicked() instanceof ItemFrame
-            && (Journal.isJournal(event.getPlayer().getItemInHand()) || Utils.isQuestItem(event
+            && (Journal.isJournal(PlayerConverter.getID(event.getPlayer()),
+                    event.getPlayer().getItemInHand()) || Utils.isQuestItem(event
                     .getPlayer().getItemInHand()))) {
             event.setCancelled(true);
         }

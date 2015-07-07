@@ -60,7 +60,7 @@ public class CubeNPCListener implements Listener {
         if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
             // if the player doesn't have the required permission deny the editing
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Config.getMessage("no_permission").replaceAll("&", "§"));
+            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "no_permission");
         }
     }
 
@@ -109,7 +109,7 @@ public class CubeNPCListener implements Listener {
             String assignment = Config.getNpc(conversationID);
             if (assignment != null) {
                 if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
-                    event.getPlayer().sendMessage(Config.getMessage("busy"));
+                    Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "busy");
                     return;
                 }
                 String[] parts = assignment.split("\\.");

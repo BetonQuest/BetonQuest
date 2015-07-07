@@ -25,7 +25,6 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Pointer;
-import pl.betoncraft.betonquest.core.SimpleTextOutput;
 
 /**
  * Adds the entry to player's journal
@@ -51,11 +50,8 @@ public class JournalEvent extends QuestEvent {
         Journal journal = BetonQuest.getInstance().getDBHandler(playerID)
                 .getJournal();
         journal.addPointer(new Pointer(name, new Date().getTime()));
-        journal.updateJournal();
-        SimpleTextOutput.sendSystemMessage(
-                playerID,
-                Config.getMessage("new_journal_entry"),
-                Config.getString("config.sounds.journal"));
+        journal.update();
+        Config.sendMessage(playerID, "new_journal_entry", null, "journal");
     }
 
 }

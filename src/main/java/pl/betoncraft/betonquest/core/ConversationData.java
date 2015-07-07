@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.core;
 import java.util.HashMap;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -36,8 +37,8 @@ public class ConversationData {
     private ConfigPackage pack;
     private String convName;
     
-    private String quester;
-    private String unknown;
+    private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
+    private HashMap<String, String> unknown = new HashMap<>();
     private String[] finalEvents;
     private String[] startingOptions;
     private boolean blockMovement;
@@ -60,8 +61,21 @@ public class ConversationData {
         convName = name;
         pack = Config.getPackage(pkg);
         // get the main data
-        this.quester = pack.getString("conversations." + name + ".quester");
-        this.unknown = pack.getString("conversations." + name + ".unknown");
+        FileConfiguration conv = pack.getConversation(name).getConfig();
+        if (conv.isConfigurationSection("quester")) {
+            for (String lang : conv.getConfigurationSection("quester").getKeys(false)) {
+                quester.put(lang, pack.getString("conversations." + name + ".quester." + lang));
+            }
+        } else {
+            quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
+        }
+        if (conv.isConfigurationSection("unknown")) {
+            for (String lang : conv.getConfigurationSection("unknown").getKeys(false)) {
+                unknown.put(lang, pack.getString("conversations." + name + ".unknown." + lang));
+            }
+        } else {
+            unknown.put(Config.getLanguage(), pack.getString("conversations." + name + ".unknown"));
+        }
         String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
@@ -134,17 +148,29 @@ public class ConversationData {
     }
     
     /**
+     * @param lang
+     *          language of quester's name
      * @return the quester's name
      */
-    public String getQuester() {
-        return quester;
+    public String getQuester(String lang) {
+        String text = quester.get(lang);
+        if (text == null) {
+            text = quester.get(Config.getLanguage());
+        }
+        return text;
     }
     
     /**
+     * @param lang
+     *          language of quester's response
      * @return the unknown message
      */
-    public String getUnknown() {
-        return unknown;
+    public String getUnknown(String lang) {
+        String text = unknown.get(lang);
+        if (text == null) {
+            text = unknown.get(Config.getLanguage());
+        }
+        return text;
     }
     
     /**
@@ -168,11 +194,11 @@ public class ConversationData {
         return blockMovement;
     }
     
-    public String getText(String option, OptionType type) {
+    public String getText(String lang, String option, OptionType type) {
         if (type == OptionType.NPC) {
-            return NPCOptions.get(option).getText();
+            return NPCOptions.get(option).getText(lang);
         } else {
-            return playerOptions.get(option).getText();
+            return playerOptions.get(option).getText(lang);
         }
     }
     
@@ -196,7 +222,7 @@ public class ConversationData {
     
     private interface Option {
         public String getName();
-        public String getText();
+        public String getText(String lang);
         public String[] getConditions();
         public String[] getEvents();
         public String[] getPointers();
@@ -209,16 +235,34 @@ public class ConversationData {
         
         private String name;
         
-        private String text;
+        private HashMap<String, String> text = new HashMap<>();
         private String[] conditions;
         private String[] events;
         private String[] pointers;
         
         public NPCOption(String name) throws InstructionParseException {
             this.name = name;
-            text = pack.getString("conversations." + convName + ".NPC_options." + name + ".text");
-            if (text == null || text.equals("")) throw new InstructionParseException(String.format(
-                    "Text not defined in NPC option %s", name));
+            String defaultLang = Config.getLanguage();
+            if (pack.getConversation(convName).getConfig()
+                    .isConfigurationSection("NPC_options." + name + ".text")) {
+                for (String lang : pack.getConversation(convName).getConfig()
+                        .getConfigurationSection("NPC_options." + name + ".text")
+                        .getKeys(false)) {
+                    text.put(lang, pack.getString("conversations." + convName
+                            + ".NPC_options." + name + ".text." + lang));
+                }
+                if (!text.containsKey(defaultLang)) {
+                    throw new InstructionParseException(
+                            "No default language for " + name + " NPC option");
+                }
+            } else {
+                text.put(defaultLang, pack.getString("conversations." + convName
+                        + ".NPC_options." + name + ".text"));
+            };
+            for (String theText : text.values()) {
+                if (theText == null || theText.equals("")) throw new InstructionParseException(String.format(
+                        "Text not defined in NPC option %s", name));
+            }
             String rawConditions = pack.getString("conversations." + convName + ".NPC_options." + name + ".conditions");
             if (rawConditions != null && !rawConditions.equals("")) {
                 conditions = rawConditions.split(",");
@@ -253,8 +297,12 @@ public class ConversationData {
             return name;
         }
         
-        public String getText() {
-            return text;
+        public String getText(String lang) {
+            String theText = text.get(lang);
+            if (theText == null) {
+                theText = text.get(Config.getLanguage());
+            }
+            return theText;
         }
         
         public String[] getConditions() {
@@ -277,17 +325,37 @@ public class ConversationData {
         
         private String name;
         
-        private String text;
+        private HashMap<String, String> text = new HashMap<>();
         private String[] conditions;
         private String[] events;
         private String[] pointers;
         
         public PlayerOption(String name) throws InstructionParseException {
             this.name = name;
-            text = pack.getString("conversations." + convName + ".player_options." + name + ".text");
-            if (text == null || text.equals("")) throw new InstructionParseException(String.format(
-                    "Text not defined in player option %s", name));
-            String rawConditions = pack.getString("conversations." + convName + ".player_options." + name + ".conditions");
+            String defaultLang = Config.getLanguage();
+            if (pack.getConversation(convName).getConfig()
+                    .isConfigurationSection("player_options." + name + ".text")) {
+                for (String lang : pack.getConversation(convName).getConfig()
+                        .getConfigurationSection("player_options." + name + ".text")
+                        .getKeys(false)) {
+                    text.put(lang, pack.getString("conversations." + convName
+                            + ".player_options." + name + ".text." + lang));
+                }
+                if (!text.containsKey(defaultLang)) {
+                    throw new InstructionParseException(
+                            "No default language for " + name + " player option");
+                }
+            } else {
+                text.put(defaultLang, pack.getString("conversations." + convName
+                        + ".player_options." + name + ".text"));
+            };
+            for (String theText : text.values()) {
+                if (theText == null || theText.equals(""))
+                    throw new InstructionParseException(String.format(
+                            "Text not defined in player option %s", name));
+            }
+            String rawConditions = pack.getString("conversations." + convName
+                    + ".player_options." + name + ".conditions");
             if (rawConditions != null && !rawConditions.equals("")) {
                 conditions = rawConditions.split(",");
             } else {
@@ -298,7 +366,8 @@ public class ConversationData {
                     conditions[i] = pack.getName() + "." + conditions[i];
                 }
             }
-            String rawEvents = pack.getString("conversations." + convName + ".player_options." + name + ".events");
+            String rawEvents = pack.getString("conversations." + convName
+                    + ".player_options." + name + ".events");
             if (rawEvents != null && !rawEvents.equals("")) {
                 events = rawEvents.split(",");
             } else {
@@ -309,7 +378,8 @@ public class ConversationData {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = pack.getString("conversations." + convName + ".player_options." + name + ".pointer");
+            String rawPointers = pack.getString("conversations." + convName
+                    + ".player_options." + name + ".pointer");
             if (rawPointers != null && !rawPointers.equals("")) {
                 pointers = rawPointers.split(",");
             } else {
@@ -321,8 +391,12 @@ public class ConversationData {
             return name;
         }
         
-        public String getText() {
-            return text;
+        public String getText(String lang) {
+            String theText = text.get(lang);
+            if (theText == null) {
+                theText = text.get(Config.getLanguage());
+            }
+            return theText;
         }
         
         public String[] getConditions() {

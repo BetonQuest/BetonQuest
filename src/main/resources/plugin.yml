@@ -16,6 +16,10 @@ commands:
     usage: /<command>
     permission: betonquest.journal
     aliases: [bj, journal, bjournal, betonjournal, b, bb, backpack, bbackpack, betonbackpack]
+  questlang:
+    description: Changes the language
+    usage: /<command> lang
+    permission: betonquest.language
   betonquestanswer:
     description: Handles tellraw answers
 permissions:
@@ -24,5 +28,7 @@ permissions:
   betonquest.journal:
     default: true
   betonquest.conversation:
+    default: true
+  betonquest.language:
     default: true
   

@@ -31,6 +31,7 @@ Additions:
 Changes:
     * The plugin now uses package system: configuration has been moved into "default" package
     * Objectives has returned to "objectives.yml" - it's improving performance
+    * All quests can (but don't have to) be translated into multiple languages
     * Metrics are now toggled in PluginMetrics/config.yml
     * All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads
     * Citizens NPC will stop when talked to

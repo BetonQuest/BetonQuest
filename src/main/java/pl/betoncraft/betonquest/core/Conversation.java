@@ -58,6 +58,7 @@ public class Conversation implements Listener {
     
     private final String playerID;
     private final Player player;
+    private final String language;
     private final ConversationData data;
     private final Location location;
     private final boolean tellraw;
@@ -78,6 +79,7 @@ public class Conversation implements Listener {
 
         this.playerID = playerID;
         this.player = PlayerConverter.getPlayer(playerID);
+        this.language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
         this.location = location;
         this.tellraw = Config.getString("config.tellraw")
                 .equalsIgnoreCase("true");
@@ -121,10 +123,8 @@ public class Conversation implements Listener {
                 list.put(playerID, conv);
 
                 // print message about starting a conversation
-                SimpleTextOutput.sendSystemMessage(playerID,
-                        Config.getMessage("conversation_start")
-                        .replaceAll("%quester%", data.getQuester()),
-                        Config.getString("config.sounds.start"));
+                Config.sendMessage(playerID, "conversation_start",
+                        new String[]{data.getQuester(language)}, "start");
                 
                 // print NPC's text
                 printNPCText(data.getStartingOptions());
@@ -165,8 +165,8 @@ public class Conversation implements Listener {
         }
 
         // print option to the player
-        SimpleTextOutput.sendQuesterMessage(this.playerID, data.getQuester(),
-                data.getText(option, OptionType.NPC));
+        SimpleTextOutput.sendQuesterMessage(this.playerID, data.getQuester(language),
+                data.getText(language, option, OptionType.NPC));
 
         final String fOption = option;
         new BukkitRunnable() {
@@ -202,11 +202,10 @@ public class Conversation implements Listener {
         if (answer.equalsIgnoreCase("0") || !answer.matches("\\d+")
             || Integer.valueOf(answer) > current.size()) {
             // some text from npc saying that he doesn't understand player
-            SimpleTextOutput.sendQuesterMessage(playerID, data.getQuester(),
-                    data.getUnknown());
+            SimpleTextOutput.sendQuesterMessage(playerID, data.getQuester(language),
+                    data.getUnknown(language));
             // and instructions from plugin about answering npcs
-            SimpleTextOutput.sendSystemMessage(playerID,
-                    Config.getMessage("help_with_answering"), "false");
+            Config.sendMessage(playerID, "help_with_answering");
             return;
         }
 
@@ -219,8 +218,8 @@ public class Conversation implements Listener {
         if (tellraw) hashes.clear();
 
         // print to player his answer
-        SimpleTextOutput.sendPlayerReply(playerID, data.getQuester(),
-                data.getText(choosenAnswerID, OptionType.PLAYER));
+        SimpleTextOutput.sendPlayerReply(playerID, data.getQuester(language),
+                data.getText(language, choosenAnswerID, OptionType.PLAYER));
 
         new BukkitRunnable() {
             public void run() {
@@ -259,8 +258,8 @@ public class Conversation implements Listener {
             i++;
             // print reply
             String randomID = UUID.randomUUID().toString();
-            SimpleTextOutput.sendQuesterReply(playerID, i, data.getQuester(),
-                    data.getText(option, OptionType.PLAYER), randomID);
+            SimpleTextOutput.sendQuesterReply(playerID, i, data.getQuester(language),
+                    data.getText(language, option, OptionType.PLAYER), randomID);
             // put reply to hashmap
             current.put(Integer.valueOf(i), option);
             if (tellraw) {
@@ -288,9 +287,8 @@ public class Conversation implements Listener {
             BetonQuest.event(playerID, event);
         }
         // print message
-        SimpleTextOutput.sendSystemMessage(playerID, Config.getMessage(
-                "conversation_end").replaceAll("%quester%", data.getQuester()),
-                Config.getString("config.sounds.end"));
+        Config.sendMessage(playerID, "conversation_end",
+                new String[]{data.getQuester(language)}, "end");
         // delete conversation
         list.remove(playerID);
         // unregister listener
@@ -375,7 +373,7 @@ public class Conversation implements Listener {
         String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
-            player.sendMessage(Config.getMessage("command_blocked"));
+            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "command_blocked");
         }
     }
 
@@ -409,8 +407,7 @@ public class Conversation implements Listener {
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
         if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            event.getPlayer().sendMessage(Config.getMessage("pullback")
-                    .replaceAll("&", "§"));
+            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "pullback");
         }
     }
 
