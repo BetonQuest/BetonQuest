@@ -20,6 +20,8 @@ package pl.betoncraft.betonquest.api;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -125,7 +127,7 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        removePlayer(playerID);
+        BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(label);
         Debug.info("Objective \"" + label + "\" has been completed for player "
         	+ PlayerConverter.getName(playerID) + ", firing final events.");
         // fire all events
@@ -156,12 +158,15 @@ public abstract class Objective {
     }
     
     /**
-     * Adds this new objective to the player. 
+     * Adds this new objective to the player. Also updates the database
+     * with the objective.
      * 
      * @param playerID
      */
     public final void newPlayer(String playerID) {
-        addPlayer(playerID, getDefaultDataInstruction());
+        String def = getDefaultDataInstruction();
+        addPlayer(playerID, def);
+        BetonQuest.getInstance().getDBHandler(playerID).addObjToDB(label, def);
     }
     
     /**
@@ -177,7 +182,8 @@ public abstract class Objective {
                 + " developer: <coosheck@gmail.com>";
         ObjectiveData data = null;
         try {
-            data = template.getConstructor(String.class).newInstance(instruction);
+            data = template.getConstructor(String.class, String.class, String.class)
+                    .newInstance(instruction, playerID, label);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 Debug.error("Error while loading " + label +
@@ -198,7 +204,10 @@ public abstract class Objective {
     }
     
     /**
-     * Removes the objective from the player without completing it.
+     * Removes the objective from the player. It does not complete it nor
+     * update the database. In order to complete it, use completeObjective()
+     * instead. In order to remove it from database use 
+     * DatabaseHandler.deleteObjective() instead.
      * 
      * @param playerID
      *          ID of the player
@@ -266,7 +275,9 @@ public abstract class Objective {
      */
     protected static class ObjectiveData {
         
-        private String instruction;
+        protected String instruction;
+        protected String playerID;
+        protected String objID;
         
         /**
          * The constructor needs to parse the data in instruction string
@@ -274,8 +285,10 @@ public abstract class Objective {
          * 
          * @param instruction
          */
-        public ObjectiveData(String instruction) {
+        public ObjectiveData(String instruction, String playerID, String objID) {
             this.instruction = instruction;
+            this.playerID = playerID;
+            this.objID = objID;
         }
 
         /**
@@ -286,6 +299,16 @@ public abstract class Objective {
          */
         public String toString() {
             return instruction;
+        }
+        
+        /**
+         * Should be called when the data inside ObjectiveData changes. It will
+         * update the database with the changes.
+         */
+        protected void update() {
+            QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID,
+                    toString());
+            Bukkit.getPluginManager().callEvent(event);
         }
         
     }

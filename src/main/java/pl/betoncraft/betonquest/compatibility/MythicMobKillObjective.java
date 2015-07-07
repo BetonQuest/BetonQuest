@@ -100,13 +100,14 @@ public class MythicMobKillObjective extends Objective implements Listener {
         
         private int amount;
 
-        public MMData(String instruction) {
-            super(instruction);
+        public MMData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
         
         private void kill() {
             amount--;
+            update();
         }
         
         private boolean killed() {

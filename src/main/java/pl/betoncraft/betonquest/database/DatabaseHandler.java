@@ -19,9 +19,7 @@ package pl.betoncraft.betonquest.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,6 +39,7 @@ import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -51,6 +50,8 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Jakub Sapalski
  */
 public class DatabaseHandler {
+    
+    private Saver saver = BetonQuest.getInstance().getSaver();
 
     private String playerID;
 
@@ -159,70 +160,6 @@ public class DatabaseHandler {
         }
         objectives.clear();
     }
-
-    /**
-     * Saves all data to the database. It does not remove the data, you need to
-     * use {@link #removeData() removeDate} for that.
-     */
-    public void saveData() {
-        Connector con = new Connector();
-        // delete old data
-        con.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-        con.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-        con.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-        con.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-        con.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-        con.updateSQL(UpdateType.DELETE_PLAYER, new String[]{ playerID });
-        // insert new data
-        for (String objective : new HashMap<>(objectives).keySet()) {
-            con.updateSQL(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objective, objectives.get(objective) });
-        }
-        ArrayList<Objective> objectivesList = getObjectives();
-        for (Objective objective : new ArrayList<>(objectivesList)) {
-            con.updateSQL(UpdateType.ADD_OBJECTIVES,
-                    new String[] { playerID, objective.getLabel(), objective.getData(playerID) });
-        }
-        for (String tag : new ArrayList<>(tags)) {
-            con.updateSQL(UpdateType.ADD_TAGS, new String[] { playerID, tag });
-        }
-        for (Point point : new ArrayList<>(points)) {
-            con.updateSQL(UpdateType.ADD_POINTS, new String[] { playerID, point.getCategory(),
-                String.valueOf(point.getCount()) });
-        }
-        for (Pointer pointer : new ArrayList<>(journal.getPointers())) {
-            con.updateSQL(UpdateType.ADD_JOURNAL,
-                    new String[] { playerID, pointer.getPointer(),
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp())) });
-        }
-        for (ItemStack itemStack : new ArrayList<>(backpack)) {
-            String instruction = Utils.itemToString(itemStack);
-            String amount = String.valueOf(itemStack.getAmount());
-            con.updateSQL(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount });
-        }
-        con.updateSQL(UpdateType.ADD_PLAYER, new String[]{playerID, lang});
-        // log debug message about saving
-        Debug.info("Saved " + (objectives.size() + objectivesList.size()) + " objectives, "
-            + tags.size() + " tags, " + points.size() + " points, "
-            + journal.getPointers().size() + " journal entries and " + backpack.size()
-            + " items for player " + PlayerConverter.getName(playerID));
-    }
-    
-    /**
-     * Removes the data of the player. It does not save anything, you need to
-     * use {@link #saveData() saveData} for that.
-     */
-    public void removeData() {
-        // unregister objectives
-        for (Objective objective : getObjectives()) {
-            objective.removePlayer(playerID);;
-        }
-        // clear all lists
-        objectives.clear();
-        tags.clear();
-        points.clear();
-        journal.clear();
-        backpack.clear();
-    }
     
     public HashMap<String, String> getRawObjectives() {
         return objectives;
@@ -244,8 +181,8 @@ public class DatabaseHandler {
     }
     
     /**
-     * Adds objective to a list of not initialized objectives,
-     * ready to be started or saved to the database.
+     * Adds objective to a list of not initialized objectives and the database,
+     * ready to be started.
      * 
      * @param objectiveID
      *          ID of the objective
@@ -257,6 +194,17 @@ public class DatabaseHandler {
             return;
         }
         objectives.put(objectiveID, data);
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
+    }
+    
+    /**
+     * Removes the raw objective from the plugin and the database.
+     * 
+     * @param objectiveID
+     */
+    public void removeRawObjective(String objectiveID) {
+        objectives.remove(objectiveID);
+        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objectiveID}));
     }
 
     /**
@@ -294,6 +242,26 @@ public class DatabaseHandler {
      */
     public Journal getJournal() {
         return journal;
+    }
+    
+    /**
+     * Adds the pointer to the database
+     * 
+     * @param pointer
+     */
+    public void addPointer(Pointer pointer) {
+        saver.add(new Record(UpdateType.ADD_JOURNAL, new String[]{playerID,
+                pointer.getPointer(), String.valueOf(pointer.getTimestamp())}));
+    }
+    
+    /**
+     * Removes the pointer from the database
+     * 
+     * @param pointer
+     */
+    public void removePointer(Pointer pointer) {
+        saver.add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID,
+                pointer.getPointer(), String.valueOf(pointer.getTimestamp())}));
     }
 
     /**
@@ -340,8 +308,10 @@ public class DatabaseHandler {
      *            tag to add
      */
     public void addTag(String tag) {
-        if (!tags.contains(tag))
+        if (!tags.contains(tag)) {
             tags.add(tag);
+            saver.add(new Record(UpdateType.ADD_TAGS, new String[]{playerID, tag}));
+        }
     }
 
     /**
@@ -353,6 +323,7 @@ public class DatabaseHandler {
      */
     public void removeTag(String tag) {
         tags.remove(tag);
+        saver.add(new Record(UpdateType.REMOVE_TAGS, new String[]{playerID, tag}));
     }
 
     /**
@@ -370,6 +341,15 @@ public class DatabaseHandler {
         }
         // search inactive objectives
         objectives.remove(label);
+        removeObjFromDB(label);
+    }
+    
+    public void removeObjFromDB(String label) {
+        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, label}));
+    }
+    
+    public void addObjToDB(String label, String data) {
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, label, data}));
     }
 
     /**
@@ -382,16 +362,20 @@ public class DatabaseHandler {
      *            how much points will be added (or subtracted)
      */
     public void addPoints(String category, int count) {
+        saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
         // check if the category already exists
         for (Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 // if it does, add points to it
+                saver.add(new Record(UpdateType.ADD_POINTS, new String[]{playerID,
+                        category, String.valueOf(point.getCount() + count)}));
                 point.addPoints(count);
                 return;
             }
         }
         // if not then create new point category with given amount of points
         points.add(new Point(category, count));
+        saver.add(new Record(UpdateType.ADD_POINTS, new String[]{playerID, category, String.valueOf(count)}));
     }
     
     public void removePointsCategory(String category) {
@@ -404,6 +388,7 @@ public class DatabaseHandler {
         if (pointToRemove != null) {
             points.remove(pointToRemove);
         }
+        saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
     }
 
     /**
@@ -417,6 +402,13 @@ public class DatabaseHandler {
     
     public void setBackpack(List<ItemStack> list) {
         this.backpack = list;
+        // update the database (quite expensive way, should be changed)
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
+        for (ItemStack itemStack : list) {
+            String instruction = Utils.itemToString(itemStack);
+            String amount = String.valueOf(itemStack.getAmount());
+            saver.add(new Record(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount }));
+        }
     }
 
     /**
@@ -436,7 +428,8 @@ public class DatabaseHandler {
                 if (amount + itemStack.getAmount() <= itemStack.getMaxStackSize()) {
                     // if they will fit all together, then just add them
                     itemStack.setAmount(itemStack.getAmount() + amount);
-                    return;
+                    amount = 0; // this will allow for passing the while loop
+                    break;
                 } else {
                     // if the stack will be overflown, set max size and continue
                     amount -= itemStack.getMaxStackSize() - itemStack.getAmount();
@@ -463,6 +456,13 @@ public class DatabaseHandler {
             Debug.info("    Adding item of type " + newItem.getType()
                     + ", amount left to ad is " + amount);
             backpack.add(newItem);
+        }
+        // update the database (quite expensive way, should be changed)
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
+        for (ItemStack itemStack : backpack) {
+            String instruction = Utils.itemToString(itemStack);
+            String newAmount = String.valueOf(itemStack.getAmount());
+            saver.add(new Record(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, newAmount }));
         }
     }
     
@@ -608,5 +608,7 @@ public class DatabaseHandler {
     
     public void setLanguage(String lang) {
         this.lang = lang;
+        saver.add(new Record(UpdateType.DELETE_PLAYER, new String[]{playerID}));
+        saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, lang}));
     }
 }

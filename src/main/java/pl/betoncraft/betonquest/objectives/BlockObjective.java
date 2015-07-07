@@ -163,17 +163,19 @@ public class BlockObjective extends Objective implements Listener {
 
         private int amount;
         
-        public BlockData(String instruction) {
-            super(instruction);
+        public BlockData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
         
         private void add() {
             amount++;
+            update();
         }
         
         private void remove() {
             amount--;
+            update();
         }
         
         private int getAmount() {

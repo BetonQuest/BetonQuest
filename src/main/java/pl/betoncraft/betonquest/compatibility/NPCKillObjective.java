@@ -107,13 +107,14 @@ public class NPCKillObjective extends Objective implements Listener {
         
         private int amount;
 
-        public NPCData(String instruction) {
-            super(instruction);
+        public NPCData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
         
         private void kill() {
             amount--;
+            update();
         }
         
         private boolean killed() {

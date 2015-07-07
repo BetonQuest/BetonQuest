@@ -71,12 +71,10 @@ public class ObjectiveEvent extends QuestEvent {
                     if (action.equals("start")) {
                         dbHandler.addNewRawObjective(objective);
                     } else if (action.equals("delete")) {
-                        dbHandler.getRawObjectives().remove(objective);
+                        dbHandler.removeRawObjective(objective);
                     } else {
                         Debug.error("Cannot complete objective for offline player!");
                     }
-                    dbHandler.saveData();
-                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {

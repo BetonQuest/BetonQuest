@@ -55,8 +55,6 @@ public class DeleteObjectiveEvent extends QuestEvent {
                 public void run() {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
                     dbHandler.deleteObjective(tag);
-                    dbHandler.saveData();
-                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         }

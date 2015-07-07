@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -50,6 +51,8 @@ public class Config {
     
     private static String lang;
     
+    private static ArrayList<String> languages;
+    
     private File root;
 
     /**
@@ -72,6 +75,13 @@ public class Config {
         messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
         messages.saveDefaultConfig();
         saveResource(root, "advanced-messages.yml");
+        languages = new ArrayList<>();
+        for (String key : messages.getConfig().getKeys(false)) {
+            if (!key.equals("global")) {
+                languages.add(key);
+            }
+        }
+        Debug.broadcast("Loaded " + languages.size() + " languages!");
         
         // save example package
         createPackage("default");
@@ -369,5 +379,12 @@ public class Config {
                 }
             }
         }
+    }
+    
+    /**
+     * @return the languages defined for this plugin
+     */
+    public static ArrayList<String> getLanguages() {
+        return languages;
     }
 }

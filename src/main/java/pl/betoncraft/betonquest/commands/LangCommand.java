@@ -26,6 +26,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 
@@ -48,10 +49,14 @@ public class LangCommand implements CommandExecutor {
                 sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
                 return true;
             }
-            if (!BetonQuest.getInstance().getLanguages().contains(args[0])) {
+            if (!Config.getLanguages().contains(args[0])) {
                 StringBuilder builder = new StringBuilder();
-                for (String lang : BetonQuest.getInstance().getLanguages()) {
+                for (String lang : Config.getLanguages()) {
                     builder.append(lang + ", ");
+                }
+                if (builder.length() < 3) {
+                    Debug.error("No translations loaded, somethings wrong!");
+                    return false;
                 }
                 String finalMessage = builder.substring(0, builder.length() - 2) + ".";
                 sender.sendMessage(Config.getMessage(Config.getLanguage(),

@@ -205,6 +205,7 @@ public class ConfigUpdater {
                     messages.set(lang + ".items_taken", messages.getString(lang + ".items_taken").replace("%name%", "{1}").replace("%amount%", "{2}"));
                     messages.set(lang + ".blocks_to_break", messages.getString(lang + ".blocks_to_break").replace("%amount%", "{1}"));
                     messages.set(lang + ".blocks_to_place", messages.getString(lang + ".blocks_to_place").replace("%amount%", "{1}"));
+                    messages.set(lang + ".mobs_to_kill", messages.getString(lang + ".mobs_to_kill").replace("%amount%", "{1}"));
                     messages.set(lang + ".conversation_start", messages.getString(lang + ".conversation_start").replace("%quester%", "{1}"));
                     messages.set(lang + ".conversation_end", messages.getString(lang + ".conversation_end").replace("%quester%", "{1}"));
                 } catch (NullPointerException e) {

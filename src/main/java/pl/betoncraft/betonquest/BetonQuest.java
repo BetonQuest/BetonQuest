@@ -77,6 +77,7 @@ import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
+import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.events.ClearEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
@@ -121,7 +122,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Represents BetonQuest plugin
  * 
- * @authors Co0sh, Dzejkop, BYK
+ * @author Jakub Sapalski
  */
 public final class BetonQuest extends JavaPlugin {
     
@@ -129,9 +130,12 @@ public final class BetonQuest extends JavaPlugin {
             + " developer: <coosheck@gmail.com>";
     
     private static BetonQuest instance;
+    
     private Database database;
     private boolean isMySQLUsed;
-    private ArrayList<String> languages;
+    private Saver saver;
+    private BukkitRunnable keeper;
+    
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
@@ -143,7 +147,6 @@ public final class BetonQuest extends JavaPlugin {
     private static HashMap<String, Objective> objectives = new HashMap<>();
     private static HashMap<String, ConversationData> conversations = new HashMap<>();
     
-    private BukkitRunnable saver;
 
     @Override
     public void onEnable() {
@@ -155,10 +158,6 @@ public final class BetonQuest extends JavaPlugin {
         
         // load configuration
         new Config();
-        languages = new ArrayList<>();
-        for (String key : Config.getMessages().getConfig().getKeys(false)) {
-            if (!key.equals("global")) languages.add(key);
-        }
 
         // try to connect to database
         Debug.info("Connecting to MySQL database");
@@ -193,6 +192,9 @@ public final class BetonQuest extends JavaPlugin {
             getConfig().set("debug", "false");
             saveConfig();
         }
+        
+        saver = new Saver();
+        saver.start();
 
         // instantiating of these important things
         new JoinQuitListener();
@@ -294,25 +296,19 @@ public final class BetonQuest extends JavaPlugin {
             dbh.startObjectives();
         }
 
-        // This probably locks the database if using SQLite
-        // schedule periodic data saving
-        saver = new BukkitRunnable() {
+        // schedule database pinging to keep connection
+        keeper = new BukkitRunnable() {
             @Override
             public void run() {
-                if (dbHandlers.isEmpty()) {
-                    try {
-                        database.getConnection().prepareStatement("SELECT 1")
-                                .executeQuery();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                for (DatabaseHandler dbHandler : dbHandlers.values()) {
-                    dbHandler.saveData();
+                try {
+                    database.getConnection().prepareStatement("SELECT 1")
+                            .executeQuery();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         };
-        saver.runTaskTimerAsynchronously(this, 60*20, 60*20);
+        keeper.runTaskTimerAsynchronously(this, 60*20, 60*20);
 
         // metrics
         try {
@@ -497,15 +493,10 @@ public final class BetonQuest extends JavaPlugin {
     @Override
     public void onDisable() {
         // cancel database saver
-        saver.cancel();
+        saver.end();
+        keeper.cancel();
         // stop global location listener
         GlobalLocations.stop();
-        // save players' data
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            DatabaseHandler dbHandler = dbHandlers.get(PlayerConverter.getID(player));
-            dbHandler.saveData();
-            dbHandler.removeData();
-        }
         database.closeConnection();
         // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
@@ -774,12 +765,13 @@ public final class BetonQuest extends JavaPlugin {
     public Objective getObjective(String objectiveID) {
         return objectives.get(objectiveID);
     }
-
     
     /**
-     * @return the languages defined for this plugin
+     * Returns the instance of Saver
+     * 
+     * @return the Saver
      */
-    public ArrayList<String> getLanguages() {
-        return new ArrayList<>(languages);
+    public Saver getSaver() {
+        return saver;
     }
 }

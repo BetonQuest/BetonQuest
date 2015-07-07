@@ -83,6 +83,7 @@ public class Journal {
         Debug.info("Adding new pointer \"" + pointer.getPointer() + "\" / " + pointer
                 .getTimestamp() + " to journal for player " + PlayerConverter.getName(playerID));
         pointers.add(pointer);
+        BetonQuest.getInstance().getDBHandler(playerID).addPointer(pointer);
         generateTexts(lang);
     }
 
@@ -92,10 +93,11 @@ public class Journal {
      * @param pointer
      *          the pointer to remove
      */
-    public void removePointer(String pointer) {
+    public void removePointer(String pointerName) {
         for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
-            Pointer pointerr = (Pointer) iterator.next();
-            if (pointerr.getPointer().equalsIgnoreCase(pointer)) {
+            Pointer pointer = (Pointer) iterator.next();
+            if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
+                BetonQuest.getInstance().getDBHandler(playerID).removePointer(pointer);
                 iterator.remove();
                 break;
             }

@@ -138,13 +138,14 @@ public class CraftingObjective extends Objective implements Listener {
         
         private int amount;
 
-        public CraftData(String instruction) {
-            super(instruction);
+        public CraftData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
         
         private void subtract(int amount) {
             this.amount -= amount;
+            update();
         }
         
         private boolean isZero() {

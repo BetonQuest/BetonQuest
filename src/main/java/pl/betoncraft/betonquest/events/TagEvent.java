@@ -85,8 +85,6 @@ public class TagEvent extends QuestEvent {
                             dbHandler.removeTag(tag);
                         }
                     }
-                    dbHandler.saveData();
-                    dbHandler.removeData();
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         }

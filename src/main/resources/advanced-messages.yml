@@ -2,14 +2,12 @@ global:
   quester_line_format: '&4%quester%&f: &a&o'
   quester_reply_format: '&e%number%. &b'
   player_reply_format: '&2%player%&f: &7'
-  plugin_prefix: '&e[&2BetonQuest&e]&r '
   date_format: dd.MM.yyyy HH:mm
   cancel_color: '&2'
 pl:
   conversation_start: '&e*&bRozpocząłeś rozmowę z {1}!&e*'
   conversation_end: '&e*&bZakończyłeś rozmowę z {1}!&e*'
-  help_with_answering: '&cAby odpowiedzieć NPCowi napisz na chacie numer wybranej
-    odpowiedzi bez kropki, np. 2'
+  help_with_answering: '&cAby odpowiedzieć NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
   unknown_argument: '&cNiewłaściwy argument.'
   no_permission: '&cNie masz permisji.'
   reloaded: '&cKonfiguracja przeładowana!'
@@ -53,8 +51,7 @@ pl:
   pointer_added: '&2Wskaźnik dodany!'
   pointer_removed: '&2Wskaźnik usunięty!'
   purged: '&4Dane gracza {1} wyczyszczone!'
-  changelog: '&e*&bNowy changelog jest dostępny w folderze pluginu! Zapoznaj się ze
-    zmianami i usuń lub zmień nazwę pliku, aby wyłączyć ten komunikat!&e*'
+  changelog: '&e*&bNowy changelog jest dostępny w folderze pluginu! Zapoznaj się ze zmianami i usuń lub zmień nazwę pliku, aby wyłączyć ten komunikat!&e*'
   command_reload: przeładowuje plugin
   command_objectives: wyświetla aktywne zadania gracza
   command_tags: wyświetla tagi gracza
@@ -72,7 +69,7 @@ pl:
   items_taken: '&2Utracono {1} x{2}'
   blocks_to_break: '&2Pozostało {1} bloków do zniszczenia'
   blocks_to_place: '&2Pozostało {1} bloków do postawienia'
-  mobs_to_kill: '&2Pozostało %amount% stworzeń do zabicia'
+  mobs_to_kill: '&2Pozostało {1} stworzeń do zabicia'
   busy: '&cNie możesz rozmawiać w trakcie walki'
   quest_canceled: '&2Zadanie {1} anulowane!'
   command_blocked: '&cNie możesz używać tej komendy podczas rozmowy.'
@@ -85,8 +82,7 @@ pl:
 en:
   conversation_start: '&e*&bConversation with {1} started!&e*'
   conversation_end: '&e*&bConversation with {1} finished!&e*'
-  help_with_answering: '&cAnswer the NPC by typing a number of the answer without
-    a dot, eg. 2'
+  help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
   unknown_argument: '&cWrong argument.'
   no_permission: '&cYou don''t have permission.'
   reloaded: '&cConfiguration reloaded!'
@@ -130,8 +126,7 @@ en:
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
   purged: '&4{1}''s data purged!'
-  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the
-    changes and delete or rename the file to dismiss this message!&e*'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
   command_tags: displays tags
@@ -149,7 +144,7 @@ en:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -161,9 +156,8 @@ en:
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
   conversation_start: '&e*&bGespräch mit {1} begonnen!&e*'
-  conversation_end: '&e*&Gespräch mit {1} beendet!&e*'
-  help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst
-    (z.B. 2)'
+  conversation_end: '&e*&bGespräch mit {1} beendet!&e*'
+  help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
   unknown_argument: '&cFalsches Argument festgestellt.'
   no_permission: '&cDu hast keinen Zugriff auf diesen Befehl.'
   reloaded: '&cKonfiguration neu geladen!'
@@ -181,8 +175,7 @@ de:
   specify_item: '&cGebe eine Gegenstandsbezeichnung an.'
   specify_tag: '&cGib einen Tag an.'
   specify_objective: '&cGib eine Aufgabe an.'
-  specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese
-    zu modifizieren.'
+  specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese zu modifizieren.'
   specify_pointer: '&cBitte den Namen des Zeigers angeben.'
   specify_date: '&cBitte Datum des Zeigers angeben. (Formatiert in Datums-Format)'
   specify_action: '&cBitte Aktion angeben (read, set oder add)'
@@ -197,7 +190,7 @@ de:
   player_tags: '&aSpieler - Tags:'
   player_condition: '&aBedingung {1}: {2}'
   player_event: '&aEreignis ausgelöst: {1}'
-  player_points: '&a%category% Punkte: %count%'
+  player_points: '&aPunkte:'
   player_journal: '&eZeiger im Tagebuch:'
   points_added: '&2Punkte hinzugefügt!'
   points_removed: '&2Punkte entfernt!'
@@ -208,8 +201,7 @@ de:
   pointer_added: '&2Zeiger hinzugefügt!'
   pointer_removed: '&2Zeiger entfernt!'
   purged: '&4{1} - Alle Dateien zurückgesetzt!'
-  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Änderungen
-    an und/oder lösche/benenne die Datei um, um diese Meldung zu schließen!&e*'
+  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Änderungen an und/oder lösche/benenne die Datei um, um diese Meldung zu schließen!&e*'
   command_reload: lädt das Plugin neu
   command_objectives: Aufgaben für Spieler
   command_tags: Tags für Spieler
@@ -227,7 +219,7 @@ de:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -240,8 +232,7 @@ de:
 fr:
   conversation_start: '&e*&bLa conversation avec {1} est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec {1} est terminee!&e*'
-  help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console
-    sans le point, ex. 2'
+  help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console sans le point, ex. 2'
   unknown_argument: '&cMauvais parametre.'
   no_permission: '&cVous n''avez pas la permission.'
   reloaded: '&cConfiguration rechargee!'
@@ -259,8 +250,7 @@ fr:
   specify_item: '&cSpecifier le nom de l''objet.'
   specify_tag: '&cSpecifier le tag.'
   specify_objective: '&cSpecifier les instructions de l''objectif.'
-  specify_category_and_amount: '&cSpecifier la categorie et le nombre de points a
-    modifier.'
+  specify_category_and_amount: '&cSpecifier la categorie et le nombre de points a modifier.'
   specify_pointer: '&cSpecifier le nom du pointeur.'
   specify_date: '&cSpecifier la date du pointeur (format identique a date_format)'
   specify_action: '&cSpecifier une action (read, set or add)'
@@ -275,7 +265,7 @@ fr:
   player_tags: '&aLes tags du joueur:'
   player_condition: '&aCondition {1}: {2}'
   player_event: '&aEvenement envoye : {1}'
-  player_points: '&a%category% points: %count%'
+  player_points: '&aPoints:'
   player_journal: '&ePointeurs du journal:'
   purged: '&4Donnes du joueur {1} effacees!'
   points_added: '&2Points ajoutes!'
@@ -286,8 +276,7 @@ fr:
   objective_removed: '&2Objectif retire!'
   pointer_added: '&2Pointeur ajoute!'
   pointer_removed: '&2Pointeur supprime!'
-  changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez
-    bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
+  changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   command_reload: Recharge le plugin
   command_objectives: Affiche les objectifs en cours
   command_tags: Affiche vos tags
@@ -305,7 +294,7 @@ fr:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -338,12 +327,9 @@ cn:
   specify_objective: '&c请注明任务目标信息.'
   specify_category_and_amount: '&c请注明要更改的点数名字和更改的数量.'
   specify_pointer: '&c请注明日记内容的代码(journal.yml中该行内容的名字).'
-  specify_date: '&c请注明此日记内容的日期 (使用Java的日期格式)'
+  specify_date: '&c请注明此日记内容的日期(使用Java的日期格式)'
   specify_action: '&c请注明你要做什么 (读取(read), 更改(set)还是添加(add))'
   specify_path: '&c请注明目标的路径 (使用“.”分隔多个路径)'
-  specify_package: '&cSpecify package name'
-  package_created: '&2Package created'
-  package_exists: '&cPackage already exists'
   config_set_error: '&c执行命令时出错，请确认目标路径无误.'
   no_item: '&c请拿着一个物品!'
   item_created: '&2物品已经保存为 {1}.'
@@ -351,7 +337,7 @@ cn:
   player_tags: '&a该玩家的标签:'
   player_condition: '&a状态 {1}: {2}'
   player_event: '&a事件已激活: {1}'
-  player_points: '&a%category% 点数: %count%'
+  player_points: '&a点数:'
   player_journal: '&e你已经触发的任务日记:'
   points_added: '&2成功添加任务点数!'
   points_removed: '&2成功扣除任务点数!'
@@ -375,26 +361,28 @@ cn:
   command_purge: 删除该玩家的所有任务信息
   command_backup: 备份配置文件，只能从控制台，并且在无人在线时使用！
   offline: '&4只有在无人在线时才能进行备份!'
-  pullback: '&cYou must finish your conversation!'
-  items_given: '&2Received {1} x{2}'
-  items_taken: '&2Lost {1} x{2}'
-  blocks_to_break: '&2{1} blocks left to break'
-  blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
-  busy: '&cYou can''t talk while fighting'
-  quest_canceled: '&2Quest {1} canceled!'
-  cancel: '&cCancel the quest'
-  cancel_page: Canceling quests
-  command_blocked: '&cYou can''t use that command while in conversation.'
-  language_changed: '&2Language changed!'
-  default_language_changed: '&2Default language changed!'
-  language_missing: '&cSpecify language'
-  language_not_exist: '&cThis language is not defined, possible options: '
+  pullback: '&c你还在对话中!&a(输入1看看聊天栏有没有反应吧)'
+  items_given: '&2你获得了 {2}个{1}'
+  items_taken: '&2你失去了 {2}个{1}'
+  blocks_to_break: '&2还需要再破坏{1}个方块'
+  blocks_to_place: '&2还需要再放置{1}个方块'
+  mobs_to_kill: '&2还需要杀死{1}个怪物'
+  busy: '&c你还在战斗中'
+  specify_package: '&c未知的类名'
+  package_created: '&2成功创建此类'
+  package_exists: '&c该类已经存在'
+  quest_canceled: '&2任务 {1} 已取消!'
+  cancel: '&c取消任务'
+  cancel_page: 正在取消任务
+  command_blocked: '&c你不能在任务中使用该命令.'
+  language_changed: '&2您的语言已更换!'
+  default_language_changed: '&2默认语言已更换!'
+  language_missing: '&c请注明语言的名字'
+  language_not_exist: '&c这个语言不存在，可用的语言有：'
 es:
   conversation_start: '&e*&bLa conversacion con {1} ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con {1} ha terminado.&e*'
-  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta,
-    ej: 2.'
+  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
   unknown_argument: '&cArgumento incorrecto.'
   no_permission: '&cNo tienes permiso para eso.'
   reloaded: '&cSe ha recargado la configuracion.'
@@ -427,8 +415,10 @@ es:
   player_tags: '&aEtiquetas del jugador:'
   player_condition: '&aCondicion: {1}: {2}'
   player_event: '&aEvento efectuado: {1}'
-  player_points: '&a%category% puntos: %count%'
+  player_points: '&aPuntos:'
   player_journal: '&aPunteros en la revista:'
+  points_added: '&2Points added!'
+  points_removed: '&2Points subtracted!'
   tag_added: '&2Etiqueta agregada!'
   tag_removed: '&2Etiqueta eliminada!'
   objective_added: '&2Objetivo agregado!'
@@ -436,8 +426,7 @@ es:
   pointer_added: Puntero añadido!
   pointer_removed: Puntero eliminado!
   purged: '&4{1}''s datos borrados.'
-  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin.
-    Borra o cambia el archivo para quitar este mensaje&e*'
+  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
   command_reload: recarga el plugin.
   command_objectives: muestra los objetivos actuales.
   command_tags: muestra tus etiquetas.
@@ -455,7 +444,7 @@ es:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'

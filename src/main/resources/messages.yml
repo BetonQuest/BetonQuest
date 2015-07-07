@@ -7,8 +7,7 @@ global:
 pl:
   conversation_start: '&e*&bRozpoczales rozmowe z {1}!&e*'
   conversation_end: '&e*&bZakonczyles rozmowe z {1}!&e*'
-  help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej
-    odpowiedzi bez kropki, np. 2'
+  help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
   unknown_argument: '&cNiewlasciwy argument.'
   no_permission: '&cNie masz permisji.'
   reloaded: '&cKonfiguracja przeladowana!'
@@ -52,8 +51,7 @@ pl:
   pointer_added: '&2Wskaznik dodany!'
   pointer_removed: '&2Wskaznik usuniety!'
   purged: '&4Dane gracza {1} wyczyszczone!'
-  changelog: '&e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze
-    zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
+  changelog: '&e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
   command_reload: przeladowuje plugin
   command_objectives: wyswietla aktywne zadania gracza
   command_tags: wyswietla tagi gracza
@@ -71,7 +69,7 @@ pl:
   items_taken: '&2Utracono {1} x{2}'
   blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
   blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
-  mobs_to_kill: '&2Pozostalo %amount% stworzen do zabicia'
+  mobs_to_kill: '&2Pozostalo {1} stworzen do zabicia'
   busy: '&cNie mozesz rozmawiac w trakcie walki'
   quest_canceled: '&2Zadanie {1} anulowane!'
   cancel: '&cAnuluj zadanie'
@@ -84,8 +82,7 @@ pl:
 en:
   conversation_start: '&e*&bConversation with {1} started!&e*'
   conversation_end: '&e*&bConversation with {1} finished!&e*'
-  help_with_answering: '&cAnswer the NPC by typing a number of the answer without
-    a dot, eg. 2'
+  help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
   unknown_argument: '&cWrong argument.'
   no_permission: '&cYou don''t have permission.'
   reloaded: '&cConfiguration reloaded!'
@@ -129,8 +126,7 @@ en:
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
   purged: '&4{1}''s data purged!'
-  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the
-    changes and delete or rename the file to dismiss this message!&e*'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
   command_tags: displays tags
@@ -148,7 +144,7 @@ en:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -160,9 +156,8 @@ en:
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
   conversation_start: '&e*&bGesprach mit {1} begonnen!&e*'
-  conversation_end: '&e*&Gesprach mit {1} beendet!&e*'
-  help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst
-    (z.B. 2)'
+  conversation_end: '&e*&bGesprach mit {1} beendet!&e*'
+  help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
   unknown_argument: '&cFalsches Argument festgestellt.'
   no_permission: '&cDu hast keinen Zugriff auf diesen Befehl.'
   reloaded: '&cKonfiguration neu geladen!'
@@ -180,8 +175,7 @@ de:
   specify_item: '&cGebe eine Gegenstandsbezeichnung an.'
   specify_tag: '&cGib einen Tag an.'
   specify_objective: '&cGib eine Aufgabe an.'
-  specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese
-    zu modifizieren.'
+  specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese zu modifizieren.'
   specify_pointer: '&cBitte den Namen des Zeigers angeben.'
   specify_date: '&cBitte Datum des Zeigers angeben. (Formatiert in Datums-Format)'
   specify_action: '&cBitte Aktion angeben (read, set oder add)'
@@ -196,7 +190,7 @@ de:
   player_tags: '&aSpieler - Tags:'
   player_condition: '&aBedingung {1}: {2}'
   player_event: '&aEreignis ausgelost: {1}'
-  player_points: '&a%category% Punkte: %count%'
+  player_points: '&aPunkte:'
   player_journal: '&eZeiger im Tagebuch:'
   points_added: '&2Punkte hinzugefugt!'
   points_removed: '&2Punkte entfernt!'
@@ -207,8 +201,7 @@ de:
   pointer_added: '&2Zeiger hinzugefugt!'
   pointer_removed: '&2Zeiger entfernt!'
   purged: '&4{1} - Alle Dateien zuruckgesetzt!'
-  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die anderungen
-    an und/oder losche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
+  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die anderungen an und/oder losche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
   command_reload: ladt das Plugin neu
   command_objectives: Aufgaben fur Spieler
   command_tags: Tags fur Spieler
@@ -226,7 +219,7 @@ de:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -239,8 +232,7 @@ de:
 fr:
   conversation_start: '&e*&bLa conversation avec {1} est engagee!&e*'
   conversation_end: '&e*&bLa conversation avec {1} est terminee!&e*'
-  help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console
-    sans le point, ex. 2'
+  help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console sans le point, ex. 2'
   unknown_argument: '&cMauvais parametre.'
   no_permission: '&cVous n''avez pas la permission.'
   reloaded: '&cConfiguration rechargee!'
@@ -258,8 +250,7 @@ fr:
   specify_item: '&cSpecifier le nom de l''objet.'
   specify_tag: '&cSpecifier le tag.'
   specify_objective: '&cSpecifier les instructions de l''objectif.'
-  specify_category_and_amount: '&cSpecifier la categorie et le nombre de points a
-    modifier.'
+  specify_category_and_amount: '&cSpecifier la categorie et le nombre de points a modifier.'
   specify_pointer: '&cSpecifier le nom du pointeur.'
   specify_date: '&cSpecifier la date du pointeur (format identique a date_format)'
   specify_action: '&cSpecifier une action (read, set or add)'
@@ -274,7 +265,7 @@ fr:
   player_tags: '&aLes tags du joueur:'
   player_condition: '&aCondition {1}: {2}'
   player_event: '&aEvenement envoye : {1}'
-  player_points: '&a%category% points: %count%'
+  player_points: '&aPoints:'
   player_journal: '&ePointeurs du journal:'
   purged: '&4Donnes du joueur {1} effacees!'
   points_added: '&2Points ajoutes!'
@@ -285,8 +276,7 @@ fr:
   objective_removed: '&2Objectif retire!'
   pointer_added: '&2Pointeur ajoute!'
   pointer_removed: '&2Pointeur supprime!'
-  changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez
-    bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
+  changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   command_reload: Recharge le plugin
   command_objectives: Affiche les objectifs en cours
   command_tags: Affiche vos tags
@@ -304,7 +294,7 @@ fr:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
@@ -314,11 +304,85 @@ fr:
   default_language_changed: '&2Default language changed!'
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
+cn:
+  conversation_start: "&e====&b\u4e0e{1}\u5bf9\u8bdd\u4e2d&e===="
+  conversation_end: "&e====&b\u4e0e{1}\u7684\u5bf9\u8bdd\u5df2\u7ecf\u7ed3\u675f&e===="
+  help_with_answering: "&c\u8bf7\u8f93\u5165\u5bf9\u8bdd\u9009\u9879\u5e8f\u53f7"
+  unknown_argument: "&c\u672a\u77e5\u7684\u547d\u4ee4\uff0c\u8bf7\u8f93\u5165/q\u67e5\u770b\u547d\u4ee4\u5217\u8868"
+  no_permission: "&c\u4f60\u6ca1\u6709\u76f8\u5e94\u7684\u6743\u9650."
+  reloaded: "&c\u91cd\u8f7d\u5b8c\u6210!"
+  new_journal_entry: "&e*&b\u4f60\u7684\u7b14\u8bb0\u5df2\u7ecf\u66f4\u65b0!&e*"
+  journal_title: "\u4efb\u52a1\u7b14\u8bb0"
+  journal_lore: "\u53ef\u4ee5\u67e5\u770b\u4f60\u7684\u4efb\u52a1\u72b6\u6001"
+  quest_item: "&2\u4efb\u52a1\u7269\u54c1"
+  backpack_title: "\u80cc\u5305"
+  previous: "&2\u524d\u4e00\u4e2a"
+  next: "&2\u4e0b\u4e00\u4e2a"
+  inventory_full: "&e*&b\u4f60\u7684\u80cc\u5305\u5df2\u6ee1!&e*"
+  specify_condition: "&c\u8bf7\u6307\u660e\u72b6\u6001."
+  specify_event: "&c\u8bf7\u6307\u660e\u4e8b\u4ef6."
+  specify_player: "&c\u8bf7\u6307\u660e\u73a9\u5bb6ID"
+  specify_item: "&c\u8bf7\u6307\u660e\u7269\u54c1\u540d"
+  specify_tag: "&c\u8bf7\u6307\u660e\u6807\u7b7e\u540d."
+  specify_objective: "&c\u8bf7\u6ce8\u660e\u4efb\u52a1\u76ee\u6807\u4fe1\u606f."
+  specify_category_and_amount: "&c\u8bf7\u6ce8\u660e\u8981\u66f4\u6539\u7684\u70b9\u6570\u540d\u5b57\u548c\u66f4\u6539\u7684\u6570\u91cf."
+  specify_pointer: "&c\u8bf7\u6ce8\u660e\u65e5\u8bb0\u5185\u5bb9\u7684\u4ee3\u7801(journal.yml\u4e2d\u8be5\u884c\u5185\u5bb9\u7684\u540d\u5b57)."
+  specify_date: "&c\u8bf7\u6ce8\u660e\u6b64\u65e5\u8bb0\u5185\u5bb9\u7684\u65e5\u671f(\u4f7f\u7528Java\u7684\u65e5\u671f\u683c\u5f0f)"
+  specify_action: "&c\u8bf7\u6ce8\u660e\u4f60\u8981\u505a\u4ec0\u4e48 (\u8bfb\u53d6(read), \u66f4\u6539(set)\u8fd8\u662f\u6dfb\u52a0(add))"
+  specify_path: "&c\u8bf7\u6ce8\u660e\u76ee\u6807\u7684\u8def\u5f84 (\u4f7f\u7528\u201c.\u201d\u5206\u9694\u591a\u4e2a\u8def\u5f84)"
+  config_set_error: "&c\u6267\u884c\u547d\u4ee4\u65f6\u51fa\u9519\uff0c\u8bf7\u786e\u8ba4\u76ee\u6807\u8def\u5f84\u65e0\u8bef."
+  no_item: "&c\u8bf7\u62ff\u7740\u4e00\u4e2a\u7269\u54c1!"
+  item_created: "&2\u7269\u54c1\u5df2\u7ecf\u4fdd\u5b58\u4e3a {1}."
+  player_objectives: "&a\u8be5\u73a9\u5bb6\u7684\u76ee\u6807:"
+  player_tags: "&a\u8be5\u73a9\u5bb6\u7684\u6807\u7b7e:"
+  player_condition: "&a\u72b6\u6001 {1}: {2}"
+  player_event: "&a\u4e8b\u4ef6\u5df2\u6fc0\u6d3b: {1}"
+  player_points: "&a\u70b9\u6570:"
+  player_journal: "&e\u4f60\u5df2\u7ecf\u89e6\u53d1\u7684\u4efb\u52a1\u65e5\u8bb0:"
+  points_added: "&2\u6210\u529f\u6dfb\u52a0\u4efb\u52a1\u70b9\u6570!"
+  points_removed: "&2\u6210\u529f\u6263\u9664\u4efb\u52a1\u70b9\u6570!"
+  tag_added: "&2\u5df2\u6dfb\u52a0\u6807\u7b7e!"
+  tag_removed: "&2\u5df2\u79fb\u9664\u6807\u7b7e!"
+  objective_added: "&2\u5df2\u5f00\u59cb\u8be5\u4efb\u52a1!"
+  objective_removed: "&2\u5df2\u5220\u9664\u8be5\u4efb\u52a1!"
+  pointer_added: "&2\u5df2\u6dfb\u52a0\u6b64\u65e5\u8bb0\uff01"
+  pointer_removed: "&2\u5df2\u79fb\u9664\u6b64\u65e5\u8bb0\uff01!"
+  purged: "&4{1}\u7684\u6240\u6709\u4fe1\u606f\u5df2\u7ecf\u5220\u9664!"
+  changelog: "&e*&b\u65b0\u7248\u672c\u7684\u66f4\u65b0\u5185\u5bb9\u5df2\u7ecf\u751f\u6210\u5728\u63d2\u4ef6\u6587\u4ef6\u5939\u4e0b!\u5c06\u5b83\u5220\u9664\u5c31\u4e0d\u4f1a\u518d\u770b\u5230\u8fd9\u4e2a\u4fe1\u606f\u4e86&e*"
+  command_reload: "\u91cd\u8f7d\u63d2\u4ef6"
+  command_objectives: "\u663e\u793a\u5f53\u524d\u6b63\u5728\u8fdb\u884c\u4e2d\u7684\u4efb\u52a1\u76ee\u6807"
+  command_tags: "\u663e\u793a/\u6dfb\u52a0/\u5220\u9664\u4f60\u7684\u6807\u7b7e"
+  command_points: "\u663e\u793a/\u6dfb\u52a0/\u51cf\u5c11\u4f60\u7684\u4efb\u52a1\u70b9\u6570"
+  command_journal: "\u663e\u793a\u4f60\u5f53\u524d\u5df2\u7ecf\u89e6\u53d1\u4e86\u7684\u65e5\u8bb0\u5185\u5bb9"
+  command_condition: "\u786e\u8ba4\u4f60\u662f\u5426\u5df2\u7ecf\u6ee1\u8db3\u4e86\u8981\u6c42\u7684\u72b6\u6001"
+  command_event: "\u4e3a\u67d0\u73a9\u5bb6\u6fc0\u6d3b\u4e00\u4e2a\u4e8b\u4ef6"
+  command_item: "\u5c06\u4f60\u624b\u4e2d\u62ff\u7740\u7684\u7269\u54c1\u4fdd\u5b58\u4e3a\u9884\u7f6e\u7269\u54c1"
+  command_config: "\u8bfb\u53d6, \u66f4\u6539\u6216\u6dfb\u52a0\u914d\u7f6e\u6587\u4ef6\u4e2d\u7684\u67d0\u4e9b\u6587\u5b57(\u9700\u8981\u9644\u4e0a\u6587\u5b57\u524d\u7684\u8def\u5f84)"
+  command_purge: "\u5220\u9664\u8be5\u73a9\u5bb6\u7684\u6240\u6709\u4efb\u52a1\u4fe1\u606f"
+  command_backup: "\u5907\u4efd\u914d\u7f6e\u6587\u4ef6\uff0c\u53ea\u80fd\u4ece\u63a7\u5236\u53f0\uff0c\u5e76\u4e14\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u4f7f\u7528\uff01"
+  offline: "&4\u53ea\u6709\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u624d\u80fd\u8fdb\u884c\u5907\u4efd!"
+  pullback: "&c\u4f60\u8fd8\u5728\u5bf9\u8bdd\u4e2d!&a(\u8f93\u51651\u770b\u770b\u804a\u5929\u680f\u6709\u6ca1\u6709\u53cd\u5e94\u5427)"
+  items_given: "&2\u4f60\u83b7\u5f97\u4e86 {2}\u4e2a{1}"
+  items_taken: "&2\u4f60\u5931\u53bb\u4e86 {2}\u4e2a{1}"
+  blocks_to_break: '&2\u8fd8\u9700\u8981\u518d\u7834\u574f{1}\u4e2a\u65b9\u5757'
+  blocks_to_place: '&2\u8fd8\u9700\u8981\u518d\u653e\u7f6e{1}\u4e2a\u65b9\u5757'
+  mobs_to_kill: '&2\u8fd8\u9700\u8981\u6740\u6b7b{1}\u4e2a\u602a\u7269'
+  busy: "&c\u4f60\u8fd8\u5728\u6218\u6597\u4e2d"
+  specify_package: "&c\u672a\u77e5\u7684\u7c7b\u540d"
+  package_created: "&2\u6210\u529f\u521b\u5efa\u6b64\u7c7b"
+  package_exists: "&c\u8be5\u7c7b\u5df2\u7ecf\u5b58\u5728"
+  quest_canceled: "&2\u4efb\u52a1 {1} \u5df2\u53d6\u6d88!"
+  cancel: "&c\u53d6\u6d88\u4efb\u52a1"
+  cancel_page: "\u6b63\u5728\u53d6\u6d88\u4efb\u52a1"
+  command_blocked: "&c\u4f60\u4e0d\u80fd\u5728\u4efb\u52a1\u4e2d\u4f7f\u7528\u8be5\u547d\u4ee4."
+  language_changed: "&2\u60a8\u7684\u8bed\u8a00\u5df2\u66f4\u6362!"
+  default_language_changed: "&2\u9ed8\u8ba4\u8bed\u8a00\u5df2\u66f4\u6362!"
+  language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
+  language_not_exist: "&c\u8fd9\u4e2a\u8bed\u8a00\u4e0d\u5b58\u5728\uff0c\u53ef\u7528\u7684\u8bed\u8a00\u6709\uff1a"
 es:
   conversation_start: '&e*&bLa conversacion con {1} ha comenzado.&e*'
   conversation_end: '&e*&bLa conversacion con {1} ha terminado.&e*'
-  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta,
-    ej: 2.'
+  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
   unknown_argument: '&cArgumento incorrecto.'
   no_permission: '&cNo tienes permiso para eso.'
   reloaded: '&cSe ha recargado la configuracion.'
@@ -351,8 +415,10 @@ es:
   player_tags: '&aEtiquetas del jugador:'
   player_condition: '&aCondicion: {1}: {2}'
   player_event: '&aEvento efectuado: {1}'
-  player_points: '&a%category% puntos: %count%'
+  player_points: '&aPuntos:'
   player_journal: '&aPunteros en la revista:'
+  points_added: '&2Points added!'
+  points_removed: '&2Points subtracted!'
   tag_added: '&2Etiqueta agregada!'
   tag_removed: '&2Etiqueta eliminada!'
   objective_added: '&2Objetivo agregado!'
@@ -360,8 +426,7 @@ es:
   pointer_added: Puntero anadido!
   pointer_removed: Puntero eliminado!
   purged: '&4{1}''s datos borrados.'
-  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin.
-    Borra o cambia el archivo para quitar este mensaje&e*'
+  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
   command_reload: recarga el plugin.
   command_objectives: muestra los objetivos actuales.
   command_tags: muestra tus etiquetas.
@@ -379,7 +444,7 @@ es:
   items_taken: '&2Lost {1} x{2}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2%amount% mobs left to kill'
+  mobs_to_kill: '&2{1} mobs left to kill'
   busy: '&cYou can''t talk while fighting'
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'

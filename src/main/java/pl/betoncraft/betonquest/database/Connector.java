@@ -154,6 +154,18 @@ public class Connector {
                 case ADD_PLAYER:
                     statement = connection.prepareStatement("INSERT INTO " + prefix + "player (playerID, language) VALUES (?, ?);");
                     break;
+                case REMOVE_OBJECTIVES:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ? AND objective = ?;");
+                    break;
+                case REMOVE_TAGS:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE playerID = ? AND tag = ?;");
+                    break;
+                case REMOVE_POINTS:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ? AND category = ?;");
+                    break;
+                case REMOVE_JOURNAL:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "journal WHERE playerID = ? AND pointer = ? AND date = ?;");
+                    break;
                 case DELETE_OBJECTIVES:
                     statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ?;");
                     break;
@@ -255,13 +267,54 @@ public class Connector {
      */
     public enum UpdateType {
 
-        ADD_OBJECTIVES, ADD_TAGS, ADD_POINTS, ADD_JOURNAL, ADD_BACKPACK, ADD_PLAYER,
+        /**
+         * Add the single objective to the database. PlayerID, objectiveID, instruction.
+         */
+        ADD_OBJECTIVES,
+        /**
+         * Add the single tag to the database. PlayerID, tag.
+         */
+        ADD_TAGS,
+        /**
+         * Add single point category to the database. PlayerID, category, amount.
+         */
+        ADD_POINTS,
+        /**
+         * Add single journal entry to the database. PlayerID, pointer, date.
+         */
+        ADD_JOURNAL,
+        /**
+         * Add single itemstack to the database. PlayerID, instruction, amount.
+         */
+        ADD_BACKPACK,
+        /**
+         * Add single player to the database. PlayerID, language.
+         */
+        ADD_PLAYER,
+        /**
+         * Removes the single objective from the database. PlayerID, objectiveID.
+         */
+        REMOVE_OBJECTIVES,
+        /**
+         * Removes the single tag from the database. PlayerID, tag.
+         */
+        REMOVE_TAGS,
+        /**
+         * Removes single point category from the database. PlayerID, category.
+         */
+        REMOVE_POINTS,
+        /**
+         * Removes single journal entry from the database. PlayerID, pointer, date.
+         */
+        REMOVE_JOURNAL,
+        
         DELETE_OBJECTIVES, DELETE_TAGS, DELETE_POINTS, DELETE_JOURNAL, DELETE_BACKPACK, DELETE_PLAYER,
 
         UPDATE_PLAYERS_OBJECTIVES, UPDATE_PLAYERS_TAGS, UPDATE_PLAYERS_POINTS,
         UPDATE_PLAYERS_JOURNAL, UPDATE_PLAYERS_BACKPACK,
         
         DROP_OBJECTIVES, DROP_TAGS, DROP_POINTS, DROP_JOURNALS, DROP_BACKPACK, DROP_PLAYER,
+        
         INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL, INSERT_BACKPACK, INSERT_PLAYER
     }
 

@@ -109,13 +109,14 @@ public class SmeltingObjective extends Objective implements Listener {
         
         private int amount;
 
-        public SmeltData(String instruction) {
-            super(instruction);
+        public SmeltData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
         
         private void subtract(int amount) {
             this.amount -= amount; 
+            update();
         }
         
         private boolean isZero() {

@@ -27,7 +27,6 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -61,12 +60,6 @@ public class JoinQuitListener implements Listener {
             return;
         }
         String playerID = event.getUniqueId().toString();
-        // if player is already on the server, don't let him in
-        if (PlayerConverter.getPlayer(playerID) != null) {
-            event.setLoginResult(Result.KICK_OTHER);
-            event.setKickMessage("You are already logged in!");
-            return;
-        }
         BetonQuest plugin = BetonQuest.getInstance();
         plugin.putDBHandler(playerID, new DatabaseHandler(playerID));
     }
@@ -97,16 +90,6 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        // save in async thread
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-                dbHandler.saveData();
-                dbHandler.removeData();
-                BetonQuest.getInstance().removeDBHandler(playerID);
-            }
-        }.runTaskAsynchronously(instance);
+        BetonQuest.getInstance().removeDBHandler(PlayerConverter.getID(event.getPlayer()));
     }
 }

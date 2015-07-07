@@ -123,8 +123,8 @@ public class TameObjective extends Objective implements Listener {
         
         private int amount;
 
-        public TameData(String instruction) {
-            super(instruction);
+        public TameData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
 
@@ -135,6 +135,7 @@ public class TameObjective extends Objective implements Listener {
         
         private void subtract() {
             amount--;
+            update();
         }
         
         private boolean isZero() {

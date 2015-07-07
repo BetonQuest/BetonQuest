@@ -85,8 +85,8 @@ public class DelayObjective extends Objective {
         
         private final long timestamp;
 
-        public DelayData(String instruction) {
-            super(instruction);
+        public DelayData(String instruction, String playerID, String objID) {
+            super(instruction, playerID, objID);
             timestamp = Long.parseLong(instruction);
         }
         
