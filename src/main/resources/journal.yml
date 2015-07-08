@@ -1,9 +1,12 @@
 wood_started:
   en: 'The Innkeeper asked me to bring him 16 blocks of wood from nearby forest.'
   pl: 'Karczmarz poprosil mnie abym przyniosl mu 16 blokow drewna z pobliskiego lasu.'
+  cn: "\u65c5\u5e97\u8001\u677f\u8ba9\u6211\u53bb\u65c1\u8fb9\u7684\u68ee\u6797\u7ed9\u4ed6\u5f0416\u5757\u6728\u5934"
 wood_done:
   en: 'I colected 16 block of wood. I should return to the Innkeeper.'
   pl: 'Zebralem 16 blokow drewna. Powinienem wrocic do Karczmarza.'
+  cn: "\u6211\u5df2\u7ecf\u5f04\u5230\u4e8616\u5757\u6728\u5934\uff0c\u73b0\u5728\u5e94\u8be5\u53ef\u4ee5\u56de\u53bb\u627e\u65c5\u5e97\u8001\u677f\u4e86"
 wood_paid:
   en: 'I brought wood to the Innkeeper and he gave me 5 emeralds.'
   pl: 'Zanioslem drewno Karczmarzowi, a on dal mi 5 szmaragdow.'
+  cn: "\u6211\u5c0616\u5757\u6728\u5934\u7ed9\u4e86\u65c5\u5e97\u8001\u677f\uff0c\u4ed6\u7ed9\u4e86\u62115\u4e2a\u7eff\u5b9d\u77f3"

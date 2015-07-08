@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -90,6 +91,11 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        BetonQuest.getInstance().removeDBHandler(PlayerConverter.getID(event.getPlayer()));
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+        for (Objective objective : dbHandler.getObjectives()) {
+            objective.removePlayer(playerID);
+        }
+        BetonQuest.getInstance().removeDBHandler(playerID);
     }
 }

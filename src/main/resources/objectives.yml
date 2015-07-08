@@ -1,1 +1,1 @@
-wood: block $block$ -16 events:tag_wood_done,entry_wood_done label:wood
+wood: block $block$ -16 events:tag_wood_done,entry_wood_done

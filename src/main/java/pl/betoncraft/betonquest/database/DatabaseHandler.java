@@ -19,7 +19,9 @@ package pl.betoncraft.betonquest.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,8 +102,9 @@ public class DatabaseHandler {
             // load journals
             ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[] { playerID });
             // put them into the list
-            while (res3.next())
+            while (res3.next()) {
                 entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
+            }
 
             // load points
             ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[] { playerID });
@@ -250,8 +253,12 @@ public class DatabaseHandler {
      * @param pointer
      */
     public void addPointer(Pointer pointer) {
+        // SQLite doesn't accept formatted date and MySQL doesn't accept numeric timestamp
+        String date = (BetonQuest.getInstance().isMySQLUsed())
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+                : Long.toString(pointer.getTimestamp());
         saver.add(new Record(UpdateType.ADD_JOURNAL, new String[]{playerID,
-                pointer.getPointer(), String.valueOf(pointer.getTimestamp())}));
+                pointer.getPointer(), date}));
     }
     
     /**
@@ -260,8 +267,11 @@ public class DatabaseHandler {
      * @param pointer
      */
     public void removePointer(Pointer pointer) {
+        String date = (BetonQuest.getInstance().isMySQLUsed())
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+                : Long.toString(pointer.getTimestamp());
         saver.add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID,
-                pointer.getPointer(), String.valueOf(pointer.getTimestamp())}));
+                date}));
     }
 
     /**
@@ -488,10 +498,15 @@ public class DatabaseHandler {
                  journal    = null,
                  loc        = null;
         String questName = null;
+        String defName   = null;
         // parse it to get the data
         for (String part : instruction.split(" ")) {
             if (part.startsWith("name:")) {
-                questName = part.substring(5).replace("_", " ");
+                defName = part.substring(5).replace("_", " ");
+            } else if (part.startsWith("name_" + lang + ":")) {
+                questName = part.substring(6 + lang.length()).replace("_", " ");
+            } else if (part.startsWith("name_" + Config.getLanguage() + ":")) {
+                defName = part.substring(6 + Config.getLanguage().length()).replace("_", " ");
             } else if (part.startsWith("events:")) {
                 events = part.substring(7).split(",");
             } else if (part.startsWith("tags:")) {
@@ -596,6 +611,13 @@ public class DatabaseHandler {
         }
         // done
         Debug.info("Quest removed!");
+        if (questName == null) {
+            questName = defName;
+        }
+        if (questName == null) {
+            Debug.error("Default quest name not defined in " + name);
+            return;
+        }
         Config.sendMessage(playerID, "quest_canceled", new String[]{questName});
     }
 
@@ -606,6 +628,12 @@ public class DatabaseHandler {
         return lang;
     }
     
+    /**
+     * Sets player's language
+     * 
+     * @param lang
+     *          language to set
+     */
     public void setLanguage(String lang) {
         this.lang = lang;
         saver.add(new Record(UpdateType.DELETE_PLAYER, new String[]{playerID}));
