@@ -192,6 +192,12 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v19() {
         try {
+            if (config.getString("tellraw").equalsIgnoreCase("true")) {
+                config.set("default_conversation_IO", "simple");
+            } else {
+                config.set("default_conversation_IO", "tellraw");
+            }
+            config.set("tellraw", null);
             FileConfiguration messages = Config.getMessages().getConfig();
             String message;
             message = messages.getString("global.quester_line_format");
