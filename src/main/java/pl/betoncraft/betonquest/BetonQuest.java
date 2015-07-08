@@ -34,6 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.commands.BackpackCommand;
 import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
@@ -111,6 +112,7 @@ import pl.betoncraft.betonquest.objectives.ExperienceObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
+import pl.betoncraft.betonquest.objectives.StepObjective;
 import pl.betoncraft.betonquest.objectives.TameObjective;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Metrics;
@@ -216,6 +218,7 @@ public final class BetonQuest extends JavaPlugin {
 
         new QuestCommand();
         new JournalCommand();
+        new BackpackCommand();
         new TellrawCommand();
         new LangCommand();
 
@@ -281,6 +284,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("delay", DelayObjective.class);
         registerObjectives("arrow", ArrowShootObjective.class);
         registerObjectives("experience", ExperienceObjective.class);
+        registerObjectives("step", StepObjective.class);
 
         // initialize compatibility with other plugins
         new Compatibility();

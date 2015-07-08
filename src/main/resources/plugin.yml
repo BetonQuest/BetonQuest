@@ -15,17 +15,25 @@ commands:
     description: Adds journal to your inventory
     usage: /<command>
     permission: betonquest.journal
-    aliases: [bj, journal, bjournal, betonjournal, b, bb, backpack, bbackpack, betonbackpack]
+    aliases: [bj, journal, bjournal, betonjournal, betonquestjournal]
+  backpack:
+    description: Opens quest backpack
+    usage: /<command>
+    permission: betonquest.backpack
+    aliases: [b, bb, bbackpack, betonbackpack, betonquestbackpack]
   questlang:
     description: Changes the language
     usage: /<command> lang
     permission: betonquest.language
+    alias: [ql]
   betonquestanswer:
     description: Handles tellraw answers
 permissions:
   betonquest.admin:
     default: op
   betonquest.journal:
+    default: true
+  betonquest.backpack:
     default: true
   betonquest.conversation:
     default: true

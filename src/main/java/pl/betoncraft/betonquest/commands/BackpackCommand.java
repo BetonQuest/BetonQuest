@@ -23,36 +23,34 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.core.BackpackDisplay;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Gives the player his journal
+ * The journal command. It gives the player his journal book.
  * 
  * @author Jakub Sapalski
  */
-public class JournalCommand implements CommandExecutor {
-
+public class BackpackCommand implements CommandExecutor {
+    
     /**
-     * Registers a new executor of the /j command
+     * Registers a new executor of the /backpack command
      */
-    public JournalCommand() {
-        BetonQuest.getInstance().getCommand("j").setExecutor(this);
+    public BackpackCommand() {
+        BetonQuest.getInstance().getCommand("backpack").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("j")) {
+        if (cmd.getName().equalsIgnoreCase("backpack")) {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
-              // giving the player his journal
-              BetonQuest.getInstance().getDBHandler(PlayerConverter
-                      .getID((Player) sender)).getJournal().addToInv(Integer
-                      .parseInt(Config.getString("config.default_journal_slot")));
+                Debug.info("Executing /backpack command for " + sender.getName());
+                new BackpackDisplay(PlayerConverter.getID((Player) sender));
             }
             return true;
         }
         return false;
     }
-
 }
