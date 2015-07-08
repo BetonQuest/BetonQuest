@@ -185,7 +185,7 @@ public class BackpackDisplay implements Listener {
                     canceler = new ItemStack(Material.BONE);
                 }
                 ItemMeta meta = canceler.getItemMeta();
-                meta.setDisplayName(Config.getString("messages.global.cancel_color").replace("&", "§") + name.replace("_", " "));
+                meta.setDisplayName(name.replace("_", " "));
                 canceler.setItemMeta(meta);
                 content[i] = canceler;
                 map.put(i, address);

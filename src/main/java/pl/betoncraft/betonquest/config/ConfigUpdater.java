@@ -81,7 +81,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v19";
+    private final String destination = "v20";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -141,7 +141,7 @@ public class ConfigUpdater {
         } else if (version.matches("^v\\d+$")) {
             performUpdate();
         } else {
-            Debug.broadcast("Something is not right wit configuration version. Consider fixing this.");
+            Debug.broadcast("Something is not right with configuration version. Consider fixing this.");
         }
     }
     
@@ -187,6 +187,62 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v19() {
+        try {
+            FileConfiguration messages = Config.getMessages().getConfig();
+            String message;
+            message = messages.getString("global.quester_line_format");
+            if (message == null) message = "&4%quester%&f: &a&o";
+            config.set("conversation.quester_line_format", message);
+            message = messages.getString("global.quester_reply_format");
+            if (message == null) message = "&e%number%. &b";
+            config.set("conversation.quester_reply_format", message);
+            message = messages.getString("global.player_reply_format");
+            if (message == null) message = "&2%player%&f: &7";
+            config.set("conversation.player_reply_format", message);
+            message = messages.getString("global.date_format");
+            if (message == null) message = "dd.MM.yyyy HH:mm";
+            config.set("date_format", message);
+            String cancel_color = messages.getString("global.cancel_color", "&2");
+            messages.set("global", null);
+            Debug.broadcast("Moved 'global' messages to main config.");
+            Config.getMessages().saveConfig();
+            for (String packName : Config.getPackageNames()) {
+                Debug.info("Processing " + packName + " package");
+                ConfigPackage pack = Config.getPackage(packName);
+                ConfigurationSection cancelers = pack.getMain().getConfig()
+                        .getConfigurationSection("cancel");
+                for (String key : cancelers.getKeys(false)) {
+                    String canceler = cancelers.getString(key);
+                    StringBuilder string = new StringBuilder();
+                    for (String part : canceler.split(" ")) {
+                        if (part.startsWith("name")) {
+                            string.append(part.replace(":", ":" + cancel_color) + " ");
+                        } else {
+                            string.append(part + " ");
+                        }
+                    }
+                    cancelers.set(key, string.toString().trim());
+                    Debug.info("  Updated " + key + " canceler name color");
+                }
+                pack.getMain().saveConfig();
+                for (String convName : pack.getConversationNames()) {
+                    ConfigAccessor conv = pack.getConversation(convName);
+                    conv.getConfig().set("unknown", null);
+                    conv.saveConfig();
+                    Debug.info("  Removed 'unknown' messages from " + convName + " conversation");
+                }
+            }
+            Debug.broadcast("Removed no longer used 'unknown' message from conversations.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        config.set("version", "v20");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

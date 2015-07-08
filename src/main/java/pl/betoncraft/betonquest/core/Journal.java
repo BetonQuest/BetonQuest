@@ -121,7 +121,7 @@ public class Journal {
         texts.clear();
         this.lang = lang; 
         for (Pointer pointer : pointers) {
-            String date = new SimpleDateFormat(Config.getString("messages.global.date_format")).format(pointer.getTimestamp());
+            String date = new SimpleDateFormat(Config.getString("config.date_format")).format(pointer.getTimestamp());
             String[] dateParts = date.split(" ");
             String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
             String hour = "";

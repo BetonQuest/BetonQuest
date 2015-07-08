@@ -3,11 +3,6 @@ quester:
   es: 'Tabernero'
   pl: 'Karczmarz'
   cn: "\u65c5\u9986\u8001\u677f"
-unknown: 
-  en: 'I''m sorry, I didn''t understand. Can you repeat?'
-  es: 'Lo siento, no te he entendido. Puedes repetirlo?'
-  pl: 'Wybacz, nie zrozumialem. Moglbys powtorzyc?'
-  cn: "\u62b1\u6b49\uff0c\u6211\u4e0d\u77e5\u9053\u4f60\u5728\u8bf4\u4ec0\u4e48\uff0c\u53ef\u4ee5\u518d\u8bf4\u4e00\u6b21\u4e48\uff1f"
 first: 'start,start_wood_started,start_wood_completed'
 stop: 'false'
 NPC_options:

@@ -1,4 +1,4 @@
-version: v19
+version: v20
 mysql:
   host: ''
   port: ''
@@ -10,17 +10,11 @@ language: en
 autoupdate: 'true'
 default_journal_slot: '-1'
 max_npc_distance: '5'
-tellraw: 'false'
+default_conversation_IO: simple
 combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
-remove_items_after_respawn: true
-journal_colors:
-  date:
-    day: '9'
-    hour: '6'
-  line: '4'
-  text: '0'
+remove_items_after_respawn: 'true'
 sounds:
   start: VILLAGER_HAGGLE
   end: VILLAGER_YES
@@ -35,3 +29,14 @@ hook:
   vault: 'true'
   worldguard: 'true'
   skript: 'true'
+journal_colors:
+  date:
+    day: '9'
+    hour: '6'
+  line: '4'
+  text: '0'
+conversation:
+  quester_line_format: '&4%quester%&f: &a&o'
+  quester_reply_format: '&e%number%. &b'
+  player_reply_format: '&2%player%&f: &7'
+date_format: dd.MM.yyyy HH:mm

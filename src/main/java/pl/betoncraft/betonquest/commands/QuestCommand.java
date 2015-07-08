@@ -780,8 +780,6 @@ public class QuestCommand implements CommandExecutor {
         new Config();
         // load new static events
         new StaticEvents();
-        // reload tellraw command executor
-        new TellrawCommand();
         // stop current global locations listener
         // and start new one with reloaded configs
         Debug.info("Restarting global locations");

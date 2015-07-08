@@ -38,7 +38,6 @@ public class ConversationData {
     private String convName;
     
     private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private HashMap<String, String> unknown = new HashMap<>();
     private String[] finalEvents;
     private String[] startingOptions;
     private boolean blockMovement;
@@ -69,13 +68,6 @@ public class ConversationData {
         } else {
             quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
         }
-        if (conv.isConfigurationSection("unknown")) {
-            for (String lang : conv.getConfigurationSection("unknown").getKeys(false)) {
-                unknown.put(lang, pack.getString("conversations." + name + ".unknown." + lang));
-            }
-        } else {
-            unknown.put(Config.getLanguage(), pack.getString("conversations." + name + ".unknown"));
-        }
         String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
@@ -83,9 +75,6 @@ public class ConversationData {
         // check if all data is valid (or at least exist)
         if (quester == null || quester.equals("")) {
             throw new InstructionParseException("Quester's name is not defined");
-        }
-        if (unknown == null || unknown.equals("")) {
-            throw new InstructionParseException("\"Unknown\" text is not defined");
         }
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
@@ -156,19 +145,6 @@ public class ConversationData {
         String text = quester.get(lang);
         if (text == null) {
             text = quester.get(Config.getLanguage());
-        }
-        return text;
-    }
-    
-    /**
-     * @param lang
-     *          language of quester's response
-     * @return the unknown message
-     */
-    public String getUnknown(String lang) {
-        String text = unknown.get(lang);
-        if (text == null) {
-            text = unknown.get(Config.getLanguage());
         }
         return text;
     }

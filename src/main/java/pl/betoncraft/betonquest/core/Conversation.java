@@ -17,25 +17,20 @@
  */
 package pl.betoncraft.betonquest.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
@@ -47,9 +42,9 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Represents a conversation between QuestPlayer and Quester
+ * Represents a conversation between player and NPC
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class Conversation implements Listener {
 
@@ -61,18 +56,22 @@ public class Conversation implements Listener {
     private final String language;
     private final ConversationData data;
     private final Location location;
-    private final boolean tellraw;
     private final List<String> blacklist;
+    private ConversationIO inOut;
     
     private HashMap<Integer, String> current = new HashMap<>();
-    private HashMap<Integer, String> hashes = new HashMap<>();
 
     /**
-     * Constructor method, starts a new conversation between player and npc at
-     * given location
+     * Starts a new conversation between player and npc at given location
      * 
      * @param playerID
+     *          ID of the player
+     * @param packName
+     *          name of the package in which this conversation is defined
      * @param conversationID
+     *          name of the conversation
+     * @param location
+     *          location where the conversation has been started
      */
     public Conversation(final String playerID, final String packName,
             final String conversationID, final Location location) {
@@ -81,12 +80,28 @@ public class Conversation implements Listener {
         this.player = PlayerConverter.getPlayer(playerID);
         this.language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
         this.location = location;
-        this.tellraw = Config.getString("config.tellraw")
-                .equalsIgnoreCase("true");
         this.data = BetonQuest.getInstance().getConversation(
                 packName + "." + conversationID);
         this.blacklist = BetonQuest.getInstance().getConfig()
                 .getStringList("cmd_blacklist");
+        try {
+            String name = BetonQuest.getInstance().getConfig()
+                    .getString("default_conversation_IO");
+            Class<? extends ConversationIO> c = BetonQuest.getInstance()
+                    .getConvIO(name);
+            if (c == null) {
+                Debug.error("Conversation IO " + name + " is not registered!");
+                return;
+            }
+            this.inOut = c.getConstructor(Conversation.class, String.class, String.class)
+                    .newInstance(this, playerID, data.getQuester(language));
+        } catch (InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+            Debug.error("Error when loading conversation IO");
+            return;
+        }
         
         // check if data is present
         if (data == null) {
@@ -114,13 +129,13 @@ public class Conversation implements Listener {
                 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) return;
-                
-                // everything is ok, register conversation as listener
-                BetonQuest.getInstance().getServer().getPluginManager()
-                        .registerEvents(conv, BetonQuest.getInstance());
 
                 // add the player to the list of active conversations
                 list.put(playerID, conv);
+                
+                // register listeners for immunity and blocking commands
+                Bukkit.getPluginManager().registerEvents(conv, BetonQuest
+                        .getInstance());
 
                 // print message about starting a conversation
                 Config.sendMessage(playerID, "conversation_start",
@@ -165,8 +180,7 @@ public class Conversation implements Listener {
         }
 
         // print option to the player
-        SimpleTextOutput.sendQuesterMessage(this.playerID, data.getQuester(language),
-                data.getText(language, option, OptionType.NPC));
+        inOut.setNPCResponse(data.getText(language, option, OptionType.NPC));
 
         final String fOption = option;
         new BukkitRunnable() {
@@ -193,33 +207,15 @@ public class Conversation implements Listener {
      * @param rawAnswer
      *            the message player has sent on chat
      */
-    public void passPlayerAnswer(String rawAnswer) {
-
-        String answer = rawAnswer.trim();
-
-        // if answer isn't a number, or the number is greater than amount of
-        // possible options then print messages
-        if (answer.equalsIgnoreCase("0") || !answer.matches("\\d+")
-            || Integer.valueOf(answer) > current.size()) {
-            // some text from npc saying that he doesn't understand player
-            SimpleTextOutput.sendQuesterMessage(playerID, data.getQuester(language),
-                    data.getUnknown(language));
-            // and instructions from plugin about answering npcs
-            Config.sendMessage(playerID, "help_with_answering");
-            return;
-        }
+    public void passPlayerAnswer(int number) {
+        
+        inOut.clear();
 
         // get the answer ID from player's response
-        Integer number = new Integer(answer);
         final String choosenAnswerID = current.get(number);
 
         // clear hashmap
         current.clear();
-        if (tellraw) hashes.clear();
-
-        // print to player his answer
-        SimpleTextOutput.sendPlayerReply(playerID, data.getQuester(language),
-                data.getText(language, choosenAnswerID, OptionType.PLAYER));
 
         new BukkitRunnable() {
             public void run() {
@@ -256,16 +252,11 @@ public class Conversation implements Listener {
                 }
             }
             i++;
-            // print reply
-            String randomID = UUID.randomUUID().toString();
-            SimpleTextOutput.sendQuesterReply(playerID, i, data.getQuester(language),
-                    data.getText(language, option, OptionType.PLAYER), randomID);
-            // put reply to hashmap
+            // print reply and put it to the hashmap
             current.put(Integer.valueOf(i), option);
-            if (tellraw) {
-                hashes.put(Integer.valueOf(i), randomID);
-            }
+            inOut.addPlayerOption(data.getText(language, option, OptionType.PLAYER));
         }
+        inOut.display();
         // end conversations if there are no possible options
         if (current.isEmpty()) {
             new BukkitRunnable() {
@@ -282,6 +273,7 @@ public class Conversation implements Listener {
      * active conversations
      */
     public void endConversation() {
+        inOut.end();
         // fire final events
         for (String event : data.getFinalEvents()) {
             BetonQuest.event(playerID, event);
@@ -291,7 +283,6 @@ public class Conversation implements Listener {
                 new String[]{data.getQuester(language)}, "end");
         // delete conversation
         list.remove(playerID);
-        // unregister listener
         HandlerList.unregisterAll(this);
         Bukkit.getServer().getPluginManager().callEvent(
                 new PlayerConversationEndEvent(player, this));
@@ -304,64 +295,6 @@ public class Conversation implements Listener {
      */
     public boolean isMovementBlock() {
         return data.isMovementBlocked();
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onReply(final AsyncPlayerChatEvent event) {
-        // return if it's someone else
-        if (event.getPlayer() != player) {
-            return;
-        }
-        if (event.getMessage().startsWith("#")) {
-            event.setMessage(event.getMessage().substring(1).trim());
-        } else {
-            event.setCancelled(true);
-            passPlayerAnswer(event.getMessage());
-        }
-    }
-
-    @EventHandler
-    public void onWalkAway(PlayerMoveEvent event) {
-        // return if it's someone else
-        if (!event.getPlayer().equals(player)) {
-            return;
-        }
-        // if player passes max distance
-        if (!event.getTo().getWorld().equals(location.getWorld()) ||
-                event.getTo().distance(location) > Integer.valueOf(
-                        Config.getString("config.max_npc_distance"))) {
-            // we can stop the player or end conversation
-            if (isMovementBlock()) {
-                moveBack(event);
-            } else {
-                endConversation();
-            }
-        }
-        return;
-    }
-    
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        // prevent damage to (or from) player while in conversation
-        if ((event.getEntity() instanceof Player && PlayerConverter.getID(
-                (Player) event.getEntity()).equals(playerID)) ||
-                (event.getDamager() instanceof Player && PlayerConverter
-                        .getID((Player) event.getDamager()).equals(playerID))) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        // if player quits, end conversation (why keep listeners running?)
-        if (event.getPlayer().equals(player)) {
-            // delete conversation
-            list.remove(playerID);
-            // unregister listener
-            HandlerList.unregisterAll(this);
-            Bukkit.getServer().getPluginManager().callEvent(
-                    new PlayerConversationEndEvent(player, this));
-        }
     }
     
     @EventHandler
@@ -376,38 +309,15 @@ public class Conversation implements Listener {
             Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "command_blocked");
         }
     }
-
-    /**
-     * Moves the player back a few blocks in the conversation's center
-     * direction.
-     * 
-     * @param event
-     *            PlayerMoveEvent event, for extracting the necessary data
-     */
-    private void moveBack(PlayerMoveEvent event) {
-        // if the player is in other world (he teleported himself), teleport him
-        // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(location.getWorld()) ||
-                event.getTo().distance(location) > Integer.valueOf(
-                        Config.getString("config.max_npc_distance")) * 2) {
-            event.getPlayer().teleport(location);
-            return;
-        }
-        // if not, then calculate the vector
-        float yaw = event.getTo().getYaw();
-        float pitch = event.getTo().getPitch();
-        Vector vector = new Vector(location.getX() - event.getTo().getX(),
-                location.getY() - event.getTo().getY(), location.getZ()
-                - event.getTo().getZ());
-        vector = vector.multiply(1 / vector.length());
-        // and teleport him back using this vector
-        Location newLocation = event.getTo().clone();
-        newLocation.add(vector);
-        newLocation.setPitch(pitch);
-        newLocation.setYaw(yaw);
-        event.getPlayer().teleport(newLocation);
-        if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "pullback");
+    
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        // prevent damage to (or from) player while in conversation
+        if ((event.getEntity() instanceof Player && PlayerConverter.getID(
+                (Player) event.getEntity()).equals(playerID))
+                || (event.getDamager() instanceof Player && PlayerConverter
+                        .getID((Player) event.getDamager()).equals(playerID))) {
+            event.setCancelled(true);
         }
     }
 
@@ -429,11 +339,9 @@ public class Conversation implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerID = PlayerConverter.getID(player);
             if (list.containsKey(playerID)) {
-                Conversation conv = list.get(playerID);
-                // unregister listener
-                HandlerList.unregisterAll(conv);
+                list.get(playerID).endConversation();
                 Bukkit.getServer().getPluginManager().callEvent(
-                        new PlayerConversationEndEvent(player, conv));
+                        new PlayerConversationEndEvent(player, list.get(playerID)));
             }
         }
         list.clear();
@@ -449,9 +357,12 @@ public class Conversation implements Listener {
     public static Conversation getConversation(String playerID) {
         return list.get(playerID);
     }
-    
-    public HashMap<Integer, String> getHashes() {
-        return hashes;
+
+    /**
+     * @return the location
+     */
+    public Location getLocation() {
+        return location;
     }
 
 }

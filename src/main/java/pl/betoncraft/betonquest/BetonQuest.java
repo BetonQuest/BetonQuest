@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -38,7 +40,6 @@ import pl.betoncraft.betonquest.commands.BackpackCommand;
 import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
-import pl.betoncraft.betonquest.commands.TellrawCommand;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
@@ -66,14 +67,18 @@ import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
+import pl.betoncraft.betonquest.core.AnswerFilter;
 import pl.betoncraft.betonquest.core.CombatTagger;
 import pl.betoncraft.betonquest.core.ConversationData;
+import pl.betoncraft.betonquest.core.ConversationIO;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
 import pl.betoncraft.betonquest.core.QuestItemHandler;
+import pl.betoncraft.betonquest.core.SimpleConvIO;
 import pl.betoncraft.betonquest.core.StaticEvents;
+import pl.betoncraft.betonquest.core.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -143,6 +148,7 @@ public final class BetonQuest extends JavaPlugin {
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
     private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
     private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
+    private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
     
     private static HashMap<String, Condition> conditions = new HashMap<>();
     private static HashMap<String, QuestEvent> events = new HashMap<>();
@@ -219,7 +225,6 @@ public final class BetonQuest extends JavaPlugin {
         new QuestCommand();
         new JournalCommand();
         new BackpackCommand();
-        new TellrawCommand();
         new LangCommand();
 
         // register conditions
@@ -285,6 +290,10 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("arrow", ArrowShootObjective.class);
         registerObjectives("experience", ExperienceObjective.class);
         registerObjectives("step", StepObjective.class);
+        
+        // register conversation IO types
+        registerConversationIO("simple", SimpleConvIO.class);
+        registerConversationIO("tellraw", TellrawConvIO.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
@@ -313,6 +322,15 @@ public final class BetonQuest extends JavaPlugin {
             }
         };
         keeper.runTaskTimerAsynchronously(this, 60*20, 60*20);
+        
+        // block betonquestanswer logging (it's just a spam)
+        try {
+            Class.forName("org.apache.logging.log4j.core.Filter");
+            Logger coreLogger = (Logger) LogManager.getRootLogger();
+            coreLogger.addFilter(new AnswerFilter());
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            Debug.info("Could not disable /betonquestanswer logging");
+        }
 
         // metrics
         try {
@@ -615,6 +633,11 @@ public final class BetonQuest extends JavaPlugin {
         Debug.info("Registering " + name + " objective type");
         objectiveTypes.put(name, objectiveClass);
     }
+    
+    public void registerConversationIO(String name, Class<? extends ConversationIO> convIOClass) {
+        Debug.info("Registering " + name + " conversation IO type");
+        convIOTypes.put(name, convIOClass);
+    }
 
     /**
      * Checks if the condition described by conditionID is met
@@ -777,5 +800,9 @@ public final class BetonQuest extends JavaPlugin {
      */
     public Saver getSaver() {
         return saver;
+    }
+    
+    public Class<? extends ConversationIO> getConvIO(String name) {
+        return convIOTypes.get(name);
     }
 }

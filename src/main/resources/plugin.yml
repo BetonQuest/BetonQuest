@@ -26,8 +26,6 @@ commands:
     usage: /<command> lang
     permission: betonquest.language
     aliases: [ql]
-  betonquestanswer:
-    description: Handles tellraw answers
 permissions:
   betonquest.admin:
     default: op

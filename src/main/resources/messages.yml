@@ -1,12 +1,6 @@
-global:
-  quester_line_format: '&4%quester%&f: &a&o'
-  quester_reply_format: '&e%number%. &b'
-  player_reply_format: '&2%player%&f: &7'
-  date_format: dd.MM.yyyy HH:mm
-  cancel_color: '&2'
 pl:
-  conversation_start: '&e*&bRozpoczales rozmowe z {1}!&e*'
-  conversation_end: '&e*&bZakonczyles rozmowe z {1}!&e*'
+  conversation_start: '&e====&bRozpoczales rozmowe z {1}!&e===='
+  conversation_end: '&e====&bZakonczyles rozmowe z {1}!&e===='
   help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
   unknown_argument: '&cNiewlasciwy argument.'
   no_permission: '&cNie masz permisji.'
@@ -80,8 +74,8 @@ pl:
   language_missing: '&cPodaj jezyk'
   language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
 en:
-  conversation_start: '&e*&bConversation with {1} started!&e*'
-  conversation_end: '&e*&bConversation with {1} finished!&e*'
+  conversation_start: '&e====&bConversation with {1} started!&e===='
+  conversation_end: '&e====&bConversation with {1} finished!&e===='
   help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
   unknown_argument: '&cWrong argument.'
   no_permission: '&cYou don''t have permission.'
@@ -155,8 +149,8 @@ en:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
-  conversation_start: '&e*&bGesprach mit {1} begonnen!&e*'
-  conversation_end: '&e*&bGesprach mit {1} beendet!&e*'
+  conversation_start: '&e====&bGesprach mit {1} begonnen!&e===='
+  conversation_end: '&e====&bGesprach mit {1} beendet!&e===='
   help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
   unknown_argument: '&cFalsches Argument festgestellt.'
   no_permission: '&cDu hast keinen Zugriff auf diesen Befehl.'
@@ -230,8 +224,8 @@ de:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 fr:
-  conversation_start: '&e*&bLa conversation avec {1} est engagee!&e*'
-  conversation_end: '&e*&bLa conversation avec {1} est terminee!&e*'
+  conversation_start: '&e====&bLa conversation avec {1} est engagee!&e===='
+  conversation_end: '&e====&bLa conversation avec {1} est terminee!&e===='
   help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console sans le point, ex. 2'
   unknown_argument: '&cMauvais parametre.'
   no_permission: '&cVous n''avez pas la permission.'
@@ -380,8 +374,8 @@ cn:
   language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
   language_not_exist: "&c\u8fd9\u4e2a\u8bed\u8a00\u4e0d\u5b58\u5728\uff0c\u53ef\u7528\u7684\u8bed\u8a00\u6709\uff1a"
 es:
-  conversation_start: '&e*&bLa conversacion con {1} ha comenzado.&e*'
-  conversation_end: '&e*&bLa conversacion con {1} ha terminado.&e*'
+  conversation_start: '&e====&bLa conversacion con {1} ha comenzado.&e===='
+  conversation_end: '&e====&bLa conversacion con {1} ha terminado.&e===='
   help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
   unknown_argument: '&cArgumento incorrecto.'
   no_permission: '&cNo tienes permiso para eso.'

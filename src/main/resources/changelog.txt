@@ -11,6 +11,7 @@ Fixes:
     * Greatly improved performance in almost every aspect
     * Finally fixed issues with special characters on some servers
     * Fixed database saving/loading issues
+    * Fixed player options in conversations being white on next lines when using tellraw
 Additions:
     * Variable system for quick changing quest parameters (for example location of a quest)
     * Quest canceling system
@@ -39,6 +40,7 @@ Changes:
     * Quest blocks cannot be placed, quest items will not break
     * Conversations cannot be started while in combat
     * Cannot fight while in conversation
+    * Tellraw conversations no longer spam the console
     * Mobs can be spawned with a name (spawnmob event, "name:" argument)
     * /q command is now more beautiful
     * Removed unnecessary argument prefixes from conditions and events
