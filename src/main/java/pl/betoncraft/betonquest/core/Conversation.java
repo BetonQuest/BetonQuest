@@ -84,24 +84,6 @@ public class Conversation implements Listener {
                 packName + "." + conversationID);
         this.blacklist = BetonQuest.getInstance().getConfig()
                 .getStringList("cmd_blacklist");
-        try {
-            String name = BetonQuest.getInstance().getConfig()
-                    .getString("default_conversation_IO");
-            Class<? extends ConversationIO> c = BetonQuest.getInstance()
-                    .getConvIO(name);
-            if (c == null) {
-                Debug.error("Conversation IO " + name + " is not registered!");
-                return;
-            }
-            this.inOut = c.getConstructor(Conversation.class, String.class, String.class)
-                    .newInstance(this, playerID, data.getQuester(language));
-        } catch (InstantiationException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
-            Debug.error("Error when loading conversation IO");
-            return;
-        }
         
         // check if data is present
         if (data == null) {
@@ -129,6 +111,29 @@ public class Conversation implements Listener {
                 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) return;
+                
+                // now the conversation should start no matter what
+                // the inOut can be safely instantiated; doing it before
+                // would leave it active while the conversation is not
+                // started, causing it to display "null" all the time
+                try {
+                    String name = BetonQuest.getInstance().getConfig()
+                            .getString("default_conversation_IO");
+                    Class<? extends ConversationIO> c = BetonQuest.getInstance()
+                            .getConvIO(name);
+                    if (c == null) {
+                        Debug.error("Conversation IO " + name + " is not registered!");
+                        return;
+                    }
+                    conv.inOut = c.getConstructor(Conversation.class, String.class, String.class)
+                            .newInstance(conv, playerID, data.getQuester(language));
+                } catch (InstantiationException | IllegalAccessException
+                        | IllegalArgumentException | InvocationTargetException
+                        | NoSuchMethodException | SecurityException e) {
+                    e.printStackTrace();
+                    Debug.error("Error when loading conversation IO");
+                    return;
+                }
 
                 // add the player to the list of active conversations
                 list.put(playerID, conv);
