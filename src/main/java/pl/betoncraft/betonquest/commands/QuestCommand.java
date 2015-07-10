@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -159,6 +160,11 @@ public class QuestCommand implements CommandExecutor {
                         }
                     }.runTaskAsynchronously(instance);
                     break;
+                case "vector":
+                case "vec":
+                case "v":
+                    handleVector(sender, args);
+                    break;
                 case "purge":
                     Debug.info("Loading data asynchronously");
                     final CommandSender finalSender5 = sender;
@@ -197,7 +203,7 @@ public class QuestCommand implements CommandExecutor {
         }
         return false;
     }
-    
+
     /**
      * Creates new package
      */
@@ -770,6 +776,54 @@ public class QuestCommand implements CommandExecutor {
                 break;
         }
     }
+    
+    /**
+     * Creates a vector variable
+     * 
+     * @param sender
+     * @param args
+     */
+    private void handleVector(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) return;
+        Player player = ((Player) sender);
+        if (args.length != 3) {
+            player.sendMessage("§4ERROR");
+            return;
+        }
+        String[] parts = args[1].split("\\.");
+        if (parts.length != 2) {
+            player.sendMessage("§4ERROR");
+            return;
+        }
+        String pack = parts[0];
+        String name = parts[1];
+        String origin = Config.getString(pack + ".main.variables." + name);
+        if (origin == null) {
+            player.sendMessage("§4ERROR");
+            return;
+        }
+        parts = origin.split(";");
+        if (parts.length < 3) {
+            player.sendMessage("§4ERROR");
+            return;
+        }
+        double x, y, z;
+        try {
+            x = Double.parseDouble(parts[0]);
+            y = Double.parseDouble(parts[1]);
+            z = Double.parseDouble(parts[2]);
+        } catch (NumberFormatException e) {
+            player.sendMessage("§4ERROR");
+            return;
+        }
+        Location loc = player.getLocation();
+        x = loc.getX() - x;
+        y = loc.getY() - y;
+        z = loc.getZ() - z;
+        Config.setString(pack + ".main.variables.vectors." + args[2],
+                String.format("$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
+        player.sendMessage("§2OK");
+    }
 
     /**
      * Reloads the configuration.
@@ -817,11 +871,12 @@ public class QuestCommand implements CommandExecutor {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
+        cmds.put("vector", "vector <pack.varname> <vectorname>");
         cmds.put("purge", "purge <player>");
         if (!(sender instanceof Player)) cmds.put("backup", "backup");
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
-        if (Config.getString("config.tellraw").equalsIgnoreCase("true") && sender instanceof Player) {
+        if (sender instanceof Player) {
             String lang = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID((Player) sender)).getLanguage();
             for (String command : cmds.keySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 

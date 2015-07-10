@@ -55,6 +55,7 @@ pl:
   command_journal: wyswietla wskazniki w dzienniku gracza
   command_item: tworzy nowy przedmiot z trzymanego w rece
   command_config: odczytuje, zapisuje lub dodaje napisy do konfiguracji
+  command_vector: tworzy wektor od pierwszej zmiennej i zapisuje do drugiej
   command_purge: czysci wszystkie dane o graczu
   command_backup: tworzy backup konfiguracji i bazy danych. Uzywac z konsoli na pustym serwerze!
   offline: '&4Wszyscy gracze musza byc offline aby wykonac backup!'
@@ -130,6 +131,7 @@ en:
   command_event: fires an event for the player
   command_item: creates an item from the one you're holding
   command_config: reads, sets or appends strings to configs
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: deletes all data about the player
   command_backup: creates configuration and database backup. Use only from console on empty server!
   offline: '&4All players must be offline in order to make a backup!'
@@ -205,6 +207,7 @@ de:
   command_event: Ereignis fur Spieler auslosen
   command_item: erstellt einen Gegenstand aus dem in deiner Hand
   command_config: liest, setzt oder hangt Zeilen an die Konfig an
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: Setzt alle Daten uber Spieler zuruck
   command_backup: Erstellt ein Backup von Konfiguration und Datenbank. Nur von der Konsole aus verwenden wenn keine Spieler online sind!
   offline: '&4Alle Spieler mussen offline sein, um ein Backup zu vollziehen!'
@@ -280,6 +283,7 @@ fr:
   command_event: Envoi d'un evenement
   command_item: Creer un objet a partir de celui que vous avez en main
   command_config: reads, sets or appends des chaines dans la config
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: Supprime tout l'historique du joueur
   command_backup: creer une configuration et une sauvegarde de la base. S'execute en console et avec un serveur vide de joueurs!
   offline: '&4Tous les joueurs doivent se deconnecter avant de lancer une sauvegarde!'
@@ -352,6 +356,7 @@ cn:
   command_event: "\u4e3a\u67d0\u73a9\u5bb6\u6fc0\u6d3b\u4e00\u4e2a\u4e8b\u4ef6"
   command_item: "\u5c06\u4f60\u624b\u4e2d\u62ff\u7740\u7684\u7269\u54c1\u4fdd\u5b58\u4e3a\u9884\u7f6e\u7269\u54c1"
   command_config: "\u8bfb\u53d6, \u66f4\u6539\u6216\u6dfb\u52a0\u914d\u7f6e\u6587\u4ef6\u4e2d\u7684\u67d0\u4e9b\u6587\u5b57(\u9700\u8981\u9644\u4e0a\u6587\u5b57\u524d\u7684\u8def\u5f84)"
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: "\u5220\u9664\u8be5\u73a9\u5bb6\u7684\u6240\u6709\u4efb\u52a1\u4fe1\u606f"
   command_backup: "\u5907\u4efd\u914d\u7f6e\u6587\u4ef6\uff0c\u53ea\u80fd\u4ece\u63a7\u5236\u53f0\uff0c\u5e76\u4e14\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u4f7f\u7528\uff01"
   offline: "&4\u53ea\u6709\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u624d\u80fd\u8fdb\u884c\u5907\u4efd!"
@@ -430,6 +435,7 @@ es:
   command_event: activa un evento.
   command_item: crea un objeto a partir del cual estas sosteniendo.
   command_config: lee, fija o anade cadenas de configuraciones
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: borra todos los datos de un jugador.
   command_backup: crea un backup de la configuracion y la base de datos. Usar solo desde consola y con el servidor vacio!
   offline: '&4Todos los jugadores deben estar desconectados para hacer el backup!'

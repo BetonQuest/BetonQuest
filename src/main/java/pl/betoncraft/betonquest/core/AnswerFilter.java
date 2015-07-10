@@ -36,7 +36,8 @@ public class AnswerFilter implements Filter {
     @Override
     public Result filter(LogEvent record) {
         if (record != null && record.getMessage() != null
-                && record.getMessage().getFormattedMessage()
+                && record.getMessage().getFormattedMessage() != null &&
+                record.getMessage().getFormattedMessage()
                 .contains(" issued server command: /betonquestanswer ")) {
             return Result.DENY;
         }

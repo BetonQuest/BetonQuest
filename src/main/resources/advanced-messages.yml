@@ -55,6 +55,7 @@ pl:
   command_journal: wyświetla wskaźniki w dzienniku gracza
   command_item: tworzy nowy przedmiot z trzymanego w rece
   command_config: odczytuje, zapisuje lub dodaje napisy do konfiguracji
+  command_vector: tworzy wektor od pierwszej zmiennej i zapisuje do drugiej
   command_purge: czyści wszystkie dane o graczu
   command_backup: tworzy backup konfiguracji i bazy danych. Uzywać z konsoli na pustym serwerze!
   offline: '&4Wszyscy gracze muszś być offline aby wykonać backup!'
@@ -130,6 +131,7 @@ en:
   command_event: fires an event for the player
   command_item: creates an item from the one you're holding
   command_config: reads, sets or appends strings to configs
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: deletes all data about the player
   command_backup: creates configuration and database backup. Use only from console on empty server!
   offline: '&4All players must be offline in order to make a backup!'
@@ -205,6 +207,7 @@ de:
   command_event: Ereignis für Spieler auslösen
   command_item: erstellt einen Gegenstand aus dem in deiner Hand
   command_config: liest, setzt oder hängt Zeilen an die Konfig an
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: Setzt alle Daten über Spieler zurück
   command_backup: Erstellt ein Backup von Konfiguration und Datenbank. Nur von der Konsole aus verwenden wenn keine Spieler online sind!
   offline: '&4Alle Spieler müssen offline sein, um ein Backup zu vollziehen!'
@@ -280,6 +283,7 @@ fr:
   command_event: Envoi d'un evenement
   command_item: Creer un objet a partir de celui que vous avez en main
   command_config: reads, sets or appends des chaines dans la config
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: Supprime tout l'historique du joueur
   command_backup: creer une configuration et une sauvegarde de la base. S'execute en console et avec un serveur vide de joueurs!
   offline: '&4Tous les joueurs doivent se deconnecter avant de lancer une sauvegarde!'
@@ -352,6 +356,7 @@ cn:
   command_event: 为某玩家激活一个事件
   command_item: 将你手中拿着的物品保存为预置物品
   command_config: 读取, 更改或添加配置文件中的某些文字(需要附上文字前的路径)
+  command_vector: calculates a vector from first variable and saves it to the second
   command_purge: 删除该玩家的所有任务信息
   command_backup: 备份配置文件，只能从控制台，并且在无人在线时使用！
   offline: '&4只有在无人在线时才能进行备份!'
@@ -429,6 +434,7 @@ es:
   command_condition: comprueba si cumples las condiciones.
   command_event: activa un evento.
   command_item: crea un objeto a partir del cual estas sosteniendo.
+  command_vector: calculates a vector from first variable and saves it to the second
   command_config: lee, fija o anade cadenas de configuraciones
   command_purge: borra todos los datos de un jugador.
   command_backup: crea un backup de la configuracion y la base de datos. Usar solo desde consola y con el servidor vacio!

@@ -21,6 +21,7 @@ Additions:
     * Optional message when the player is pulled back by stop option
     * Optional message for take and give events
     * Optional message when advancing in "block" and "mobkill" objectives
+    * "/q vector" command for easy calculating location vector variables
     * New "empty" condition - amount of empty inventory slots
     * New "party" condition - manages the conditions in the party
     * New "monsters" condition - true if there are monsters in the area
