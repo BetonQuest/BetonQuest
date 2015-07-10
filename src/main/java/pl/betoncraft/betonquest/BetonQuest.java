@@ -69,9 +69,11 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.core.AnswerFilter;
 import pl.betoncraft.betonquest.core.CombatTagger;
+import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.ConversationColors;
 import pl.betoncraft.betonquest.core.ConversationData;
 import pl.betoncraft.betonquest.core.ConversationIO;
+import pl.betoncraft.betonquest.core.ConversationResumer;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.InstructionParseException;
@@ -313,6 +315,8 @@ public final class BetonQuest extends JavaPlugin {
             DatabaseHandler dbh = new DatabaseHandler(playerID);
             dbHandlers.put(playerID, dbh);
             dbh.startObjectives();
+            if (dbh.getConversation() != null) new ConversationResumer(playerID,
+                    dbh.getConversation());
         }
 
         // schedule database pinging to keep connection
@@ -520,6 +524,11 @@ public final class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // suspend all conversations
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
+            if (conv != null) conv.suspend();
+        }
         // cancel database saver
         saver.end();
         keeper.cancel();

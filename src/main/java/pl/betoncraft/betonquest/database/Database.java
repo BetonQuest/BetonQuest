@@ -99,7 +99,8 @@ public abstract class Database {
             Debug.info("Creating player table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "player (id INTEGER PRIMARY KEY "
-                        + autoIncrement + ", playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL);");
+                        + autoIncrement + ", playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "
+                        + "conversation VARCHAR(512));");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -87,6 +87,9 @@ public class JoinQuitListener implements Listener {
         if (Journal.hasJournal(playerID)) {
             dbHandler.getJournal().update();
         }
+        if (dbHandler.getConversation() != null) {
+            new ConversationResumer(playerID, dbHandler.getConversation());
+        }
     }
 
     @EventHandler

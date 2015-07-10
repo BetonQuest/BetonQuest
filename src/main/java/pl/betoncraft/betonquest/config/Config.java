@@ -31,6 +31,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -81,7 +82,6 @@ public class Config {
                 languages.add(key);
             }
         }
-        Debug.broadcast("Loaded " + languages.size() + " languages!");
         
         // save example package
         createPackage("default");
@@ -363,9 +363,11 @@ public class Config {
      */
     public static void sendMessage(String playerID, String messageName,
             String[] variables, String soundName) {
-        String language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
-        String message = getMessage(language, messageName, variables);
         Player player = PlayerConverter.getPlayer(playerID);
+        DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+        if (player == null || dbHandler == null) return;
+        String language = dbHandler.getLanguage();
+        String message = getMessage(language, messageName, variables);
         player.sendMessage(message);
         if (soundName != null) {
             String rawSound = BetonQuest.getInstance().getConfig().getString(

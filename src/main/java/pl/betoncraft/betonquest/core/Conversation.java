@@ -39,6 +39,8 @@ import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.core.ConversationData.OptionType;
 import pl.betoncraft.betonquest.core.ConversationData.RequestType;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -57,14 +59,16 @@ public class Conversation implements Listener {
     private final String language;
     private final ConversationData data;
     private final Location location;
+    private final String convID;
     private final List<String> blacklist;
     private ConversationIO inOut;
+    private String option;
     private final Conversation conv;
     
     private HashMap<Integer, String> current = new HashMap<>();
-
+    
     /**
-     * Starts a new conversation between player and npc at given location
+     * Starts a new conversation between player and npc at given location.
      * 
      * @param playerID
      *          ID of the player
@@ -75,16 +79,37 @@ public class Conversation implements Listener {
      * @param location
      *          location where the conversation has been started
      */
+    public Conversation (String playerID, String packName, String conversationID,
+            Location location) {
+        this(playerID, packName, conversationID, location, null);
+    }
+
+    /**
+     * Starts a new conversation between player and npc at given location,
+     * starting with the given option. If the option is null, then it will
+     * start rom the beginning.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param packName
+     *          name of the package in which this conversation is defined
+     * @param conversationID
+     *          name of the conversation
+     * @param location
+     *          location where the conversation has been started
+     * @param option
+     *          ID of the option from where to start
+     */
     public Conversation(final String playerID, final String packName,
-            final String conversationID, final Location location) {
+            final String conversationID, final Location location, String option) {
 
         this.conv = this;
         this.playerID = playerID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
         this.location = location;
-        this.data = BetonQuest.getInstance().getConversation(
-                packName + "." + conversationID);
+        this.convID = packName + "." + conversationID;
+        this.data = BetonQuest.getInstance().getConversation(convID);
         this.blacklist = BetonQuest.getInstance().getConfig()
                 .getStringList("cmd_blacklist");
         
@@ -101,7 +126,15 @@ public class Conversation implements Listener {
                     " is in conversation right now, returning.");
             return;
         }
-        new Starter().runTaskAsynchronously(BetonQuest.getInstance());
+        
+        String[] options;
+        if (option == null) {
+            options = null;
+        } else {
+            options = new String[]{option};
+        }
+        
+        new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
 
     /**
@@ -110,22 +143,29 @@ public class Conversation implements Listener {
      * 
      * @param options
      *            list of option pointers separated by commas
+     * @param force
+     *            setting it to true will force the first option, even if
+     *            conditions are not met
      */
-    private void printNPCText(String[] options) {
+    private void printNPCText(String[] options, boolean force) {
 
-        // get npc's text
-        String option = null;
-        options: for (String NPCoption : options) {
-            for (String condition : data.getData(NPCoption, OptionType.NPC,
-                    RequestType.CONDITION)) {
-                if (!BetonQuest.condition(this.playerID, condition)) {
-                    continue options;
+        if (!force) {
+            // get npc's text
+            option = null;
+            options:
+            for (String NPCoption : options) {
+                for (String condition : data.getData(NPCoption, OptionType.NPC,
+                        RequestType.CONDITION)) {
+                    if (!BetonQuest.condition(this.playerID, condition)) {
+                        continue options;
+                    }
                 }
+                option = NPCoption;
+                break;
             }
-            option = NPCoption;
-            break;
+        } else {
+            option = options[0];
         }
-
         // if there are no possible options, end conversation
         if (option == null) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
@@ -240,13 +280,31 @@ public class Conversation implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         // if player quits, end conversation (why keep listeners running?)
         if (event.getPlayer().equals(player)) {
-            // delete conversation
-            list.remove(playerID);
-            // unregister listener
-            HandlerList.unregisterAll(this);
-            Bukkit.getServer().getPluginManager().callEvent(
-                    new PlayerConversationEndEvent(player, this));
+            if (isMovementBlock()) {
+                suspend();
+            } else {
+                endConversation();
+            }
         }
+    }
+    
+    /**
+     * Instead of ending the conversation it saves it to the database,
+     * from where it will be resumed after the player logs in again.
+     */
+    public void suspend() {
+        inOut.end();
+        // save the conversation to the database
+        String loc = location.getX() + ";" + location.getY() + ";"
+                    + location.getZ() + ";" + location.getWorld().getName();
+        BetonQuest.getInstance().getSaver().add(new Record(
+                UpdateType.UPDATE_CONVERSATION, new String[]{convID
+                + " " + option + " " + loc, playerID}));
+        // delete conversation
+        list.remove(playerID);
+        HandlerList.unregisterAll(this);
+        Bukkit.getServer().getPluginManager().callEvent(
+                new PlayerConversationEndEvent(player, this));
     }
 
     /**
@@ -258,21 +316,6 @@ public class Conversation implements Listener {
      */
     public static boolean containsPlayer(String playerID) {
         return list.containsKey(playerID);
-    }
-
-    /**
-     * Ends every active conversation for every online player.
-     */
-    public static void clear() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String playerID = PlayerConverter.getID(player);
-            if (list.containsKey(playerID)) {
-                list.get(playerID).endConversation();
-                Bukkit.getServer().getPluginManager().callEvent(
-                        new PlayerConversationEndEvent(player, list.get(playerID)));
-            }
-        }
-        list.clear();
     }
 
     /**
@@ -299,6 +342,13 @@ public class Conversation implements Listener {
      * @author Jakub Sapalski
      */
     private class Starter extends BukkitRunnable {
+        
+        private String[] options;
+        
+        public Starter(String[] options) {
+            this.options = options;
+        }
+        
         public void run() {
             // the conversation start event must be run on next tick
             PlayerConversationStartEvent event =
@@ -337,13 +387,20 @@ public class Conversation implements Listener {
             // register listeners for immunity and blocking commands
             Bukkit.getPluginManager().registerEvents(conv, BetonQuest
                     .getInstance());
-
-            // print message about starting a conversation
-            Config.sendMessage(playerID, "conversation_start",
-                    new String[]{data.getQuester(language)}, "start");
+            
+            boolean force = true;
+            if (options == null) {
+                options = data.getStartingOptions();
+                force = false;
+                
+                // print message about starting a conversation only if it
+                // is started, not resumed
+                Config.sendMessage(playerID, "conversation_start",
+                        new String[]{data.getQuester(language)}, "start");
+            }
             
             // print NPC's text
-            printNPCText(data.getStartingOptions());
+            printNPCText(options, force);
         }
     }
     
@@ -409,7 +466,7 @@ public class Conversation implements Listener {
         public void run() {
             // print to player npc's answer
             printNPCText(data.getData(option,
-                    OptionType.PLAYER, RequestType.POINTER));
+                    OptionType.PLAYER, RequestType.POINTER), false);
         }
     }
     

@@ -38,7 +38,6 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.core.Conversation;
 import pl.betoncraft.betonquest.core.ConversationColors;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.Journal;
@@ -798,8 +797,6 @@ public class QuestCommand implements CommandExecutor {
             journal.generateTexts(dbHandler.getLanguage());
             journal.update();
         }
-        // kill all conversation
-        Conversation.clear();
         // initialize new debugger
         new Debug();
     }

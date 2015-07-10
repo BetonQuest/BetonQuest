@@ -63,6 +63,7 @@ public class DatabaseHandler {
     private HashMap<String, String> objectives = new HashMap<>(); // not active ones
     private Journal journal;
     private List<ItemStack> backpack = new ArrayList<>();
+    private String conv;
 
     private String lang; // the player's language
 
@@ -133,6 +134,10 @@ public class DatabaseHandler {
             // put it there
             if (res6.next()) {
                 lang = res6.getString("language");
+                conv = res6.getString("conversation");
+                if (conv == null || conv.equalsIgnoreCase("null")) {
+                    conv = null;
+                }
             } else {
                 lang = Config.getLanguage();
             }
@@ -638,5 +643,13 @@ public class DatabaseHandler {
         this.lang = lang;
         saver.add(new Record(UpdateType.DELETE_PLAYER, new String[]{playerID}));
         saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, lang}));
+    }
+    
+    /**
+     * @return the conversation string if the player had active conversation or
+     * null if he did not.
+     */
+    public String getConversation() {
+        return conv;
     }
 }

@@ -295,6 +295,7 @@ public class Utils {
                     player.getString(key + ".id"),
                     player.getString(key + ".playerID"),
                     player.getString(key + ".language"),
+                    player.getString(key + ".conversation")
                 });
             }
             // delete backup file so it doesn't get loaded again

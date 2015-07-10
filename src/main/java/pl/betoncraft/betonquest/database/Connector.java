@@ -75,7 +75,7 @@ public class Connector {
                     statement = connection.prepareStatement("SELECT instruction, amount FROM " + prefix + "backpack WHERE playerID = ?;");
                     break;
                 case SELECT_PLAYER:
-                    statement = connection.prepareStatement("SELECT language FROM " + prefix + "player WHERE playerID = ?;");
+                    statement = connection.prepareStatement("SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;");
                     break;
                 case SELECT_PLAYERS_TAGS:
                     statement = connection.prepareStatement("SELECT playerID FROM " + prefix + "tags GROUP BY playerID;");
@@ -233,7 +233,10 @@ public class Connector {
                     statement = connection.prepareStatement("INSERT INTO " + prefix + "backpack VALUES (?,?,?,?)");
                     break;
                 case INSERT_PLAYER:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "player VALUES (?,?,?);");
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "player VALUES (?,?,?,?);");
+                    break;
+                case UPDATE_CONVERSATION:
+                    statement = connection.prepareStatement("UPDATE " + prefix + "player SET conversation = ? WHERE playerID = ?");
                     break;
                 default:
                     statement = null;
@@ -315,7 +318,10 @@ public class Connector {
         
         DROP_OBJECTIVES, DROP_TAGS, DROP_POINTS, DROP_JOURNALS, DROP_BACKPACK, DROP_PLAYER,
         
-        INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL, INSERT_BACKPACK, INSERT_PLAYER
+        INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL, INSERT_BACKPACK, INSERT_PLAYER,
+        
+        UPDATE_CONVERSATION,
+        UPDATE_LANGUAGE
     }
 
 }

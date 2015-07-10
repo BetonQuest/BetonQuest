@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v21";
+    private final String destination = "v22";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -188,6 +188,42 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v21() {
+        try {
+            Debug.info("Updating the database");
+            Connection con = instance.getDB().getConnection();
+            String prefix = Config.getString("config.mysql.prefix");
+            // update database format
+            Debug.info("Adding conversation column to player table");
+            if (instance.isMySQLUsed()) {
+                con.prepareStatement("ALTER TABLE " + prefix +
+                        "player ADD conversation VARCHAR(512)"
+                        + " AFTER language;")
+                        .executeUpdate();
+            } else {
+                con.prepareStatement("BEGIN TRANSACTION").executeUpdate();
+                con.prepareStatement("ALTER TABLE " + prefix +
+                        "player RENAME TO " + prefix + "player_old")
+                        .executeUpdate();
+                con.prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix +
+                        "player (id INTEGER PRIMARY KEY AUTOINCREMENT, playerID"
+                        + " VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "
+                        + "conversation VARCHAR(512));").executeUpdate();
+                con.prepareStatement("INSERT INTO " + prefix + "player"
+                        + " SELECT id, playerID, language, 'null'"
+                        + " FROM " + prefix + "player_old").executeUpdate();
+                con.prepareStatement("COMMIT").executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Added conversations to database format");
+        config.set("version", "v22");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

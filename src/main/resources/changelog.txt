@@ -35,6 +35,7 @@ Changes:
     * Objectives has returned to "objectives.yml" - it's improving performance
     * All quests can (but don't have to) be translated into multiple languages
     * The database is now updated in real time
+    * Conversations with stop option are resumed when the player logs out and in again
     * Metrics are now toggled in PluginMetrics/config.yml
     * All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads
     * Citizens NPC will stop when talked to
