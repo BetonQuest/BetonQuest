@@ -44,7 +44,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class BackpackDisplay implements Listener {
 
@@ -173,7 +173,8 @@ public class BackpackDisplay implements Listener {
             for (String address : cancelers.keySet()) {
                 String name = cancelers.get(address);
                 ItemStack canceler = null;
-                String item = Config.getString("default.items.cancel_button");
+                String item = Config.getString(address.substring(0, address.indexOf('.'))
+                        + ".items.cancel_button");
                 if (item != null) {
                     try {
                         canceler = new QuestItem(item).generateItem(1);
@@ -185,7 +186,7 @@ public class BackpackDisplay implements Listener {
                     canceler = new ItemStack(Material.BONE);
                 }
                 ItemMeta meta = canceler.getItemMeta();
-                meta.setDisplayName(name.replace("_", " "));
+                meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
                 canceler.setItemMeta(meta);
                 content[i] = canceler;
                 map.put(i, address);

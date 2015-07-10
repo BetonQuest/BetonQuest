@@ -15,6 +15,7 @@ Fixes:
 Additions:
     * Variable system for quick changing quest parameters (for example location of a quest)
     * Quest canceling system
+    * New inventory GUI for conversations
     * Added the "random" parameter in "folder" event - choose randomly X events to fire
     * Added "static events" mechanism for firing events at specified time of the day
     * Optional message when the player is pulled back by stop option

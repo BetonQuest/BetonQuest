@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -60,7 +61,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 public class ConfigUpdater {
     
     /**
-     * Error which should be displayed to the player when 
+     * Error which should be displayed to the player when something goes wrong
      */
     private final String ERROR = "There was an error during updating process! Please "
             + "downgrade to the previous working version of the plugin and restore your "
@@ -81,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v20";
+    private final String destination = "v21";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -190,12 +191,141 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v20() {
+        try {
+            ArrayList<ChatColor> npcColors    = new ArrayList<>();
+            ArrayList<ChatColor> textColors   = new ArrayList<>();
+            ArrayList<ChatColor> numberColors = new ArrayList<>();
+            ArrayList<ChatColor> optionColors = new ArrayList<>();
+            ArrayList<ChatColor> playerColors = new ArrayList<>();
+            ArrayList<ChatColor> answerColors = new ArrayList<>();
+            // get npc message format
+            String npcFormat = config.getString("conversation.quester_line_format");
+            String[] npcParts = npcFormat.split("%quester%");
+            if (npcParts.length != 2) {
+                Debug.info("Could not parse NPC text format, saving defaults");
+                npcColors.add(ChatColor.DARK_RED);
+                textColors.add(ChatColor.GREEN);
+                textColors.add(ChatColor.ITALIC);
+            } else {
+                try {
+                    for (String code : npcParts[0].split("&")) {
+                        if (code.length() < 1) continue;
+                        npcColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                    for (String code : npcParts[1].split("&")) {
+                        if (code.length() < 1) continue;
+                        textColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.info("Could not parse NPC text format, saving defaults");
+                    npcColors.add(ChatColor.DARK_RED);
+                    textColors.add(ChatColor.GREEN);
+                    textColors.add(ChatColor.ITALIC);
+                }
+            }
+            // get player option format
+            String optionFormat = config.getString("conversation.quester_reply_format");
+            String[] optionParts = optionFormat.split("%number%");
+            if (optionParts.length != 2) {
+                Debug.info("Could not parse player option format, saving defaults");
+                numberColors.add(ChatColor.YELLOW);
+                optionColors.add(ChatColor.AQUA);
+            } else {
+                try {
+                    for (String code : optionParts[0].split("&")) {
+                        if (code.length() < 1) continue;
+                        numberColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                    for (String code : optionParts[1].split("&")) {
+                        if (code.length() < 1) continue;
+                        optionColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.info("Could not parse player option format, saving defaults");
+                    numberColors.add(ChatColor.YELLOW);
+                    optionColors.add(ChatColor.AQUA);
+                }
+            }
+            // get player answer format
+            String answerFormat = config.getString("conversation.player_reply_format");
+            String[] answerParts = answerFormat.split("%player%");
+            if (answerParts.length != 2) {
+                Debug.info("Could not parse player answer format, saving defaults");
+                playerColors.add(ChatColor.DARK_GREEN);
+                answerColors.add(ChatColor.GRAY);
+            } else {
+                try {
+                    for (String code : answerParts[0].split("&")) {
+                        if (code.length() < 1) continue;
+                        playerColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                    for (String code : answerParts[1].split("&")) {
+                        if (code.length() < 1) continue;
+                        answerColors.add(ChatColor.getByChar(code.charAt(0)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Debug.info("Could not parse player answer format, saving defaults");
+                    playerColors.add(ChatColor.DARK_GREEN);
+                    answerColors.add(ChatColor.GRAY);
+                }
+            }
+            StringBuilder npc = new StringBuilder();
+            StringBuilder text = new StringBuilder();
+            StringBuilder number = new StringBuilder();
+            StringBuilder option = new StringBuilder();
+            StringBuilder player = new StringBuilder();
+            StringBuilder answer = new StringBuilder();
+            for (ChatColor color : npcColors) {
+                if (color == null) continue;
+                npc.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.npc", npc.substring(0, npc.length() - 1));
+            for (ChatColor color : textColors) {
+                if (color == null) continue;
+                text.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.text", text.substring(0, text.length() - 1));
+            for (ChatColor color : numberColors) {
+                if (color == null) continue;
+                number.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.number", number.substring(0, number.length() - 1));
+            for (ChatColor color : optionColors) {
+                if (color == null) continue;
+                option.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.option", option.substring(0, option.length() - 1));
+            for (ChatColor color : playerColors) {
+                if (color == null) continue;
+                player.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.player", player.substring(0, player.length() - 1));
+            for (ChatColor color : answerColors) {
+                if (color == null) continue;
+                answer.append(color.name().toLowerCase() + ",");
+            }
+            config.set("conversation_colors.answer", answer.substring(0, answer.length() - 1));
+            config.set("conversation", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Converted conversation format strings to colors");
+        config.set("version", "v21");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v19() {
         try {
             if (config.getString("tellraw").equalsIgnoreCase("true")) {
-                config.set("default_conversation_IO", "simple");
-            } else {
                 config.set("default_conversation_IO", "tellraw");
+            } else {
+                config.set("default_conversation_IO", "simple");
             }
             config.set("tellraw", null);
             FileConfiguration messages = Config.getMessages().getConfig();

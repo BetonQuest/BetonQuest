@@ -39,6 +39,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.core.ConversationColors;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.core.Point;
@@ -785,6 +786,7 @@ public class QuestCommand implements CommandExecutor {
         Debug.info("Restarting global locations");
         GlobalLocations.stop();
         new GlobalLocations().runTaskTimer(instance, 0, 20);
+        new ConversationColors();
         // load all events, conditions, objectives, conversations etc.
         instance.loadData();
         // start objectives and update journals for every online player

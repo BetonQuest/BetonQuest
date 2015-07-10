@@ -1,4 +1,4 @@
-version: v20
+version: v21
 mysql:
   host: ''
   port: ''
@@ -35,8 +35,11 @@ journal_colors:
     hour: '6'
   line: '4'
   text: '0'
-conversation:
-  quester_line_format: '&4%quester%&f: &a&o'
-  quester_reply_format: '&e%number%. &b'
-  player_reply_format: '&2%player%&f: &7'
+conversation_colors:
+  npc: dark_red
+  player: dark_green
+  text: green,italic
+  answer: gray
+  number: yellow
+  option: aqua
 date_format: dd.MM.yyyy HH:mm

@@ -30,6 +30,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -58,6 +59,7 @@ public class Conversation implements Listener {
     private final Location location;
     private final List<String> blacklist;
     private ConversationIO inOut;
+    private final Conversation conv;
     
     private HashMap<Integer, String> current = new HashMap<>();
 
@@ -76,6 +78,7 @@ public class Conversation implements Listener {
     public Conversation(final String playerID, final String packName,
             final String conversationID, final Location location) {
 
+        this.conv = this;
         this.playerID = playerID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
@@ -98,58 +101,7 @@ public class Conversation implements Listener {
                     " is in conversation right now, returning.");
             return;
         }
-        
-        // start the conversation asynchronously
-        final Conversation conv = this;
-        new BukkitRunnable() {
-            public void run() {
-                
-                // the conversation start event must be run on next tick
-                PlayerConversationStartEvent event =
-                        new PlayerConversationStartEvent(player, conv);
-                Bukkit.getServer().getPluginManager().callEvent(event);
-                
-                // stop the conversation if it's canceled
-                if (event.isCancelled()) return;
-                
-                // now the conversation should start no matter what
-                // the inOut can be safely instantiated; doing it before
-                // would leave it active while the conversation is not
-                // started, causing it to display "null" all the time
-                try {
-                    String name = BetonQuest.getInstance().getConfig()
-                            .getString("default_conversation_IO");
-                    Class<? extends ConversationIO> c = BetonQuest.getInstance()
-                            .getConvIO(name);
-                    if (c == null) {
-                        Debug.error("Conversation IO " + name + " is not registered!");
-                        return;
-                    }
-                    conv.inOut = c.getConstructor(Conversation.class, String.class, String.class)
-                            .newInstance(conv, playerID, data.getQuester(language));
-                } catch (InstantiationException | IllegalAccessException
-                        | IllegalArgumentException | InvocationTargetException
-                        | NoSuchMethodException | SecurityException e) {
-                    e.printStackTrace();
-                    Debug.error("Error when loading conversation IO");
-                    return;
-                }
-
-                // add the player to the list of active conversations
-                list.put(playerID, conv);
-                
-                // register listeners for immunity and blocking commands
-                Bukkit.getPluginManager().registerEvents(conv, BetonQuest
-                        .getInstance());
-
-                // print message about starting a conversation
-                Config.sendMessage(playerID, "conversation_start",
-                        new String[]{data.getQuester(language)}, "start");
-                
-                // print NPC's text
-                printNPCText(data.getStartingOptions());
-            }
-        }.runTaskAsynchronously(BetonQuest.getInstance());
+        new Starter().runTaskAsynchronously(BetonQuest.getInstance());
     }
 
     /**
@@ -176,68 +128,30 @@ public class Conversation implements Listener {
 
         // if there are no possible options, end conversation
         if (option == null) {
-            new BukkitRunnable() {
-                public void run() {
-                    endConversation();
-                }
-            }.runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
 
         // print option to the player
         inOut.setNPCResponse(data.getText(language, option, OptionType.NPC));
 
-        final String fOption = option;
-        new BukkitRunnable() {
-            public void run() {
-                // fire events
-                for (String event : data.getData(fOption, OptionType.NPC,
-                        RequestType.EVENT)) {
-                    BetonQuest.event(playerID, event);
-                }
-                new BukkitRunnable() {
-                    public void run() {
-                        // print options
-                        printOptions(data.getData(fOption, OptionType.NPC,
-                                RequestType.POINTER));
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            }
-        }.runTask(BetonQuest.getInstance());
+        new NPCEventRunner(option).runTask(BetonQuest.getInstance());
     }
 
     /**
      * Passes given string as answer from player in a conversation.
      * 
-     * @param rawAnswer
+     * @param number
      *            the message player has sent on chat
      */
     public void passPlayerAnswer(int number) {
         
         inOut.clear();
-
-        // get the answer ID from player's response
-        final String choosenAnswerID = current.get(number);
+        
+        new PlayerEventRunner(current.get(number)).runTask(BetonQuest.getInstance());
 
         // clear hashmap
         current.clear();
-
-        new BukkitRunnable() {
-            public void run() {
-                // fire events
-                for (String event : data.getData(choosenAnswerID,
-                        OptionType.PLAYER, RequestType.EVENT)) {
-                    BetonQuest.event(playerID, event);
-                }
-                new BukkitRunnable() {
-                    public void run() {
-                        // print to player npc's answer
-                        printNPCText(data.getData(choosenAnswerID,
-                                OptionType.PLAYER, RequestType.POINTER));
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-            }
-        }.runTask(BetonQuest.getInstance());
     }
 
     /**
@@ -264,11 +178,7 @@ public class Conversation implements Listener {
         inOut.display();
         // end conversations if there are no possible options
         if (current.isEmpty()) {
-            new BukkitRunnable() {
-                public void run() {
-                    endConversation();
-                }
-            }.runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
     }
@@ -325,6 +235,19 @@ public class Conversation implements Listener {
             event.setCancelled(true);
         }
     }
+    
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        // if player quits, end conversation (why keep listeners running?)
+        if (event.getPlayer().equals(player)) {
+            // delete conversation
+            list.remove(playerID);
+            // unregister listener
+            HandlerList.unregisterAll(this);
+            Bukkit.getServer().getPluginManager().callEvent(
+                    new PlayerConversationEndEvent(player, this));
+        }
+    }
 
     /**
      * Checks if the player is in a conversation
@@ -370,4 +293,154 @@ public class Conversation implements Listener {
         return location;
     }
 
+    /**
+     * Starts the conversation, should be called asynchronously.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class Starter extends BukkitRunnable {
+        public void run() {
+            // the conversation start event must be run on next tick
+            PlayerConversationStartEvent event =
+                    new PlayerConversationStartEvent(player, conv);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            
+            // stop the conversation if it's canceled
+            if (event.isCancelled()) return;
+            
+            // now the conversation should start no matter what
+            // the inOut can be safely instantiated; doing it before
+            // would leave it active while the conversation is not
+            // started, causing it to display "null" all the time
+            try {
+                String name = BetonQuest.getInstance().getConfig()
+                        .getString("default_conversation_IO");
+                Class<? extends ConversationIO> c = BetonQuest.getInstance()
+                        .getConvIO(name);
+                if (c == null) {
+                    Debug.error("Conversation IO " + name + " is not registered!");
+                    return;
+                }
+                conv.inOut = c.getConstructor(Conversation.class, String.class, String.class)
+                        .newInstance(conv, playerID, data.getQuester(language));
+            } catch (InstantiationException | IllegalAccessException
+                    | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
+                e.printStackTrace();
+                Debug.error("Error when loading conversation IO");
+                return;
+            }
+
+            // add the player to the list of active conversations
+            list.put(playerID, conv);
+            
+            // register listeners for immunity and blocking commands
+            Bukkit.getPluginManager().registerEvents(conv, BetonQuest
+                    .getInstance());
+
+            // print message about starting a conversation
+            Config.sendMessage(playerID, "conversation_start",
+                    new String[]{data.getQuester(language)}, "start");
+            
+            // print NPC's text
+            printNPCText(data.getStartingOptions());
+        }
+    }
+    
+    /**
+     * Fires events from the option. Should be called in the main thread.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class NPCEventRunner extends BukkitRunnable {
+        
+        private String option;
+        
+        public NPCEventRunner(String option) {
+            this.option = option;
+        }
+        
+        public void run() {
+            // fire events
+            for (String event : data.getData(option, OptionType.NPC,
+                    RequestType.EVENT)) {
+                BetonQuest.event(playerID, event);
+            }
+            new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
+        }
+    }
+    
+    /**
+     * Fires events from the option. Should be called in the main thread.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class PlayerEventRunner extends BukkitRunnable {
+        
+        private String option;
+        
+        public PlayerEventRunner(String option) {
+            this.option = option;
+        }
+        
+        public void run() {
+            // fire events
+            for (String event : data.getData(option,
+                    OptionType.PLAYER, RequestType.EVENT)) {
+                BetonQuest.event(playerID, event);
+            }
+            new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
+        }
+    }
+    
+    /**
+     * Prints the NPC response to the player. Should be called asynchronously.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class ResponsePrinter extends BukkitRunnable {
+        
+        private String option;
+        
+        public ResponsePrinter(String option) {
+            this.option = option;
+        }
+
+        public void run() {
+            // print to player npc's answer
+            printNPCText(data.getData(option,
+                    OptionType.PLAYER, RequestType.POINTER));
+        }
+    }
+    
+    /**
+     * Prints the options to the player. Should be called asynchronously.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class OptionPrinter extends BukkitRunnable {
+        
+        private String option;
+        
+        public OptionPrinter(String option) {
+            this.option = option;
+        }
+
+        public void run() {
+            // print options
+            printOptions(data.getData(option, OptionType.NPC,
+                    RequestType.POINTER));
+        }
+    }
+    
+    /**
+     * Ends the conversation. Should be called in the main thread.
+     * 
+     * @author Jakub Sapalski
+     */
+    private class ConversationEnder extends BukkitRunnable {
+        public void run() {
+            endConversation();
+        }
+    }
 }

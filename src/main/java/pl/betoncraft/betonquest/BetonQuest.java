@@ -69,11 +69,13 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.core.AnswerFilter;
 import pl.betoncraft.betonquest.core.CombatTagger;
+import pl.betoncraft.betonquest.core.ConversationColors;
 import pl.betoncraft.betonquest.core.ConversationData;
 import pl.betoncraft.betonquest.core.ConversationIO;
 import pl.betoncraft.betonquest.core.CubeNPCListener;
 import pl.betoncraft.betonquest.core.GlobalLocations;
 import pl.betoncraft.betonquest.core.InstructionParseException;
+import pl.betoncraft.betonquest.core.InventoryConvIO;
 import pl.betoncraft.betonquest.core.JoinQuitListener;
 import pl.betoncraft.betonquest.core.QuestItemHandler;
 import pl.betoncraft.betonquest.core.SimpleConvIO;
@@ -218,6 +220,9 @@ public final class BetonQuest extends JavaPlugin {
         
         // initialize combat tagging
         new CombatTagger();
+        
+        // load colors for conversations
+        new ConversationColors();
 
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
@@ -294,6 +299,7 @@ public final class BetonQuest extends JavaPlugin {
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);
+        registerConversationIO("chest", InventoryConvIO.class);
 
         // initialize compatibility with other plugins
         new Compatibility();

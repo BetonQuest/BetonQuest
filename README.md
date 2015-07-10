@@ -34,7 +34,7 @@ If you prefer already compiled builds head to the
 [DBO page](http://dev.bukkit.org/bukkit-plugins/betonquest/)
 or [Spigot page](http://www.spigotmc.org/resources/betonquest.2117/).
 Development builds can be found [here](http://betonquest.betoncraft.pl).
-Use it with caution and report all bugs on 
+Use them with caution and report all bugs on 
 [Issues](https://github.com/Co0sh/BetonQuest/issues)!
 
 Compiling the plugin

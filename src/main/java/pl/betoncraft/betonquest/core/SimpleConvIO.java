@@ -17,163 +17,36 @@
  */
 package pl.betoncraft.betonquest.core;
 
-import java.util.HashMap;
+import org.bukkit.ChatColor;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Simple chat based conversation IO
+ * Simple chat-based conversation output.
  * 
  * @author Jakub Sapalski
  */
-public class SimpleConvIO implements ConversationIO, Listener {
+public class SimpleConvIO extends ChatConvIO {
     
-    protected int i; // counts options
-    protected HashMap<Integer, String> options;
-    protected String npcText;
-    
-    protected final Conversation conv;
-    protected final String npcName;
-    protected final String name;
-    protected final Player player;
-    
-    protected final String npcFormat;
-    protected final String playerFormat;
-    protected final String answerFormat;
-    
+    private String optionFormat;
+
     public SimpleConvIO(Conversation conv, String playerID, String npcName) {
-        this.options = new HashMap<>();
-        this.conv = conv;
-        this.npcName = npcName;
-        this.player = PlayerConverter.getPlayer(playerID);
-        this.name = player.getName();
-        this.npcFormat = Config.getString("config.conversation.quester_line_format").replace("%quester%", npcName).replace('&', '§');
-        this.playerFormat = Config.getString("config.conversation.quester_reply_format").replace('&', '§');
-        this.answerFormat = Config.getString("config.conversation.player_reply_format").replace("%player%", name).replace('&', '§');
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        super(conv, playerID, npcName);
+        StringBuilder string = new StringBuilder();
+        for (ChatColor color : colors.get("number")) {
+            string.append(color);
+        }
+        string.append("%number%. ");
+        for (ChatColor color : colors.get("option")) {
+            string.append(color);
+        }
+        optionFormat = string.toString();
     }
     
-    @EventHandler(priority=EventPriority.LOWEST)
-    public void onReply(AsyncPlayerChatEvent event) {
-        if (event.isCancelled()) return;
-        if (!event.getPlayer().equals(player)) return;
-        String message = event.getMessage().trim();
-        for (int i : options.keySet()) {
-            if (message.equals(Integer.toString(i))) {
-                player.sendMessage(answerFormat + options.get(i));
-                conv.passPlayerAnswer(i);
-                event.setCancelled(true);
-                return;
-            }
-        }
-        // redisplay the conversation after player's message so he can see it
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                display();
-            }
-        }.runTask(BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onWalkAway(PlayerMoveEvent event) {
-        // return if it's someone else
-        if (!event.getPlayer().equals(player)) {
-            return;
-        }
-        // if player passes max distance
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld())
-                || event.getTo().distance(conv.getLocation()) > Integer.valueOf(Config
-                        .getString("config.max_npc_distance"))) {
-            // we can stop the player or end conversation
-            if (conv.isMovementBlock()) {
-                moveBack(event);
-            } else {
-                conv.endConversation();
-            }
-        }
-        return;
-    }
-
-    /**
-     * Moves the player back a few blocks in the conversation's center
-     * direction.
-     * 
-     * @param event
-     *            PlayerMoveEvent event, for extracting the necessary data
-     */
-    private void moveBack(PlayerMoveEvent event) {
-        // if the player is in other world (he teleported himself), teleport him
-        // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld())
-                || event.getTo().distance(conv.getLocation()) > Integer.valueOf(Config
-                        .getString("config.max_npc_distance")) * 2) {
-            event.getPlayer().teleport(conv.getLocation());
-            return;
-        }
-        // if not, then calculate the vector
-        float yaw = event.getTo().getYaw();
-        float pitch = event.getTo().getPitch();
-        Vector vector =
-                new Vector(conv.getLocation().getX() - event.getTo().getX(),
-                        conv.getLocation().getY()
-                        - event.getTo().getY(), conv.getLocation().getZ()
-                        - event.getTo().getZ());
-        vector = vector.multiply(1 / vector.length());
-        // and teleport him back using this vector
-        Location newLocation = event.getTo().clone();
-        newLocation.add(vector);
-        newLocation.setPitch(pitch);
-        newLocation.setYaw(yaw);
-        event.getPlayer().teleport(newLocation);
-        if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()),
-                    "pullback");
-        }
-    }
-
-    @Override
-    public void setNPCResponse(String response) {
-        this.npcText = response.replace("%quester%", npcName).replace("%player%", name).replace('&', '§');
-    }
-
-    @Override
-    public void addPlayerOption(String option) {
-        i++;
-        options.put(i, option.replace("%quester%", npcName).replace("%player%", name).replace('&', '§'));
-    }
-
     @Override
     public void display() {
-        player.sendMessage(npcFormat + npcText);
+        super.display();
         for (int i = 1; i <= options.size(); i++) {
-            player.sendMessage(playerFormat.replace("%number%", Integer.toString(i)) + options.get(i));
+            player.sendMessage(optionFormat.replace("%number%", Integer.toString(i)) + options.get(i));
         }
-    }
-
-    @Override
-    public void clear() {
-        i = 0;
-        options.clear();
-        npcText = null;
-    }
-
-    @Override
-    public void end() {
-        HandlerList.unregisterAll(this);
     }
 }
