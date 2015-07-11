@@ -27,7 +27,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 /**
  * Connects to the database and queries it
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class Connector {
     

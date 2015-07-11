@@ -68,19 +68,8 @@ abstract public class Condition {
      * all the required data is present and parsed correctly.
      * 
      * @param playerID
-     * 		ID of the player for whom the condition will be checked
+     *          ID of the player for whom the condition will be checked
      * @return the result of the check
      */
     abstract public boolean check(String playerID);
-
-    /**
-     * Checks if the condition is met.
-     * 
-     * @param playerID
-     * 		ID of the player for whom the condition will be checked
-     * @return if the condition is met
-     */
-    public final boolean isMet(String playerID) {
-	return check(playerID);
-    }
 }

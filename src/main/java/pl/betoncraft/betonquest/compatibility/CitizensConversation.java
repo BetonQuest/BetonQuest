@@ -26,7 +26,7 @@ import pl.betoncraft.betonquest.core.Conversation;
 /**
  * Represents a conversation with NPC
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class CitizensConversation extends Conversation {
     

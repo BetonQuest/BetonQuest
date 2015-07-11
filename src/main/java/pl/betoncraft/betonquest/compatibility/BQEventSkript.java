@@ -29,7 +29,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Fires the custom event for Skript to listen to
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class BQEventSkript extends QuestEvent {
     

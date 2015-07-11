@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specified amount of health (or more)
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class HealthCondition extends Condition {
 

@@ -31,12 +31,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
-import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Prevents Citizens NPCs from walking around when in conversation with the player
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class CitizensWalkingListener implements Listener {
     
@@ -61,10 +60,8 @@ public class CitizensWalkingListener implements Listener {
                 locs.put(npc, nav.getTargetAsLocation());
                 nav.setTarget(conv.getNPC().getEntity().getLocation());
                 nav.setPaused(true);
-                Debug.info("Stopping the NPC");
             } else {
                 npcs.put(npc, npcs.get(npc) + 1);
-                Debug.info("NPC is already stopped");
             }
         }
     }
@@ -83,10 +80,8 @@ public class CitizensWalkingListener implements Listener {
                         Navigator nav = npc.getNavigator();
                         nav.setPaused(false);
                         nav.setTarget(locs.remove(npc));
-                        Debug.info("Resuming NPC");
                     } else {
                         npcs.put(npc, i);
-                        Debug.info("NPC should wait");
                     }
                 }
             }.runTask(BetonQuest.getInstance());

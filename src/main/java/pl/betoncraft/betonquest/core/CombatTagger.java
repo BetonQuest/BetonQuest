@@ -34,7 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Tags players that are in combat to prevent them from starting the conversation
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class CombatTagger implements Listener {
     

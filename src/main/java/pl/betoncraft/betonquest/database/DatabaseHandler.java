@@ -436,7 +436,6 @@ public class DatabaseHandler {
      *            amount of the items
      */
     public void addItem(ItemStack item, int amount) {
-        Debug.info("  Cloned item type: " + item.getType());
         for (ItemStack itemStack : backpack) {
             if (item.isSimilar(itemStack)) {
                 // if items are similar they can be joined in a single itemstack
@@ -468,8 +467,6 @@ public class DatabaseHandler {
                 newItem.setAmount(amount);
                 amount = 0;
             }
-            Debug.info("    Adding item of type " + newItem.getType()
-                    + ", amount left to ad is " + amount);
             backpack.add(newItem);
         }
         // update the database (quite expensive way, should be changed)

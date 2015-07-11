@@ -42,7 +42,6 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -71,8 +70,6 @@ public class QuestItemHandler implements Listener {
         if (Journal.isJournal(playerID, item)) {
             event.getItemDrop().remove();
         } else if (Utils.isQuestItem(item)) {
-            Debug.info("Player " + event.getPlayer().getName() + " dropped " + item.getAmount()
-                + " quest items, adding them to backpack");
             BetonQuest.getInstance().getDBHandler(playerID)
                     .addItem(item.clone(), item.getAmount());
             event.getItemDrop().remove();

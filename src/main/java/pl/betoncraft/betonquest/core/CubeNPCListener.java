@@ -37,7 +37,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Listener which starts conversation on clicking on NPCs made from blocks.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class CubeNPCListener implements Listener {
 

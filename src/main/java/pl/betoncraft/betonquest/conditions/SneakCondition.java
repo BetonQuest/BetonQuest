@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Returns true if the player is sneaking
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class SneakCondition extends Condition {
 

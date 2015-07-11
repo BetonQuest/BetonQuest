@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 /**
  * Converts playerIDs to Player objects and back to playerIDs.
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 @SuppressWarnings("deprecation")
 public class PlayerConverter {

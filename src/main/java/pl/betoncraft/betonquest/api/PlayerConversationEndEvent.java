@@ -26,7 +26,7 @@ import pl.betoncraft.betonquest.core.Conversation;
 /**
  * Fires when a player starts a conversation with an NPC
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class PlayerConversationEndEvent extends PlayerEvent {
 

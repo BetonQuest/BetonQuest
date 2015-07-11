@@ -129,7 +129,7 @@ public abstract class Objective {
         // remove the objective from player's list
         BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(label);
         Debug.info("Objective \"" + label + "\" has been completed for player "
-        	+ PlayerConverter.getName(playerID) + ", firing final events.");
+                + PlayerConverter.getName(playerID) + ", firing final events.");
         // fire all events
         for (String event : events) {
             BetonQuest.event(playerID, event);

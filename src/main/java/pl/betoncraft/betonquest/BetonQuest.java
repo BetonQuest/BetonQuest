@@ -92,7 +92,6 @@ import pl.betoncraft.betonquest.events.ClearEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
-import pl.betoncraft.betonquest.events.DeleteObjectiveEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
@@ -136,17 +135,17 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Jakub Sapalski
  */
 public final class BetonQuest extends JavaPlugin {
-    
+
     private final static String ERROR = "There was some error. Please send it to the"
             + " developer: <coosheck@gmail.com>";
-    
+
     private static BetonQuest instance;
-    
+
     private Database database;
     private boolean isMySQLUsed;
     private Saver saver;
     private BukkitRunnable keeper;
-    
+
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
@@ -158,7 +157,6 @@ public final class BetonQuest extends JavaPlugin {
     private static HashMap<String, QuestEvent> events = new HashMap<>();
     private static HashMap<String, Objective> objectives = new HashMap<>();
     private static HashMap<String, ConversationData> conversations = new HashMap<>();
-    
 
     @Override
     public void onEnable() {
@@ -167,15 +165,16 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize debugger
         new Debug();
-        
+
         // load configuration
         new Config();
 
         // try to connect to database
         Debug.info("Connecting to MySQL database");
-        this.database = new MySQL(this, getConfig().getString("mysql.host"), getConfig().getString(
-                "mysql.port"), getConfig().getString("mysql.base"), getConfig().getString(
-                "mysql.user"), getConfig().getString("mysql.pass"));
+        this.database = new MySQL(this, getConfig().getString("mysql.host"),
+                getConfig().getString("mysql.port"), getConfig().getString(
+                "mysql.base"), getConfig().getString("mysql.user"), getConfig()
+                .getString("mysql.pass"));
 
         // try to connect to MySQL
         Connection con = database.getConnection();
@@ -204,7 +203,7 @@ public final class BetonQuest extends JavaPlugin {
             getConfig().set("debug", "false");
             saveConfig();
         }
-        
+
         saver = new Saver();
         saver.start();
 
@@ -258,7 +257,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
         registerConditions("monsters", MonstersCondition.class);
-        
+
         // register events
         registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
@@ -269,7 +268,6 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);
         registerEvents("point", PointEvent.class);
-        registerEvents("delete", DeleteObjectiveEvent.class);
         registerEvents("give", GiveEvent.class);
         registerEvents("take", TakeEvent.class);
         registerEvents("conversation", ConversationEvent.class);
@@ -297,7 +295,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("arrow", ArrowShootObjective.class);
         registerObjectives("experience", ExperienceObjective.class);
         registerObjectives("step", StepObjective.class);
-        
+
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);
@@ -305,7 +303,7 @@ public final class BetonQuest extends JavaPlugin {
 
         // initialize compatibility with other plugins
         new Compatibility();
-        
+
         // Load all events and conditions
         loadData();
 
@@ -332,7 +330,7 @@ public final class BetonQuest extends JavaPlugin {
             }
         };
         keeper.runTaskTimerAsynchronously(this, 60*20, 60*20);
-        
+
         // block betonquestanswer logging (it's just a spam)
         try {
             Class.forName("org.apache.logging.log4j.core.Filter");
@@ -374,44 +372,45 @@ public final class BetonQuest extends JavaPlugin {
             objective.close();
         }
         // clear previously loaded data
-	events.clear();
-	conditions.clear();
-	conversations.clear();
-	objectives.clear();
-	// load new data
-	for (String packName : Config.getPackageNames()) {
+        events.clear();
+        conditions.clear();
+        conversations.clear();
+        objectives.clear();
+        // load new data
+        for (String packName : Config.getPackageNames()) {
             Debug.info("Loading stuff in package " + packName);
             ConfigPackage pack = Config.getPackage(packName);
             FileConfiguration eConfig = Config.getPackage(packName).getEvents()
                     .getConfig();
             for (String key : eConfig.getKeys(false)) {
-        	String ID = packName + "." + key;
+                String ID = packName + "." + key;
                 String instruction = pack.getString("events." + key);
                 if (instruction == null) {
                     continue;
                 }
                 String[] parts = instruction.split(" ");
-        	if (parts.length < 1) {
-        	    Debug.error("Not enough arguments in event " + ID);
-        	    continue;
-        	}
-        	Class<? extends QuestEvent> eventClass = eventTypes.get(parts[0]);
+                if (parts.length < 1) {
+                    Debug.error("Not enough arguments in event " + ID);
+                    continue;
+                }
+                Class<? extends QuestEvent> eventClass = eventTypes.get(parts[0]);
                 if (eventClass == null) {
                     // if it's null then there is no such type registered, log an error
                     Debug.error(
-                	    "Event type " + parts[0] + " is not registered, check if it's"
-                    	    + " spelled correctly in " + ID + " event."
+                            "Event type " + parts[0] + " is not registered, check if it's"
+                            + " spelled correctly in " + ID + " event."
                     );
                     continue;
                 }
                 try {
-                    QuestEvent event = eventClass.getConstructor(String.class, String.class)
-                	    .newInstance(packName, instruction);
+                    QuestEvent event = eventClass.getConstructor(String.class,
+                            String.class).newInstance(packName, instruction);
                     events.put(ID, event);
                     Debug.info("  Event " + ID + " loaded");
                 } catch (InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                	Debug.error("Error in " + ID + " event: " + e.getCause().getMessage());
+                        Debug.error("Error in " + ID + " event: "
+                                + e.getCause().getMessage());
                     } else {
                         e.printStackTrace();
                         Debug.error(ERROR);
@@ -423,33 +422,35 @@ public final class BetonQuest extends JavaPlugin {
             }
             FileConfiguration cConfig = pack.getConditions().getConfig();
             for (String key : cConfig.getKeys(false)) {
-        	String ID = packName + "." + key;
+                String ID = packName + "." + key;
                 String instruction = pack.getString("conditions." + key);
                 if (instruction == null) {
                     continue;
                 }
                 String[] parts = instruction.split(" ");
-        	if (parts.length < 1) {
-        	    Debug.error("Not enough arguments in condition " + ID);
-        	    continue;
-        	}
-        	Class<? extends Condition> conditionClass = conditionTypes.get(parts[0]);
+                if (parts.length < 1) {
+                    Debug.error("Not enough arguments in condition " + ID);
+                    continue;
+                }
+                Class<? extends Condition> conditionClass = conditionTypes
+                        .get(parts[0]);
                 // if it's null then there is no such type registered, log an error
                 if (conditionClass == null) {
-                    Debug.error(
-                	    "Condition type " + parts[0] + " is not registered, check if it's"
-                    	    + " spelled correctly in " + ID + " condition."
+                    Debug.error("Condition type " + parts[0] + " is not registered,"
+                            + " check if it's spelled correctly in " + ID
+                            + " condition."
                     );
                     continue;
                 }
                 try {
-                    Condition condition = conditionClass.getConstructor(String.class, String.class)
-                	    .newInstance(packName, instruction);
+                    Condition condition = conditionClass.getConstructor(String.class,
+                            String.class).newInstance(packName, instruction);
                     conditions.put(ID, condition);
                     Debug.info("  Condition " + ID + " loaded");
                 } catch (InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                	Debug.error("Error in " + ID + " condition: " + e.getCause().getMessage());
+                        Debug.error("Error in " + ID + " condition: "
+                                + e.getCause().getMessage());
                     } else {
                         e.printStackTrace();
                         Debug.error(ERROR);
@@ -471,7 +472,8 @@ public final class BetonQuest extends JavaPlugin {
                     Debug.error("Not enough arguments in objectives " + ID);
                     continue;
                 }
-                Class<? extends Objective> objectiveClass = objectiveTypes.get(parts[0]);
+                Class<? extends Objective> objectiveClass = objectiveTypes
+                        .get(parts[0]);
                 // if it's null then there is no such type registered, log an error
                 if (objectiveClass == null) {
                     Debug.error("Objective type " + parts[0] +
@@ -487,7 +489,8 @@ public final class BetonQuest extends JavaPlugin {
                     Debug.info("  Objective " + ID + " loaded");
                 } catch (InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        Debug.error("Error in " + ID + " objective: " + e.getCause().getMessage());
+                        Debug.error("Error in " + ID + " objective: "
+                                + e.getCause().getMessage());
                     } else {
                         e.printStackTrace();
                         Debug.error(ERROR);
@@ -526,7 +529,8 @@ public final class BetonQuest extends JavaPlugin {
     public void onDisable() {
         // suspend all conversations
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
+            Conversation conv = Conversation.getConversation(PlayerConverter
+                    .getID(player));
             if (conv != null) conv.suspend();
         }
         // cancel database saver
@@ -537,11 +541,12 @@ public final class BetonQuest extends JavaPlugin {
         database.closeConnection();
         // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
-            Updater updater = new Updater(this, 86448, this.getFile(), Updater.UpdateType.DEFAULT,
-                    false);
+            Updater updater = new Updater(this, 86448, this.getFile(),
+                    Updater.UpdateType.DEFAULT, false);
             if (updater.getResult().equals(UpdateResult.SUCCESS)) {
-                Debug.broadcast("Found " + updater.getLatestName() + " update on DBO and "
-                    + "downloaded it! Plugin will be automatically updated on next restart.");
+                Debug.broadcast("Found " + updater.getLatestName() + " update "
+                        + "on DBO and downloaded it! Plugin will be automatically"
+                        + " updated on next restart.");
             }
         }
         // done
@@ -618,7 +623,8 @@ public final class BetonQuest extends JavaPlugin {
      * @param conditionClass
      *            class object for the condition
      */
-    public void registerConditions(String name, Class<? extends Condition> conditionClass) {
+    public void registerConditions(String name, Class<? extends Condition>
+            conditionClass) {
         Debug.info("Registering " + name + " condition type");
         conditionTypes.put(name, conditionClass);
     }
@@ -644,12 +650,14 @@ public final class BetonQuest extends JavaPlugin {
      * @param objectiveClass
      *            class object for the objective
      */
-    public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
+    public void registerObjectives(String name, Class<? extends Objective>
+            objectiveClass) {
         Debug.info("Registering " + name + " objective type");
         objectiveTypes.put(name, objectiveClass);
     }
     
-    public void registerConversationIO(String name, Class<? extends ConversationIO> convIOClass) {
+    public void registerConversationIO(String name, Class<? extends ConversationIO>
+            convIOClass) {
         Debug.info("Registering " + name + " conversation IO type");
         convIOTypes.put(name, convIOClass);
     }
@@ -687,10 +695,11 @@ public final class BetonQuest extends JavaPlugin {
             return false;
         }
         // and check if it's met or not
-        boolean outcome = condition.isMet(playerID);
+        boolean outcome = condition.check(playerID);
         boolean isMet = (outcome && !inverted) || (!outcome && inverted);
-        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition "
-                + conditionID + " for player " + PlayerConverter.getName(playerID));
+        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "")
+                + " condition " + conditionID + " for player " + PlayerConverter
+                .getName(playerID));
         return isMet;
     }
 
@@ -753,7 +762,8 @@ public final class BetonQuest extends JavaPlugin {
      * @param instruction
      *          data instruction string
      */
-    public static void resumeObjective(String playerID, String objectiveID, String instruction) {
+    public static void resumeObjective(String playerID, String objectiveID,
+            String instruction) {
         // null check
         if (playerID == null || objectiveID == null || instruction == null) {
             Debug.info("Null arguments for the objective!");

@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.utils.Debug;
 /**
  * StaticEvents contains logic for running events that aren't tied to any player
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class StaticEvents {
     

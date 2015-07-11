@@ -20,7 +20,7 @@ package pl.betoncraft.betonquest.core;
 /**
  * Represents the point category.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class Point {
 

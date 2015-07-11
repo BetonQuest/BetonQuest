@@ -38,7 +38,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
  *
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class JoinQuitListener implements Listener {
 

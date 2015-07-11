@@ -57,8 +57,8 @@ public class TeleportEvent extends QuestEvent {
             y = Double.parseDouble(location[1]);
             z = Double.parseDouble(location[2]);
             if (location.length == 6) {
-        	yaw = Float.parseFloat(location[4]);
-        	pitch = Float.parseFloat(location[5]);
+                yaw = Float.parseFloat(location[4]);
+                pitch = Float.parseFloat(location[5]);
             }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse coordinates");
@@ -67,6 +67,6 @@ public class TeleportEvent extends QuestEvent {
     }
 
     public void run(String playerID) {
-	PlayerConverter.getPlayer(playerID).teleport(loc);
+        PlayerConverter.getPlayer(playerID).teleport(loc);
     }
 }

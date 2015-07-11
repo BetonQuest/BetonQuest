@@ -203,7 +203,6 @@ public class BackpackDisplay implements Listener {
         // items and all others 45
         int pages = (backpack.size() < 45 ? 1 : (backpack.size() + 1 % 45 == 0 ? (int) (backpack
                 .size() + 1) / 45 : (int) Math.floor((backpack.size() + 1) / 45) + 1));
-        Debug.info("Generating backpack for " + PlayerConverter.getName(playerID) + ", page " + page);
         // prepare the inventory
         inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title") + (pages == 1 ? "" : " ("
                 + (page + 1) + "/" + pages + ")"));
@@ -211,27 +210,21 @@ public class BackpackDisplay implements Listener {
         int i = 0;
         // insert the journal if the player doesn't have it in his inventory
         if (page == 0) {
-            Debug.info("  First page, checking journal");
             if (!Journal.hasJournal(playerID)) {
-                Debug.info("    Adding the journal");
                 content[0] = dbHandler.getJournal().getAsItem();
             } else {
-                Debug.info("    Player has his journal, not adding");
                 content[0] = null;
             }
             i++;
         } else {
-            Debug.info("  Page is not first, skipping journal check");
         }
         // set all the items
-        Debug.info("  Setting " + backpack.size() + " items");
         while (i < 45 && i + (page * 45) <= backpack.size()) {
             ItemStack item = backpack.get(i + (page * 45) - 1);
             content[i] = item;
             i++;
         }
         // if there are other pages, place the buttons
-        Debug.info("  Placing buttons");
         if (page > 0) {
             ItemStack previous = null;
             String item = Config.getString("default.items.previous_button");
@@ -248,7 +241,6 @@ public class BackpackDisplay implements Listener {
             ItemMeta meta = previous.getItemMeta();
             meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
             previous.setItemMeta(meta);
-            Debug.info("    There is a previous button");
             content[48] = previous;
         }
         if (backpack.size() > (page + 1) * 45 - 1) {
@@ -267,7 +259,6 @@ public class BackpackDisplay implements Listener {
             ItemMeta meta = next.getItemMeta();
             meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
             next.setItemMeta(meta);
-            Debug.info("    There is a next button");
             content[50] = next;
         }
         // set "cancel quest" button
@@ -288,7 +279,6 @@ public class BackpackDisplay implements Listener {
         cancel.setItemMeta(meta);
         content[45] = cancel;
         // set the inventory and display it
-        Debug.info("Done, setting the content");
         inv.setContents(content);
         player.openInventory(inv);
         // register listener
@@ -304,7 +294,6 @@ public class BackpackDisplay implements Listener {
             if (event.getRawSlot() < 0) {
                 return;
             }
-            Debug.info("Player " + PlayerConverter.getName(playerID) + " clicked in backpack");
             if (page == -1) {
                 // handle quest canceling
                 String address = map.get(event.getRawSlot());
@@ -316,12 +305,11 @@ public class BackpackDisplay implements Listener {
                 return;
             } else if (page == 0 && event.getRawSlot() == 0) {
                 // first page on first slot should contain the journal
-                Debug.info("  Journal slot was clicked, adding journal");
-                dbHandler.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
+                dbHandler.getJournal().addToInv(Integer.parseInt(Config
+                        .getString("config.default_journal_slot")));
                 new BackpackDisplay(playerID, page);
             } else if (event.getRawSlot() < 45) {
                 // raw slot lower than 45 is a quest item
-                Debug.info("  Quest Item has been clicked");
                 // read the id of the item from clicked slot
                 int id = page * 45 + event.getRawSlot() - 1;
                 ItemStack item = null;
@@ -364,7 +352,6 @@ public class BackpackDisplay implements Listener {
                 }
             } else if (event.getRawSlot() > 53) {
                 // slot above 53 is player's inventory, so handle item storing
-                Debug.info("  Player's inventory was clicked");
                 final int slot = event.getSlot();
                 final ClickType click = event.getClick();
                 ItemStack item = player.getInventory().getItem(slot);
@@ -372,7 +359,6 @@ public class BackpackDisplay implements Listener {
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
                         // if it is a quest item, add it to the backpack
-                        Debug.info("    Slot " + slot + ", click " + click + ", item " + item.getType());
                         int amount = 0;
                         // left click is one item, right is all items
                         switch (click) {
@@ -401,14 +387,11 @@ public class BackpackDisplay implements Listener {
                 }
             } else if (event.getRawSlot() == 48 && page > 0) {
                 // if it was a previous/next button turn the pages
-                Debug.info("  Previous button has been clicked");
                 new BackpackDisplay(playerID, page - 1);
             } else if (event.getRawSlot() == 50 && dbHandler.getBackpack().size() > (page + 1) 
                     * 45 - 1) {
-                Debug.info("  Next button has been clicked");
                 new BackpackDisplay(playerID, page + 1);
             } else if (event.getRawSlot() == 45) {
-                Debug.info("  Cancel quest button has been clicked");
                 new BackpackDisplay(playerID, -1);
             }
         }
@@ -417,7 +400,6 @@ public class BackpackDisplay implements Listener {
     @EventHandler
     public void onInventoryClosing(InventoryCloseEvent event) {
         if (event.getPlayer().equals(player)) {
-            Debug.info("Player " + PlayerConverter.getName(playerID) + " closed his backpack, terminating");
             HandlerList.unregisterAll(this);
         }
     }

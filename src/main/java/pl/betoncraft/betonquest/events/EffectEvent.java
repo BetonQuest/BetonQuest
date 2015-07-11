@@ -48,13 +48,13 @@ public class EffectEvent extends QuestEvent {
             throw new InstructionParseException("Effect type does not exist");
         }
         try {
-	    duration = Integer.parseInt(parts[2]);
-	    amplifier = Integer.parseInt(parts[3]);
-	} catch (NumberFormatException e) {
-	    throw new InstructionParseException(
-	            "Could not parse number arguments");
-	}
-	ambient = instructions.contains("--ambient");
+            duration = Integer.parseInt(parts[2]);
+            amplifier = Integer.parseInt(parts[3]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException(
+                    "Could not parse number arguments");
+        }
+        ambient = instructions.contains("--ambient");
     }
 
     @Override

@@ -29,7 +29,7 @@ public class InstructionParseException extends Exception {
     private final String message;
     
     public InstructionParseException(final String message) {
-	this.message = message;
+        this.message = message;
     }
     
     @Override

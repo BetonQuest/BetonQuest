@@ -78,12 +78,12 @@ public abstract class QuestEvent {
         String[] parts = instructions.split(" ");
         for (String part : parts) {
             if (part.startsWith("conditions:")) {
-        	tempConditions = part.substring(11).split(",");
+                tempConditions = part.substring(11).split(",");
             }
         }
         for (int i = 0; i < tempConditions.length; i++) {
             if (!tempConditions[i].contains(".")) {
-        	tempConditions[i] = pack.getName() + "." + tempConditions[i];
+                tempConditions[i] = pack.getName() + "." + tempConditions[i];
             }
         }
         conditions = tempConditions;
@@ -95,7 +95,7 @@ public abstract class QuestEvent {
      * all the required data is present and parsed correctly.
      * 
      * @param playerID
-     * 		ID of the player for whom the event will fire
+     *          ID of the player for whom the event will fire
      */
     abstract public void run(String playerID);
     
@@ -104,7 +104,7 @@ public abstract class QuestEvent {
      * not needed to check them explicitly.
      * 
      * @param playerID
-     * 		ID of the player for whom the event will fire
+     *          ID of the player for whom the event will fire
      */
     public final void fire(String playerID) {
         // check if playerID isn't null, this event cannot be static
@@ -117,17 +117,17 @@ public abstract class QuestEvent {
         // check if the event cannot be fired for offline players
         if (PlayerConverter.getPlayer(playerID) == null) {
             if (!persistent) {
-		Debug.info("Player " + playerID + " is offline, cannot fire event");
-		return;
-	    }
+                Debug.info("Player " + playerID + " is offline, cannot fire event");
+                return;
+            }
         }
         // check event conditions before firing the event
-	for (String condition : conditions) {
-	    if (!BetonQuest.condition(playerID, condition)) {
-		Debug.info("Event conditions were not met.");
-		return;
-	    }
-	}
-	run(playerID);
+        for (String condition : conditions) {
+            if (!BetonQuest.condition(playerID, condition)) {
+                Debug.info("Event conditions were not met.");
+                return;
+            }
+        }
+        run(playerID);
     }
 }

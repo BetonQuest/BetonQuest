@@ -79,6 +79,7 @@ public class Config {
         languages = new ArrayList<>();
         for (String key : messages.getConfig().getKeys(false)) {
             if (!key.equals("global")) {
+                Debug.info("Loaded " + key + " language");
                 languages.add(key);
             }
         }
@@ -96,6 +97,7 @@ public class Config {
             ConfigPackage pack = new ConfigPackage(file);
             if (pack.isValid()) {
                 packages.put(file.getName(), pack);
+                Debug.info("Loaded " + file.getName() + " package");
             }
         }
     }

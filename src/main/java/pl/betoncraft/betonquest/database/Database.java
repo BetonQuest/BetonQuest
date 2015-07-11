@@ -22,15 +22,11 @@ import java.sql.SQLException;
 
 import org.bukkit.plugin.Plugin;
 
-import pl.betoncraft.betonquest.utils.Debug;
-
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  * 
- * @author -_Husky_-
- * @author tips48
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public abstract class Database {
 
@@ -71,32 +67,26 @@ public abstract class Database {
         // create tables if they don't exist
         Connection connection = getConnection();
         try {
-            Debug.info("Creating objectives table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID VARCHAR(256) NOT NULL, objective VARCHAR(512)"
                         + " NOT NULL, instructions VARCHAR(2048) NOT NULL);");
-            Debug.info("Creating tags table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER PRIMARY KEY " + autoIncrement
                         + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL);");
-            Debug.info("Creating points table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID "
                         + "VARCHAR(256) NOT NULL, category VARCHAR(256) "
                         + "NOT NULL, count INT NOT NULL);");
-            Debug.info("Creating journal table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "journal (id INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID VARCHAR(256) NOT NULL, pointer "
                         + "VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-            Debug.info("Creating backpack table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "backpack (id INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID VARCHAR(256) NOT NULL, instruction "
                         + "TEXT NOT NULL, amount INT NOT NULL);");
-            Debug.info("Creating player table");
             connection.createStatement().executeUpdate(
                     "CREATE TABLE IF NOT EXISTS " + prefix + "player (id INTEGER PRIMARY KEY "
                         + autoIncrement + ", playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "

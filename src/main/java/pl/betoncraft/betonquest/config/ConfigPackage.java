@@ -272,8 +272,6 @@ public class ConfigPackage {
                 value = value.replace("$" + varName + "$", varVal);
             }
         }
-        Debug.info(String.format("Variables in %s changed, result: %s",
-                address, value));
         return value;
     }
     

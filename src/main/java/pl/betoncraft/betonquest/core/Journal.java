@@ -39,7 +39,7 @@ import com.google.common.collect.Lists;
 /**
  * Represents player's journal.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class Journal {
 
@@ -80,8 +80,6 @@ public class Journal {
      *            Timestamp object containing the date of aquiring the entry
      */
     public void addPointer(Pointer pointer) {
-        Debug.info("Adding new pointer \"" + pointer.getPointer() + "\" / " + pointer
-                .getTimestamp() + " to journal for player " + PlayerConverter.getName(playerID));
         pointers.add(pointer);
         BetonQuest.getInstance().getDBHandler(playerID).addPointer(pointer);
         generateTexts(lang);

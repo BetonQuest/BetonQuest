@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Handler for global locations.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class GlobalLocations extends BukkitRunnable {
 
@@ -190,17 +190,17 @@ public class GlobalLocations extends BukkitRunnable {
                 if (part.contains("conditions:")) {
                     conditions = part.substring(11).split(",");
                     for (int i = 0; i < conditions.length; i++) {
-                	if (!conditions[i].contains(".")) {
-                	    conditions[i] = pack.getName() + "." + conditions[i];
-                	}
+                        if (!conditions[i].contains(".")) {
+                            conditions[i] = pack.getName() + "." + conditions[i];
+                        }
                     }
                 }
                 if (part.contains("events:")) {
                     events = part.substring(7).split(",");
                     for (int i = 0; i < events.length; i++) {
-                	if (!events[i].contains(".")) {
-                	    events[i] = pack.getName() + "." + events[i];
-                	}
+                        if (!events[i].contains(".")) {
+                            events[i] = pack.getName() + "." + events[i];
+                        }
                     }
                 }
             }

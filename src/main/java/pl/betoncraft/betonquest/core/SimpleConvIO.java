@@ -19,7 +19,6 @@ package pl.betoncraft.betonquest.core;
 
 import org.bukkit.ChatColor;
 
-
 /**
  * Simple chat-based conversation output.
  * 

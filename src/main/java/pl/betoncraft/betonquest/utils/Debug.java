@@ -34,23 +34,14 @@ import pl.betoncraft.betonquest.BetonQuest;
 /**
  * Handels error logging and debugging.
  * 
- * @author Coosh
+ * @author Jakub Sapalski
  */
 public class Debug {
 
-    /**
-     * True if {@link #info(String)} method should log anything.
-     */
     private static boolean debugging = false;
     private static Debug instance;
     private Logger logger = BetonQuest.getInstance().getLogger();
-    /**
-     * Debugging log.
-     */
     private File debug;
-    /**
-     * Error log.
-     */
     private File error;
 
     public Debug() {
@@ -86,7 +77,6 @@ public class Debug {
         }
         if (debugging) {
             if (debug == null) {
-                BetonQuest.getInstance().getLogger().info("NULLPOINTEREXCEPTION!!!");
                 return;
             }
             try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(debug, true)))) {
@@ -148,8 +138,7 @@ public class Debug {
 
     private void log(String message, LogType type) {
         // errors should be displayed in the console at severe level and logged
-        // into
-        // error.log file
+        // into error.log file
         if (type == LogType.ERROR) {
             logger.severe(message);
             save(message, error, LogType.ERROR);
@@ -158,8 +147,7 @@ public class Debug {
         if (type == LogType.BROAD)
             logger.info(message);
         // addictionally everything should be logged to debug.log if debugging
-        // is
-        // turned on
+        // is turned on
         if (debugging)
             save(message, debug, type);
     }

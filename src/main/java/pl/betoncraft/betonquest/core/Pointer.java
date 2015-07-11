@@ -21,7 +21,7 @@ package pl.betoncraft.betonquest.core;
 /**
  * Represents the journal pointer.
  * 
- * @author Co0sh
+ * @author Jakub Sapalski
  */
 public class Pointer {
 
