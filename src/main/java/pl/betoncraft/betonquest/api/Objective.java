@@ -23,9 +23,9 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

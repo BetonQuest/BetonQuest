@@ -45,7 +45,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.QuestItem;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -157,7 +157,7 @@ public class ConfigUpdater {
         updateLanguages();
         instance.saveConfig();
         // reload configuration file to apply all possible changes
-        new Config();
+        new Config(false);
         Debug.broadcast("Successfully updated configuration!");
         addChangelog();
     }
@@ -174,7 +174,7 @@ public class ConfigUpdater {
             return;
         try {
             // reload existing configuration
-            new Config();
+            new Config(false);
             config = instance.getConfig();
             // call the right updating method
             Method method = this.getClass().getDeclaredMethod("update_from_" + version);
@@ -420,9 +420,11 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v18() {
         try {
-            FileConfiguration messages = Config.getMessages().getConfig();
+            ConfigAccessor confMessages = Config.getMessages();
+            FileConfiguration messages = confMessages.getConfig();
             for (String lang : messages.getKeys(false)) {
                 if (lang.equalsIgnoreCase("global")) continue;
+                Debug.info("Updating " + lang + " language");
                 try {
                     messages.set(lang + ".purged", messages.getString(lang + ".purged").replace("%player%", "{1}"));
                     messages.set(lang + ".item_created", messages.getString(lang + ".item_created").replace("%item%", "{1}"));
@@ -440,7 +442,7 @@ public class ConfigUpdater {
                     Debug.error("The language " + lang + " is not present in the defaults, please update it manually.");
                 }
             }
-            Config.getMessages().saveConfig();
+            confMessages.saveConfig();
             Debug.broadcast("Updated messages to new replace format");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1358,7 +1360,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v7() {
         ConfigAccessor messages = ch.getConfigs().get("messages");
-        messages.getConfig().set("date_format", "dd.MM.yyyy HH:mm");
+        messages.getConfig().set("global.date_format", "dd.MM.yyyy HH:mm");
         messages.saveConfig();
         Debug.broadcast("Added date format line to messages.yml");
         config.set("version", "v8");
@@ -2223,7 +2225,7 @@ public class ConfigUpdater {
     private void updateLanguages() {
         // add new languages
         boolean isUpdated = false;
-        ConfigAccessor messages = ch.getConfigs().get("messages");
+        ConfigAccessor messages = Config.getMessages();
         // check every language if it exists
         for (String path : messages.getConfig().getDefaultSection().getKeys(false)) {
             if (messages.getConfig().isSet(path)) {

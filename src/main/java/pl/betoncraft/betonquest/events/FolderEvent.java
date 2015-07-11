@@ -23,8 +23,8 @@ import java.util.Random;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Folder event is a collection of other events, that can be run after a delay

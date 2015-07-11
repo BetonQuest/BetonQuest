@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import net.milkbowl.vault.permission.Permission;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

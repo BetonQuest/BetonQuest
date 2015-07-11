@@ -22,8 +22,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.BackpackDisplay;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.core.BackpackDisplay;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

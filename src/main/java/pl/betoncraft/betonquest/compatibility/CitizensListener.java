@@ -27,7 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.CombatTagger;
+import pl.betoncraft.betonquest.conversation.CombatTagger;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

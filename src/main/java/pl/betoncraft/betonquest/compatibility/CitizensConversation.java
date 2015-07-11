@@ -21,7 +21,7 @@ import net.citizensnpcs.api.npc.NPC;
 
 import org.bukkit.Location;
 
-import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.conversation.Conversation;
 
 /**
  * Represents a conversation with NPC

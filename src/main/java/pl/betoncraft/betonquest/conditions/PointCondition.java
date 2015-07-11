@@ -18,10 +18,10 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.core.Point;
 
 /**
  * Requires the player to have specified amount of points (or more) in specified

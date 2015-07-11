@@ -22,7 +22,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.conversation.Conversation;
 
 /**
  * Fires when player ends a conversation with an NPC

@@ -20,8 +20,8 @@ package pl.betoncraft.betonquest.conditions;
 
 import java.util.Random;
 
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * The condition that is met randomly

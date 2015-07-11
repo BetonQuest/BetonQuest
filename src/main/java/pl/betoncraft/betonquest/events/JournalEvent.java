@@ -20,11 +20,11 @@ package pl.betoncraft.betonquest.events;
 import java.util.Date;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.core.Journal;
-import pl.betoncraft.betonquest.core.Pointer;
 
 /**
  * Adds the entry to player's journal

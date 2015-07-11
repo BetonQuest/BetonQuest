@@ -17,9 +17,9 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Superclass for all conditions. You need to extend it in order to create new

@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import pl.betoncraft.betonquest.core.Conversation;
+import pl.betoncraft.betonquest.conversation.Conversation;
 
 /**
  * Fires when a player starts a conversation with an NPC

@@ -23,8 +23,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Player has to wait specified amount of time. He may logout, the objective

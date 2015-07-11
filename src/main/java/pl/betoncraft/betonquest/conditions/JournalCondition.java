@@ -18,9 +18,9 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.core.Pointer;
 
 /**
  * Checks if the player has specified pointer in his journal

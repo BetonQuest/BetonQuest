@@ -26,10 +26,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.InstructionParseException;
-import pl.betoncraft.betonquest.core.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

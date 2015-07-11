@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.core;
+package pl.betoncraft.betonquest.conversation;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

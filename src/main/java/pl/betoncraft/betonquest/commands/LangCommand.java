@@ -23,8 +23,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.Journal;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;

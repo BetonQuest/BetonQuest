@@ -23,8 +23,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 
 /**
  * Checks block at specified location against specified Material

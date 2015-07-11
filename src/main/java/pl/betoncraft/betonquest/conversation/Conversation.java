@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.core;
+package pl.betoncraft.betonquest.conversation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -37,8 +37,8 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.core.ConversationData.OptionType;
-import pl.betoncraft.betonquest.core.ConversationData.RequestType;
+import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
+import pl.betoncraft.betonquest.conversation.ConversationData.RequestType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;

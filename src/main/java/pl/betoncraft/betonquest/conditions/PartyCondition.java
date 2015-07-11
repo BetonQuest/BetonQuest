@@ -20,8 +20,8 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**

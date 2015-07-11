@@ -19,8 +19,8 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.World;
 
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.core.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

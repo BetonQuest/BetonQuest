@@ -56,10 +56,14 @@ public class Config {
     
     private File root;
 
+    public Config() {
+        this(true);
+    }
+
     /**
      * Creates new instance of the Config handler
      */
-    public Config() {
+    public Config(boolean verboose) {
         
         instance = this;
         plugin = BetonQuest.getInstance();
@@ -79,7 +83,7 @@ public class Config {
         languages = new ArrayList<>();
         for (String key : messages.getConfig().getKeys(false)) {
             if (!key.equals("global")) {
-                Debug.info("Loaded " + key + " language");
+                if (verboose) Debug.info("Loaded " + key + " language");
                 languages.add(key);
             }
         }
@@ -97,7 +101,7 @@ public class Config {
             ConfigPackage pack = new ConfigPackage(file);
             if (pack.isValid()) {
                 packages.put(file.getName(), pack);
-                Debug.info("Loaded " + file.getName() + " package");
+                if (verboose) Debug.info("Loaded " + file.getName() + " package");
             }
         }
     }
