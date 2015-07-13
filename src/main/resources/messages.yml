@@ -151,8 +151,8 @@ en:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
-  conversation_start: '&e====&bGesprach mit {1} begonnen!&e===='
-  conversation_end: '&e====&bGesprach mit {1} beendet!&e===='
+  conversation_start: '&e====&bGespraech mit {1} begonnen!&e===='
+  conversation_end: '&e====&bGespraech mit {1} beendet!&e===='
   help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
   unknown_argument: '&cFalsches Argument festgestellt.'
   no_permission: '&cDu hast keinen Zugriff auf diesen Befehl.'
@@ -162,70 +162,70 @@ de:
   journal_lore: Dein Tagebuch mit allen Questinformationen
   quest_item: '&2Quest Item'
   backpack_title: Rucksack
-  previous: '&2Zuruck'
+  previous: '&2Zurueck'
   next: '&2Vor'
   inventory_full: '&e*&bDein Inventar ist voll!&e*'
-  specify_condition: '&cGeben Sie eine Bedingung an.'
-  specify_event: '&cGebe den Namen des Ereignisses an.'
-  specify_player: '&cGebe Spielernamen an.'
-  specify_item: '&cGebe eine Gegenstandsbezeichnung an.'
-  specify_tag: '&cGib einen Tag an.'
-  specify_objective: '&cGib eine Aufgabe an.'
+  specify_condition: '&cBitte eine Bedingung angeben.'
+  specify_event: '&cBitte den Namen des Ereignisses angeben.'
+  specify_player: '&cBitte einen Spielernamen angeben.'
+  specify_item: '&cBitte eine Gegenstandsbezeichnung angeben.'
+  specify_tag: '&cBitte einen Tag angeben.'
+  specify_objective: '&cBitte einen Aufgabennamen angeben.'
   specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese zu modifizieren.'
   specify_pointer: '&cBitte den Namen des Zeigers angeben.'
   specify_date: '&cBitte Datum des Zeigers angeben. (Formatiert in Datums-Format)'
-  specify_action: '&cBitte Aktion angeben (read, set oder add)'
-  specify_path: '&cBitte Pfad angeben (separiert mit ".")'
-  specify_package: '&cSpecify package name'
-  package_created: '&2Package created'
-  package_exists: '&cPackage already exists'
+  specify_action: '&cBitte Aktion angeben (read, set oder add).'
+  specify_path: '&cBitte Pfad angeben (separiert mit ".").'
+  specify_package: '&cBitte Paketnamen angeben.'
+  package_created: '&2Paket erstellt.'
+  package_exists: '&cPaket existiert bereits.'
   config_set_error: '&cKonnte Pfad nicht setzen.'
   no_item: '&cKeinen Gegenstand in der Hand!'
   item_created: '&2Gegenstand in Konfiguration als {1} gespeichert.'
   player_objectives: '&aSpieler - Aufgaben:'
   player_tags: '&aSpieler - Tags:'
   player_condition: '&aBedingung {1}: {2}'
-  player_event: '&aEreignis ausgelost: {1}'
+  player_event: '&aEreignis ausgeloest: {1}'
   player_points: '&aPunkte:'
   player_journal: '&eZeiger im Tagebuch:'
-  points_added: '&2Punkte hinzugefugt!'
+  points_added: '&2Punkte hinzugefuegt!'
   points_removed: '&2Punkte entfernt!'
   tag_added: '&2Tag hinzugefuegt!'
   tag_removed: '&2Tag entfernt!'
   objective_added: '&2Neue Aufgaben gestartet!'
   objective_removed: '&2Aufgabe entfernt!'
-  pointer_added: '&2Zeiger hinzugefugt!'
+  pointer_added: '&2Zeiger hinzugefuegt!'
   pointer_removed: '&2Zeiger entfernt!'
-  purged: '&4{1} - Alle Dateien zuruckgesetzt!'
-  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die anderungen an und/oder losche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
-  command_reload: ladt das Plugin neu
-  command_objectives: Aufgaben fur Spieler
-  command_tags: Tags fur Spieler
-  command_points: Punkte fur Spieler
-  command_journal: Zeiger im Tagebuch fur Spieler
-  command_condition: Bedingung fur Spieler uberprufen
-  command_event: Ereignis fur Spieler auslosen
+  purged: '&4{1} - Alle Dateien zurueckgesetzt!'
+  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Aenderungen an und/oder loesche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
+  command_reload: laedt das Plugin neu
+  command_objectives: Aufgaben fuer Spieler
+  command_tags: Tags fuer Spieler
+  command_points: Punkte fuer Spieler
+  command_journal: Zeiger im Tagebuch fuer Spieler
+  command_condition: Bedingung fuer Spieler ueberpruefen
+  command_event: Ereignis fuer Spieler ausloesen
   command_item: erstellt einen Gegenstand aus dem in deiner Hand
-  command_config: liest, setzt oder hangt Zeilen an die Konfig an
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: Setzt alle Daten uber Spieler zuruck
+  command_config: liest, setzt oder haengt Zeilen an die Konfig an
+  command_vector: berechnet einen Vektor aus der ersten Variablen und speichert ihn in der zweiten
+  command_purge: Setzt alle Daten ueber Spieler zurueck
   command_backup: Erstellt ein Backup von Konfiguration und Datenbank. Nur von der Konsole aus verwenden wenn keine Spieler online sind!
   offline: '&4Alle Spieler mussen offline sein, um ein Backup zu vollziehen!'
-  pullback: '&cYou must finish your conversation!'
-  items_given: '&2Received {1} x{2}'
-  items_taken: '&2Lost {1} x{2}'
-  blocks_to_break: '&2{1} blocks left to break'
-  blocks_to_place: '&2{1} blocks left to place'
-  mobs_to_kill: '&2{1} mobs left to kill'
-  busy: '&cYou can''t talk while fighting'
-  quest_canceled: '&2Quest {1} canceled!'
-  cancel: '&cCancel the quest'
-  cancel_page: Canceling quests
-  command_blocked: '&cYou can''t use that command while in conversation.'
-  language_changed: '&2Language changed!'
-  default_language_changed: '&2Default language changed!'
-  language_missing: '&cSpecify language'
-  language_not_exist: '&cThis language is not defined, possible options: '
+  pullback: '&cDu musst das Gespraech erst beenden!'
+  items_given: '&2{1} x{2} erhalten.'
+  items_taken: '&2{1} x{2} weggenommen.'
+  blocks_to_break: '&2Noch {1} Bloecke abzubauen.'
+  blocks_to_place: '&2Noch {1} Bloecke zu setzen.'
+  mobs_to_kill: '&2Noch {1} Monster zu toeten.'
+  busy: '&cDu kannst dich nicht waehrend eines Kampfes unterhalten.'
+  quest_canceled: '&2Quest {1} abgebrochen!'
+  cancel: '&cQuest abbrechen'
+  cancel_page: Quests abbrechen
+  command_blocked: '&cDu kannst diesen Befehl nicht benutzen, solange du in einem Gespraech bist.'
+  language_changed: '&2Sprache geaendert!'
+  default_language_changed: '&2Standardsprache geaendert!'
+  language_missing: '&cBitte eine Sprache angeben.'
+  language_not_exist: '&cDiese Sprache ist nicht definiert. Moegliche Optionen: '
 fr:
   conversation_start: '&e====&bLa conversation avec {1} est engagee!&e===='
   conversation_end: '&e====&bLa conversation avec {1} est terminee!&e===='
