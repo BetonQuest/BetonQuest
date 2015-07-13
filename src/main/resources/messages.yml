@@ -170,7 +170,7 @@ de:
   specify_player: '&cGebe Spielernamen an.'
   specify_item: '&cGebe eine Gegenstandsbezeichnung an.'
   specify_tag: '&cGib einen Tag an.'
-  specify_objective: '&cGib eine Aufgabe an.'
+  specify_objective: '&cGib einen Aufgabennamen an.'
   specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese zu modifizieren.'
   specify_pointer: '&cBitte den Namen des Zeigers angeben.'
   specify_date: '&cBitte Datum des Zeigers angeben. (Formatiert in Datums-Format)'
