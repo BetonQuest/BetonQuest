@@ -1,11 +1,8 @@
-﻿1.7 (dev)
+﻿v1.7
 Notes:
-  - This is a development version, use it with caution.
   - BetonQuest no longer supports servers without UUID handling
   - There were a lot of changes since previous version, check carefully if everything is working
   - Compatibility with plugins hooking INTO BetonQuest is broken, they need to update
-  - Dependencies updated: WorldGuard/WorldEdit 6.1, MythicMobs 2.0.4
-  - You should report all bugs on <https://github.com/Co0sh/BetonQuest/issues>
 Fixes:
     * Objectives no longer mysteriously double events
     * Greatly improved performance in almost every aspect
@@ -13,14 +10,15 @@ Fixes:
     * Fixed database saving/loading issues
     * Fixed player options in conversations being white on next lines when using tellraw
 Additions:
-    * Variable system for quick changing quest parameters (for example location of a quest)
     * Quest canceling system
     * New inventory GUI for conversations
     * Added the "random" parameter in "folder" event - choose randomly X events to fire
+    * Action objective can be "canceled" - the click will not do anything
     * Added "static events" mechanism for firing events at specified time of the day
     * Optional message when the player is pulled back by stop option
     * Optional message for take and give events
     * Optional message when advancing in "block" and "mobkill" objectives
+    * Variable system for quick changing quest parameters (for example location of a quest)
     * "/q vector" command for easy calculating location vector variables
     * New "empty" condition - amount of empty inventory slots
     * New "party" condition - manages the conditions in the party
@@ -29,13 +27,13 @@ Additions:
     * New "region" objective - reach WorldGuard region
     * Blacklist of commands which cannot be used while in conversation
     * Option to disable compatibility with other plugins
-    * Action objective can be "canceled" - the click will not do anything
     * Added remove_items_after_respawn option - for servers using keepInventory gamerule
 Changes:
     * The plugin now uses package system: configuration has been moved into "default" package
     * Objectives has returned to "objectives.yml" - it's improving performance
-    * All quests can (but don't have to) be translated into multiple languages
     * The database is now updated in real time
+    * All quests can (but don't have to) be translated into multiple languages
+    * Players can change their language with /questlang command
     * Conversations with stop option are resumed when the player logs out and in again
     * Metrics are now toggled in PluginMetrics/config.yml
     * All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads
@@ -49,6 +47,7 @@ Changes:
     * Removed unnecessary argument prefixes from conditions and events
     * Removed "tag:" from objective instruction strings
     * Conversations no longer need those empty lines everywhere ('')
+    * Dependencies updated: WorldGuard/WorldEdit 6.1, MythicMobs 2.0.4
 
 v1.6.2
 Fixed errors on data loading when MySQL is being used.

@@ -19,9 +19,6 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -40,7 +37,6 @@ public class MessageEvent extends QuestEvent {
     public MessageEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
-        staticness = true;
         String[] parts;
         try {
             parts = instructions.substring(8).split(" ");
@@ -75,28 +71,15 @@ public class MessageEvent extends QuestEvent {
     
     @Override
     public void run(String playerID) {
-        if (playerID == null) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String lang = BetonQuest.getInstance().getDBHandler(
-                        PlayerConverter.getID(player)).getLanguage();
-                String message = messages.get(lang);
-                if (message == null) {
-                    messages.get(Config.getLanguage());
-                }
-                player.sendMessage(message.replaceAll("&", "§")
-                        .replaceAll("%player%", player.getName()));
-            }
-        } else {
-            String lang = BetonQuest.getInstance().getDBHandler(playerID)
-                    .getLanguage();
-            String message = messages.get(lang);
-            if (message == null) {
-                message = messages.get(Config.getLanguage());
-            }
-            PlayerConverter.getPlayer(playerID).sendMessage(
-                    message.replaceAll("&", "§").replaceAll("%player%",
-                    PlayerConverter.getName(playerID)));
+        String lang = BetonQuest.getInstance().getDBHandler(playerID)
+                .getLanguage();
+        String message = messages.get(lang);
+        if (message == null) {
+            message = messages.get(Config.getLanguage());
         }
+        PlayerConverter.getPlayer(playerID).sendMessage(
+                message.replaceAll("&", "§").replaceAll("%player%",
+                PlayerConverter.getName(playerID)));
     }
 
 }

@@ -57,9 +57,6 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class QuestCommand implements CommandExecutor {
     
-    /**
-     * Keeps the pointer to BetonQuest's instance.
-     */
     private BetonQuest instance = BetonQuest.getInstance();
     
     /**
@@ -265,6 +262,10 @@ public class QuestCommand implements CommandExecutor {
                 break;
             case "set":
             case "s":
+                if (args.length < 4) {
+                    sendMessage(sender, "config_set_error");
+                    return;
+                }
                 StringBuilder strBldr = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
                     strBldr.append(args[i] + " ");
@@ -274,7 +275,8 @@ public class QuestCommand implements CommandExecutor {
                     sendMessage(sender, "specify_path");
                     return;
                 }
-                boolean set = Config.setString(path, (args[3].equals("null")) ? null : strBldr.toString().trim());
+                boolean set = Config.setString(path, (args[3].equalsIgnoreCase("null"))
+                        ? null : strBldr.toString().trim());
                 if (set) {
                     Debug.info("Displaying variable at path " + path);
                     String message1 = Config.getString(path);
@@ -285,6 +287,10 @@ public class QuestCommand implements CommandExecutor {
                 break;
             case "add":
             case "a":
+                if (args.length < 4) {
+                    sendMessage(sender, "config_set_error");
+                    return;
+                }
                 StringBuilder strBldr2 = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
                     strBldr2.append(args[i] + " ");
@@ -297,7 +303,7 @@ public class QuestCommand implements CommandExecutor {
                 String finalString = strBldr2.toString().trim();
                 boolean space = false;
                 if (finalString.startsWith("_")) {
-                    finalString = finalString.substring(1, finalString.length());
+                    finalString = finalString.substring(1);
                     space = true;
                 }
                 String oldString = Config.getString(path);
@@ -550,6 +556,11 @@ public class QuestCommand implements CommandExecutor {
         String name;
         if (eventID.contains(".")) {
             String[] parts = eventID.split("\\.");
+            if (parts.length != 2) {
+                Debug.info("Condition's ID is missing");
+                sendMessage(sender, "specify_condition");
+                return;
+            }
             pack = parts[0];
             name = parts[1];
         } else {
@@ -597,6 +608,11 @@ public class QuestCommand implements CommandExecutor {
         String name;
         if (conditionID.contains(".")) {
             String[] parts = conditionID.split("\\.");
+            if (parts.length != 2) {
+                Debug.info("Condition's ID is missing");
+                sendMessage(sender, "specify_condition");
+                return;
+            }
             pack = parts[0];
             name = parts[1];
         } else {

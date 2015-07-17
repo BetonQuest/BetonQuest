@@ -1,10 +1,10 @@
 name: BetonQuest
 main: pl.betoncraft.betonquest.BetonQuest
 description: Advanced quest plugin
-authors: [Co0sh, Dzejkop, BYK]
+authors: [Co0sh]
 website: http://dev.bukkit.org/bukkit-plugins/betonquest/
 softdepend: [Skript, Citizens, MythicMobs, Denizen, Vault, Multiverse-Core]
-version: 1.7-dev
+version: 1.7
 commands:
   q:
     description: General quest command

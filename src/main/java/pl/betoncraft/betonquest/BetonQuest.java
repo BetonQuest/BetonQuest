@@ -718,8 +718,12 @@ public final class BetonQuest extends JavaPlugin {
             return;
         }
         // fire the event
-        Debug.info("Firing event " + eventID + " for "
-                + PlayerConverter.getName(playerID));
+        if (playerID == null) {
+            Debug.info("Firing static event " + eventID);
+        } else {
+            Debug.info("Firing event " + eventID + " for "
+                    + PlayerConverter.getName(playerID));
+        }
         event.fire(playerID);
     }
 

@@ -254,14 +254,17 @@ public class Config {
      */
     public static String getString(String address) {
         if (address == null) return null;
-        String main = address.split("\\.")[0];
+        String[] parts = address.split("\\.");
+        if (parts.length < 2) return null;
+        String main = parts[0];
         if (main.equals("config")) {
-            return plugin.getConfig().getString(address.substring(7, address.length()));
+            return plugin.getConfig().getString(address.substring(7));
         } else if (main.equals("messages")) {
-            return messages.getConfig().getString(address.substring(9, address.length()));
+            return messages.getConfig().getString(address.substring(9));
         } else {
             ConfigPackage pack = packages.get(main);
-            return pack.getRawString(address.substring(main.length() + 1, address.length()));
+            if (pack == null) return null;
+            return pack.getRawString(address.substring(main.length() + 1));
         }
     }
     
@@ -276,18 +279,21 @@ public class Config {
      */
     public static boolean setString(String address, String value) {
         if (address == null) return false;;
-        String main = address.split("\\.")[0];
+        String[] parts = address.split("\\.");
+        if (parts.length < 2) return false;
+        String main = parts[0];
         if (main.equals("config")) {
-            plugin.getConfig().set(address.substring(7, address.length()), value);
+            plugin.getConfig().set(address.substring(7), value);
             plugin.saveConfig();
             return true;
         } else if (main.equals("messages")) {
-            messages.getConfig().set(address.substring(9, address.length()), value);
+            messages.getConfig().set(address.substring(9), value);
             messages.saveConfig();
             return true;
         } else {
             ConfigPackage pack = packages.get(main);
-            return pack.setString(address.substring(main.length()+1, address.length()), value);
+            if (pack == null) return false;
+            return pack.setString(address.substring(main.length()+1), value);
         }
     }
     

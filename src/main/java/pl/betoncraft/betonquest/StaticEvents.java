@@ -69,7 +69,10 @@ public class StaticEvents {
             }
             // for each hour, create an event timer
             for (String key : config.getKeys(false)) {
-                final String value = config.getString(key);
+                String value = config.getString(key);
+                if (!value.contains(".")) {
+                    value = packName + "." + value;
+                }
                 long timeStamp = getTimestamp(key);
                 if (timeStamp < 0) {
                     Debug.error("Incorrect time value in static event declaration (" + key
@@ -145,7 +148,6 @@ public class StaticEvents {
                 @Override
                 public void run() {
                     // run the event in sync
-                    Debug.info("Firing static event " + event);
                     BetonQuest.event(null, event);
                 }
             }.runTask(BetonQuest.getInstance());

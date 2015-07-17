@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
@@ -107,27 +110,42 @@ public abstract class QuestEvent {
      *          ID of the player for whom the event will fire
      */
     public final void fire(String playerID) {
-        // check if playerID isn't null, this event cannot be static
         if (playerID == null) {
+            // handle static event
             if (!staticness) {
-                Debug.error("This event cannot be static: " + instructions);
-                return;
+                Debug.info("Static event will be fired once for every player:");
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    String ID = PlayerConverter.getID(player);
+                    for (String condition : conditions) {
+                        if (!BetonQuest.condition(ID, condition)) {
+                            Debug.info("  Event conditions were not met for player "
+                                    + player.getName());
+                            continue;
+                        }
+                    }
+                    Debug.info("  Firing this static event for player " + player.getName());
+                    run(ID);
+                }
+            } else {
+                run(null);
             }
-        }
-        // check if the event cannot be fired for offline players
-        if (PlayerConverter.getPlayer(playerID) == null) {
+        } else if (PlayerConverter.getPlayer(playerID) == null) {
+            // handle persistent event
             if (!persistent) {
-                Debug.info("Player " + playerID + " is offline, cannot fire event");
+                Debug.info("Player " + playerID + " is offline, cannot fire event"
+                        + " because it's not persistent.");
                 return;
             }
-        }
-        // check event conditions before firing the event
-        for (String condition : conditions) {
-            if (!BetonQuest.condition(playerID, condition)) {
-                Debug.info("Event conditions were not met.");
-                return;
+            run(playerID);
+        } else {
+            // handle standard event
+            for (String condition : conditions) {
+                if (!BetonQuest.condition(playerID, condition)) {
+                    Debug.info("Event conditions were not met.");
+                    return;
+                }
             }
+            run(playerID);
         }
-        run(playerID);
     }
 }

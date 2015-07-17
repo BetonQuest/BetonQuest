@@ -64,6 +64,7 @@ public class Conversation implements Listener {
     private ConversationIO inOut;
     private String option;
     private final Conversation conv;
+    private boolean ended = false;
     
     private HashMap<Integer, String> current = new HashMap<>();
     
@@ -228,6 +229,8 @@ public class Conversation implements Listener {
      * active conversations
      */
     public void endConversation() {
+        if (ended) return;
+        ended = true;
         inOut.end();
         // fire final events
         for (String event : data.getFinalEvents()) {

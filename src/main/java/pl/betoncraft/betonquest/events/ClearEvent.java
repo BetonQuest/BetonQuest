@@ -45,6 +45,7 @@ public class ClearEvent extends QuestEvent {
     public ClearEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
+        staticness = true;
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");

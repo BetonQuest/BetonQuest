@@ -23,6 +23,7 @@ import org.bukkit.World;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -67,6 +68,8 @@ public class TeleportEvent extends QuestEvent {
     }
 
     public void run(String playerID) {
+        Conversation conv = Conversation.getConversation(playerID);
+        if (conv != null) conv.endConversation();
         PlayerConverter.getPlayer(playerID).teleport(loc);
     }
 }

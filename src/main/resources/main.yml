@@ -5,7 +5,7 @@ npcs:
   'Innkeeper': innkeeper
   '0': innkeeper
 cancel:
-  wood: name_en:&2Wood_for_Innkeeper name_pl:&2Drewno_dla_Karczmarza name_cn:&2\u65c5\u5e97\u4e4b\u6728 name_es:&2Madera_para_el_Tabernero conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
+  wood: name_en:&2Wood_for_Innkeeper name_pl:&2Drewno_dla_Karczmarza name_cn:&2\u65c5\u5e97\u4e4b\u6728 name_es:&2Madera_para_el_Tabernero name_de:&2Holz_fuer_den_Gastwirt conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
 #static:
 #  '03:45': example
 #global_locations: 'example,beton'

@@ -36,6 +36,7 @@ public class LightningEvent extends QuestEvent {
     public LightningEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
+        staticness = true;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
