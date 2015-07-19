@@ -38,7 +38,11 @@ public class JournalCondition extends Condition {
         if (parts.length < 2) {
             throw new InstructionParseException("Journal entry not defined");
         }
-        targetPointer = parts[1];
+        if (parts[1].contains(".")) {
+            targetPointer = parts[1];
+        } else {
+            targetPointer = packName + "." + parts[1];
+        }
     }
 
     @Override

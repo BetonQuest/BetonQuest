@@ -298,19 +298,24 @@ public final class BetonQuest extends JavaPlugin {
         // initialize compatibility with other plugins
         new Compatibility();
 
-        // Load all events and conditions
-        loadData();
-
-        // load data for all online players
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String playerID = PlayerConverter.getID(player);
-            DatabaseHandler dbh = new DatabaseHandler(playerID);
-            dbHandlers.put(playerID, dbh);
-            dbh.startObjectives();
-            if (dbh.getConversation() != null) new ConversationResumer(playerID,
-                    dbh.getConversation());
-        }
-
+        // schedule quest data loading on the first tick, so all other
+        // plugins can register their types
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+            public void run() {
+                // Load all events and conditions
+                loadData();
+                // load data for all online players
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    String playerID = PlayerConverter.getID(player);
+                    DatabaseHandler dbh = new DatabaseHandler(playerID);
+                    dbHandlers.put(playerID, dbh);
+                    dbh.startObjectives();
+                    if (dbh.getConversation() != null)
+                        new ConversationResumer(playerID, dbh.getConversation());
+                }
+            }
+        });
+        
         // schedule database pinging to keep connection
         keeper = new BukkitRunnable() {
             @Override

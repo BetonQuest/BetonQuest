@@ -380,6 +380,7 @@ public class Config {
         if (player == null || dbHandler == null) return;
         String language = dbHandler.getLanguage();
         String message = getMessage(language, messageName, variables);
+        if (message.length() == 0) return;
         player.sendMessage(message);
         if (soundName != null) {
             String rawSound = BetonQuest.getInstance().getConfig().getString(
