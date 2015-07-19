@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -14,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,7 +44,6 @@ import pl.betoncraft.betonquest.core.PointRes;
 import pl.betoncraft.betonquest.core.Pointer;
 import pl.betoncraft.betonquest.core.QuestEvent;
 import pl.betoncraft.betonquest.core.TagRes;
-import pl.betoncraft.betonquest.database.ConfigAccessor;
 import pl.betoncraft.betonquest.database.ConfigUpdater;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Metrics;
@@ -152,29 +148,26 @@ public final class BetonQuest extends JavaPlugin {
 		// create tables if they don't exist
 		Connection connection = database.openConnection();
 		try {
-                    connection
-                                    .createStatement()
-                                    .executeUpdate(
-                                                    "CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY "
-                                                                    + autoIncrement
-                                                                    + ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-                    connection.createStatement().executeUpdate(
-                                    "CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement
-                                                    + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
-                    connection.createStatement().executeUpdate(
-                                    "CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement
-                                                    + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-                    connection.createStatement().executeUpdate(
-                                    "CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement
-                                                    + ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-                } catch (SQLException e) {
+			connection
+					.createStatement()
+					.executeUpdate(
+							"CREATE TABLE IF NOT EXISTS objectives (id INTEGER PRIMARY KEY "
+									+ autoIncrement
+									+ ", playerID VARCHAR(256) NOT NULL, instructions VARCHAR(2048) NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL, isused BOOLEAN NOT NULL DEFAULT 0);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
+			connection.createStatement().executeUpdate(
+					"CREATE TABLE IF NOT EXISTS journal (id INTEGER PRIMARY KEY " + autoIncrement
+							+ ", playerID VARCHAR(256) NOT NULL, pointer VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		database.closeConnection();
 
-		// load database backup if it's present
-		loadDatabaseFromBackup();
-		
 		// update configs
 		new ConfigUpdater();
 		
@@ -864,95 +857,4 @@ public final class BetonQuest extends JavaPlugin {
 	public boolean isMySQLUsed() {
 		return isMySQLUsed;
 	}
-	
-    /**
-     * If the database backup file exists, loads it into the database.
-     */
-    public static void loadDatabaseFromBackup() {
-        try {
-            BetonQuest instance = BetonQuest.getInstance();
-            File file = new File(instance.getDataFolder(), "database-backup.yml");
-            // if the backup doesn't exist then there is nothing to load, return
-            if (!file.exists()) {
-                return;
-            }
-            instance.getLogger().info("Loading database backup!");
-            // backup the database
-            File backupFolder = new File(instance.getDataFolder(), "backups");
-            if (!backupFolder.isDirectory()) {
-                backupFolder.mkdirs();
-            }
-            ConfigAccessor accessor = new ConfigAccessor(instance, file, "database-backup.yml");
-            FileConfiguration config = accessor.getConfig();
-            Database database = instance.getDB();
-            // create tables if they don't exist, so we can be 100% sure
-            // that we can drop them without an error (should've been done
-            // in a different way...)
-            database.createTables(instance.isMySQLUsed());
-            // drop all tables
-            database.openConnection();
-            database.updateSQL(UpdateType.DROP_OBJECTIVES, new String[] {});
-            database.updateSQL(UpdateType.DROP_TAGS, new String[] {});
-            database.updateSQL(UpdateType.DROP_POINTS, new String[] {});
-            database.updateSQL(UpdateType.DROP_JOURNALS, new String[] {});
-            database.closeConnection();
-            // create new tables
-            database.createTables(instance.isMySQLUsed());
-            // load objectives
-            database.openConnection();
-            ConfigurationSection objectives = config.getConfigurationSection("objectives");
-            if (objectives != null)
-                for (String key : objectives.getKeys(false)) {
-                    database.updateSQL(
-                            UpdateType.INSERT_OBJECTIVE,
-                            new String[] {
-                                objectives.getString(key + ".id"),
-                                objectives.getString(key + ".playerID"),
-                                objectives.getString(key + ".instructions"), 
-                                objectives.getString(key + ".isused")});
-                }
-            // load tags
-            ConfigurationSection tags = config.getConfigurationSection("tags");
-            if (tags != null)
-                for (String key : tags.getKeys(false)) {
-                    database.updateSQL(
-                            UpdateType.INSERT_TAG,
-                            new String[] {
-                                tags.getString(key + ".id"),
-                                tags.getString(key + ".playerID"),
-                                tags.getString(key + ".tag"),
-                                tags.getString(key + ".isused")});
-                }
-            // load points
-            ConfigurationSection points = config.getConfigurationSection("points");
-            if (points != null)
-                for (String key : points.getKeys(false)) {
-                    database.updateSQL(
-                            UpdateType.INSERT_POINT,
-                            new String[] { points.getString(key + ".id"),
-                                points.getString(key + ".playerID"),
-                                points.getString(key + ".category"),
-                                points.getString(key + ".count"), });
-                }
-            // load journals
-            ConfigurationSection journals = config.getConfigurationSection("journals");
-            if (journals != null)
-                for (String key : journals.getKeys(false)) {
-                    database.updateSQL(
-                            UpdateType.INSERT_JOURNAL,
-                            new String[] { journals.getString(key + ".id"),
-                                journals.getString(key + ".playerID"),
-                                journals.getString(key + ".pointer"),
-                                journals.getString(key + ".date"), });
-                }
-            database.closeConnection();
-            // delete backup file so it doesn't get loaded again
-            file.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-            instance.getLogger()
-                    .severe("Your database probably got corrupted, sorry for that :( Please contact the "
-                        + "developer at <coosheck@gmail.com> in order to fix this manually.");
-        }
-    }
 }
