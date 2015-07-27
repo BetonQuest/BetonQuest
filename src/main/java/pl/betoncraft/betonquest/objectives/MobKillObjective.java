@@ -118,7 +118,7 @@ public class MobKillObjective extends Objective implements Listener {
                     } else if (notify) {
                         // send a notification
                         Config.sendMessage(playerID, "mobs_to_kill",
-                                new String[]{String.valueOf(amount)});
+                                new String[]{String.valueOf(playerData.getAmount())});
                     }
                 }
             }
@@ -141,7 +141,7 @@ public class MobKillObjective extends Objective implements Listener {
                     } else if (notify) {
                         // send a notification
                         Config.sendMessage(playerID, "mobs_to_kill",
-                                new String[]{String.valueOf(amount)});
+                                new String[]{String.valueOf(playerData.getAmount())});
                     }
                 }
             }
@@ -170,6 +170,10 @@ public class MobKillObjective extends Objective implements Listener {
         public MobData(String instruction, String playerID, String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
+        }
+        
+        private int getAmount() {
+            return amount;
         }
         
         private void subtract() {

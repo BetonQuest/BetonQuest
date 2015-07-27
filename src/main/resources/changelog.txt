@@ -1,4 +1,16 @@
-﻿v1.7
+﻿v1.7.2
+Fixes:
+    * "mobkill" objective now displays correct amount of mobs left to kill
+    * "delay" objective can be set to 0 delay
+
+v1.7.1
+Fixes:
+    * Quests are loaded after other plugins register their types
+    * Journal condition correctly resolves package names
+Changes:
+    * Updated French translation
+
+v1.7
 Notes:
   - BetonQuest no longer supports servers without UUID handling
   - There were a lot of changes since previous version, check carefully if everything is working

@@ -50,8 +50,8 @@ public class DelayObjective extends Objective {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse delay");
         }
-        if (delay < 1) {
-            throw new InstructionParseException("Delay cannot be less than 1");
+        if (delay < 0) {
+            throw new InstructionParseException("Delay cannot be less than 0");
         }
     }
 
