@@ -236,8 +236,7 @@ public class Conversation implements Listener {
         if (ended) return;
         ended = true;
         inOut.end();
-        // set conversation null on database
-        Connector con = new Connector();
+        // set conversation to null on database
         BetonQuest.getInstance().getSaver().add(new Record(
                 UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID }));
         // fire final events
