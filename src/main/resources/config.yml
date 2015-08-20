@@ -15,6 +15,7 @@ combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
 remove_items_after_respawn: 'true'
+conversation_events_log: 'true'
 sounds:
   start: VILLAGER_HAGGLE
   end: VILLAGER_YES

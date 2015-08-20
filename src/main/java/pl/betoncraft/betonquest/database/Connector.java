@@ -59,6 +59,9 @@ public class Connector {
         try {
             PreparedStatement statement;
             switch (type) {
+            	case CHECK_PLAYER:
+                    statement = connection.prepareStatement("SELECT 1 FROM " + prefix + "player WHERE playerID = ?;");
+                    break;
                 case SELECT_JOURNAL:
                     statement = connection.prepareStatement("SELECT pointer, date FROM " + prefix + "journal WHERE playerID = ?;");
                     break;
@@ -153,6 +156,9 @@ public class Connector {
                     break;
                 case ADD_PLAYER:
                     statement = connection.prepareStatement("INSERT INTO " + prefix + "player (playerID, language) VALUES (?, ?);");
+                    break;
+                case ADD_CONVERSATION:
+                    statement = connection.prepareStatement("INSERT INTO " + prefix + "player (playerID, language, conversation) VALUES (?, ?, ?);");
                     break;
                 case REMOVE_OBJECTIVES:
                     statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ? AND objective = ?;");
@@ -255,6 +261,8 @@ public class Connector {
      * Type of the query
      */
     public enum QueryType {
+    	
+    	CHECK_PLAYER,
 
         SELECT_OBJECTIVES, SELECT_TAGS, SELECT_POINTS, SELECT_JOURNAL, SELECT_BACKPACK, SELECT_PLAYER,
 
@@ -294,6 +302,10 @@ public class Connector {
          * Add single player to the database. PlayerID, language.
          */
         ADD_PLAYER,
+        /**
+         * Add conversation checkpoint. PlayerID, language, conversation.
+         */
+        ADD_CONVERSATION,
         /**
          * Removes the single objective from the database. PlayerID, objectiveID.
          */

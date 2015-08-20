@@ -18,6 +18,8 @@
 package pl.betoncraft.betonquest.conversation;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +41,8 @@ import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.conversation.ConversationData.RequestType;
+import pl.betoncraft.betonquest.database.Connector;
+import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -232,13 +236,19 @@ public class Conversation implements Listener {
         if (ended) return;
         ended = true;
         inOut.end();
+        // set conversation null on database
+        Connector con = new Connector();
+        BetonQuest.getInstance().getSaver().add(new Record(
+                UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID }));
         // fire final events
         for (String event : data.getFinalEvents()) {
             BetonQuest.event(playerID, event);
         }
         // print message
-        Config.sendMessage(playerID, "conversation_end",
-                new String[]{data.getQuester(language)}, "end");
+        if (BetonQuest.getInstance().getConfig().getBoolean("conversation_events_log")) {
+            Config.sendMessage(playerID, "conversation_end",
+        		    new String[]{data.getQuester(language)}, "end");
+        }
         // delete conversation
         list.remove(playerID);
         HandlerList.unregisterAll(this);
@@ -264,7 +274,9 @@ public class Conversation implements Listener {
         String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "command_blocked");
+            if (BetonQuest.getInstance().getConfig().getBoolean("conversation_events_log")) {
+                Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "command_blocked");
+            }
         }
     }
     
@@ -300,9 +312,19 @@ public class Conversation implements Listener {
         // save the conversation to the database
         String loc = location.getX() + ";" + location.getY() + ";"
                     + location.getZ() + ";" + location.getWorld().getName();
-        BetonQuest.getInstance().getSaver().add(new Record(
-                UpdateType.UPDATE_CONVERSATION, new String[]{convID
-                + " " + option + " " + loc, playerID}));
+        Connector con = new Connector();
+        ResultSet res = con.querySQL(QueryType.CHECK_PLAYER, new String[] { playerID });
+        try {
+            if (res.next()) {
+                BetonQuest.getInstance().getSaver().add(new Record(
+                        UpdateType.UPDATE_CONVERSATION, new String[] { convID + " " + option + " " + loc, playerID }));
+            } else {
+                BetonQuest.getInstance().getSaver().add(new Record(
+                        UpdateType.ADD_CONVERSATION, new String[] { playerID, language, convID + " " + option + " " + loc }));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         // delete conversation
         list.remove(playerID);
         HandlerList.unregisterAll(this);
@@ -405,8 +427,10 @@ public class Conversation implements Listener {
                 
                 // print message about starting a conversation only if it
                 // is started, not resumed
-                Config.sendMessage(playerID, "conversation_start",
-                        new String[]{data.getQuester(language)}, "start");
+                if (BetonQuest.getInstance().getConfig().getBoolean("conversation_events_log")) {
+                    Config.sendMessage(playerID, "conversation_start",
+                            new String[]{data.getQuester(language)}, "start");
+                }
             }
             
             // print NPC's text
