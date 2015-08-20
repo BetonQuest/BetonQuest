@@ -333,10 +333,17 @@ public class Conversation implements Listener {
     }
 
     /**
-     * @return the location
+     * @return the location where the conversation has been started
      */
     public Location getLocation() {
         return location;
+    }
+    
+    /**
+     * @return the ConversationIO object used by this conversation
+     */
+    public ConversationIO getIO() {
+        return inOut;
     }
 
     /**

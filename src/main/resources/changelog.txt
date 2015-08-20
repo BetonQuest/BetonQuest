@@ -1,4 +1,11 @@
-﻿v1.7.2
+﻿v1.7.3
+Fixes:
+    * Combat tagging does not work if the attack has been canceled
+Changes:
+    * Options in conversation can also be defined using "event:", "condition:" and "pointers:"
+      argument names (with and without 's' at the end). "text:" argument is unchanged.
+
+v1.7.2
 Fixes:
     * "mobkill" objective now displays correct amount of mobs left to kill
     * "delay" objective can be set to 0 delay

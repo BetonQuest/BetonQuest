@@ -241,10 +241,24 @@ public class ConversationData {
                         "Text not defined in NPC option %s", name));
             }
             String rawConditions = pack.getString("conversations." + convName + ".NPC_options." + name + ".conditions");
+            String[] cond1 = new String[]{};
             if (rawConditions != null && !rawConditions.equals("")) {
-                conditions = rawConditions.split(",");
-            } else {
-                conditions = new String[]{};
+                cond1 = rawConditions.split(",");
+            }
+            String rawCondition = pack.getString("conversations." + convName + ".NPC_options." + name + ".condition");
+            String[] cond2 = new String[]{};
+            if (rawCondition != null && !rawCondition.equals("")) {
+                cond2 = rawCondition.split(",");
+            }
+            conditions = new String[cond1.length + cond2.length];
+            int count = 0;
+            for (String cond : cond1) {
+                conditions[count] = cond;
+                count++;
+            }
+            for (String cond : cond2) {
+                conditions[count] = cond;
+                count++;
             }
             for (int i = 0; i < conditions.length; i++) {
                 if (!conditions[i].contains(".")) {
@@ -252,21 +266,49 @@ public class ConversationData {
                 }
             }
             String rawEvents = pack.getString("conversations." + convName + ".NPC_options." + name + ".events");
+            String[] event1 = new String[]{};
             if (rawEvents != null && !rawEvents.equals("")) {
-                events = rawEvents.split(",");
-            } else {
-                events = new String[]{};
+                event1 = rawEvents.split(",");
+            }
+            String rawEvent = pack.getString("conversations." + convName + ".NPC_options." + name + ".event");
+            String[] event2 = new String[]{};
+            if (rawEvent != null && !rawEvent.equals("")) {
+                event2 = rawEvent.split(",");
+            }
+            events = new String[event1.length + event2.length];
+            count = 0;
+            for (String event : event1) {
+                events[count] = event;
+                count++;
+            }
+            for (String event : event2) {
+                events[count] = event;
+                count++;
             }
             for (int i = 0; i < events.length; i++) {
                 if (!events[i].contains(".")) {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointer");
+            String rawPointers = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointers");
+            String[] pointer1 = new String[]{};
             if (rawPointers != null && !rawPointers.equals("")) {
-                pointers = rawPointers.split(",");
-            } else {
-                pointers = new String[]{};
+                pointer1 = rawPointers.split(",");
+            }
+            String rawPointer = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointer");
+            String[] pointer2 = new String[]{};
+            if (rawPointer != null && !rawPointer.equals("")) {
+                pointer2 = rawPointer.split(",");
+            }
+            pointers = new String[pointer1.length + pointer2.length];
+            count = 0;
+            for (String pointer : pointer1) {
+                pointers[count] = pointer;
+                count++;
+            }
+            for (String pointer : pointer2) {
+                pointers[count] = pointer;
+                count++;
             }
         }
         
@@ -331,36 +373,75 @@ public class ConversationData {
                     throw new InstructionParseException(String.format(
                             "Text not defined in player option %s", name));
             }
-            String rawConditions = pack.getString("conversations." + convName
-                    + ".player_options." + name + ".conditions");
+            String rawConditions = pack.getString("conversations." + convName + ".player_options." + name + ".conditions");
+            String[] cond1 = new String[]{};
             if (rawConditions != null && !rawConditions.equals("")) {
-                conditions = rawConditions.split(",");
-            } else {
-                conditions = new String[]{};
+                cond1 = rawConditions.split(",");
+            }
+            String rawCondition = pack.getString("conversations." + convName + ".player_options." + name + ".condition");
+            String[] cond2 = new String[]{};
+            if (rawCondition != null && !rawCondition.equals("")) {
+                cond2 = rawCondition.split(",");
+            }
+            conditions = new String[cond1.length + cond2.length];
+            int count = 0;
+            for (String cond : cond1) {
+                conditions[count] = cond;
+                count++;
+            }
+            for (String cond : cond2) {
+                conditions[count] = cond;
+                count++;
             }
             for (int i = 0; i < conditions.length; i++) {
                 if (!conditions[i].contains(".")) {
                     conditions[i] = pack.getName() + "." + conditions[i];
                 }
             }
-            String rawEvents = pack.getString("conversations." + convName
-                    + ".player_options." + name + ".events");
+            String rawEvents = pack.getString("conversations." + convName + ".player_options." + name + ".events");
+            String[] event1 = new String[]{};
             if (rawEvents != null && !rawEvents.equals("")) {
-                events = rawEvents.split(",");
-            } else {
-                events = new String[]{};
+                event1 = rawEvents.split(",");
+            }
+            String rawEvent = pack.getString("conversations." + convName + ".player_options." + name + ".event");
+            String[] event2 = new String[]{};
+            if (rawEvent != null && !rawEvent.equals("")) {
+                event2 = rawEvent.split(",");
+            }
+            events = new String[event1.length + event2.length];
+            count = 0;
+            for (String event : event1) {
+                events[count] = event;
+                count++;
+            }
+            for (String event : event2) {
+                events[count] = event;
+                count++;
             }
             for (int i = 0; i < events.length; i++) {
                 if (!events[i].contains(".")) {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = pack.getString("conversations." + convName
-                    + ".player_options." + name + ".pointer");
+            String rawPointers = pack.getString("conversations." + convName + ".player_options." + name + ".pointers");
+            String[] pointer1 = new String[]{};
             if (rawPointers != null && !rawPointers.equals("")) {
-                pointers = rawPointers.split(",");
-            } else {
-                pointers = new String[]{};
+                pointer1 = rawPointers.split(",");
+            }
+            String rawPointer = pack.getString("conversations." + convName + ".player_options." + name + ".pointer");
+            String[] pointer2 = new String[]{};
+            if (rawPointer != null && !rawPointer.equals("")) {
+                pointer2 = rawPointer.split(",");
+            }
+            pointers = new String[pointer1.length + pointer2.length];
+            count = 0;
+            for (String pointer : pointer1) {
+                pointers[count] = pointer;
+                count++;
+            }
+            for (String pointer : pointer2) {
+                pointers[count] = pointer;
+                count++;
             }
         }
         

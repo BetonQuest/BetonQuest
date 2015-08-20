@@ -23,6 +23,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -66,8 +67,9 @@ public class CombatTagger implements Listener {
         return result;
     }
     
-    @EventHandler
+    @EventHandler(priority=EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return;
         ArrayList<String> IDs = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
             IDs.add(PlayerConverter.getID((Player) event.getEntity()));
