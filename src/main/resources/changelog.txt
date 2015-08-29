@@ -1,4 +1,9 @@
-﻿v1.7.3
+﻿v1.7.4
+Fixes:
+    * Fixed error when player was quitting with active "stop" conversation while he had not
+      changed his language with /ql command
+
+v1.7.3
 Fixes:
     * Combat tagging does not work if the attack has been canceled
 Changes:

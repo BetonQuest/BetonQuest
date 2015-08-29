@@ -190,6 +190,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @Override
     public void clear() {
+        response = null;
         options.clear();
         i = 0;
     }
@@ -197,6 +198,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowClose = true;
+        if (response == null && options.isEmpty()) {
+            player.closeInventory();
+        }
     }
 
     private ArrayList<String> stringToLines(String singleLine, String color) {

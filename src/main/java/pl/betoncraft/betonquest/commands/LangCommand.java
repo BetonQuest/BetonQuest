@@ -49,8 +49,9 @@ public class LangCommand implements CommandExecutor {
                 sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
                 return true;
             }
-            if (!Config.getLanguages().contains(args[0])) {
+            if (!Config.getLanguages().contains(args[0]) && !args[0].equalsIgnoreCase("default")) {
                 StringBuilder builder = new StringBuilder();
+                builder.append("default (" + Config.getLanguage() + "), ");
                 for (String lang : Config.getLanguages()) {
                     builder.append(lang + ", ");
                 }

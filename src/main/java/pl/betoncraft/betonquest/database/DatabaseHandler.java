@@ -134,12 +134,16 @@ public class DatabaseHandler {
             // put it there
             if (res6.next()) {
                 lang = res6.getString("language");
+                if (lang.equals("default")) {
+                    lang = Config.getLanguage();
+                }
                 conv = res6.getString("conversation");
                 if (conv == null || conv.equalsIgnoreCase("null")) {
                     conv = null;
                 }
             } else {
                 lang = Config.getLanguage();
+                con.updateSQL(UpdateType.ADD_PLAYER, new String[]{playerID, "default"});
             }
 
             // log data to debugger
@@ -637,7 +641,11 @@ public class DatabaseHandler {
      *          language to set
      */
     public void setLanguage(String lang) {
-        this.lang = lang;
+        if (lang.equalsIgnoreCase("default")) {
+            this.lang = Config.getLanguage();
+        } else {
+            this.lang = lang;
+        }
         saver.add(new Record(UpdateType.DELETE_PLAYER, new String[]{playerID}));
         saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, lang}));
     }
