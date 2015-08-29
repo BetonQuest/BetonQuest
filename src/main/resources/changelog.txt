@@ -2,6 +2,8 @@
 Fixes:
     * Fixed error when player was quitting with active "stop" conversation while he had not
       changed his language with /ql command
+Changes:
+    * Inventory GUI will close itself if there's nothing left to display
 
 v1.7.3
 Fixes:
