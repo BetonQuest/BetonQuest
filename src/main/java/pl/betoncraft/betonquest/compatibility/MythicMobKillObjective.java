@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility;
 
-import net.elseland.xikage.MythicMobs.API.Events.MythicMobDeathEvent;
+import net.elseland.xikage.MythicMobs.API.Bukkit.Events.MythicMobDeathEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -31,8 +31,7 @@ Download
 --------
 
 If you prefer already compiled builds head to the
-[DBO page](http://dev.bukkit.org/bukkit-plugins/betonquest/)
-or [Spigot page](http://www.spigotmc.org/resources/betonquest.2117/).
+[Releases](https://github.com/Co0sh/BetonQuest/releases).
 Development builds can be found [here](http://betonquest.betoncraft.pl).
 Use them with caution and report all bugs on 
 [Issues](https://github.com/Co0sh/BetonQuest/issues)!

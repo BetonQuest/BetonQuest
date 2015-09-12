@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.betoncraft.betonquest</groupId>
 	<artifactId>BetonQuest</artifactId>
-	<version>1.7.4</version>
+	<version>1.7.5</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
