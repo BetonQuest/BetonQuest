@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.betoncraft.betonquest</groupId>
 	<artifactId>BetonQuest</artifactId>
-	<version>1.7.5</version>
+	<version>1.8-dev</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -95,13 +95,20 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/WorldGuard.jar</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldedit</artifactId>
-			<version>6.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/WorldEdit.jar</systemPath>
-		</dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>6.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/WorldEdit.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.gmail.nossr50</groupId>
+            <artifactId>mcmmo</artifactId>
+            <version>1.5.04</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/mcMMO.jar</systemPath>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>

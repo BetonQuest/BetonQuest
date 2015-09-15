@@ -29,6 +29,7 @@ hook:
   vault: 'true'
   worldguard: 'true'
   skript: 'true'
+  mcmmo: 'true'
 journal_colors:
   date:
     day: '9'

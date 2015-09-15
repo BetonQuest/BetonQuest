@@ -105,6 +105,15 @@ public class Compatibility {
             BetonQuest.getInstance().registerObjectives("region", RegionObjective.class);
             hooked.add("WorldGuard");
         }
+        
+        // hook into mcMMO
+        if (Bukkit.getPluginManager().isPluginEnabled("mcMMO")
+                && instance.getConfig().getString("hook.mcmmo")
+                .equalsIgnoreCase("true")) {
+            BetonQuest.getInstance().registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
+            BetonQuest.getInstance().registerEvents("mcmmoexp", McMMOAddExpEvent.class);
+            hooked.add("mcMMO");
+        }
 
         // log which plugins have been hooked
         if (hooked.size() > 0) {
