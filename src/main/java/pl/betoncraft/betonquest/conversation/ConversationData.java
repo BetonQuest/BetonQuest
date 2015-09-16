@@ -71,7 +71,7 @@ public class ConversationData {
             quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
         }
         String questName = pack.getString("conversations." + name + ".questname");
-    	this.questName = (questName != null && !questName.equals("")) ? questName : "";
+        this.questName = (questName != null && !questName.equals("")) ? questName : "";
         String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
@@ -142,16 +142,17 @@ public class ConversationData {
     
     /**
      * Gets the name of the quest.
-     * If provided NPC option does not define it, the global one from the conversation is used instead.
+     * If provided NPC option does not define it, the global one from the conversation is returned
+     * instead.
      * 
      * @param option
-     * 			the quest starting npc option that contains the name of the quest
+     *          the quest starting npc option that contains the name of the quest
      * @return the quest's name
      */
     public String getQuestName(String option) {
-		String questname = ((Option)this.NPCOptions.get(option)).getInlineQuestName();
-		return !questname.equals("") ? questname : this.questName;
-	}
+        String questname = ((Option)this.NPCOptions.get(option)).getInlineQuestName();
+        return !questname.equals("") ? questname : this.questName;
+    }
     
     /**
      * @param lang
@@ -238,8 +239,9 @@ public class ConversationData {
         public NPCOption(String name) throws InstructionParseException {
             this.name = name;
             String defaultLang = Config.getLanguage();
-            String questname = pack.getString("conversations." + convName + ".NPC_options." + name + ".questname");
-        	this.inlineQuestName = (questname != null && !questname.equals("")) ? questname : "";
+            String questname = pack.getString("conversations." + convName
+                    + ".NPC_options." + name + ".questname");
+            this.inlineQuestName = (questname != null && !questname.equals("")) ? questname : "";
             if (pack.getConversation(convName).getConfig()
                     .isConfigurationSection("NPC_options." + name + ".text")) {
                 for (String lang : pack.getConversation(convName).getConfig()
@@ -337,8 +339,8 @@ public class ConversationData {
         }
         
         public String getInlineQuestName() {
-    		return this.inlineQuestName;
-    	}
+            return this.inlineQuestName;
+        }
         
         public String getText(String lang) {
             String theText = text.get(lang);
@@ -474,8 +476,8 @@ public class ConversationData {
         }
         
         public String getInlineQuestName() {
-    		return "";
-    	}
+            return "";
+        }
         
         public String getText(String lang) {
             String theText = text.get(lang);
