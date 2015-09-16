@@ -411,11 +411,18 @@ public class Conversation implements Listener {
                 force = false;
                 
                 selectOption(options, force);
+                String questName = data.getQuestName(option);
                 
                 // print message about starting a conversation only if it
                 // is started, not resumed
-                Config.sendMessage(playerID, "conversation_start",
-                        new String[]{data.getQuester(language), data.getQuestName(option)}, "start");
+                if (!questName.equals("")) {
+                	Config.sendMessage(playerID, "conversation_start_named",
+                		new String[]{data.getQuester(language), questName}, "start");
+                }
+                else {
+                	Config.sendMessage(playerID, "conversation_start",
+                		new String[]{data.getQuester(language)}, "start");
+                }
             }
             else {
         		selectOption(options, force);
