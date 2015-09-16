@@ -1,5 +1,5 @@
 pl:
-  conversation_start: '&e====&bRozpoczales rozmowe z {1}!&e===='
+  conversation_start: '&2[&9{2}&2] &e====&bRozpoczales rozmowe z {1}!&e===='
   conversation_end: '&e====&bZakonczyles rozmowe z {1}!&e===='
   help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
   unknown_argument: '&cNiewlasciwy argument.'
@@ -75,7 +75,7 @@ pl:
   language_missing: '&cPodaj jezyk'
   language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
 en:
-  conversation_start: '&e====&bConversation with {1} started!&e===='
+  conversation_start: '&2[&9{2}&2] &e====&bConversation with {1} started!&e===='
   conversation_end: '&e====&bConversation with {1} finished!&e===='
   help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
   unknown_argument: '&cWrong argument.'
@@ -151,7 +151,7 @@ en:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
-  conversation_start: '&e====&bGespraech mit {1} begonnen!&e===='
+  conversation_start: '&2[&9{2}&2] &e====&bGespraech mit {1} begonnen!&e===='
   conversation_end: '&e====&bGespraech mit {1} beendet!&e===='
   help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
   unknown_argument: '&cFalsches Argument festgestellt.'
@@ -227,7 +227,7 @@ de:
   language_missing: '&cBitte eine Sprache angeben.'
   language_not_exist: '&cDiese Sprache ist nicht definiert. Moegliche Optionen: '
 fr:
-  conversation_start: '&e====&bLa conversation avec {1} est engagee!&e===='
+  conversation_start: '&2[&9{2}&2] &e====&bLa conversation avec {1} est engagee!&e===='
   conversation_end: '&e====&bLa conversation avec {1} est terminee!&e===='
   help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console sans le point, ex. 2'
   unknown_argument: '&cMauvais parametre.'
@@ -303,7 +303,7 @@ fr:
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
 cn:
-  conversation_start: "&e====&b\u4e0e{1}\u5bf9\u8bdd\u4e2d&e===="
+  conversation_start: "&2[&9{2}&2] &e====&b\u4e0e{1}\u5bf9\u8bdd\u4e2d&e===="
   conversation_end: "&e====&b\u4e0e{1}\u7684\u5bf9\u8bdd\u5df2\u7ecf\u7ed3\u675f&e===="
   help_with_answering: "&c\u8bf7\u8f93\u5165\u5bf9\u8bdd\u9009\u9879\u5e8f\u53f7"
   unknown_argument: "&c\u672a\u77e5\u7684\u547d\u4ee4\uff0c\u8bf7\u8f93\u5165/q\u67e5\u770b\u547d\u4ee4\u5217\u8868"
@@ -379,7 +379,7 @@ cn:
   language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
   language_not_exist: "&c\u8fd9\u4e2a\u8bed\u8a00\u4e0d\u5b58\u5728\uff0c\u53ef\u7528\u7684\u8bed\u8a00\u6709\uff1a"
 es:
-  conversation_start: '&e====&bLa conversacion con {1} ha comenzado.&e===='
+  conversation_start: '&2[&9{2}&2] &e====&bLa conversacion con {1} ha comenzado.&e===='
   conversation_end: '&e====&bLa conversacion con {1} ha terminado.&e===='
   help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
   unknown_argument: '&cArgumento incorrecto.'

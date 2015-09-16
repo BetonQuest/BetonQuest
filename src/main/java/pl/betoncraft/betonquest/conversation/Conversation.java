@@ -137,36 +137,43 @@ public class Conversation implements Listener {
         
         new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
-
+    
     /**
-     * Sends to the player the text said by NPC. It chooses the first avaliable
-     * option and displays it.
+     * Chooses the first available option.
      * 
      * @param options
-     *            list of option pointers separated by commas
+     * 				list of option pointers separated by commas
      * @param force
-     *            setting it to true will force the first option, even if
-     *            conditions are not met
+     * 				setting it to true will force the first option, even if
+     * 				conditions are not met
      */
-    private void printNPCText(String[] options, boolean force) {
+    private void selectOption(String[] options, boolean force) {
+    	
+		if (!force) {
+			// get npc's text
+			option = null;
+			options:
+			for (String NPCoption : options) {
+		 		for (String condition : data.getData(NPCoption, OptionType.NPC,
+		 				RequestType.CONDITION)) {
+					if (!BetonQuest.condition(this.playerID, condition)) {
+						continue options;
+					}
+				}
+				option = NPCoption;
+				break;
+			}
+		} else {
+			option = options[0];
+		}
+	}
 
-        if (!force) {
-            // get npc's text
-            option = null;
-            options:
-            for (String NPCoption : options) {
-                for (String condition : data.getData(NPCoption, OptionType.NPC,
-                        RequestType.CONDITION)) {
-                    if (!BetonQuest.condition(this.playerID, condition)) {
-                        continue options;
-                    }
-                }
-                option = NPCoption;
-                break;
-            }
-        } else {
-            option = options[0];
-        }
+    /**
+     * Sends to the player the text said by NPC. It uses the selected
+     * option and displays it.
+     */
+    private void printNPCText() {
+
         // if there are no possible options, end conversation
         if (option == null) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
@@ -403,14 +410,19 @@ public class Conversation implements Listener {
                 options = data.getStartingOptions();
                 force = false;
                 
+                selectOption(options, force);
+                
                 // print message about starting a conversation only if it
                 // is started, not resumed
                 Config.sendMessage(playerID, "conversation_start",
-                        new String[]{data.getQuester(language)}, "start");
+                        new String[]{data.getQuester(language), data.getQuestName(option)}, "start");
             }
+            else {
+        		selectOption(options, force);
+        	}
             
             // print NPC's text
-            printNPCText(options, force);
+            printNPCText();
         }
     }
     
@@ -474,9 +486,10 @@ public class Conversation implements Listener {
         }
 
         public void run() {
+        	selectOption(data.getData(option,
+        			OptionType.PLAYER, RequestType.POINTER), false);
             // print to player npc's answer
-            printNPCText(data.getData(option,
-                    OptionType.PLAYER, RequestType.POINTER), false);
+            printNPCText();
         }
     }
     

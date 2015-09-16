@@ -39,6 +39,7 @@ public class ConversationData {
     private String convName;
     
     private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
+    private String questName;
     private String[] finalEvents;
     private String[] startingOptions;
     private boolean blockMovement;
@@ -69,6 +70,8 @@ public class ConversationData {
         } else {
             quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
         }
+        String questName = pack.getString("conversations." + name + ".questname");
+    	this.questName = (questName != null && !questName.equals("")) ? questName : "";
         String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
@@ -138,6 +141,19 @@ public class ConversationData {
     }
     
     /**
+     * Gets the name of the quest.
+     * If provided NPC option does not define it, the global one from the conversation is used instead.
+     * 
+     * @param option
+     * 			the quest starting npc option that contains the name of the quest
+     * @return the quest's name
+     */
+    public String getQuestName(String option) {
+		String questname = ((Option)this.NPCOptions.get(option)).getInlineQuestName();
+		return !questname.equals("") ? questname : this.questName;
+	}
+    
+    /**
      * @param lang
      *          language of quester's name
      * @return the quester's name
@@ -199,6 +215,7 @@ public class ConversationData {
     
     private interface Option {
         public String getName();
+        public abstract String getInlineQuestName();
         public String getText(String lang);
         public String[] getConditions();
         public String[] getEvents();
@@ -211,6 +228,7 @@ public class ConversationData {
     private class NPCOption implements Option {
         
         private String name;
+        private String inlineQuestName;
         
         private HashMap<String, String> text = new HashMap<>();
         private String[] conditions;
@@ -220,6 +238,8 @@ public class ConversationData {
         public NPCOption(String name) throws InstructionParseException {
             this.name = name;
             String defaultLang = Config.getLanguage();
+            String questname = pack.getString("conversations." + convName + ".NPC_options." + name + ".questname");
+        	this.inlineQuestName = (questname != null && !questname.equals("")) ? questname : "";
             if (pack.getConversation(convName).getConfig()
                     .isConfigurationSection("NPC_options." + name + ".text")) {
                 for (String lang : pack.getConversation(convName).getConfig()
@@ -315,6 +335,10 @@ public class ConversationData {
         public String getName() {
             return name;
         }
+        
+        public String getInlineQuestName() {
+    		return this.inlineQuestName;
+    	}
         
         public String getText(String lang) {
             String theText = text.get(lang);
@@ -448,6 +472,10 @@ public class ConversationData {
         public String getName() {
             return name;
         }
+        
+        public String getInlineQuestName() {
+    		return "";
+    	}
         
         public String getText(String lang) {
             String theText = text.get(lang);
