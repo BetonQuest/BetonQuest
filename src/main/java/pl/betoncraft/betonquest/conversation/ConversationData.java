@@ -39,7 +39,7 @@ public class ConversationData {
     private String convName;
     
     private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private String questName;
+    private HashMap<String, String> prefix = new HashMap<>();
     private String[] finalEvents;
     private String[] startingOptions;
     private boolean blockMovement;
@@ -70,8 +70,21 @@ public class ConversationData {
         } else {
             quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
         }
-        String questName = pack.getString("conversations." + name + ".questname");
-        this.questName = (questName != null && !questName.equals("")) ? questName : "";
+        if (conv.isConfigurationSection("prefix")) {
+            for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
+                String pref = pack.getString("conversations." + name + ".prefix." + lang);
+                if (pref != null && !pref.equals(""))
+                {
+                    prefix.put(lang, pref);
+                }
+            }
+        } else {
+            String pref = pack.getString("conversations." + name + ".prefix");
+            if (pref != null && !pref.equals(""))
+            {
+                prefix.put(Config.getLanguage(), pref);
+            }
+        }
         String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
@@ -141,17 +154,17 @@ public class ConversationData {
     }
     
     /**
-     * Gets the name of the quest.
-     * If provided NPC option does not define it, the global one from the conversation is returned
+     * Gets the prefix of the conversation.
+     * If provided NPC option does not define one, the global one from the conversation is returned
      * instead.
      * 
      * @param option
-     *          the quest starting npc option that contains the name of the quest
-     * @return the quest's name
+     *          the quest starting npc option that defines the prefix of the conversation
+     * @return the conversation prefix, or null if not defined
      */
-    public String getQuestName(String option) {
-        String questname = ((Option)this.NPCOptions.get(option)).getInlineQuestName();
-        return !questname.equals("") ? questname : this.questName;
+    public String getPrefix(String option) {
+        String pref = NPCOptions.get(option).getInlinePrefix();
+        return pref != null ? pref : prefix.get(Config.getLanguage());
     }
     
     /**
@@ -216,7 +229,7 @@ public class ConversationData {
     
     private interface Option {
         public String getName();
-        public abstract String getInlineQuestName();
+        public abstract String getInlinePrefix();
         public String getText(String lang);
         public String[] getConditions();
         public String[] getEvents();
@@ -229,7 +242,7 @@ public class ConversationData {
     private class NPCOption implements Option {
         
         private String name;
-        private String inlineQuestName;
+        private HashMap<String, String> inlinePrefix = new HashMap<>();
         
         private HashMap<String, String> text = new HashMap<>();
         private String[] conditions;
@@ -239,13 +252,31 @@ public class ConversationData {
         public NPCOption(String name) throws InstructionParseException {
             this.name = name;
             String defaultLang = Config.getLanguage();
-            String questname = pack.getString("conversations." + convName
-                    + ".NPC_options." + name + ".questname");
-            this.inlineQuestName = (questname != null && !questname.equals("")) ? questname : "";
-            if (pack.getConversation(convName).getConfig()
-                    .isConfigurationSection("NPC_options." + name + ".text")) {
-                for (String lang : pack.getConversation(convName).getConfig()
-                        .getConfigurationSection("NPC_options." + name + ".text")
+            FileConfiguration conv = pack.getConversation(convName).getConfig();
+            if (conv.isConfigurationSection("NPC_options." + name + ".prefix")) {
+                for (String lang : conv.getConfigurationSection("NPC_options." + name + ".prefix")
+                        .getKeys(false)) {
+                    String pref = pack.getString("conversations." + convName
+                            + ".NPC_options." + name + ".prefix." + lang);
+                    if (pref != null && !pref.equals(""))
+                    {
+                        inlinePrefix.put(lang, pref);
+                    }
+                }
+                if (!inlinePrefix.containsKey(defaultLang)) {
+                    throw new InstructionParseException(
+                            "No default language for " + name + " NPC option prefix");
+                }
+            } else {
+                String pref = pack.getString("conversations." + convName
+                        + ".NPC_options." + name + ".prefix");
+                if (pref != null && !pref.equals(""))
+                {
+                    inlinePrefix.put(defaultLang, pref);
+                }
+            }
+            if (conv.isConfigurationSection("NPC_options." + name + ".text")) {
+                for (String lang : conv.getConfigurationSection("NPC_options." + name + ".text")
                         .getKeys(false)) {
                     text.put(lang, pack.getString("conversations." + convName
                             + ".NPC_options." + name + ".text." + lang));
@@ -257,7 +288,7 @@ public class ConversationData {
             } else {
                 text.put(defaultLang, pack.getString("conversations." + convName
                         + ".NPC_options." + name + ".text"));
-            };
+            }
             for (String theText : text.values()) {
                 if (theText == null || theText.equals("")) throw new InstructionParseException(String.format(
                         "Text not defined in NPC option %s", name));
@@ -338,8 +369,8 @@ public class ConversationData {
             return name;
         }
         
-        public String getInlineQuestName() {
-            return this.inlineQuestName;
+        public String getInlinePrefix() {
+            return inlinePrefix.get(Config.getLanguage());
         }
         
         public String getText(String lang) {
@@ -475,8 +506,8 @@ public class ConversationData {
             return name;
         }
         
-        public String getInlineQuestName() {
-            return "";
+        public String getInlinePrefix() {
+            return null; // prefixes are only used with NPC options, not Player options
         }
         
         public String getText(String lang) {

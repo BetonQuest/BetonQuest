@@ -415,15 +415,15 @@ public class Conversation implements Listener {
                 // first select the option before sending message, so it
                 // knows which is used
                 selectOption(options, force);
-                String questName = data.getQuestName(option);
+                String prefix = data.getPrefix(option);
                 
                 // print message about starting a conversation only if it
                 // is started, not resumed
-                // send the appropriate message depending on whether a questname
+                // send the appropriate message depending on whether a prefix
                 // was specified
-                if (!questName.equals("")) {
+                if (prefix != null) {
                     Config.sendMessage(playerID, "conversation_start_named",
-                        new String[]{data.getQuester(language), questName}, "start");
+                        new String[]{data.getQuester(language), prefix}, "start");
                 }
                 else {
                     Config.sendMessage(playerID, "conversation_start",
