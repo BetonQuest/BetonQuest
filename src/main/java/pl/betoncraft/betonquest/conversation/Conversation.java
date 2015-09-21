@@ -415,20 +415,21 @@ public class Conversation implements Listener {
                 // first select the option before sending message, so it
                 // knows which is used
                 selectOption(options, force);
-                String prefix = data.getPrefix(option);
+                
+                // check whether to add a prefix
+                String prefix = data.getPrefix(language, option);
+                String prefixName = null;
+                String[] prefixVariables = null;
+                if (prefix != null) {
+                    prefixName = "conversation_prefix";
+                    prefixVariables = new String[]{prefix};
+                }
                 
                 // print message about starting a conversation only if it
                 // is started, not resumed
-                // send the appropriate message depending on whether a prefix
-                // was specified
-                if (prefix != null) {
-                    Config.sendMessage(playerID, "conversation_start_named",
-                        new String[]{data.getQuester(language), prefix}, "start");
-                }
-                else {
-                    Config.sendMessage(playerID, "conversation_start",
-                        new String[]{data.getQuester(language)}, "start");
-                }
+                Config.sendMessage(playerID, "conversation_start",
+                    new String[]{data.getQuester(language)}, "start",
+                    prefixName, prefixVariables);
             }
             else {
                 // don't forget to select the option prior to printing its text

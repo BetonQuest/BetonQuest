@@ -1,5 +1,5 @@
 pl:
-  conversation_start_named: '&2[&9{2}&2] &e====&bRozpocząłeś rozmowę z {1}!&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bRozpocząłeś rozmowę z {1}!&e===='
   conversation_end: '&e====&bZakończyłeś rozmowę z {1}!&e===='
   help_with_answering: '&cAby odpowiedzieć NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
@@ -76,7 +76,7 @@ pl:
   cancel: '&cAnuluj zadanie'
   cancel_page: Anulowanie zadania
 en:
-  conversation_start_named: '&2[&9{2}&2] &e====&bConversation with {1} started!&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bConversation with {1} started!&e===='
   conversation_end: '&e====&bConversation with {1} finished!&e===='
   help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
@@ -153,7 +153,7 @@ en:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
-  conversation_start_named: '&2[&9{2}&2] &e====&bGespräch mit {1} begonnen!&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bGespräch mit {1} begonnen!&e===='
   conversation_end: '&e====&bGespräch mit {1} beendet!&e===='
   help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
@@ -230,7 +230,7 @@ de:
   language_missing: '&cBitte eine Sprache angeben.'
   language_not_exist: '&cDiese Sprache ist nicht definiert. Mögliche Optionen: '
 fr:
-  conversation_start_named: '&2[&9{2}&2] &e====&bLa conversation avec {1} est engagée!&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bLa conversation avec {1} est engagée!&e===='
   conversation_end: '&e====&bLa conversation avec {1} est terminée!&e===='
   help_with_answering: '&cRépondez au NPC en saisissant le numéro dans la console sans le point, ex. 2'
@@ -307,7 +307,7 @@ fr:
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
 cn:
-  conversation_start_named: '&2[&9{2}&2] &e====&b与{1}对话中&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&b与{1}对话中&e===='
   conversation_end: '&e====&b与{1}的对话已经结束&e===='
   help_with_answering: '&c请输入对话选项序号'
@@ -384,7 +384,7 @@ cn:
   language_missing: '&c请注明语言的名字'
   language_not_exist: '&c这个语言不存在，可用的语言有：'
 es:
-  conversation_start_named: '&2[&9{2}&2] &e====&bLa conversacion con {1} ha comenzado.&e===='
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bLa conversacion con {1} ha comenzado.&e===='
   conversation_end: '&e====&bLa conversacion con {1} ha terminado.&e===='
   help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'

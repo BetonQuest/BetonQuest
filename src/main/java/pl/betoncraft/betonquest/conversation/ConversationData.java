@@ -39,7 +39,7 @@ public class ConversationData {
     private String convName;
     
     private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private HashMap<String, String> prefix = new HashMap<>();
+    private HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
     private String[] finalEvents;
     private String[] startingOptions;
     private boolean blockMovement;
@@ -158,13 +158,26 @@ public class ConversationData {
      * If provided NPC option does not define one, the global one from the conversation is returned
      * instead.
      * 
+     * @param lang
+     *          language of the prefix
      * @param option
      *          the quest starting npc option that defines the prefix of the conversation
      * @return the conversation prefix, or null if not defined
      */
-    public String getPrefix(String option) {
-        String pref = NPCOptions.get(option).getInlinePrefix();
-        return pref != null ? pref : prefix.get(Config.getLanguage());
+    public String getPrefix(String lang, String option) {
+        String pref = NPCOptions.get(option).getInlinePrefix(lang);
+        if (pref == null) {
+            pref = NPCOptions.get(option).getInlinePrefix(Config.getLanguage());
+        }
+        // return inline prefix if defined
+        if (pref != null) return pref;
+        
+        // otherwise return global prefix
+        String global = prefix.get(lang);
+        if (global == null) {
+            global = prefix.get(Config.getLanguage());
+        }
+        return global;
     }
     
     /**
@@ -229,7 +242,7 @@ public class ConversationData {
     
     private interface Option {
         public String getName();
-        public abstract String getInlinePrefix();
+        public String getInlinePrefix(String lang);
         public String getText(String lang);
         public String[] getConditions();
         public String[] getEvents();
@@ -369,8 +382,12 @@ public class ConversationData {
             return name;
         }
         
-        public String getInlinePrefix() {
-            return inlinePrefix.get(Config.getLanguage());
+        public String getInlinePrefix(String lang) {
+            String thePrefix = inlinePrefix.get(lang);
+            if (thePrefix == null) {
+                thePrefix = inlinePrefix.get(Config.getLanguage());
+            }
+            return thePrefix;
         }
         
         public String getText(String lang) {
@@ -506,7 +523,7 @@ public class ConversationData {
             return name;
         }
         
-        public String getInlinePrefix() {
+        public String getInlinePrefix(String lang) {
             return null; // prefixes are only used with NPC options, not Player options
         }
         

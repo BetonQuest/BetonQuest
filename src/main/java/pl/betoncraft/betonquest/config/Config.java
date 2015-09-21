@@ -330,7 +330,7 @@ public class Config {
     }
     
     /**
-     * Sends a message to player in his choosen language or default
+     * Sends a message to player in his chosen language or default
      * or English (if previous not found).
      * 
      * @param playerID
@@ -339,11 +339,11 @@ public class Config {
      *          ID of the message
      */
     public static void sendMessage(String playerID, String messageName) {
-        sendMessage(playerID, messageName, null, null);
+        sendMessage(playerID, messageName, null, null, null, null);
     }
     
     /**
-     * Sends a message to player in his choosen language or default
+     * Sends a message to player in his chosen language or default
      * or English (if previous not found). It will replace all {x}
      * sequences with the variables.
      * 
@@ -356,11 +356,11 @@ public class Config {
      */
     public static void sendMessage(String playerID, String messageName,
             String[] variables) {
-        sendMessage(playerID, messageName, variables, null);
+        sendMessage(playerID, messageName, variables, null, null, null);
     }
     
     /**
-     * Sends a message to player in his choosen language or default
+     * Sends a message to player in his chosen language or default
      * or English (if previous not found). It will replace all {x}
      * sequences with the variables and play the sound.
      * 
@@ -370,17 +370,47 @@ public class Config {
      *          ID of the message
      * @param variables
      *          array of variables which will be inserted into the string
-     * @param sound
+     * @param soundName
      *          name of the sound to play to the player
      */
     public static void sendMessage(String playerID, String messageName,
             String[] variables, String soundName) {
+        sendMessage(playerID, messageName, variables, soundName, null, null);
+    }
+    
+    /**
+     * Sends a message to player in his chosen language or default
+     * or English (if previous not found). It will replace all {x}
+     * sequences with the variables and play the sound. It will also
+     * add a prefix to the message.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @param messageName
+     *          ID of the message
+     * @param variables
+     *          array of variables which will be inserted into the message
+     * @param soundName
+     *          name of the sound to play to the player
+     * @param prefixName
+     *          ID of the prefix
+     * @param prefixVariables
+     *          array of variables which will be inserted into the prefix
+     */
+    public static void sendMessage(String playerID, String messageName,
+            String[] variables, String soundName, String prefixName, String[] prefixVariables) {
         Player player = PlayerConverter.getPlayer(playerID);
         DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
         if (player == null || dbHandler == null) return;
         String language = dbHandler.getLanguage();
         String message = getMessage(language, messageName, variables);
         if (message.length() == 0) return;
+        if (prefixName != null) {
+            String prefix = getMessage(language, prefixName, prefixVariables);
+            if (prefix.length() > 0) {
+                message = prefix + " " + message;
+            }
+        }
         player.sendMessage(message);
         if (soundName != null) {
             String rawSound = BetonQuest.getInstance().getConfig().getString(
