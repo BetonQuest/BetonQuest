@@ -5,6 +5,7 @@ quester:
   fr: 'Aubergiste'
   cn: "\u65c5\u9986\u8001\u677f"
   de: 'Gastwirt'
+  nl: 'Herbergier'
 first: 'start,start_wood_started,start_wood_completed'
 stop: 'false'
 NPC_options:
@@ -16,6 +17,7 @@ NPC_options:
       fr: 'Bienvenue dans mon auberge %player%! Que puis-je faire pour votre service?'
       cn: "\u6b22\u8fce\u6765\u5230\u6211\u7684\u65c5\u5e97\uff0c%player%! \u6709\u4ec0\u4e48\u6211\u53ef\u4ee5\u5e2e\u4f60\u7684\u5417\uff1f"
       de: 'Willkommen in meinem Gasthaus, %player%! Was kann ich fuer dich tun?'
+      nl: 'Welkom in mijn herberg, %player%! Wat kan ik voor je doen?'
     conditions: '!wood_started'
     pointer: 'questions,quests,bye'
   'back':
@@ -26,6 +28,7 @@ NPC_options:
       fr: 'Oui?'
       cn: "\u6069\uff1f"
       de: 'Ja?'
+      nl: 'Ja?'
     pointer: 'questions,quests,wood_questions,wood_done,more_quests,bye'
   'start_wood_started':
     text:
@@ -35,6 +38,7 @@ NPC_options:
       fr: 'Deja de retour! Vous avez trouve du bois?'
       cn: "\u6b22\u8fce\u56de\u6765\uff01\u5173\u4e8e\u4f10\u6728\u7684\u4e8b\u60c5\u505a\u5f97\u600e\u6837\u4e86\uff1f"
       de: 'Willkommen zurueck! Wie laeuft es mit dem Holz?'
+      nl: 'Welkom terug! Hoe gaat het met dat hout?'
     conditions: 'wood_started,!wood_paid'
     pointer: 'questions,wood_questions,wood_done,bye'
   'start_wood_completed':
@@ -45,6 +49,7 @@ NPC_options:
       fr: 'Ah, mon client prefere! Que souhaitez-vous?'
       cn: "\u554a\uff0c\u4eb2\u7231\u7684\u5ba2\u5b98\uff0c\u6709\u4ec0\u4e48\u6211\u53ef\u4ee5\u5e2e\u7684\u4e48\uff1f"
       de: 'Ah, mein Lieblingskunde! Wie kann ich dir helfen?'
+      nl: 'Ah, mijn favoriete klant! Hoe kan ik je helpen?'
     conditions: 'wood_paid'
     pointer: 'questions,more_quests,bye'
   'quest_wood':
@@ -55,6 +60,7 @@ NPC_options:
       fr: 'Je fabriquais de nouvelles chopes de biere mais je manque de bois. Il y a une foret a cote vous pourriez m''en rapporter?'
       cn: "\u6211\u6b63\u5728\u505a\u4e00\u4e9b\u9152\u676f\uff0c\u4f46\u662f\u53d1\u73b0\u6211\u6ca1\u6709\u6728\u5934\u4e86\u3002\u4f60\u53ef\u4ee5\u4ece\u9644\u8fd1\u7684\u68ee\u6797\u4e2d\u5f04\u4e00\u4e9b\u6765\u7ed9\u6211\u4e48\uff1f"
       de: 'Ich wollte gerade neue Bierkruege herstellen, aber ich habe kein Holz mehr. Kannst du mir welches aus dem nahen Wald holen?'
+      nl: 'Ik was nieuwe mokken voor bier aan het maken, maar ik heb geen hout meer. Kun je me wat van het dichtbij gelegen bos halen?'
     pointer: 'wood_yes,wood_no'
   'questions':
     text:
@@ -64,6 +70,7 @@ NPC_options:
       fr: 'Je vais essayer de vous repondre au mieux.'
       cn: "\u6211\u4f1a\u5c3d\u529b\u56de\u7b54\u4f60\u7684\u95ee\u9898"
       de: 'Ich werde so gut es geht antworten.'
+      nl: 'Ik zal zo goed mogelijk antwoorden.'
     pointer: 'wood_where,wood_how,wood_with_what,no_questions'
   'wood_reward':
     text:
@@ -73,6 +80,7 @@ NPC_options:
       fr: 'Excelent! Voici 5 emeraudes pour voous!'
       cn: "\u592a\u597d\u4e86\uff0c\u8c22\u8c22\u4f60\uff01\u8fd9\u91cc\u662f\u4f60\u7684\u62a5\u916c\uff0c\u4e94\u4e2a\u7eff\u5b9d\u77f3\u3002"
       de: 'Hervorragend! Hier hast du 5 Smaragde!'
+      nl: 'Uitstekend! Hier zijn 5 smaragden voor jou!'
     conditions: 'has_wood'
     events: 'wood_reward,remove_wood,tag_wood_paid,entry_wood_paid'
     pointer: 'questions,more_quests,bye'
@@ -84,6 +92,7 @@ NPC_options:
       fr: 'Ou cela? Je ne trouve rien dans votre inventaire...'
       cn: "\u4f46\u662f\u4f60\u4f3c\u4e4e\u5e76\u6ca1\u6709\u6728\u5934\u7ed9\u6211\u554a\u2026\u2026"
       de: 'Wo? Ich sehe nichts in deinem Inventar...'
+      nl: 'Waar? Ik zie niets in je inventaris...'
     conditions: '!has_wood'
     pointer: 'now,wood_go,questions'
   'no_quests':
@@ -94,6 +103,7 @@ NPC_options:
       fr: 'Malheureusement je n''ai plus rien en ce moment. Revenez un peu plus tard'
       cn: "\u62b1\u6b49\uff0c\u6211\u73b0\u5728\u6ca1\u4ec0\u4e48\u4e8b\u60c5\u53ef\u4ee5\u7ed9\u4f60\u505a\uff0c\u665a\u4e9b\u518d\u6765\u5427\u3002"
       de: 'Leider habe ich zur Zeit keine weiteren Aufgaben. Schau spaeter noch mal vorbei.'
+      nl: 'Helaas heb ik niets anders. Kom later nog eens terug.'
     pointer: 'questions,bye'
   'wood_yes':
     text:
@@ -103,6 +113,7 @@ NPC_options:
       fr: 'Super. Allez dans la foret et ramenez moi un peu de bois.'
       cn: "\u592a\u597d\u4e86\uff0c\u5feb\u53bb\u68ee\u6797\u7ed9\u6211\u5f04\u4e00\u4e9b\u6728\u5934\u5427"
       de: 'Sehr gut. Geh in den Wald und bring mit etwas Holz.'
+      nl: 'Fantastisch. Ga naar het bos en breng me wat hout.'
     pointer: 'wood_go,wood_questions,back'
   'wood_no':
     text:
@@ -112,6 +123,7 @@ NPC_options:
       fr: 'Dommage.'
       cn: "\u554a\u2026\u2026\u662f\u5417"
       de: 'Sehr schade.'
+      nl: 'Dat is jammer.'
   'wood_where':
     text:
       en: 'Go out of the village through south gate and turn left. There is a forest.'
@@ -120,6 +132,7 @@ NPC_options:
       fr: 'En sortant du village et en prenant a gauche vous verrez. Il y a une foret.'
       cn: "\u4ece\u6751\u5b50\u5357\u95e8\u51fa\u53bb\u5de6\u8f6c\uff0c\u90a3\u8fb9\u5c31\u6709\u4e2a\u68ee\u6797"
       de: 'Verlasse das Dorf durch das Suedtor und geh nach links. Dann kommst du zum Wald.'
+      nl: 'Verlaat het dorp via de zuidpoort en ga linksaf. Daar is het bos.'
     pointer: 'wood_how,wood_with_what,no_questions'
   'wood_how':
     text:
@@ -129,6 +142,7 @@ NPC_options:
       fr: 'Il suffit de se placer face a un arbre et de le taper jusqu''a ce que des blocs tombent. C''est tres facile.'
       cn: "\u7ad9\u5728\u6811\u7684\u524d\u9762\uff0c\u62fc\u547d\u63cd\u5b83\uff0c\u76f4\u5230\u4e00\u4e2a\u6728\u5934\u4ece\u5929\u4e0a\u6389\u4e0b\u6765\u2014\u2014\u8fd9\u4f60\u90fd\u4e0d\u4f1a\uff1f"
       de: 'Stell dich vor einen Baum und schlage ihn, bis ein Holzblock herauskommt. So einfach ist es.'
+      nl: 'Ga voor de boom staan en begin het te stompen totdat er een blok hout uitkomt. Zo eenvoudig is het.'
     pointer: 'wood_where,wood_with_what,no_questions'
   'wood_with_what':
     text:
@@ -138,6 +152,7 @@ NPC_options:
       fr: 'Vous pouvez aller dans la cabane de luberjack. Je pense que vous trouverez des haches la bas cela sera plus facile.'
       cn: "\u4f60\u53ef\u4ee5\u53bb\u4f10\u6728\u4eba\u7684\u5c0f\u5c4b\u770b\u770b\uff0c\u8bf4\u4e0d\u5b9a\u80fd\u627e\u5230\u4e00\u4e2a\u65a7\u5934\u5462"
       de: 'Schau mal in der Holzfaellerhuette. Ich bin mir sicher, dass du dort ein paar Aexte finden wirst.'
+      nl: 'Kijk eens in de hut van de houthakker. Ik weet zeker dat je daar een paar bijlen kunt vinden.'
     pointer: 'wood_where,wood_how,no_questions'
   'no_questions':
     text:
@@ -147,6 +162,7 @@ NPC_options:
       fr: 'J''espere vous avoir aide.'
       cn: "\u6211\u5e0c\u671b\u6211\u5e2e\u5230\u4e86\u4f60"
       de: 'Ich hoffe, ich konnte helfen.'
+      nl: 'Ik hoop dat ik je geholpen heb.'
     pointer: 'wood_go,back'
   'wood_go':
     text:
@@ -156,6 +172,7 @@ NPC_options:
       fr: 'Bonne chance!'
       cn: "\u795d\u4f60\u4e00\u8def\u987a\u98ce\uff01"
       de: 'Viel Glueck!'
+      nl: 'Succes!'
 player_options:
   'questions':
     text:
@@ -165,6 +182,7 @@ player_options:
       fr: 'J''ai des questions.'
       cn: "\u6211\u60f3\u95ee\u51e0\u4e2a\u95ee\u9898"
       de: 'Ich habe Fragen.'
+      nl: 'Ik wou wat vragen.'
   'back':
     text:
       en: 'Back to the topic...'
@@ -173,6 +191,7 @@ player_options:
       fr: 'Retour au menu...'
       cn: "\u8bdd\u8bf4\u56de\u6765\u2026\u2026"
       de: 'Zurueck zum Inhalt...'
+      nl: 'Terug naar het onderwerp...'
     pointer: 'back'
   'quests':
     text:
@@ -182,6 +201,7 @@ player_options:
       fr: 'Auriez-vous des quetes ? J''ai besoin d''argent.'
       cn: "\u4f60\u6709\u4ec0\u4e48\u9700\u8981\u5e2e\u5fd9\u7684\u4e48\uff1f\u6211\u9700\u8981\u94b1"
       de: 'Hast du Aufgaben fuer mich? Ich brauche Geld.'
+      nl: 'Heb je misschien wat quests voor mij? Ik heb geld nodig.'
     conditions: '!wood_started'
     pointer: 'quest_wood'
   'wood_questions':
@@ -192,6 +212,7 @@ player_options:
       fr: 'Je me pose des questions pour couper les arbres.'
       cn: "\u6211\u60f3\u95ee\u4e00\u4e0b\u5173\u4e8e\u4f10\u6728\u7684\u95ee\u9898"
       de: 'Ich habe ein paar Fragen zum Holzfaellen.'
+      nl: 'Ik heb wat vragen over dit houthakken.'
     conditions: 'wood_started,!wood_paid'
     pointer: 'questions'
   'wood_done':
@@ -202,6 +223,7 @@ player_options:
       fr: 'J''ai votre bois.'
       cn: "\u6211\u5df2\u7ecf\u62ff\u5230\u4e86\u4f60\u8981\u7684\u6728\u5934"
       de: 'Ich hab das ganze Holz geholt.'
+      nl: 'Ik heb al het hout verzameld.'
     conditions: 'wood_done,has_wood,!wood_paid'
     pointer: 'wood_reward,wood_doesnt_have'
   'more_quests':
@@ -212,6 +234,7 @@ player_options:
       fr: 'Auriez-vous d''autres quetes?'
       cn: "\u8fd8\u6709\u4ec0\u4e48\u522b\u7684\u6211\u53ef\u4ee5\u5e2e\u4f60\u7684\u4e48\uff1f"
       de: 'Hast du noch andere Aufgaben fuer mich?'
+      nl: 'Heb je misschien nog andere quests?'
     conditions: 'wood_paid'
     pointer: 'no_quests'
   'wood_yes':
@@ -222,6 +245,7 @@ player_options:
       fr: 'Cela me semble bien.'
       cn: "\u542c\u8d77\u6765\u4e0d\u9519"
       de: 'Klingt gut.'
+      nl: 'Klinkt goed.'
     events: 'wood_start,tag_wood_started,entry_wood_started'
     pointer: 'wood_yes'
   'wood_no':
@@ -232,6 +256,7 @@ player_options:
       fr: 'D''un autre cote je n''ai pas vraiment besoin de cet argent.'
       cn: "\u6069\u2026\u2026\u6211\u4e0d\u9700\u8981\u90a3\u4e2a"
       de: 'Mh, andererseits brauche ich das Geld doch nicht so dringend.'
+      nl: 'Bij nader inzien, heb ik dat geld toch niet nodig.'
     pointer: 'wood_no'
   'wood_where':
     text:
@@ -241,6 +266,7 @@ player_options:
       fr: 'Ou se trouve cette foret?'
       cn: "\u68ee\u6797\u5728\u54ea\uff1f"
       de: 'Wo ist der Wald?'
+      nl: 'Waar is het bos?'
     pointer: 'wood_where'
   'wood_how':
     text:
@@ -250,6 +276,7 @@ player_options:
       fr: 'Comment puis-je ramasser du bois ?'
       cn: "\u6211\u600e\u4e48\u624d\u80fd\u780d\u6728\u5934\uff1f"
       de: 'Wie kann ich Holz faellen?'
+      nl: 'Hoe kan ik hout hakken?'
     pointer: 'wood_how'
   'wood_with_what':
     text:
@@ -259,6 +286,7 @@ player_options:
       fr: 'Avec quoi tailler le bois ?'
       cn: "\u6211\u8981\u7528\u4ec0\u4e48\u4f10\u6728\uff1f"
       de: 'Womit kann ich Holz faellen?'
+      nl: 'Waarmee kan ik hout hakken?'
     pointer: 'wood_with_what'
   'no_questions':
     text:
@@ -268,6 +296,7 @@ player_options:
       fr: 'Je n''ai plus de question'
       cn: "\u6211\u6ca1\u6709\u8981\u95ee\u7684\u4e1c\u897f\u4e86"
       de: 'Ich habe keine Fragen.'
+      nl: 'Ik heb geen vragen.'
     pointer: 'no_questions'
   'wood_go':
     text:
@@ -277,6 +306,7 @@ player_options:
       fr: 'Ok, je vais tailler les arbres.'
       cn: "\u597d\uff0c\u6211\u8fd9\u5c31\u53bb\u4f10\u6728"
       de: 'Ok, dann gehe ich mal ein paar Baeume faellen.'
+      nl: 'Ok, dan ga ik maar een paar bomen omhakken.'
     pointer: 'wood_go'
   'now':
     text:
@@ -286,6 +316,7 @@ player_options:
       fr: 'Et maintenant ?'
       cn: "\u73b0\u5728\u5462\uff1f"
       de: 'Wie ist es jetzt?'
+      nl: 'En nu?'
     pointer: 'wood_reward,wood_doesnt_have'
   'bye':
     text:
@@ -295,3 +326,4 @@ player_options:
       fr: 'Au revoir.'
       cn: "\u518d\u89c1"
       de: 'Auf bald.'
+      nl: 'Tot ziens.'
