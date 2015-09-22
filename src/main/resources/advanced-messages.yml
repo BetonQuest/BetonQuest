@@ -454,3 +454,80 @@ es:
   default_language_changed: '&2Lenguage por defecto cambiado!'
   language_missing: '&cEspecifica un lenguage'
   language_not_exist: '&cEste lenguage no esta definido, opciones posibles: '
+nl:
+  conversation_prefix: '&2[&9{1}&2]'
+  conversation_start: '&e====&bGesprek met {1} begonnen!&e===='
+  conversation_end: '&e====&bGesprek met {1} afgerond!&e===='
+  help_with_answering: '&cGeef de NPC antwoord door een nummer van het antwoord te typen zonder een punt, bijv. 2'
+  unknown_argument: '&cVerkeerd argument.'
+  no_permission: '&cJe hebt geen toestemming.'
+  reloaded: '&cConfiguratie is herladen!'
+  new_journal_entry: '&e*&bDagboek is bijgewerkt!&e*'
+  journal_title: Dagboek
+  journal_lore: Je dagboek, bevat alle quest informatie
+  quest_item: '&2Quest Item'
+  backpack_title: Rugzak
+  previous: '&2Vorige'
+  next: '&2Volgende'
+  inventory_full: '&e*&bJe inventaris is vol!&e*'
+  specify_condition: '&cSpecificeer conditie naam.'
+  specify_event: '&cSpecificeer gebeurtenis naam.'
+  specify_player: '&cSpecificeer speler''s naam.'
+  specify_item: '&cSpecificeer item''s naam.'
+  specify_tag: '&cSpecificeer label.'
+  specify_objective: '&cSpecificeer doelstelling naam.'
+  specify_category_and_amount: '&cSpecificeer categorie naam en aantal te bewerken punten.'
+  specify_pointer: '&cSpecificeer pointer naam.'
+  specify_date: '&cSpecificeer pointer datum (formaat zoals in date_format)'
+  specify_action: '&cSpecificeer actie (read, set of add)'
+  specify_path: '&cSpecificeer pad (gescheiden door punten)'
+  specify_package: '&cSpecificeer package naam'
+  package_created: '&2Package aangemaakt'
+  package_exists: '&cPackage bestaat al'
+  config_set_error: '&cKon opgegeven pad niet instellen.'
+  no_item: '&cJe hebt geen item in je hand!'
+  item_created: '&2Item opgeslagen in configuratie als {1}.'
+  player_objectives: '&aSpeler''s doelstellingen:'
+  player_tags: '&aSpeler''s labels:'
+  player_condition: '&aConditie {1}: {2}'
+  player_event: '&aGebeurtenis plaatsgevonden: {1}'
+  player_points: '&aSpeler''s punten:'
+  player_journal: '&ePointers in dagboek:'
+  points_added: '&2Punten toegevoegd!'
+  points_removed: '&2Punten afgetrokken!'
+  tag_added: '&2Label toegevoegd!'
+  tag_removed: '&2Label verwijderd!'
+  objective_added: '&2Doelstelling gestart!'
+  objective_removed: '&2Doelstelling gestopt!'
+  pointer_added: '&2Pointer toegevoegd!'
+  pointer_removed: '&2Pointer verwijderd!'
+  purged: '&4{1}''s data verwijderd!'
+  changelog: '&e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
+  command_reload: herlaad de plugin
+  command_objectives: actieve doelstellingen weergeven
+  command_tags: labels weergeven
+  command_points: punten weergeven
+  command_journal: dagboek pointers weergeven
+  command_condition: controleer of de speler aan de conditie voldoet
+  command_event: laat een gebeurtenis plaatsvinden voor de speler
+  command_item: maakt een item van hetgene in je hand
+  command_config: leest, stelt in of voegt toe aan strings in configuraties
+  command_vector: berekent een vector van eerste variabele en slaat op in tweede
+  command_purge: verwijdert alle data van de speler
+  command_backup: maakt configuratie en database backup. Gebruik alleen vanaf console wanneer iedereen is uitgelogd!
+  offline: '&4Alle spelers moeten uitgelogd zijn om een backup te maken!'
+  pullback: '&cRondt eerst je gesprek af!'
+  items_given: '&2Ontvangen {1} x{2}'
+  items_taken: '&2Afgegeven {1} x{2}'
+  blocks_to_break: '&2{1} blokken over om te breken'
+  blocks_to_place: '&2{1} blokken over om te plaatsen'
+  mobs_to_kill: '&2{1} monsters over om te doden'
+  busy: '&cJe kunt niet praten tijdens het vechten'
+  quest_canceled: '&2Quest {1} geannuleerd!'
+  cancel: '&cAnnuleer de quest'
+  cancel_page: Quests annuleren
+  command_blocked: '&cJe kunt dat commando niet gebruiken terwijl je in gesprek bent.'
+  language_changed: '&2Taal gewijzigd!'
+  default_language_changed: '&2Standaard taal gewijzigd!'
+  language_missing: '&cSpecificeer taal'
+  language_not_exist: '&cDeze taal is niet gedefinieerd, mogelijke opties: '
