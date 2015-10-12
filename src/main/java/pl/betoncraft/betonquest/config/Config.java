@@ -408,7 +408,7 @@ public class Config {
         if (prefixName != null) {
             String prefix = getMessage(language, prefixName, prefixVariables);
             if (prefix.length() > 0) {
-                message = prefix + " " + message;
+                message = prefix + message;
             }
         }
         player.sendMessage(message);

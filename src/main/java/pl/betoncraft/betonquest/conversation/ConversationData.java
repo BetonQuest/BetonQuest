@@ -73,15 +73,13 @@ public class ConversationData {
         if (conv.isConfigurationSection("prefix")) {
             for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                 String pref = pack.getString("conversations." + name + ".prefix." + lang);
-                if (pref != null && !pref.equals(""))
-                {
+                if (pref != null && !pref.equals("")) {
                     prefix.put(lang, pref);
                 }
             }
         } else {
             String pref = pack.getString("conversations." + name + ".prefix");
-            if (pref != null && !pref.equals(""))
-            {
+            if (pref != null && !pref.equals("")) {
                 prefix.put(Config.getLanguage(), pref);
             }
         }

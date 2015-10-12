@@ -140,7 +140,6 @@ public class Conversation implements Listener {
 
     /**
      * Chooses the first available option.
-     * Note: this method was logically separated from printNPCText()
      * 
      * @param options
      *            list of option pointers separated by commas
@@ -430,8 +429,7 @@ public class Conversation implements Listener {
                 Config.sendMessage(playerID, "conversation_start",
                     new String[]{data.getQuester(language)}, "start",
                     prefixName, prefixVariables);
-            }
-            else {
+            } else {
                 // don't forget to select the option prior to printing its text
                 selectOption(options, force);
             }
