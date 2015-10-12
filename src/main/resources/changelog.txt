@@ -1,6 +1,7 @@
 ﻿v1.8-dev
 Additions:
     * Compatibility with mcMMO (level condition and experience event)
+    * Optional prefix for conversations (contributed by Jack McKalling)
 
 v1.7.5
 Fixes:
