@@ -206,11 +206,11 @@ de:
   command_condition: Bedingung fuer Spieler ueberpruefen
   command_event: Ereignis fuer Spieler ausloesen
   command_item: erstellt einen Gegenstand aus dem in deiner Hand
-  command_config: liest, setzt oder haengt Zeilen an die Konfig an
+  command_config: liest, setzt oder haengt Zeilen an die Konfiguration an
   command_vector: berechnet einen Vektor aus der ersten Variablen und speichert ihn in der zweiten
   command_purge: Setzt alle Daten ueber Spieler zurueck
   command_backup: Erstellt ein Backup von Konfiguration und Datenbank. Nur von der Konsole aus verwenden wenn keine Spieler online sind!
-  offline: '&4Alle Spieler mussen offline sein, um ein Backup zu vollziehen!'
+  offline: '&4Alle Spieler muessen offline sein, um ein Backup zu vollziehen!'
   pullback: '&cDu musst das Gespraech erst beenden!'
   items_given: '&2{1} x{2} erhalten.'
   items_taken: '&2{1} x{2} weggenommen.'
