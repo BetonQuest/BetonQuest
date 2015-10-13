@@ -400,13 +400,13 @@ es:
   specify_objective: '&cEspecifica nombre del objetivo.'
   specify_tag: '&cEspecifica etiqueta'
   specify_category_and_amount: '&cEspecifica categoria y cantidad de puntos a modificar.'
-  specify_pointer: '&cEspecificar puntero revista.'
+  specify_pointer: '&cEspecificar puntero del diario.'
   specify_date: '&cEspecificar fecha puntero (formato como en date_format)'
   specify_action: '&cEspecifique la accion (read, set o add)'
   specify_path: '&cEspecifique la ruta (separados por puntos)'
-  specify_package: '&cSpecify package name'
-  package_created: '&2Package created'
-  package_exists: '&cPackage already exists'
+  specify_package: '&cEspecifica el nombre del paquete'
+  package_created: '&2Paquete creado'
+  package_exists: '&cEl paquete ya existe'
   config_set_error: '&cNo se pudo establecer la ruta especificada.'
   no_item: '&cNo tienes ningun objeto en la mano.'
   item_created: '&2El objeto se ha guardado como {1}.'
@@ -415,7 +415,7 @@ es:
   player_condition: '&aCondicion: {1}: {2}'
   player_event: '&aEvento efectuado: {1}'
   player_points: '&aPuntos:'
-  player_journal: '&aPunteros en la revista:'
+  player_journal: '&aPunteros en el diario:'
   points_added: '&2Puntos anadidos!'
   points_removed: '&2Puntos sustraidos!'
   tag_added: '&2Etiqueta agregada!'
@@ -424,20 +424,20 @@ es:
   objective_removed: '&2Objetivo eliminado!'
   pointer_added: Puntero anadido!
   pointer_removed: Puntero eliminado!
-  purged: '&4{1}''s datos borrados.'
+  purged: '&4Datos de {1} borrados.'
   changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
-  command_reload: recarga el plugin.
-  command_objectives: muestra los objetivos actuales.
-  command_tags: muestra tus etiquetas.
-  command_points: muestra tus puntos.
-  command_journal: muestra los punteros de revistas
-  command_condition: comprueba si cumples las condiciones.
-  command_event: activa un evento.
-  command_item: crea un objeto a partir del cual estas sosteniendo.
-  command_config: lee, fija o anade cadenas de configuraciones
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: borra todos los datos de un jugador.
-  command_backup: crea un backup de la configuracion y la base de datos. Usar solo desde consola y con el servidor vacio!
+  command_reload: Recarga el plugin.
+  command_objectives: Muestra los objetivos actuales.
+  command_tags: Muestra tus etiquetas.
+  command_points: Muestra tus puntos.
+  command_journal: Muestra los punteros de revistas
+  command_condition: Comprueba si cumples las condiciones.
+  command_event: Activa un evento.
+  command_item: Crea un objeto a partir del cual estas sosteniendo.
+  command_config: Lee, fija o anade cadenas de configuraciones.
+  command_vector: Calcula un vector desde la primera variable y lo guarda en la segunda.
+  command_purge: Borra todos los datos de un jugador.
+  command_backup: Crea un backup de la configuracion y la base de datos. Usar solo desde consola y con el servidor vacio!
   offline: '&4Todos los jugadores deben estar desconectados para hacer el backup!'
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1} x{2}'
@@ -450,10 +450,10 @@ es:
   cancel: '&cCancelar la mision'
   cancel_page: Cancelar misiones
   command_blocked: '&cNo puedes usar ese comando en una conversacion.'
-  language_changed: '&2Lenguage cambiado!'
-  default_language_changed: '&2Lenguage por defecto cambiado!'
-  language_missing: '&cEspecifica un lenguage'
-  language_not_exist: '&cEste lenguage no esta definido, opciones posibles: '
+  language_changed: '&2Lenguaje cambiado!'
+  default_language_changed: '&2Lenguaje por defecto cambiado!'
+  language_missing: '&cEspecifica un lenguaje'
+  language_not_exist: '&cEste lenguaje no esta definido, opciones posibles: '
 nl:
   conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bGesprek met {1} begonnen!&e===='
