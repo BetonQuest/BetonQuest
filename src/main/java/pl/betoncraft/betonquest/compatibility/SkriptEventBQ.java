@@ -32,7 +32,6 @@ import ch.njol.util.Checker;
  */
 public class SkriptEventBQ extends SkriptEvent {
 
-    private static final long serialVersionUID = 1L;
     private Literal<?> literal;
 
     @Override

@@ -35,7 +35,6 @@ import ch.njol.util.Kleenean;
  */
 public class SkriptEffectBQ extends Effect {
 
-    private static final long serialVersionUID = 1L;
     private Expression<String> event;
     private Expression<Player> player;
 

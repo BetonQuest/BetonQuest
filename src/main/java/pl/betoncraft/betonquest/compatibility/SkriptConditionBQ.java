@@ -34,7 +34,6 @@ import ch.njol.util.Kleenean;
  */
 public class SkriptConditionBQ extends Condition {
 
-    private static final long serialVersionUID = 1L;
     private Expression<Player> player;
     private Expression<String> condition;
 

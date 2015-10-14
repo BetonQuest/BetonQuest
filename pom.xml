@@ -8,7 +8,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
-		<finalName>${artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<resources>
 			<resource>
 				<directory>${basedir}</directory>
@@ -43,71 +43,51 @@
 			<id>spigot-api</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
 		</repository>
-		<repository>
-			<id>citizens-repo</id>
-			<url>http://repo.citizensnpcs.co/</url>
-		</repository>
-		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
-		</repository>
-		<repository>
-			<id>njol-repo</id>
-			<url>http://maven.njol.ch/repo/</url>
-		</repository>
+        <repository>
+            <id>lib</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
 			<version>1.8.7-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizensapi</artifactId>
 			<version>2.0.12-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.5</version>
-			<scope>provided</scope>
+			<artifactId>vaultapi</artifactId>
+			<version>1.5.6</version>
 		</dependency>
 		<dependency>
-			<groupId>net.elseland.xikage</groupId>
-			<artifactId>MythicMobs</artifactId>
+			<groupId>net.elseland.xikage.MythicMobs</groupId>
+			<artifactId>mythicmobs</artifactId>
 			<version>2.0.4</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/MythicMobs.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>ch.njol</groupId>
+			<groupId>ch.njol.skript</groupId>
 			<artifactId>skript</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
+			<version>2.1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sk89q</groupId>
+			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard</artifactId>
 			<version>6.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/WorldGuard.jar</systemPath>
 		</dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
+            <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit</artifactId>
             <version>6.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/WorldEdit.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gmail.nossr50</groupId>
             <artifactId>mcmmo</artifactId>
-            <version>1.5.04</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/mcMMO.jar</systemPath>
+            <version>1.5.04-SNAPSHOT</version>
         </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
