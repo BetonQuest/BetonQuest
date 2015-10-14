@@ -55,6 +55,7 @@ import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
+import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
@@ -251,6 +252,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
         registerConditions("monsters", MonstersCondition.class);
+        registerConditions("objective", ObjectiveCondition.class);
 
         // register events
         registerEvents("message", MessageEvent.class);

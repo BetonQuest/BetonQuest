@@ -2,6 +2,7 @@
 Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
+    * New condition 'objective' - checks if the player has an active objective
 
 v1.7.5
 Fixes:
