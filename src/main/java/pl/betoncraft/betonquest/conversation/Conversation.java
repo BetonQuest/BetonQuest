@@ -127,6 +127,9 @@ public class Conversation implements Listener {
                     " is in conversation right now, returning.");
             return;
         }
+
+        // add the player to the list of active conversations
+        list.put(playerID, conv);
         
         String[] options;
         if (option == null) {
@@ -390,9 +393,6 @@ public class Conversation implements Listener {
                 Debug.error("Error when loading conversation IO");
                 return;
             }
-
-            // add the player to the list of active conversations
-            list.put(playerID, conv);
             
             // register listeners for immunity and blocking commands
             Bukkit.getPluginManager().registerEvents(conv, BetonQuest

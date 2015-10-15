@@ -1,4 +1,4 @@
-﻿v1.7.5
+v1.7.5
 Fixes:
     * Restored compatibility with MythicMobs 2.1.0
 
