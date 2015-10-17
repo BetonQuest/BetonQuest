@@ -193,7 +193,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v24() {
         Debug.broadcast("Added prefix to language files.");
-        config.set("version", "v24");
+        config.set("version", "v25");
         instance.saveConfig();
     }
     
@@ -207,6 +207,8 @@ public class ConfigUpdater {
             Debug.error(ERROR);
         }
         Debug.broadcast("Added mcMMO compatibility");
+        config.set("version", "v24");
+        instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
