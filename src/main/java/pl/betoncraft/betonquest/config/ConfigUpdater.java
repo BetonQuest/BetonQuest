@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v24";
+    private final String destination = "v25";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -191,14 +191,14 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
-    private void update_from_v23() {
+    private void update_from_v24() {
         Debug.broadcast("Added prefix to language files.");
         config.set("version", "v24");
         instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
-    private void update_from_v22() {
+    private void update_from_v23() {
         try {
             Debug.info("Adding option to disable mcMMO hooking to the config");
             config.set("hook.mcmmo", "true");
@@ -207,6 +207,11 @@ public class ConfigUpdater {
             Debug.error(ERROR);
         }
         Debug.broadcast("Added mcMMO compatibility");
+    }
+
+    @SuppressWarnings("unused")
+    private void update_from_v22() {
+        Debug.broadcast("Added Dutch translation");
         config.set("version", "v23");
         instance.saveConfig();
     }

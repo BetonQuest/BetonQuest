@@ -167,7 +167,7 @@ es:
   language_missing: '&cEspecifica un lenguaje'
   language_not_exist: '&cEste lenguaje no esta definido, opciones posibles: '
 nl:
-  conversation_prefix: '&2[&9{1}&2] '
+  conversation_prefix: '&2[&9{1}&2]'
   conversation_start: '&e====&bGesprek met {1} begonnen!&e===='
   conversation_end: '&e====&bGesprek met {1} afgerond!&e===='
   no_permission: '&cJe hebt geen toestemming.'

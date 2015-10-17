@@ -1,15 +1,18 @@
 ﻿v1.8-dev
-Fixes:
-    * Conversation can no longer be started multiple times at once if it happens
-      on the same tick
 Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * New condition 'objective' - checks if the player has an active objective
-    * Dutch translation by Jack McKalling
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
+
+v1.7.6
+Fixes:
+    * Conversation can no longer be started multiple times at once if it happens
+      on the same tick
+Additions:
+    * Dutch translation by Jack McKalling
 
 v1.7.5
 Fixes:
