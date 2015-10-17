@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.logging.Level;
 
@@ -46,7 +47,8 @@ public class ConfigAccessor {
      * @param plugin
      *          instance of the plugin
      * @param file
-     *          the file in which the configuration is stored
+     *          the file in which the configuration is stored; if it's null the
+     *          config will be loaded from resource, as read-only
      * @param fileName
      *          the name of the resource in plugin jar
      */
@@ -64,14 +66,18 @@ public class ConfigAccessor {
     }
 
     public void reloadConfig() {
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-
-        // Look for defaults in the jar
-        InputStream defConfigStream = plugin.getResource(fileName);
-        if (defConfigStream != null) {
-            @SuppressWarnings("deprecation")
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            fileConfiguration.setDefaults(defConfig);
+        if (configFile == null) {
+            fileConfiguration = YamlConfiguration.loadConfiguration(
+                    new InputStreamReader(plugin.getResource(fileName)));
+        } else {
+            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+            // Look for defaults in the jar
+            InputStream defConfigStream = plugin.getResource(fileName);
+            if (defConfigStream != null) {
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(
+                        new InputStreamReader(defConfigStream));
+                fileConfiguration.setDefaults(defConfig);
+            }
         }
     }
 
@@ -95,6 +101,7 @@ public class ConfigAccessor {
     }
 
     public void saveDefaultConfig() {
+        if (configFile == null) return;
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();

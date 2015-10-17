@@ -47,6 +47,7 @@ public class Config {
     private static Config instance;
     
     private static ConfigAccessor messages;
+    private static ConfigAccessor internal;
     
     private static HashMap<String, ConfigPackage> packages;
     
@@ -62,6 +63,9 @@ public class Config {
 
     /**
      * Creates new instance of the Config handler
+     * 
+     * @param verboose
+     *              controls if this object should log it's actions to the file 
      */
     public Config(boolean verboose) {
         
@@ -79,7 +83,7 @@ public class Config {
         // load messages
         messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
         messages.saveDefaultConfig();
-        saveResource(root, "advanced-messages.yml");
+        internal = new ConfigAccessor(plugin, null, "internal-messages.yml");
         languages = new ArrayList<>();
         for (String key : messages.getConfig().getKeys(false)) {
             if (!key.equals("global")) {
@@ -202,6 +206,9 @@ public class Config {
         }
         if (result == null) {
             result = messages.getConfig().getString("en." + message);
+        }
+        if (result == null) {
+            result = internal.getConfig().getString(lang + "." + message);
         }
         if (result != null) {
             if (variables != null) for (int i = 0; i < variables.length; i++) {

@@ -2,10 +2,7 @@ pl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bRozpoczales rozmowe z {1}!&e===='
   conversation_end: '&e====&bZakonczyles rozmowe z {1}!&e===='
-  help_with_answering: '&cAby odpowiedziec NPCowi napisz na chacie numer wybranej odpowiedzi bez kropki, np. 2'
-  unknown_argument: '&cNiewlasciwy argument.'
   no_permission: '&cNie masz permisji.'
-  reloaded: '&cKonfiguracja przeladowana!'
   new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
   journal_title: Dziennik
   journal_lore: Twoj dziennik, zawierajacy informacje o questach
@@ -14,52 +11,7 @@ pl:
   previous: '&2Poprzednia strona'
   next: '&2Nastepna strona'
   inventory_full: '&e*&bTwoj ekwipunek jest pelny!&e*'
-  specify_condition: '&cPodaj nazwe warunku.'
-  specify_event: '&cPodaj nazwe zdarzenia.'
-  specify_player: '&cPodaj nick gracza.'
-  specify_item: '&cPodaj nazwe przedmiotu.'
-  specify_tag: '&cPodaj tag.'
-  specify_objective: '&cPodaj nazwe zadania.'
-  specify_category_and_amount: '&cPodaj kategorie i ilosc punktow do zmodyfikowania.'
-  specify_pointer: '&cPodaj nazwe wskaznika.'
-  specify_date: '&cPodaj date wskaznika (sformatowana tak jak w date_format)'
-  specify_action: '&cPodaj akcje (read, set lub add)'
-  specify_path: '&cPodaj sciezke (rozdzielana kropkami)'
-  specify_package: '&cPodaj nazwe paczki'
-  package_created: '&2Paczka utworzona'
-  package_exists: '&cPaczka juz istnieje'
-  config_set_error: '&cNie udalo sie ustawic podanej sciezki.'
-  no_item: '&cNie trzymasz zadnego przedmiotu!'
-  item_created: '&2Przedmiot zapisany w konfiguracji jako {1}.'
-  player_objectives: '&aZadania gracza:'
-  player_tags: '&aTagi gracza:'
-  player_condition: '&aWarunek {1}: {2}'
-  player_event: '&aZdarzenie wykonane: {1}'
-  player_points: '&aPunkty gracza:'
-  player_journal: '&eWskazniki w dzienniku:'
-  points_added: '&2Punkty dodane!'
-  points_removed: '&2Puntky odjete!'
-  tag_added: '&2Tag dodany!'
-  tag_removed: '&2Tag usuniety!'
-  objective_added: '&2Zadanie dodane!'
-  objective_removed: '&2Zadanie usuniete!'
-  pointer_added: '&2Wskaznik dodany!'
-  pointer_removed: '&2Wskaznik usuniety!'
-  purged: '&4Dane gracza {1} wyczyszczone!'
   changelog: '&e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
-  command_reload: przeladowuje plugin
-  command_objectives: wyswietla aktywne zadania gracza
-  command_tags: wyswietla tagi gracza
-  command_points: wyswietla punkty gracza
-  command_condition: sprawdza, czy gracz spelnia warunek
-  command_event: uruchamia zdarzenie dla gracza
-  command_journal: wyswietla wskazniki w dzienniku gracza
-  command_item: tworzy nowy przedmiot z trzymanego w rece
-  command_config: odczytuje, zapisuje lub dodaje napisy do konfiguracji
-  command_vector: tworzy wektor od pierwszej zmiennej i zapisuje do drugiej
-  command_purge: czysci wszystkie dane o graczu
-  command_backup: tworzy backup konfiguracji i bazy danych. Uzywac z konsoli na pustym serwerze!
-  offline: '&4Wszyscy gracze musza byc offline aby wykonac backup!'
   pullback: '&cMusisz dokonczyc swoja rozmowe!'
   items_given: '&2Otrzymano {1} x{2}'
   items_taken: '&2Utracono {1} x{2}'
@@ -72,17 +24,13 @@ pl:
   cancel_page: Anulowanie zadania
   command_blocked: '&cNie mozesz uzywac tej komendy podczas rozmowy.'
   language_changed: '&2Jezyk zmieniony!'
-  default_language_changed: '&2Domyslny jezyk zmieniony!'
   language_missing: '&cPodaj jezyk'
   language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1} started!&e===='
   conversation_end: '&e====&bConversation with {1} finished!&e===='
-  help_with_answering: '&cAnswer the NPC by typing a number of the answer without a dot, eg. 2'
-  unknown_argument: '&cWrong argument.'
   no_permission: '&cYou don''t have permission.'
-  reloaded: '&cConfiguration reloaded!'
   new_journal_entry: '&e*&bJournal updated!&e*'
   journal_title: Journal
   journal_lore: Your journal, containing all quest informations
@@ -91,52 +39,7 @@ en:
   previous: '&2Previous'
   next: '&2Next'
   inventory_full: '&e*&bYour inventory is full!&e*'
-  specify_condition: '&cSpecify condition name.'
-  specify_event: '&cSpecify event name.'
-  specify_player: '&cSpecify player''s nick.'
-  specify_item: '&cSpecify item''s name.'
-  specify_tag: '&cSpecify tag.'
-  specify_objective: '&cSpecify objective name.'
-  specify_category_and_amount: '&cSpecify category name and amount of points to modify.'
-  specify_pointer: '&cSpecify pointer name.'
-  specify_date: '&cSpecify pointer date (formatted like in date_format)'
-  specify_action: '&cSpecify action (read, set or add)'
-  specify_path: '&cSpecify path (separated by dots)'
-  specify_package: '&cSpecify package name'
-  package_created: '&2Package created'
-  package_exists: '&cPackage already exists'
-  config_set_error: '&cCould not set specified path.'
-  no_item: '&cYou''re not holding any item!'
-  item_created: '&2Item saved to configuration as {1}.'
-  player_objectives: '&aPlayer''s objectives:'
-  player_tags: '&aPlayer''s tags:'
-  player_condition: '&aCondition {1}: {2}'
-  player_event: '&aEvent fired: {1}'
-  player_points: '&aPlayer''s points:'
-  player_journal: '&ePointers in journal:'
-  points_added: '&2Points added!'
-  points_removed: '&2Points subtracted!'
-  tag_added: '&2Tag added!'
-  tag_removed: '&2Tag removed!'
-  objective_added: '&2Objective started!'
-  objective_removed: '&2Objective deleted!'
-  pointer_added: '&2Pointer added!'
-  pointer_removed: '&2Pointer removed!'
-  purged: '&4{1}''s data purged!'
   changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
-  command_reload: reloads the plugin
-  command_objectives: displays active objectives
-  command_tags: displays tags
-  command_points: displays points
-  command_journal: displays journal pointers
-  command_condition: checks if the player meet the condition
-  command_event: fires an event for the player
-  command_item: creates an item from the one you're holding
-  command_config: reads, sets or appends strings to configs
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: deletes all data about the player
-  command_backup: creates configuration and database backup. Use only from console on empty server!
-  offline: '&4All players must be offline in order to make a backup!'
   pullback: '&cYou must finish your conversation!'
   items_given: '&2Received {1} x{2}'
   items_taken: '&2Lost {1} x{2}'
@@ -149,17 +52,13 @@ en:
   cancel_page: Canceling quests
   command_blocked: '&cYou can''t use that command while in conversation.'
   language_changed: '&2Language changed!'
-  default_language_changed: '&2Default language changed!'
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
 de:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGespraech mit {1} begonnen!&e===='
   conversation_end: '&e====&bGespraech mit {1} beendet!&e===='
-  help_with_answering: '&cAntworte dem NPC, indem du die Zahl der Zeile ohne "." eintippst (z.B. 2)'
-  unknown_argument: '&cFalsches Argument festgestellt.'
   no_permission: '&cDu hast keinen Zugriff auf diesen Befehl.'
-  reloaded: '&cKonfiguration neu geladen!'
   new_journal_entry: '&e*&bTagebuch aktualisiert!&e*'
   journal_title: Tagebuch
   journal_lore: Dein Tagebuch mit allen Questinformationen
@@ -168,52 +67,7 @@ de:
   previous: '&2Zurueck'
   next: '&2Vor'
   inventory_full: '&e*&bDein Inventar ist voll!&e*'
-  specify_condition: '&cBitte eine Bedingung angeben.'
-  specify_event: '&cBitte den Namen des Ereignisses angeben.'
-  specify_player: '&cBitte einen Spielernamen angeben.'
-  specify_item: '&cBitte eine Gegenstandsbezeichnung angeben.'
-  specify_tag: '&cBitte einen Tag angeben.'
-  specify_objective: '&cBitte einen Aufgabennamen angeben.'
-  specify_category_and_amount: '&cGib eine Kategorie und Menge der Punkte an, um diese zu modifizieren.'
-  specify_pointer: '&cBitte den Namen des Zeigers angeben.'
-  specify_date: '&cBitte Datum des Zeigers angeben. (Formatiert in Datums-Format)'
-  specify_action: '&cBitte Aktion angeben (read, set oder add).'
-  specify_path: '&cBitte Pfad angeben (separiert mit ".").'
-  specify_package: '&cBitte Paketnamen angeben.'
-  package_created: '&2Paket erstellt.'
-  package_exists: '&cPaket existiert bereits.'
-  config_set_error: '&cKonnte Pfad nicht setzen.'
-  no_item: '&cKeinen Gegenstand in der Hand!'
-  item_created: '&2Gegenstand in Konfiguration als {1} gespeichert.'
-  player_objectives: '&aSpieler - Aufgaben:'
-  player_tags: '&aSpieler - Tags:'
-  player_condition: '&aBedingung {1}: {2}'
-  player_event: '&aEreignis ausgeloest: {1}'
-  player_points: '&aPunkte:'
-  player_journal: '&eZeiger im Tagebuch:'
-  points_added: '&2Punkte hinzugefuegt!'
-  points_removed: '&2Punkte entfernt!'
-  tag_added: '&2Tag hinzugefuegt!'
-  tag_removed: '&2Tag entfernt!'
-  objective_added: '&2Neue Aufgaben gestartet!'
-  objective_removed: '&2Aufgabe entfernt!'
-  pointer_added: '&2Zeiger hinzugefuegt!'
-  pointer_removed: '&2Zeiger entfernt!'
-  purged: '&4{1} - Alle Dateien zurueckgesetzt!'
   changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Aenderungen an und/oder loesche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
-  command_reload: laedt das Plugin neu
-  command_objectives: Aufgaben fuer Spieler
-  command_tags: Tags fuer Spieler
-  command_points: Punkte fuer Spieler
-  command_journal: Zeiger im Tagebuch fuer Spieler
-  command_condition: Bedingung fuer Spieler ueberpruefen
-  command_event: Ereignis fuer Spieler ausloesen
-  command_item: erstellt einen Gegenstand aus dem in deiner Hand
-  command_config: liest, setzt oder haengt Zeilen an die Konfiguration an
-  command_vector: berechnet einen Vektor aus der ersten Variablen und speichert ihn in der zweiten
-  command_purge: Setzt alle Daten ueber Spieler zurueck
-  command_backup: Erstellt ein Backup von Konfiguration und Datenbank. Nur von der Konsole aus verwenden wenn keine Spieler online sind!
-  offline: '&4Alle Spieler muessen offline sein, um ein Backup zu vollziehen!'
   pullback: '&cDu musst das Gespraech erst beenden!'
   items_given: '&2{1} x{2} erhalten.'
   items_taken: '&2{1} x{2} weggenommen.'
@@ -226,17 +80,13 @@ de:
   cancel_page: Quests abbrechen
   command_blocked: '&cDu kannst diesen Befehl nicht benutzen, solange du in einem Gespraech bist.'
   language_changed: '&2Sprache geaendert!'
-  default_language_changed: '&2Standardsprache geaendert!'
   language_missing: '&cBitte eine Sprache angeben.'
   language_not_exist: '&cDiese Sprache ist nicht definiert. Moegliche Optionen: '
 fr:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversation avec {1} est engagee!&e===='
   conversation_end: '&e====&bLa conversation avec {1} est terminee!&e===='
-  help_with_answering: '&cRepondez au NPC en saisissant le numero dans la console sans le point, ex. 2'
-  unknown_argument: '&cMauvais parametre.'
   no_permission: '&cVous n''avez pas la permission.'
-  reloaded: '&cConfiguration rechargee!'
   new_journal_entry: '&e*&bLe journal a ete mis a jour!&e*'
   journal_title: 'Journal'
   journal_lore: 'Votre journal contient les informations sur vos quetes'
@@ -245,52 +95,7 @@ fr:
   previous: '&2Precedent'
   next: '&2Suivant'
   inventory_full: '&e*&bVotre inventaire est plein!&e*'
-  specify_condition: '&cIndiquer le nom de la condition.'
-  specify_event: '&cSpecifier le nom de l''evenement.'
-  specify_player: '&cIndiquez le surnom du joueur.'
-  specify_item: '&cSpecifier le nom de l''objet.'
-  specify_tag: '&cSpecifier le tag.'
-  specify_objective: '&cSpecifier les instructions pour l''objectif.'
-  specify_category_and_amount: '&cSpecifier la categorie et le nombre de points a modifier.'
-  specify_pointer: '&cSpecifier le nom du pointeur.'
-  specify_date: '&cSpecifier la date du pointeur (format identique a date_format)'
-  specify_action: '&cSpecifier une action (read, set or add)'
-  specify_path: '&cSpecifier le chemin (separer par des points)'
-  specify_package: '&cIndiquer le nom du package'
-  package_created: '&2Package cree'
-  package_exists: '&cLe package existe deja'
-  config_set_error: '&cje ne peux pas specifier le chemin.'
-  no_item: '&cVous n''avez aucun objet en main!'
-  item_created: '&2L''objet a ete enregistre en tant que {1}.'
-  player_objectives: '&aLes objectifs du joueur:'
-  player_tags: '&aLes tags du joueur:'
-  player_condition: '&aCondition {1}: {2}'
-  player_event: '&aEvenement envoye : {1}'
-  player_points: '&aPoints:'
-  player_journal: '&ePointeurs du journal:'
-  purged: '&4Donnees du joueur {1} effacees!'
-  points_added: '&2Points ajoutes!'
-  points_removed: '&2Points retires!'
-  tag_added: '&2Tag ajoute!'
-  tag_removed: '&2Tag supprime!'
-  objective_added: '&2Objectif ajoute!'
-  objective_removed: '&2Objectif retire!'
-  pointer_added: '&2Pointeur ajoute!'
-  pointer_removed: '&2Pointeur supprime!'
   changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
-  command_reload: Recharge le plugin
-  command_objectives: Affiche les objectifs en cours
-  command_tags: Affiche vos tags
-  command_points: Affiche vos points
-  command_journal: Affiche les pointeurs du journal
-  command_condition: Verifie si vous respectez la condition
-  command_event: Envoi d'un evenement
-  command_item: Creer un objet a partir de celui que vous avez en main
-  command_config: reads, sets or appends des chaines dans la config
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: Supprime tout l'historique du joueur
-  command_backup: creer une configuration et une sauvegarde de la base. S'execute en console et avec un serveur vide de joueurs!
-  offline: '&4Tous les joueurs doivent se deconnecter avant de lancer une sauvegarde!'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1} x{2}'
   items_taken: '&2Vous redonnez {1} x{2}'
@@ -303,17 +108,13 @@ fr:
   cancel_page: 'Annulation des quetes'
   command_blocked: '&cImpossible d''utiliser cette commande pendant une conversation.'
   language_changed: '&2Langue modifiee!'
-  default_language_changed: '&2Langue par defaut modifiee!'
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}\u5bf9\u8bdd\u4e2d&e===="
   conversation_end: "&e====&b\u4e0e{1}\u7684\u5bf9\u8bdd\u5df2\u7ecf\u7ed3\u675f&e===="
-  help_with_answering: "&c\u8bf7\u8f93\u5165\u5bf9\u8bdd\u9009\u9879\u5e8f\u53f7"
-  unknown_argument: "&c\u672a\u77e5\u7684\u547d\u4ee4\uff0c\u8bf7\u8f93\u5165/q\u67e5\u770b\u547d\u4ee4\u5217\u8868"
   no_permission: "&c\u4f60\u6ca1\u6709\u76f8\u5e94\u7684\u6743\u9650."
-  reloaded: "&c\u91cd\u8f7d\u5b8c\u6210!"
   new_journal_entry: "&e*&b\u4f60\u7684\u7b14\u8bb0\u5df2\u7ecf\u66f4\u65b0!&e*"
   journal_title: "\u4efb\u52a1\u7b14\u8bb0"
   journal_lore: "\u53ef\u4ee5\u67e5\u770b\u4f60\u7684\u4efb\u52a1\u72b6\u6001"
@@ -322,49 +123,7 @@ cn:
   previous: "&2\u524d\u4e00\u4e2a"
   next: "&2\u4e0b\u4e00\u4e2a"
   inventory_full: "&e*&b\u4f60\u7684\u80cc\u5305\u5df2\u6ee1!&e*"
-  specify_condition: "&c\u8bf7\u6307\u660e\u72b6\u6001."
-  specify_event: "&c\u8bf7\u6307\u660e\u4e8b\u4ef6."
-  specify_player: "&c\u8bf7\u6307\u660e\u73a9\u5bb6ID"
-  specify_item: "&c\u8bf7\u6307\u660e\u7269\u54c1\u540d"
-  specify_tag: "&c\u8bf7\u6307\u660e\u6807\u7b7e\u540d."
-  specify_objective: "&c\u8bf7\u6ce8\u660e\u4efb\u52a1\u76ee\u6807\u4fe1\u606f."
-  specify_category_and_amount: "&c\u8bf7\u6ce8\u660e\u8981\u66f4\u6539\u7684\u70b9\u6570\u540d\u5b57\u548c\u66f4\u6539\u7684\u6570\u91cf."
-  specify_pointer: "&c\u8bf7\u6ce8\u660e\u65e5\u8bb0\u5185\u5bb9\u7684\u4ee3\u7801(journal.yml\u4e2d\u8be5\u884c\u5185\u5bb9\u7684\u540d\u5b57)."
-  specify_date: "&c\u8bf7\u6ce8\u660e\u6b64\u65e5\u8bb0\u5185\u5bb9\u7684\u65e5\u671f(\u4f7f\u7528Java\u7684\u65e5\u671f\u683c\u5f0f)"
-  specify_action: "&c\u8bf7\u6ce8\u660e\u4f60\u8981\u505a\u4ec0\u4e48 (\u8bfb\u53d6(read), \u66f4\u6539(set)\u8fd8\u662f\u6dfb\u52a0(add))"
-  specify_path: "&c\u8bf7\u6ce8\u660e\u76ee\u6807\u7684\u8def\u5f84 (\u4f7f\u7528\u201c.\u201d\u5206\u9694\u591a\u4e2a\u8def\u5f84)"
-  config_set_error: "&c\u6267\u884c\u547d\u4ee4\u65f6\u51fa\u9519\uff0c\u8bf7\u786e\u8ba4\u76ee\u6807\u8def\u5f84\u65e0\u8bef."
-  no_item: "&c\u8bf7\u62ff\u7740\u4e00\u4e2a\u7269\u54c1!"
-  item_created: "&2\u7269\u54c1\u5df2\u7ecf\u4fdd\u5b58\u4e3a {1}."
-  player_objectives: "&a\u8be5\u73a9\u5bb6\u7684\u76ee\u6807:"
-  player_tags: "&a\u8be5\u73a9\u5bb6\u7684\u6807\u7b7e:"
-  player_condition: "&a\u72b6\u6001 {1}: {2}"
-  player_event: "&a\u4e8b\u4ef6\u5df2\u6fc0\u6d3b: {1}"
-  player_points: "&a\u70b9\u6570:"
-  player_journal: "&e\u4f60\u5df2\u7ecf\u89e6\u53d1\u7684\u4efb\u52a1\u65e5\u8bb0:"
-  points_added: "&2\u6210\u529f\u6dfb\u52a0\u4efb\u52a1\u70b9\u6570!"
-  points_removed: "&2\u6210\u529f\u6263\u9664\u4efb\u52a1\u70b9\u6570!"
-  tag_added: "&2\u5df2\u6dfb\u52a0\u6807\u7b7e!"
-  tag_removed: "&2\u5df2\u79fb\u9664\u6807\u7b7e!"
-  objective_added: "&2\u5df2\u5f00\u59cb\u8be5\u4efb\u52a1!"
-  objective_removed: "&2\u5df2\u5220\u9664\u8be5\u4efb\u52a1!"
-  pointer_added: "&2\u5df2\u6dfb\u52a0\u6b64\u65e5\u8bb0\uff01"
-  pointer_removed: "&2\u5df2\u79fb\u9664\u6b64\u65e5\u8bb0\uff01!"
-  purged: "&4{1}\u7684\u6240\u6709\u4fe1\u606f\u5df2\u7ecf\u5220\u9664!"
   changelog: "&e*&b\u65b0\u7248\u672c\u7684\u66f4\u65b0\u5185\u5bb9\u5df2\u7ecf\u751f\u6210\u5728\u63d2\u4ef6\u6587\u4ef6\u5939\u4e0b!\u5c06\u5b83\u5220\u9664\u5c31\u4e0d\u4f1a\u518d\u770b\u5230\u8fd9\u4e2a\u4fe1\u606f\u4e86&e*"
-  command_reload: "\u91cd\u8f7d\u63d2\u4ef6"
-  command_objectives: "\u663e\u793a\u5f53\u524d\u6b63\u5728\u8fdb\u884c\u4e2d\u7684\u4efb\u52a1\u76ee\u6807"
-  command_tags: "\u663e\u793a/\u6dfb\u52a0/\u5220\u9664\u4f60\u7684\u6807\u7b7e"
-  command_points: "\u663e\u793a/\u6dfb\u52a0/\u51cf\u5c11\u4f60\u7684\u4efb\u52a1\u70b9\u6570"
-  command_journal: "\u663e\u793a\u4f60\u5f53\u524d\u5df2\u7ecf\u89e6\u53d1\u4e86\u7684\u65e5\u8bb0\u5185\u5bb9"
-  command_condition: "\u786e\u8ba4\u4f60\u662f\u5426\u5df2\u7ecf\u6ee1\u8db3\u4e86\u8981\u6c42\u7684\u72b6\u6001"
-  command_event: "\u4e3a\u67d0\u73a9\u5bb6\u6fc0\u6d3b\u4e00\u4e2a\u4e8b\u4ef6"
-  command_item: "\u5c06\u4f60\u624b\u4e2d\u62ff\u7740\u7684\u7269\u54c1\u4fdd\u5b58\u4e3a\u9884\u7f6e\u7269\u54c1"
-  command_config: "\u8bfb\u53d6, \u66f4\u6539\u6216\u6dfb\u52a0\u914d\u7f6e\u6587\u4ef6\u4e2d\u7684\u67d0\u4e9b\u6587\u5b57(\u9700\u8981\u9644\u4e0a\u6587\u5b57\u524d\u7684\u8def\u5f84)"
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: "\u5220\u9664\u8be5\u73a9\u5bb6\u7684\u6240\u6709\u4efb\u52a1\u4fe1\u606f"
-  command_backup: "\u5907\u4efd\u914d\u7f6e\u6587\u4ef6\uff0c\u53ea\u80fd\u4ece\u63a7\u5236\u53f0\uff0c\u5e76\u4e14\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u4f7f\u7528\uff01"
-  offline: "&4\u53ea\u6709\u5728\u65e0\u4eba\u5728\u7ebf\u65f6\u624d\u80fd\u8fdb\u884c\u5907\u4efd!"
   pullback: "&c\u4f60\u8fd8\u5728\u5bf9\u8bdd\u4e2d!&a(\u8f93\u51651\u770b\u770b\u804a\u5929\u680f\u6709\u6ca1\u6709\u53cd\u5e94\u5427)"
   items_given: "&2\u4f60\u83b7\u5f97\u4e86 {2}\u4e2a{1}"
   items_taken: "&2\u4f60\u5931\u53bb\u4e86 {2}\u4e2a{1}"
@@ -372,25 +131,18 @@ cn:
   blocks_to_place: '&2\u8fd8\u9700\u8981\u518d\u653e\u7f6e{1}\u4e2a\u65b9\u5757'
   mobs_to_kill: '&2\u8fd8\u9700\u8981\u6740\u6b7b{1}\u4e2a\u602a\u7269'
   busy: "&c\u4f60\u8fd8\u5728\u6218\u6597\u4e2d"
-  specify_package: "&c\u672a\u77e5\u7684\u7c7b\u540d"
-  package_created: "&2\u6210\u529f\u521b\u5efa\u6b64\u7c7b"
-  package_exists: "&c\u8be5\u7c7b\u5df2\u7ecf\u5b58\u5728"
   quest_canceled: "&2\u4efb\u52a1 {1} \u5df2\u53d6\u6d88!"
   cancel: "&c\u53d6\u6d88\u4efb\u52a1"
   cancel_page: "\u6b63\u5728\u53d6\u6d88\u4efb\u52a1"
   command_blocked: "&c\u4f60\u4e0d\u80fd\u5728\u4efb\u52a1\u4e2d\u4f7f\u7528\u8be5\u547d\u4ee4."
   language_changed: "&2\u60a8\u7684\u8bed\u8a00\u5df2\u66f4\u6362!"
-  default_language_changed: "&2\u9ed8\u8ba4\u8bed\u8a00\u5df2\u66f4\u6362!"
   language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
   language_not_exist: "&c\u8fd9\u4e2a\u8bed\u8a00\u4e0d\u5b58\u5728\uff0c\u53ef\u7528\u7684\u8bed\u8a00\u6709\uff1a"
 es:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversacion con {1} ha comenzado.&e===='
   conversation_end: '&e====&bLa conversacion con {1} ha terminado.&e===='
-  help_with_answering: '&cResponde al personaje escribiendo el numero de la respuesta, ej: 2.'
-  unknown_argument: '&cArgumento incorrecto.'
   no_permission: '&cNo tienes permiso para eso.'
-  reloaded: '&cSe ha recargado la configuracion.'
   new_journal_entry: '&e*&bTu diario se ha actualizado.&e*'
   journal_title: Diario
   journal_lore: Es tu diario, contiene informacion de todas tus misiones.
@@ -399,52 +151,7 @@ es:
   previous: '&2Anterior'
   next: '&2Siguiente'
   inventory_full: '&e*&bTu inventario esta lleno.&e*'
-  specify_condition: '&cEspecifica un nombre para la condicion.'
-  specify_event: '&cEspecifica un nombre para el evento.'
-  specify_player: '&cEspecifica el nombre del jugador.'
-  specify_item: '&cEspecifica un nombre para el objeto.'
-  specify_objective: '&cEspecifica nombre del objetivo.'
-  specify_tag: '&cEspecifica etiqueta'
-  specify_category_and_amount: '&cEspecifica categoria y cantidad de puntos a modificar.'
-  specify_pointer: '&cEspecificar puntero del diario.'
-  specify_date: '&cEspecificar fecha puntero (formato como en date_format)'
-  specify_action: '&cEspecifique la accion (read, set o add)'
-  specify_path: '&cEspecifique la ruta (separados por puntos)'
-  specify_package: '&cEspecifica el nombre del paquete'
-  package_created: '&2Paquete creado'
-  package_exists: '&cEl paquete ya existe'
-  config_set_error: '&cNo se pudo establecer la ruta especificada.'
-  no_item: '&cNo tienes ningun objeto en la mano.'
-  item_created: '&2El objeto se ha guardado como {1}.'
-  player_objectives: '&aObjetivos del jugador:'
-  player_tags: '&aEtiquetas del jugador:'
-  player_condition: '&aCondicion: {1}: {2}'
-  player_event: '&aEvento efectuado: {1}'
-  player_points: '&aPuntos:'
-  player_journal: '&aPunteros en el diario:'
-  points_added: '&2Puntos anadidos!'
-  points_removed: '&2Puntos sustraidos!'
-  tag_added: '&2Etiqueta agregada!'
-  tag_removed: '&2Etiqueta eliminada!'
-  objective_added: '&2Objetivo agregado!'
-  objective_removed: '&2Objetivo eliminado!'
-  pointer_added: Puntero anadido!
-  pointer_removed: Puntero eliminado!
-  purged: '&4Datos de {1} borrados.'
   changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
-  command_reload: Recarga el plugin.
-  command_objectives: Muestra los objetivos actuales.
-  command_tags: Muestra tus etiquetas.
-  command_points: Muestra tus puntos.
-  command_journal: Muestra los punteros de revistas
-  command_condition: Comprueba si cumples las condiciones.
-  command_event: Activa un evento.
-  command_item: Crea un objeto a partir del cual estas sosteniendo.
-  command_config: Lee, fija o anade cadenas de configuraciones.
-  command_vector: Calcula un vector desde la primera variable y lo guarda en la segunda.
-  command_purge: Borra todos los datos de un jugador.
-  command_backup: Crea un backup de la configuracion y la base de datos. Usar solo desde consola y con el servidor vacio!
-  offline: '&4Todos los jugadores deben estar desconectados para hacer el backup!'
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1} x{2}'
   items_taken: '&2Perdido {1} x{2}'
@@ -457,17 +164,13 @@ es:
   cancel_page: Cancelar misiones
   command_blocked: '&cNo puedes usar ese comando en una conversacion.'
   language_changed: '&2Lenguaje cambiado!'
-  default_language_changed: '&2Lenguaje por defecto cambiado!'
   language_missing: '&cEspecifica un lenguaje'
   language_not_exist: '&cEste lenguaje no esta definido, opciones posibles: '
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1} begonnen!&e===='
   conversation_end: '&e====&bGesprek met {1} afgerond!&e===='
-  help_with_answering: '&cGeef de NPC antwoord door een nummer van het antwoord te typen zonder een punt, bijv. 2'
-  unknown_argument: '&cVerkeerd argument.'
   no_permission: '&cJe hebt geen toestemming.'
-  reloaded: '&cConfiguratie is herladen!'
   new_journal_entry: '&e*&bDagboek is bijgewerkt!&e*'
   journal_title: Dagboek
   journal_lore: Je dagboek, bevat alle quest informatie
@@ -476,52 +179,7 @@ nl:
   previous: '&2Vorige'
   next: '&2Volgende'
   inventory_full: '&e*&bJe inventaris is vol!&e*'
-  specify_condition: '&cSpecificeer conditie naam.'
-  specify_event: '&cSpecificeer gebeurtenis naam.'
-  specify_player: '&cSpecificeer speler''s naam.'
-  specify_item: '&cSpecificeer item''s naam.'
-  specify_tag: '&cSpecificeer label.'
-  specify_objective: '&cSpecificeer doelstelling naam.'
-  specify_category_and_amount: '&cSpecificeer categorie naam en aantal te bewerken punten.'
-  specify_pointer: '&cSpecificeer pointer naam.'
-  specify_date: '&cSpecificeer pointer datum (formaat zoals in date_format)'
-  specify_action: '&cSpecificeer actie (read, set of add)'
-  specify_path: '&cSpecificeer pad (gescheiden door punten)'
-  specify_package: '&cSpecificeer package naam'
-  package_created: '&2Package aangemaakt'
-  package_exists: '&cPackage bestaat al'
-  config_set_error: '&cKon opgegeven pad niet instellen.'
-  no_item: '&cJe hebt geen item in je hand!'
-  item_created: '&2Item opgeslagen in configuratie als {1}.'
-  player_objectives: '&aSpeler''s doelstellingen:'
-  player_tags: '&aSpeler''s labels:'
-  player_condition: '&aConditie {1}: {2}'
-  player_event: '&aGebeurtenis plaatsgevonden: {1}'
-  player_points: '&aSpeler''s punten:'
-  player_journal: '&ePointers in dagboek:'
-  points_added: '&2Punten toegevoegd!'
-  points_removed: '&2Punten afgetrokken!'
-  tag_added: '&2Label toegevoegd!'
-  tag_removed: '&2Label verwijderd!'
-  objective_added: '&2Doelstelling gestart!'
-  objective_removed: '&2Doelstelling gestopt!'
-  pointer_added: '&2Pointer toegevoegd!'
-  pointer_removed: '&2Pointer verwijderd!'
-  purged: '&4{1}''s data verwijderd!'
   changelog: '&e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
-  command_reload: herlaad de plugin
-  command_objectives: actieve doelstellingen weergeven
-  command_tags: labels weergeven
-  command_points: punten weergeven
-  command_journal: dagboek pointers weergeven
-  command_condition: controleer of de speler aan de conditie voldoet
-  command_event: laat een gebeurtenis plaatsvinden voor de speler
-  command_item: maakt een item van hetgene in je hand
-  command_config: leest, stelt in of voegt toe aan strings in configuraties
-  command_vector: berekent een vector van eerste variabele en slaat op in tweede
-  command_purge: verwijdert alle data van de speler
-  command_backup: maakt configuratie en database backup. Gebruik alleen vanaf console wanneer iedereen is uitgelogd!
-  offline: '&4Alle spelers moeten uitgelogd zijn om een backup te maken!'
   pullback: '&cRondt eerst je gesprek af!'
   items_given: '&2Ontvangen {1} x{2}'
   items_taken: '&2Afgegeven {1} x{2}'
@@ -534,7 +192,5 @@ nl:
   cancel_page: Quests annuleren
   command_blocked: '&cJe kunt dat commando niet gebruiken terwijl je in gesprek bent.'
   language_changed: '&2Taal gewijzigd!'
-  default_language_changed: '&2Standaard taal gewijzigd!'
   language_missing: '&cSpecificeer taal'
   language_not_exist: '&cDeze taal is niet gedefinieerd, mogelijke opties: '
-  
