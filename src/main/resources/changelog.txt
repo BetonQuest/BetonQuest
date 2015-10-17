@@ -1,3 +1,10 @@
+v1.7.6
+Fixes:
+    * Conversation can no longer be started multiple times at once if it happens
+      on the same tick
+Additions:
+    * Dutch translation by Jack McKalling
+
 v1.7.5
 Fixes:
     * Restored compatibility with MythicMobs 2.1.0

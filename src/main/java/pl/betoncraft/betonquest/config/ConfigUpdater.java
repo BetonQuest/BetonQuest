@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v22";
+    private final String destination = "v23";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -188,6 +188,13 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v22() {
+        Debug.broadcast("Added Dutch translation");
+        config.set("version", "v23");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
