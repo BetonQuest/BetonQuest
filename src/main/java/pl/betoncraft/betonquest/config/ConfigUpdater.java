@@ -392,6 +392,7 @@ public class ConfigUpdater {
                 config.set("default_conversation_IO", "simple");
             }
             config.set("tellraw", null);
+            config.set("tellraw_append", "&7(click to select)");
             FileConfiguration messages = Config.getMessages().getConfig();
             String message;
             message = messages.getString("global.quester_line_format");
