@@ -225,10 +225,11 @@ public class Conversation implements Listener {
             i++;
             // print reply and put it to the hashmap
             current.put(Integer.valueOf(i), option);
+            String append = "";
             if(inOut instanceof TellrawConvIO) {
-                option += BetonQuest.getInstance().getConfig().getString("tellraw_append");
+                append = BetonQuest.getInstance().getConfig().getString("tellraw_append");
             }
-            inOut.addPlayerOption(data.getText(language, option, OptionType.PLAYER));
+            inOut.addPlayerOption(data.getText(language, option, OptionType.PLAYER) + append);
         }
         inOut.display();
         // end conversations if there are no possible options
