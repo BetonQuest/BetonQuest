@@ -11,6 +11,7 @@ autoupdate: 'true'
 default_journal_slot: '-1'
 max_npc_distance: '5'
 default_conversation_IO: simple
+tellraw_append: '&7(click to select)'
 combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
