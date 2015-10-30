@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -39,6 +40,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
     private final String name;
     private final int amount;
+    private final boolean notify;
 
     public MythicMobKillObjective(String packName, String label, String instruction)
             throws InstructionParseException {
@@ -64,6 +66,13 @@ public class MythicMobKillObjective extends Objective implements Listener {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
         amount = tempAmount;
+        boolean tempNotify = false;
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("notify")) {
+                tempNotify = true;
+            }
+        }
+        notify = tempNotify;
     }
 
     @EventHandler
@@ -76,6 +85,10 @@ public class MythicMobKillObjective extends Objective implements Listener {
                 playerData.kill();
                 if (playerData.killed()) {
                     completeObjective(playerID);
+                } else if (notify) {
+                    // send a notification
+                    Config.sendMessage(playerID, "mobs_to_kill",
+                            new String[]{String.valueOf(playerData.getAmount())});
                 }
             }
         }
@@ -112,6 +125,10 @@ public class MythicMobKillObjective extends Objective implements Listener {
         
         private boolean killed() {
             return amount <= 0;
+        }
+        
+        private int getAmount() {
+            return amount;
         }
         
     }
