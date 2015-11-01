@@ -184,8 +184,8 @@ public class ActionObjective extends Objective implements Listener {
                     && (event.getClickedBlock() != null
                     && event.getClickedBlock().getType().equals(type))
                     && (data < 0 || event.getClickedBlock().getData() == data)
-                    && (loc == null || event.getClickedBlock().getLocation()
-                        .distance(loc) <= range)
+                    && (loc == null || (event.getClickedBlock().getWorld().equals(loc.getWorld()) 
+                    && event.getClickedBlock().getLocation().distance(loc) <= range))
                     && checkConditions(playerID)) {
                 if (cancel) event.setCancelled(true);
                 completeObjective(playerID);
