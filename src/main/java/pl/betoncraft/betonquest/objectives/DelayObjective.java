@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.objectives;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.bukkit.scheduler.BukkitRunnable;
@@ -60,7 +61,7 @@ public class DelayObjective extends Objective {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for (String playerID : dataMap.keySet()) {
+                for (String playerID : new ArrayList<>(dataMap.keySet())) {
                     DelayData playerData = (DelayData) dataMap.get(playerID);
                     if (new Date().getTime() >= playerData.getTime() &&
                             checkConditions(playerID)) {
