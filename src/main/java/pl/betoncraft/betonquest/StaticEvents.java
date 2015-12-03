@@ -65,7 +65,7 @@ public class StaticEvents {
             ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
             if (config == null) {
                 Debug.info("There are no static events defined, skipping");
-                return;
+                continue;
             }
             // for each hour, create an event timer
             for (String key : config.getKeys(false)) {
