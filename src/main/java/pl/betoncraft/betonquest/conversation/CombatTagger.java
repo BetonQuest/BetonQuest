@@ -26,6 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -91,5 +92,13 @@ public class CombatTagger implements Listener {
             });
             untaggers.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
         }
+    }
+    
+    @EventHandler(priority=EventPriority.MONITOR)
+    public void onDeath(PlayerDeathEvent event) {
+        String playerID = PlayerConverter.getID(event.getEntity());
+        tagged.remove(playerID);
+        BukkitRunnable runnable = untaggers.remove(playerID);
+        if (runnable != null) runnable.cancel();
     }
 }
