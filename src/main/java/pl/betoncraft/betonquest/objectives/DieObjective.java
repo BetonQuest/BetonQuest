@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -91,7 +92,7 @@ public class DieObjective extends Objective implements Listener {
         location = tempLoc;
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.HIGHEST)
     public void onDeath(EntityDeathEvent event) {
         if (cancel) {
             return;
@@ -104,7 +105,7 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.HIGHEST)
     public void onLastDamage(EntityDamageEvent event) {
         if (!cancel) {
             return;
