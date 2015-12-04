@@ -1,4 +1,9 @@
 ﻿v1.8-dev
+Fixes:
+    * Die objective now reacts to death caused by other plugins
+    * Static events now are started correctly
+    * Action objective now correctly checks locations
+    * Combat tag is removed after death
 Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
@@ -6,6 +11,7 @@ Additions:
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
+    * Journal event can remove entries from the journal
 
 v1.7.6
 Fixes:

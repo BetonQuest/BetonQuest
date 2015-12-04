@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v25";
+    private final String destination = "v26";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -188,6 +188,29 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v25() {
+        try {
+            for (String packName : Config.getPackageNames()) {
+                ConfigPackage pack = Config.getPackage(packName);
+                FileConfiguration events = pack.getEvents().getConfig();
+                for (String key : events.getKeys(false)) {
+                    String event = events.getString(key);
+                    if (event.startsWith("journal ")) {
+                        events.set(key, "journal add " + event.substring(8));
+                    }
+                }
+                pack.getEvents().saveConfig();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Journal entries can now be deleted.");
+        config.set("version", "v26");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
