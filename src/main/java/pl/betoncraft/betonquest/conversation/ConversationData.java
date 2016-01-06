@@ -237,20 +237,11 @@ public class ConversationData {
         }
         return null;
     }
-    
-    private interface Option {
-        public String getName();
-        public String getInlinePrefix(String lang);
-        public String getText(String lang);
-        public String[] getConditions();
-        public String[] getEvents();
-        public String[] getPointers();
-    }
 
     /**
-     * Represents an option which can be said by the NPC
+     * Represents an option
      */
-    private class NPCOption implements Option {
+    private abstract class Option {
         
         private String name;
         private HashMap<String, String> inlinePrefix = new HashMap<>();
@@ -260,15 +251,15 @@ public class ConversationData {
         private String[] events;
         private String[] pointers;
         
-        public NPCOption(String name) throws InstructionParseException {
+        public Option(String name, String type, String visibleType) throws InstructionParseException {
             this.name = name;
             String defaultLang = Config.getLanguage();
             FileConfiguration conv = pack.getConversation(convName).getConfig();
-            if (conv.isConfigurationSection("NPC_options." + name + ".prefix")) {
-                for (String lang : conv.getConfigurationSection("NPC_options." + name + ".prefix")
+            if (conv.isConfigurationSection(type + "." + name + ".prefix")) {
+                for (String lang : conv.getConfigurationSection(type + "." + name + ".prefix")
                         .getKeys(false)) {
-                    String pref = pack.getString("conversations." + convName
-                            + ".NPC_options." + name + ".prefix." + lang);
+                    String pref = pack.getString("conversations." + convName + "."
+                            + type + "." + name + ".prefix." + lang);
                     if (pref != null && !pref.equals(""))
                     {
                         inlinePrefix.put(lang, pref);
@@ -276,40 +267,40 @@ public class ConversationData {
                 }
                 if (!inlinePrefix.containsKey(defaultLang)) {
                     throw new InstructionParseException(
-                            "No default language for " + name + " NPC option prefix");
+                            "No default language for " + name + " " + visibleType + " prefix");
                 }
             } else {
-                String pref = pack.getString("conversations." + convName
-                        + ".NPC_options." + name + ".prefix");
+                String pref = pack.getString("conversations." + convName + "." 
+                        + type + "." + name + ".prefix");
                 if (pref != null && !pref.equals(""))
                 {
                     inlinePrefix.put(defaultLang, pref);
                 }
             }
-            if (conv.isConfigurationSection("NPC_options." + name + ".text")) {
-                for (String lang : conv.getConfigurationSection("NPC_options." + name + ".text")
+            if (conv.isConfigurationSection(type + "." + name + ".text")) {
+                for (String lang : conv.getConfigurationSection(type + "." + name + ".text")
                         .getKeys(false)) {
-                    text.put(lang, pack.getString("conversations." + convName
-                            + ".NPC_options." + name + ".text." + lang));
+                    text.put(lang, pack.getString("conversations." + convName + "." 
+                            + type + "." + name + ".text." + lang));
                 }
                 if (!text.containsKey(defaultLang)) {
                     throw new InstructionParseException(
-                            "No default language for " + name + " NPC option");
+                            "No default language for " + name + " " + visibleType);
                 }
             } else {
-                text.put(defaultLang, pack.getString("conversations." + convName
-                        + ".NPC_options." + name + ".text"));
+                text.put(defaultLang, pack.getString("conversations." + convName + "." 
+                        + type + "." + name + ".text"));
             }
             for (String theText : text.values()) {
-                if (theText == null || theText.equals("")) throw new InstructionParseException(String.format(
-                        "Text not defined in NPC option %s", name));
+                if (theText == null || theText.equals("")) throw new InstructionParseException(
+                        "Text not defined in " + visibleType + " " + name);
             }
-            String rawConditions = pack.getString("conversations." + convName + ".NPC_options." + name + ".conditions");
+            String rawConditions = pack.getString("conversations." + convName + "." + type + "." + name + ".conditions");
             String[] cond1 = new String[]{};
             if (rawConditions != null && !rawConditions.equals("")) {
                 cond1 = rawConditions.split(",");
             }
-            String rawCondition = pack.getString("conversations." + convName + ".NPC_options." + name + ".condition");
+            String rawCondition = pack.getString("conversations." + convName + "." + type + "." + name + ".condition");
             String[] cond2 = new String[]{};
             if (rawCondition != null && !rawCondition.equals("")) {
                 cond2 = rawCondition.split(",");
@@ -329,12 +320,12 @@ public class ConversationData {
                     conditions[i] = pack.getName() + "." + conditions[i];
                 }
             }
-            String rawEvents = pack.getString("conversations." + convName + ".NPC_options." + name + ".events");
+            String rawEvents = pack.getString("conversations." + convName + "." + type + "." + name + ".events");
             String[] event1 = new String[]{};
             if (rawEvents != null && !rawEvents.equals("")) {
                 event1 = rawEvents.split(",");
             }
-            String rawEvent = pack.getString("conversations." + convName + ".NPC_options." + name + ".event");
+            String rawEvent = pack.getString("conversations." + convName + "." + type + "." + name + ".event");
             String[] event2 = new String[]{};
             if (rawEvent != null && !rawEvent.equals("")) {
                 event2 = rawEvent.split(",");
@@ -354,12 +345,12 @@ public class ConversationData {
                     events[i] = pack.getName() + "." + events[i];
                 }
             }
-            String rawPointers = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointers");
+            String rawPointers = pack.getString("conversations." + convName + "." + type + "." + name + ".pointers");
             String[] pointer1 = new String[]{};
             if (rawPointers != null && !rawPointers.equals("")) {
                 pointer1 = rawPointers.split(",");
             }
-            String rawPointer = pack.getString("conversations." + convName + ".NPC_options." + name + ".pointer");
+            String rawPointer = pack.getString("conversations." + convName + "." + type + "." + name + ".pointer");
             String[] pointer2 = new String[]{};
             if (rawPointer != null && !rawPointer.equals("")) {
                 pointer2 = rawPointer.split(",");
@@ -412,137 +403,18 @@ public class ConversationData {
     /**
      * Represents an option which can be choosen by the Player
      */
-    private class PlayerOption implements Option {
-        
-        private String name;
-        
-        private HashMap<String, String> text = new HashMap<>();
-        private String[] conditions;
-        private String[] events;
-        private String[] pointers;
-        
+    private class PlayerOption extends Option {
         public PlayerOption(String name) throws InstructionParseException {
-            this.name = name;
-            String defaultLang = Config.getLanguage();
-            if (pack.getConversation(convName).getConfig()
-                    .isConfigurationSection("player_options." + name + ".text")) {
-                for (String lang : pack.getConversation(convName).getConfig()
-                        .getConfigurationSection("player_options." + name + ".text")
-                        .getKeys(false)) {
-                    text.put(lang, pack.getString("conversations." + convName
-                            + ".player_options." + name + ".text." + lang));
-                }
-                if (!text.containsKey(defaultLang)) {
-                    throw new InstructionParseException(
-                            "No default language for " + name + " player option");
-                }
-            } else {
-                text.put(defaultLang, pack.getString("conversations." + convName
-                        + ".player_options." + name + ".text"));
-            };
-            for (String theText : text.values()) {
-                if (theText == null || theText.equals(""))
-                    throw new InstructionParseException(String.format(
-                            "Text not defined in player option %s", name));
-            }
-            String rawConditions = pack.getString("conversations." + convName + ".player_options." + name + ".conditions");
-            String[] cond1 = new String[]{};
-            if (rawConditions != null && !rawConditions.equals("")) {
-                cond1 = rawConditions.split(",");
-            }
-            String rawCondition = pack.getString("conversations." + convName + ".player_options." + name + ".condition");
-            String[] cond2 = new String[]{};
-            if (rawCondition != null && !rawCondition.equals("")) {
-                cond2 = rawCondition.split(",");
-            }
-            conditions = new String[cond1.length + cond2.length];
-            int count = 0;
-            for (String cond : cond1) {
-                conditions[count] = cond;
-                count++;
-            }
-            for (String cond : cond2) {
-                conditions[count] = cond;
-                count++;
-            }
-            for (int i = 0; i < conditions.length; i++) {
-                if (!conditions[i].contains(".")) {
-                    conditions[i] = pack.getName() + "." + conditions[i];
-                }
-            }
-            String rawEvents = pack.getString("conversations." + convName + ".player_options." + name + ".events");
-            String[] event1 = new String[]{};
-            if (rawEvents != null && !rawEvents.equals("")) {
-                event1 = rawEvents.split(",");
-            }
-            String rawEvent = pack.getString("conversations." + convName + ".player_options." + name + ".event");
-            String[] event2 = new String[]{};
-            if (rawEvent != null && !rawEvent.equals("")) {
-                event2 = rawEvent.split(",");
-            }
-            events = new String[event1.length + event2.length];
-            count = 0;
-            for (String event : event1) {
-                events[count] = event;
-                count++;
-            }
-            for (String event : event2) {
-                events[count] = event;
-                count++;
-            }
-            for (int i = 0; i < events.length; i++) {
-                if (!events[i].contains(".")) {
-                    events[i] = pack.getName() + "." + events[i];
-                }
-            }
-            String rawPointers = pack.getString("conversations." + convName + ".player_options." + name + ".pointers");
-            String[] pointer1 = new String[]{};
-            if (rawPointers != null && !rawPointers.equals("")) {
-                pointer1 = rawPointers.split(",");
-            }
-            String rawPointer = pack.getString("conversations." + convName + ".player_options." + name + ".pointer");
-            String[] pointer2 = new String[]{};
-            if (rawPointer != null && !rawPointer.equals("")) {
-                pointer2 = rawPointer.split(",");
-            }
-            pointers = new String[pointer1.length + pointer2.length];
-            count = 0;
-            for (String pointer : pointer1) {
-                pointers[count] = pointer;
-                count++;
-            }
-            for (String pointer : pointer2) {
-                pointers[count] = pointer;
-                count++;
-            }
+            super(name, "player_options", "player option");
         }
-        
-        public String getName() {
-            return name;
-        }
-        
-        public String getInlinePrefix(String lang) {
-            return null; // prefixes are only used with NPC options, not Player options
-        }
-        
-        public String getText(String lang) {
-            String theText = text.get(lang);
-            if (theText == null) {
-                theText = text.get(Config.getLanguage());
-            }
-            return theText;
-        }
-        
-        public String[] getConditions() {
-            return conditions;
-        }
-        
-        public String[] getEvents() {
-            return events;
-        }
-        
-        public String[] getPointers() {
-            return pointers;
+    }
+
+    /**
+     * Represents an option which can be choosen by the NPC
+     */
+    private class NPCOption extends Option {
+        public NPCOption(String name) throws InstructionParseException {
+            super(name, "NPC_options", "NPC option");
         }
     }
     
