@@ -124,9 +124,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.ItemAmountVariable;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
 import pl.betoncraft.betonquest.variables.ObjectivePropertyVariable;
 import pl.betoncraft.betonquest.variables.PlayerNameVariable;
+import pl.betoncraft.betonquest.variables.PointVariable;
 
 /**
  * Represents BetonQuest plugin
@@ -307,6 +309,8 @@ public final class BetonQuest extends JavaPlugin {
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
         registerVariable("objective", ObjectivePropertyVariable.class);
+        registerVariable("point", PointVariable.class);
+        registerVariable("item", ItemAmountVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
