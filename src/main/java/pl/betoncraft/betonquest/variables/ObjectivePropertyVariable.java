@@ -29,7 +29,7 @@ import pl.betoncraft.betonquest.api.Variable;
  */
 public class ObjectivePropertyVariable extends Variable {
     
-    private Objective objective;
+    private String objective;
     private String propertyName;
 
     public ObjectivePropertyVariable(String packName, String instruction)
@@ -39,18 +39,20 @@ public class ObjectivePropertyVariable extends Variable {
         if (parts.length != 3) {
             throw new InstructionParseException("Incorrect number of arguments");
         }
-        String objectiveID;
         if (parts[1].contains(".")) {
-            objectiveID = parts[1];
+            objective = parts[1];
         } else {
-            objectiveID = packName + "." + parts[1];
+            objective = packName + "." + parts[1];
         }
-        objective = BetonQuest.getInstance().getObjective(objectiveID);
         propertyName = parts[2];
     }
 
     @Override
     public String getValue(String playerID) {
+        Objective objective = BetonQuest.getInstance().getObjective(this.objective);
+        // existence of an objective is checked now because it may not exist yet
+        // when variable is created (in case of "message" event)
+        if (objective == null) return "";
         return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
     }
 

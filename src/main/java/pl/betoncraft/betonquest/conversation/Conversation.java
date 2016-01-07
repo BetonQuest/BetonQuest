@@ -187,7 +187,7 @@ public class Conversation implements Listener {
         String text = data.getText(language, option, OptionType.NPC);
         for (String variable : BetonQuest.resolveVariables(text)) {
             text = text.replace(variable, BetonQuest.getInstance()
-                    .getVariableValue(data.getPackName() + "-" + variable, playerID));
+                    .getVariableValue(data.getPackName(), variable, playerID));
         }
         // print option to the player
         inOut.setNPCResponse(text);
@@ -234,7 +234,7 @@ public class Conversation implements Listener {
             String text = data.getText(language, option, OptionType.PLAYER);
             for (String variable : BetonQuest.resolveVariables(text)) {
                 text = text.replace(variable, BetonQuest.getInstance()
-                        .getVariableValue(data.getPackName() + "-" + variable, playerID));
+                        .getVariableValue(data.getPackName(), variable, playerID));
             }
             inOut.addPlayerOption(text);
         }

@@ -969,9 +969,12 @@ public final class BetonQuest extends JavaPlugin {
      *          name of the variable (instruction, with % characters)
      * @param playerID
      *          ID of the player
+     * @param playerID2 
      * @return the value of this variable for given player
      */
-    public String getVariableValue(String name, String playerID) {
-        return variables.get(name).getValue(playerID);
+    public String getVariableValue(String packName, String name, String playerID) {
+        Variable var = variables.get(packName + "-" + name);
+        if (var == null) return "";
+        return variables.get(packName + "-" + name).getValue(playerID);
     }
 }

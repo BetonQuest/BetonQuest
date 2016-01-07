@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -33,6 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class MessageEvent extends QuestEvent {
     
     private final HashMap<String, String> messages = new HashMap<>();
+    private final ArrayList<String> variables = new ArrayList<>();
 
     public MessageEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -67,6 +69,12 @@ public class MessageEvent extends QuestEvent {
         if (messages.isEmpty()) {
             throw new InstructionParseException("Message missing");
         }
+        for (String message : messages.values()) {
+            for (String variable : BetonQuest.resolveVariables(message)) {
+                BetonQuest.createVariable(pack, variable);
+                if (!variables.contains(variable)) variables.add(variable);
+            }
+        }
     }
     
     @Override
@@ -77,9 +85,12 @@ public class MessageEvent extends QuestEvent {
         if (message == null) {
             message = messages.get(Config.getLanguage());
         }
+        for (String variable : variables) {
+            message = message.replace(variable, BetonQuest.getInstance()
+                    .getVariableValue(pack.getName(), variable, playerID));
+        }
         PlayerConverter.getPlayer(playerID).sendMessage(
-                message.replaceAll("&", "§").replaceAll("%player%",
-                PlayerConverter.getName(playerID)));
+                message.replaceAll("&", "§"));
     }
 
 }

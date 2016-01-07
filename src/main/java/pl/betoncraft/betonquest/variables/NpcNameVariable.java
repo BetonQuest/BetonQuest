@@ -36,9 +36,10 @@ public class NpcNameVariable extends Variable {
     
     @Override
     public String getValue(String playerID) {
-        return Conversation.getConversation(playerID).getData()
-                .getQuester(BetonQuest.getInstance().getDBHandler(playerID)
-                .getLanguage());
+        Conversation conv = Conversation.getConversation(playerID);
+        if (conv == null) return "";
+        return conv.getData().getQuester(BetonQuest.getInstance()
+                .getDBHandler(playerID).getLanguage());
     }
 
 }
