@@ -143,7 +143,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             buttons[j] = new ItemStack(Material.ENDER_PEARL);
             ItemMeta meta = buttons[j].getItemMeta();
             meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
-            meta.setLore(stringToLines(option, optionColor));
+            ArrayList<String> lines = stringToLines(response, npcTextColor);
+            lines.addAll(stringToLines(option, optionColor));
+            meta.setLore(lines);
             buttons[j].setItemMeta(meta);
         }
         player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);

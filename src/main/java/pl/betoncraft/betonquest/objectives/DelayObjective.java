@@ -28,7 +28,6 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Player has to wait specified amount of time. He may logout, the objective
@@ -87,9 +86,7 @@ public class DelayObjective extends Objective {
     
     @Override
     public String getProperty(String name, String playerID) {
-        Debug.broadcast("getting property");
         if (name.equalsIgnoreCase("left")) {
-            Debug.broadcast("time left...");
             String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
             String daysWord = Config.getMessage(lang, "days");
             String hoursWord = Config.getMessage(lang, "hours");
@@ -100,7 +97,6 @@ public class DelayObjective extends Objective {
             long m = (timeLeft / (1000 * 60)) % 60;
             long h = (timeLeft / (1000 * 60 * 60)) % 24;
             long d = (timeLeft / (1000 * 60 * 60 * 24));
-            Debug.broadcast(d + "d " + h + "h " + m + "m " + s + "s");
             StringBuilder time = new StringBuilder();
             String[] words = new String[3];
             if (d > 0) words[0] = d + " " + daysWord;
@@ -111,17 +107,13 @@ public class DelayObjective extends Objective {
                 if (word != null) count++;
             }
             if (count == 0) {
-                Debug.broadcast("only seconds left");
                 time.append(s + " " + secondsWord);
             } else if (count == 1) {
-                Debug.broadcast("one word");
                 for (String word : words) {
                     if (word == null) continue;
-                    Debug.broadcast("appending word " + word);
                     time.append(word);
                 }
             } else if (count == 2) {
-                Debug.broadcast("two words");
                 boolean second = false;
                 for (String word : words) {
                     if (word == null) continue;
@@ -133,10 +125,8 @@ public class DelayObjective extends Objective {
                     }
                 }
             } else {
-                Debug.broadcast("three words");
                 time.append(words[0] + ", " + words[1] + " " + Config.getMessage(lang, "and ") + words[2]);
             }
-            Debug.broadcast("time looks like: " + time.toString());
             return time.toString();
         } else if (name.equalsIgnoreCase("date")) {
             return new SimpleDateFormat(Config.getString("config.date_format"))
