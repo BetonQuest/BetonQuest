@@ -103,5 +103,14 @@ public class LocationObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return "";
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("location")) {
+            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() +
+                    ", Z: " + location.getBlockZ();
+        }
+        return "";
+    }
 
 }

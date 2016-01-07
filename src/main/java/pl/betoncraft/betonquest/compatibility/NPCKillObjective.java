@@ -103,6 +103,16 @@ public class NPCKillObjective extends Objective implements Listener {
         return Integer.toString(amount);
     }
     
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((NPCData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
+    
     public static class NPCData extends ObjectiveData {
         
         private int amount;
@@ -119,6 +129,10 @@ public class NPCKillObjective extends Objective implements Listener {
         
         private boolean killed() {
             return amount <= 0;
+        }
+        
+        private int getAmount() {
+            return amount;
         }
         
     }

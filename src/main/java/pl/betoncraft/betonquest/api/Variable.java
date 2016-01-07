@@ -50,7 +50,8 @@ abstract public class Variable {
      *            required data from it and display errors if there is anything
      *            wrong.
      */
-    public Variable(String packName, String instruction) {
+    public Variable(String packName, String instruction)
+            throws InstructionParseException {
         this.instruction = instruction;
         this.pack = Config.getPackage(packName);
     }

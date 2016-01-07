@@ -105,6 +105,16 @@ public class SmeltingObjective extends Objective implements Listener {
         return Integer.toString(amount);
     }
     
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((SmeltData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((SmeltData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
+    
     public static class SmeltData extends ObjectiveData {
         
         private int amount;
@@ -112,6 +122,10 @@ public class SmeltingObjective extends Objective implements Listener {
         public SmeltData(String instruction, String playerID, String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
+        }
+        
+        private int getAmount() {
+            return amount;
         }
         
         private void subtract(int amount) {

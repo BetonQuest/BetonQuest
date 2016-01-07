@@ -119,6 +119,16 @@ public class TameObjective extends Objective implements Listener {
         return Integer.toString(amount);
     }
     
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((TameData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((TameData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
+    
     public static class TameData extends ObjectiveData {
         
         private int amount;
@@ -131,6 +141,10 @@ public class TameObjective extends Objective implements Listener {
         @Override
         public String toString() {
             return Integer.toString(amount);
+        }
+        
+        private int getAmount() {
+            return amount;
         }
         
         private void subtract() {

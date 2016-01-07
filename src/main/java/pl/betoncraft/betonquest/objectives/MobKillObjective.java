@@ -162,6 +162,16 @@ public class MobKillObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return Integer.toString(amount);
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((MobData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((MobData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
 
     public static class MobData extends ObjectiveData {
 

@@ -125,6 +125,7 @@ import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
 import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
+import pl.betoncraft.betonquest.variables.ObjectivePropertyVariable;
 import pl.betoncraft.betonquest.variables.PlayerNameVariable;
 
 /**
@@ -305,6 +306,7 @@ public final class BetonQuest extends JavaPlugin {
         // register variable types
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
+        registerVariable("objective", ObjectivePropertyVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
@@ -386,6 +388,7 @@ public final class BetonQuest extends JavaPlugin {
         conditions.clear();
         conversations.clear();
         objectives.clear();
+        variables.clear();
         // load new data
         for (String packName : Config.getPackageNames()) {
             Debug.info("Loading stuff in package " + packName);

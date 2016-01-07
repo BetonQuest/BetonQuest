@@ -129,8 +129,8 @@ public abstract class Objective {
      * 
      * @return the property with given name
      */
-    public String getProperty(String name) {
-        return null;
+    public String getProperty(String name, String playerID) {
+        return "";
     }
     
     /**

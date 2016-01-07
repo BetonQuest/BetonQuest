@@ -207,5 +207,14 @@ public class ActionObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return "";
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("location")) {
+            if (loc == null) return "";
+            return "X: " + loc.getBlockX() + ", Y: " + loc.getBlockY() + ", Z: " + loc.getBlockZ();
+        }
+        return "";
+    }
 
 }

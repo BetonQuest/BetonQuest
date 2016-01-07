@@ -158,6 +158,16 @@ public class BlockObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return "0";
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(neededAmount - ((BlockData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((BlockData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
 
     public static class BlockData extends ObjectiveData {
 

@@ -17,34 +17,41 @@
  */
 package pl.betoncraft.betonquest.variables;
 
-import org.bukkit.entity.Player;
-
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * This variable resolves into the player's name. It can has optional "display"
- * argument, which will resolve it to the display name.
+ * Resolves to a specified property of an objective.
  * 
  * @author Jakub Sapalski
  */
-public class PlayerNameVariable extends Variable {
+public class ObjectivePropertyVariable extends Variable {
     
-    private boolean display = false;
+    private Objective objective;
+    private String propertyName;
 
-    public PlayerNameVariable(String packName, String instruction)
+    public ObjectivePropertyVariable(String packName, String instruction)
             throws InstructionParseException {
         super(packName, instruction);
         String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length > 1 && parts[1].equalsIgnoreCase("display"))
-            display = true;
+        if (parts.length != 3) {
+            throw new InstructionParseException("Incorrect number of arguments");
+        }
+        String objectiveID;
+        if (parts[1].contains(".")) {
+            objectiveID = parts[1];
+        } else {
+            objectiveID = packName + "." + parts[1];
+        }
+        objective = BetonQuest.getInstance().getObjective(objectiveID);
+        propertyName = parts[2];
     }
 
     @Override
     public String getValue(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        return (display) ? player.getDisplayName() : player.getName();
+        return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
     }
 
 }
