@@ -183,9 +183,14 @@ public class Conversation implements Listener {
             new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
-
+        // resolve variables
+        String text = data.getText(language, option, OptionType.NPC);
+        for (String variable : BetonQuest.resolveVariables(text)) {
+            text = text.replace(variable, BetonQuest.getInstance()
+                    .getVariableValue(data.getPackName() + "-" + variable, playerID));
+        }
         // print option to the player
-        inOut.setNPCResponse(data.getText(language, option, OptionType.NPC));
+        inOut.setNPCResponse(text);
 
         new NPCEventRunner(option).runTask(BetonQuest.getInstance());
     }
@@ -225,7 +230,13 @@ public class Conversation implements Listener {
             i++;
             // print reply and put it to the hashmap
             current.put(Integer.valueOf(i), option);
-            inOut.addPlayerOption(data.getText(language, option, OptionType.PLAYER));
+            // replace variables with their values
+            String text = data.getText(language, option, OptionType.PLAYER);
+            for (String variable : BetonQuest.resolveVariables(text)) {
+                text = text.replace(variable, BetonQuest.getInstance()
+                        .getVariableValue(data.getPackName() + "-" + variable, playerID));
+            }
+            inOut.addPlayerOption(text);
         }
         inOut.display();
         // end conversations if there are no possible options
@@ -355,6 +366,13 @@ public class Conversation implements Listener {
      */
     public ConversationIO getIO() {
         return inOut;
+    }
+    
+    /**
+     * @return the data of the conversation
+     */
+    public ConversationData getData() {
+        return data;
     }
 
     /**

@@ -36,6 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.commands.BackpackCommand;
 import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
@@ -123,6 +124,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.NpcNameVariable;
+import pl.betoncraft.betonquest.variables.PlayerNameVariable;
 
 /**
  * Represents BetonQuest plugin
@@ -147,11 +150,13 @@ public final class BetonQuest extends JavaPlugin {
     private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
     private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
     private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
+    private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
     
     private static HashMap<String, Condition> conditions = new HashMap<>();
     private static HashMap<String, QuestEvent> events = new HashMap<>();
     private static HashMap<String, Objective> objectives = new HashMap<>();
     private static HashMap<String, ConversationData> conversations = new HashMap<>();
+    private static HashMap<String, Variable> variables = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -296,6 +301,10 @@ public final class BetonQuest extends JavaPlugin {
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);
         registerConversationIO("chest", InventoryConvIO.class);
+        
+        // register variable types
+        registerVariable("player", PlayerNameVariable.class);
+        registerVariable("npc", NpcNameVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
@@ -657,10 +666,31 @@ public final class BetonQuest extends JavaPlugin {
         objectiveTypes.put(name, objectiveClass);
     }
     
+    /**
+     * Registers new conversation input/output class.
+     * 
+     * @param name
+     *          name of the IO type
+     * @param convIOClass
+     *          class object to register
+     */
     public void registerConversationIO(String name, Class<? extends ConversationIO>
             convIOClass) {
         Debug.info("Registering " + name + " conversation IO type");
         convIOTypes.put(name, convIOClass);
+    }
+    
+    /**
+     * Registers new variable type.
+     * 
+     * @param name
+     *          name of the variable type
+     * @param variable
+     *          class object of this type
+     */
+    public void registerVariable(String name, Class<? extends Variable> variable) {
+        Debug.info("Registering " + name + " variable type");
+        variableTypes.put(name, variable);
     }
 
     /**
@@ -788,6 +818,92 @@ public final class BetonQuest extends JavaPlugin {
     }
     
     /**
+     * Creates a new instance of a variable and puts it into the hashmap.
+     * @param pack 
+     * 
+     * @param instruction
+     *          instruction of the variable, including both % characters.
+     */
+    public static void createVariable(ConfigPackage pack, String instruction) {
+        String ID = pack.getName() + "-" + instruction;
+        // no need to create duplicated variables
+        if (variables.containsKey(ID)) return;
+        String[] parts = instruction.replace("%", "").split("\\.");
+        if (parts.length < 1) {
+            Debug.error("Not enough arguments in variable " + ID);
+            return;
+        }
+        Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
+        // if it's null then there is no such type registered, log an error
+        if (variableClass == null) {
+            Debug.error("Variable type " + parts[0] + " is not registered,"
+                    + " check if it's spelled correctly in " + ID
+                    + " variable."
+            );
+            return;
+        }
+        try {
+            Variable variable = variableClass.getConstructor(String.class,
+                    String.class).newInstance(pack.getName(), instruction);
+            variables.put(ID, variable);
+            Debug.info("Variable " + ID + " loaded");
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof InstructionParseException) {
+                Debug.error("Error in " + ID + " variable: "
+                        + e.getCause().getMessage());
+            } else {
+                e.printStackTrace();
+                Debug.error(ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+    }
+    
+    /**
+     * Resolves variables in the supplied text and returns them as a list of
+     * instruction strings, including % characters. Variables are unique, so
+     * if the user uses the same variables multiple times, the list will
+     * contain only one occurence of this variable.
+     * 
+     * @param text
+     *          text from which the variables will be resolved
+     * @return the list of unique variable instructions
+     */
+    public static ArrayList<String> resolveVariables(String text) {
+        ArrayList<String> variables = new ArrayList<>();
+        boolean inside = false;
+        char[] charArr = text.toCharArray();
+        StringBuilder variable = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            if (inside) {
+                if (charArr[i] == ' ') {
+                    // it's not a variable if it contains a space
+                    inside = false;
+                    variable = new StringBuilder();
+                }
+                variable.append(charArr[i]);
+                if (charArr[i] == '%') {
+                    // end of the variable
+                    inside = false;
+                    String finalVariable = variable.toString();
+                    variable = new StringBuilder();
+                    if (!variables.contains(finalVariable)) {
+                        variables.add(finalVariable);
+                    }
+                }
+            } else {
+                if (charArr[i] == '%') {
+                    inside = true;
+                    variable.append('%');
+                }
+            }
+        }
+        return variables;
+    }
+    
+    /**
      * Returns the list of objectives of this player
      * 
      * @param playerID
@@ -832,7 +948,23 @@ public final class BetonQuest extends JavaPlugin {
         return saver;
     }
     
+    /**
+     * @param name
+     *          name of the conversation IO type
+     * @return the class object for this conversation IO type
+     */
     public Class<? extends ConversationIO> getConvIO(String name) {
         return convIOTypes.get(name);
+    }
+    
+    /**
+     * @param name
+     *          name of the variable (instruction, with % characters)
+     * @param playerID
+     *          ID of the player
+     * @return the value of this variable for given player
+     */
+    public String getVariableValue(String name, String playerID) {
+        return variables.get(name).getValue(playerID);
     }
 }

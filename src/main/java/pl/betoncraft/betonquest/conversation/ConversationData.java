@@ -17,11 +17,13 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -220,6 +222,13 @@ public class ConversationData {
         }
     }
     
+    /**
+     * @return the name of the package
+     */
+    public String getPackName() {
+        return pack.getName();
+    }
+    
     public String[] getData(String option, OptionType type, RequestType req) {
         HashMap<String, Option> options;
         if (type == OptionType.NPC) {
@@ -291,9 +300,19 @@ public class ConversationData {
                 text.put(defaultLang, pack.getString("conversations." + convName + "." 
                         + type + "." + name + ".text"));
             }
+            ArrayList<String> variables = new ArrayList<>();
             for (String theText : text.values()) {
                 if (theText == null || theText.equals("")) throw new InstructionParseException(
                         "Text not defined in " + visibleType + " " + name);
+                // variables are possibly duplicated because there probably is the same variable in every language
+                ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
+                for (String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
+                    if (variables.contains(possiblyDuplicatedVariable)) continue;
+                    variables.add(possiblyDuplicatedVariable);
+                }
+            }
+            for (String variable : variables) {
+                BetonQuest.createVariable(pack, variable);
             }
             String rawConditions = pack.getString("conversations." + convName + "." + type + "." + name + ".conditions");
             String[] cond1 = new String[]{};

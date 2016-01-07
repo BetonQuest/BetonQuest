@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v26";
+    private final String destination = "v27";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -191,6 +191,61 @@ public class ConfigUpdater {
     }
     
     @SuppressWarnings("unused")
+    private void update_from_v26() {
+        try {
+            for (String packName : Config.getPackageNames()) {
+                for (String convName : Config.getPackage(packName).getConversationNames()) {
+                    FileConfiguration conv = Config.getPackage(packName)
+                            .getConversation(convName).getConfig();
+                    ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
+                    if (playerSection != null) {
+                        for (String playerKey : playerSection.getKeys(false)) {
+                            if (conv.isConfigurationSection("player_options." + playerKey + ".text")) {
+                                for (String langKey : conv.getConfigurationSection(
+                                        "player_options." + playerKey + ".text")
+                                        .getKeys(false)) {
+                                    conv.set("player_options." + playerKey + ".text." + langKey,
+                                            conv.getString("player_options." + playerKey + ".text." + langKey)
+                                            .replace("%quester%", "%npc%"));
+                                }
+                            } else {
+                                conv.set("player_options." + playerKey + ".text",
+                                        conv.getString("player_options." + playerKey + ".text")
+                                        .replace("%quester%", "%npc%"));
+                            }
+                        }
+                    }
+                    ConfigurationSection npcSection = conv.getConfigurationSection("NPC_options");
+                    if (npcSection != null) {
+                        for (String npcKey : npcSection.getKeys(false)) {
+                            if (conv.isConfigurationSection("NPC_options." + npcKey + ".text")) {
+                                for (String langKey : conv.getConfigurationSection(
+                                        "NPC_options." + npcKey + ".text")
+                                        .getKeys(false)) {
+                                    conv.set("NPC_options." + npcKey + ".text." + langKey,
+                                            conv.getString("NPC_options." + npcKey + ".text." + langKey)
+                                            .replace("%quester%", "%npc%"));
+                                }
+                            } else {
+                                conv.set("NPC_options." + npcKey + ".text",
+                                        conv.getString("NPC_options." + npcKey + ".text")
+                                        .replace("%quester%", "%npc%"));
+                            }
+                        }
+                    }
+                    Config.getPackage(packName).getConversation(convName).saveConfig();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Changed %quester% variables to %npc%.");
+        config.set("version", "v27");
+        instance.saveConfig();
+    }
+    
+    @SuppressWarnings("unused")
     private void update_from_v25() {
         try {
             for (String packName : Config.getPackageNames()) {
@@ -208,7 +263,7 @@ public class ConfigUpdater {
             e.printStackTrace();
             Debug.error(ERROR);
         }
-        Debug.broadcast("Journal entries can now be deleted.");
+        Debug.broadcast("Added \"add\" keyword to journal events.");
         config.set("version", "v26");
         instance.saveConfig();
     }

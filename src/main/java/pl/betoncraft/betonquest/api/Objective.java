@@ -119,7 +119,20 @@ public abstract class Objective {
      * @return the default data instruction string
      */
     public abstract String getDefaultDataInstruction();
-
+    
+    /**
+     * This method should return various properties of the objective, formatted
+     * as readable Strings. An example would be "5h 5min" for "time_left" keyword
+     * in "delay" objective or "12" for keyword "mobs_killed" in "mobkill" objective.
+     * The method is not abstract since not all objectives need to have properties,
+     * i.e. "die" objective.
+     * 
+     * @return the property with given name
+     */
+    public String getProperty(String name) {
+        return null;
+    }
+    
     /**
      * This method fires events for the objective and removes it from player's
      * list of active objectives. Use it when you detect that the objective has

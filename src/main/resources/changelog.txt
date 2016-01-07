@@ -5,6 +5,7 @@ Fixes:
     * Action objective now correctly checks locations
     * Combat tag is removed after death
 Additions:
+    * New variable system in conversations (check out the documentation)
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * New condition 'objective' - checks if the player has an active objective
@@ -12,6 +13,7 @@ Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
     * Journal event can remove entries from the journal
+    * In conversations, %quester% variable changed to %npc%
 
 v1.7.6
 Fixes:
