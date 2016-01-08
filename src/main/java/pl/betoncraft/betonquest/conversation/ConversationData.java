@@ -37,6 +37,8 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class ConversationData {
     
+    private static ArrayList<String> externalPointers = new ArrayList<>();
+    
     private ConfigPackage pack;
     private String convName;
     
@@ -96,7 +98,6 @@ public class ConversationData {
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
         }
-        startingOptions = rawStartingOptions.split(",");
         if (rawFinalEvents != null && !rawFinalEvents.equals("")) {
             finalEvents = rawFinalEvents.split(",");
         } else {
@@ -117,6 +118,16 @@ public class ConversationData {
         NPCOptions = new HashMap<>();
         for (String key : NPCSection.getKeys(false)) {
             NPCOptions.put(key, new NPCOption(key));
+        }
+        // check if all starting options point to existing NPC options
+        startingOptions = rawStartingOptions.split(",");
+        for (String startingOption : startingOptions) {
+            if (startingOption.contains(".")) {
+                String entirePointer = pack.getName() + "." + convName + "." + "<starting_option>" + "." + startingOption;
+                externalPointers.add(entirePointer);
+            } else if (!NPCOptions.containsKey(startingOption)) {
+                throw new InstructionParseException("Starting option " + startingOption + " does not exist");
+            }
         }
         // load all Player options
         ConfigurationSection playerSection = pack.getConversation(name)
@@ -139,7 +150,10 @@ public class ConversationData {
         }
         for (Option option : playerOptions.values()) {
             for (String pointer : option.getPointers()) {
-                if (!NPCOptions.containsKey(pointer)) {
+                if (pointer.contains(".")) {
+                    String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
+                    externalPointers.add(entirePointer);
+                } else if (!NPCOptions.containsKey(pointer)) {
                     throw new InstructionParseException(String.format(
                             "Player option %s points to %s NPC option, but it does not exist",
                             option.getName(), pointer));
@@ -151,6 +165,13 @@ public class ConversationData {
                 "Conversation loaded: %d NPC options and %d player options",
                 NPCOptions.size(), playerOptions.size())
         );
+    }
+    
+    /**
+     * @return the name of this conversation
+     */
+    public String getName() {
+        return convName;
     }
     
     /**
@@ -215,11 +236,14 @@ public class ConversationData {
     }
     
     public String getText(String lang, String option, OptionType type) {
+        Option o = null;
         if (type == OptionType.NPC) {
-            return NPCOptions.get(option).getText(lang);
+            o = NPCOptions.get(option);
         } else {
-            return playerOptions.get(option).getText(lang);
+            o = playerOptions.get(option);
         }
+        if (o == null) return null;
+        return o.getText(lang);
     }
     
     /**
@@ -245,6 +269,38 @@ public class ConversationData {
                 return options.get(option).getPointers();
         }
         return null;
+    }
+    
+    /**
+     * Checks if external pointers point to valid options. It cannot be checked
+     * when constructing ConversationData objects because conversations that are
+     * being pointed to may not yet exist.
+     * 
+     * This method should be called when all conversations are loaded. It will
+     * not throw any exceptions, just display errors in the console.
+     */
+    public static void postEnableCheck() {
+        for (String externalPointer : externalPointers) {
+            String[] parts = externalPointer.split("\\.");
+            String packName = parts[0];
+            String sourceConv = parts[1];
+            String sourceOption = parts[2];
+            String targetConv = parts[3];
+            String targetOption = parts[4];
+            ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
+            if (conv == null) {
+                Debug.error("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, " + 
+                        ((sourceOption.equals("<starting_option>")) ? "starting option" : ("'" + sourceOption + "' player option")) + 
+                        " points to '" + targetConv + "' conversation, but it does not even exist. Check your spelling!");
+                continue;
+            }
+            if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
+                Debug.error("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, " + 
+                        ((sourceOption.equals("<starting_option>")) ? "starting option" : ("'" + sourceOption + "' player option")) + 
+                        " points to '" + targetOption + "' NPC option in '" + targetConv + "' conversation, but it does not exist.");
+            }
+        }
+        externalPointers.clear();
     }
 
     /**

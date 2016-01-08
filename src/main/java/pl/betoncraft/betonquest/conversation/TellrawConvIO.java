@@ -44,7 +44,7 @@ public class TellrawConvIO  extends ChatConvIO {
     private String number;
 
     public TellrawConvIO(Conversation conv, String playerID, String npcName) {
-        super(conv, playerID, npcName);
+        super(conv, playerID);
         hashes = new HashMap<>();
         for (ChatColor color : colors.get("option")) {
             if (color == ChatColor.STRIKETHROUGH) {

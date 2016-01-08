@@ -56,14 +56,16 @@ public class Conversation implements Listener {
     
     private final String playerID;
     private final Player player;
+    private final String packName;
     private final String language;
-    private final ConversationData data;
+    private ConversationData data;
     private final Location location;
     private final String convID;
     private final List<String> blacklist;
     private ConversationIO inOut;
     private String option;
     private final Conversation conv;
+    private final BetonQuest plugin;
     private boolean ended = false;
     
     private HashMap<Integer, String> current = new HashMap<>();
@@ -105,13 +107,15 @@ public class Conversation implements Listener {
             final String conversationID, final Location location, String option) {
 
         this.conv = this;
+        this.plugin = BetonQuest.getInstance();
         this.playerID = playerID;
         this.player = PlayerConverter.getPlayer(playerID);
-        this.language = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+        this.packName = packName;
+        this.language = plugin.getDBHandler(playerID).getLanguage();
         this.location = location;
         this.convID = packName + "." + conversationID;
-        this.data = BetonQuest.getInstance().getConversation(convID);
-        this.blacklist = BetonQuest.getInstance().getConfig()
+        this.data = plugin.getConversation(convID);
+        this.blacklist = plugin.getConfig()
                 .getStringList("cmd_blacklist");
         
         // check if data is present
@@ -135,10 +139,11 @@ public class Conversation implements Listener {
         if (option == null) {
             options = null;
         } else {
+            if (!option.contains(".")) option = conversationID + "." + option;
             options = new String[]{option};
         }
         
-        new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
+        new Starter(options).runTaskAsynchronously(plugin);
     }
 
     /**
@@ -156,14 +161,25 @@ public class Conversation implements Listener {
             // get npc's text
             option = null;
             options:
-            for (String NPCoption : options) {
-                for (String condition : data.getData(NPCoption, OptionType.NPC,
+            for (String option : options) {
+                String convName, optionName;
+                if (option.contains(".")) {
+                    String[] parts = option.split("\\.");
+                    convName = parts[0];
+                    optionName = parts[1];
+                } else {
+                    convName = data.getName();
+                    optionName = option;
+                }
+                ConversationData currentData = plugin.getConversation(packName + "." + convName);
+                for (String condition : currentData.getData(optionName, OptionType.NPC,
                         RequestType.CONDITION)) {
                     if (!BetonQuest.condition(this.playerID, condition)) {
                         continue options;
                     }
                 }
-                option = NPCoption;
+                this.option = optionName;
+                data = currentData;
                 break;
             }
         } else {
@@ -180,19 +196,19 @@ public class Conversation implements Listener {
 
         // if there are no possible options, end conversation
         if (option == null) {
-            new ConversationEnder().runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(plugin);
             return;
         }
-        // resolve variables
         String text = data.getText(language, option, OptionType.NPC);
+        // resolve variables
         for (String variable : BetonQuest.resolveVariables(text)) {
-            text = text.replace(variable, BetonQuest.getInstance()
+            text = text.replace(variable, plugin
                     .getVariableValue(data.getPackName(), variable, playerID));
         }
         // print option to the player
-        inOut.setNPCResponse(text);
+        inOut.setNpcResponse(data.getQuester(language), text);
 
-        new NPCEventRunner(option).runTask(BetonQuest.getInstance());
+        new NPCEventRunner(option).runTask(plugin);
     }
 
     /**
@@ -205,7 +221,7 @@ public class Conversation implements Listener {
         
         inOut.clear();
         
-        new PlayerEventRunner(current.get(number)).runTask(BetonQuest.getInstance());
+        new PlayerEventRunner(current.get(number)).runTask(plugin);
 
         // clear hashmap
         current.clear();
@@ -233,7 +249,7 @@ public class Conversation implements Listener {
             // replace variables with their values
             String text = data.getText(language, option, OptionType.PLAYER);
             for (String variable : BetonQuest.resolveVariables(text)) {
-                text = text.replace(variable, BetonQuest.getInstance()
+                text = text.replace(variable, plugin
                         .getVariableValue(data.getPackName(), variable, playerID));
             }
             inOut.addPlayerOption(text);
@@ -241,7 +257,7 @@ public class Conversation implements Listener {
         inOut.display();
         // end conversations if there are no possible options
         if (current.isEmpty()) {
-            new ConversationEnder().runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(plugin);
             return;
         }
     }
@@ -322,7 +338,7 @@ public class Conversation implements Listener {
         // save the conversation to the database
         String loc = location.getX() + ";" + location.getY() + ";"
                     + location.getZ() + ";" + location.getWorld().getName();
-        BetonQuest.getInstance().getSaver().add(new Record(
+        plugin.getSaver().add(new Record(
                 UpdateType.UPDATE_CONVERSATION, new String[]{convID
                 + " " + option + " " + loc, playerID}));
         // delete conversation
@@ -397,21 +413,21 @@ public class Conversation implements Listener {
             // stop the conversation if it's canceled
             if (event.isCancelled()) return;
             
-            // now the conversation should start no matter what
+            // now the conversation should start no matter what;
             // the inOut can be safely instantiated; doing it before
             // would leave it active while the conversation is not
             // started, causing it to display "null" all the time
             try {
-                String name = BetonQuest.getInstance().getConfig()
+                String name = plugin.getConfig()
                         .getString("default_conversation_IO");
-                Class<? extends ConversationIO> c = BetonQuest.getInstance()
+                Class<? extends ConversationIO> c = plugin
                         .getConvIO(name);
                 if (c == null) {
                     Debug.error("Conversation IO " + name + " is not registered!");
                     return;
                 }
-                conv.inOut = c.getConstructor(Conversation.class, String.class, String.class)
-                        .newInstance(conv, playerID, data.getQuester(language));
+                conv.inOut = c.getConstructor(Conversation.class, String.class)
+                        .newInstance(conv, playerID);
             } catch (InstantiationException | IllegalAccessException
                     | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException e) {
@@ -424,14 +440,12 @@ public class Conversation implements Listener {
             Bukkit.getPluginManager().registerEvents(conv, BetonQuest
                     .getInstance());
             
-            boolean force = true;
             if (options == null) {
                 options = data.getStartingOptions();
-                force = false;
                 
                 // first select the option before sending message, so it
                 // knows which is used
-                selectOption(options, force);
+                selectOption(options, false);
                 
                 // check whether to add a prefix
                 String prefix = data.getPrefix(language, option);
@@ -449,7 +463,7 @@ public class Conversation implements Listener {
                     prefixName, prefixVariables);
             } else {
                 // don't forget to select the option prior to printing its text
-                selectOption(options, force);
+                selectOption(options, true);
             }
             
             // print NPC's text
@@ -476,7 +490,7 @@ public class Conversation implements Listener {
                     RequestType.EVENT)) {
                 BetonQuest.event(playerID, event);
             }
-            new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
+            new OptionPrinter(option).runTaskAsynchronously(plugin);
         }
     }
     
@@ -499,7 +513,7 @@ public class Conversation implements Listener {
                     OptionType.PLAYER, RequestType.EVENT)) {
                 BetonQuest.event(playerID, event);
             }
-            new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
+            new ResponsePrinter(option).runTaskAsynchronously(plugin);
         }
     }
     

@@ -28,10 +28,12 @@ public interface ConversationIO {
      * Set the text of response choosen by the NPC. Should be called once per
      * conversation cycle.
      * 
+     * @param npcName
+     *         the name of the NPC
      * @param response
      *         the text the NPC chose
      */
-    public void setNPCResponse(String response);
+    public void setNpcResponse(String npcName, String response);
     
     /**
      * Adds the text of the player option. Should be called for each option in

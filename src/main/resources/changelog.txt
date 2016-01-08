@@ -15,6 +15,7 @@ Changes:
     * Journal event can remove entries from the journal
     * In conversations, %quester% variable changed to %npc%
     * In inventory GUI there is NPC's text in every option, for convenience
+    * Conversations can point to NPC options in other conversations within the package
 
 v1.7.6
 Fixes:

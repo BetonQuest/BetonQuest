@@ -529,6 +529,8 @@ public final class BetonQuest extends JavaPlugin {
                     Debug.error(ERROR);
                 }
             }
+            // check external pointers
+            ConversationData.postEnableCheck();
             Debug.info("Everything in package " + packName + " loaded");
         }
         Debug.broadcast("There are " + conditions.size() + " conditions, "

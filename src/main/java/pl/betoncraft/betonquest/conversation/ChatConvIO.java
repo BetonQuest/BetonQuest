@@ -46,9 +46,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected int i; // counts options
     protected HashMap<Integer, String> options;
     protected String npcText;
+    protected String npcName;
     
     protected final Conversation conv;
-    protected final String npcName;
     protected final String name;
     protected final Player player;
     protected final HashMap<String, ChatColor[]> colors;
@@ -56,10 +56,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String answerFormat;
     protected String textFormat;
     
-    public ChatConvIO(Conversation conv, String playerID, String npcName) {
+    public ChatConvIO(Conversation conv, String playerID) {
         this.options = new HashMap<>();
         this.conv = conv;
-        this.npcName = npcName;
         this.player = PlayerConverter.getPlayer(playerID);
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
@@ -67,7 +66,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         for (ChatColor color : colors.get("npc")) {
             string.append(color);
         }
-        string.append(npcName + ChatColor.RESET + ": ");
+        string.append("%npc%" + ChatColor.RESET + ": ");
         for (ChatColor color : colors.get("text")) {
             string.append(color);
         }
@@ -164,7 +163,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void setNPCResponse(String response) {
+    public void setNpcResponse(String npcName, String response) {
+        this.npcName = npcName;
         this.npcText = response.replace('&', '§');
     }
 
@@ -180,7 +180,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        player.sendMessage(textFormat + npcText);
+        player.sendMessage(textFormat.replace("%npc%", npcName) + npcText);
     }
 
     @Override

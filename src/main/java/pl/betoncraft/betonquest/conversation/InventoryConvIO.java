@@ -62,11 +62,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private boolean allowClose = false;;
     private Location loc;
     
-    public InventoryConvIO(Conversation conv, String playerID, String npcName) {
+    public InventoryConvIO(Conversation conv, String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
         HashMap<String, ChatColor[]> colors = ConversationColors.getColors();
-        this.npcName = npcName;
         StringBuilder string = new StringBuilder();
         for (ChatColor color : colors.get("npc")) {
             string.append(color);
@@ -98,20 +97,21 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         answerPrefix = string.toString();
         loc = player.getLocation();
-        inv = Bukkit.createInventory(null, 9, npcName);
+        inv = Bukkit.createInventory(null, 9);
         player.openInventory(inv);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
-    public void setNPCResponse(String response) {
-        this.response = response.replace("%quester%", npcName).replace("%player%", player.getName()).replace('&', '§'); 
+    public void setNpcResponse(String npcName, String response) {
+        this.npcName = npcName;
+        this.response = response.replace('&', '§'); 
     }
 
     @Override
     public void addPlayerOption(String option) {
         i++;
-        options.put(i, option.replace("%quester%", npcName).replace("%player%", player.getName()).replace('&', '§'));
+        options.put(i, option.replace('&', '§'));
     }
 
     @Override
