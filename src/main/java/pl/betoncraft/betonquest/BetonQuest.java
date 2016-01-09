@@ -45,6 +45,7 @@ import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
+import pl.betoncraft.betonquest.conditions.CheckCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
@@ -99,6 +100,7 @@ import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
+import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
@@ -261,6 +263,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("party", PartyCondition.class);
         registerConditions("monsters", MonstersCondition.class);
         registerConditions("objective", ObjectiveCondition.class);
+        registerConditions("check", CheckCondition.class);
 
         // register events
         registerEvents("message", MessageEvent.class);
@@ -285,6 +288,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("damage", DamageEvent.class);
         registerEvents("party", PartyEvent.class);
         registerEvents("clear", ClearEvent.class);
+        registerEvents("run", RunEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
@@ -978,5 +982,19 @@ public final class BetonQuest extends JavaPlugin {
         Variable var = variables.get(packName + "-" + name);
         if (var == null) return "";
         return variables.get(packName + "-" + name).getValue(playerID);
+    }
+
+    /**
+     * @return the class of the event
+     */
+    public Class<? extends QuestEvent> getEventClass(String name) {
+        return eventTypes.get(name);
+    }
+
+    /**
+     * @return the class of the event
+     */
+    public Class<? extends Condition> getConditionClass(String name) {
+        return conditionTypes.get(name);
     }
 }
