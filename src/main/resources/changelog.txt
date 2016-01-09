@@ -12,6 +12,7 @@ Additions:
     * New condition 'objective' - checks if the player has an active objective
     * New event 'givejournal' - gives journal to the player
     * New objective 'logout' - the player needs to leave the server
+    * New objective 'password' - 
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged

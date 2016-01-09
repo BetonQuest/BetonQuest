@@ -31,6 +31,7 @@ pl:
   minutes: 'minut'
   seconds: 'sekund'
   and: 'i'
+  password: 'haslo: '
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1} started!&e===='
@@ -64,6 +65,7 @@ en:
   minutes: 'minutes'
   seconds: 'seconds'
   and: 'and'
+  password: 'password: '
 de:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGespraech mit {1} begonnen!&e===='
@@ -97,6 +99,7 @@ de:
   minutes: 'Minuten'
   seconds: 'Sekunden'
   and: 'und'
+  password: 'Passwort: '
 fr:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversation avec {1} est engagee!&e===='
@@ -130,6 +133,7 @@ fr:
   minutes: 'minutes'
   seconds: 'secondes'
   and: 'et'
+  password: 'mot de passe: '
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}\u5bf9\u8bdd\u4e2d&e===="
@@ -163,6 +167,7 @@ cn:
   minutes: 'minutes'
   seconds: 'seconds'
   and: 'and'
+  password: 'password: '
 es:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversacion con {1} ha comenzado.&e===='
@@ -196,6 +201,7 @@ es:
   minutes: 'minutos'
   seconds: 'segundos'
   and: 'y'
+  password: 'clave: '
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1} begonnen!&e===='
@@ -229,3 +235,4 @@ nl:
   minutes: 'minuten'
   seconds: 'seconden'
   and: 'en'
+  password: 'wachtwoord: '
