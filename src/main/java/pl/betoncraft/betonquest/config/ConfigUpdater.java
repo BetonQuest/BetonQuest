@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v27";
+    private final String destination = "v28";
     /**
      * Deprecated ConfigHandler, used fo updating older configuration files
      */
@@ -188,6 +188,22 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v27() {
+        try {
+            config.set("journal.chars_per_page", "245");
+            config.set("journal.one_entry_per_page", "false");
+            config.set("journal.reversed_order", "false");
+            config.set("journal.hide_date", "false");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Added journal options.");
+        config.set("version", "v28");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

@@ -176,10 +176,11 @@ public class Utils {
      */
     public static List<String> pagesFromString(String string, boolean singleString) {
         List<String> pages = new ArrayList<>();
+        int chars = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
         if (singleString) {
             StringBuilder page = new StringBuilder();
             for (String word : string.split(" ")) {
-                if (page.length() + word.length() + 1 > 245) {
+                if (page.length() + word.length() + 1 > chars) {
                     pages.add(page.toString().trim());
                     page = new StringBuilder();
                 }

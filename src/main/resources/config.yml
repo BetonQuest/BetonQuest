@@ -1,4 +1,4 @@
-version: v27
+version: v28
 mysql:
   host: ''
   port: ''
@@ -30,6 +30,11 @@ hook:
   worldguard: 'true'
   skript: 'true'
   mcmmo: 'true'
+journal:
+  chars_per_page: '245'
+  one_entry_per_page: 'false'
+  reversed_order: 'true'
+  hide_date: 'false'
 journal_colors:
   date:
     day: '9'

@@ -6,6 +6,7 @@ Fixes:
     * Combat tag is removed after death
 Additions:
     * New variable system in conversations (check out the documentation)
+    * More options for journal, including one entry per page and removing date
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * New condition 'objective' - checks if the player has an active objective

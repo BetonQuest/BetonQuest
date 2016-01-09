@@ -108,7 +108,11 @@ public class Journal {
      * @return list of Strings - texts for every journal entry
      */
     public List<String> getText() {
-        return Lists.reverse(texts);
+        if (Config.getString("config.journal.reversed_order").equalsIgnoreCase("true")) {
+            return Lists.reverse(texts);
+        } else {
+            return texts;
+        }
     }
 
     /**
@@ -118,12 +122,16 @@ public class Journal {
         texts.clear();
         this.lang = lang; 
         for (Pointer pointer : pointers) {
-            String date = new SimpleDateFormat(Config.getString("config.date_format")).format(pointer.getTimestamp());
-            String[] dateParts = date.split(" ");
-            String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
-            String hour = "";
-            if (dateParts.length > 1) {
-                hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
+            String datePrefix = "";
+            if (Config.getString("config.journal.hide_date").equalsIgnoreCase("false")) {
+                String date = new SimpleDateFormat(Config.getString("config.date_format")).format(pointer.getTimestamp());
+                String[] dateParts = date.split(" ");
+                String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
+                String hour = "";
+                if (dateParts.length > 1) {
+                    hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
+                }
+                datePrefix = day + " " + hour;
             }
             String[] parts = pointer.getPointer().split("\\.");
             String packName = parts[0];
@@ -145,7 +153,7 @@ public class Journal {
             } else {
                 text = pack.getString("journal." + pointerName);
             }
-            texts.add(day + " " + hour + "§" + Config.getString("config.journal_colors.text")
+            texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text")
                     + "\n" + text);
         }
     }
@@ -206,16 +214,20 @@ public class Journal {
         lore.add(Config.getMessage(lang, "journal_lore").replaceAll("&", "§"));
         meta.setLore(lore);
 
-        // logic for converting entries into single text and then to pages
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String entry : getText()) {
-            stringBuilder.append(entry.replaceAll("&", "§") + "\n§"
-                + Config.getString("config.journal_colors.line") + "---------------\n");
+        if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
+            // logic for converting entries into single text and then to pages
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String entry : getText()) {
+                stringBuilder.append(entry.replaceAll("&", "§") + "\n§"
+                        + Config.getString("config.journal_colors.line")
+                        + "---------------\n");
+            }
+            String wholeString = stringBuilder.toString().trim();
+            // return ready journal ItemStack
+            meta.setPages(Utils.pagesFromString(wholeString, true));
+        } else {
+            meta.setPages(getText());
         }
-        String wholeString = stringBuilder.toString().trim();
-
-        // return ready journal ItemStack
-        meta.setPages(Utils.pagesFromString(wholeString, true));
         item.setItemMeta(meta);
         return item;
     }
