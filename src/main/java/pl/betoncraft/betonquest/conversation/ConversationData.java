@@ -383,11 +383,11 @@ public class ConversationData {
             conditions = new String[cond1.length + cond2.length];
             int count = 0;
             for (String cond : cond1) {
-                conditions[count] = cond;
+                conditions[count] = cond.trim();
                 count++;
             }
             for (String cond : cond2) {
-                conditions[count] = cond;
+                conditions[count] = cond.trim();
                 count++;
             }
             for (int i = 0; i < conditions.length; i++) {
@@ -408,11 +408,11 @@ public class ConversationData {
             events = new String[event1.length + event2.length];
             count = 0;
             for (String event : event1) {
-                events[count] = event;
+                events[count] = event.trim();
                 count++;
             }
             for (String event : event2) {
-                events[count] = event;
+                events[count] = event.trim();
                 count++;
             }
             for (int i = 0; i < events.length; i++) {
@@ -433,11 +433,11 @@ public class ConversationData {
             pointers = new String[pointer1.length + pointer2.length];
             count = 0;
             for (String pointer : pointer1) {
-                pointers[count] = pointer;
+                pointers[count] = pointer.trim();
                 count++;
             }
             for (String pointer : pointer2) {
-                pointers[count] = pointer;
+                pointers[count] = pointer.trim();
                 count++;
             }
         }

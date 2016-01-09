@@ -9,6 +9,7 @@ Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * New condition 'objective' - checks if the player has an active objective
+    * New event 'givejournal' - gives journal to the player
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
@@ -16,6 +17,7 @@ Changes:
     * In conversations, %quester% variable changed to %npc%
     * In inventory GUI there is NPC's text in every option, for convenience
     * Conversations can point to NPC options in other conversations within the package
+    * You can use spaces between events, conditions and pointers in conversations
 
 v1.7.6
 Fixes:
