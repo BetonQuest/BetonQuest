@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conversation;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -130,7 +131,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
         npcMeta.setOwner(npcName);
         npcMeta.setDisplayName(npcNameColor + npcName);
-        npcMeta.setLore(stringToLines(response, npcTextColor));
+        npcMeta.setLore(stringToLines(response, npcTextColor, null));
         npc.setItemMeta(npcMeta);
         buttons[0] = npc;
         int next = 0;
@@ -143,8 +144,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
             buttons[j] = new ItemStack(Material.ENDER_PEARL);
             ItemMeta meta = buttons[j].getItemMeta();
             meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
-            ArrayList<String> lines = stringToLines(response, npcTextColor);
-            lines.addAll(stringToLines(option, optionColor));
+            ArrayList<String> lines = stringToLines(response, npcTextColor, npcNameColor + npcName + ChatColor.RESET + ": ");
+            StringBuilder string = new StringBuilder();
+            for (ChatColor color : ConversationColors.getColors().get("number")) {
+                string.append(color);
+            }
+            lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
             meta.setLore(lines);
             buttons[j].setItemMeta(meta);
         }
@@ -205,18 +210,29 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
-    private ArrayList<String> stringToLines(String singleLine, String color) {
+    private ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
         ArrayList<String> multiLine = new ArrayList<>();
-        String[] arr = singleLine.split(" ");
+        boolean firstLinePrefix = prefix != null;
+        if (prefix == null) prefix = "";
+        String[] arr = (prefix + singleLine).split(" ");
         StringBuilder line = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
             if (line.length() + arr[i].length() + 1 > 42) {
-                multiLine.add(color + line.toString().trim());
+                if (firstLinePrefix) {
+                    firstLinePrefix = false;
+                    multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+                } else {
+                    multiLine.add(color + line.toString().trim());
+                }
                 line = new StringBuilder();
             }
             line.append(arr[i] + " ");
         }
-        multiLine.add(color + line.toString().trim());
+        if (firstLinePrefix) {
+            multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+        } else {
+            multiLine.add(color + line.toString().trim());
+        }
         return multiLine;
     }
 }
