@@ -11,6 +11,7 @@ Additions:
     * Optional prefix for conversations (contributed by Jack McKalling)
     * New condition 'objective' - checks if the player has an active objective
     * New event 'givejournal' - gives journal to the player
+    * New objective 'logout' - the player needs to leave the server
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
