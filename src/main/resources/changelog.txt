@@ -17,6 +17,7 @@ Additions:
     * New objective 'password' - the player needs to type the pasword in the chat
     * New objective 'fish' - catching fish
     * New objective 'enchant' - enchanting an item
+    * New objective 'shear' - shearing a sheep
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
