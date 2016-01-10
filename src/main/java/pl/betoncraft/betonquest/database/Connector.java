@@ -238,6 +238,30 @@ public class Connector {
                 case UPDATE_CONVERSATION:
                     statement = connection.prepareStatement("UPDATE " + prefix + "player SET conversation = ? WHERE playerID = ?");
                     break;
+                case REMOVE_ALL_TAGS:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE tag = ?;");
+                    break;
+                case REMOVE_ALL_POINTS:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "points WHERE category = ?;");
+                    break;
+                case REMOVE_ALL_OBJECTIVES:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE objective = ?;");
+                    break;
+                case REMOVE_ALL_ENTRIES:
+                    statement = connection.prepareStatement("DELETE FROM " + prefix + "journal WHERE pointer = ?;");
+                    break;
+                case RENAME_ALL_TAGS:
+                    statement = connection.prepareStatement("UPDATE " + prefix + "tags SET tag = ? WHERE tag = ?;");
+                    break;
+                case RENAME_ALL_POINTS:
+                    statement = connection.prepareStatement("UPDATE " + prefix + "points SET category = ? WHERE category = ?;");
+                    break;
+                case RENAME_ALL_OBJECTIVES:
+                    statement = connection.prepareStatement("UPDATE " + prefix + "objectives SET objective = ? WHERE objective = ?;");
+                    break;
+                case RENAME_ALL_ENTRIES:
+                    statement = connection.prepareStatement("UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;");
+                    break;
                 default:
                     statement = null;
                     break;
@@ -321,7 +345,10 @@ public class Connector {
         INSERT_OBJECTIVE, INSERT_TAG, INSERT_POINT, INSERT_JOURNAL, INSERT_BACKPACK, INSERT_PLAYER,
         
         UPDATE_CONVERSATION,
-        UPDATE_LANGUAGE
+        UPDATE_LANGUAGE,
+
+        REMOVE_ALL_TAGS, REMOVE_ALL_OBJECTIVES, REMOVE_ALL_POINTS, REMOVE_ALL_ENTRIES,
+        RENAME_ALL_TAGS, RENAME_ALL_OBJECTIVES, RENAME_ALL_POINTS, RENAME_ALL_ENTRIES,
     }
 
 }

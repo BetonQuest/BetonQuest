@@ -45,7 +45,9 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationColors;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -58,6 +60,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 public class QuestCommand implements CommandExecutor {
     
     private BetonQuest instance = BetonQuest.getInstance();
+    private String defaultPack = Config.getString("config.default_package");
     
     /**
      * Registers a new executor of the /q command
@@ -157,6 +160,32 @@ public class QuestCommand implements CommandExecutor {
                         }
                     }.runTaskAsynchronously(instance);
                     break;
+                case "delete":
+                case "del":
+                case "d":
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender5 = sender;
+                    final String[] finalArgs5 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            handleDeleting(finalSender5, finalArgs5);
+                        }
+                    }.runTaskAsynchronously(instance);
+                    break;
+                case "rename":
+                case "r":
+                    Debug.info("Loading data asynchronously");
+                    final CommandSender finalSender6 = sender;
+                    final String[] finalArgs6 = args;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Debug.broadcast("renaming");
+                            handleRenaming(finalSender6, finalArgs6);
+                        }
+                    }.runTaskAsynchronously(instance);
+                    break;
                 case "vector":
                 case "vec":
                 case "v":
@@ -164,12 +193,12 @@ public class QuestCommand implements CommandExecutor {
                     break;
                 case "purge":
                     Debug.info("Loading data asynchronously");
-                    final CommandSender finalSender5 = sender;
-                    final String[] finalArgs5 = args;
+                    final CommandSender finalSender7 = sender;
+                    final String[] finalArgs7 = args;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            purgePlayer(finalSender5, finalArgs5);
+                            purgePlayer(finalSender7, finalArgs7);
                         }
                     }.runTaskAsynchronously(instance);
                     break;
@@ -352,7 +381,7 @@ public class QuestCommand implements CommandExecutor {
             Debug.info("Listing journal pointers");
             sendMessage(sender, "player_journal");
             for (Pointer pointer : journal.getPointers()) {
-                String date = new SimpleDateFormat(Config.getString("messages.global.date_format"))
+                String date = new SimpleDateFormat(Config.getString("config.date_format"))
                         .format(new Date(pointer.getTimestamp()));
                 sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
             }
@@ -364,20 +393,22 @@ public class QuestCommand implements CommandExecutor {
             sendMessage(sender, "specify_pointer");
             return;
         }
+        String pointerName = (args[3].contains(".")) ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
             case "a":
+                Pointer pointer;
                 if (args.length < 5) {
                     long timestamp = new Date().getTime();
                     Debug.info("Adding pointer with current date: " + timestamp);
-                    journal.addPointer(new Pointer(args[3], timestamp));
+                    pointer = new Pointer(pointerName, timestamp);
                 } else {
                     Debug.info("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        journal.addPointer(new Pointer(args[3], new SimpleDateFormat(
-                                Config.getString("messages.global.date_format"))
-                                .parse(args[4].replaceAll("_", " ")).getTime()));
+                        pointer = new Pointer(pointerName, new SimpleDateFormat(
+                                Config.getString("config.date_format"))
+                                .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (ParseException e) {
                         Debug.info("Date was in the wrong format");
                         sendMessage(sender, "specify_date");
@@ -386,7 +417,10 @@ public class QuestCommand implements CommandExecutor {
                 }
                 // add the pointer
                 if (isOnline) {
+                    journal.addPointer(pointer);
                     journal.update();
+                } else {
+                    dbHandler.addPointer(pointer);
                 }
                 sendMessage(sender, "pointer_added");
                 break;
@@ -397,9 +431,16 @@ public class QuestCommand implements CommandExecutor {
             case "d":
                 // remove the pointer (this is unnecessary as adding negativ
                 Debug.info("Removing pointer");
-                journal.removePointer(args[3]);
                 if (isOnline) {
+                    journal.removePointer(pointerName);
                     journal.update();
+                } else {
+                    for (Pointer pointer2 : journal.getPointers()) {
+                        if (pointer2.getPointer().equals(pointerName)) {
+                            dbHandler.removePointer(pointer2);
+                            break;
+                        }
+                    }
                 }
                 sendMessage(sender, "pointer_removed");
                 break;
@@ -502,13 +543,8 @@ public class QuestCommand implements CommandExecutor {
             pack = parts[0];
             name = parts[1];
         } else {
-            pack = Config.getString("config.default_package");
+            pack = defaultPack;
             name = itemID;
-        }
-        if (!args[1].contains(".")) {
-            Debug.info("Cannot continue, package must be specified");
-            sendMessage(sender, "specify_package");
-            return;
         }
         Player player = (Player) sender;
         ItemStack item = player.getItemInHand();
@@ -565,7 +601,7 @@ public class QuestCommand implements CommandExecutor {
             pack = parts[0];
             name = parts[1];
         } else {
-            pack = Config.getString("config.default_package");
+            pack = defaultPack;
             name = eventID;
             eventID = pack + "." + name;
         }
@@ -618,7 +654,7 @@ public class QuestCommand implements CommandExecutor {
             pack = parts[0];
             name = parts[1];
         } else {
-            pack = Config.getString("config.default_package");
+            pack = defaultPack;
             name = conditionID;
             conditionID = pack + "." + name;
         }
@@ -763,7 +799,7 @@ public class QuestCommand implements CommandExecutor {
                 Debug.info("Adding new objective for player " + PlayerConverter.getName(playerID));
                 String objectiveID = args[3];
                 if (!objectiveID.contains(".")) {
-                    objectiveID = Config.getString("config.default_package") + "." + args[3];
+                    objectiveID = defaultPack + "." + args[3];
                 }
                 if (BetonQuest.getInstance().getObjective(objectiveID) == null) {
                     sendMessage(sender, "specify_objective");
@@ -808,19 +844,21 @@ public class QuestCommand implements CommandExecutor {
             player.sendMessage("§4ERROR");
             return;
         }
-        String[] parts = args[1].split("\\.");
-        if (parts.length != 2) {
-            player.sendMessage("§4ERROR");
-            return;
+        String pack = null, name = null;
+        if (args[1].contains(".")) {
+            String[] parts = args[1].split("\\.");
+            pack = parts[0];
+            name = parts[1];
+        } else {
+            pack = defaultPack;
+            name = args[1];
         }
-        String pack = parts[0];
-        String name = parts[1];
         String origin = Config.getString(pack + ".main.variables." + name);
         if (origin == null) {
             player.sendMessage("§4ERROR");
             return;
         }
-        parts = origin.split(";");
+        String[] parts = origin.split(";");
         if (parts.length < 3) {
             player.sendMessage("§4ERROR");
             return;
@@ -844,12 +882,180 @@ public class QuestCommand implements CommandExecutor {
     }
 
     /**
+     * Renames stuff.
+     */
+    protected void handleRenaming(CommandSender sender, String[] args) {
+        if (args.length < 4) {
+            sendMessage(sender, "arguments");
+            return;
+        }
+        String type = args[1].toLowerCase(), name = args[2], rename = args[3];
+        if (!name.contains(".")) {
+            name = defaultPack + "." + name;
+        }
+        if (!rename.contains(".")) {
+            rename = defaultPack + "." + rename;
+        }
+        UpdateType updateType;
+        switch (type) {
+            case "tags":
+            case "tag":
+            case "t":
+                updateType = UpdateType.RENAME_ALL_TAGS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    dbHandler.removeTag(name);
+                    dbHandler.addTag(rename);
+                }
+                break;
+            case "points":
+            case "point":
+            case "p":
+                updateType = UpdateType.RENAME_ALL_POINTS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    int points = 0;
+                    for (Point point : dbHandler.getPoints()) {
+                        if (point.getCategory().equals(name)) {
+                            points = point.getCount();
+                            break;
+                        }
+                    }
+                    dbHandler.removePointsCategory(name);
+                    dbHandler.addPoints(rename, points);
+                }
+                break;
+            case "objectives":
+            case "objective":
+            case "o":
+                updateType = UpdateType.RENAME_ALL_OBJECTIVES;
+                String[] parts = name.split("\\.");
+                String packName = parts[0];
+                String objName = parts[1];
+                ConfigPackage pack = Config.getPackage(packName);
+                if (pack == null) {
+                    sendMessage(sender, "specify_package");
+                    return;
+                }
+                String objective = pack.getObjectives().getConfig().getString(objName);
+                if (objective != null) {
+                    pack.getObjectives().getConfig().set(rename, objective);
+                    pack.getObjectives().getConfig().set(objective, null);
+                    pack.getObjectives().saveConfig();
+                }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    String data = null;
+                    for (Objective obj : dbHandler.getObjectives()) {
+                        if (obj.getLabel().equals(name)) {
+                            data = obj.getData(PlayerConverter.getID(player));
+                            break;
+                        }
+                    }
+                    if (data == null) data = "";
+                    dbHandler.deleteObjective(name);
+                    BetonQuest.resumeObjective(PlayerConverter.getID(player), rename, data);
+                }
+                break;
+            case "journals":
+            case "journal":
+            case "j":
+            case "entries":
+            case "entry":
+            case "e":
+                Debug.broadcast("journal");
+                updateType = UpdateType.RENAME_ALL_ENTRIES;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Journal journal = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player)).getJournal();
+                    Pointer p = null;
+                    for (Pointer pointer : journal.getPointers()) {
+                        if (pointer.getPointer().equals(name)) {
+                            p = pointer;
+                        }
+                    }
+                    journal.removePointer(name);
+                    journal.addPointer(new Pointer(rename, p.getTimestamp()));
+                    journal.update();
+                }
+                break;
+            default:
+                sendMessage(sender, "unknown_argument");
+                return;
+        }
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{rename, name}));
+        sendMessage(sender, "everything_renamed");
+    }
+
+    /**
+     * Deleted stuff.
+     */
+    protected void handleDeleting(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            sendMessage(sender, "arguments");
+            return;
+        }
+        String type = args[1].toLowerCase(), name = args[2];
+        if (!name.contains(".")) {
+            name = defaultPack + "." + name;
+        }
+        UpdateType updateType;
+        switch (type) {
+            case "tags":
+            case "tag":
+            case "t":
+                updateType = UpdateType.REMOVE_ALL_TAGS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    dbHandler.removeTag(name);
+                }
+                break;
+            case "points":
+            case "point":
+            case "p":
+                updateType = UpdateType.REMOVE_ALL_POINTS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    dbHandler.removePointsCategory(name);
+                }
+                break;
+            case "objectives":
+            case "objective":
+            case "o":
+                updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    dbHandler.deleteObjective(name);
+                }
+                break;
+            case "journals":
+            case "journal":
+            case "j":
+            case "entries":
+            case "entry":
+            case "e":
+                updateType = UpdateType.REMOVE_ALL_ENTRIES;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Journal journal = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player)).getJournal();
+                    journal.removePointer(name);
+                    journal.update();
+                }
+                break;
+            default:
+                sendMessage(sender, "unknown_argument");
+                return;
+        }
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{name}));
+        sendMessage(sender, "everything_removed");
+    }
+
+    /**
      * Reloads the configuration.
      */
     private void reloadPlugin() {
         // reload the configuration
         Debug.info("Reloading configuration");
         new Config();
+        defaultPack = Config.getString("config.default_package");
         // load new static events
         new StaticEvents();
         // stop current global locations listener

@@ -18,6 +18,8 @@ Additions:
     * New objective 'fish' - catching fish
     * New objective 'enchant' - enchanting an item
     * New objective 'shear' - shearing a sheep
+    * New subcommand '/q delete' - delete all specific tags/points/objectives/entries
+    * New subcommand '/q rename' - rename all specific tags/points/objectives/entries
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged

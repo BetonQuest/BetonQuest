@@ -1,6 +1,7 @@
 en:
   unknown_argument: '&cWrong argument.'
   reloaded: '&cConfiguration reloaded!'
+  arguments: '&cNot enough arguments.'
   specify_condition: '&cSpecify condition name.'
   specify_event: '&cSpecify event name.'
   specify_player: '&cSpecify player''s nick.'
@@ -32,6 +33,8 @@ en:
   objective_removed: '&2Objective deleted!'
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
+  everything_removed: '&2Every occurence renamed!'
+  everything_removed: '&2Every occurence removed!'
   purged: '&4{1}''s data purged!'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
