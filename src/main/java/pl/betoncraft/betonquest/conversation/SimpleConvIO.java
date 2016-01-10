@@ -28,7 +28,7 @@ public class SimpleConvIO extends ChatConvIO {
     
     private String optionFormat;
 
-    public SimpleConvIO(Conversation conv, String playerID, String npcName) {
+    public SimpleConvIO(Conversation conv, String playerID) {
         super(conv, playerID);
         StringBuilder string = new StringBuilder();
         for (ChatColor color : colors.get("number")) {

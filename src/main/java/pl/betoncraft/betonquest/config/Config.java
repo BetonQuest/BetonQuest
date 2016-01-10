@@ -210,6 +210,9 @@ public class Config {
         if (result == null) {
             result = internal.getConfig().getString(lang + "." + message);
         }
+        if (result == null) {
+            result = internal.getConfig().getString("en." + message);
+        }
         if (result != null) {
             if (variables != null) for (int i = 0; i < variables.length; i++) {
                 result = result.replace("{" + (i+1) + "}", variables[i]);
