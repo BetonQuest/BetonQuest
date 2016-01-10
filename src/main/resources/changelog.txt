@@ -15,7 +15,8 @@ Additions:
     * New event 'givejournal' - gives journal to the player
     * New objective 'logout' - the player needs to leave the server
     * New objective 'password' - the player needs to type the pasword in the chat
-    * New objective 'fish' - catching a fish
+    * New objective 'fish' - catching fish
+    * New objective 'enchant' - enchanting an item
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged
