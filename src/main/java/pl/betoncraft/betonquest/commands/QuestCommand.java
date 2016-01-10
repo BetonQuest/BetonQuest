@@ -750,7 +750,7 @@ public class QuestCommand implements CommandExecutor {
         // if there is not enough arguments, display warning
         if (args.length < 4) {
             Debug.info("Missing objective instruction string");
-            sender.sendMessage("specify_objective");
+            sendMessage(sender, "specify_objective");
             return;
         }
         // if there are arguments, handle them

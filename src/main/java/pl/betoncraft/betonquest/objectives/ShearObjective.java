@@ -88,6 +88,16 @@ public class ShearObjective extends Objective implements Listener {
             Config.sendMessage(playerID, "sheep_to_shear",
                     new String[]{String.valueOf(data.getAmount())});
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(((SheepData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(amount - ((SheepData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
 
     @Override
     public void start() {

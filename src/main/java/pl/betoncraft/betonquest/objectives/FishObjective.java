@@ -98,6 +98,16 @@ public class FishObjective extends Objective implements Listener {
             Config.sendMessage(playerID, "fish_to_catch",
                     new String[]{String.valueOf(data.getAmount())});
     }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(amount - ((FishData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
 
     @Override
     public void start() {
