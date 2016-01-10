@@ -98,7 +98,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         answerPrefix = string.toString();
         loc = player.getLocation();
-        inv = Bukkit.createInventory(null, 9);
+        inv = Bukkit.createInventory(null, 9, "NPC");
         player.openInventory(inv);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }

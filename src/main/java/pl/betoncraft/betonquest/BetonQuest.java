@@ -137,6 +137,7 @@ import pl.betoncraft.betonquest.variables.NpcNameVariable;
 import pl.betoncraft.betonquest.variables.ObjectivePropertyVariable;
 import pl.betoncraft.betonquest.variables.PlayerNameVariable;
 import pl.betoncraft.betonquest.variables.PointVariable;
+import pl.betoncraft.betonquest.variables.VersionVariable;
 
 /**
  * Represents BetonQuest plugin
@@ -327,6 +328,7 @@ public final class BetonQuest extends JavaPlugin {
         registerVariable("objective", ObjectivePropertyVariable.class);
         registerVariable("point", PointVariable.class);
         registerVariable("item", ItemAmountVariable.class);
+        registerVariable("version", VersionVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();

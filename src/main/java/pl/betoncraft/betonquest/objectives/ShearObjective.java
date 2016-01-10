@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 
@@ -38,9 +39,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ShearObjective extends Objective implements Listener {
     
-    private String color;
-    private String name;
-    private int amount;
+    private final String color;
+    private final String name;
+    private final int amount;
+    private final boolean notify;
 
     public ShearObjective(String packName, String label, String instructions)
             throws InstructionParseException {
@@ -55,13 +57,19 @@ public class ShearObjective extends Objective implements Listener {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse amount");
         }
+        String tempName = null, tempColor = null;
+        boolean tempNotify = false;
         for (String part : parts) {
             if (part.startsWith("color:")) {
-                color = part.substring(6);
+                tempColor = part.substring(6);
             } else if (part.startsWith("name:")) {
-                name = part.substring(5);
-            }
+                tempName = part.substring(5);
+            } else if (part.equalsIgnoreCase("notify"))
+                tempNotify = true;
         }
+        name = tempName;
+        color = tempColor;
+        notify = tempNotify;
     }
     
     @EventHandler
@@ -76,6 +84,9 @@ public class ShearObjective extends Objective implements Listener {
             data.shearSheep();
         if (data.getAmount() <= 0)
             completeObjective(playerID);
+        else if (notify)
+            Config.sendMessage(playerID, "sheep_to_shear",
+                    new String[]{String.valueOf(data.getAmount())});
     }
 
     @Override

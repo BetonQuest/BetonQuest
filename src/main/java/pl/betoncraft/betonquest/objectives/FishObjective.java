@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -41,6 +43,7 @@ public class FishObjective extends Objective implements Listener {
     private final Material fish;
     private final byte data;
     private final int amount;
+    private final boolean notify;
 
     public FishObjective(String packName, String label, String instructions)
             throws InstructionParseException {
@@ -60,13 +63,20 @@ public class FishObjective extends Objective implements Listener {
                 throw new InstructionParseException("Could not parse fish data value");
             }
         } else {
-            data = 0;
+            data = -1;
         }
         try {
             amount = Integer.parseInt(parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse fish amount");
         }
+        boolean tempNotify = false;
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("notify")) {
+                tempNotify = true;
+            }
+        }
+        notify = tempNotify;
     }
     
     @SuppressWarnings("deprecation")
@@ -75,14 +85,18 @@ public class FishObjective extends Objective implements Listener {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) return;
         if (event.getCaught() == null) return;
+        if (event.getCaught().getType() != EntityType.DROPPED_ITEM) return;
         ItemStack item = ((Item) event.getCaught()).getItemStack();
         if (item.getType() != fish) return;
-        if (item.getData().getData() != data) return;
+        if (data >= 0 && item.getData().getData() != data) return;
         FishData data = (FishData) dataMap.get(playerID);
         if (checkConditions(playerID))
             data.catchFish();
         if (data.getAmount() <= 0)
             completeObjective(playerID);
+        else if (notify)
+            Config.sendMessage(playerID, "fish_to_catch",
+                    new String[]{String.valueOf(data.getAmount())});
     }
 
     @Override

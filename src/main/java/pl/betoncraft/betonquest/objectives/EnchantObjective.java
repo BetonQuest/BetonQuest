@@ -61,7 +61,7 @@ public class EnchantObjective extends Objective implements Listener {
                 throw new InstructionParseException("Could not parse item data value");
             }
         } else {
-            data = 0;
+            data = -1;
         }
         String[] enchantParts = parts[2].split(":");
         if (enchantParts.length != 2)
@@ -82,7 +82,7 @@ public class EnchantObjective extends Objective implements Listener {
         String playerID = PlayerConverter.getID(event.getEnchanter());
         if (!containsPlayer(playerID)) return;
         if (event.getItem().getType() != item) return;
-        if (event.getItem().getData().getData() != data) return;
+        if (data >= 0 && event.getItem().getData().getData() != data) return;
         for (Enchantment enchant : event.getEnchantsToAdd().keySet())
             if (enchant == this.enchant)
                 if (event.getEnchantsToAdd().get(enchant) >= level)
