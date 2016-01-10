@@ -538,14 +538,15 @@ public class QuestCommand implements CommandExecutor {
     /**
      * Fires an event for an online player. It cannot work for offline players!
      */
+    @SuppressWarnings("deprecation")
     private void handleEvents(CommandSender sender, String[] args) {
-        String playerID = PlayerConverter.getID(args[1]);
         // the player has to be specified every time
-        if (args.length < 2 || PlayerConverter.getPlayer(playerID) == null) {
+        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {
             Debug.info("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
+        String playerID = PlayerConverter.getID(args[1]);
         if (args.length < 3) {
             Debug.info("Event's ID is missing");
             sendMessage(sender, "specify_event");
@@ -588,14 +589,15 @@ public class QuestCommand implements CommandExecutor {
     /**
      * Checks if specified player meets condition described by ID
      */
+    @SuppressWarnings("deprecation")
     private void handleConditions(CommandSender sender, String[] args) {
-        String playerID = PlayerConverter.getID(args[1]);
         // the player has to be specified every time
-        if (args.length < 2 || PlayerConverter.getPlayer(playerID) == null) {
+        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {
             Debug.info("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
+        String playerID = PlayerConverter.getID(args[1]);
         // the condition ID
         if (args.length < 3) {
             Debug.info("Condition's ID is missing");
