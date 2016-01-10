@@ -18,7 +18,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -27,6 +26,7 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -38,8 +38,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class EnchantObjective extends Objective implements Listener {
     
-    private Material item;
-    private byte data;
+    private QuestItem item;
     private Enchantment enchant;
     private int level;
 
@@ -50,19 +49,11 @@ public class EnchantObjective extends Objective implements Listener {
         String[] parts = instructions.split(" ");
         if (parts.length < 3)
             throw new InstructionParseException("Not enough arguments");
-        String[] itemParts = parts[1].split(":");
-        item = Material.matchMaterial(itemParts[0]);
-        if (item == null)
-            throw new InstructionParseException("Unknown item type");
-        if (itemParts.length > 1) {
-            try {
-                data = Byte.parseByte(itemParts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse item data value");
-            }
-        } else {
-            data = -1;
+        String itemInstruction = pack.getString("items." + parts[1]);
+        if (itemInstruction == null) {
+            throw new InstructionParseException("Item not defined: " + parts[1]);
         }
+        item = new QuestItem(itemInstruction);
         String[] enchantParts = parts[2].split(":");
         if (enchantParts.length != 2)
             throw new InstructionParseException("Could not parse enchantment");
@@ -76,18 +67,18 @@ public class EnchantObjective extends Objective implements Listener {
         }
     }
     
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onEnchant(EnchantItemEvent event) {
         String playerID = PlayerConverter.getID(event.getEnchanter());
         if (!containsPlayer(playerID)) return;
-        if (event.getItem().getType() != item) return;
-        if (data >= 0 && event.getItem().getData().getData() != data) return;
+        if (!item.equalsI(event.getItem())) return;
         for (Enchantment enchant : event.getEnchantsToAdd().keySet())
             if (enchant == this.enchant)
                 if (event.getEnchantsToAdd().get(enchant) >= level)
-                    if (checkConditions(playerID))
+                    if (checkConditions(playerID)) {
                         completeObjective(playerID);
+                        return;
+                    }
     }
 
     @Override
