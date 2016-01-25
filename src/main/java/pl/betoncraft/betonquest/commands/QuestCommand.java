@@ -486,6 +486,7 @@ public class QuestCommand implements CommandExecutor {
             sendMessage(sender, "specify_category");
             return;
         }
+        String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
@@ -497,7 +498,7 @@ public class QuestCommand implements CommandExecutor {
                 }
                 // add the point
                 Debug.info("Adding points");
-                dbHandler.addPoints(args[3], Integer.parseInt(args[4]));
+                dbHandler.addPoints(category, Integer.parseInt(args[4]));
                 sendMessage(sender, "points_added");
                 break;
             case "remove":
@@ -505,11 +506,10 @@ public class QuestCommand implements CommandExecutor {
             case "del":
             case "r":
             case "d":
-                // remove the point (this is unnecessary as adding negative
-                // amounts
-                // subtracts points, but for the sake of users leave it be)
+                // remove the point (this is unnecessary as adding negative amounts
+                // subtracts points, but for the sake of users let's leave it here)
                 Debug.info("Removing points");
-                dbHandler.removePointsCategory(args[3]);
+                dbHandler.removePointsCategory(category);
                 sendMessage(sender, "points_removed");
                 break;
             default:
@@ -646,11 +646,6 @@ public class QuestCommand implements CommandExecutor {
         String name;
         if (conditionID.contains(".")) {
             String[] parts = conditionID.split("\\.");
-            if (parts.length != 2) {
-                Debug.info("Condition's ID is missing");
-                sendMessage(sender, "specify_condition");
-                return;
-            }
             pack = parts[0];
             name = parts[1];
         } else {
@@ -689,8 +684,7 @@ public class QuestCommand implements CommandExecutor {
         }
         String playerID = PlayerConverter.getID(args[1]);
         DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-        // if the player is offline then get his DatabaseHandler outside of the
-        // list
+        // if the player is offline then get his DatabaseHandler outside of the list
         if (dbHandler == null) {
             Debug.info("Player is offline, loading his data");
             dbHandler = new DatabaseHandler(playerID);
@@ -711,13 +705,14 @@ public class QuestCommand implements CommandExecutor {
             sendMessage(sender, "specify_tag");
             return;
         }
+        String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
             case "a":
-                // add the point
-                Debug.info("Adding tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
-                dbHandler.addTag(args[3]);
+                // add the tag
+                Debug.info("Adding tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                dbHandler.addTag(tag);
                 sendMessage(sender, "tag_added");
                 break;
             case "remove":
@@ -725,11 +720,9 @@ public class QuestCommand implements CommandExecutor {
             case "del":
             case "r":
             case "d":
-                // remove the point (this is unnecessary as adding negative
-                // amounts
-                // subtracts points, but for the sake of users leave it be)
-                Debug.info("Removing tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
-                dbHandler.removeTag(args[3]);
+                // remove the tag
+                Debug.info("Removing tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                dbHandler.removeTag(tag);
                 sendMessage(sender, "tag_removed");
                 break;
             default:

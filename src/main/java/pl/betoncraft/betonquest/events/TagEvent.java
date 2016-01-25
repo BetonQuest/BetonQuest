@@ -22,7 +22,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -46,13 +45,9 @@ public class TagEvent extends QuestEvent {
         }
         add = parts[1].equalsIgnoreCase("add");
         tags = parts[2].split(",");
-        String prefix = Config.getPackage(packName).getMain().getConfig()
-                .getString("tag_point_prefix");
-        if (prefix != null && prefix.equalsIgnoreCase("true")) {
-            for (int i = 0; i < tags.length; i++) {
-                if (!tags[i].contains(".")) {
-                    tags[i] = packName + "." + tags[i];
-                }
+        for (int i = 0; i < tags.length; i++) {
+            if (!tags[i].contains(".")) {
+                tags[i] = packName + "." + tags[i];
             }
         }
     }

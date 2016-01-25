@@ -14,7 +14,7 @@ Additions:
     * New event 'run' - allows for specifying multiple instructions in one
     * New event 'givejournal' - gives journal to the player
     * New objective 'logout' - the player needs to leave the server
-    * New objective 'password' - the player needs to type the pasword in the chat
+    * New objective 'password' - the player needs to type the password in the chat
     * New objective 'fish' - catching fish
     * New objective 'enchant' - enchanting an item
     * New objective 'shear' - shearing a sheep
@@ -28,6 +28,7 @@ Changes:
     * In inventory GUI there is NPC's text in every option, for convenience
     * Conversations can point to NPC options in other conversations within the package
     * You can use spaces between events, conditions and pointers in conversations
+    * All tags and points are internally associated with a package now
 
 v1.7.6
 Fixes:
@@ -234,9 +235,9 @@ Notes:
   and you can easily extract everything from it. Please refer to the wiki to learn how objectives are now defined
   or just study converted ones (it's pretty straightforward).
 - AutoUpdater is now enabled by default. Every future update will be working exactly like before, all changes
-  will be automaticly updated by a converter, there is always a backup and you are informed about all changes in
+  will be automatically updated by a converter, there is always a backup and you are informed about all changes in
   this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you
-  don't want to have latest fixex and features you can disable updating but this will make the developer sad.
+  don't want to have latest fixes and features you can disable updating but this will make the developer sad.
 - Because of changes in how books behave since 1.8 you may experience some strange bugs with saving books
   to items.yml. Generally you should open a book before saving it using /q item command. And don't start or end
   your books with " character, as it's part of a workaround of this bug/feature.
@@ -287,7 +288,7 @@ Remember to backup your config files before updating! It shouldn't destroy anyth
 v1.2
 Global locations now automatically run only once, no need for blocking it with tags and conditions. They use however tags that follow the syntax "global_<tag>", where <tag> is global location objective tag.
 Added optional respawn location for cancelled death objective, just add "respawn:100.5;200;300.5;world;90;0" to instruction string.
-Added german translation, thanks to coalaa!
+Added German translation, thanks to coalaa!
 Added optional movement blocking while in conversation, just add option "stop: true" or "stop: false" in every conversation.
 Changed priority of conversation chat event to lowest, should work even for muted players.
 Fixed data values in block objective.

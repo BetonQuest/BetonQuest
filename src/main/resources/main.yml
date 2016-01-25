@@ -1,4 +1,3 @@
-tag_point_prefix: 'true'
 variables:
   block: LOG
 npcs:

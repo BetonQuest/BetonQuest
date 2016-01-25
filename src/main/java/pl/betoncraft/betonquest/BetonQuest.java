@@ -202,6 +202,10 @@ public final class BetonQuest extends JavaPlugin {
 
         // create tables in the database
         database.createTables(isMySQLUsed);
+
+        // create and start the saver object, which handles correct asynchronous saving to the database
+        saver = new Saver();
+        saver.start();
         
         // load database backup
         Utils.loadDatabaseFromBackup();
@@ -215,9 +219,6 @@ public final class BetonQuest extends JavaPlugin {
             getConfig().set("debug", "false");
             saveConfig();
         }
-
-        saver = new Saver();
-        saver.start();
 
         // instantiating of these important things
         new JoinQuitListener();

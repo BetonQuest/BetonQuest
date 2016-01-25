@@ -21,7 +21,6 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.config.Config;
 
 /**
  * Requires the player to have specified amount of points (or more) in specified
@@ -41,14 +40,7 @@ public class PointCondition extends Condition {
         if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
-        String prefix = Config.getPackage(packName).getMain().getConfig()
-                .getString("tag_point_prefix");
-        if (prefix != null && prefix.equalsIgnoreCase("true") && !parts[1]
-                .contains(".")) {
-            category = packName + "." + parts[1];
-        } else {
-            category = parts[1];
-        }
+        category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
         try {
             count = Integer.parseInt(parts[2]);
         } catch (NumberFormatException e) {

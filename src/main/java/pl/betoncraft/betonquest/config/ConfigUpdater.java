@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -50,6 +51,7 @@ import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -82,9 +84,9 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v28";
+    private final String destination = "v29";
     /**
-     * Deprecated ConfigHandler, used fo updating older configuration files
+     * Deprecated ConfigHandler, used for updating older configuration files
      */
     private ConfigHandler ch;
 
@@ -115,7 +117,7 @@ public class ConfigUpdater {
         } else {
             Utils.backup();
         }
-        // instanitiate old configuration handler
+        // instantiate old configuration handler
         ch = new ConfigHandler();
         // if the version is null the plugin is updated from pre-1.3 version
         // (which can be 1.0, 1.1 or 1.2)
@@ -147,7 +149,7 @@ public class ConfigUpdater {
     }
     
     /**
-     * Performes full update in new updating system.
+     * Performs full update in new updating system.
      */
     private void performUpdate() {
         // this is new, post-1.5.3 updating system, where config versions
@@ -190,6 +192,394 @@ public class ConfigUpdater {
         update();
     }
     
+    @SuppressWarnings("unused") 
+    private void update_from_v28() {
+        String globalName = "global";
+        try {
+            HashMap<String, ArrayList<String>> tags = new HashMap<>();
+            HashMap<String, ArrayList<String>> points = new HashMap<>();
+            // this will ensure that there is no "global" package already defined
+            int i = 1;
+            while (Config.getPackage(globalName) != null) {
+                i++;
+                globalName = "global-" + i;
+            }
+            Debug.info("Global package will be called '" + globalName + "'");
+            // create lists for tags/points that are duplicated across multiple packages
+            // these will be "global", the rest will be converted to their local packages
+            ArrayList<String> globalTagList = new ArrayList<>();
+            ArrayList<String> globalPointList = new ArrayList<>();
+            tags.put(globalName, globalTagList);
+            points.put(globalName, globalPointList);
+            ArrayList<ConfigPackage> packages = new ArrayList<>();
+            for (String packName : Config.getPackageNames()) {
+                Debug.info("  Checking '" + packName + "' package");
+                ConfigPackage pack = Config.getPackage(packName);
+                // skip packages that already use prefixes
+                String prefixOption = pack.getString("main.tag_point_prefix");
+                if (prefixOption != null && prefixOption.equalsIgnoreCase("true"))
+                    continue;
+                Debug.info("  - It's outdated, extracting tags and points from events");
+                packages.add(pack);
+                // create array lists
+                ArrayList<String> tagList = new ArrayList<>();
+                ArrayList<String> pointList = new ArrayList<>();
+                tags.put(packName, tagList);
+                points.put(packName, pointList);
+                // handle all tags/points in events
+                for (String key : pack.getEvents().getConfig().getKeys(false)) {
+                    Debug.info("    Checking '" + key + "' event");
+                    String rawInstruction = pack.getEvents().getConfig().getString(key);
+                    ArrayList<String> instructions = new ArrayList<>();
+                    // run event also needs to be checked in case it contained any tags
+                    if (rawInstruction.startsWith("run ")) {
+                        Debug.info("    - It's \"run\" event, extracting additional instructions");
+                        // this part is copied from run event
+                        String[] parts = rawInstruction.substring(3).trim().split(" ");
+                        StringBuilder builder = new StringBuilder();
+                        for (String part : parts) {
+                            if (part.startsWith("^")) {
+                                if (builder.length() != 0) {
+                                    instructions.add(builder.toString().trim());
+                                    builder = new StringBuilder();
+                                }
+                                builder.append(part.substring(1) + " ");
+                            } else {
+                                builder.append(part + " ");
+                            }
+                        }
+                        instructions.add(builder.toString().trim());
+                    } else {
+                        // if it's not run event, add whole instruction string
+                        instructions.add(rawInstruction);
+                    }
+                    // check every instruction that was specified
+                    for (String instruction : instructions) {
+                        if (instruction.startsWith("tag ")) {
+                            Debug.info("      Found tag event, extracting tag");
+                            String[] parts = instruction.split(" ");
+                            // check if it contains the tag, if not - continue
+                            if (parts.length < 3) {
+                                Debug.info("      - Could not find tags");
+                                continue;
+                            }
+                            // add tag to the list if it does not contain a package
+                            for (String tag : parts[2].split(",")) {
+                                if (!tag.contains(".")) tagList.add(tag);
+                            }
+                        } else if (instruction.startsWith("point ")) {
+                            Debug.info("      Found point event, extracting points");
+                            String[] parts = instruction.split(" ");
+                            // check if the point has defined a category
+                            if (parts.length < 2) {
+                                Debug.info("      - Could not find the category");
+                                continue;
+                            }
+                            // add point to the list if it does not contain a package
+                            if (!parts[1].contains(".")) pointList.add(parts[1]);
+                        }
+                    }
+                    // done, all tags in events are extracted
+                }
+                Debug.info("  All tags and points extracted from events, moving to conditions");
+                // handle all tags/points in conditions
+                for (String key : pack.getConditions().getConfig().getKeys(false)) {
+                    Debug.info("    Checking '" + key + "' condition");
+                    String rawInstruction = pack.getConditions().getConfig().getString(key);
+                    ArrayList<String> instructions = new ArrayList<>();
+                    // check condition also needs to be checked in case it contained any tags
+                    if (rawInstruction.startsWith("check ")) {
+                        Debug.info("    - It's \"check\" condition, extracting additional instructions");
+                        // this part is copied from run event
+                        String[] parts = rawInstruction.substring(5).trim().split(" ");
+                        StringBuilder builder = new StringBuilder();
+                        for (String part : parts) {
+                            if (part.startsWith("^")) {
+                                if (builder.length() != 0) {
+                                    instructions.add(builder.toString().trim());
+                                    builder = new StringBuilder();
+                                }
+                                builder.append(part.substring(1) + " ");
+                            } else {
+                                builder.append(part + " ");
+                            }
+                        }
+                        instructions.add(builder.toString().trim());
+                    } else {
+                        // if it's not check condition, add whole instruction string
+                        instructions.add(rawInstruction);
+                    }
+                    // check every instruction that was specified
+                    for (String instruction : instructions) {
+                        if (instruction.startsWith("tag ")) {
+                            Debug.info("      Found tag condition, extracting tag");
+                            String[] parts = instruction.split(" ");
+                            // check if it contains the tag, if not - continue
+                            if (parts.length < 2) {
+                                Debug.info("      - Could not find the tag");
+                                continue;
+                            }
+                            // add tag to the list if it does not contain a package
+                            if (!parts[1].contains(".")) tagList.add(parts[1]);
+                        } else if (instruction.startsWith("point ")) {
+                            Debug.info("      Found point condition, extracting points");
+                            String[] parts = instruction.split(" ");
+                            // check if the point has defined a category
+                            if (parts.length < 2) {
+                                Debug.info("      - Could not find the category");
+                                continue;
+                            }
+                            // add point to the list if it does not contain a package
+                            if (!parts[1].contains(".")) pointList.add(parts[1]);
+                        }
+                    }
+                    // done, all tags in conditions are extracted
+                }
+                Debug.info("  All tags and points extracted from conditions");
+                // done, events and conditions in package extracted
+            }
+            Debug.info("All tags and points in all packages extracted, checking tags for duplicates");
+            // find tags/points that are duplicated in package hashMaps,
+            // put them to global package and remove from those packages
+            // first tags in each package
+            for (int j = 0; j < packages.size(); j++) {
+                Debug.info("  Checking list '" + packages.get(j).getName() + "'");
+                // get a list
+                ArrayList<String> list = tags.get(packages.get(j).getName());
+                // and for each element
+                for (int k = 0; k < list.size(); k++) {
+                    String checked = list.get(k);
+                    Debug.info("    Checking tag '" + checked + "'");
+                    // go to each next package
+                    for (int l = j + 1; l < packages.size(); l++) {
+                        ArrayList<String> nextList = tags.get(packages.get(l).getName());
+                        // and check if it contains that element
+                        if (nextList.contains(checked)) {
+                            Debug.info("    - list '" + packages.get(l).getName() + "' contains this tag, removing");
+                            nextList.remove(checked);
+                            if (!globalTagList.contains(checked)) {
+                                globalTagList.add(checked);
+                                Debug.info("      Tag was added to the global list");
+                            }
+                        }
+                    }
+                }
+            }
+            Debug.info("List of global tags is filled, checking points");
+            // now points in each package
+            for (int j = 0; j < packages.size(); j++) {
+                Debug.info("  Checking list '" + packages.get(j).getName() + "'");
+                // get a list
+                ArrayList<String> list = points.get(packages.get(j).getName());
+                // and for each element
+                for (int k = 0; k < list.size(); k++) {
+                    String checked = list.get(k);
+                    Debug.info("    Checking point '" + checked + "'");
+                    // go to each next package
+                    for (int l = j + 1; l < packages.size(); l++) {
+                        ArrayList<String> nextList = points.get(packages.get(l).getName());
+                        // and check if it contains that element
+                        if (nextList.contains(checked)) {
+                            Debug.info("    - list '" + packages.get(l).getName() + "' contains this point, removing");
+                            nextList.remove(checked);
+                            if (!globalPointList.contains(checked)) {
+                                globalPointList.add(checked);
+                                Debug.info("      Point was added to the global list");
+                            }
+                        }
+                    }
+                }
+            }
+            Debug.info("List of global points is filled, now adding \"global\" prefix in configuration files");
+            // done, global lists are filled
+            for (ConfigPackage pack : packages) {
+                Debug.info("  Replacing in '" + pack.getName() + "' package");
+                // update tags/points in events
+                for (String key : pack.getEvents().getConfig().getKeys(false)) {
+                    Debug.info("    Replacing tags/points in '" + key + "' event");
+                    String instruction = pack.getEvents().getConfig().getString(key);
+                    if (instruction.startsWith("tag ")) {
+                        Debug.info("      Found tag event, replacing tags");
+                        String[] parts = instruction.split(" ");
+                        // check if it contains the tag, if not - continue
+                        if (parts.length < 3) {
+                            Debug.info("      - Could not find tags");
+                            continue;
+                        }
+                        // replace tags
+                        String[] localTags = parts[2].split(",");
+                        for (int j = 0; j < localTags.length; j++)
+                            if (globalTagList.contains(localTags[j])) {
+                                String replaced = globalName + "." + localTags[j];
+                                Debug.info("        Replacing '" + localTags[j] + "' with '" + replaced + "'");
+                                localTags[j] = replaced;
+                            }
+                        pack.getEvents().getConfig().set(key, instruction.replace(parts[2], StringUtils.join(Arrays.asList(localTags), ',')));
+                    } else if (instruction.startsWith("point ")) {
+                        Debug.info( "      Found point event, replacing points");
+                        String[] parts = instruction.split(" ");
+                        // check if the point has defined a category
+                        if (parts.length < 2) {
+                            Debug.info("      - Could not find the category");
+                            continue;
+                        }
+                        // replace points category
+                        if (globalPointList.contains(parts[1])) {
+                            String replaced = globalName + "." + parts[1];
+                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            pack.getEvents().getConfig().set(key, StringUtils.replaceOnce(instruction, parts[1], replaced));
+                        }
+                    } else if (instruction.startsWith("run ")) {
+                        Debug.info( "      Found run event, looking for tags and points");
+                        String[] parts = instruction.split(" ");
+                        for (int j = 0; j < parts.length; j++) {
+                            // if the part is beginning of the "tag" instruction and it contains a tag
+                            if (parts[j].equals("^tag") && j+2 < parts.length) {
+                                Debug.info("        There is a tag event, replacing tags");
+                                String[] localTags = parts[j+2].split(",");
+                                for (int k = 0; k < localTags.length; k++)
+                                    if (globalTagList.contains(localTags[k])) {
+                                        String replaced = globalName + "." + localTags[k];
+                                        Debug.info("        Replacing '" + localTags[k] + "' with '" + replaced + "'");
+                                        localTags[k] = replaced;
+                                    }
+                                parts[j+2] = StringUtils.join(Arrays.asList(localTags), ',');
+                            } else if (parts[j].equals("^point") && j+1 < parts.length) {
+                                Debug.info("        There is a point event, replacing points");
+                                if (globalTagList.contains(parts[j+1])) {
+                                    String replaced = globalName + "." + parts[j+1];
+                                    Debug.info("        Replacing '" + parts[j+1] + "' with '" + replaced + "'");
+                                    parts[j+1] = replaced;
+                                }
+                            }
+                        }
+                        pack.getEvents().getConfig().set(key, StringUtils.join(Arrays.asList(parts), ' '));
+                    }
+                }
+                pack.getEvents().saveConfig();
+                Debug.info("  All tags/points replaced in all events");
+                // done, everything replaced in events
+                // replacing tags/points in conditions
+                for (String key : pack.getConditions().getConfig().getKeys(false)) {
+                    Debug.info("    Replacing tags/points in '" + key + "' condition");
+                    String instruction = pack.getConditions().getConfig().getString(key);
+                    if (instruction.startsWith("tag ")) {
+                        Debug.info("      Found tag condition, replacing the tag");
+                        String[] parts = instruction.split(" ");
+                        // check if it contains the tag, if not - continue
+                        if (parts.length < 2) {
+                            Debug.info("      - Could not find tags");
+                            continue;
+                        }
+                        // replace tag
+                        if (globalTagList.contains(parts[1])) {
+                            String replaced = globalName + "." + parts[1];
+                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            pack.getConditions().getConfig().set(key, StringUtils.replaceOnce(instruction, parts[1], replaced));
+                        }
+                        
+                    } else if (instruction.startsWith("point ")) {
+                        Debug.info( "      Found point condition, replacing points");
+                        String[] parts = instruction.split(" ");
+                        // check if the point has defined a category
+                        if (parts.length < 2) {
+                            Debug.info("      - Could not find the category");
+                            continue;
+                        }
+                        // replace points category
+                        if (globalPointList.contains(parts[1])) {
+                            String replaced = globalName + "." + parts[1];
+                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            pack.getConditions().getConfig().set(key, StringUtils.replaceOnce(instruction, parts[1], replaced));
+                        }
+                    } else if (instruction.startsWith("check ")) {
+                        Debug.info( "      Found check condition, looking for tags and points");
+                        String[] parts = instruction.split(" ");
+                        for (int j = 0; j < parts.length; j++) {
+                            // if the part is beginning of the "tag" instruction and it contains a tag
+                            if (parts[j].equals("^tag") && j+1 < parts.length) {
+                                Debug.info("        There is a tag condition, replacing tags");
+                                if (globalTagList.contains(parts[j+1])) {
+                                    String replaced = globalName + "." + parts[j+1];
+                                    Debug.info("        Replacing '" + parts[j+1] + "' with '" + replaced + "'");
+                                    parts[j+1] = replaced;
+                                }
+                            } else if (parts[j].equals("^point") && j+1 < parts.length) {
+                                Debug.info("        There is a point condition, replacing points");
+                                if (globalTagList.contains(parts[j+1])) {
+                                    String replaced = globalName + "." + parts[j+1];
+                                    Debug.info("        Replacing '" + parts[j+1] + "' with '" + replaced + "'");
+                                    parts[j+1] = replaced;
+                                }
+                            }
+                        }
+                        pack.getConditions().getConfig().set(key, StringUtils.join(Arrays.asList(parts), ' '));
+                    }
+                }
+                pack.getConditions().saveConfig();
+                Debug.info("  All tags/points replaced in all conditions, time for quest cancelers");
+                // done, everything replaced in conditions
+                // time for quest cancelers
+                for (String key : pack.getMain().getConfig().getConfigurationSection("cancel").getKeys(false)) {
+                    Debug.info("    Replacing tags/points in '" + key + "' canceler");
+                    String instruction = pack.getMain().getConfig().getString("cancel." + key);
+                    String[] parts = instruction.split(" ");
+                    for (int j = 0; j < parts.length; j++) {
+                        if (parts[j].startsWith("tags:")) {
+                            String[] localTags = parts[j].substring(5).split(",");
+                            for (int k = 0; k < localTags.length; k++) {
+                                if (globalTagList.contains(localTags[k])) {
+                                    String replaced = globalName + "." + localTags[k];
+                                    Debug.info("      Replaced  tag '" + localTags[k] + "' to '" + replaced + "'");
+                                    localTags[k] = replaced;
+                                }
+                            }
+                            parts[j] = "tags:" + StringUtils.join(Arrays.asList(localTags), ',');
+                        } else if (parts[j].startsWith("points:")) {
+                            String[] localPoints = parts[j].substring(5).split(",");
+                            for (int k = 0; k < localPoints.length; k++) {
+                                if (globalPointList.contains(localPoints[k])) {
+                                    String replaced = globalName + "." + localPoints[k];
+                                    Debug.info("      Replaced  point '" + localPoints[k] + "' to '" + replaced + "'");
+                                    localPoints[k] = replaced;
+                                }
+                            }
+                            parts[j] = "points:" + StringUtils.join(Arrays.asList(localPoints), ',');
+                        }
+                    }
+                    pack.getMain().getConfig().set("cancel." + key, StringUtils.join(Arrays.asList(parts), " "));
+                }
+                Debug.info("  All tags/points replaced in quest cancelers");
+                pack.getMain().saveConfig();
+            }
+            // done, all packages have replaced  tags and points
+            Debug.info("Done, all global tags and points are prefixed as global everywhere in every package. Updating the database.");
+            for (String packName : tags.keySet()) {
+                for (String tag : tags.get(packName)) {
+                    instance.getSaver().add(new Record(UpdateType.RENAME_ALL_TAGS, new String[]{packName + "." + tag, tag}));
+                }   
+            } 
+            for (String packName : points.keySet()) {
+                for (String point : points.get(packName)) {
+                    instance.getSaver().add(new Record(UpdateType.RENAME_ALL_POINTS, new String[]{packName + "." + point, point}));
+                }
+            }
+            // remove "tag_point_prefix" option from main.yml files
+            for (String packName : Config.getPackageNames()) {
+                ConfigAccessor main = Config.getPackage(packName).getMain();
+                main.getConfig().set("tag_point_prefix", null);
+                main.saveConfig();
+            }
+            Debug.info("Done, all cross-package tags and points are now global, the rest is local.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Moved all package-less cross-package tags and points to \"" + globalName + "\" package (you probably won't notice this change)");
+        config.set("version", "v29");
+        instance.saveConfig();
+    }
+    
     @SuppressWarnings("unused")
     private void update_from_v27() {
         try {
@@ -201,7 +591,7 @@ public class ConfigUpdater {
             e.printStackTrace();
             Debug.error(ERROR);
         }
-        Debug.broadcast("Added journal options.");
+        Debug.broadcast("Added journal options");
         config.set("version", "v28");
         instance.saveConfig();
     }
@@ -256,7 +646,7 @@ public class ConfigUpdater {
             e.printStackTrace();
             Debug.error(ERROR);
         }
-        Debug.broadcast("Changed %quester% variables to %npc%.");
+        Debug.broadcast("Changed %quester% variables to %npc%");
         config.set("version", "v27");
         instance.saveConfig();
     }
@@ -279,14 +669,14 @@ public class ConfigUpdater {
             e.printStackTrace();
             Debug.error(ERROR);
         }
-        Debug.broadcast("Added \"add\" keyword to journal events.");
+        Debug.broadcast("Added \"add\" keyword to journal events");
         config.set("version", "v26");
         instance.saveConfig();
     }
     
     @SuppressWarnings("unused")
     private void update_from_v24() {
-        Debug.broadcast("Added prefix to language files.");
+        Debug.broadcast("Added prefix to language files");
         config.set("version", "v25");
         instance.saveConfig();
     }
