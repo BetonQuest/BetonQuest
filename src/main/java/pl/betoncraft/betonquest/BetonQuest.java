@@ -104,6 +104,7 @@ import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
+import pl.betoncraft.betonquest.events.SudoEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
@@ -298,6 +299,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("clear", ClearEvent.class);
         registerEvents("run", RunEvent.class);
         registerEvents("givejournal", GiveJournalEvent.class);
+        registerEvents("sudo", SudoEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

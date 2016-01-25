@@ -14,6 +14,7 @@ Additions:
     * New condition 'objective' - checks if the player has an active objective
     * New event 'run' - allows for specifying multiple instructions in one
     * New event 'givejournal' - gives journal to the player
+    * New event 'sudo' - forces the player to run a command
     * New objective 'logout' - the player needs to leave the server
     * New objective 'password' - the player needs to type the password in the chat
     * New objective 'fish' - catching fish
