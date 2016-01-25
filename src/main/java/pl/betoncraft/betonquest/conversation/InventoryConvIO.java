@@ -141,7 +141,18 @@ public class InventoryConvIO implements Listener, ConversationIO {
             if (option == null) {
                 break;
             }
-            buttons[j] = new ItemStack(Material.ENDER_PEARL);
+            Material material = Material.ENDER_PEARL;
+            if (option.matches("^\\{[a-zA-Z_ ]+\\}.*$")) {
+                String mName = option.substring(1, option.indexOf('}'));
+                Material m = Material.matchMaterial(mName);
+                option = option.replace("{" + mName + "}", "");
+                if (m == null) {
+                    material = Material.ENDER_PEARL;
+                } else {
+                    material = m;
+                }
+            }
+            buttons[j] = new ItemStack(material);
             ItemMeta meta = buttons[j].getItemMeta();
             meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
             ArrayList<String> lines = stringToLines(response, npcTextColor, npcNameColor + npcName + ChatColor.RESET + ": ");

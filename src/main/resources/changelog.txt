@@ -9,6 +9,7 @@ Additions:
     * More options for journal, including one entry per page and removing date
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
+    * Optional material for buttons in "chest" conversation IO
     * New condition 'check' - allows for specifying multiple instructions in one
     * New condition 'objective' - checks if the player has an active objective
     * New event 'run' - allows for specifying multiple instructions in one
