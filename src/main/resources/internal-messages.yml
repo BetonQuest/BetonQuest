@@ -2,14 +2,14 @@ en:
   unknown_argument: '&cWrong argument.'
   reloaded: '&cConfiguration reloaded!'
   arguments: '&cNot enough arguments.'
-  specify_condition: '&cSpecify condition name.'
-  specify_event: '&cSpecify event name.'
+  specify_condition: '&cSpecify correct condition name.'
+  specify_event: '&cSpecify correct event name.'
   specify_player: '&cSpecify player''s nick.'
-  specify_item: '&cSpecify item''s name.'
+  specify_item: '&cSpecify correct item''s name.'
   specify_tag: '&cSpecify tag.'
-  specify_objective: '&cSpecify objective name.'
+  specify_objective: '&cSpecify correct objective name.'
   specify_category_and_amount: '&cSpecify category name and amount of points to modify.'
-  specify_pointer: '&cSpecify pointer name.'
+  specify_pointer: '&cSpecify correct pointer name.'
   specify_date: '&cSpecify pointer date (formatted like in date_format)'
   specify_action: '&cSpecify action (read, set or add)'
   specify_path: '&cSpecify path (separated by dots)'
@@ -33,8 +33,8 @@ en:
   objective_removed: '&2Objective deleted!'
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
-  everything_removed: '&2Every occurence renamed!'
-  everything_removed: '&2Every occurence removed!'
+  everything_removed: '&2Every occurrence renamed!'
+  everything_removed: '&2Every occurrence removed!'
   purged: '&4{1}''s data purged!'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
@@ -44,9 +44,13 @@ en:
   command_condition: checks if the player meet the condition
   command_event: fires an event for the player
   command_item: creates an item from the one you're holding
-  command_config: reads, sets or appends strings to configs
+  command_give: gives you the specified item
+  command_rename: renames all specified objects entries in the database
+  command_delete: deletes all specified objects from the database
+  command_config: reads, sets or appends strings to config files
   command_vector: calculates a vector from first variable and saves it to the second
   command_purge: deletes all data about the player
   command_backup: creates configuration and database backup. Use only from console on empty server!
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
+  error: '&cThere has been some error!'

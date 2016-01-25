@@ -21,6 +21,7 @@ Additions:
     * New objective 'shear' - shearing a sheep
     * New subcommand '/q delete' - delete all specific tags/points/objectives/entries
     * New subcommand '/q rename' - rename all specific tags/points/objectives/entries
+    * New subcommand '/q give' - gives you an item from items.yml
 Changes:
     * Administrative messages are now English-only in new installations; existing
       translations are unchanged

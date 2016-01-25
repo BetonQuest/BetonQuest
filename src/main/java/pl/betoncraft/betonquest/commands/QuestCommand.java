@@ -36,9 +36,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.GlobalLocations;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.StaticEvents;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -103,6 +105,10 @@ public class QuestCommand implements CommandExecutor {
                     // and items, which only use configuration files (they
                     // should be sync)
                     handleItems(sender, args);
+                    break;
+                case "give":
+                case "g":
+                    giveItem(sender, args);
                     break;
                 case "config":
                     // config is also only synchronous
@@ -228,6 +234,51 @@ public class QuestCommand implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Gives an item to the player
+     */
+    private void giveItem(CommandSender sender, String[] args) {
+        // sender must be a player
+        if (!(sender instanceof Player)) {
+            Debug.info("Cannot continue, sender must be player");
+            return;
+        }
+        // and the item name must be specified
+        if (args.length < 2) {
+            Debug.info("Cannot continue, item's name must be supplied");
+            sendMessage(sender, "specify_item");
+            return;
+        }
+        String itemID = args[1];
+        String packName;
+        String name;
+        if (itemID.contains(".")) {
+            String[] parts = itemID.split("\\.");
+            packName = parts[0];
+            name = parts[1];
+        } else {
+            packName = defaultPack;
+            name = itemID;
+        }
+        Player player = (Player) sender;
+        ConfigPackage pack = Config.getPackage(packName);
+        if (pack == null) {
+            sendMessage(sender, "specify_package");
+            return;
+        }
+        String instruction = pack.getItems().getConfig().getString(name);
+        if (instruction == null) {
+            sendMessage(sender, "specify_item");
+            return;
+        }
+        try {
+            QuestItem item = new QuestItem(instruction);
+            player.getInventory().addItem(item.generateItem(1));
+        } catch (InstructionParseException e) {
+            sendMessage(sender, "error");
+        }
     }
 
     /**
@@ -1087,6 +1138,9 @@ public class QuestCommand implements CommandExecutor {
         cmds.put("condition", "condition <player> <condition>");
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
+        cmds.put("give", "give <name>");
+        cmds.put("rename", "rename <tag/point/objective/journal> <old> <new>");
+        cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
         cmds.put("vector", "vector <pack.varname> <vectorname>");
         cmds.put("purge", "purge <player>");
