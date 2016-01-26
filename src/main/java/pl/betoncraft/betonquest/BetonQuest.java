@@ -744,13 +744,8 @@ public final class BetonQuest extends JavaPlugin {
      */
     public static boolean condition(String playerID, String conditionID) {
         // null check
-        if (playerID == null || conditionID == null) {
+        if (conditionID == null) {
             Debug.info("Null arguments for the condition!");
-            return false;
-        }
-        // check for online player
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            Debug.info("Player was offline, returning false");
             return false;
         }
         // check for inverted condition
@@ -763,6 +758,16 @@ public final class BetonQuest extends JavaPlugin {
         Condition condition = conditions.get(conditionID);
         if (condition == null) {
             Debug.error("The condition " + conditionID + " is not defined!");
+            return false;
+        }
+        // check for null player
+        if (playerID == null && !condition.isStatic()) {
+            Debug.info("Cannot check non-static condition without a player, returning false");
+            return false;
+        }
+        // check for online player
+        if (playerID != null && PlayerConverter.getPlayer(playerID) == null && !condition.isPersistent()) {
+            Debug.info("Player was offline, condition is not persistent, returning false");
             return false;
         }
         // and check if it's met or not

@@ -41,6 +41,17 @@ abstract public class Condition {
      * ConfigPackage in which this condition is defined
      */
     protected ConfigPackage pack;
+    /**
+     * If a condition is static it can be used with null player.
+     * Static events can be run with static events.
+     */
+    protected boolean staticness = false;
+    /**
+     * If a condition is persistent it can be checked for offline player.
+     * Persistent conditions can be checked in folder events after
+     * the player logs out.
+     */
+    protected boolean persistent = false;
 
     /**
      * Creates new instance of the condition. The condition should parse
@@ -59,7 +70,23 @@ abstract public class Condition {
         this.instructions = instructions;
         this.pack = Config.getPackage(packName);
     }
-
+    
+    /**
+     * @return if the condition is static or not. If a condition is static it can
+     * be used with null player. Static events can be run with static events.
+     */
+    public final boolean isStatic() {
+        return staticness;
+    }
+    
+    /**
+     * @return if the condition is persistent or not. If a condition is persistent
+     * it can be checked for offline player. Persistent conditions can be checked
+     * in folder events after the player logs out.
+     */
+    public final boolean isPersistent() {
+        return persistent;
+    }
 
     /**
      * This method should contain all logic for the condition and use data

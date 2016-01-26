@@ -36,6 +36,8 @@ public class RandomCondition extends Condition {
     public RandomCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
+        staticness = true;
+        persistent = true;
         String[] values = null;
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {

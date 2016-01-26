@@ -46,6 +46,8 @@ public class MonstersCondition extends Condition {
     public MonstersCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
+        staticness = true;
+        persistent = true;
         String[] parts = instructions.split(" ");
         if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");

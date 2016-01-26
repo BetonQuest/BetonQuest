@@ -27,14 +27,14 @@ Additions:
     * New subcommand '/q rename' - rename all specific tags/points/objectives/entries
     * New subcommand '/q give' - gives you an item from items.yml
 Changes:
-    * Administrative messages are now English-only in new installations; existing
-      translations are unchanged
+    * Administrative messages are now English-only in new installations
     * Journal event can remove entries from the journal
     * In conversations, %quester% variable changed to %npc%
     * In inventory GUI there is NPC's text in every option, for convenience
     * Conversations can point to NPC options in other conversations within the package
     * You can use spaces between events, conditions and pointers in conversations
     * All tags and points are internally associated with a package now
+    * Some conditions are now static and persistent (just like events)
 
 v1.7.6
 Fixes:
