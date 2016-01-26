@@ -45,6 +45,7 @@ public abstract class Objective {
     protected final ConfigPackage pack;
     protected final String[] conditions;
     protected final String[] events;
+    protected final boolean persistent;
     
     private String label;
     
@@ -78,6 +79,7 @@ public abstract class Objective {
         // extract events and conditions
         String[] tempEvents     = new String[]{},
                  tempConditions = new String[]{};
+        boolean  tempPersistent = false;
         for (String part : instructions.split(" ")) {
             if (part.startsWith("events:")) {
                 tempEvents = part.substring(7).split(",");
@@ -86,19 +88,21 @@ public abstract class Objective {
                         tempEvents[i] = packName + "." + tempEvents[i];
                     }
                 }
-            }
-            if (part.startsWith("conditions:")) {
+            } else if (part.startsWith("conditions:")) {
                 tempConditions = part.substring(11).split(",");
                 for (int i = 0; i < tempConditions.length; i++) {
                     if (!tempConditions[i].contains(".")) {
                         tempConditions[i] = packName + "." + tempConditions[i];
                     }
                 }
+            } else if (part.equalsIgnoreCase("persistent")) {
+                tempPersistent = true;
             }
         }
         // make them final
         events     = tempEvents;
         conditions = tempConditions;
+        persistent = tempPersistent;
     }
     
     /**
@@ -141,9 +145,11 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(label);
+        if (!persistent) {
+            BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(label);
+        }
         Debug.info("Objective \"" + label + "\" has been completed for player "
-                + PlayerConverter.getName(playerID) + ", firing final events.");
+                + PlayerConverter.getName(playerID) + ", firing events.");
         // fire all events
         for (String event : events) {
             BetonQuest.event(playerID, event);

@@ -10,6 +10,7 @@ Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
+    * New argument in objectives: "persistent" - makes them repeat after completing
     * New condition 'check' - allows for specifying multiple instructions in one
     * New condition 'objective' - checks if the player has an active objective
     * New condition 'chestitem' - checks if a chest contains items
