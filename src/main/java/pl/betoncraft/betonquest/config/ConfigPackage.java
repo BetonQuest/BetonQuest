@@ -208,7 +208,7 @@ public class ConfigPackage {
                         varName, name));
                 return null;
             } else if (varVal.matches(
-                    "^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*\\)$")) {
+                    "^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*\\)$")) {
                 // handle location variables
                 // parse the inner location
                 String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
@@ -249,8 +249,8 @@ public class ConfigPackage {
                 double x2, y2, z2;
                 try {
                     int s = varVal.indexOf('(');
-                    int i = varVal.indexOf(',');
-                    int j = varVal.indexOf(',', i+1);
+                    int i = varVal.indexOf(';');
+                    int j = varVal.indexOf(';', i+1);
                     int e = varVal.indexOf(')');
                     x2 = Double.parseDouble(varVal.substring(s+1, i));
                     y2 = Double.parseDouble(varVal.substring(i+1, j));

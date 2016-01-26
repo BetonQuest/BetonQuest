@@ -84,7 +84,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v29";
+    private final String destination = "v30";
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
@@ -187,9 +187,34 @@ public class ConfigUpdater {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException
                 | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
+            // return, so it does not fall into an infinite loop
+            return;
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v29() {
+        try {
+            for (String packName : Config.getPackageNames()) {
+                ConfigPackage pack = Config.getPackage(packName);
+                ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("variables");
+                for (String key : section.getKeys(true)) {
+                    String variable = section.getString(key);
+                    if (variable.matches("^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*,\\-?\\d+\\.?\\d*\\)$")) {
+                        section.set(key, variable.replace(',', ';'));
+                    }
+                }
+                pack.getMain().saveConfig();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Changed commas to semicolons in vector variables");
+        config.set("version", "v30");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused") 

@@ -99,6 +99,8 @@ public class ChestPutObjective extends Objective implements Listener {
         } catch (ClassCastException e) {
             return;
         }
+        if (event.getInventory() == null || event.getInventory().getHolder() == null)
+            return;
         if (!event.getInventory().getHolder().equals(chest)) return;
         if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
             completeObjective(playerID);
