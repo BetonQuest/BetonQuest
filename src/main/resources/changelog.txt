@@ -12,14 +12,17 @@ Additions:
     * Optional material for buttons in "chest" conversation IO
     * New condition 'check' - allows for specifying multiple instructions in one
     * New condition 'objective' - checks if the player has an active objective
+    * New condition 'chestitem' - checks if a chest contains items
     * New event 'run' - allows for specifying multiple instructions in one
     * New event 'givejournal' - gives journal to the player
     * New event 'sudo' - forces the player to run a command
+    * New events 'chestgive', 'chesttake' and 'chestclear' - put and remove items in chests
     * New objective 'logout' - the player needs to leave the server
     * New objective 'password' - the player needs to type the password in the chat
     * New objective 'fish' - catching fish
     * New objective 'enchant' - enchanting an item
     * New objective 'shear' - shearing a sheep
+    * New objective 'chestput' - putting items in a chest
     * New subcommand '/q delete' - delete all specific tags/points/objectives/entries
     * New subcommand '/q rename' - rename all specific tags/points/objectives/entries
     * New subcommand '/q give' - gives you an item from items.yml

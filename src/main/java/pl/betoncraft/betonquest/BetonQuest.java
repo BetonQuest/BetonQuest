@@ -46,6 +46,7 @@ import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
 import pl.betoncraft.betonquest.conditions.CheckCondition;
+import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
@@ -85,6 +86,9 @@ import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.database.Saver;
+import pl.betoncraft.betonquest.events.ChestClearEvent;
+import pl.betoncraft.betonquest.events.ChestGiveEvent;
+import pl.betoncraft.betonquest.events.ChestTakeEvent;
 import pl.betoncraft.betonquest.events.ClearEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
@@ -113,6 +117,7 @@ import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
+import pl.betoncraft.betonquest.objectives.ChestPutObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
 import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
@@ -273,6 +278,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("monsters", MonstersCondition.class);
         registerConditions("objective", ObjectiveCondition.class);
         registerConditions("check", CheckCondition.class);
+        registerConditions("chestitem", ChestItemCondition.class);
 
         // register events
         registerEvents("message", MessageEvent.class);
@@ -300,6 +306,9 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("run", RunEvent.class);
         registerEvents("givejournal", GiveJournalEvent.class);
         registerEvents("sudo", SudoEvent.class);
+        registerEvents("chestgive", ChestGiveEvent.class);
+        registerEvents("chesttake", ChestTakeEvent.class);
+        registerEvents("chestclear", ChestClearEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
@@ -319,6 +328,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("fish", FishObjective.class);
         registerObjectives("enchant", EnchantObjective.class);
         registerObjectives("shear", ShearObjective.class);
+        registerObjectives("chestput", ChestPutObjective.class);
 
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
