@@ -33,7 +33,7 @@ en:
   objective_removed: '&2Objective deleted!'
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
-  everything_removed: '&2Every occurrence renamed!'
+  everything_renamed: '&2Every occurrence renamed!'
   everything_removed: '&2Every occurrence removed!'
   purged: '&4{1}''s data purged!'
   command_reload: reloads the plugin

@@ -187,7 +187,6 @@ public class QuestCommand implements CommandExecutor {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            Debug.broadcast("renaming");
                             handleRenaming(finalSender6, finalArgs6);
                         }
                     }.runTaskAsynchronously(instance);
@@ -973,6 +972,7 @@ public class QuestCommand implements CommandExecutor {
             case "objective":
             case "o":
                 updateType = UpdateType.RENAME_ALL_OBJECTIVES;
+                // get ID and package
                 String[] parts = name.split("\\.");
                 String packName = parts[0];
                 String objName = parts[1];
@@ -981,21 +981,30 @@ public class QuestCommand implements CommandExecutor {
                     sendMessage(sender, "specify_package");
                     return;
                 }
+                // rename objective in the file
                 String objective = pack.getObjectives().getConfig().getString(objName);
                 if (objective != null) {
-                    pack.getObjectives().getConfig().set(rename, objective);
-                    pack.getObjectives().getConfig().set(objective, null);
+                    pack.getObjectives().getConfig().set(rename.split("\\.")[1], objective);
+                    pack.getObjectives().getConfig().set(objName, null);
                     pack.getObjectives().saveConfig();
                 }
+                // rename objective instance
+                BetonQuest.getInstance().renameObjective(name, rename);
+                BetonQuest.getInstance().getObjective(rename).setLabel(rename);
+                // renaming an active objective probably isn't needed
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+                    boolean found = false;
                     String data = null;
                     for (Objective obj : dbHandler.getObjectives()) {
                         if (obj.getLabel().equals(name)) {
+                            found = true;
                             data = obj.getData(PlayerConverter.getID(player));
                             break;
                         }
                     }
+                    // skip the player if he does not have this objective
+                    if (found == false) continue;
                     if (data == null) data = "";
                     dbHandler.deleteObjective(name);
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), rename, data);
@@ -1007,7 +1016,6 @@ public class QuestCommand implements CommandExecutor {
             case "entries":
             case "entry":
             case "e":
-                Debug.broadcast("journal");
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     Journal journal = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player)).getJournal();
@@ -1017,6 +1025,8 @@ public class QuestCommand implements CommandExecutor {
                             p = pointer;
                         }
                     }
+                    // skip the player if he does not have this entry
+                    if (p == null) continue;
                     journal.removePointer(name);
                     journal.addPointer(new Pointer(rename, p.getTimestamp()));
                     journal.update();

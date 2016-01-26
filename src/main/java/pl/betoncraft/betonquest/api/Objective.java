@@ -45,7 +45,8 @@ public abstract class Objective {
     protected final ConfigPackage pack;
     protected final String[] conditions;
     protected final String[] events;
-    protected final String label;
+    
+    private String label;
     
     /**
      * Contains all data objects of the players with this objective active
@@ -266,6 +267,17 @@ public abstract class Objective {
      */
     public final String getLabel() {
         return label;
+    }
+
+    /**
+     * Sets the label of this objective. Don't worry about it, it's only used
+     * by the rest of BetonQuest's logic.
+     * 
+     * @param rename
+     *          new name of the objective
+     */
+    public void setLabel(String rename) {
+        label = rename;
     }
     
     /**

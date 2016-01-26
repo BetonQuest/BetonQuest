@@ -1024,4 +1024,14 @@ public final class BetonQuest extends JavaPlugin {
     public Class<? extends Condition> getConditionClass(String name) {
         return conditionTypes.get(name);
     }
+    
+    /**
+     * Renames the objective instance.
+     * 
+     * @param name the current name
+     * @param rename the name it should have now
+     */
+    public void renameObjective(String name, String rename) {
+        objectives.put(rename, objectives.remove(name));
+    }
 }

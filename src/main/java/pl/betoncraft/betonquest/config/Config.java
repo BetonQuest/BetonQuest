@@ -414,7 +414,7 @@ public class Config {
         if (player == null || dbHandler == null) return;
         String language = dbHandler.getLanguage();
         String message = getMessage(language, messageName, variables);
-        if (message.length() == 0) return;
+        if (message == null || message.length() == 0) return;
         if (prefixName != null) {
             String prefix = getMessage(language, prefixName, prefixVariables);
             if (prefix.length() > 0) {
