@@ -128,6 +128,7 @@ import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.LogoutObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
 import pl.betoncraft.betonquest.objectives.PasswordObjective;
+import pl.betoncraft.betonquest.objectives.PotionObjective;
 import pl.betoncraft.betonquest.objectives.ShearObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
 import pl.betoncraft.betonquest.objectives.StepObjective;
@@ -329,6 +330,7 @@ public final class BetonQuest extends JavaPlugin {
         registerObjectives("enchant", EnchantObjective.class);
         registerObjectives("shear", ShearObjective.class);
         registerObjectives("chestput", ChestPutObjective.class);
+        registerObjectives("potion", PotionObjective.class);
 
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
