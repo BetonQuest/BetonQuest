@@ -91,6 +91,7 @@ import pl.betoncraft.betonquest.events.ChestGiveEvent;
 import pl.betoncraft.betonquest.events.ChestTakeEvent;
 import pl.betoncraft.betonquest.events.ClearEvent;
 import pl.betoncraft.betonquest.events.CommandEvent;
+import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
@@ -310,6 +311,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("chestgive", ChestGiveEvent.class);
         registerEvents("chesttake", ChestTakeEvent.class);
         registerEvents("chestclear", ChestClearEvent.class);
+        registerEvents("compass", CompassEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

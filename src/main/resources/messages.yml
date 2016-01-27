@@ -24,6 +24,8 @@ pl:
   quest_canceled: '&2Zadanie {1} anulowane!'
   cancel: '&cAnuluj zadanie'
   cancel_page: Anulowanie zadania
+  compass: '&cCele kompasu'
+  compass_page: Wybierz cel
   command_blocked: '&cNie mozesz uzywac tej komendy podczas rozmowy.'
   language_changed: '&2Jezyk zmieniony!'
   language_missing: '&cPodaj jezyk'
@@ -60,6 +62,8 @@ en:
   quest_canceled: '&2Quest {1} canceled!'
   cancel: '&cCancel the quest'
   cancel_page: Canceling quests
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: '&cYou can''t use that command while in conversation.'
   language_changed: '&2Language changed!'
   language_missing: '&cSpecify language'
@@ -96,6 +100,8 @@ de:
   quest_canceled: '&2Quest {1} abgebrochen!'
   cancel: '&cQuest abbrechen'
   cancel_page: Quests abbrechen
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: '&cDu kannst diesen Befehl nicht benutzen, solange du in einem Gespraech bist.'
   language_changed: '&2Sprache geaendert!'
   language_missing: '&cBitte eine Sprache angeben.'
@@ -132,6 +138,8 @@ fr:
   quest_canceled: '&2Quete {1} annulee!'
   cancel: '&cAnnuler cette quete'
   cancel_page: 'Annulation des quetes'
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: '&cImpossible d''utiliser cette commande pendant une conversation.'
   language_changed: '&2Langue modifiee!'
   language_missing: '&cChoix de la langue'
@@ -168,6 +176,8 @@ cn:
   quest_canceled: "&2\u4efb\u52a1 {1} \u5df2\u53d6\u6d88!"
   cancel: "&c\u53d6\u6d88\u4efb\u52a1"
   cancel_page: "\u6b63\u5728\u53d6\u6d88\u4efb\u52a1"
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: "&c\u4f60\u4e0d\u80fd\u5728\u4efb\u52a1\u4e2d\u4f7f\u7528\u8be5\u547d\u4ee4."
   language_changed: "&2\u60a8\u7684\u8bed\u8a00\u5df2\u66f4\u6362!"
   language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
@@ -204,6 +214,8 @@ es:
   quest_canceled: '&2Mision {1} cancelada!'
   cancel: '&cCancelar la mision'
   cancel_page: Cancelar misiones
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: '&cNo puedes usar ese comando en una conversacion.'
   language_changed: '&2Lenguaje cambiado!'
   language_missing: '&cEspecifica un lenguaje'
@@ -240,6 +252,8 @@ nl:
   quest_canceled: '&2Quest {1} geannuleerd!'
   cancel: '&cAnnuleer de quest'
   cancel_page: Quests annuleren
+  compass: '&cCompass targets'
+  compass_page: Choose target
   command_blocked: '&cJe kunt dat commando niet gebruiken terwijl je in gesprek bent.'
   language_changed: '&2Taal gewijzigd!'
   language_missing: '&cSpecificeer taal'

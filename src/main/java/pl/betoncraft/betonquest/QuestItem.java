@@ -88,6 +88,8 @@ public class QuestItem {
      *            ID of the item from items.yml
      */
     public QuestItem(String instruction) throws InstructionParseException {
+        if (instruction == null)
+            throw new NullPointerException("Item instruction is null");
         String[] parts = instruction.split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Item type not defined");
