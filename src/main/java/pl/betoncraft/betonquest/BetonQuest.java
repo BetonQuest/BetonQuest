@@ -86,6 +86,7 @@ import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.database.Saver;
+import pl.betoncraft.betonquest.events.CancelEvent;
 import pl.betoncraft.betonquest.events.ChestClearEvent;
 import pl.betoncraft.betonquest.events.ChestGiveEvent;
 import pl.betoncraft.betonquest.events.ChestTakeEvent;
@@ -312,6 +313,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("chesttake", ChestTakeEvent.class);
         registerEvents("chestclear", ChestClearEvent.class);
         registerEvents("compass", CompassEvent.class);
+        registerEvents("cancel", CancelEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

@@ -18,6 +18,7 @@ Additions:
     * New event 'givejournal' - gives journal to the player
     * New event 'sudo' - forces the player to run a command
     * New event 'compass' - point player's compass to a location
+    * New event 'cancel' - cancels a quest (as in main.yml)
     * New events 'chestgive', 'chesttake' and 'chestclear' - put and remove items in chests
     * New objective 'logout' - the player needs to leave the server
     * New objective 'password' - the player needs to type the password in the chat
