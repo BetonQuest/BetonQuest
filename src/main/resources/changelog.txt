@@ -39,6 +39,7 @@ Changes:
     * You can use spaces between events, conditions and pointers in conversations
     * All tags and points are internally associated with a package now
     * Some conditions are now static and persistent (just like events)
+    * Point event can now multiply points
 
 v1.7.6
 Fixes:

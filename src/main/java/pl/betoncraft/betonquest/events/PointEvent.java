@@ -21,6 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,7 +33,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PointEvent extends QuestEvent {
     
-    final int    count;
+    final double    count;
+    final boolean   multi;
     final String category; 
 
     public PointEvent(String packName, String instructions)
@@ -44,8 +46,14 @@ public class PointEvent extends QuestEvent {
             throw new InstructionParseException("Not enough arguments");
         }
         category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+        if (parts[2].startsWith("*")) {
+            multi = true;
+            parts[2] = parts[2].replace("*", "");
+        } else {
+            multi = false;
+        }
         try {
-            count = Integer.valueOf(parts[2]);
+            count = Double.valueOf(parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count");
         }
@@ -58,12 +66,24 @@ public class PointEvent extends QuestEvent {
                 @Override
                 public void run() {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-                    dbHandler.addPoints(category, count);
+                    addPoints(dbHandler);
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            BetonQuest.getInstance().getDBHandler(playerID)
-                    .addPoints(category, count);
+            DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+            addPoints(dbHandler);
+        }
+    }
+
+    private void addPoints(DatabaseHandler dbHandler) {
+        if (multi) {
+            for (Point p : dbHandler.getPoints()) {
+                if (p.getCategory().equalsIgnoreCase(category)) {
+                    dbHandler.addPoints(category, (int) Math.floor((p.getCount() * count) - p.getCount()));
+                }
+            }
+        } else {
+            dbHandler.addPoints(category, (int) Math.floor(count));
         }
     }
 }
