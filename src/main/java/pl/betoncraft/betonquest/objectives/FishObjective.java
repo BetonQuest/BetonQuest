@@ -135,10 +135,16 @@ public class FishObjective extends Objective implements Listener {
         
         public void catchFish() {
             amount--;
+            update();
         }
         
         public int getAmount() {
             return amount;
+        }
+        
+        @Override
+        public String toString() {
+            return String.valueOf(amount);
         }
         
     }

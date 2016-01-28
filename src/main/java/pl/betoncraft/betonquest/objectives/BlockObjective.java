@@ -191,5 +191,10 @@ public class BlockObjective extends Objective implements Listener {
         private int getAmount() {
             return amount;
         }
+        
+        @Override
+        public String toString() {
+            return String.valueOf(amount);
+        }
     }
 }

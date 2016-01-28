@@ -141,6 +141,11 @@ public class MythicMobKillObjective extends Objective implements Listener {
             return amount;
         }
         
+        @Override
+        public String toString() {
+            return String.valueOf(amount);
+        }
+        
     }
 
 }

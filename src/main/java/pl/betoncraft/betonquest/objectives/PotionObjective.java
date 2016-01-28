@@ -188,10 +188,16 @@ public class PotionObjective extends Objective implements Listener {
         
         public void brew() {
             amount++;
+            update();
         }
         
         public int getAmount() {
             return amount;
+        }
+        
+        @Override
+        public String toString() {
+            return String.valueOf(amount);
         }
         
     }

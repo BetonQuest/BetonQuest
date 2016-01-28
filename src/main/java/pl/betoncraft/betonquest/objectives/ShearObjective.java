@@ -125,10 +125,16 @@ public class ShearObjective extends Objective implements Listener {
         
         public void shearSheep() {
             amount--;
+            update();
         }
         
         public int getAmount() {
             return amount;
+        }
+        
+        @Override
+        public String toString() {
+            return String.valueOf(amount);
         }
         
     }

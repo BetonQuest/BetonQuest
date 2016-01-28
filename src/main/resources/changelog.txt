@@ -4,6 +4,7 @@ Fixes:
     * Static events now are started correctly
     * Action objective now correctly checks locations
     * Combat tag is removed after death
+    * Block, Craft and MythicMobs MobKill objectives now correctly save data
 Additions:
     * New variable system in conversations (check out the documentation)
     * More options for journal, including one entry per page and removing date
