@@ -652,14 +652,21 @@ public final class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Retrieves DatabaseHandler object for specified player
+     * Retrieves DatabaseHandler object for specified player. If the handler does not exist
+     * but the player is online, it will create new handler on the main thread and put it
+     * into the map.
      * 
      * @param playerID
      *            ID of the player
      * @return DatabaseHandler object for the player
      */
     public DatabaseHandler getDBHandler(String playerID) {
-        return dbHandlers.get(playerID);
+        DatabaseHandler dbh = dbHandlers.get(playerID);
+        if (dbh == null && PlayerConverter.getPlayer(playerID) != null) {
+            dbh = new DatabaseHandler(playerID);
+            putDBHandler(playerID, dbh);
+        }
+        return dbh;
     }
     
     /**
