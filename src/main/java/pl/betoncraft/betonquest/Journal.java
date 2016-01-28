@@ -262,11 +262,11 @@ public class Journal {
      *            slot number for adding the journal
      */
     public void addToInv(int slot) {
+        // remove the old journal if it exists
         if (hasJournal(playerID)) {
-            update();
-            return;
+            slot = removeFromInv();
         }
-        // update the journal
+        // update the texts
         generateTexts(lang);
         Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
         // if the slot is less than 0 then use default slot
@@ -331,9 +331,10 @@ public class Journal {
      */
     public void update() {
         lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
-        int slot = removeFromInv();
-        addToInv(slot);
-
+        if (hasJournal(playerID)) {
+            int slot = removeFromInv();
+            addToInv(slot);
+        }
     }
     
     /**
