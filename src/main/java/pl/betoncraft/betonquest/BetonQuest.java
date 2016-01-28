@@ -589,6 +589,7 @@ public final class BetonQuest extends JavaPlugin {
             Conversation conv = Conversation.getConversation(PlayerConverter
                     .getID(player));
             if (conv != null) conv.suspend();
+            player.closeInventory();
         }
         // cancel database saver
         saver.end();

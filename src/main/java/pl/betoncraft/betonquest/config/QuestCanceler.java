@@ -74,7 +74,6 @@ public class QuestCanceler {
                rawPoints     = pack.getString("main.cancel." + cancelerName + ".points"),
                rawJournal    = pack.getString("main.cancel." + cancelerName + ".journal"),
                rawLoc        = pack.getString("main.cancel." + cancelerName + ".loc");
-        System.out.println(packName + "." + cancelerName + " EVENTS: " + rawEvents + " CONDITIONS:" + rawConditions + " TAGS:" + rawTags + " OBJECTIVES:" + rawObjectives + " POINTS:" + rawPoints + " JOURNAL:" + rawJournal + " LOC:" + rawLoc);
         // get the name
         if (pack.getMain().getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
             for (String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name").getKeys(false)){

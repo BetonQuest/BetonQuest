@@ -79,6 +79,9 @@ public class Config {
         
         // save default config
         plugin.saveDefaultConfig();
+        // need to be sure everything is saved
+        plugin.reloadConfig();
+        plugin.saveConfig();
 
         // if the packages are not on the config list yet, add them
         List<String> packageList  = plugin.getConfig().getStringList("packages");
@@ -95,10 +98,6 @@ public class Config {
             plugin.getConfig().set("packages", allPackages);
             plugin.saveConfig();
         }
-        
-        // need to be sure everything is saved
-        plugin.reloadConfig();
-        plugin.saveConfig();
         
         // load messages
         messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
