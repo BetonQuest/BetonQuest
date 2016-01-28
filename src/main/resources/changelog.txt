@@ -43,6 +43,7 @@ Changes:
     * Some conditions are now static and persistent (just like events)
     * Point event can now multiply points
     * Journal event can now use "update" argument for updating variables on the main page
+    * Packages can now be moved to another directories
 
 v1.7.6
 Fixes:

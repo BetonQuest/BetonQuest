@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Sound;
@@ -76,7 +77,24 @@ public class Config {
         
         // save default config
         plugin.saveDefaultConfig();
-        // need to be sure
+
+        // if the packages are not on the config list yet, add them
+        List<String> packageList  = plugin.getConfig().getStringList("packages");
+        if (plugin.getConfig().getStringList("packages") == null || packageList.isEmpty()) {
+            ArrayList<String> allPackages = new ArrayList<>();
+            for (File file : root.listFiles()) {
+                if (file.isDirectory() &&
+                        !file.getName().equals("logs") &&
+                        !file.getName().equals("backups") &&
+                        !file.getName().equals("conversations")) {
+                    allPackages.add(file.getName());
+                }
+            }
+            plugin.getConfig().set("packages", allPackages);
+            plugin.saveConfig();
+        }
+        
+        // need to be sure everything is saved
         plugin.reloadConfig();
         plugin.saveConfig();
         
@@ -97,15 +115,16 @@ public class Config {
         
         // load packages
         packages = new HashMap<>();
-        for (File file : root.listFiles()) {
+        for (String packPath : plugin.getConfig().getStringList("packages")) {
+            File file = new File(root, packPath.replace("-", File.separator));
             // get directories which can be quest packages
             if (!file.isDirectory()) continue;
             if (file.getName().equals("logs") || file.getName().equals("backups") || file.getName().equals("conversations")) continue;
             // initialize ConfigPackage objects and if they are valid place them in the map
             ConfigPackage pack = new ConfigPackage(file);
             if (pack.isValid()) {
-                packages.put(file.getName(), pack);
-                if (verboose) Debug.info("Loaded " + file.getName() + " package");
+                packages.put(packPath, pack);
+                if (verboose) Debug.info("Loaded " + packPath + " package");
             }
         }
     }
@@ -118,7 +137,7 @@ public class Config {
      * @return true if the package was created, false if it already existed
      */
     public static boolean createPackage(String packName) {
-        File def = new File(instance.root, packName);
+        File def = new File(instance.root, packName.replace("-", File.pathSeparator));
         if (!def.exists()) {
             Debug.broadcast("Deploying " + packName + " package!");
             def.mkdir();
@@ -131,6 +150,11 @@ public class Config {
             File conversations = new File(def, "conversations");
             conversations.mkdir();
             saveResource(conversations, "defaultConversation.yml", "innkeeper.yml");
+            List<String> list = plugin.getConfig().getStringList("packages");
+            if (list == null) list = new ArrayList<>();
+            list.add(packName);
+            plugin.getConfig().set("packages", list);
+            plugin.saveConfig();
             return true;
         }
         return false;
