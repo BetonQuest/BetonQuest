@@ -5,3 +5,15 @@ npcs:
   '0': innkeeper
 cancel:
   wood: name_en:&2Wood_for_Innkeeper name_pl:&2Drewno_dla_Karczmarza name_cn:&2\u65c5\u5e97\u4e4b\u6728 name_es:&2Madera_para_el_Tabernero name_de:&2Holz_fuer_den_Gastwirt name_fr:&2Bois_pour_Aubergiste conditions:wood_started,!wood_paid objectives:wood tags:wood_started,wood_done,wood_paid journal:wood_started,wood_done,wood_paid
+journal_main_page:
+  greeting:
+    priority: 1
+    text:
+      pl: 'Ukonczyles zadanie dla Karczmarza!'
+      en: 'You have completed a quest for Innkeeper!'
+      de: 'You have completed a quest for Innkeeper!'
+      fr: 'You have completed a quest for Innkeeper!'
+      cn: 'You have completed a quest for Innkeeper!'
+      es: 'You have completed a quest for Innkeeper!'
+      nl: 'You have completed a quest for Innkeeper!'
+    conditions: 'wood_paid'

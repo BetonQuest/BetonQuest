@@ -364,6 +364,7 @@ public final class BetonQuest extends JavaPlugin {
                     DatabaseHandler dbh = new DatabaseHandler(playerID);
                     dbHandlers.put(playerID, dbh);
                     dbh.startObjectives();
+                    dbh.getJournal().update();
                     if (dbh.getConversation() != null)
                         new ConversationResumer(playerID, dbh.getConversation());
                 }
@@ -1018,8 +1019,8 @@ public final class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(String packName, String name, String playerID) {
         Variable var = variables.get(packName + "-" + name);
-        if (var == null) return "";
-        return variables.get(packName + "-" + name).getValue(playerID);
+        if (var == null) return "variable does not exist";
+        return var.getValue(playerID);
     }
 
     /**

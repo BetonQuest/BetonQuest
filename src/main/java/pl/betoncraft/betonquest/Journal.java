@@ -19,21 +19,25 @@ package pl.betoncraft.betonquest;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+
+import com.google.common.collect.Lists;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
-
-import com.google.common.collect.Lists;
 
 /**
  * Represents player's journal.
@@ -46,6 +50,7 @@ public class Journal {
     private List<Pointer> pointers;
     private List<String> texts = new ArrayList<>();
     private String lang;
+    private String mainPage;
 
     /**
      * Creates new Journal instance from List of Pointers.
@@ -58,7 +63,6 @@ public class Journal {
         this.playerID = playerID;
         this.lang = lang;
         pointers = list;
-        generateTexts(lang);
     }
 
     /**
@@ -71,7 +75,7 @@ public class Journal {
     }
 
     /**
-     * Adds pointer to the journal and regenerates the texts
+     * Adds pointer to the journal. It needs to be updated now.
      * 
      * @param pointer
      *            the pointer to be added
@@ -81,11 +85,10 @@ public class Journal {
     public void addPointer(Pointer pointer) {
         pointers.add(pointer);
         BetonQuest.getInstance().getDBHandler(playerID).addPointer(pointer);
-        generateTexts(lang);
     }
 
     /**
-     * Removes the pointer from journal and regenerates it
+     * Removes the pointer from journal. It needs to be updated now.
      * 
      * @param pointer
      *          the pointer to remove
@@ -99,7 +102,6 @@ public class Journal {
                 break;
             }
         }
-        generateTexts(lang);
     }
 
     /**
@@ -108,20 +110,28 @@ public class Journal {
      * @return list of Strings - texts for every journal entry
      */
     public List<String> getText() {
+        List<String> list;
         if (Config.getString("config.journal.reversed_order").equalsIgnoreCase("true")) {
-            return Lists.reverse(texts);
+            list = Lists.reverse(texts);
         } else {
-            return texts;
+            list = texts;
         }
+        list = new ArrayList<>(list);
+        if (mainPage != null) list.add(0, mainPage);
+        return list;
     }
 
     /**
      * Generates texts for every pointer and places them inside a List
      */
     public void generateTexts(String lang) {
+        // remove previous texts
         texts.clear();
-        this.lang = lang; 
+        this.lang = lang;
+        // generate the first page
+        mainPage = generateMainPage();
         for (Pointer pointer : pointers) {
+            // if date should not be hidden, generate the date prefix
             String datePrefix = "";
             if (Config.getString("config.journal.hide_date").equalsIgnoreCase("false")) {
                 String date = new SimpleDateFormat(Config.getString("config.date_format")).format(pointer.getTimestamp());
@@ -133,6 +143,7 @@ public class Journal {
                 }
                 datePrefix = day + " " + hour;
             }
+            // get package and name of the pointer
             String[] parts = pointer.getPointer().split("\\.");
             String packName = parts[0];
             ConfigPackage pack = Config.getPackage(packName);
@@ -140,6 +151,7 @@ public class Journal {
                 continue;
             }
             String pointerName = parts[1];
+            // resolve the text in player's language
             String text;
             if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
                 text = pack.getString("journal." + pointerName + "." + lang);
@@ -153,9 +165,86 @@ public class Journal {
             } else {
                 text = pack.getString("journal." + pointerName);
             }
+            // add the entry to the list
             texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text")
                     + "\n" + text);
         }
+    }
+
+    /**
+     * Generates the main page for this journal.
+     * 
+     * @return the main page string or null, if there is no main page
+     */
+    private String generateMainPage() {
+        HashMap<Integer, String> lines = new HashMap<>(); // holds text lines with their priority
+        ArrayList<Integer> numbers = new ArrayList<>();   // stores numbers that are used, so there's no need to search them
+        for (String packName : Config.getPackageNames()) {
+            ConfigPackage pack = Config.getPackage(packName);
+            ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
+            if (s == null) continue;
+            // handle every entry
+            keys:
+            for (String key : s.getKeys(false)) {
+                int i = s.getInt(key + ".priority", -1);
+                // only add entry if the priority is set and not doubled
+                if (i >= 0 && !numbers.contains(i)) {
+                    // check conditions and continue loop if not met 
+                    String rawConditions = s.getString(key + ".conditions");
+                    if (rawConditions != null && rawConditions.length() > 0) {
+                        for (String condition : rawConditions.split(",")) {
+                            if (!condition.contains(".")) {
+                                condition = packName + "." + condition;
+                            }
+                            if (!BetonQuest.condition(playerID, condition)) {
+                                continue keys;
+                            }
+                        }
+                    }
+                    // here conditions are met, get the text in player's language
+                    String text;
+                    if (s.isConfigurationSection(key + ".text")) {
+                        text = s.getString(key + ".text." + lang);
+                        if (text == null)
+                            text = s.getString(key + ".text." + Config.getLanguage());
+                        if (text == null)
+                            text = s.getString(key + ".text.en");
+                    } else {
+                        text = s.getString(key + ".text");
+                    }
+                    if (text == null || text.length() <= 0) {
+                        continue;
+                    }
+                    // resolve variables
+                    for (String variable : BetonQuest.resolveVariables(text)) {
+                        BetonQuest.createVariable(pack, variable);
+                        text = text.replace(variable, BetonQuest.getInstance()
+                                .getVariableValue(packName, variable, playerID));
+                    }
+                    // add the text to HashMap
+                    numbers.add(i);
+                    lines.put(i, text);
+                } else {
+                    Debug.error("Priority of " + packName + "." + key + " journal main page line is not defined or doubled");
+                    continue;
+                }
+            }
+        }
+        if (numbers.isEmpty()) return null;
+        // now all lines from all packages are extracted, sort numbers
+        numbers.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+        // build the string and return it
+        ArrayList<String> sortedLines = new ArrayList<>();
+        for (int i : numbers) {
+            sortedLines.add(lines.get(i));
+        }
+        String finalLine = StringUtils.join(sortedLines, '\n');
+        return finalLine;
     }
 
     /**
@@ -173,10 +262,12 @@ public class Journal {
      *            slot number for adding the journal
      */
     public void addToInv(int slot) {
-        // do nothing if the player already has a journal
         if (hasJournal(playerID)) {
+            update();
             return;
         }
+        // update the journal
+        generateTexts(lang);
         Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
         // if the slot is less than 0 then use default slot
         if (slot < 0) {
@@ -239,11 +330,9 @@ public class Journal {
      *            ID of the player
      */
     public void update() {
-        if (hasJournal(playerID)) {
-            int slot = removeFromInv();
-            generateTexts(lang);
-            addToInv(slot);
-        }
+        lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+        int slot = removeFromInv();
+        addToInv(slot);
 
     }
     

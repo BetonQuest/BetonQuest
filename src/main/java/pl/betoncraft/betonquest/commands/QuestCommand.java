@@ -1126,7 +1126,6 @@ public class QuestCommand implements CommandExecutor {
             Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
             DatabaseHandler dbHandler = instance.getDBHandler(playerID);
             Journal journal = dbHandler.getJournal();
-            journal.generateTexts(dbHandler.getLanguage());
             journal.update();
         }
         // initialize new debugger

@@ -40,11 +40,16 @@ public class JournalEvent extends QuestEvent {
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
+        if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        add = parts[1].equalsIgnoreCase("add");
-        name = packName + "." + parts[2];
+        if (parts.length < 3) {
+            add = false;
+            name = null;
+        } else {
+            add = parts[1].equalsIgnoreCase("add");
+            name = packName + "." + parts[2];
+        }
     }
 
     @Override
@@ -54,7 +59,7 @@ public class JournalEvent extends QuestEvent {
         if (add) {
             journal.addPointer(new Pointer(name, new Date().getTime()));
             Config.sendMessage(playerID, "new_journal_entry", null, "journal");
-        } else {
+        } else if (name != null) {
             journal.removePointer(name);
         }
         journal.update();

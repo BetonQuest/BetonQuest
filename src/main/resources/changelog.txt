@@ -11,6 +11,7 @@ Additions:
     * Compatibility with mcMMO (level condition and experience event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
+    * Configurable main page in the journal
     * New argument in objectives: "persistent" - makes them repeat after completing
     * New condition 'check' - allows for specifying multiple instructions in one
     * New condition 'objective' - checks if the player has an active objective
@@ -41,6 +42,7 @@ Changes:
     * All tags and points are internally associated with a package now
     * Some conditions are now static and persistent (just like events)
     * Point event can now multiply points
+    * Journal event can now use "update" argument for updating variables on the main page
 
 v1.7.6
 Fixes:

@@ -91,8 +91,9 @@ public class DatabaseHandler {
             ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES,
                     new String[] { playerID });
             // put them into the list
-            while (res1.next())
+            while (res1.next()) {
                 objectives.put(res1.getString("objective"), res1.getString("instructions"));
+            }
 
             // load tags
             ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[] { playerID });
@@ -152,10 +153,6 @@ public class DatabaseHandler {
                     + " tags, " + points.size() + " points, " + entries.size() + " journal entries"
                     + " and " + backpack.size() + " items loaded for player " + PlayerConverter.getName(playerID));
             }
-
-            // generate journal
-            journal = new Journal(playerID, lang, entries);
-            // entries.clear();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -253,6 +250,9 @@ public class DatabaseHandler {
      * @return new Journal instance
      */
     public Journal getJournal() {
+        if (journal == null) {
+            journal = new Journal(playerID, lang, entries);
+        }
         return journal;
     }
     
