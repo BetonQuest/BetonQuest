@@ -19,7 +19,7 @@ package pl.betoncraft.betonquest;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -232,15 +232,12 @@ public class Journal {
         }
         if (numbers.isEmpty()) return null;
         // now all lines from all packages are extracted, sort numbers
-        numbers.sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1 - o2;
-            }
-        });
+        Integer[] sorted = new Integer[numbers.size()];
+        sorted = numbers.toArray(sorted);
+        Arrays.sort(sorted);
         // build the string and return it
         ArrayList<String> sortedLines = new ArrayList<>();
-        for (int i : numbers) {
+        for (int i : sorted) {
             sortedLines.add(lines.get(i));
         }
         String finalLine = StringUtils.join(sortedLines, '\n');

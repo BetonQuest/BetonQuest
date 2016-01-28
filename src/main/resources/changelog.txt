@@ -1,4 +1,7 @@
 ﻿v1.8-dev
+Notes:
+  - As always in big updates, compatibility with plugins hooking into BetonQuest is broken.
+    You need to check if everything is working.
 Fixes:
     * Die objective now reacts to death caused by other plugins
     * Static events now are started correctly
