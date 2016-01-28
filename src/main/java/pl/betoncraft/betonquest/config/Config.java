@@ -32,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -50,7 +51,8 @@ public class Config {
     private static ConfigAccessor messages;
     private static ConfigAccessor internal;
     
-    private static HashMap<String, ConfigPackage> packages;
+    private static HashMap<String, ConfigPackage> packages = new HashMap<>();
+    private static HashMap<String, QuestCanceler> cancelers = new HashMap<>();
     
     private static String lang;
     
@@ -114,7 +116,6 @@ public class Config {
         createPackage("default");
         
         // load packages
-        packages = new HashMap<>();
         for (String packPath : plugin.getConfig().getStringList("packages")) {
             File file = new File(root, packPath.replace("-", File.separator));
             // get directories which can be quest packages
@@ -125,6 +126,20 @@ public class Config {
             if (pack.isValid()) {
                 packages.put(packPath, pack);
                 if (verboose) Debug.info("Loaded " + packPath + " package");
+            }
+        }
+        
+        // load quest cancelers
+        for (ConfigPackage pack : packages.values()) {
+            ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
+            if (s == null) continue;
+            for (String key : s.getKeys(false)) {
+                String name = pack.getName() + "." + key;
+                try {
+                    cancelers.put(name, new QuestCanceler(name));
+                } catch (InstructionParseException e) {
+                    Debug.error("Could not load '" + name + "' quest canceler: " + e.getMessage());
+                }
             }
         }
     }
@@ -208,6 +223,17 @@ public class Config {
      */
     public static Config getInstance() {
         return instance;
+    }
+    
+    /**
+     * Returns a quest canceler object, ready to cancel players' quests.
+     * 
+     * @param name
+     *          name of the object (package.name)
+     * @return the QuestCanceler object with given name
+     */
+    public static HashMap<String, QuestCanceler> getCancelers() {
+        return cancelers;
     }
     
     /**

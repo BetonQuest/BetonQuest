@@ -25,9 +25,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -38,7 +35,7 @@ import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.QuestCanceler;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
@@ -486,145 +483,11 @@ public class DatabaseHandler {
      * Cancels the quest by removing all defined tags, objectives
      * 
      * @param name
+     *          name of the canceler
      */
     public void cancelQuest(String name) {
-        Debug.info("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
-        // get the instruction
-        String[] parts = name.split("\\.");
-        String packName = parts[0];
-        String cancelerName = parts[1];
-        ConfigPackage pack = Config.getPackage(packName);
-        String rawPrefix = pack.getMain().getConfig().getString("tag_point_prefix");
-        boolean prefix = rawPrefix != null && rawPrefix.equalsIgnoreCase("true");
-        String instruction = pack.getString("main.cancel." + cancelerName);
-        String[] events     = null,
-                 tags       = null,
-                 objectives = null,
-                 points     = null,
-                 journal    = null,
-                 loc        = null;
-        String questName = null;
-        String defName   = null;
-        // parse it to get the data
-        for (String part : instruction.split(" ")) {
-            if (part.startsWith("name:")) {
-                defName = part.substring(5).replace("_", " ");
-            } else if (part.startsWith("name_" + lang + ":")) {
-                questName = part.substring(6 + lang.length()).replace("_", " ");
-            } else if (part.startsWith("name_" + Config.getLanguage() + ":")) {
-                defName = part.substring(6 + Config.getLanguage().length()).replace("_", " ");
-            } else if (part.startsWith("events:")) {
-                events = part.substring(7).split(",");
-            } else if (part.startsWith("tags:")) {
-                tags = part.substring(5).split(",");
-            } else if (part.startsWith("objectives:")) {
-                objectives = part.substring(11).split(",");
-            } else if (part.startsWith("points:")) {
-                points = part.substring(7).split(",");
-            } else if (part.startsWith("journal:")) {
-                journal = part.substring(8).split(",");
-            } else if (part.startsWith("loc:")) {
-                loc = part.substring(4).split(";");
-            }
-        }
-        // remove tags, points, objectives and journals
-        if (tags != null) {
-            for (String tag : tags) {
-                Debug.info("  Removing tag " + tag);
-                if (prefix && !tag.contains(".")) {
-                    removeTag(packName + "." + tag);
-                } else {
-                    removeTag(tag);
-                }
-            }
-        }
-        if (points != null) {
-            for (String point : points) {
-                Debug.info("  Removing points " + point);
-                if (prefix && !point.contains(".")) {
-                    removePointsCategory(packName + "." + point);
-                } else {
-                    removePointsCategory(point);
-                }
-            }
-        }
-        if (objectives != null) {
-            for (String obj : objectives) {
-                Debug.info("  Removing objective " + obj);
-                if (!obj.contains(".")) {
-                    deleteObjective(packName + "." + obj);
-                } else {
-                    deleteObjective(obj);
-                }
-            }
-        }
-        if (journal != null) {
-            Journal j = getJournal();
-            for (String entry : journal) {
-                Debug.info("  Removing entry " + entry);
-                if (entry.contains(".")) {
-                    j.removePointer(entry);
-                } else {
-                    j.removePointer(packName + "." + entry);
-                }
-            }
-            j.update();
-        }
-        // teleport player to the location
-        if (loc != null) {
-            if (loc.length != 4 && loc.length != 6) {
-                Debug.error("Wrong location format in quest canceler " + name);
-                return;
-            }
-            double x, y, z;
-            try {
-                x = Double.parseDouble(loc[0]);
-                y = Double.parseDouble(loc[1]);
-                z = Double.parseDouble(loc[2]);
-            } catch (NumberFormatException e) {
-                Debug.error("Could not parse location in quest canceler " + name);
-                return;
-            }
-            World world = Bukkit.getWorld(loc[3]);
-            if (world == null) {
-                Debug.error("The world doesn't exist in quest canceler " + name);
-                return;
-            }
-            float yaw = 0, pitch = 0;
-            if (loc.length == 6) {
-                try {
-                    yaw = Float.parseFloat(loc[4]);
-                    pitch = Float.parseFloat(loc[5]);
-                } catch (NumberFormatException e) {
-                    Debug.error("Could not parse yaw/pitch in quest canceler " + name
-                        + ", setting to 0");
-                    yaw = 0;
-                    pitch = 0;
-                }
-            }
-            Debug.info("  Teleporting to new location");
-            Location location = new Location(world, x, y, z, yaw, pitch);
-            PlayerConverter.getPlayer(playerID).teleport(location);
-        }
-        // fire all events
-        if (events != null) {
-            for (String event : events) {
-                if (!event.contains(".")) {
-                    event = packName + "." + event;
-                }
-                BetonQuest.event(playerID, event);
-            }
-        }
-        // done
-        Debug.info("Quest removed!");
-        if (questName == null) {
-            questName = defName;
-        }
-        if (questName == null) {
-            Debug.error("Default quest name not defined in " + name);
-            return;
-        }
-        Config.sendMessage(playerID, "quest_canceled", new String[]{questName});
+        QuestCanceler canceler = Config.getCancelers().get(name);
+        if (canceler != null) canceler.cancel(playerID); 
     }
 
     /**

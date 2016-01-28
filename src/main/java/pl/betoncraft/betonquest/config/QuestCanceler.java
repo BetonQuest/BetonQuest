@@ -1,0 +1,265 @@
+/**
+ * BetonQuest - advanced quests for Bukkit
+ * Copyright (C) 2015  Jakub "Co0sh" Sapalski
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package pl.betoncraft.betonquest.config;
+
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+/**
+ * Represents a quest canceler, which cancels quests for players.
+ * 
+ * @author Jakub Sapalski
+ */
+public class QuestCanceler {
+    
+    private String item;
+    private String[] events, tags, objectives, points, journal, conditions;
+    private Location loc;
+    private HashMap<String, String> name = new HashMap<>();
+    
+    private String packName;
+    private String cancelerName;
+    
+    /**
+     * Creates a new canceler with given name.
+     * 
+     * @param cancelerID
+     *          ID of the canceler (package.name)
+     */
+    public QuestCanceler(String cancelerID) throws InstructionParseException {
+        if (cancelerID == null)
+            throw new InstructionParseException("Name is null");
+        // get the instruction
+        String[] parts = cancelerID.split("\\.");
+        if (parts.length != 2)
+            throw new InstructionParseException("ID is incorrect");
+        packName = parts[0];
+        cancelerName = parts[1];
+        ConfigPackage pack = Config.getPackage(packName);
+        if (pack == null)
+            throw new InstructionParseException("Package does not exist");
+        String rawEvents     = pack.getString("main.cancel." + cancelerName + ".events"),
+               rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions"),
+               rawTags       = pack.getString("main.cancel." + cancelerName + ".tags"),
+               rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives"),
+               rawPoints     = pack.getString("main.cancel." + cancelerName + ".points"),
+               rawJournal    = pack.getString("main.cancel." + cancelerName + ".journal"),
+               rawLoc        = pack.getString("main.cancel." + cancelerName + ".loc");
+        System.out.println(packName + "." + cancelerName + " EVENTS: " + rawEvents + " CONDITIONS:" + rawConditions + " TAGS:" + rawTags + " OBJECTIVES:" + rawObjectives + " POINTS:" + rawPoints + " JOURNAL:" + rawJournal + " LOC:" + rawLoc);
+        // get the name
+        if (pack.getMain().getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
+            for (String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name").getKeys(false)){
+                name.put(lang, pack.getString("main.cancel." + cancelerName + ".name." + lang));
+            }
+        } else {
+            name.put(Config.getLanguage(), pack.getString("main.cancel." + cancelerName + ".name"));
+        }
+        // get the item
+        item = pack.getString("main.cancel." + cancelerName + ".item");
+        if (item == null) {
+            item = Config.getString(packName + ".items.cancel_button");
+        }
+        // parse it to get the data
+        events     = (rawEvents != null)     ? rawEvents.split(",")     : null;
+        conditions = (rawConditions != null) ? rawConditions.split(",") : null;
+        tags       = (rawTags != null)       ? rawTags.split(",")       : null;
+        objectives = (rawObjectives != null) ? rawObjectives.split(",") : null;
+        points     = (rawPoints != null)     ? rawPoints.split(",")     : null;
+        journal    = (rawJournal != null)    ? rawJournal.split(",")    : null;
+        String[] locParts = (rawLoc != null) ? rawLoc.split(";")        : null;
+        // get location
+        if (locParts != null) {
+            if (locParts.length != 4 && locParts.length != 6) {
+                Debug.error("Wrong location format in quest canceler " + name);
+                return;
+            }
+            double x, y, z;
+            try {
+                x = Double.parseDouble(locParts[0]);
+                y = Double.parseDouble(locParts[1]);
+                z = Double.parseDouble(locParts[2]);
+            } catch (NumberFormatException e) {
+                Debug.error("Could not parse location in quest canceler " + name);
+                return;
+            }
+            World world = Bukkit.getWorld(locParts[3]);
+            if (world == null) {
+                Debug.error("The world doesn't exist in quest canceler " + name);
+                return;
+            }
+            float yaw = 0, pitch = 0;
+            if (locParts.length == 6) {
+                try {
+                    yaw = Float.parseFloat(locParts[4]);
+                    pitch = Float.parseFloat(locParts[5]);
+                } catch (NumberFormatException e) {
+                    Debug.error("Could not parse yaw/pitch in quest canceler " + name
+                        + ", setting to 0");
+                    yaw = 0;
+                    pitch = 0;
+                }
+            }
+            loc = new Location(world, x, y, z, yaw, pitch);
+        }
+    }
+    
+    /**
+     * Checks conditions of this canceler to decide if it should be shown to the
+     * player or not.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @return true if all conditions are met, false otherwise
+     */
+    public boolean show(String playerID) {
+        if (conditions == null) return true;
+        for (String condition : conditions) {
+            if (!condition.contains(".")) {
+                condition = packName + "." + condition;
+            }
+            if (!BetonQuest.condition(playerID, condition)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Cancels the quest for specified player.
+     * 
+     * @param playerID
+     *          ID of the player
+     */
+    public void cancel(String playerID) {
+        Debug.info("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
+        DatabaseHandler handler = BetonQuest.getInstance().getDBHandler(playerID);
+        // remove tags, points, objectives and journals
+        if (tags != null) {
+            for (String tag : tags) {
+                Debug.info("  Removing tag " + tag);
+                if (!tag.contains(".")) {
+                    handler.removeTag(packName + "." + tag);
+                } else {
+                    handler.removeTag(tag);
+                }
+            }
+        }
+        if (points != null) {
+            for (String point : points) {
+                Debug.info("  Removing points " + point);
+                if (!point.contains(".")) {
+                    handler.removePointsCategory(packName + "." + point);
+                } else {
+                    handler.removePointsCategory(point);
+                }
+            }
+        }
+        if (objectives != null) {
+            for (String obj : objectives) {
+                Debug.info("  Removing objective " + obj);
+                if (!obj.contains(".")) {
+                    handler.deleteObjective(packName + "." + obj);
+                } else {
+                    handler.deleteObjective(obj);
+                }
+            }
+        }
+        if (journal != null) {
+            Journal j = handler.getJournal();
+            for (String entry : journal) {
+                Debug.info("  Removing entry " + entry);
+                if (entry.contains(".")) {
+                    j.removePointer(entry);
+                } else {
+                    j.removePointer(packName + "." + entry);
+                }
+            }
+            j.update();
+        }
+        // teleport player to the location
+        if (loc != null) {
+            Debug.info("  Teleporting to new location");
+            PlayerConverter.getPlayer(playerID).teleport(loc);
+        }
+        // fire all events
+        if (events != null) {
+            for (String event : events) {
+                if (!event.contains(".")) {
+                    event = packName + "." + event;
+                }
+                BetonQuest.event(playerID, event);
+            }
+        }
+        // done
+        Debug.info("Quest removed!");
+        String questName = getName(playerID);
+        Config.sendMessage(playerID, "quest_canceled", new String[]{questName});
+    }
+    
+    /**
+     * Returns a name of this quest canceler in the language of the player, default language, English
+     * or if none of above are specified, simply "Quest". In that case, it will also log an error
+     * to the console.
+     * 
+     * @param playerID
+     *          ID of the player
+     * @return the name of the quest canceler
+     */
+    public String getName(String playerID) {
+        String questName = name.get(BetonQuest.getInstance().getDBHandler(playerID).getLanguage());
+        if (questName == null)
+            questName = name.get(Config.getLanguage());
+        if (questName == null)
+            questName = name.get("en");
+        if (questName == null) {
+            Debug.error("Default quest name not defined in canceler " + packName + "." + cancelerName);
+            questName = "Quest";
+        }
+        return questName.replace("_", " ").replace("&", "§");
+    }
+    
+    public ItemStack getItem(String playerID) {
+        ItemStack stack = new ItemStack(Material.BONE);
+        if (item != null) {
+            try {
+                stack = new QuestItem(packName + "." + item).generateItem(1);
+            } catch (InstructionParseException e) {
+                Debug.error("Could not load cancel button: " + e.getMessage());
+            }
+        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(getName(playerID));
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
+}

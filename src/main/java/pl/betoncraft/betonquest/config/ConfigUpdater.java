@@ -84,7 +84,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v30";
+    private final String destination = "v31";
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
@@ -192,6 +192,85 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v30() {
+        try {
+            Debug.info("Converting cancelers to a new format");
+            for (String packName : Config.getPackageNames()) {
+                Debug.info("Searching " + packName + " package");
+                ConfigPackage pack = Config.getPackage(packName);
+                ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
+                if (s == null) continue;
+                for (String key : s.getKeys(false)) {
+                    String instruction = s.getString(key);
+                    Debug.info("  Converting " + key + " canceler: " + instruction);
+                    String[] parts = instruction.split(" ");
+                    HashMap<String, String> names = new HashMap<>();
+                    String events = null,
+                           conditions = null,
+                           tags = null,
+                           points = null,
+                           objectives = null,
+                           journal = null,
+                           loc = null;
+                    for (String part : parts) {
+                        Debug.info("    Checking part " + part);
+                        if (part.startsWith("name:")) {
+                            Debug.info("    Found general name: " + part.substring(5));
+                            names.put(Config.getLanguage(), part.substring(5));
+                        } else if (part.startsWith("name_")) {
+                            int colonIndex = part.indexOf(':');
+                            if (colonIndex < 0) continue;
+                            String lang = part.substring(5, colonIndex);
+                            Debug.info("    Found " + lang + " name: " + part.substring(colonIndex));
+                            names.put(lang, part.substring(colonIndex));
+                        } else if (part.startsWith("events:")) {
+                            Debug.info("    Found events: " + part.substring(7));
+                            events = part.substring(7);
+                        } else if (part.startsWith("conditions:")) {
+                            Debug.info("    Found conditions: " + part.substring(11));
+                            conditions = part.substring(11);
+                        } else if (part.startsWith("tags:")) {
+                            Debug.info("    Found tags: " + part.substring(5));
+                            tags = part.substring(5);
+                        } else if (part.startsWith("points:")) {
+                            Debug.info("    Found points: " + part.substring(7));
+                            points = part.substring(7);
+                        } else if (part.startsWith("objectives:")) {
+                            Debug.info("    Found objectives: " + part.substring(11));
+                            objectives = part.substring(11);
+                        } else if (part.startsWith("journal:")) {
+                            Debug.info("    Found journal entries: " + part.substring(8));
+                            journal = part.substring(8);
+                        } else if (part.startsWith("loc:")) {
+                            Debug.info("    Found location: " + part.substring(4));
+                            loc = part.substring(4);
+                        }
+                    }
+                    Debug.info("  - Setting the values");
+                    s.set(key, null);
+                    for (String lang : names.keySet()) {
+                        s.set(key + ".name." + lang, names.get(lang));
+                    }
+                    s.set(key + ".events", events);
+                    s.set(key + ".conditions", conditions);
+                    s.set(key + ".tags", tags);
+                    s.set(key + ".points", points);
+                    s.set(key + ".objectives", objectives);
+                    s.set(key + ".journal", journal);
+                    s.set(key + ".loc", loc);
+                    pack.getMain().saveConfig();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Made quest cancelers more convenient to define");
+        config.set("version", "v31");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

@@ -37,6 +37,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.QuestCanceler;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -357,63 +358,19 @@ public class BackpackDisplay implements Listener {
      */
     private class Cancelers extends Display {
         
-        private HashMap<Integer, String> map = new HashMap<>();
+        private HashMap<Integer, QuestCanceler> map = new HashMap<>();
         
         /**
          * Creates a page with quest cancelers and displays it to the player.
          */
         public Cancelers() {
-            HashMap<String, String> cancelers = new HashMap<>();
-            // for every package
-            for (String packName : Config.getPackageNames()) {
-                // loop all quest cancelers
-                ConfigurationSection s = Config.getPackage(packName).getMain()
-                        .getConfig().getConfigurationSection("cancel");
-                for (String key : s.getKeys(false)) {
-                    // and for each canceler
-                    String canceler = s.getString(key);
-                    boolean isMet = true;
-                    String name = null;
-                    String defName = null;
-                    for (String part : canceler.split(" ")) {
-                        // check conditions
-                        if (part.startsWith("conditions:")) {
-                            for (String condition : part.substring(11).split(",")) {
-                                if (!condition.contains(".")) {
-                                    condition = packName + "." + condition;
-                                }
-                                if (!BetonQuest.condition(playerID, condition)) {
-                                    isMet = false;
-                                    break;
-                                }
-                            }
-                        // and parse the name
-                        } else if (part.startsWith("name_" + lang + ":")) {
-                            name = part.substring(6 + lang.length());
-                        } else {
-                            if (part.startsWith("name_" + Config.getLanguage() + ":")) {
-                                defName = part.substring(6 + Config.getLanguage().length());
-                            } else if (part.startsWith("name:")) {
-                                defName = part.substring(5);
-                            }
-                        }
-                    }
-                    if (name == null) {
-                        name = defName;
-                    }
-                    if (name == null) {
-                        Debug.error("Default name not defined in quest canceler: "
-                                + packName + "." + key);
-                        continue;
-                    }
-                    // now if canceler meets the conditions
-                    if (isMet) {
-                        // put it into the map
-                        cancelers.put(packName + "." + key, name);
-                    }
-                }
+            HashMap<String, QuestCanceler> cancelers = new HashMap<>();
+            // get all quest cancelers that can be shown to the player
+            for (String name : Config.getCancelers().keySet()) {
+                QuestCanceler canceler = Config.getCancelers().get(name);
+                if (canceler.show(playerID)) cancelers.put(name, canceler);
             }
-            // not all cancelers that meet conditions and their names are in the map
+            // generate the inventory view
             int size = cancelers.size();
             int numberOfRows = ((size - size%9) / 9) + 1;
             if (numberOfRows > 6) {
@@ -424,27 +381,10 @@ public class BackpackDisplay implements Listener {
             inv = Bukkit.createInventory(null, numberOfRows*9, Config.getMessage(lang, "cancel_page"));
             ItemStack[] content = new ItemStack[numberOfRows*9];
             int i = 0;
-            for (String address : cancelers.keySet()) {
-                String name = cancelers.get(address);
-                ItemStack canceler = null;
-                String item = Config.getString(address.substring(0, address.indexOf('.'))
-                        + ".items.cancel_button");
-                if (item != null) {
-                    try {
-                        canceler = new QuestItem(item).generateItem(1);
-                    } catch (InstructionParseException e) {
-                        Debug.error("Could not load cancel button: " + e.getMessage());
-                        player.closeInventory();
-                        return;
-                    }
-                } else {
-                    canceler = new ItemStack(Material.BONE);
-                }
-                ItemMeta meta = canceler.getItemMeta();
-                meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
-                canceler.setItemMeta(meta);
-                content[i] = canceler;
-                map.put(i, address);
+            for (String name : cancelers.keySet()) {
+                QuestCanceler canceler = cancelers.get(name);
+                content[i] = canceler.getItem(playerID);
+                map.put(i, canceler);
                 i++;
             }
             inv.setContents(content);
@@ -454,12 +394,12 @@ public class BackpackDisplay implements Listener {
         
         @Override
         void click(int slot, int playerSlot, ClickType click) {
-            String address = map.get(slot);
-            if (address == null) {
+            QuestCanceler cancel = map.get(slot);
+            if (cancel == null) {
                 return;
             }
             // cancel the chosen quests
-            dbHandler.cancelQuest(address);
+            cancel.cancel(playerID);
             player.closeInventory();
         }
     }

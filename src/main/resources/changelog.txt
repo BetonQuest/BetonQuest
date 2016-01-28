@@ -44,6 +44,7 @@ Changes:
     * Point event can now multiply points
     * Journal event can now use "update" argument for updating variables on the main page
     * Packages can now be moved to another directories
+    * Quest cancelers are now defined in a more convenient way
 
 v1.7.6
 Fixes:
