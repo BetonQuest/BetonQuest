@@ -15,12 +15,14 @@ Additions:
     * New argument in objectives: "persistent" - makes them repeat after completing
     * New condition 'check' - allows for specifying multiple instructions in one
     * New condition 'objective' - checks if the player has an active objective
+    * New condition 'score' - check scores on scoreboards
     * New condition 'chestitem' - checks if a chest contains items
     * New event 'run' - allows for specifying multiple instructions in one
     * New event 'givejournal' - gives journal to the player
     * New event 'sudo' - forces the player to run a command
     * New event 'compass' - point player's compass to a location
     * New event 'cancel' - cancels a quest (as in main.yml)
+    * New event 'score' - modify scores on scoreboards
     * New events 'chestgive', 'chesttake' and 'chestclear' - put and remove items in chests
     * New objective 'logout' - the player needs to leave the server
     * New objective 'password' - the player needs to type the password in the chat

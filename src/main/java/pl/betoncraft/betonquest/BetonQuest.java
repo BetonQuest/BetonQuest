@@ -63,6 +63,7 @@ import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.RandomCondition;
+import pl.betoncraft.betonquest.conditions.ScoreboardCondition;
 import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.conditions.TestForBlockCondition;
@@ -108,6 +109,7 @@ import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
+import pl.betoncraft.betonquest.events.ScoreboardEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
 import pl.betoncraft.betonquest.events.SudoEvent;
@@ -282,6 +284,7 @@ public final class BetonQuest extends JavaPlugin {
         registerConditions("objective", ObjectiveCondition.class);
         registerConditions("check", CheckCondition.class);
         registerConditions("chestitem", ChestItemCondition.class);
+        registerConditions("score", ScoreboardCondition.class);
 
         // register events
         registerEvents("message", MessageEvent.class);
@@ -314,6 +317,7 @@ public final class BetonQuest extends JavaPlugin {
         registerEvents("chestclear", ChestClearEvent.class);
         registerEvents("compass", CompassEvent.class);
         registerEvents("cancel", CancelEvent.class);
+        registerEvents("score", ScoreboardEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
