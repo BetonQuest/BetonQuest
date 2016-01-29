@@ -124,6 +124,8 @@ public class Compatibility {
                 && plugin.getConfig().getString("hook.effectlib")
                 .equalsIgnoreCase("true")) {
             manager = new EffectManager(plugin);
+            if (hooked.contains("Citizens"))
+                new CitizensParticle();
             plugin.registerEvents("particle", ParticleEvent.class);
             hooked.add("EffectLib");
         }
@@ -158,6 +160,15 @@ public class Compatibility {
      */
     public static EffectManager getEffectManager() {
         return instance.manager;
+    }
+    
+    /**
+     * Reloads all stuff connected to other plugins.
+     */
+    public static void reload() {
+        if (instance.hooked.contains("Citizens") && instance.hooked.contains("EffectLib")) {
+            CitizensParticle.reload();
+        }
     }
     
     /**

@@ -12,7 +12,7 @@ Additions:
     * New variable system in conversations (check out the documentation)
     * More options for journal, including one entry per page and removing date
     * Compatibility with mcMMO (level condition and experience event)
-    * Compatibility with EffectLib ('particle' event)
+    * Compatibility with EffectLib ('particle' event, NPC particles)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
     * Configurable main page in the journal

@@ -197,6 +197,14 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v31() {
         config.set("hook.effectlib", "true");
+        config.set("effectlib_npc_effect.class", "VortexEffect");
+        config.set("effectlib_npc_effect.iterations", 20);
+        config.set("effectlib_npc_effect.particle", "crit_magic");
+        config.set("effectlib_npc_effect.helixes", 3);
+        config.set("effectlib_npc_effect.circles", 1);
+        config.set("effectlib_npc_effect.grow", 0.1);
+        config.set("effectlib_npc_effect.radius", 0.5);
+        config.set("effectlib_npc_effect.delay", 5);
         Debug.broadcast("Added compatibility with EffectLib");
         config.set("version", "v32");
         instance.saveConfig();
