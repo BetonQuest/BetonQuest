@@ -166,6 +166,7 @@ public final class BetonQuest extends JavaPlugin {
     private boolean isMySQLUsed;
     private Saver saver;
     private BukkitRunnable keeper;
+    private Compatibility compatibility;
 
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
@@ -354,7 +355,7 @@ public final class BetonQuest extends JavaPlugin {
         registerVariable("version", VersionVariable.class);
 
         // initialize compatibility with other plugins
-        new Compatibility();
+        compatibility = new Compatibility();
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
@@ -598,6 +599,7 @@ public final class BetonQuest extends JavaPlugin {
         // cancel database saver
         saver.end();
         keeper.cancel();
+        compatibility.disable();
         // stop global location listener
         GlobalLocations.stop();
         database.closeConnection();

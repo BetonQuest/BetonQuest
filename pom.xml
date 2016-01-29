@@ -89,6 +89,11 @@
             <artifactId>mcmmo</artifactId>
             <version>1.5.04-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>de.slikey.effectlib</groupId>
+            <artifactId>EffectLib</artifactId>
+            <version>3.8</version>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>

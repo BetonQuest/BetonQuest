@@ -20,15 +20,15 @@ package pl.betoncraft.betonquest.compatibility;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import ch.njol.skript.Skript;
+import de.slikey.effectlib.EffectManager;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.BQEventSkript.CustomEventForSkript;
-import ch.njol.skript.Skript;
 
 /**
  * Compatibility with other plugins
@@ -37,37 +37,41 @@ import ch.njol.skript.Skript;
  */
 public class Compatibility {
 
-    private BetonQuest instance = BetonQuest.getInstance();
+    private BetonQuest plugin = BetonQuest.getInstance();
+    private static Compatibility instance;
     private List<String> hooked = new ArrayList<>();
 
-    private static Permission permission = null;
-    private static Economy economy = null;
+    private Permission permission = null;
+    private Economy economy = null;
+
+    private EffectManager manager;
 
     public Compatibility() {
+        instance = this;
 
         // hook into MythicMobs
         if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")
-                && instance.getConfig().getString("hook.mythicmobs")
+                && plugin.getConfig().getString("hook.mythicmobs")
                 .equalsIgnoreCase("true")) {
-            instance.registerObjectives("mmobkill", MythicMobKillObjective.class);
-            instance.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
+            plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
+            plugin.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
             hooked.add("MythicMobs");
         }
 
         // hook into Citizens
         if (Bukkit.getPluginManager().isPluginEnabled("Citizens")
-                && instance.getConfig().getString("hook.citizens")
+                && plugin.getConfig().getString("hook.citizens")
                 .equalsIgnoreCase("true")) {
             new CitizensListener();
             new CitizensWalkingListener();
-            instance.registerObjectives("npckill", NPCKillObjective.class);
-            instance.registerObjectives("npcinteract", NPCInteractObjective.class);
+            plugin.registerObjectives("npckill", NPCKillObjective.class);
+            plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
             hooked.add("Citizens");
         }
 
         // hook into Vault
         if (Bukkit.getPluginManager().isPluginEnabled("Vault")
-                && instance.getConfig().getString("hook.vault")
+                && plugin.getConfig().getString("hook.vault")
                 .equalsIgnoreCase("true")) {
             RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer()
                     .getServicesManager()
@@ -80,39 +84,48 @@ public class Compatibility {
             if (economyProvider != null) {
                 economy = economyProvider.getProvider();
             }
-            instance.registerEvents("money", MoneyEvent.class);
-            instance.registerConditions("money", MoneyCondition.class);
-            instance.registerEvents("permission", PermissionEvent.class);
+            plugin.registerEvents("money", MoneyEvent.class);
+            plugin.registerConditions("money", MoneyCondition.class);
+            plugin.registerEvents("permission", PermissionEvent.class);
             hooked.add("Vault");
         }
         
         // hook into Skript
         if (Bukkit.getPluginManager().isPluginEnabled("Skript")
-                && instance.getConfig().getString("hook.skript")
+                && plugin.getConfig().getString("hook.skript")
                 .equalsIgnoreCase("true")) {
             Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
             Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
             Skript.registerEvent("betonquest", SkriptEventBQ.class, CustomEventForSkript.class, "[betonquest] event %string%");
-            BetonQuest.getInstance().registerEvents("skript", BQEventSkript.class);
+            plugin.registerEvents("skript", BQEventSkript.class);
             hooked.add("Skript");
         }
         
         // hook into WorldGuard
         if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")
-                && instance.getConfig().getString("hook.worldguard")
+                && plugin.getConfig().getString("hook.worldguard")
                 .equalsIgnoreCase("true")) {
-            BetonQuest.getInstance().registerConditions("region", RegionCondition.class);
-            BetonQuest.getInstance().registerObjectives("region", RegionObjective.class);
+            plugin.registerConditions("region", RegionCondition.class);
+            plugin.registerObjectives("region", RegionObjective.class);
             hooked.add("WorldGuard");
         }
         
         // hook into mcMMO
         if (Bukkit.getPluginManager().isPluginEnabled("mcMMO")
-                && instance.getConfig().getString("hook.mcmmo")
+                && plugin.getConfig().getString("hook.mcmmo")
                 .equalsIgnoreCase("true")) {
-            BetonQuest.getInstance().registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
-            BetonQuest.getInstance().registerEvents("mcmmoexp", McMMOAddExpEvent.class);
+            plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
+            plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
             hooked.add("mcMMO");
+        }
+        
+        // hook into EffectLib
+        if (Bukkit.getPluginManager().isPluginEnabled("EffectLib")
+                && plugin.getConfig().getString("hook.effectlib")
+                .equalsIgnoreCase("true")) {
+            manager = new EffectManager(plugin);
+            plugin.registerEvents("particle", ParticleEvent.class);
+            hooked.add("EffectLib");
         }
 
         // log which plugins have been hooked
@@ -122,7 +135,7 @@ public class Compatibility {
                 string.append(plugin + ", ");
             }
             String plugins = string.substring(0, string.length() - 2);
-            instance.getLogger().info("Hooked into " + plugins + "!");
+            plugin.getLogger().info("Hooked into " + plugins + "!");
         }
     }
 
@@ -130,14 +143,31 @@ public class Compatibility {
      * @return the permission
      */
     public static Permission getPermission() {
-        return permission;
+        return instance.permission;
     }
 
     /**
      * @return the economy
      */
     public static Economy getEconomy() {
-        return economy;
+        return instance.economy;
+    }
+    
+    /**
+     * @return the EffectLib effect manager
+     */
+    public static EffectManager getEffectManager() {
+        return instance.manager;
+    }
+    
+    /**
+     * Is called when BetonQuest is being disabled. Does everything the
+     * compatible plugins require to do on disable.
+     */
+    public void disable() {
+        if (hooked.contains("EffectLib")) {
+            manager.dispose();
+        }
     }
 
 }

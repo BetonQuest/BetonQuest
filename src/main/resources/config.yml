@@ -1,4 +1,4 @@
-version: v31
+version: v32
 mysql:
   host: ''
   port: ''
@@ -30,6 +30,7 @@ hook:
   worldguard: 'true'
   skript: 'true'
   mcmmo: 'true'
+  effectlib: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
