@@ -15,15 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.skript;
 
 import org.bukkit.event.Event;
 
-import pl.betoncraft.betonquest.compatibility.BQEventSkript.CustomEventForSkript;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
+import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
 
 /**
  * Skript event, which listens to custom event fired by BetonQuest's event

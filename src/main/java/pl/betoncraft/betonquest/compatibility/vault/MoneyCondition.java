@@ -15,52 +15,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
-
-import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.api.SkillAPI;
+package pl.betoncraft.betonquest.compatibility.vault;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
- * Adds experience in specified skill.
+ * Checks if the player has specified amount of Vault money
  * 
  * @author Jakub Sapalski
  */
-public class McMMOAddExpEvent extends QuestEvent {
-    
-    private final String skillType;
-    private final int exp;
+public class MoneyCondition extends Condition {
 
-    public McMMOAddExpEvent(String packName, String instructions)
+    private final double amount;
+
+    public MoneyCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        skillType = parts[1].toUpperCase();
-        if (!SkillAPI.getSkills().contains(skillType)) {
-            throw new InstructionParseException("Invalid skill name");
+        if (parts.length < 2) {
+            throw new InstructionParseException("Money amount not specified");
         }
         try {
-            int tempLevel = Integer.parseInt(parts[2]);
-            if (tempLevel <= 0) {
-                throw new InstructionParseException(
-                        "Experience amount must be greater than 0");
+            double tempAmount = Double.parseDouble(parts[1]);
+            if (tempAmount < 0) {
+                tempAmount = 0;
             }
-            exp = tempLevel;
+            amount = tempAmount;
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse experience amount");
+            throw new InstructionParseException("Could not parse money amount");
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void run(String playerID) {
-        ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp, "UNKNOWN");
+    public boolean check(String playerID) {
+        return Compatibility.getEconomy()
+                .has(PlayerConverter.getPlayer(playerID).getName(), amount);
     }
 
 }

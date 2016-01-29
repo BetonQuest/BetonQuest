@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.effectlib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +24,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

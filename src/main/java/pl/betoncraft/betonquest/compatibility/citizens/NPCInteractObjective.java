@@ -15,37 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.citizens;
+
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 /**
- * Player has to enter the WorldGuard region
+ * Player has to right click the NPC
  * 
  * @author Jakub Sapalski
  */
-public class RegionObjective extends Objective implements Listener {
-
-    private final String name;
-    private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
-            Bukkit.getPluginManager().getPlugin("WorldGuard");
+public class NPCInteractObjective extends Objective implements Listener {
     
-    public RegionObjective(String packName, String label, String instruction)
+    private final int id;
+    private final boolean cancel;
+
+    public NPCInteractObjective(String packName, String label, String instruction)
             throws InstructionParseException {
         super(packName, label, instruction);
         template = ObjectiveData.class;
@@ -53,29 +48,33 @@ public class RegionObjective extends Objective implements Listener {
         if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        name = parts[1];
-    }
-    
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
-            return;
+        try {
+            id = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse ID");
         }
-        Location loc = event.getTo();
-        RegionManager manager = worldGuard.getRegionManager(loc.getWorld());
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(loc);
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) {
-                if (checkConditions(playerID)) {
-                    completeObjective(playerID);
-                } else {
-                    return;
-                }
+        if (id < 0) {
+            throw new InstructionParseException("ID cannot be negative");
+        }
+        boolean tempCancel = false;
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("cancel")) {
+                tempCancel = true;
             }
         }
-        
+        cancel = tempCancel;
+    }
+    
+    @EventHandler(priority=EventPriority.LOWEST)
+    public void onNPCClick(NPCRightClickEvent event) {
+        String playerID = PlayerConverter.getID(event.getClicker());
+        if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
+            return;
+        }
+        if (checkConditions(playerID)) {
+            if (cancel) event.setCancelled(true);
+            completeObjective(playerID);
+        }
     }
 
     @Override

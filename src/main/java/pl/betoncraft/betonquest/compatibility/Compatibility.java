@@ -28,7 +28,26 @@ import de.slikey.effectlib.EffectManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.compatibility.BQEventSkript.CustomEventForSkript;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
+import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
+import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
+import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
+import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
+import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
+import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
+import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
+import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
+import pl.betoncraft.betonquest.compatibility.skript.SkriptConditionBQ;
+import pl.betoncraft.betonquest.compatibility.skript.SkriptEffectBQ;
+import pl.betoncraft.betonquest.compatibility.skript.SkriptEventBQ;
+import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
+import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
+import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
+import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
+import pl.betoncraft.betonquest.compatibility.worldguard.RegionCondition;
+import pl.betoncraft.betonquest.compatibility.worldguard.RegionObjective;
 
 /**
  * Compatibility with other plugins

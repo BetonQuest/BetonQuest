@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.citizens;
 
 import java.util.ArrayList;
 
@@ -27,6 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 
 /**

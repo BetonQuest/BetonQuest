@@ -15,44 +15,51 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.worldguard;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 /**
- * Checks if the player has specified amount of Vault money
+ * Checks if the player is in specified region
  * 
  * @author Jakub Sapalski
  */
-public class MoneyCondition extends Condition {
+public class RegionCondition extends Condition {
 
-    private final double amount;
-
-    public MoneyCondition(String packName, String instructions)
+    private final String name;
+    private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
+            Bukkit.getPluginManager().getPlugin("WorldGuard");
+    
+    public RegionCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
-            throw new InstructionParseException("Money amount not specified");
+            throw new InstructionParseException("Not enough arguments");
         }
-        try {
-            double tempAmount = Double.parseDouble(parts[1]);
-            if (tempAmount < 0) {
-                tempAmount = 0;
-            }
-            amount = tempAmount;
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse money amount");
-        }
+        name = parts[1];
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean check(String playerID) {
-        return Compatibility.getEconomy()
-                .has(PlayerConverter.getPlayer(playerID).getName(), amount);
+        Player player = PlayerConverter.getPlayer(playerID);
+        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
+        ProtectedRegion region = manager.getRegion(name);
+        ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
+        for (ProtectedRegion compare : set) {
+            if (compare.equals(region)) return true;
+        }
+        return false;
     }
 
 }

@@ -15,45 +15,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.mcmmo;
 
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+
 /**
- * Modifies player's balance
+ * Adds experience in specified skill.
  * 
  * @author Jakub Sapalski
  */
-public class MoneyEvent extends QuestEvent {
+public class McMMOAddExpEvent extends QuestEvent {
     
-    private final double amount;
+    private final String skillType;
+    private final int exp;
 
-    public MoneyEvent(String packName, String instructions)
+    public McMMOAddExpEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
+        if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
+        skillType = parts[1].toUpperCase();
+        if (!SkillAPI.getSkills().contains(skillType)) {
+            throw new InstructionParseException("Invalid skill name");
+        }
         try {
-            amount = Double.parseDouble(parts[1]);
+            int tempLevel = Integer.parseInt(parts[2]);
+            if (tempLevel <= 0) {
+                throw new InstructionParseException(
+                        "Experience amount must be greater than 0");
+            }
+            exp = tempLevel;
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse money amount");
+            throw new InstructionParseException("Could not parse experience amount");
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        if (amount > 0) {
-            Compatibility.getEconomy().depositPlayer(player.getName(), amount);
-        } else if (amount < 0) {
-            Compatibility.getEconomy().withdrawPlayer(player.getName(), -amount);
-        }
+        ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp, "UNKNOWN");
     }
+
 }

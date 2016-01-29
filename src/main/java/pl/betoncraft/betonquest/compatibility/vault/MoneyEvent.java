@@ -15,53 +15,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.vault;
 
-import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.api.SkillAPI;
+import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
- * Checks if the player has specified level in an mcMMO skill.
+ * Modifies player's balance
  * 
  * @author Jakub Sapalski
  */
-public class McMMOSkillLevelCondition extends Condition {
+public class MoneyEvent extends QuestEvent {
     
-    private final String skillType;
-    private final int level;
+    private final double amount;
 
-    public McMMOSkillLevelCondition(String packName, String instructions)
+    public MoneyEvent(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
+        if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        skillType = parts[1].toUpperCase();
-        if (!SkillAPI.getSkills().contains(skillType)) {
-            throw new InstructionParseException("Invalid skill name");
-        }
         try {
-            int tempLevel = Integer.parseInt(parts[2]);
-            if (tempLevel <= 0) {
-                throw new InstructionParseException(
-                        "Level cannot be less or equal to 0");
-            }
-            level = tempLevel;
+            amount = Double.parseDouble(parts[1]);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse level");
+            throw new InstructionParseException("Could not parse money amount");
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean check(String playerID) {
-        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID),
-                skillType) >= level;
+    public void run(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        if (amount > 0) {
+            Compatibility.getEconomy().depositPlayer(player.getName(), amount);
+        } else if (amount < 0) {
+            Compatibility.getEconomy().withdrawPlayer(player.getName(), -amount);
+        }
     }
-
 }

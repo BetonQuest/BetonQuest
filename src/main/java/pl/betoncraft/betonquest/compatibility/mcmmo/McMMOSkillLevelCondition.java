@@ -15,51 +15,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility;
+package pl.betoncraft.betonquest.compatibility.mcmmo;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 /**
- * Checks if the player is in specified region
+ * Checks if the player has specified level in an mcMMO skill.
  * 
  * @author Jakub Sapalski
  */
-public class RegionCondition extends Condition {
-
-    private final String name;
-    private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
-            Bukkit.getPluginManager().getPlugin("WorldGuard");
+public class McMMOSkillLevelCondition extends Condition {
     
-    public RegionCondition(String packName, String instructions)
+    private final String skillType;
+    private final int level;
+
+    public McMMOSkillLevelCondition(String packName, String instructions)
             throws InstructionParseException {
         super(packName, instructions);
         String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
+        if (parts.length < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
-        name = parts[1];
+        skillType = parts[1].toUpperCase();
+        if (!SkillAPI.getSkills().contains(skillType)) {
+            throw new InstructionParseException("Invalid skill name");
+        }
+        try {
+            int tempLevel = Integer.parseInt(parts[2]);
+            if (tempLevel <= 0) {
+                throw new InstructionParseException(
+                        "Level cannot be less or equal to 0");
+            }
+            level = tempLevel;
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse level");
+        }
     }
 
     @Override
     public boolean check(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) return true;
-        }
-        return false;
+        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID),
+                skillType) >= level;
     }
 
 }
