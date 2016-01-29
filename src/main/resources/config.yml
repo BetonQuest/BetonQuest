@@ -1,4 +1,4 @@
-version: v32
+version: v33
 mysql:
   host: ''
   port: ''
@@ -31,6 +31,7 @@ hook:
   skript: 'true'
   mcmmo: 'true'
   effectlib: 'true'
+  playerpoints: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

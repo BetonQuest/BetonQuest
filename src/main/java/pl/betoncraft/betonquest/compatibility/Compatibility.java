@@ -38,6 +38,8 @@ import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
+import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
+import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptConditionBQ;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptEffectBQ;
@@ -147,6 +149,15 @@ public class Compatibility {
                 new CitizensParticle();
             plugin.registerEvents("particle", ParticleEvent.class);
             hooked.add("EffectLib");
+        }
+        
+        // hook into PlayerPoints
+        if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")
+                && plugin.getConfig().getString("hook.playerpoints")
+                .equalsIgnoreCase("true")) {
+            plugin.registerEvents("playerpoints", PlayerPointsEvent.class);
+            plugin.registerConditions("playerpoints", PlayerPointsCondition.class);
+            hooked.add("PlayerPoints");
         }
 
         // log which plugins have been hooked
