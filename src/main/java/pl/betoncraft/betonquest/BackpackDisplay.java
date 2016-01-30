@@ -37,6 +37,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.QuestCanceler;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -414,22 +415,23 @@ public class BackpackDisplay implements Listener {
             Integer counter = 0;
             // for every package
             for (String packName : Config.getPackageNames()) {
+                ConfigPackage pack = Config.getPackage(packName);
                 // loop all compass locations
-                ConfigurationSection s = Config.getPackage(packName).getMain()
+                ConfigurationSection s = pack.getMain()
                         .getConfig().getConfigurationSection("compass");
                 if (s != null) {
                     for (String key : s.getKeys(false)) {
-                        String location = s.getString(key + ".location");
-                        String itemName = s.getString(key + ".item");
+                        String location = pack.getString("main.compass." + key + ".location");
+                        String itemName = pack.getString("main.compass." + key + ".item");
                         String name = null;
                         if (s.isConfigurationSection(key + ".name")) {
-                            name = s.getString(key + ".name." + lang);
+                            name = pack.getString("main.compass." + key + ".name." + lang);
                             if (name == null)
-                                name = s.getString(key + ".name." + Config.getLanguage());
+                                name = pack.getString("main.compass." + key + ".name." + Config.getLanguage());
                             if (name == null)
-                                name = s.getString(key + ".name.en");
+                                name = pack.getString("main.compass." + key + ".name.en");
                         } else {
-                            name = s.getString(key + ".name");
+                            name = pack.getString("main.compass." + key + ".name");
                         }
                         if (name == null) {
                             Debug.error("Name not defined in a compass pointer in " + packName + " package: " + key);
