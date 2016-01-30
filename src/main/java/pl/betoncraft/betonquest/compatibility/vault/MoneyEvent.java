@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class MoneyEvent extends QuestEvent {
     
     private final double amount;
+    private boolean multi;
 
     public MoneyEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -39,6 +40,10 @@ public class MoneyEvent extends QuestEvent {
         String[] parts = instructions.split(" ");
         if (parts.length < 2) {
             throw new InstructionParseException("Not enough arguments");
+        }
+        if (parts[1].startsWith("*")) {
+            multi = true;
+            parts[1] = parts[1].replace("*", "");
         }
         try {
             amount = Double.parseDouble(parts[1]);
@@ -51,10 +56,16 @@ public class MoneyEvent extends QuestEvent {
     @Override
     public void run(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
-        if (amount > 0) {
-            Compatibility.getEconomy().depositPlayer(player.getName(), amount);
-        } else if (amount < 0) {
-            Compatibility.getEconomy().withdrawPlayer(player.getName(), -amount);
+        // get the difference between target money and current money
+        double current = Compatibility.getEconomy().getBalance(player);
+        double target;
+        if (multi) target = current * amount;
+        else target = current + amount;
+        double difference = target - current;
+        if (difference > 0) {
+            Compatibility.getEconomy().depositPlayer(player.getName(), difference);
+        } else if (difference < 0) {
+            Compatibility.getEconomy().withdrawPlayer(player.getName(), -difference);
         }
     }
 }

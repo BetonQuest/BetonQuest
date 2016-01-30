@@ -51,9 +51,11 @@ import pl.betoncraft.betonquest.compatibility.skript.SkriptEventBQ;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
+import pl.betoncraft.betonquest.compatibility.vault.MoneyVariable;
 import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionCondition;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionObjective;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Compatibility with other plugins
@@ -109,9 +111,18 @@ public class Compatibility {
             if (economyProvider != null) {
                 economy = economyProvider.getProvider();
             }
-            plugin.registerEvents("money", MoneyEvent.class);
-            plugin.registerConditions("money", MoneyCondition.class);
-            plugin.registerEvents("permission", PermissionEvent.class);
+            if (economy != null) {
+                plugin.registerEvents("money", MoneyEvent.class);
+                plugin.registerConditions("money", MoneyCondition.class);
+                plugin.registerVariable("money", MoneyVariable.class);
+            } else {
+                Debug.error("There is no economy plugin on the server!");
+            }
+            if (permission != null) {
+                plugin.registerEvents("permission", PermissionEvent.class);
+            } else {
+                Debug.error("Could not get permission provider!");
+            }
             hooked.add("Vault");
         }
         

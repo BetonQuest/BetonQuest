@@ -51,6 +51,7 @@ Changes:
     * All tags and points are internally associated with a package now
     * Some conditions are now static and persistent (just like events)
     * Point event can now multiply points
+    * Vault Money event can now multiply money
     * Journal event can now use "update" argument for updating variables on the main page
     * Packages can now be moved to another directories
     * Quest cancelers are now defined in a more convenient way
