@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -38,6 +39,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -50,6 +52,7 @@ public class PotionObjective extends Objective implements Listener {
     private final HashMap<PotionEffectType, Integer> effects = new HashMap<>();
     private final int data;
     private final int amount;
+    private final boolean notify;
     private final HashMap<Location, String> locations = new HashMap<>();
 
     public PotionObjective(String packName, String label, String instructions)
@@ -66,6 +69,7 @@ public class PotionObjective extends Objective implements Listener {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse potion type or amount");
         }
+        boolean tempNotify = false;
         for (String part : parts) {
             if (part.startsWith("effects:")) {
                 String[] effectsArray = part.substring(8).split(",");
@@ -86,17 +90,20 @@ public class PotionObjective extends Objective implements Listener {
                     }
                     effects.put(type, duration);
                 }
-            }
+            } else if (part.equalsIgnoreCase("notify"))
+                tempNotify = true;
         }
+        notify = tempNotify;
     }
     
     @EventHandler
     public void onIngredientPut(InventoryClickEvent event) {
         if (event.getInventory().getType() != InventoryType.BREWING) return;
-        if (event.getRawSlot() != 3) return;
-        String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-        if (!containsPlayer(playerID)) return;
-        locations.put(((BrewingStand) event.getInventory().getHolder()).getLocation(), playerID);
+        if (event.getRawSlot() == 3 || event.getClick().equals(ClickType.SHIFT_LEFT)) {
+            String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+            if (!containsPlayer(playerID)) return;
+            locations.put(((BrewingStand) event.getInventory().getHolder()).getLocation(), playerID);
+        }
     }
     
     @EventHandler
@@ -116,6 +123,7 @@ public class PotionObjective extends Objective implements Listener {
             @Override
             public void run() {
                 // unfinaling it for modifications
+                boolean brewed = false;
                 int alreadyExistingFinal = alreadyExisting;
                 for (int i = 0; i < 3; i++) {
                     // if there were any potions before, don't count them to prevent cheating
@@ -124,11 +132,15 @@ public class PotionObjective extends Objective implements Listener {
                             data.brew();
                         }
                         alreadyExistingFinal--;
+                        brewed = true;
                     }
                 }
                 // check if the objective has been completed
                 if (data.getAmount() >= amount) {
                     completeObjective(playerID);
+                } else if (brewed && notify) {
+                    Config.sendMessage(playerID, "potions_to_brew",
+                            new String[]{String.valueOf(amount - data.getAmount())});
                 }
             }
         }.runTask(BetonQuest.getInstance());
@@ -159,6 +171,16 @@ public class PotionObjective extends Objective implements Listener {
             return false;
         }
         return false;
+    }
+    
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((PotionData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((PotionData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
     }
 
     @Override
