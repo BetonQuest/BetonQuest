@@ -43,10 +43,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MobKillObjective extends Objective implements Listener {
 
-    private final EntityType mobType;
-    private final int amount;
-    private final String name;
-    private final boolean notify;
+    protected final EntityType mobType;
+    protected final int amount;
+    protected final String name;
+    protected final boolean notify;
 
     public MobKillObjective(String packName, String label, String instruction)
             throws InstructionParseException {
@@ -182,16 +182,16 @@ public class MobKillObjective extends Objective implements Listener {
             amount = Integer.parseInt(instruction);
         }
         
-        private int getAmount() {
+        public int getAmount() {
             return amount;
         }
         
-        private void subtract() {
+        public void subtract() {
             amount--;
             update();
         }
         
-        private boolean isZero() {
+        public boolean isZero() {
             return amount <= 0;
         }
 

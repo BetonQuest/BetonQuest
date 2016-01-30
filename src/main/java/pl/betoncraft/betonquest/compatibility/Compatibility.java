@@ -34,6 +34,10 @@ import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
 import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesCompatibleMobKillObjective;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
@@ -158,6 +162,18 @@ public class Compatibility {
             plugin.registerEvents("playerpoints", PlayerPointsEvent.class);
             plugin.registerConditions("playerpoints", PlayerPointsCondition.class);
             hooked.add("PlayerPoints");
+        }
+        
+        // hook into Heroes
+        if (Bukkit.getPluginManager().isPluginEnabled("Heroes")
+                && plugin.getConfig().getString("hook.heroes")
+                .equalsIgnoreCase("true")) {
+            plugin.registerConditions("heroesclass", HeroesClassCondition.class);
+            plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
+            plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
+            // override "mobkill" objective so it accepts mobs killed with Heroes
+            plugin.registerObjectives("mobkill", HeroesCompatibleMobKillObjective.class);
+            hooked.add("Heroes");
         }
 
         // log which plugins have been hooked

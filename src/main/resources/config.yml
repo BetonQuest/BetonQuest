@@ -1,4 +1,4 @@
-version: v33
+version: v34
 mysql:
   host: ''
   port: ''
@@ -32,6 +32,7 @@ hook:
   mcmmo: 'true'
   effectlib: 'true'
   playerpoints: 'true'
+  heroes: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
