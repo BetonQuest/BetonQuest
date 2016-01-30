@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
 import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesCompatibleMobKillObjective;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
@@ -182,8 +182,8 @@ public class Compatibility {
             plugin.registerConditions("heroesclass", HeroesClassCondition.class);
             plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
             plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
-            // override "mobkill" objective so it accepts mobs killed with Heroes
-            plugin.registerObjectives("mobkill", HeroesCompatibleMobKillObjective.class);
+            // create mobkill listener for passing Heroes kills to MobKillObjective
+            new HeroesMobKillListener();
             hooked.add("Heroes");
         }
 

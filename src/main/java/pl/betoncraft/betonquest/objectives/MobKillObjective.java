@@ -19,17 +19,14 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.api.MobKillNotifier;
+import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -47,6 +44,10 @@ public class MobKillObjective extends Objective implements Listener {
     protected final int amount;
     protected final String name;
     protected final boolean notify;
+    
+    static {
+        new MobKillNotifier();
+    }
 
     public MobKillObjective(String packName, String label, String instruction)
             throws InstructionParseException {
@@ -83,14 +84,7 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler
-    public void onEntityKill(EntityDeathEvent event) {
-        // check if the damage cause actually exists; if it does not,
-        // the whole checking is pointless
-        if (event.getEntity() == null || event.getEntity().getLastDamageCause()
-                == null || event.getEntity().getLastDamageCause().getCause()
-                == null) {
-            return;
-        }
+    public void onMobKill(MobKilledEvent event) {
         // check if it's the right entity type
         if (!event.getEntity().getType().equals(mobType)) {
             return;
@@ -100,50 +94,18 @@ public class MobKillObjective extends Objective implements Listener {
                 !event.getEntity().getCustomName().equals(name))) {
             return;
         }
-        // handle the normal attack
-        if (event.getEntity().getLastDamageCause().getCause()
-                .equals(DamageCause.ENTITY_ATTACK)) {
-            EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent)
-                    event.getEntity().getLastDamageCause();
-            // if the damager is player, check if he has this objective
-            if (damage.getDamager() instanceof Player) {
-                String playerID = PlayerConverter.getID((Player) damage
-                        .getDamager());
-                if (containsPlayer(playerID) && checkConditions(playerID)) {
-                    // the right mob was killed, handle data update
-                    MobData playerData = (MobData) dataMap.get(playerID);
-                    playerData.subtract();
-                    if (playerData.isZero()) {
-                        completeObjective(playerID);
-                    } else if (notify) {
-                        // send a notification
-                        Config.sendMessage(playerID, "mobs_to_kill",
-                                new String[]{String.valueOf(playerData.getAmount())});
-                    }
-                }
-            }
-        // handle projectile attack
-        } else if (event.getEntity().getLastDamageCause().getCause()
-                .equals(DamageCause.PROJECTILE)) {
-            Projectile projectile = (Projectile) ((EntityDamageByEntityEvent)
-                    event.getEntity().getLastDamageCause()).getDamager();
-            // check if the shooter was a player
-            if (projectile.getShooter() instanceof Player) {
-                String playerID = PlayerConverter.getID((Player) projectile
-                        .getShooter());
-                // check if that player has this objective
-                if (containsPlayer(playerID) && checkConditions(playerID)) {
-                    // handle data update
-                    MobData playerData = (MobData) dataMap.get(playerID);
-                    playerData.subtract();
-                    if (playerData.isZero()) {
-                        completeObjective(playerID);
-                    } else if (notify) {
-                        // send a notification
-                        Config.sendMessage(playerID, "mobs_to_kill",
-                                new String[]{String.valueOf(playerData.getAmount())});
-                    }
-                }
+        // check if the player has this objective
+        String playerID = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(playerID) && checkConditions(playerID)) {
+            // the right mob was killed, handle data update
+            MobData playerData = (MobData) dataMap.get(playerID);
+            playerData.subtract();
+            if (playerData.isZero()) {
+                completeObjective(playerID);
+            } else if (notify) {
+                // send a notification
+                Config.sendMessage(playerID, "mobs_to_kill",
+                        new String[]{String.valueOf(playerData.getAmount())});
             }
         }
     }
