@@ -84,7 +84,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v34";
+    private final String destination = "v35";
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
@@ -192,6 +192,14 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v34() {
+        config.set("hook.magic", "true");
+        Debug.broadcast("Added compatibility with Magic");
+        config.set("version", "v35");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

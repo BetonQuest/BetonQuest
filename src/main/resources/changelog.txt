@@ -16,6 +16,7 @@ Additions:
     * Compatibility with PlayerPoints (points event and condition)
     * Compatibility with Heroes (class and skill condition, experience event,
       Heroes kills in 'mobkill' objective)
+    * Compatibility with Magic ('wand' condition)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
     * Configurable main page in the journal

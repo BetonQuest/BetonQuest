@@ -35,9 +35,10 @@ import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
 import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
+import pl.betoncraft.betonquest.compatibility.magic.WandCondition;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
@@ -45,10 +46,10 @@ import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
+import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptConditionBQ;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptEffectBQ;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptEventBQ;
-import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyVariable;
@@ -185,6 +186,14 @@ public class Compatibility {
             // create mobkill listener for passing Heroes kills to MobKillObjective
             new HeroesMobKillListener();
             hooked.add("Heroes");
+        }
+        
+        // hook into Heroes
+        if (Bukkit.getPluginManager().isPluginEnabled("Magic")
+                && plugin.getConfig().getString("hook.magic")
+                .equalsIgnoreCase("true")) {
+            plugin.registerConditions("wand", WandCondition.class);
+            hooked.add("Magic");
         }
 
         // log which plugins have been hooked
