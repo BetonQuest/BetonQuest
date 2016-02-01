@@ -23,6 +23,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -34,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class LocationCondition extends Condition {
 
     private final Location location;
-    private final double   distance;
+    private final VariableNumber distance;
 
     public LocationCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -63,10 +64,7 @@ public class LocationCondition extends Condition {
         }
         location = new Location(world, x, y, z);
         try {
-            distance = Double.parseDouble(partsOfLoc[4]);
-            if (distance <= 0) {
-                throw new InstructionParseException("Distance must be positive");
-            }
+            distance = new VariableNumber(packName, partsOfLoc[4]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse distance");
         }
@@ -78,8 +76,8 @@ public class LocationCondition extends Condition {
         if (!location.getWorld().equals(player.getWorld())) {
             return false;
         }
-        if (player.getLocation().distanceSquared(location) <= distance
-                * distance) {
+        double dist = distance.getDouble(playerID);
+        if (player.getLocation().distanceSquared(location) <= dist * dist) {
             return true;
         }
         return false;

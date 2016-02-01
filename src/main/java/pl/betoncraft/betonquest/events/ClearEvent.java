@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
@@ -38,7 +39,7 @@ public class ClearEvent extends QuestEvent {
     
     private final EntityType[] types;
     private final Location location;
-    private final double range;
+    private final VariableNumber range;
     private final String name;
     private final boolean kill;
 
@@ -85,10 +86,7 @@ public class ClearEvent extends QuestEvent {
         }
         location = new Location(world, x, y, z);
         try {
-            range = Double.parseDouble(partsOfLoc[4]);
-            if (range <= 0) {
-                throw new InstructionParseException("Range must be positive");
-            }
+            range = new VariableNumber(packName, partsOfLoc[4]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse range");
         }
@@ -112,7 +110,8 @@ public class ClearEvent extends QuestEvent {
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }
-            if (entity.getLocation().distanceSquared(location) < range*range) {
+            double rangeDouble = range.getDouble(playerID);
+            if (entity.getLocation().distanceSquared(location) < rangeDouble*rangeDouble) {
                 EntityType theType = entity.getType();
                 for (EntityType type : types) {
                     if (theType == type) {

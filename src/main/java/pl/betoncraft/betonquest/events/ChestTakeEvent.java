@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 
@@ -74,10 +75,10 @@ public class ChestTakeEvent extends QuestEvent {
         for (String rawItem : itemsToRemove) {
             String[] rawItemParts = rawItem.split(":");
             String itemName = rawItemParts[0];
-            int amount = 1;
+            VariableNumber amount = new VariableNumber(1);
             if (rawItemParts.length > 1) {
                 try {
-                    amount = Integer.parseInt(rawItemParts[1]);
+                    amount = new VariableNumber(packName, rawItemParts[1]);
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException(
                             "Could not parse item amount");
@@ -107,7 +108,7 @@ public class ChestTakeEvent extends QuestEvent {
         }
         for (Item item : questItems) {
             QuestItem questItem = item.getItem();
-            int amount = item.getAmount();
+            int amount = item.getAmount().getInt(playerID);
             //Remove Quest items from player's inventory
             chest.getInventory().setContents(
                     removeItems(chest.getInventory().getContents(), questItem,
@@ -138,9 +139,9 @@ public class ChestTakeEvent extends QuestEvent {
     private class Item {
 
         private final QuestItem item;
-        private final int       amount;
+        private final VariableNumber amount;
 
-        public Item(QuestItem item, int amount) {
+        public Item(QuestItem item, VariableNumber amount) {
             this.item = item;
             this.amount = amount;
         }
@@ -149,7 +150,7 @@ public class ChestTakeEvent extends QuestEvent {
             return item;
         }
 
-        public int getAmount() {
+        public VariableNumber getAmount() {
             return amount;
         }
     }

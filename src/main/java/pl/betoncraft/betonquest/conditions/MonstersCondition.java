@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 
 
@@ -38,9 +39,9 @@ import pl.betoncraft.betonquest.api.Condition;
 public class MonstersCondition extends Condition {
     
     private final EntityType[] types;
-    private final int[] amounts;
+    private final VariableNumber[] amounts;
     private final Location location;
-    private final double range;
+    private final VariableNumber range;
     private final String name;
 
     public MonstersCondition(String packName, String instructions)
@@ -54,7 +55,7 @@ public class MonstersCondition extends Condition {
         }
         String[] rawTypes = parts[1].split(",");
         EntityType[] tempTypes = new EntityType[rawTypes.length];
-        int[] tempAmounts = new int[rawTypes.length];
+        VariableNumber[] tempAmounts = new VariableNumber[rawTypes.length];
         for (int i = 0; i < rawTypes.length; i++) {
             try {
                 if (rawTypes[i].contains(":")) {
@@ -63,11 +64,11 @@ public class MonstersCondition extends Condition {
                         throw new InstructionParseException("Type not defined");
                     } else if (typeParts.length < 2) {
                         tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
-                        tempAmounts[i] = 1;
+                        tempAmounts[i] = new VariableNumber(1);
                     } else {
                         tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
                         try {
-                            tempAmounts[i] = Integer.parseInt(typeParts[1]);
+                            tempAmounts[i] = new VariableNumber(packName, typeParts[1]);
                         } catch (NumberFormatException e) {
                             throw new InstructionParseException(
                                     "Could not parse amount");
@@ -75,7 +76,7 @@ public class MonstersCondition extends Condition {
                     }
                 } else {
                     tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
-                    tempAmounts[i] = 1;
+                    tempAmounts[i] = new VariableNumber(1);
                 }
             } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown mob type: "
@@ -104,10 +105,7 @@ public class MonstersCondition extends Condition {
         }
         location = new Location(world, x, y, z);
         try {
-            range = Double.parseDouble(partsOfLoc[4]);
-            if (range <= 0) {
-                throw new InstructionParseException("Range must be positive");
-            }
+            range = new VariableNumber(packName, partsOfLoc[4]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse range");
         }
@@ -128,11 +126,12 @@ public class MonstersCondition extends Condition {
             neededAmounts[i] = 0;
         }
         Collection<Entity> entities = location.getWorld().getEntities();
+        double r = range.getDouble(playerID);
         for (Entity entity : entities) {
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }
-            if (entity.getLocation().distanceSquared(location) < range*range) {
+            if (entity.getLocation().distanceSquared(location) < r*r) {
                 EntityType theType = entity.getType();
                 for (int i = 0; i < types.length; i++) {
                     if (theType == types[i]) {
@@ -150,7 +149,7 @@ public class MonstersCondition extends Condition {
             }
         }
         for (int i = 0; i < amounts.length; i++) {
-            if (neededAmounts[i] < amounts[i]) {
+            if (neededAmounts[i] < amounts[i].getInt(playerID)) {
                 return false;
             }
         }

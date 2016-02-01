@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -32,7 +33,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ArmorRatingCondition extends Condition {
 
-    private final int required;
+    private final VariableNumber required;
 
     public ArmorRatingCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -45,7 +46,7 @@ public class ArmorRatingCondition extends Condition {
         }
 
         try {
-            required = Integer.parseInt(parts[1]);
+            required = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse rating amount");
         }
@@ -108,7 +109,7 @@ public class ArmorRatingCondition extends Condition {
             else if (chest.getType() == Material.DIAMOND_CHESTPLATE)
                 rating += 8;
         }
-        if (rating >= required) {
+        if (rating >= required.getInt(playerID)) {
             return true;
         }
         return false;

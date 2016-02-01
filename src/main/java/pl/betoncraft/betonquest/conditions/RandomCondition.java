@@ -21,6 +21,7 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.Random;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 
 /**
@@ -30,8 +31,8 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class RandomCondition extends Condition {
 
-    private final int valueMax;
-    private final int rangeOfRandom;
+    private final VariableNumber valueMax;
+    private final VariableNumber rangeOfRandom;
 
     public RandomCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -48,8 +49,8 @@ public class RandomCondition extends Condition {
             throw new InstructionParseException("Wrong randomness format");
         }
         try {
-            valueMax = Integer.parseInt(values[0]);
-            rangeOfRandom = Integer.parseInt(values[1]);
+            valueMax = new VariableNumber(packName, values[0]);
+            rangeOfRandom = new VariableNumber(packName, values[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException(
                     "Cannot parse randomness values");
@@ -59,8 +60,8 @@ public class RandomCondition extends Condition {
     @Override
     public boolean check(String playerID) {
         Random generator = new Random();
-        int temp = generator.nextInt(rangeOfRandom) + 1;
-        if (temp <= valueMax) {
+        int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
+        if (temp <= valueMax.getInt(playerID)) {
             return true;
         } else {
             return false;

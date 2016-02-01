@@ -23,6 +23,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -35,7 +36,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ScoreboardCondition extends Condition {
 
     private final String objective;
-    private final int count;
+    private final VariableNumber count;
     
     public ScoreboardCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -46,7 +47,7 @@ public class ScoreboardCondition extends Condition {
         }
         objective = parts[1];
         try {
-            count = Integer.parseInt(parts[2]);
+            count = new VariableNumber(packName, parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point amount");
         }
@@ -61,7 +62,7 @@ public class ScoreboardCondition extends Condition {
             return false;
         }
         Score score = obj.getScore(PlayerConverter.getName(playerID));
-        return score.getScore() >= count;
+        return score.getScore() >= count.getInt(playerID);
     }
 
 }

@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -55,10 +56,10 @@ public class TakeEvent extends QuestEvent {
         for (String rawItem : itemsToRemove) {
             String[] rawItemParts = rawItem.split(":");
             String itemName = rawItemParts[0];
-            int amount = 1;
+            VariableNumber amount = new VariableNumber(1);
             if (rawItemParts.length > 1) {
                 try {
-                    amount = Integer.parseInt(rawItemParts[1]);
+                    amount = new VariableNumber(packName, rawItemParts[1]);
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException(
                             "Could not parse item amount");
@@ -81,26 +82,28 @@ public class TakeEvent extends QuestEvent {
         Player player = PlayerConverter.getPlayer(playerID);
         for (Item item : questItems) {
             QuestItem questItem = item.getItem();
-            int amount = item.getAmount();
+            VariableNumber amount = item.getAmount();
             if (notify) {
                 Config.sendMessage(playerID, "items_taken", new String[]{
                         (questItem.getName() != null) ? questItem.getName() :
                                 questItem.getMaterial().toString().toLowerCase()
                                 .replace("_", " "), String.valueOf(amount)});
             }
+            
+            int a = amount.getInt(playerID);
 
             //Remove Quest items from player's inventory
             player.getInventory().setContents(
                     removeItems(player.getInventory().getContents(), questItem,
-                            amount));
+                            a));
 
             //Remove Quest items from player's armor slots
             player.getInventory().setArmorContents(
                     removeItems(player.getInventory().getArmorContents(),
-                            questItem, amount));
+                            questItem, a));
 
             //Remove Quest items from player's backpack
-            if (amount > 0) {
+            if (a > 0) {
                 List<ItemStack> backpack =
                         BetonQuest.getInstance().getDBHandler(playerID)
                                 .getBackpack();
@@ -108,7 +111,7 @@ public class TakeEvent extends QuestEvent {
                 array = backpack.toArray(array);
                 LinkedList<ItemStack> list =
                         new LinkedList<>(Arrays.asList(removeItems(array,
-                                questItem, amount)));
+                                questItem, a)));
                 while (list.remove(null))
                     BetonQuest.getInstance().getDBHandler(playerID)
                             .setBackpack(list);
@@ -139,9 +142,9 @@ public class TakeEvent extends QuestEvent {
     private class Item {
 
         private final QuestItem item;
-        private final int       amount;
+        private final VariableNumber amount;
 
-        public Item(QuestItem item, int amount) {
+        public Item(QuestItem item, VariableNumber amount) {
             this.item = item;
             this.amount = amount;
         }
@@ -150,7 +153,7 @@ public class TakeEvent extends QuestEvent {
             return item;
         }
 
-        public int getAmount() {
+        public VariableNumber getAmount() {
             return amount;
         }
     }

@@ -24,6 +24,7 @@ import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -34,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PlayerPointsCondition extends Condition {
     
-    private int count;
+    private VariableNumber count;
     private PlayerPointsAPI api;
 
     public PlayerPointsCondition(String packName, String instructions)
@@ -45,7 +46,7 @@ public class PlayerPointsCondition extends Condition {
             throw new InstructionParseException("Not enough arguments");
         }
         try {
-            count = Integer.valueOf(parts[1]);
+            count = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count");
         }
@@ -55,7 +56,7 @@ public class PlayerPointsCondition extends Condition {
     @Override
     public boolean check(String playerID) {
         UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
-        return api.look(uuid) >= count;
+        return api.look(uuid) >= count.getInt(playerID);
     }
 
 }

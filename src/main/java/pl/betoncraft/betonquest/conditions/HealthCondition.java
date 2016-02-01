@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -28,7 +29,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HealthCondition extends Condition {
 
-    private final double health;
+    private final VariableNumber health;
 
     public HealthCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -38,7 +39,7 @@ public class HealthCondition extends Condition {
             throw new InstructionParseException("Not enough arguments");
         }
         try {
-            health = Double.parseDouble(parts[1]);
+            health = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse health amount");
         }
@@ -46,7 +47,7 @@ public class HealthCondition extends Condition {
 
     @Override
     public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).getHealth() >= health) {
+        if (PlayerConverter.getPlayer(playerID).getHealth() >= health.getDouble(playerID)) {
             return true;
         }
         return false;

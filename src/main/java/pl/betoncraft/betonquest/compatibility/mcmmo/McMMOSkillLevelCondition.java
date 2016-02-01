@@ -21,6 +21,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -33,7 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class McMMOSkillLevelCondition extends Condition {
     
     private final String skillType;
-    private final int level;
+    private final VariableNumber level;
 
     public McMMOSkillLevelCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -47,11 +48,7 @@ public class McMMOSkillLevelCondition extends Condition {
             throw new InstructionParseException("Invalid skill name");
         }
         try {
-            int tempLevel = Integer.parseInt(parts[2]);
-            if (tempLevel <= 0) {
-                throw new InstructionParseException(
-                        "Level cannot be less or equal to 0");
-            }
+            VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
             level = tempLevel;
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse level");
@@ -61,7 +58,7 @@ public class McMMOSkillLevelCondition extends Condition {
     @Override
     public boolean check(String playerID) {
         return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID),
-                skillType) >= level;
+                skillType) >= level.getInt(playerID);
     }
 
 }

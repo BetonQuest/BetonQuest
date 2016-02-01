@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -28,7 +29,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ExperienceCondition extends Condition {
 
-    private final int experience;
+    private final VariableNumber experience;
 
     public ExperienceCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -38,7 +39,7 @@ public class ExperienceCondition extends Condition {
             throw new InstructionParseException("Experience level not defined");
         }
         try {
-            experience = Integer.parseInt(parts[1]);
+            experience = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException(
                     "Could not parse experience level");
@@ -47,7 +48,7 @@ public class ExperienceCondition extends Condition {
 
     @Override
     public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).getLevel() >= experience) {
+        if (PlayerConverter.getPlayer(playerID).getLevel() >= experience.getInt(playerID)) {
             return true;
         }
         return false;

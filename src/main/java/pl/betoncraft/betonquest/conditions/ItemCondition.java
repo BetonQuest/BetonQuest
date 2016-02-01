@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -48,10 +49,10 @@ public class ItemCondition extends Condition {
         for (String item : items.split(",")) {
             String[] itemParts = item.split(":");
             String name = itemParts[0];
-            int amount = 1;
+            VariableNumber amount = new VariableNumber(1);
             if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
                 try {
-                    amount = Integer.parseInt(item.split(":")[1]);
+                    amount = new VariableNumber(packName, item.split(":")[1]);
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException(
                             "Cannot parse item amount");
@@ -70,7 +71,7 @@ public class ItemCondition extends Condition {
     public boolean check(String playerID) {
         int counter = 0;
         for (Item questItem : questItems) {
-            int amount = questItem.getAmount();
+            int amount = questItem.getAmount().getInt(playerID);
             ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
             for (ItemStack item : inventoryItems) {
                 if (item == null) {
@@ -109,9 +110,9 @@ public class ItemCondition extends Condition {
     private class Item {
         
         private QuestItem questItem;
-        private int amount = 1;
+        private VariableNumber amount;
         
-        public Item(QuestItem questItem, int amount) {
+        public Item(QuestItem questItem, VariableNumber amount) {
             this.questItem = questItem;
             this.amount = amount;
         }
@@ -120,7 +121,7 @@ public class ItemCondition extends Condition {
             return questItem.equalsI(item);
         }
 
-        public int getAmount() {
+        public VariableNumber getAmount() {
             return amount;
         }
     }

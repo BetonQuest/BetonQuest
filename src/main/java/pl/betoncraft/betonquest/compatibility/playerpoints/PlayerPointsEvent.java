@@ -24,6 +24,7 @@ import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -34,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PlayerPointsEvent extends QuestEvent {
     
-    private double count;
+    private VariableNumber count;
     private boolean multi;
     private PlayerPointsAPI api;
 
@@ -52,7 +53,7 @@ public class PlayerPointsEvent extends QuestEvent {
             multi = false;
         }
         try {
-            count = Double.valueOf(parts[1]);
+            count = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count");
         }
@@ -63,12 +64,13 @@ public class PlayerPointsEvent extends QuestEvent {
     public void run(String playerID) {
         UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
         if (multi) {
-            api.set(uuid, (int) Math.floor(api.look(uuid) * count));
+            api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
         } else {
-            if (count < 0) {
-                api.take(uuid, (int) Math.floor(-count));
+            double i = count.getDouble(playerID);
+            if (i < 0) {
+                api.take(uuid, (int) Math.floor(-i));
             } else {
-                api.give(uuid, (int) Math.floor(count));
+                api.give(uuid, (int) Math.floor(i));
             }
         }
     }

@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 
@@ -76,12 +77,12 @@ public class ChestGiveEvent extends QuestEvent {
             String rawItem = items[i];
             String[] itemParts = rawItem.split(":");
             String name = itemParts[0];
-            int amount;
+            VariableNumber amount;
             if (itemParts.length == 1) {
-                amount = 1;
+                amount = new VariableNumber(1);
             } else {
                 try {
-                    amount = Integer.parseInt(itemParts[1]);
+                    amount = new VariableNumber(packName, itemParts[1]);
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException("Wrong number format");
                 }
@@ -109,7 +110,7 @@ public class ChestGiveEvent extends QuestEvent {
         }
         for (Item theItem : questItems) {
             QuestItem questItem = theItem.getItem();
-            int amount = theItem.getAmount();
+            int amount = theItem.getAmount().getInt(playerID);
             while (amount > 0) {
                 int stackSize;
                 if (amount > 64) {
@@ -132,9 +133,9 @@ public class ChestGiveEvent extends QuestEvent {
     private class Item {
 
         private final QuestItem item;
-        private final int       amount;
+        private final VariableNumber amount;
 
-        public Item(QuestItem item, int amount) {
+        public Item(QuestItem item, VariableNumber amount) {
             this.item = item;
             this.amount = amount;
         }
@@ -143,7 +144,7 @@ public class ChestGiveEvent extends QuestEvent {
             return item;
         }
 
-        public int getAmount() {
+        public VariableNumber getAmount() {
             return amount;
         }
     }

@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -55,12 +56,12 @@ public class GiveEvent extends QuestEvent {
             String rawItem = items[i];
             String[] itemParts = rawItem.split(":");
             String name = itemParts[0];
-            int amount;
+            VariableNumber amount;
             if (itemParts.length == 1) {
-                amount = 1;
+                amount = new VariableNumber(1);
             } else {
                 try {
-                    amount = Integer.parseInt(itemParts[1]);
+                    amount = new VariableNumber(packName, itemParts[1]);
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException("Wrong number format");
                 }
@@ -81,19 +82,20 @@ public class GiveEvent extends QuestEvent {
         Player player = PlayerConverter.getPlayer(playerID);
         for (Item theItem : questItems) {
             QuestItem questItem = theItem.getItem();
-            int amount = theItem.getAmount();
+            VariableNumber amount = theItem.getAmount();
             if (notify) {
                 Config.sendMessage(playerID, "items_given", new String[]{
                         (questItem.getName() != null) ? questItem.getName() :
                         questItem.getMaterial().toString().toLowerCase()
                         .replace("_", " "), String.valueOf(amount)});
             }
-            while (amount > 0) {
+            int amountInt = amount.getInt(playerID);
+            while (amountInt > 0) {
                 int stackSize;
-                if (amount > 64) {
+                if (amountInt > 64) {
                     stackSize = 64;
                 } else {
-                    stackSize = amount;
+                    stackSize = amountInt;
                 }
                 ItemStack item = questItem.generateItem(stackSize);
                 HashMap<Integer, ItemStack> left =
@@ -108,7 +110,7 @@ public class GiveEvent extends QuestEvent {
                                 itemStack);
                     }
                 }
-                amount = amount - stackSize;
+                amountInt = amountInt - stackSize;
             }
         }
     }
@@ -116,9 +118,9 @@ public class GiveEvent extends QuestEvent {
     private class Item {
 
         private final QuestItem item;
-        private final int       amount;
+        private final VariableNumber amount;
 
-        public Item(QuestItem item, int amount) {
+        public Item(QuestItem item, VariableNumber amount) {
             this.item = item;
             this.amount = amount;
         }
@@ -127,7 +129,7 @@ public class GiveEvent extends QuestEvent {
             return item;
         }
 
-        public int getAmount() {
+        public VariableNumber getAmount() {
             return amount;
         }
     }

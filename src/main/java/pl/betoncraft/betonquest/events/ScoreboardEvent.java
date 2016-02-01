@@ -23,6 +23,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -34,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ScoreboardEvent extends QuestEvent {
     
-    final double count;
+    final VariableNumber count;
     final boolean multi;
     final String objective;
 
@@ -54,7 +55,7 @@ public class ScoreboardEvent extends QuestEvent {
             multi = false;
         }
         try {
-            count = Double.valueOf(parts[2]);
+            count = new VariableNumber(packName, parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse score count");
         }
@@ -70,9 +71,9 @@ public class ScoreboardEvent extends QuestEvent {
         }
         Score score = obj.getScore(PlayerConverter.getName(playerID));
         if (multi) {
-            score.setScore((int) Math.floor(score.getScore() * count));
+            score.setScore((int) Math.floor(score.getScore() * count.getDouble(playerID)));
         } else {
-            score.setScore((int) Math.floor(score.getScore() + count));
+            score.setScore((int) Math.floor(score.getScore() + count.getDouble(playerID)));
         }
     }
 

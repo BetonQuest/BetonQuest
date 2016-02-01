@@ -25,6 +25,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
@@ -36,7 +37,7 @@ public class SpawnMobEvent extends QuestEvent {
 
     private final Location loc;
     private final EntityType type;
-    private final int amount;
+    private final VariableNumber amount;
     private final String name;
 
     public SpawnMobEvent(String packName, String instructions)
@@ -70,7 +71,7 @@ public class SpawnMobEvent extends QuestEvent {
             throw new InstructionParseException("Entity type does not exist");
         }
         try {
-            amount = Integer.parseInt(parts[3]);
+            amount = new VariableNumber(packName, parts[3]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse amount");
         }
@@ -86,7 +87,8 @@ public class SpawnMobEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        for (int i = 0; i < amount; i++) {
+        int a = amount.getInt(playerID);
+        for (int i = 0; i < a; i++) {
             Entity entity = loc.getWorld().spawnEntity(loc, type);
             if (name != null && entity instanceof LivingEntity) {
                 LivingEntity livingEntity = (LivingEntity) entity;

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -32,11 +33,11 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyCondition extends Condition {
 
-    private final double   range;
+    private final VariableNumber range;
     private final String[] conditions;
     private final String[] everyone;
     private final String[] anyone;
-    private final int      count;
+    private final VariableNumber count;
 
     public PartyCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -47,10 +48,7 @@ public class PartyCondition extends Condition {
         }
         // first argument is the distance
         try {
-            range = Double.parseDouble(parts[1]);
-            if (range <= 0) {
-                throw new InstructionParseException("Range must be positive");
-            }
+            range = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse distance");
         }
@@ -63,7 +61,7 @@ public class PartyCondition extends Condition {
         }
         // now time for everything else
         String[] tempEvery = new String[] {}, tempAny = new String[] {};
-        int tempCount = 0;
+        VariableNumber tempCount = new VariableNumber(0);
         for (String part : parts) {
             if (part.startsWith("every:")) {
                 tempEvery = part.substring(6).split(",");
@@ -81,7 +79,7 @@ public class PartyCondition extends Condition {
                 }
             } else if (part.startsWith("count:")) {
                 try {
-                    tempCount = Integer.parseInt(part.substring(6));
+                    tempCount = new VariableNumber(packName, part.substring(6));
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException(
                             "Could not parse \"count\" argument");
@@ -98,7 +96,7 @@ public class PartyCondition extends Condition {
     public boolean check(String playerID) {
         // get the party
         ArrayList<String> members =
-                Utils.getParty(playerID, range, pack.getName(), conditions);
+                Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
         // check every condition against every player - all of them must meet
         // those conditions
         for (String condition : everyone) {
@@ -126,7 +124,8 @@ public class PartyCondition extends Condition {
         }
         // if the count is more than 0, we need to check if there are more
         // players in the party than required minimum
-        if (count > 0 && members.size() < count) {
+        int c = count.getInt(playerID);
+        if (c > 0 && members.size() < c) {
             return false;
         }
         // every check was passed, the party meets all conditions

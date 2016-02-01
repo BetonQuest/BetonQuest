@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.vault;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -31,7 +32,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MoneyEvent extends QuestEvent {
     
-    private final double amount;
+    private final VariableNumber amount;
     private boolean multi;
 
     public MoneyEvent(String packName, String instructions)
@@ -46,7 +47,7 @@ public class MoneyEvent extends QuestEvent {
             parts[1] = parts[1].replace("*", "");
         }
         try {
-            amount = Double.parseDouble(parts[1]);
+            amount = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse money amount");
         }
@@ -59,8 +60,8 @@ public class MoneyEvent extends QuestEvent {
         // get the difference between target money and current money
         double current = Compatibility.getEconomy().getBalance(player);
         double target;
-        if (multi) target = current * amount;
-        else target = current + amount;
+        if (multi) target = current * amount.getDouble(playerID);
+        else target = current + amount.getDouble(playerID);
         double difference = target - current;
         if (difference > 0) {
             Compatibility.getEconomy().depositPlayer(player.getName(), difference);

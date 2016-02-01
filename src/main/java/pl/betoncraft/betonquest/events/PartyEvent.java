@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -33,7 +34,7 @@ public class PartyEvent extends QuestEvent {
     
     private final String[] conditions;
     private final String[] events;
-    private final double   range;
+    private final VariableNumber range;
 
     public PartyEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -59,10 +60,7 @@ public class PartyEvent extends QuestEvent {
         events = tempEvents;
         // load the range
         try {
-            range = Double.parseDouble(parts[1]);
-            if (range <= 0) {
-                throw new InstructionParseException("Range must be positive");
-            }
+            range = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Cannot parse range");
         }
@@ -70,7 +68,7 @@ public class PartyEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        ArrayList<String> members = Utils.getParty(playerID, range,
+        ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID),
                 pack.getName(), conditions);
         for (String memberID : members) {
             for (String event : events) {

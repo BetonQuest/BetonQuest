@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -41,7 +42,7 @@ public class WandCondition extends Condition {
     
     private MagicAPI api;
     private CheckType type;
-    private HashMap<String, Integer> spells = new HashMap<>();
+    private HashMap<String, VariableNumber> spells = new HashMap<>();
     private String name;
 
     public WandCondition(String packName, String instructions)
@@ -69,12 +70,12 @@ public class WandCondition extends Condition {
             if (part.startsWith("spells:")) {
                 String[] spells = part.substring(7).split(",");
                 for (String spell : spells) {
-                    int level = 1;
+                    VariableNumber level = new VariableNumber(1);
                     if (spell.contains(":")) {
                         String[] spellParts = spell.split(":");
                         spell = spellParts[0];
                         try {
-                            level = Integer.parseInt(spellParts[1]);
+                            level = new VariableNumber(packName, spellParts[1]);
                         } catch (NumberFormatException e) {
                             throw new InstructionParseException("Could not parse spell level");
                         }
@@ -105,13 +106,13 @@ public class WandCondition extends Condition {
                     return false;
                 }
                 Wand wand1 = api.getWand(player.getItemInHand());
-                return checkWand(wand1);
+                return checkWand(wand1, playerID);
             case IN_INVENTORY:
                 for (ItemStack item : player.getInventory().getContents()) {
                     if (item == null) continue;
                     if (api.isWand(item)) {
                         Wand wand2 = api.getWand(item);
-                        if (checkWand(wand2)) {
+                        if (checkWand(wand2, playerID)) {
                             return true;
                         }
                     }
@@ -129,14 +130,14 @@ public class WandCondition extends Condition {
      *          wand to check
      * @return true if the wand meets the conditions, false otherwise
      */
-    private boolean checkWand(Wand wand) {
+    private boolean checkWand(Wand wand, String playerID) {
         if (name != null && !wand.getTemplateKey().equalsIgnoreCase(name)) {
             return false;
         }
         if (!spells.isEmpty()) {
             spell:
             for (String spell : spells.keySet()) {
-                int level = spells.get(spell);
+                int level = spells.get(spell).getInt(playerID);
                 System.out.println("checking if wand has spell " + spell + " with level " + level);
                 for (String wandSpell : wand.getSpells()) {
                     System.out.println("  checking wand spell " + wandSpell + " with level " + wand.getSpellLevel(wandSpell));

@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 
 /**
@@ -31,7 +32,7 @@ import pl.betoncraft.betonquest.api.Condition;
 public class PointCondition extends Condition {
 
     private final String category;
-    private final int    count;
+    private final VariableNumber count;
 
     public PointCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -42,7 +43,7 @@ public class PointCondition extends Condition {
         }
         category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
         try {
-            count = Integer.parseInt(parts[2]);
+            count = new VariableNumber(packName, parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point amount");
         }
@@ -50,10 +51,11 @@ public class PointCondition extends Condition {
 
     @Override
     public boolean check(String playerID) {
+        int c = count.getInt(playerID);
         for (Point point : BetonQuest.getInstance().getDBHandler(playerID)
                 .getPoints()) {
             if (point.getCategory().equalsIgnoreCase(category)) {
-                return point.getCount() >= count;
+                return point.getCount() >= c;
             }
         }
         return false;

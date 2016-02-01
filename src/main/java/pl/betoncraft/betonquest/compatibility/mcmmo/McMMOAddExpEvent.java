@@ -21,6 +21,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -33,7 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class McMMOAddExpEvent extends QuestEvent {
     
     private final String skillType;
-    private final int exp;
+    private final VariableNumber exp;
 
     public McMMOAddExpEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -47,11 +48,7 @@ public class McMMOAddExpEvent extends QuestEvent {
             throw new InstructionParseException("Invalid skill name");
         }
         try {
-            int tempLevel = Integer.parseInt(parts[2]);
-            if (tempLevel <= 0) {
-                throw new InstructionParseException(
-                        "Experience amount must be greater than 0");
-            }
+            VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
             exp = tempLevel;
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse experience amount");
@@ -60,7 +57,7 @@ public class McMMOAddExpEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp, "UNKNOWN");
+        ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp.getInt(playerID), "UNKNOWN");
     }
 
 }

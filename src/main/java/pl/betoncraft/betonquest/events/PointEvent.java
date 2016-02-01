@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,8 +34,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PointEvent extends QuestEvent {
     
-    final double    count;
-    final boolean   multi;
+    final VariableNumber count;
+    final boolean multi;
     final String category; 
 
     public PointEvent(String packName, String instructions)
@@ -53,7 +54,7 @@ public class PointEvent extends QuestEvent {
             multi = false;
         }
         try {
-            count = Double.valueOf(parts[2]);
+            count = new VariableNumber(packName, parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count");
         }
@@ -66,24 +67,24 @@ public class PointEvent extends QuestEvent {
                 @Override
                 public void run() {
                     DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-                    addPoints(dbHandler);
+                    addPoints(playerID, dbHandler);
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-            addPoints(dbHandler);
+            addPoints(playerID, dbHandler);
         }
     }
 
-    private void addPoints(DatabaseHandler dbHandler) {
+    private void addPoints(String playerID, DatabaseHandler dbHandler) {
         if (multi) {
             for (Point p : dbHandler.getPoints()) {
                 if (p.getCategory().equalsIgnoreCase(category)) {
-                    dbHandler.addPoints(category, (int) Math.floor((p.getCount() * count) - p.getCount()));
+                    dbHandler.addPoints(category, (int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
                 }
             }
         } else {
-            dbHandler.addPoints(category, (int) Math.floor(count));
+            dbHandler.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
         }
     }
 }

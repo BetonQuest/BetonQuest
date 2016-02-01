@@ -890,14 +890,14 @@ public final class BetonQuest extends JavaPlugin {
      * @param instruction
      *          instruction of the variable, including both % characters.
      */
-    public static void createVariable(ConfigPackage pack, String instruction) {
+    public static Variable createVariable(ConfigPackage pack, String instruction) {
         String ID = pack.getName() + "-" + instruction;
         // no need to create duplicated variables
-        if (variables.containsKey(ID)) return;
+        if (variables.containsKey(ID)) return variables.get(ID);
         String[] parts = instruction.replace("%", "").split("\\.");
         if (parts.length < 1) {
             Debug.error("Not enough arguments in variable " + ID);
-            return;
+            return null;
         }
         Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
         // if it's null then there is no such type registered, log an error
@@ -906,13 +906,14 @@ public final class BetonQuest extends JavaPlugin {
                     + " check if it's spelled correctly in " + ID
                     + " variable."
             );
-            return;
+            return null;
         }
         try {
             Variable variable = variableClass.getConstructor(String.class,
                     String.class).newInstance(pack.getName(), instruction);
             variables.put(ID, variable);
             Debug.info("Variable " + ID + " loaded");
+            return variable;
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 Debug.error("Error in " + ID + " variable: "
@@ -925,6 +926,7 @@ public final class BetonQuest extends JavaPlugin {
             e.printStackTrace();
             Debug.error(ERROR);
         }
+        return null;
     }
     
     /**
@@ -1024,16 +1026,20 @@ public final class BetonQuest extends JavaPlugin {
     }
     
     /**
+     * Resoles the variable for specified player. If the variable is not loaded yet
+     * it will load it on the main thread.
+     * 
+     * @param packName
+     *          name of the package
      * @param name
      *          name of the variable (instruction, with % characters)
      * @param playerID
      *          ID of the player
-     * @param playerID2 
      * @return the value of this variable for given player
      */
     public String getVariableValue(String packName, String name, String playerID) {
-        Variable var = variables.get(packName + "-" + name);
-        if (var == null) return "variable does not exist";
+        Variable var = createVariable(Config.getPackage(packName), name);
+        if (var == null) return "could not resolve variable";
         return var.getValue(playerID);
     }
 

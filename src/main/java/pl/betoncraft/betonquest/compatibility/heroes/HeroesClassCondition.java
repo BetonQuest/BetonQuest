@@ -24,6 +24,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -38,7 +39,7 @@ public class HeroesClassCondition extends Condition {
     private boolean any;
     private boolean primary;
     private boolean mastered;
-    private int level = -1;
+    private VariableNumber level = new VariableNumber(-1);
 
     public HeroesClassCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -60,7 +61,7 @@ public class HeroesClassCondition extends Condition {
         for (String part : parts) {
             if (part.startsWith("level:")) {
                 try {
-                    level = Integer.parseInt(part.substring(6));
+                    level = new VariableNumber(packName, part.substring(6));
                 } catch (NumberFormatException e) {
                     throw new InstructionParseException("Could not parse level");
                 }
@@ -84,13 +85,14 @@ public class HeroesClassCondition extends Condition {
         }
         if (heroClasses.isEmpty()) return false;
         boolean matchingClass = true, matchingLevel = true;
+        int l = level.getInt(playerID);
         if (!any) {
             matchingClass = heroClasses.contains(heroClass);
-            if (level > 0) {
-                matchingLevel = hero.getLevel(heroClass) >= level;
+            if (l > 0) {
+                matchingLevel = hero.getLevel(heroClass) >= l;
             }
         } else {
-            matchingLevel = hero.getLevel() >= level;
+            matchingLevel = hero.getLevel() >= l;
         }
         return matchingClass && matchingLevel;
     }

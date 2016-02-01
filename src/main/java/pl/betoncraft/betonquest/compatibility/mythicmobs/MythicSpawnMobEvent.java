@@ -17,13 +17,13 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import net.elseland.xikage.MythicMobs.Mobs.MobSpawner;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import net.elseland.xikage.MythicMobs.Mobs.MobSpawner;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
@@ -35,8 +35,8 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     private final Location loc;
     private final String mob;
-    private final int amount;
-    private final int level;
+    private final VariableNumber amount;
+    private final VariableNumber level;
 
     public MythicSpawnMobEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -68,12 +68,12 @@ public class MythicSpawnMobEvent extends QuestEvent {
         }
         mob = mobParts[0];
         try {
-            level = Integer.parseInt(parts[2].split(":")[1]);
+            level = new VariableNumber(packName, parts[2].split(":")[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse mob level");
         }
         try {
-            amount = Integer.parseInt(parts[3]);
+            amount = new VariableNumber(packName, parts[3]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse mob amount");
         }
@@ -81,8 +81,10 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        for (int i = 0; i < amount; i++) {
-            MobSpawner.SpawnMythicMob(mob, loc, level);
+        int a = amount.getInt(playerID);
+        int l = level.getInt(playerID);
+        for (int i = 0; i < a; i++) {
+            MobSpawner.SpawnMythicMob(mob, loc, l);
         }
     }
 

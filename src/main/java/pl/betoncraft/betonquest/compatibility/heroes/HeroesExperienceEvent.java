@@ -21,6 +21,7 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -33,7 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class HeroesExperienceEvent extends QuestEvent {
     
     private boolean primary;
-    private double amount;
+    private VariableNumber amount;
 
     public HeroesExperienceEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -44,7 +45,7 @@ public class HeroesExperienceEvent extends QuestEvent {
         }
         primary = parts[1].equalsIgnoreCase("primary");
         try {
-            amount = Double.valueOf(parts[2]);
+            amount = new VariableNumber(packName, parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse experience amount");
         }
@@ -56,10 +57,10 @@ public class HeroesExperienceEvent extends QuestEvent {
         if (hero == null) return;
         if (primary) {
             if (hero.getHeroClass() == null) return;
-            hero.addExp(amount, hero.getHeroClass(), hero.getPlayer().getLocation());
+            hero.addExp(amount.getInt(playerID), hero.getHeroClass(), hero.getPlayer().getLocation());
         } else {
             if (hero.getSecondClass() == null) return;
-            hero.addExp(amount, hero.getSecondClass(), hero.getPlayer().getLocation());
+            hero.addExp(amount.getInt(playerID), hero.getSecondClass(), hero.getPlayer().getLocation());
         }
     }
 

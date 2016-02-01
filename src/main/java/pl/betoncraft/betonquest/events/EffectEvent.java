@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -32,8 +33,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class EffectEvent extends QuestEvent {
 
     private final PotionEffectType effect;
-    private final int duration;
-    private final int amplifier;
+    private final VariableNumber duration;
+    private final VariableNumber amplifier;
     private final boolean ambient;
 
     public EffectEvent(String packName, String instructions)
@@ -48,8 +49,8 @@ public class EffectEvent extends QuestEvent {
             throw new InstructionParseException("Effect type does not exist");
         }
         try {
-            duration = Integer.parseInt(parts[2]);
-            amplifier = Integer.parseInt(parts[3]);
+            duration = new VariableNumber(packName, parts[2]);
+            amplifier = new VariableNumber(packName, parts[3]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException(
                     "Could not parse number arguments");
@@ -60,7 +61,7 @@ public class EffectEvent extends QuestEvent {
     @Override
     public void run(String playerID) {
         PlayerConverter.getPlayer(playerID).addPotionEffect(
-                new PotionEffect(effect, duration * 20, amplifier - 1, ambient)
+                new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient)
         );
     }
 

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -28,7 +29,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class DamageEvent extends QuestEvent {
     
-    private final double damage;
+    private final VariableNumber damage;
 
     public DamageEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -38,18 +39,15 @@ public class DamageEvent extends QuestEvent {
             throw new InstructionParseException("Not enough arguments");
         }
         try {
-            damage = Double.parseDouble(parts[1]);
+            damage = new VariableNumber(packName, parts[1]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Wrong number format");
-        }
-        if (damage <= 0) {
-            throw new InstructionParseException("Wrong damage amount");
         }
     }
     
     @Override
     public void run(String playerID) {
-        PlayerConverter.getPlayer(playerID).damage(damage);
+        PlayerConverter.getPlayer(playerID).damage(Math.abs(damage.getDouble(playerID)));
     }
 
 }

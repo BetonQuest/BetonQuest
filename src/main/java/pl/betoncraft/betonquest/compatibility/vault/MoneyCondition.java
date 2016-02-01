@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.vault;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -29,7 +30,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MoneyCondition extends Condition {
 
-    private final double amount;
+    private final VariableNumber amount;
 
     public MoneyCondition(String packName, String instructions)
             throws InstructionParseException {
@@ -39,10 +40,7 @@ public class MoneyCondition extends Condition {
             throw new InstructionParseException("Money amount not specified");
         }
         try {
-            double tempAmount = Double.parseDouble(parts[1]);
-            if (tempAmount < 0) {
-                tempAmount = 0;
-            }
+            VariableNumber tempAmount = new VariableNumber(packName, parts[1]);
             amount = tempAmount;
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse money amount");
@@ -52,8 +50,9 @@ public class MoneyCondition extends Condition {
     @SuppressWarnings("deprecation")
     @Override
     public boolean check(String playerID) {
-        return Compatibility.getEconomy()
-                .has(PlayerConverter.getPlayer(playerID).getName(), amount);
+        double a = amount.getDouble(playerID);
+        if (a < 0) a = -a;
+        return Compatibility.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
     }
 
 }
