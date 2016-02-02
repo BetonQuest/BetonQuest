@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class TakeEvent extends QuestEvent {
 
     private final Item[]  questItems;
     private final boolean notify;
+    
+    private int counter;
 
     public TakeEvent(String packName, String instructions)
             throws InstructionParseException {
@@ -89,49 +92,43 @@ public class TakeEvent extends QuestEvent {
                                 questItem.getMaterial().toString().toLowerCase()
                                 .replace("_", " "), String.valueOf(amount)});
             }
-            
-            int a = amount.getInt(playerID);
+            // cache the amount
+            counter = amount.getInt(playerID);
 
             //Remove Quest items from player's inventory
             player.getInventory().setContents(
-                    removeItems(player.getInventory().getContents(), questItem,
-                            a));
+                    removeItems(player.getInventory().getContents(), questItem));
 
             //Remove Quest items from player's armor slots
-            player.getInventory().setArmorContents(
-                    removeItems(player.getInventory().getArmorContents(),
-                            questItem, a));
+            if (counter > 0) {
+                player.getInventory().setArmorContents(removeItems(
+                        player.getInventory().getArmorContents(), questItem));
+            }
 
             //Remove Quest items from player's backpack
-            if (a > 0) {
-                List<ItemStack> backpack =
-                        BetonQuest.getInstance().getDBHandler(playerID)
-                                .getBackpack();
+            if (counter > 0) {
+                List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
                 ItemStack[] array = new ItemStack[] {};
                 array = backpack.toArray(array);
-                LinkedList<ItemStack> list =
-                        new LinkedList<>(Arrays.asList(removeItems(array,
-                                questItem, a)));
-                while (list.remove(null))
-                    BetonQuest.getInstance().getDBHandler(playerID)
-                            .setBackpack(list);
+                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
+                list.removeAll(Collections.singleton(null));
+                BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
             }
         }
     }
 
-    private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem,
-            int amount) {
+    private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {
         for (int i = 0; i < items.length; i++) {
             ItemStack item = items[i];
             if (questItem.equalsI(item)) {
-                if (item.getAmount() - amount <= 0) {
-                    amount = amount - item.getAmount();
+                if (item.getAmount() - counter <= 0) {
+                    counter -= item.getAmount();
                     items[i] = null;
                 } else {
-                    item.setAmount(item.getAmount() - amount);
-                    amount = 0;
+                    item.setAmount(item.getAmount() - counter);
+                    counter = 0;
                 }
-                if (amount <= 0) {
+                if (counter <= 0) {
                     break;
                 }
             }

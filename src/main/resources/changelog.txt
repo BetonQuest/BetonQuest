@@ -8,6 +8,7 @@ Fixes:
     * Action objective now correctly checks locations
     * Combat tag is removed after death
     * Block, Craft and MythicMobs MobKill objectives now correctly save data
+    * Take event now correctly takes items from inventory, armor slots and backpack
 Additions:
     * New variable system in conversations (check out the documentation)
     * More options for journal, including one entry per page and removing date
