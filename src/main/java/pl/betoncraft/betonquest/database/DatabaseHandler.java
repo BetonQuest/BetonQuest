@@ -292,7 +292,7 @@ public class DatabaseHandler {
         tags.clear();
         points.clear();
         entries.clear();
-        journal.clear();
+        getJournal().clear(); // journal can be null, so use a method to get it
         backpack.clear();
         // clear the database
         Connector database = new Connector();
@@ -303,7 +303,7 @@ public class DatabaseHandler {
         database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
-            journal.update();
+            getJournal().update();
         }
     }
 

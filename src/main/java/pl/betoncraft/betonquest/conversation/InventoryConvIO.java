@@ -60,7 +60,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private Conversation conv;
     private Player player;
     private Inventory inv;
-    private boolean allowClose = false;;
+    private boolean allowClose = false;
+    private boolean switching = false;
     private Location loc;
     
     public InventoryConvIO(Conversation conv, String playerID) {
@@ -98,8 +99,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         answerPrefix = string.toString();
         loc = player.getLocation();
-        inv = Bukkit.createInventory(null, 9, "NPC");
-        player.openInventory(inv);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -125,7 +124,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (options.isEmpty()) {
             end();
         }
-        ItemStack[] buttons = new ItemStack[9];
+        // each row contains 7 options, so get amount of rows
+        int rows = (int) Math.floor(options.size() / 7);
+        rows++;
+        // this itemstack represents slots in the invenotry
+        inv = Bukkit.createInventory(null, 9 * rows, "NPC");
+        inv.setContents(new ItemStack[9 * rows]);
+        ItemStack[] buttons = new ItemStack[9 * rows];
+        // set the NPC head
         ItemStack npc = new ItemStack(Material.SKULL_ITEM);
         npc.setDurability((short) 3);
         SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
@@ -134,13 +140,20 @@ public class InventoryConvIO implements Listener, ConversationIO {
         npcMeta.setLore(stringToLines(response, npcTextColor, null));
         npc.setItemMeta(npcMeta);
         buttons[0] = npc;
+        // this is the number of an option
         int next = 0;
-        for (int j = 2; j < 9; j++) {
+        // now fill the slots
+        for (int j = 0; j < 9 * rows; j++) {
+            // skip first and second slots of each row
+            if (j % 9 == 0 || j % 9 == 1) continue;
+            // count option numbers, starting with 1
             next ++;
+            // break if all options are set
             String option = options.get(next);
             if (option == null) {
                 break;
             }
+            // generate an itemstack for this option
             Material material = Material.ENDER_PEARL;
             if (option.matches("^\\{[a-zA-Z_ ]+\\}.*$")) {
                 String mName = option.substring(1, option.indexOf('}'));
@@ -153,6 +166,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 }
             }
             buttons[j] = new ItemStack(material);
+            // set the display name and lore of the option
             ItemMeta meta = buttons[j].getItemMeta();
             meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
             ArrayList<String> lines = stringToLines(response, npcTextColor, npcNameColor + npcName + ChatColor.RESET + ": ");
@@ -166,6 +180,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
         inv.setContents(buttons);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                switching = true;
+                player.openInventory(inv);
+                switching = false;
+            }
+        }.runTask(BetonQuest.getInstance());
     }
     
     @EventHandler
@@ -174,12 +196,17 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (!((Player) event.getWhoClicked()).equals(player)) return;
         event.setCancelled(true);
         int slot = event.getRawSlot();
-        if (slot > 1) {
-            int choosen = slot - 1;
+        // calculate the option number
+        if (slot % 9 > 1) {
+            int row = (int) Math.floor(slot / 9);
+            // raw column number minus two columns (npc head an empty space) 
+            // and plus one (because options are indexed starting with 1) 
+            int col = (slot % 9) - 2 + 1;
+            // each row can have 7 options, add column number to get an option
+            int choosen = (row * 7) + col;
             String message = options.get(choosen);
             if (message != null) {
                 player.sendMessage(answerPrefix + message);
-                inv.setContents(new ItemStack[9]);
                 conv.passPlayerAnswer(choosen);
             }
         }
@@ -189,6 +216,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) return;
         if (!((Player) event.getPlayer()).equals(player)) return;
+        // allow for closing previous option inventory
+        if (switching) {
+            return;
+        }
+        // allow closing when the conversation has finished
         if (allowClose) {
             HandlerList.unregisterAll(this);
             return;
