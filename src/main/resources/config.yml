@@ -1,4 +1,4 @@
-version: v35
+version: v36
 mysql:
   host: ''
   port: ''
@@ -34,6 +34,7 @@ hook:
   playerpoints: 'true'
   heroes: 'true'
   magic: 'true'
+  denizen: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

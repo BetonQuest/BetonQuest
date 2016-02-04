@@ -19,6 +19,7 @@ Additions:
     * Compatibility with Heroes (class and skill condition, experience event,
       Heroes kills in 'mobkill' objective)
     * Compatibility with Magic ('wand' condition)
+    * Compatibility with Denizen (running task scripts with 'script' event)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
     * Configurable main page in the journal
@@ -58,6 +59,8 @@ Changes:
     * Journal event can now use "update" argument for updating variables on the main page
     * Packages can now be moved to another directories
     * Quest cancelers are now defined in a more convenient way
+    * Conditions and events in objective instructions (and conditions in event instructions)
+      can now be defined with "condition:" and "event:" argument (without "s" at the end)
 
 v1.7.6
 Fixes:

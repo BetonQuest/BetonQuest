@@ -33,6 +33,7 @@ import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
+import pl.betoncraft.betonquest.compatibility.denizen.DenizenTaskScriptEvent;
 import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
@@ -188,12 +189,20 @@ public class Compatibility {
             hooked.add("Heroes");
         }
         
-        // hook into Heroes
+        // hook into Magic
         if (Bukkit.getPluginManager().isPluginEnabled("Magic")
                 && plugin.getConfig().getString("hook.magic")
                 .equalsIgnoreCase("true")) {
             plugin.registerConditions("wand", WandCondition.class);
             hooked.add("Magic");
+        }
+        
+        // hook into Denizen
+        if (Bukkit.getPluginManager().isPluginEnabled("Denizen")
+                && plugin.getConfig().getString("hook.denizen")
+                .equalsIgnoreCase("true")) {
+            plugin.registerEvents("script", DenizenTaskScriptEvent.class);
+            hooked.add("Denizen");
         }
 
         // log which plugins have been hooked
