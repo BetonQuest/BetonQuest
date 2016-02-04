@@ -5,6 +5,7 @@ Notes:
 Fixes:
     * Die objective now reacts to death caused by other plugins
     * Static events now are started correctly
+    * Static events now are canceled correctly
     * Action objective now correctly checks locations
     * Combat tag is removed after death
     * Block, Craft and MythicMobs MobKill objectives now correctly save data

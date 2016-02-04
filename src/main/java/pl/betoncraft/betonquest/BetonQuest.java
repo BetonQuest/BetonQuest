@@ -603,6 +603,8 @@ public final class BetonQuest extends JavaPlugin {
         // stop global location listener
         GlobalLocations.stop();
         database.closeConnection();
+        // cancel static events (they are registered outside of Bukkit so it won't happen automatically)
+        StaticEvents.stop();
         // update if needed
         if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
             Updater updater = new Updater(this, 86448, this.getFile(),

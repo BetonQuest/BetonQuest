@@ -125,7 +125,7 @@ public class StaticEvents {
     /**
      * EventTimer represents a timer for an event
      * 
-     * @author Coosh
+     * @author Jakub Sapalski
      */
     private class EventTimer extends TimerTask {
         
