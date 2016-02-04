@@ -46,6 +46,8 @@ import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
+import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
+import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPILevelCondition;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptConditionBQ;
@@ -203,6 +205,17 @@ public class Compatibility {
                 .equalsIgnoreCase("true")) {
             plugin.registerEvents("script", DenizenTaskScriptEvent.class);
             hooked.add("Denizen");
+        }
+        
+        // hook into SkillAPI
+        if (Bukkit.getPluginManager().getPlugin("SkillAPI") != null
+                && plugin.getConfig().getString("hook.skillapi")
+                .equalsIgnoreCase("true")) {
+            // SKillAPI 3.37 is already hooking into BetonQuest with outdated conditions,
+            // so I can't check if it is enabled, let's just hope it is
+            plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
+            plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
+            hooked.add("SkillAPI");
         }
 
         // log which plugins have been hooked

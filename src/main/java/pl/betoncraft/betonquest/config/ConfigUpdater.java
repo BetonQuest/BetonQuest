@@ -198,6 +198,8 @@ public class ConfigUpdater {
     private void update_from_v35() {
         config.set("hook.denizen", "true");
         Debug.broadcast("Added compatibility with Denizen");
+        config.set("hook.skillapi", "true");
+        Debug.broadcast("Added compatibility with SkillAPI");
         config.set("version", "v36");
         instance.saveConfig();
     }

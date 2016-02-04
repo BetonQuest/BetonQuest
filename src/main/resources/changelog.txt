@@ -20,6 +20,7 @@ Additions:
       Heroes kills in 'mobkill' objective)
     * Compatibility with Magic ('wand' condition)
     * Compatibility with Denizen (running task scripts with 'script' event)
+    * Compatibility with SkillAPI (class and level condition)
     * Optional prefix for conversations (contributed by Jack McKalling)
     * Optional material for buttons in "chest" conversation IO
     * Configurable main page in the journal
