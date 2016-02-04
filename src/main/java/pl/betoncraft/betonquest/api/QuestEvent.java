@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -77,24 +78,27 @@ public abstract class QuestEvent {
     public QuestEvent(String packName, String instructions) throws InstructionParseException {
         this.instructions = instructions;
         this.pack = Config.getPackage(packName);
-        String[] tempConditions = new String[]{};
+        String[] tempConditions1 = new String[]{};
+        String[] tempConditions2 = new String[]{};
         String[] parts = instructions.split(" ");
         for (String part : parts) {
             if (part.startsWith("conditions:")) {
-                tempConditions = part.substring(11).split(",");
+                tempConditions1 = part.substring(11).split(",");
+            } else if (part.startsWith("condition:")) {
+                tempConditions2 = part.substring(10).split(",");
             }
         }
-        for (int i = 0; i < tempConditions.length; i++) {
-            if (!tempConditions[i].contains(".")) {
-                tempConditions[i] = pack.getName() + "." + tempConditions[i];
+        conditions = ArrayUtils.addAll(tempConditions1, tempConditions2);
+        for (int i = 0; i < conditions.length; i++) {
+            if (!conditions[i].contains(".")) {
+                conditions[i] = pack.getName() + "." + conditions[i];
             }
         }
-        conditions = tempConditions;
     }
     
     /**
      * This method should contain all logic for firing the event and use the
-     * data parsed by the condtructor. When this method is called
+     * data parsed by the constructor. When this method is called
      * all the required data is present and parsed correctly.
      * 
      * @param playerID

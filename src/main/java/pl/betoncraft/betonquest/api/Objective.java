@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.api;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -77,31 +78,37 @@ public abstract class Objective {
         this.pack = Config.getPackage(packName);
         this.label = label;
         // extract events and conditions
-        String[] tempEvents     = new String[]{},
-                 tempConditions = new String[]{};
+        String[] tempEvents1     = new String[]{},
+                 tempEvents2     = new String[]{},
+                 tempConditions1 = new String[]{},
+                 tempConditions2 = new String[]{};
         boolean  tempPersistent = false;
         for (String part : instructions.split(" ")) {
             if (part.startsWith("events:")) {
-                tempEvents = part.substring(7).split(",");
-                for (int i = 0; i < tempEvents.length; i++) {
-                    if (!tempEvents[i].contains(".")) {
-                        tempEvents[i] = packName + "." + tempEvents[i];
-                    }
-                }
+                tempEvents1 = part.substring(7).split(",");
+            } else if (part.startsWith("event:")) {
+                tempEvents2 = part.substring(6).split(",");
             } else if (part.startsWith("conditions:")) {
-                tempConditions = part.substring(11).split(",");
-                for (int i = 0; i < tempConditions.length; i++) {
-                    if (!tempConditions[i].contains(".")) {
-                        tempConditions[i] = packName + "." + tempConditions[i];
-                    }
-                }
+                tempConditions1 = part.substring(11).split(",");
+            } else if (part.startsWith("condition:")) {
+                tempConditions2 = part.substring(10).split(",");
             } else if (part.equalsIgnoreCase("persistent")) {
                 tempPersistent = true;
             }
         }
         // make them final
-        events     = tempEvents;
-        conditions = tempConditions;
+        events     = ArrayUtils.addAll(tempEvents1, tempEvents2);
+        conditions = ArrayUtils.addAll(tempConditions1, tempConditions2);
+        for (int i = 0; i < events.length; i++) {
+            if (!events[i].contains(".")) {
+                events[i] = packName + "." + events[i];
+            }
+        }
+        for (int i = 0; i < conditions.length; i++) {
+            if (!conditions[i].contains(".")) {
+                conditions[i] = packName + "." + conditions[i];
+            }
+        }
         persistent = tempPersistent;
     }
     
