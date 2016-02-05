@@ -80,7 +80,7 @@ public class FolderEvent extends QuestEvent {
     public void run(final String playerID) {
         final ArrayList<String> chosenList = new ArrayList<>();
         // choose randomly which events should be fired
-        int randomInt = random.getInt(playerID);
+        int randomInt = random != null ? random.getInt(playerID) : 0;
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifyable ArrayList
             ArrayList<String> eventsList = new ArrayList<>();
