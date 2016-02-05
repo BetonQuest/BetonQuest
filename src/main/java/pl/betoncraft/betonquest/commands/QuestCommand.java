@@ -65,17 +65,17 @@ public class QuestCommand implements CommandExecutor {
     private String defaultPack = Config.getString("config.default_package");
     
     /**
-     * Registers a new executor of the /q command
+     * Registers a new executor of the /betonquest command
      */
     public QuestCommand() {
-        BetonQuest.getInstance().getCommand("q").setExecutor(this);
+        BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
-        if (cmd.getName().equalsIgnoreCase("q")) {
-            Debug.info("Executing /q command for user " + sender.getName()
+        if (cmd.getName().equalsIgnoreCase("betonquest")) {
+            Debug.info("Executing /betonquest command for user " + sender.getName()
                 + " with arguments: " + Arrays.toString(args));
             // if the command is empty, display help message
             if (args.length < 1) {

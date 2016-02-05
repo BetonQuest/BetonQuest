@@ -49,7 +49,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * 
  * @author Jakub Sapalski
  */
-public class BackpackDisplay implements Listener {
+public class Backpack implements Listener {
 
     /**
      * ID of the player
@@ -79,15 +79,21 @@ public class BackpackDisplay implements Listener {
      * Language of the player
      */
     private String lang;
-    private BackpackDisplay backpack;
-
+    private Backpack backpack;
+    
+    public enum DisplayType {
+        DEFAULT, CANCEL, COMPASS
+    }
+    
     /**
-     * Creates a new backpack GUI.
+     * Creates new backpack GUI opened at given page type.
      * 
      * @param playerID
-     *            ID of the player
+     *          ID of the player
+     * @param type
+     *          type of the display
      */
-    public BackpackDisplay(String playerID) {
+    public Backpack(String playerID, DisplayType type) {
         // fill required fields
         this.playerID = playerID;
         lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
@@ -96,7 +102,27 @@ public class BackpackDisplay implements Listener {
         dbHandler = instance.getDBHandler(playerID);
         backpack = this;
         // create display
-        display = new Page(0);
+        switch (type) {
+            case DEFAULT:
+                display = new Page(0);
+                break;
+            case CANCEL:
+                display = new Cancelers();
+                break;
+            case COMPASS:
+                display = new Compass();
+                break;
+        }
+    }
+
+    /**
+     * Creates new backpack GUI.
+     * 
+     * @param playerID
+     *            ID of the player
+     */
+    public Backpack(String playerID) {
+        this(playerID, DisplayType.DEFAULT);
     }
 
     @EventHandler

@@ -24,30 +24,30 @@ import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.Backpack;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.Backpack.DisplayType;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * The backpack command. It opens player's backpack.
+ * The /compass command. It opens the list of quests.
  * 
  * @author Jakub Sapalski
  */
-public class BackpackCommand implements CommandExecutor {
+public class CompassCommand implements CommandExecutor {
     
     /**
-     * Registers a new executor of the /backpack command
+     * Registers a new executor of the /compass command
      */
-    public BackpackCommand() {
-        BetonQuest.getInstance().getCommand("backpack").setExecutor(this);
+    public CompassCommand() {
+        BetonQuest.getInstance().getCommand("compass").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("backpack")) {
-            // command sender must be a player, console can't have a backpack
+        if (cmd.getName().equalsIgnoreCase("compass")) {
             if (sender instanceof Player) {
-                Debug.info("Executing /backpack command for " + sender.getName());
-                new Backpack(PlayerConverter.getID((Player) sender));
+                Player player = (Player) sender;
+                String playerID = PlayerConverter.getID(player);
+                new Backpack(playerID, DisplayType.COMPASS);
             }
             return true;
         }

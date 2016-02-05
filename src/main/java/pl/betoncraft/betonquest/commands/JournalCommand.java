@@ -34,15 +34,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class JournalCommand implements CommandExecutor {
 
     /**
-     * Registers a new executor of the /j command
+     * Registers a new executor of the /journal command
      */
     public JournalCommand() {
-        BetonQuest.getInstance().getCommand("j").setExecutor(this);
+        BetonQuest.getInstance().getCommand("journal").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("j")) {
+        if (cmd.getName().equalsIgnoreCase("journal")) {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
               // giving the player his journal

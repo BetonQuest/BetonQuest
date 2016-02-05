@@ -43,6 +43,7 @@ Additions:
     * New objective 'shear' - shearing a sheep
     * New objective 'chestput' - putting items in a chest
     * New objective 'potion' - brewing a potion
+    * New commands: /cancelquest and /compass - directly open backpack sub-pages
     * New subcommand '/q delete' - delete all specific tags/points/objectives/entries
     * New subcommand '/q rename' - rename all specific tags/points/objectives/entries
     * New subcommand '/q give' - gives you an item from items.yml
@@ -60,6 +61,7 @@ Changes:
     * Journal event can now use "update" argument for updating variables on the main page
     * Packages can now be moved to another directories
     * Quest cancelers are now defined in a more convenient way
+    * /q command renamed to /betonquest, /j to /journal; previous forms are now aliases
     * Conditions and events in objective instructions (and conditions in event instructions)
       can now be defined with "condition:" and "event:" argument (without "s" at the end)
 

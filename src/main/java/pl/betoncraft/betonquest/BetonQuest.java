@@ -38,6 +38,8 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.commands.BackpackCommand;
+import pl.betoncraft.betonquest.commands.CancelQuestCommand;
+import pl.betoncraft.betonquest.commands.CompassCommand;
 import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
@@ -253,9 +255,12 @@ public final class BetonQuest extends JavaPlugin {
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
 
+        // register commands
         new QuestCommand();
         new JournalCommand();
         new BackpackCommand();
+        new CancelQuestCommand();
+        new CompassCommand();
         new LangCommand();
 
         // register conditions
