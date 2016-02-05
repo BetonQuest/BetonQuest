@@ -21,10 +21,10 @@ journal_main_page:
     priority: 1
     text:
       pl: 'Ukonczyles zadanie dla Karczmarza!'
-      en: 'You have completed a quest for Innkeeper!'
-      de: 'You have completed a quest for Innkeeper!'
-      fr: 'You have completed a quest for Innkeeper!'
-      cn: 'You have completed a quest for Innkeeper!'
-      es: 'You have completed a quest for Innkeeper!'
-      nl: 'You have completed a quest for Innkeeper!'
+      en: 'You have completed a quest for the Innkeeper!'
+      de: 'Du hast eine Quest fuer den Gastwirt beendet!'
+      fr: 'Vous venez de terminer une quete de l'aubergiste!'
+      cn: 'You have completed a quest for the Innkeeper!'
+      es: 'You have completed a quest for the Innkeeper!'
+      nl: 'Je hebt een quest afgerond voor Herbergier!'
     conditions: 'wood_paid'
