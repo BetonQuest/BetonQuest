@@ -443,6 +443,10 @@ public final class BetonQuest extends JavaPlugin {
             FileConfiguration eConfig = Config.getPackage(packName).getEvents()
                     .getConfig();
             for (String key : eConfig.getKeys(false)) {
+                if (key.contains(" ")) {
+                    Debug.error("Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    continue;
+                }
                 String ID = packName + "." + key;
                 String instruction = pack.getString("events." + key);
                 if (instruction == null) {
@@ -482,6 +486,10 @@ public final class BetonQuest extends JavaPlugin {
             }
             FileConfiguration cConfig = pack.getConditions().getConfig();
             for (String key : cConfig.getKeys(false)) {
+                if (key.contains(" ")) {
+                    Debug.error("Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    continue;
+                }
                 String ID = packName + "." + key;
                 String instruction = pack.getString("conditions." + key);
                 if (instruction == null) {
@@ -522,6 +530,10 @@ public final class BetonQuest extends JavaPlugin {
             }
             FileConfiguration oConfig = pack.getObjectives().getConfig();
             for (String key : oConfig.getKeys(false)) {
+                if (key.contains(" ")) {
+                    Debug.error("Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    continue;
+                }
                 String ID = packName + "." + key;
                 String instruction = pack.getString("objectives." + key);
                 if (instruction == null) {
@@ -561,6 +573,10 @@ public final class BetonQuest extends JavaPlugin {
                 }
             }
             for (String convName : pack.getConversationNames()) {
+                if (convName.contains(" ")) {
+                    Debug.error("Conversation name cannot contain spaces: '" + convName + "' (in " + packName + " package)");
+                    continue;
+                }
                 try {
                     conversations.put(pack.getName() + "." + convName,
                             new ConversationData(packName, convName));
