@@ -22,9 +22,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import ch.njol.skript.Skript;
 import de.slikey.effectlib.EffectManager;
+import me.blackvein.quests.Quests;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -46,6 +48,10 @@ import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
+import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
+import pl.betoncraft.betonquest.compatibility.quests.EventReward;
+import pl.betoncraft.betonquest.compatibility.quests.QuestCondition;
+import pl.betoncraft.betonquest.compatibility.quests.QuestEvent;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPILevelCondition;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
@@ -216,6 +222,25 @@ public class Compatibility {
             plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
             plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
             hooked.add("SkillAPI");
+        }
+        
+        // hook into Quests
+        if (Bukkit.getPluginManager().getPlugin("Quests") != null
+                && plugin.getConfig().getString("hook.quests")
+                .equalsIgnoreCase("true")) {
+            // because SkillAPI wants to load before Quests, that means Quests will be forced to load
+            // after BetonQuest, so I can't check if it's enabled either; let's hope it is
+            plugin.registerConditions("quest", QuestCondition.class);
+            plugin.registerEvents("quest", QuestEvent.class);
+            // Quests is not enabled yet (because of SkillAPI...) so add custom stuff later
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Quests.getInstance().customRewards.add(new EventReward());
+                    Quests.getInstance().customRequirements.add(new ConditionRequirement());
+                }
+            }.runTask(plugin);
+            hooked.add("Quests");
         }
 
         // log which plugins have been hooked

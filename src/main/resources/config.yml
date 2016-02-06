@@ -1,4 +1,4 @@
-version: v36
+version: v37
 mysql:
   host: ''
   port: ''
@@ -36,6 +36,7 @@ hook:
   magic: 'true'
   denizen: 'true'
   skillapi: 'true'
+  quests: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
