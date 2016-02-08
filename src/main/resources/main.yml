@@ -25,6 +25,6 @@ journal_main_page:
       de: 'Du hast eine Quest fuer den Gastwirt beendet!'
       fr: 'Vous venez de terminer une quete de l''aubergiste!'
       cn: '\u4f60\u5b8c\u6210\u4e86\u65c5\u9986\u8001\u677f\u7684\u4efb\u52a1!'
-      es: 'You have completed a quest for the Innkeeper!'
+      es: 'Has completado una mision para el tabernero!'
       nl: 'Je hebt een quest afgerond voor Herbergier!'
     conditions: 'wood_paid'

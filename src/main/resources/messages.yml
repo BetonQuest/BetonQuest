@@ -213,15 +213,15 @@ es:
   blocks_to_break: '&2{1} bloques restantes que romper'
   blocks_to_place: '&2{1} bloques restantes que colocar'
   mobs_to_kill: '&2{1} mobs restantes que matar'
-  fish_to_catch: '&2{1} fish left to catch'
-  sheep_to_shear: '&2{1} sheep left to shear'
-  potions_to_brew: '&2{1} potions to brew'
+  fish_to_catch: '&2{1} peces restantes que pescar'
+  sheep_to_shear: '&2{1} ovejas restantes que esquilar'
+  potions_to_brew: '&2{1} pociones que crear'
   busy: '&cNo puedes hablar mientras luchas!'
   quest_canceled: '&2Mision {1} cancelada!'
   cancel: '&cCancelar la mision'
   cancel_page: Cancelar misiones
-  compass: '&cCompass targets'
-  compass_page: Choose target
+  compass: '&cObjetivos de la brujula'
+  compass_page: Escoge un objetivo
   command_blocked: '&cNo puedes usar ese comando en una conversacion.'
   language_changed: '&2Lenguaje cambiado!'
   language_missing: '&cEspecifica un lenguaje'
