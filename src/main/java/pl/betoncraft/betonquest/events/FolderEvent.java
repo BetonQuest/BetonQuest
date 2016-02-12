@@ -87,8 +87,7 @@ public class FolderEvent extends QuestEvent {
             for (String event : events) {
                 eventsList.add(event);
             }
-            // remove choosen events from that ArrayList and place them in
-            // a new list
+            // remove choosen events from that ArrayList and place them in a new list
             for (int i = randomInt; i > 0; i--) {
                 int chosen = new Random().nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
@@ -99,6 +98,7 @@ public class FolderEvent extends QuestEvent {
                 chosenList.add(event);
             }
         }
+        int seconds = (delay == null) ? 0 : delay.getInt(playerID);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -106,7 +106,7 @@ public class FolderEvent extends QuestEvent {
                     BetonQuest.event(playerID, event);
                 }
             }                                         // 20 ticks is a second
-        }.runTaskLater(BetonQuest.getInstance(), delay.getInt(playerID) * 20);
+        }.runTaskLater(BetonQuest.getInstance(), seconds * 20);
     }
 
 }
