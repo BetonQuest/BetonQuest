@@ -84,7 +84,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v37";
+    private final String destination = "v38";
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
@@ -192,6 +192,34 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v37() {
+        try {
+            Debug.info("Updating global location tags in the database");
+            Debug.info("    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
+            for (String packName : Config.getPackageNames()) {
+                String locList = Config.getPackage(packName).getMain().getConfig().getString("global_locations");
+                Debug.info("  Handling package '" + packName + "': " + locList);
+                if (locList == null) {
+                    continue;
+                }
+                for (String locName : locList.split(",")) {
+                    Debug.info("Adding '" + packName + "' prefix to '" + locName + "' global location tags.");
+                    instance.getSaver().add(new Record(
+                            UpdateType.RENAME_ALL_TAGS,
+                            new String[]{packName + ".global_" + locName, "global_" + locName})
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Debug.error(ERROR);
+        }
+        Debug.broadcast("Updated tags of global locations with package names");
+        config.set("version", "v38");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

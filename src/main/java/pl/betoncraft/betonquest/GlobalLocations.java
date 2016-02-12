@@ -83,8 +83,7 @@ public class GlobalLocations extends BukkitRunnable {
         for (Player player : players) {
             // for each player loop all available locations
             locations: for (GlobalLocation location : finalLocations) {
-                // if location is not set, stop everything, there is an error in
-                // config
+                // if location is not set, stop everything, there is an error in config
                 if (location.getLocation() == null) {
                     continue locations;
                 }
@@ -98,7 +97,7 @@ public class GlobalLocations extends BukkitRunnable {
                             ) <= location.getDistance()*location.getDistance()) {
                     // check if player has already triggered this location
                     if (BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
-                            .hasTag("global_" + location.getLabel())) {
+                            .hasTag(location.getPack() + ".global_" + location.getLabel())) {
                         continue locations;
                     }
                     // check all conditions
@@ -112,7 +111,7 @@ public class GlobalLocations extends BukkitRunnable {
                     }
                     // set the tag, player has triggered this location
                     BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
-                            .addTag("global_" + location.getLabel());
+                            .addTag(location.getPack() + ".global_" + location.getLabel());
                     // fire all events for the location
                     for (String event : location.getEvents()) {
                         BetonQuest.event(PlayerConverter.getID(player), event);
@@ -129,10 +128,11 @@ public class GlobalLocations extends BukkitRunnable {
      */
     private class GlobalLocation {
 
+        private String pack;
         private Location location;
         private String[] conditions;
         private String[] events;
-        private int distance;
+        private double distance;
         private String label;
         private boolean valid = true;
 
@@ -144,6 +144,7 @@ public class GlobalLocations extends BukkitRunnable {
          */
         public GlobalLocation(ConfigPackage pack, String objective) {
             Debug.info("Creating new GlobalLocation from " + pack.getName() + "." + objective + " event.");
+            this.pack = pack.getName();
             label = objective;
             String instructions = pack.getString("objectives." + objective);
             if (instructions == null || !instructions.startsWith("location ")) {
@@ -171,7 +172,7 @@ public class GlobalLocations extends BukkitRunnable {
                 x = Double.parseDouble(rawLocation[0]);
                 y = Double.parseDouble(rawLocation[1]);
                 z = Double.parseDouble(rawLocation[2]);
-                distance = Integer.parseInt(rawLocation[4]);
+                distance = Double.parseDouble(rawLocation[4]);
             } catch (NumberFormatException e) {
                 Debug.error("Wrong argument in location definition in global location's objective "
                     + objective);
@@ -204,6 +205,13 @@ public class GlobalLocations extends BukkitRunnable {
                 }
             }
         }
+        
+        /**
+         * @return the package containing this global location
+         */
+        public String getPack() {
+            return pack;
+        }
 
         /**
          * @return the location
@@ -229,7 +237,7 @@ public class GlobalLocations extends BukkitRunnable {
         /**
          * @return the distance
          */
-        public int getDistance() {
+        public double getDistance() {
             return distance;
         }
 
