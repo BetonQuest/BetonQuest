@@ -1,4 +1,14 @@
-﻿v1.8
+﻿v1.8.1
+Fixes:
+    * Removing journal entries from the database now works correctly
+	* MobKill objective now correctly handles kills
+	* Nested package names are now correctly resolved
+	* The formatting at the end of every main page line is reset
+	* Fixed Apache dependency problem
+	* Material name is no longer displayed in "chest" GUI conversations
+	* Fixed "notify" option in give/take events
+
+v1.8
 Notes:
   - As always in big updates, compatibility with plugins hooking into BetonQuest is broken.
     You need to check if everything is working.
