@@ -45,34 +45,33 @@ public class ConfigPackage {
     /**
      * Loads a package from specified directory. It doesn't have to be valid package directory.
      */
-    public ConfigPackage(File pack) {
+    public ConfigPackage(File pack, String name) {
         if (!pack.isDirectory()) return;
         folder = pack;
-        name = pack.getName();
+        this.name = name;
         BetonQuest plugin = BetonQuest.getInstance();
         // list all files inside a package folder and pick the needed
         for (File file : pack.listFiles()) {
             if (file.isFile()) {
-                String name = file.getName();
                 // load normal files
-                switch (name) {
+                switch (file.getName()) {
                     case "main.yml":
-                        main = new ConfigAccessor(plugin, file, name);
+                        main = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     case "events.yml":
-                        events = new ConfigAccessor(plugin, file, name);
+                        events = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     case "conditions.yml":
-                        conditions = new ConfigAccessor(plugin, file, name);
+                        conditions = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     case "journal.yml":
-                        journal = new ConfigAccessor(plugin, file, name);
+                        journal = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     case "items.yml":
-                        items = new ConfigAccessor(plugin, file, name);
+                        items = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     case "objectives.yml":
-                        objectives = new ConfigAccessor(plugin, file, name);
+                        objectives = new ConfigAccessor(plugin, file, file.getName());
                         break;
                     default:
                         break;

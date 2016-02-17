@@ -121,7 +121,7 @@ public class Config {
             if (!file.isDirectory()) continue;
             if (file.getName().equals("logs") || file.getName().equals("backups") || file.getName().equals("conversations")) continue;
             // initialize ConfigPackage objects and if they are valid place them in the map
-            ConfigPackage pack = new ConfigPackage(file);
+            ConfigPackage pack = new ConfigPackage(file, packPath);
             if (pack.isValid()) {
                 packages.put(packPath, pack);
                 if (verboose) Debug.info("Loaded " + packPath + " package");
@@ -151,10 +151,10 @@ public class Config {
      * @return true if the package was created, false if it already existed
      */
     public static boolean createPackage(String packName) {
-        File def = new File(instance.root, packName.replace("-", File.pathSeparator));
+        File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
             Debug.broadcast("Deploying " + packName + " package!");
-            def.mkdir();
+            def.mkdirs();
             saveResource(def, "main.yml");
             saveResource(def, "events.yml");
             saveResource(def, "conditions.yml");
