@@ -86,14 +86,17 @@ public class TakeEvent extends QuestEvent {
         for (Item item : questItems) {
             QuestItem questItem = item.getItem();
             VariableNumber amount = item.getAmount();
+            
+            // cache the amount
+            counter = amount.getInt(playerID);
+            
+            // notify the player
             if (notify) {
                 Config.sendMessage(playerID, "items_taken", new String[]{
                         (questItem.getName() != null) ? questItem.getName() :
                                 questItem.getMaterial().toString().toLowerCase()
-                                .replace("_", " "), String.valueOf(amount)});
+                                .replace("_", " "), String.valueOf(counter)});
             }
-            // cache the amount
-            counter = amount.getInt(playerID);
 
             //Remove Quest items from player's inventory
             player.getInventory().setContents(

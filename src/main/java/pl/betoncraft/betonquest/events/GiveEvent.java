@@ -83,13 +83,13 @@ public class GiveEvent extends QuestEvent {
         for (Item theItem : questItems) {
             QuestItem questItem = theItem.getItem();
             VariableNumber amount = theItem.getAmount();
+            int amountInt = amount.getInt(playerID);
             if (notify) {
                 Config.sendMessage(playerID, "items_given", new String[]{
                         (questItem.getName() != null) ? questItem.getName() :
                         questItem.getMaterial().toString().toLowerCase()
-                        .replace("_", " "), String.valueOf(amount)});
+                        .replace("_", " "), String.valueOf(amountInt)});
             }
-            int amountInt = amount.getInt(playerID);
             while (amountInt > 0) {
                 int stackSize;
                 if (amountInt > 64) {
