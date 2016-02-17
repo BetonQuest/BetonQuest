@@ -223,7 +223,7 @@ public class Journal {
                     }
                     // add the text to HashMap
                     numbers.add(i);
-                    lines.put(i, text);
+                    lines.put(i, text + "§r"); // reset the formatting
                 } else {
                     Debug.error("Priority of " + packName + "." + key + " journal main page line is not defined or doubled");
                     continue;
