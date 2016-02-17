@@ -276,8 +276,7 @@ public class DatabaseHandler {
         String date = (BetonQuest.getInstance().isMySQLUsed())
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
-        saver.add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID,
-                date}));
+        saver.add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID, pointer.getPointer(), date}));
     }
 
     /**
