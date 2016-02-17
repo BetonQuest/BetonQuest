@@ -17,7 +17,6 @@
  */
 package pl.betoncraft.betonquest.api;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -88,7 +87,11 @@ public abstract class QuestEvent {
                 tempConditions2 = part.substring(10).split(",");
             }
         }
-        conditions = ArrayUtils.addAll(tempConditions1, tempConditions2);
+        int length = tempConditions1.length + tempConditions2.length;
+        conditions = new String[length];
+        for (int i = 0; i < length; i++) {
+        	conditions[i] = (i >= tempConditions1.length) ? tempConditions2[i-tempConditions1.length] : tempConditions1[i];
+        }
         for (int i = 0; i < conditions.length; i++) {
             if (!conditions[i].contains(".")) {
                 conditions[i] = pack.getName() + "." + conditions[i];

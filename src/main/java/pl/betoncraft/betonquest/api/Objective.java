@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.api;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -97,8 +96,17 @@ public abstract class Objective {
             }
         }
         // make them final
-        events     = ArrayUtils.addAll(tempEvents1, tempEvents2);
-        conditions = ArrayUtils.addAll(tempConditions1, tempConditions2);
+        int length = tempEvents1.length + tempEvents2.length;
+        events = new String[length];
+        for (int i = 0; i < length; i++) {
+        	events[i] = (i >= tempEvents1.length) ? tempEvents2[i-tempEvents1.length] : tempEvents1[i];
+        }
+        length = tempConditions1.length + tempConditions2.length;
+        conditions = new String[length];
+        for (int i = 0; i < length; i++) {
+        	conditions[i] = (i >= tempConditions1.length) ? tempConditions2[i-tempConditions1.length] : tempConditions1[i];
+        }
+        // add package names
         for (int i = 0; i < events.length; i++) {
             if (!events[i].contains(".")) {
                 events[i] = packName + "." + events[i];
