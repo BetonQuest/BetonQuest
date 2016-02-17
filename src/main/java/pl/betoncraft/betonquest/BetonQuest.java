@@ -254,6 +254,9 @@ public final class BetonQuest extends JavaPlugin {
 
         // start timer for global locations
         new GlobalLocations().runTaskTimer(this, 20, 20);
+        
+        // start mob kill listener
+        new MobKillListener();
 
         // register commands
         new QuestCommand();

@@ -63,6 +63,7 @@ public class MobKillNotifier {
      */
     public static void addKill(Player killer, Entity killed) {
         if (instance.entities.contains(killed)) return;
+        instance.entities.add(killed);
         MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
     }
