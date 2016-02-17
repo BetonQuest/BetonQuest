@@ -127,7 +127,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // each row contains 7 options, so get amount of rows
         int rows = (int) Math.floor(options.size() / 7);
         rows++;
-        // this itemstack represents slots in the invenotry
+        // this itemstack represents slots in the inventory
         inv = Bukkit.createInventory(null, 9 * rows, "NPC");
         inv.setContents(new ItemStack[9 * rows]);
         ItemStack[] buttons = new ItemStack[9 * rows];
@@ -155,6 +155,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             }
             // generate an itemstack for this option
             Material material = Material.ENDER_PEARL;
+            // get the custom material
             if (option.matches("^\\{[a-zA-Z_ ]+\\}.*$")) {
                 String mName = option.substring(1, option.indexOf('}'));
                 Material m = Material.matchMaterial(mName);
@@ -165,8 +166,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     material = m;
                 }
             }
-            buttons[j] = new ItemStack(material);
+            // remove custom material prefix from the option
+            options.put(next, option);
             // set the display name and lore of the option
+            buttons[j] = new ItemStack(material);
             ItemMeta meta = buttons[j].getItemMeta();
             meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
             ArrayList<String> lines = stringToLines(response, npcTextColor, npcNameColor + npcName + ChatColor.RESET + ": ");
