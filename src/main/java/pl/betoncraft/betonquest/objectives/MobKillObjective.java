@@ -25,7 +25,6 @@ import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.MobKillNotifier;
 import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -44,10 +43,6 @@ public class MobKillObjective extends Objective implements Listener {
     protected final int amount;
     protected final String name;
     protected final boolean notify;
-    
-    static {
-        new MobKillNotifier();
-    }
 
     public MobKillObjective(String packName, String label, String instruction)
             throws InstructionParseException {

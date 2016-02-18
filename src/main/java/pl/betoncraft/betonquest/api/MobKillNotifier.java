@@ -62,6 +62,7 @@ public class MobKillNotifier {
      * @param killed the mob that was killed
      */
     public static void addKill(Player killer, Entity killed) {
+    	if (instance == null) new MobKillNotifier();
         if (instance.entities.contains(killed)) return;
         instance.entities.add(killed);
         MobKilledEvent event = new MobKilledEvent(killer, killed);
