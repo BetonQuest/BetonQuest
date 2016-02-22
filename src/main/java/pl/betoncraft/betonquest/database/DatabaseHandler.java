@@ -121,7 +121,8 @@ public class DatabaseHandler {
                 try {
                     item = new QuestItem(instruction).generateItem(amount);
                 } catch (InstructionParseException e) {
-                    Debug.error("Could not load item: " + e.getCause().getMessage());
+                    Debug.error("Could not load backpack item for player " + PlayerConverter.getName(playerID) + 
+                    		", with instruction '" + instruction + "', because: " + e.getMessage());
                     continue;
                 }
                 backpack.add(item);
