@@ -301,6 +301,7 @@ public class DatabaseHandler {
         database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
         database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
+        database.updateSQL(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID });
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
             getJournal().update();
