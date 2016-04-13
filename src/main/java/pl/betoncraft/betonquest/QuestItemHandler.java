@@ -131,11 +131,14 @@ public class QuestItemHandler implements Listener {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
             return;
         }
+        String playerID = PlayerConverter.getID((Player) event.getEntity());
+        // check if there is data for this player; NPCs don't have data
+        if (BetonQuest.getInstance().getDBHandler(playerID) == null)
+        	return;
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
         List<ItemStack> drops = event.getDrops();
         ListIterator<ItemStack> litr = drops.listIterator();
-        String playerID = PlayerConverter.getID((Player) event.getEntity());
         while (litr.hasNext()) {
             ItemStack stack = litr.next();
             if (Journal.isJournal(playerID, stack)) {
