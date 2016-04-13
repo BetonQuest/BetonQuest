@@ -157,33 +157,32 @@ public class Conversation implements Listener {
      */
     private void selectOption(String[] options, boolean force) {
 
-        if (!force) {
-            // get npc's text
-            option = null;
-            options:
-            for (String option : options) {
-                String convName, optionName;
-                if (option.contains(".")) {
-                    String[] parts = option.split("\\.");
-                    convName = parts[0];
-                    optionName = parts[1];
-                } else {
-                    convName = data.getName();
-                    optionName = option;
-                }
-                ConversationData currentData = plugin.getConversation(packName + "." + convName);
-                for (String condition : currentData.getData(optionName, OptionType.NPC,
-                        RequestType.CONDITION)) {
-                    if (!BetonQuest.condition(this.playerID, condition)) {
-                        continue options;
-                    }
-                }
-                this.option = optionName;
-                data = currentData;
-                break;
+        if (force) {
+            options = new String[]{options[0]};
+        }
+        // get npc's text
+        option = null;
+        options:
+        for (String option : options) {
+            String convName, optionName;
+            if (option.contains(".")) {
+                String[] parts = option.split("\\.");
+                convName = parts[0];
+                optionName = parts[1];
+            } else {
+                convName = data.getName();
+                optionName = option;
             }
-        } else {
-            option = options[0];
+            ConversationData currentData = plugin.getConversation(packName + "." + convName);
+            if (!force) for (String condition : currentData.getData(optionName, OptionType.NPC,
+                    RequestType.CONDITION)) {
+                if (!BetonQuest.condition(this.playerID, condition)) {
+                    continue options;
+                }
+            }
+            this.option = optionName;
+            data = currentData;
+            break;
         }
     }
 
