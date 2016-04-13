@@ -186,12 +186,14 @@ public class ConversationData {
      * @return the conversation prefix, or null if not defined
      */
     public String getPrefix(String lang, String option) {
-        String pref = NPCOptions.get(option).getInlinePrefix(lang);
-        if (pref == null) {
-            pref = NPCOptions.get(option).getInlinePrefix(Config.getLanguage());
-        }
-        // return inline prefix if defined
-        if (pref != null) return pref;
+    	// get prefix from an option
+    	if (option != null) {
+	        String pref = NPCOptions.get(option).getInlinePrefix(lang);
+	        if (pref == null) {
+	            pref = NPCOptions.get(option).getInlinePrefix(Config.getLanguage());
+	        }
+	        if (pref != null) return pref;
+    	}
         
         // otherwise return global prefix
         String global = prefix.get(lang);
