@@ -63,6 +63,10 @@ public class ObjectiveEvent extends QuestEvent {
 
     @Override
     public void run(final String playerID) {
+    	if (BetonQuest.getInstance().getObjective(objective) == null) {
+    		Debug.error("Objective '" + objective + "' is not defined, cannot run objective event");
+    		return;
+    	}
         if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
                 @Override
