@@ -92,7 +92,7 @@ public class DieObjective extends Objective implements Listener {
         location = tempLoc;
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.MONITOR)
     public void onDeath(EntityDeathEvent event) {
         if (cancel) {
             return;
@@ -105,16 +105,16 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.HIGH)
     public void onLastDamage(EntityDamageEvent event) {
-        if (!cancel) {
-            return;
-        }
+    	if (event.isCancelled() || !cancel) {
+    		return;
+    	}
         if (event.getEntity() instanceof Player) {
             final Player player = (Player) event.getEntity();
             final String playerID = PlayerConverter.getID(player);
             if (containsPlayer(playerID) &&
-                    player.getHealth() - event.getDamage() <= 0 &&
+                    player.getHealth() - event.getFinalDamage() <= 0 &&
                     checkConditions(playerID)) {
                 event.setCancelled(true);
                 player.setHealth(player.getMaxHealth());
