@@ -277,6 +277,7 @@ public class QuestCommand implements CommandExecutor {
             player.getInventory().addItem(item.generateItem(1));
         } catch (InstructionParseException e) {
             sendMessage(sender, "error");
+            Debug.error("Error while parsing item instruction: " + e.getMessage());
         }
     }
 
