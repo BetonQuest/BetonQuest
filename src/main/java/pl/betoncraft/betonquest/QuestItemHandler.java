@@ -86,6 +86,9 @@ public class QuestItemHandler implements Listener {
         if (event.getView().getType().equals(InventoryType.CREATIVE)) {
             return;
         }
+        if (event.getView().getType().equals(InventoryType.CRAFTING)) {
+        	return;
+        }
         String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         // canceling all action that could lead to transfering the journal
         if (Journal.isJournal(playerID, event.getCursor()) || Utils.isQuestItem(event.getCursor())) {
