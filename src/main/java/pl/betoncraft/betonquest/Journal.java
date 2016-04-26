@@ -167,7 +167,7 @@ public class Journal {
             }
             // add the entry to the list
             texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text")
-                    + "\n" + text);
+                    + "\n" + text.replaceAll("&", "§"));
         }
     }
 
@@ -306,7 +306,7 @@ public class Journal {
             // logic for converting entries into single text and then to pages
             StringBuilder stringBuilder = new StringBuilder();
             for (String entry : getText()) {
-                stringBuilder.append(entry.replaceAll("&", "§") + "\n§"
+                stringBuilder.append(entry + "\n§"
                         + Config.getString("config.journal_colors.line")
                         + "---------------\n");
             }
