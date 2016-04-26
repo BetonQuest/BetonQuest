@@ -323,7 +323,9 @@ public class Backpack implements Listener {
                         }
                         item.setAmount(backpackAmount - getAmount + leftAmount);
                         if (backpackAmount - getAmount + leftAmount == 0) {
-                            dbHandler.getBackpack().remove(id);
+                        	List<ItemStack> backpackItems = dbHandler.getBackpack();
+                            backpackItems.remove(id);
+                            dbHandler.setBackpack(backpackItems);
                         }
                     }
                     display = new Page(page);

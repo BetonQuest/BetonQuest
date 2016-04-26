@@ -417,6 +417,11 @@ public class DatabaseHandler {
         return backpack;
     }
     
+    /**
+     * Updates the database with a list of backpack items.
+     * 
+     * @param list
+     */
     public void setBackpack(List<ItemStack> list) {
         this.backpack = list;
         // update the database (quite expensive way, should be changed)
