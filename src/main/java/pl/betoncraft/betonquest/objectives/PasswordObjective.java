@@ -23,6 +23,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
@@ -63,10 +64,20 @@ public class PasswordObjective extends Objective implements Listener {
                 String password = event.getMessage().substring(prefix.length());
                 if (ignoreCase) {
                     if (password.toLowerCase().matches(regex) && checkConditions(playerID))
-                        completeObjective(playerID);
+                    	new BukkitRunnable() {
+							@Override
+							public void run() {
+		                        completeObjective(playerID);
+							}
+						}.runTask(BetonQuest.getInstance());
                 } else {
                     if (password.matches(regex) && checkConditions(playerID))
-                        completeObjective(playerID);
+                    	new BukkitRunnable() {
+							@Override
+							public void run() {
+		                        completeObjective(playerID);
+							}
+						}.runTask(BetonQuest.getInstance());
                 }
             }
         }
