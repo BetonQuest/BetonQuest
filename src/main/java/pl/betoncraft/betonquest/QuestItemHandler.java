@@ -37,6 +37,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -178,10 +179,12 @@ public class QuestItemHandler implements Listener {
 			return;
 		}
 		// this prevents the journal from being placed inside of item frame
-		if (event.getRightClicked() instanceof ItemFrame
-				&& (Journal.isJournal(PlayerConverter.getID(event.getPlayer()), event.getPlayer().getItemInHand())
-						|| Utils.isQuestItem(event.getPlayer().getItemInHand()))) {
-			event.setCancelled(true);
+		if (event.getRightClicked() instanceof ItemFrame) {
+			ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
+			String playerID = PlayerConverter.getID(event.getPlayer());
+			if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
+				event.setCancelled(true);
+			}
 		}
 	}
 

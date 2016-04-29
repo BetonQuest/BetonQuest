@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
@@ -32,6 +33,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class HandCondition extends Condition {
 
 	private final QuestItem questItem;
+	private boolean offhand = false;
 
 	public HandCondition(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -45,11 +47,18 @@ public class HandCondition extends Condition {
 			throw new InstructionParseException("Item not defined: " + itemName);
 		}
 		questItem = new QuestItem(itemInstruction);
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("offhand")) {
+				offhand = true;
+				break;
+			}
+		}
 	}
 
 	@Override
 	public boolean check(String playerID) {
-		ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
+		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+		ItemStack item = (offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
 		if (questItem.equalsI(item)) {
 			return true;
 		}

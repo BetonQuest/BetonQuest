@@ -613,7 +613,7 @@ public class QuestCommand implements CommandExecutor {
 			name = itemID;
 		}
 		Player player = (Player) sender;
-		ItemStack item = player.getItemInHand();
+		ItemStack item = player.getInventory().getItemInMainHand();
 		// if item is air then there is nothing to add to items.yml
 		if (item == null) {
 			Debug.info("Cannot continue, item must not be air");
@@ -640,7 +640,6 @@ public class QuestCommand implements CommandExecutor {
 	/**
 	 * Fires an event for an online player. It cannot work for offline players!
 	 */
-	@SuppressWarnings("deprecation")
 	private void handleEvents(CommandSender sender, String[] args) {
 		// the player has to be specified every time
 		if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {
@@ -691,7 +690,6 @@ public class QuestCommand implements CommandExecutor {
 	/**
 	 * Checks if specified player meets condition described by ID
 	 */
-	@SuppressWarnings("deprecation")
 	private void handleConditions(CommandSender sender, String[] args) {
 		// the player has to be specified every time
 		if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {

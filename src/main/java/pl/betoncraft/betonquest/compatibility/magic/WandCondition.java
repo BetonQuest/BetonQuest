@@ -102,10 +102,11 @@ public class WandCondition extends Condition {
 			}
 			return false;
 		case IN_HAND:
-			if (!api.isWand(player.getItemInHand())) {
+			ItemStack wandItem = player.getInventory().getItemInMainHand();
+			if (!api.isWand(wandItem)) {
 				return false;
 			}
-			Wand wand1 = api.getWand(player.getItemInHand());
+			Wand wand1 = api.getWand(wandItem);
 			return checkWand(wand1, playerID);
 		case IN_INVENTORY:
 			for (ItemStack item : player.getInventory().getContents()) {
