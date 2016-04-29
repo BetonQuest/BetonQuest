@@ -41,7 +41,7 @@ public class TagCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) {
-		if (BetonQuest.getInstance().getDBHandler(playerID).hasTag(tag)) {
+		if (BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag)) {
 			return true;
 		}
 		return false;

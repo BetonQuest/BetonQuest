@@ -48,7 +48,7 @@ import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationColors;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -325,16 +325,16 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		String playerID = PlayerConverter.getID(args[1]);
-		DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-		// if the player is offline then get his DatabaseHandler outside of the
+		PlayerData playerData = instance.getPlayerData(playerID);
+		// if the player is offline then get his PlayerData outside of the
 		// list
-		if (dbHandler == null) {
+		if (playerData == null) {
 			Debug.info("Player is offline, loading his data");
-			dbHandler = new DatabaseHandler(playerID);
+			playerData = new PlayerData(playerID);
 		}
 		// purge the player
 		Debug.info("Purging player " + args[1]);
-		dbHandler.purgePlayer();
+		playerData.purgePlayer();
 		// done
 		sendMessage(sender, "purged", new String[] { args[1] });
 	}
@@ -435,14 +435,14 @@ public class QuestCommand implements CommandExecutor {
 		}
 		String playerID = PlayerConverter.getID(args[1]);
 		boolean isOnline = (PlayerConverter.getPlayer(playerID) != null);
-		DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-		// if the player is offline then get his DatabaseHandler outside of the
+		PlayerData playerData = instance.getPlayerData(playerID);
+		// if the player is offline then get his PlayerData outside of the
 		// list
-		if (dbHandler == null) {
+		if (playerData == null) {
 			Debug.info("Player is offline, loading his data");
-			dbHandler = new DatabaseHandler(playerID);
+			playerData = new PlayerData(playerID);
 		}
-		Journal journal = dbHandler.getJournal();
+		Journal journal = playerData.getJournal();
 		// if there are no arguments then list player's pointers
 		if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
 			Debug.info("Listing journal pointers");
@@ -486,7 +486,7 @@ public class QuestCommand implements CommandExecutor {
 				journal.addPointer(pointer);
 				journal.update();
 			} else {
-				dbHandler.addPointer(pointer);
+				playerData.addPointer(pointer);
 			}
 			sendMessage(sender, "pointer_added");
 			break;
@@ -503,7 +503,7 @@ public class QuestCommand implements CommandExecutor {
 			} else {
 				for (Pointer pointer2 : journal.getPointers()) {
 					if (pointer2.getPointer().equals(pointerName)) {
-						dbHandler.removePointer(pointer2);
+						playerData.removePointer(pointer2);
 						break;
 					}
 				}
@@ -529,16 +529,16 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		String playerID = PlayerConverter.getID(args[1]);
-		DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-		// if the player is offline then get his DatabaseHandler outside of the
+		PlayerData playerData = instance.getPlayerData(playerID);
+		// if the player is offline then get his PlayerData outside of the
 		// list
-		if (dbHandler == null) {
+		if (playerData == null) {
 			Debug.info("Player is offline, loading his data");
-			dbHandler = new DatabaseHandler(playerID);
+			playerData = new PlayerData(playerID);
 		}
 		// if there are no arguments then list player's points
 		if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
-			List<Point> points = dbHandler.getPoints();
+			List<Point> points = playerData.getPoints();
 			Debug.info("Listing points");
 			sendMessage(sender, "player_points");
 			for (Point point : points) {
@@ -564,7 +564,7 @@ public class QuestCommand implements CommandExecutor {
 			}
 			// add the point
 			Debug.info("Adding points");
-			dbHandler.addPoints(category, Integer.parseInt(args[4]));
+			playerData.addPoints(category, Integer.parseInt(args[4]));
 			sendMessage(sender, "points_added");
 			break;
 		case "remove":
@@ -575,7 +575,7 @@ public class QuestCommand implements CommandExecutor {
 			// remove the point (this is unnecessary as adding negative amounts
 			// subtracts points, but for the sake of users let's leave it here)
 			Debug.info("Removing points");
-			dbHandler.removePointsCategory(category);
+			playerData.removePointsCategory(category);
 			sendMessage(sender, "points_removed");
 			break;
 		default:
@@ -747,16 +747,16 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		String playerID = PlayerConverter.getID(args[1]);
-		DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-		// if the player is offline then get his DatabaseHandler outside of the
+		PlayerData playerData = instance.getPlayerData(playerID);
+		// if the player is offline then get his PlayerData outside of the
 		// list
-		if (dbHandler == null) {
+		if (playerData == null) {
 			Debug.info("Player is offline, loading his data");
-			dbHandler = new DatabaseHandler(playerID);
+			playerData = new PlayerData(playerID);
 		}
 		// if there are no arguments then list player's tags
 		if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
-			List<String> tags = dbHandler.getTags();
+			List<String> tags = playerData.getTags();
 			Debug.info("Listing tags");
 			sendMessage(sender, "player_tags");
 			for (String tag : tags) {
@@ -777,7 +777,7 @@ public class QuestCommand implements CommandExecutor {
 		case "a":
 			// add the tag
 			Debug.info("Adding tag " + tag + " for player " + PlayerConverter.getName(playerID));
-			dbHandler.addTag(tag);
+			playerData.addTag(tag);
 			sendMessage(sender, "tag_added");
 			break;
 		case "remove":
@@ -787,7 +787,7 @@ public class QuestCommand implements CommandExecutor {
 		case "d":
 			// remove the tag
 			Debug.info("Removing tag " + tag + " for player " + PlayerConverter.getName(playerID));
-			dbHandler.removeTag(tag);
+			playerData.removeTag(tag);
 			sendMessage(sender, "tag_removed");
 			break;
 		default:
@@ -810,12 +810,12 @@ public class QuestCommand implements CommandExecutor {
 		}
 		String playerID = PlayerConverter.getID(args[1]);
 		boolean isOnline = !(PlayerConverter.getPlayer(playerID) == null);
-		DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-		// if the player is offline then get his DatabaseHandler outside of the
+		PlayerData playerData = instance.getPlayerData(playerID);
+		// if the player is offline then get his PlayerData outside of the
 		// list
-		if (dbHandler == null) {
+		if (playerData == null) {
 			Debug.info("Player is offline, loading his data");
-			dbHandler = new DatabaseHandler(playerID);
+			playerData = new PlayerData(playerID);
 		}
 		// if there are no arguments then list player's objectives
 		if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
@@ -824,7 +824,7 @@ public class QuestCommand implements CommandExecutor {
 				// if player is offline then convert his raw objective strings
 				// to tags
 				tags = new ArrayList<>();
-				for (String string : dbHandler.getRawObjectives().keySet()) {
+				for (String string : playerData.getRawObjectives().keySet()) {
 					tags.add(string);
 				}
 			} else {
@@ -832,7 +832,7 @@ public class QuestCommand implements CommandExecutor {
 				// active
 				// objectives
 				tags = new ArrayList<>();
-				for (Objective objective : dbHandler.getObjectives()) {
+				for (Objective objective : playerData.getObjectives()) {
 					tags.add(objective.getLabel());
 				}
 			}
@@ -868,7 +868,7 @@ public class QuestCommand implements CommandExecutor {
 			if (isOnline) {
 				BetonQuest.newObjective(playerID, objectiveID);
 			} else {
-				dbHandler.addNewRawObjective(objectiveID);
+				playerData.addNewRawObjective(objectiveID);
 			}
 			sendMessage(sender, "objective_added");
 			break;
@@ -879,7 +879,7 @@ public class QuestCommand implements CommandExecutor {
 		case "d":
 			// remove the objective
 			Debug.info("Deleting objective with tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
-			dbHandler.deleteObjective(args[3]);
+			playerData.deleteObjective(args[3]);
 			sendMessage(sender, "objective_removed");
 			break;
 		default:
@@ -963,9 +963,9 @@ public class QuestCommand implements CommandExecutor {
 		case "t":
 			updateType = UpdateType.RENAME_ALL_TAGS;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
-				dbHandler.removeTag(name);
-				dbHandler.addTag(rename);
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+				playerData.removeTag(name);
+				playerData.addTag(rename);
 			}
 			break;
 		case "points":
@@ -973,16 +973,16 @@ public class QuestCommand implements CommandExecutor {
 		case "p":
 			updateType = UpdateType.RENAME_ALL_POINTS;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
 				int points = 0;
-				for (Point point : dbHandler.getPoints()) {
+				for (Point point : playerData.getPoints()) {
 					if (point.getCategory().equals(name)) {
 						points = point.getCount();
 						break;
 					}
 				}
-				dbHandler.removePointsCategory(name);
-				dbHandler.addPoints(rename, points);
+				playerData.removePointsCategory(name);
+				playerData.addPoints(rename, points);
 			}
 			break;
 		case "objectives":
@@ -1010,10 +1010,10 @@ public class QuestCommand implements CommandExecutor {
 			BetonQuest.getInstance().getObjective(rename).setLabel(rename);
 			// renaming an active objective probably isn't needed
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
 				boolean found = false;
 				String data = null;
-				for (Objective obj : dbHandler.getObjectives()) {
+				for (Objective obj : playerData.getObjectives()) {
 					if (obj.getLabel().equals(name)) {
 						found = true;
 						data = obj.getData(PlayerConverter.getID(player));
@@ -1025,7 +1025,7 @@ public class QuestCommand implements CommandExecutor {
 					continue;
 				if (data == null)
 					data = "";
-				dbHandler.deleteObjective(name);
+				playerData.deleteObjective(name);
 				BetonQuest.resumeObjective(PlayerConverter.getID(player), rename, data);
 			}
 			break;
@@ -1037,7 +1037,7 @@ public class QuestCommand implements CommandExecutor {
 		case "e":
 			updateType = UpdateType.RENAME_ALL_ENTRIES;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				Journal journal = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player)).getJournal();
+				Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
 				Pointer p = null;
 				for (Pointer pointer : journal.getPointers()) {
 					if (pointer.getPointer().equals(name)) {
@@ -1079,8 +1079,8 @@ public class QuestCommand implements CommandExecutor {
 		case "t":
 			updateType = UpdateType.REMOVE_ALL_TAGS;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
-				dbHandler.removeTag(name);
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+				playerData.removeTag(name);
 			}
 			break;
 		case "points":
@@ -1088,8 +1088,8 @@ public class QuestCommand implements CommandExecutor {
 		case "p":
 			updateType = UpdateType.REMOVE_ALL_POINTS;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
-				dbHandler.removePointsCategory(name);
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+				playerData.removePointsCategory(name);
 			}
 			break;
 		case "objectives":
@@ -1097,8 +1097,8 @@ public class QuestCommand implements CommandExecutor {
 		case "o":
 			updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player));
-				dbHandler.deleteObjective(name);
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+				playerData.deleteObjective(name);
 			}
 			break;
 		case "journals":
@@ -1109,7 +1109,7 @@ public class QuestCommand implements CommandExecutor {
 		case "e":
 			updateType = UpdateType.REMOVE_ALL_ENTRIES;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				Journal journal = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player)).getJournal();
+				Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
 				journal.removePointer(name);
 				journal.update();
 			}
@@ -1146,8 +1146,8 @@ public class QuestCommand implements CommandExecutor {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			String playerID = PlayerConverter.getID(player);
 			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
-			DatabaseHandler dbHandler = instance.getDBHandler(playerID);
-			Journal journal = dbHandler.getJournal();
+			PlayerData playerData = instance.getPlayerData(playerID);
+			Journal journal = playerData.getJournal();
 			journal.update();
 		}
 		// initialize new debugger
@@ -1180,7 +1180,7 @@ public class QuestCommand implements CommandExecutor {
 		// display them
 		sender.sendMessage("§e----- §aBetonQuest §e-----");
 		if (sender instanceof Player) {
-			String lang = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID((Player) sender)).getLanguage();
+			String lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
 			for (String command : cmds.keySet()) {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
 						"tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "

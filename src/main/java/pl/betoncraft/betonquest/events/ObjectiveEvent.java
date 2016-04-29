@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -69,11 +69,11 @@ public class ObjectiveEvent extends QuestEvent {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+					PlayerData playerData = new PlayerData(playerID);
 					if (action.equals("start")) {
-						dbHandler.addNewRawObjective(objective);
+						playerData.addNewRawObjective(objective);
 					} else if (action.equals("delete")) {
-						dbHandler.removeRawObjective(objective);
+						playerData.removeRawObjective(objective);
 					} else {
 						Debug.error("Cannot complete objective for offline player!");
 					}

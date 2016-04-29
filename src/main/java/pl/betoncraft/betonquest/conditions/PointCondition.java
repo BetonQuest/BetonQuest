@@ -51,7 +51,7 @@ public class PointCondition extends Condition {
 	@Override
 	public boolean check(String playerID) {
 		int c = count.getInt(playerID);
-		for (Point point : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
+		for (Point point : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
 			if (point.getCategory().equalsIgnoreCase(category)) {
 				return point.getCount() >= c;
 			}

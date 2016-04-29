@@ -84,7 +84,7 @@ public class Journal {
 	 */
 	public void addPointer(Pointer pointer) {
 		pointers.add(pointer);
-		BetonQuest.getInstance().getDBHandler(playerID).addPointer(pointer);
+		BetonQuest.getInstance().getPlayerData(playerID).addPointer(pointer);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Journal {
 		for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
 			Pointer pointer = (Pointer) iterator.next();
 			if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
-				BetonQuest.getInstance().getDBHandler(playerID).removePointer(pointer);
+				BetonQuest.getInstance().getPlayerData(playerID).removePointer(pointer);
 				iterator.remove();
 				break;
 			}
@@ -336,7 +336,7 @@ public class Journal {
 	 *            ID of the player
 	 */
 	public void update() {
-		lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+		lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		if (hasJournal(playerID)) {
 			int slot = removeFromInv();
 			addToInv(slot);
@@ -375,7 +375,7 @@ public class Journal {
 			return false;
 		}
 		// get language
-		String playerLang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+		String playerLang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		// check all properties of the item and return the result
 		return (item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
 				&& ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))

@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -54,28 +54,28 @@ public class TagEvent extends QuestEvent {
 	@Override
 	public void run(final String playerID) {
 		if (PlayerConverter.getPlayer(playerID) != null) {
-			DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+			PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
 			if (add) {
 				for (String tag : tags) {
-					dbHandler.addTag(tag);
+					playerData.addTag(tag);
 				}
 			} else {
 				for (String tag : tags) {
-					dbHandler.removeTag(tag);
+					playerData.removeTag(tag);
 				}
 			}
 		} else {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+					PlayerData playerData = new PlayerData(playerID);
 					if (add) {
 						for (String tag : tags) {
-							dbHandler.addTag(tag);
+							playerData.addTag(tag);
 						}
 					} else {
 						for (String tag : tags) {
-							dbHandler.removeTag(tag);
+							playerData.removeTag(tag);
 						}
 					}
 				}

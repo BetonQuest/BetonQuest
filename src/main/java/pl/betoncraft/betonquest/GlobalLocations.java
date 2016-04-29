@@ -94,7 +94,7 @@ public class GlobalLocations extends BukkitRunnable {
 								location.getLocation().getY(), location.getLocation().getZ())) <= location.getDistance()
 										* location.getDistance()) {
 					// check if player has already triggered this location
-					if (BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
+					if (BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player))
 							.hasTag(location.getPack() + ".global_" + location.getLabel())) {
 						continue locations;
 					}
@@ -109,7 +109,7 @@ public class GlobalLocations extends BukkitRunnable {
 						}
 					}
 					// set the tag, player has triggered this location
-					BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
+					BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player))
 							.addTag(location.getPack() + ".global_" + location.getLabel());
 					// fire all events for the location
 					for (String event : location.getEvents()) {

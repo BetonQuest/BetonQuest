@@ -85,7 +85,7 @@ import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.database.Saver;
@@ -170,7 +170,7 @@ public final class BetonQuest extends JavaPlugin {
 	private Compatibility compatibility;
 	private Updater updater;
 
-	private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
 	private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
@@ -374,12 +374,12 @@ public final class BetonQuest extends JavaPlugin {
 				// load data for all online players
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String playerID = PlayerConverter.getID(player);
-					DatabaseHandler dbh = new DatabaseHandler(playerID);
-					dbHandlers.put(playerID, dbh);
-					dbh.startObjectives();
-					dbh.getJournal().update();
-					if (dbh.getConversation() != null)
-						new ConversationResumer(playerID, dbh.getConversation());
+					PlayerData playerData = new PlayerData(playerID);
+					playerDataMap.put(playerID, playerData);
+					playerData.startObjectives();
+					playerData.getJournal().update();
+					if (playerData.getConversation() != null)
+						new ConversationResumer(playerID, playerData.getConversation());
 				}
 			}
 		});
@@ -590,8 +590,8 @@ public final class BetonQuest extends JavaPlugin {
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
 				+ Config.getPackageNames().size() + " packages.");
 		// start those freshly loaded objectives for all players
-		for (DatabaseHandler dbHandler : dbHandlers.values()) {
-			dbHandler.startObjectives();
+		for (PlayerData playerData : playerDataMap.values()) {
+			playerData.startObjectives();
 		}
 	}
 
@@ -652,45 +652,45 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	/**
-	 * Stores the DatabaseHandler in a map, so it can be retrieved using
-	 * getDBHandler(String playerID)
+	 * Stores the PlayerData in a map, so it can be retrieved using
+	 * getPlayerData(String playerID)
 	 * 
 	 * @param playerID
 	 *            ID of the player
-	 * @param handler
-	 *            DatabaseHandler object to store
+	 * @param playerData
+	 *            PlayerData object to store
 	 */
-	public void putDBHandler(String playerID, DatabaseHandler handler) {
+	public void putPlayerData(String playerID, PlayerData playerData) {
 		Debug.info("Inserting data for " + PlayerConverter.getName(playerID));
-		dbHandlers.put(playerID, handler);
+		playerDataMap.put(playerID, playerData);
 	}
 
 	/**
-	 * Retrieves DatabaseHandler object for specified player. If the handler
-	 * does not exist but the player is online, it will create new handler on
+	 * Retrieves PlayerData object for specified player. If the playerData
+	 * does not exist but the player is online, it will create new playerData on
 	 * the main thread and put it into the map.
 	 * 
 	 * @param playerID
 	 *            ID of the player
-	 * @return DatabaseHandler object for the player
+	 * @return PlayerData object for the player
 	 */
-	public DatabaseHandler getDBHandler(String playerID) {
-		DatabaseHandler dbh = dbHandlers.get(playerID);
-		if (dbh == null && PlayerConverter.getPlayer(playerID) != null) {
-			dbh = new DatabaseHandler(playerID);
-			putDBHandler(playerID, dbh);
+	public PlayerData getPlayerData(String playerID) {
+		PlayerData playerData = playerDataMap.get(playerID);
+		if (playerData == null && PlayerConverter.getPlayer(playerID) != null) {
+			playerData = new PlayerData(playerID);
+			putPlayerData(playerID, playerData);
 		}
-		return dbh;
+		return playerData;
 	}
 
 	/**
-	 * Removes the database handler from the map
+	 * Removes the database playerData from the map
 	 * 
 	 * @param playerID
-	 *            ID of the player whose handler is to be removed
+	 *            ID of the player whose playerData is to be removed
 	 */
-	public void removeDBHandler(String playerID) {
-		dbHandlers.remove(playerID);
+	public void removePlayerData(String playerID) {
+		playerDataMap.remove(playerID);
 	}
 
 	/**

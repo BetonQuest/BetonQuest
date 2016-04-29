@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -472,10 +472,10 @@ public class Config {
 	public static void sendMessage(String playerID, String messageName, String[] variables, String soundName,
 			String prefixName, String[] prefixVariables) {
 		Player player = PlayerConverter.getPlayer(playerID);
-		DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-		if (player == null || dbHandler == null)
+		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+		if (player == null || playerData == null)
 			return;
-		String language = dbHandler.getLanguage();
+		String language = playerData.getLanguage();
 		String message = getMessage(language, messageName, variables);
 		if (message == null || message.length() == 0)
 			return;

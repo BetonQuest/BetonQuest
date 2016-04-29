@@ -46,7 +46,7 @@ public class JournalCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) {
-		for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID).getJournal().getPointers()) {
+		for (Pointer pointer : BetonQuest.getInstance().getPlayerData(playerID).getJournal().getPointers()) {
 			if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
 				return true;
 			}

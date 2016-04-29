@@ -46,7 +46,7 @@ public class JournalCommand implements CommandExecutor {
 			// command sender must be a player, console can't have journal
 			if (sender instanceof Player) {
 				// giving the player his journal
-				BetonQuest.getInstance().getDBHandler(PlayerConverter.getID((Player) sender)).getJournal()
+				BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal()
 						.addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
 			}
 			return true;

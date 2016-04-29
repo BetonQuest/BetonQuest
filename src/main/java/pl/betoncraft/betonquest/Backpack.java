@@ -39,7 +39,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.QuestCanceler;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -66,7 +66,7 @@ public class Backpack implements Listener {
 	/**
 	 * Database handler for the player
 	 */
-	private final DatabaseHandler dbHandler;
+	private final PlayerData playerData;
 	/**
 	 * The inventory created by this object
 	 */
@@ -96,10 +96,10 @@ public class Backpack implements Listener {
 	public Backpack(String playerID, DisplayType type) {
 		// fill required fields
 		this.playerID = playerID;
-		lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+		lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		player = PlayerConverter.getPlayer(playerID);
 		instance = BetonQuest.getInstance();
-		dbHandler = instance.getDBHandler(playerID);
+		playerData = instance.getPlayerData(playerID);
 		backpack = this;
 		// create display
 		switch (type) {
@@ -174,7 +174,7 @@ public class Backpack implements Listener {
 		 */
 		public Page(int page) {
 			this.page = page;
-			List<ItemStack> backpackItems = dbHandler.getBackpack();
+			List<ItemStack> backpackItems = playerData.getBackpack();
 			// amount of pages, considering that the first contains 44
 			// items and all others 45
 			int pages = (backpackItems.size() < 45 ? 1
@@ -188,7 +188,7 @@ public class Backpack implements Listener {
 			// insert the journal if the player doesn't have it in his inventory
 			if (page == 0) {
 				if (!Journal.hasJournal(playerID)) {
-					content[0] = dbHandler.getJournal().getAsItem();
+					content[0] = playerData.getJournal().getAsItem();
 				} else {
 					content[0] = null;
 				}
@@ -284,7 +284,7 @@ public class Backpack implements Listener {
 		void click(int slot, int playerSlot, ClickType click) {
 			if (page == 0 && slot == 0) {
 				// first page on first slot should contain the journal
-				dbHandler.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
+				playerData.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
 				display = new Page(page);
 			} else if (slot < 45) {
 				// raw slot lower than 45 is a quest item
@@ -292,8 +292,8 @@ public class Backpack implements Listener {
 				int id = page * 45 + slot - 1;
 				ItemStack item = null;
 				// get the item if it exists
-				if (dbHandler.getBackpack().size() > id) {
-					item = dbHandler.getBackpack().get(id);
+				if (playerData.getBackpack().size() > id) {
+					item = playerData.getBackpack().get(id);
 				}
 				if (item != null) {
 					// if the item exists, put it in player's inventory
@@ -323,9 +323,9 @@ public class Backpack implements Listener {
 						}
 						item.setAmount(backpackAmount - getAmount + leftAmount);
 						if (backpackAmount - getAmount + leftAmount == 0) {
-							List<ItemStack> backpackItems = dbHandler.getBackpack();
+							List<ItemStack> backpackItems = playerData.getBackpack();
 							backpackItems.remove(id);
-							dbHandler.setBackpack(backpackItems);
+							playerData.setBackpack(backpackItems);
 						}
 					}
 					display = new Page(page);
@@ -351,7 +351,7 @@ public class Backpack implements Listener {
 						}
 						// add item to backpack and remove it from player's
 						// inventory
-						dbHandler.addItem(item.clone(), amount);
+						playerData.addItem(item.clone(), amount);
 						if (item.getAmount() - amount == 0) {
 							player.getInventory().setItem(playerSlot, null);
 						} else {
@@ -361,14 +361,14 @@ public class Backpack implements Listener {
 					} else if (Journal.isJournal(playerID, item)) {
 						// if it's a journal, remove it so it appears in
 						// backpack again
-						dbHandler.getJournal().removeFromInv();
+						playerData.getJournal().removeFromInv();
 					}
 					display = new Page(page);
 				}
 			} else if (slot == 48 && page > 0) {
 				// if it was a previous/next button turn the pages
 				display = new Page(page - 1);
-			} else if (slot == 50 && dbHandler.getBackpack().size() > (page + 1) * 45 - 1) {
+			} else if (slot == 50 && playerData.getBackpack().size() > (page + 1) * 45 - 1) {
 				display = new Page(page + 1);
 			} else if (slot == 45) {
 				// slot 45 is a slot with quest cancelers
@@ -472,7 +472,7 @@ public class Backpack implements Listener {
 							continue;
 						}
 						// check if the player has special compass tag
-						if (!dbHandler.hasTag(packName + ".compass-" + key)) {
+						if (!playerData.hasTag(packName + ".compass-" + key)) {
 							continue;
 						}
 						// if the tag is present, continue

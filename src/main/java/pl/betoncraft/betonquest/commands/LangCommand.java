@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -64,13 +64,13 @@ public class LangCommand implements CommandExecutor {
 			if (sender instanceof Player) {
 				String lang = args[0];
 				String playerID = PlayerConverter.getID((Player) sender);
-				DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-				Journal journal = dbHandler.getJournal();
+				PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+				Journal journal = playerData.getJournal();
 				int slot = -1;
 				if (Journal.hasJournal(playerID)) {
 					slot = journal.removeFromInv();
 				}
-				dbHandler.setLanguage(lang);
+				playerData.setLanguage(lang);
 				journal.generateTexts(lang);
 				if (slot > 0)
 					journal.addToInv(slot);

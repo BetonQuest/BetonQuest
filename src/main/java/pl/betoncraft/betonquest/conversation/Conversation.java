@@ -109,7 +109,7 @@ public class Conversation implements Listener {
 		this.playerID = playerID;
 		this.player = PlayerConverter.getPlayer(playerID);
 		this.packName = packName;
-		this.language = plugin.getDBHandler(playerID).getLanguage();
+		this.language = plugin.getPlayerData(playerID).getLanguage();
 		this.location = location;
 		this.convID = packName + "." + conversationID;
 		this.data = plugin.getConversation(convID);

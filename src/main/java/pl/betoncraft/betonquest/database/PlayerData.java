@@ -44,11 +44,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Represents a handler for all player-related data, which can load and save it.
+ * Represents an object storing all player-related data, which can load and save it.
  * 
  * @author Jakub Sapalski
  */
-public class DatabaseHandler {
+public class PlayerData {
 
 	private Saver saver = BetonQuest.getInstance().getSaver();
 
@@ -66,12 +66,12 @@ public class DatabaseHandler {
 	private String lang; // the player's language
 
 	/**
-	 * Creates new DatabaseHandler for the player represented by playerID.
+	 * Creates new PlayerData for the player represented by playerID.
 	 * 
 	 * @param playerID
 	 *            - ID of the player
 	 */
-	public DatabaseHandler(String playerID) {
+	public PlayerData(String playerID) {
 		this.playerID = playerID;
 		// load data from the database
 		loadAllPlayerData();
@@ -281,7 +281,7 @@ public class DatabaseHandler {
 	}
 
 	/**
-	 * Purges all player's data from the database and from this handler.
+	 * Purges all player's data from the database and from this object.
 	 */
 	public void purgePlayer() {
 		for (Objective obj : getObjectives()) {

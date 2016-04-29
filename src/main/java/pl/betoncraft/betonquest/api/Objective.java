@@ -160,7 +160,7 @@ public abstract class Objective {
 	public final void completeObjective(final String playerID) {
 		// remove the objective from player's list
 		if (!persistent) {
-			BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(label);
+			BetonQuest.getInstance().getPlayerData(playerID).deleteObjective(label);
 		}
 		Debug.info("Objective \"" + label + "\" has been completed for player " + PlayerConverter.getName(playerID)
 				+ ", firing events.");
@@ -199,7 +199,7 @@ public abstract class Objective {
 	public final void newPlayer(String playerID) {
 		String def = getDefaultDataInstruction();
 		addPlayer(playerID, def);
-		BetonQuest.getInstance().getDBHandler(playerID).addObjToDB(label, def);
+		BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(label, def);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public abstract class Objective {
 	/**
 	 * Removes the objective from the player. It does not complete it nor update
 	 * the database. In order to complete it, use completeObjective() instead.
-	 * In order to remove it from database use DatabaseHandler.deleteObjective()
+	 * In order to remove it from database use PlayerData.deleteObjective()
 	 * instead.
 	 * 
 	 * @param playerID
@@ -305,7 +305,7 @@ public abstract class Objective {
 	public void close() {
 		stop();
 		for (String playerID : dataMap.keySet()) {
-			BetonQuest.getInstance().getDBHandler(playerID).addRawObjective(label, dataMap.get(playerID).toString());
+			BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(label, dataMap.get(playerID).toString());
 		}
 	}
 

@@ -86,7 +86,7 @@ public class DelayObjective extends Objective {
 	@Override
 	public String getProperty(String name, String playerID) {
 		if (name.equalsIgnoreCase("left")) {
-			String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+			String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 			String daysWord = Config.getMessage(lang, "days");
 			String hoursWord = Config.getMessage(lang, "hours");
 			String minutesWord = Config.getMessage(lang, "minutes");

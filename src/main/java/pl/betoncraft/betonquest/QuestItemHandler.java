@@ -70,7 +70,7 @@ public class QuestItemHandler implements Listener {
 		if (Journal.isJournal(playerID, item)) {
 			event.getItemDrop().remove();
 		} else if (Utils.isQuestItem(item)) {
-			BetonQuest.getInstance().getDBHandler(playerID).addItem(item.clone(), item.getAmount());
+			BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
 			event.getItemDrop().remove();
 		}
 	}
@@ -136,7 +136,7 @@ public class QuestItemHandler implements Listener {
 		}
 		String playerID = PlayerConverter.getID((Player) event.getEntity());
 		// check if there is data for this player; NPCs don't have data
-		if (BetonQuest.getInstance().getDBHandler(playerID) == null)
+		if (BetonQuest.getInstance().getPlayerData(playerID) == null)
 			return;
 		// this prevents the journal from dropping on death by removing it from
 		// the list of drops
@@ -149,7 +149,7 @@ public class QuestItemHandler implements Listener {
 			}
 			// remove all quest items and add them to backpack
 			if (Utils.isQuestItem(stack)) {
-				BetonQuest.getInstance().getDBHandler(playerID).addItem(stack.clone(), stack.getAmount());
+				BetonQuest.getInstance().getPlayerData(playerID).addItem(stack.clone(), stack.getAmount());
 				litr.remove();
 			}
 		}

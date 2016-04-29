@@ -56,7 +56,7 @@ public class PasswordObjective extends Objective implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		final String playerID = PlayerConverter.getID(event.getPlayer());
 		if (containsPlayer(playerID)) {
-			String prefix = Config.getMessage(BetonQuest.getInstance().getDBHandler(playerID).getLanguage(),
+			String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
 					"password");
 			if (event.getMessage().startsWith(prefix)) {
 				event.setCancelled(true);

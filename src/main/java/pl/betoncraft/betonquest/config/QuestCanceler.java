@@ -30,7 +30,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.QuestItem;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -161,15 +161,15 @@ public class QuestCanceler {
 	 */
 	public void cancel(String playerID) {
 		Debug.info("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
-		DatabaseHandler handler = BetonQuest.getInstance().getDBHandler(playerID);
+		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
 		// remove tags, points, objectives and journals
 		if (tags != null) {
 			for (String tag : tags) {
 				Debug.info("  Removing tag " + tag);
 				if (!tag.contains(".")) {
-					handler.removeTag(packName + "." + tag);
+					playerData.removeTag(packName + "." + tag);
 				} else {
-					handler.removeTag(tag);
+					playerData.removeTag(tag);
 				}
 			}
 		}
@@ -177,9 +177,9 @@ public class QuestCanceler {
 			for (String point : points) {
 				Debug.info("  Removing points " + point);
 				if (!point.contains(".")) {
-					handler.removePointsCategory(packName + "." + point);
+					playerData.removePointsCategory(packName + "." + point);
 				} else {
-					handler.removePointsCategory(point);
+					playerData.removePointsCategory(point);
 				}
 			}
 		}
@@ -187,14 +187,14 @@ public class QuestCanceler {
 			for (String obj : objectives) {
 				Debug.info("  Removing objective " + obj);
 				if (!obj.contains(".")) {
-					handler.deleteObjective(packName + "." + obj);
+					playerData.deleteObjective(packName + "." + obj);
 				} else {
-					handler.deleteObjective(obj);
+					playerData.deleteObjective(obj);
 				}
 			}
 		}
 		if (journal != null) {
-			Journal j = handler.getJournal();
+			Journal j = playerData.getJournal();
 			for (String entry : journal) {
 				Debug.info("  Removing entry " + entry);
 				if (entry.contains(".")) {
@@ -235,7 +235,7 @@ public class QuestCanceler {
 	 * @return the name of the quest canceler
 	 */
 	public String getName(String playerID) {
-		String questName = name.get(BetonQuest.getInstance().getDBHandler(playerID).getLanguage());
+		String questName = name.get(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
 		if (questName == null)
 			questName = name.get(Config.getLanguage());
 		if (questName == null)

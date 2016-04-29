@@ -40,7 +40,7 @@ public class CancelEvent extends QuestEvent {
 
 	@Override
 	public void run(String playerID) {
-		BetonQuest.getInstance().getDBHandler(playerID).cancelQuest(canceler);
+		BetonQuest.getInstance().getPlayerData(playerID).cancelQuest(canceler);
 	}
 
 }

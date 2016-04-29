@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -65,26 +65,26 @@ public class PointEvent extends QuestEvent {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-					addPoints(playerID, dbHandler);
+					PlayerData playerData = new PlayerData(playerID);
+					addPoints(playerID, playerData);
 				}
 			}.runTaskAsynchronously(BetonQuest.getInstance());
 		} else {
-			DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-			addPoints(playerID, dbHandler);
+			PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+			addPoints(playerID, playerData);
 		}
 	}
 
-	private void addPoints(String playerID, DatabaseHandler dbHandler) {
+	private void addPoints(String playerID, PlayerData playerData) {
 		if (multi) {
-			for (Point p : dbHandler.getPoints()) {
+			for (Point p : playerData.getPoints()) {
 				if (p.getCategory().equalsIgnoreCase(category)) {
-					dbHandler.addPoints(category,
+					playerData.addPoints(category,
 							(int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
 				}
 			}
 		} else {
-			dbHandler.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
+			playerData.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
 		}
 	}
 }

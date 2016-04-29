@@ -60,7 +60,7 @@ public class PointVariable extends Variable {
 	@Override
 	public String getValue(String playerID) {
 		Point point = null;
-		for (Point p : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
+		for (Point p : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
 			if (p.getCategory().equalsIgnoreCase(category)) {
 				point = p;
 				break;

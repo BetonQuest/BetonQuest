@@ -77,7 +77,7 @@ public class ItemAmountVariable extends Variable {
 			}
 			playersAmount += item.getAmount();
 		}
-		List<ItemStack> backpackItems = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
+		List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
 		for (ItemStack item : backpackItems) {
 			if (item == null) {
 				continue;

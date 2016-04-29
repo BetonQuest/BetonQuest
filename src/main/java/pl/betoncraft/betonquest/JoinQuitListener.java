@@ -31,7 +31,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
-import pl.betoncraft.betonquest.database.DatabaseHandler;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -62,42 +62,42 @@ public class JoinQuitListener implements Listener {
 		}
 		String playerID = event.getUniqueId().toString();
 		BetonQuest plugin = BetonQuest.getInstance();
-		plugin.putDBHandler(playerID, new DatabaseHandler(playerID));
+		plugin.putPlayerData(playerID, new PlayerData(playerID));
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		String playerID = PlayerConverter.getID(event.getPlayer());
 		// start objectives when the data is loaded
-		DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
 		// if the data still isn't loaded, force loading (this happens sometimes
 		// probably because AsyncPlayerPreLoginEvent does not fire)
-		if (dbHandler == null) {
-			dbHandler = new DatabaseHandler(playerID);
-			BetonQuest.getInstance().putDBHandler(playerID, dbHandler);
+		if (playerData == null) {
+			playerData = new PlayerData(playerID);
+			BetonQuest.getInstance().putPlayerData(playerID, playerData);
 			Debug.error("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
 		}
-		dbHandler.startObjectives();
+		playerData.startObjectives();
 		// display changelog message to the admins
 		if (event.getPlayer().hasPermission("betonquest.admin")
 				&& new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {
 			Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "changelog", null, "update");
 		}
 		if (Journal.hasJournal(playerID)) {
-			dbHandler.getJournal().update();
+			playerData.getJournal().update();
 		}
-		if (dbHandler.getConversation() != null) {
-			new ConversationResumer(playerID, dbHandler.getConversation());
+		if (playerData.getConversation() != null) {
+			new ConversationResumer(playerID, playerData.getConversation());
 		}
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		String playerID = PlayerConverter.getID(event.getPlayer());
-		DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-		for (Objective objective : dbHandler.getObjectives()) {
+		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+		for (Objective objective : playerData.getObjectives()) {
 			objective.removePlayer(playerID);
 		}
-		BetonQuest.getInstance().removeDBHandler(playerID);
+		BetonQuest.getInstance().removePlayerData(playerID);
 	}
 }

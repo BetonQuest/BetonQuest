@@ -102,7 +102,7 @@ public class GiveEvent extends QuestEvent {
 				for (Integer leftNumber : left.keySet()) {
 					ItemStack itemStack = left.get(leftNumber);
 					if (Utils.isQuestItem(itemStack)) {
-						BetonQuest.getInstance().getDBHandler(playerID).addItem(itemStack, stackSize);
+						BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
 					} else {
 						player.getWorld().dropItem(player.getLocation(), itemStack);
 					}

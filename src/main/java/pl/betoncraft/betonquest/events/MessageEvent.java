@@ -79,7 +79,7 @@ public class MessageEvent extends QuestEvent {
 
 	@Override
 	public void run(String playerID) {
-		String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+		String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		String message = messages.get(lang);
 		if (message == null) {
 			message = messages.get(Config.getLanguage());

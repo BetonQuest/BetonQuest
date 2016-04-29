@@ -35,7 +35,7 @@ public class GiveJournalEvent extends QuestEvent {
 
 	@Override
 	public void run(String playerID) {
-		BetonQuest.getInstance().getDBHandler(playerID).getJournal()
+		BetonQuest.getInstance().getPlayerData(playerID).getJournal()
 				.addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
 	}
 

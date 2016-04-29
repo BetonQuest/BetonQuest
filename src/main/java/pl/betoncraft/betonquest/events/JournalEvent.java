@@ -53,7 +53,7 @@ public class JournalEvent extends QuestEvent {
 
 	@Override
 	public void run(String playerID) {
-		Journal journal = BetonQuest.getInstance().getDBHandler(playerID).getJournal();
+		Journal journal = BetonQuest.getInstance().getPlayerData(playerID).getJournal();
 		if (add) {
 			journal.addPointer(new Pointer(name, new Date().getTime()));
 			Config.sendMessage(playerID, "new_journal_entry", null, "journal");
