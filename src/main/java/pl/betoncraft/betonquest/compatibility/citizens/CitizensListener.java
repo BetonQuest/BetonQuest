@@ -23,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -61,13 +60,7 @@ public class CitizensListener implements Listener {
             final String convName = parts[1];
             final String packName = parts[0];
             event.setCancelled(true);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    new CitizensConversation(playerID, packName,
-                            convName, event.getNPC().getEntity().getLocation(), event.getNPC());
-                }
-            }.runTaskAsynchronously(BetonQuest.getInstance());
+            new CitizensConversation(playerID, packName, convName, event.getNPC().getEntity().getLocation(), event.getNPC());
         }
     }
 }

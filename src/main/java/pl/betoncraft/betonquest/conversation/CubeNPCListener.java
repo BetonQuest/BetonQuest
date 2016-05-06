@@ -27,7 +27,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -116,13 +115,8 @@ public class CubeNPCListener implements Listener {
                 final String convName = parts[1];
                 final String packName = parts[0];
                 event.setCancelled(true);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        new Conversation(PlayerConverter.getID(event.getPlayer()), packName,
+                new Conversation(PlayerConverter.getID(event.getPlayer()), packName,
                                 convName, event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
             } else {
                 Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
                 return;
