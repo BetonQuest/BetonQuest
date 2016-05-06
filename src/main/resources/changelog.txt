@@ -1,4 +1,4 @@
-﻿v1.8.3-dev
+﻿v1.8.3
 Fixes:
     * Events are no longer run in async thread when completing "password" objective
     * Replaced stacktrace with error message when objective is incorrect in "objective" event
