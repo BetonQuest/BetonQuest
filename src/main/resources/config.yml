@@ -1,4 +1,4 @@
-version: v38
+version: v39
 mysql:
   host: ''
   port: ''
@@ -7,7 +7,10 @@ mysql:
   base: ''
   prefix: betonquest_
 language: en
-autoupdate: 'true'
+update:
+  enabled: true
+  download_bugfixes: true
+  notify_new_release: true
 default_journal_slot: '-1'
 max_npc_distance: '5'
 default_conversation_IO: simple

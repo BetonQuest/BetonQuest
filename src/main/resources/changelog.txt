@@ -1,4 +1,23 @@
-﻿v1.8.2
+﻿v1.8.3-dev
+Fixes:
+    * Events are no longer run in async thread when completing "password" objective
+    * Replaced stacktrace with error message when objective is incorrect in "objective" event
+    * Made color codes work with "one_entry_per_page" setting enabled
+    * Fixed a bug where taken backpack items were not removed from the database
+    * Quest items can now be equipped
+    * "die" objective now correctly handles damage done to the player
+    * Fixed error when conversation is started without any possible options
+    * Fixed error when killing NPCs with equipment
+    * Fixed problems with relogging while in conversations with "stop" option enabled
+    * Fixed error when loading corrupted item from the database
+Changes:
+    * Updater is now based on GitHub Releases, no longer downloads major updates automatically,
+      it is more configurable and can also download development versions with "/q update --dev"
+Additions:
+    * Added console message about the cause of "/q give" errors (tells you what is wrong with item
+      instruction string)
+
+v1.8.2
 Fixes:
     * Fixed NPE when killing a mob without any "mobkill" objectives
 

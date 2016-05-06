@@ -143,7 +143,6 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Metrics;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
-import pl.betoncraft.betonquest.utils.Updater.UpdateResult;
 import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.variables.ItemAmountVariable;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
@@ -169,6 +168,7 @@ public final class BetonQuest extends JavaPlugin {
     private Saver saver;
     private BukkitRunnable keeper;
     private Compatibility compatibility;
+    private Updater updater;
 
     private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
@@ -420,11 +420,7 @@ public final class BetonQuest extends JavaPlugin {
         }
 
         // updater
-        if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
-            Debug.broadcast("AutoUpdater enabled!");
-        } else {
-            Debug.broadcast("AutoUpdater disabled!");
-        }
+        updater = new Updater(this.getFile());
 
         // done
         Debug.broadcast("BetonQuest succesfully enabled!");
@@ -630,15 +626,7 @@ public final class BetonQuest extends JavaPlugin {
         // cancel static events (they are registered outside of Bukkit so it won't happen automatically)
         StaticEvents.stop();
         // update if needed
-        if (getConfig().getString("autoupdate").equalsIgnoreCase("true")) {
-            Updater updater = new Updater(this, 86448, this.getFile(),
-                    Updater.UpdateType.DEFAULT, false);
-            if (updater.getResult().equals(UpdateResult.SUCCESS)) {
-                Debug.broadcast("Found " + updater.getLatestName() + " update "
-                        + "on DBO and downloaded it! Plugin will be automatically"
-                        + " updated on next restart.");
-            }
-        }
+        updater.updateBugfixes();
         // done
         Debug.broadcast("BetonQuest succesfully disabled!");
     }
@@ -659,6 +647,10 @@ public final class BetonQuest extends JavaPlugin {
      */
     public Database getDB() {
         return database;
+    }
+    
+    public Updater getUpdater() {
+        return updater;
     }
 
     /**

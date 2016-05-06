@@ -84,7 +84,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v38";
+    private final String destination = "v39";
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
@@ -192,6 +192,18 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+    
+    @SuppressWarnings("unused")
+    private void update_from_v38() {
+        boolean enabled = config.getString("autoupdate").equalsIgnoreCase("true");
+        config.set("autoupdate", null);
+        config.set("update.enabled", enabled);
+        config.set("update.download_bugfixes", true);
+        config.set("update.notify_new_release", true);
+        Debug.broadcast("Modified autoupdater");
+        config.set("version", "v39");
+        instance.saveConfig();
     }
     
     @SuppressWarnings("unused")

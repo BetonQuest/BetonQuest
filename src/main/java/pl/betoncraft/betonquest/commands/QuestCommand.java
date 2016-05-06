@@ -52,6 +52,7 @@ import pl.betoncraft.betonquest.database.DatabaseHandler;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
@@ -206,6 +207,22 @@ public class QuestCommand implements CommandExecutor {
                             purgePlayer(finalSender7, finalArgs7);
                         }
                     }.runTaskAsynchronously(instance);
+                    break;
+                case "update":
+                    Updater upd = BetonQuest.getInstance().getUpdater();
+                    if (args.length > 1 && args[1].equalsIgnoreCase("--dev")) {
+                        if (upd.updateDevBuild(sender)) {
+                            sender.sendMessage("§2Downloading development version " + upd.getRemoteDevBuild());
+                        } else {
+                            sender.sendMessage("§cThere is no new development version available.");
+                        }
+                    } else {
+                        if (upd.updateNewRelease(sender)) {
+                            sender.sendMessage("§2Downloading new release " + upd.getRemoteRelease());
+                        } else {
+                            sender.sendMessage("§cThere is no new release available.");
+                        }
+                    }
                     break;
                 case "reload":
                     // just reloading
@@ -1111,6 +1128,8 @@ public class QuestCommand implements CommandExecutor {
         Debug.info("Reloading configuration");
         new Config();
         defaultPack = Config.getString("config.default_package");
+        // reload updater settings
+        BetonQuest.getInstance().getUpdater().reload();
         // load new static events
         new StaticEvents();
         // stop current global locations listener

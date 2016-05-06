@@ -7,3 +7,4 @@
 *.iml
 /resources/
 /doc/
+/dependency-reduced-pom.xml
