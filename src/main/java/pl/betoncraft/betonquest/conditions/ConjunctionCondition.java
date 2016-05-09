@@ -28,31 +28,30 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class ConjunctionCondition extends Condition {
 
-    private final String[] conditions;
+	private final String[] conditions;
 
-    public ConjunctionCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Conditions not defined");
-        }
-        String[] tempConditions = parts[1].split(",");
-        for (int i = 0; i < tempConditions.length; i++) {
-            if (!tempConditions[i].contains(".")) {
-                tempConditions[i] = packName + "." + tempConditions[i];
-            }
-        }
-        conditions = tempConditions;
-    }
+	public ConjunctionCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Conditions not defined");
+		}
+		String[] tempConditions = parts[1].split(",");
+		for (int i = 0; i < tempConditions.length; i++) {
+			if (!tempConditions[i].contains(".")) {
+				tempConditions[i] = packName + "." + tempConditions[i];
+			}
+		}
+		conditions = tempConditions;
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        for (String condition : conditions) {
-            if (!BetonQuest.condition(playerID, condition)) {
-                return false;
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean check(String playerID) {
+		for (String condition : conditions) {
+			if (!BetonQuest.condition(playerID, condition)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

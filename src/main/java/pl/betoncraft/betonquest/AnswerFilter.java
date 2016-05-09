@@ -30,68 +30,64 @@ import org.apache.logging.log4j.message.Message;
  * @author Jakub Sapalski
  */
 public class AnswerFilter implements Filter {
-    
-    public AnswerFilter() {}
 
-    @Override
-    public Result filter(LogEvent record) {
-        if (record != null && record.getMessage() != null
-                && record.getMessage().getFormattedMessage() != null &&
-                record.getMessage().getFormattedMessage()
-                .contains(" issued server command: /betonquestanswer ")) {
-            return Result.DENY;
-        }
-        return Result.NEUTRAL;
-    }
+	public AnswerFilter() {
+	}
 
-    @Override
-    public State getState() {
-        return null;
-    }
+	@Override
+	public Result filter(LogEvent record) {
+		if (record != null && record.getMessage() != null && record.getMessage().getFormattedMessage() != null
+				&& record.getMessage().getFormattedMessage().contains(" issued server command: /betonquestanswer ")) {
+			return Result.DENY;
+		}
+		return Result.NEUTRAL;
+	}
 
-    @Override
-    public boolean isStarted() {
-        return false;
-    }
+	@Override
+	public State getState() {
+		return null;
+	}
 
-    @Override
-    public boolean isStopped() {
-        return false;
-    }
+	@Override
+	public boolean isStarted() {
+		return false;
+	}
 
-    @Override
-    public void start() {
-    }
+	@Override
+	public boolean isStopped() {
+		return false;
+	}
 
-    @Override
-    public void stop() {
-    }
+	@Override
+	public void start() {
+	}
 
-    @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, String arg3,
-            Object... arg4) {
-        return null;
-    }
+	@Override
+	public void stop() {
+	}
 
-    @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, Object arg3,
-            Throwable arg4) {
-        return null;
-    }
+	@Override
+	public Result filter(Logger arg0, Level arg1, Marker arg2, String arg3, Object... arg4) {
+		return null;
+	}
 
-    @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, Message arg3,
-            Throwable arg4) {
-        return null;
-    }
+	@Override
+	public Result filter(Logger arg0, Level arg1, Marker arg2, Object arg3, Throwable arg4) {
+		return null;
+	}
 
-    @Override
-    public Result getOnMatch() {
-        return null;
-    }
+	@Override
+	public Result filter(Logger arg0, Level arg1, Marker arg2, Message arg3, Throwable arg4) {
+		return null;
+	}
 
-    @Override
-    public Result getOnMismatch() {
-        return null;
-    }
+	@Override
+	public Result getOnMatch() {
+		return null;
+	}
+
+	@Override
+	public Result getOnMismatch() {
+		return null;
+	}
 }

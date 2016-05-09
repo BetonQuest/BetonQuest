@@ -32,62 +32,61 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class BQEventSkript extends QuestEvent {
-    
-    private final String id;
-    
-    public BQEventSkript(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String [] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        id = parts[1];
-    }
-    
-    /**
-     * Custom event, which runs for Skript to listen.
-     * 
-     * @author Coosh
-     */
-    public static class CustomEventForSkript extends PlayerEvent {
 
-        private static final HandlerList handlers = new HandlerList();
-        /**
-         * ID of the event, as defined by the BetonQuest's event
-         */
-        private final String id;
+	private final String id;
 
-        
-        /**
-         * @param the Player
-         */
-        public CustomEventForSkript(Player who, String id) {
-            super(who);
-            this.id = id;
-        }
-     
-        /**
-         * @return ID of the event, as defined by the BetonQuest's event
-         */
-        public String getID() {
-            return id;
-        }
-     
-        public HandlerList getHandlers() {
-            return handlers;
-        }
-     
-        public static HandlerList getHandlerList() {
-            return handlers;
-        }
+	public BQEventSkript(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		id = parts[1];
+	}
 
-    }
+	/**
+	 * Custom event, which runs for Skript to listen.
+	 * 
+	 * @author Coosh
+	 */
+	public static class CustomEventForSkript extends PlayerEvent {
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        CustomEventForSkript event = new CustomEventForSkript(player, id);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-    }
+		private static final HandlerList handlers = new HandlerList();
+		/**
+		 * ID of the event, as defined by the BetonQuest's event
+		 */
+		private final String id;
+
+		/**
+		 * @param the
+		 *            Player
+		 */
+		public CustomEventForSkript(Player who, String id) {
+			super(who);
+			this.id = id;
+		}
+
+		/**
+		 * @return ID of the event, as defined by the BetonQuest's event
+		 */
+		public String getID() {
+			return id;
+		}
+
+		public HandlerList getHandlers() {
+			return handlers;
+		}
+
+		public static HandlerList getHandlerList() {
+			return handlers;
+		}
+
+	}
+
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		CustomEventForSkript event = new CustomEventForSkript(player, id);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+	}
 }

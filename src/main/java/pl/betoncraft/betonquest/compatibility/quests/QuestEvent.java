@@ -29,39 +29,38 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
-    
-    private String questName;
-    private boolean override = true;
 
-    public QuestEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        questName = parts[1];
-        for (String part : parts) {
-            if (part.equalsIgnoreCase("check-requirements")) {
-                override = false;
-            }
-        }
-    }
+	private String questName;
+	private boolean override = true;
 
-    @Override
-    public void run(String playerID) {
-        Quest quest = null;
-        for (Quest q : Quests.getInstance().getQuests()) {
-            if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
-                quest = q;
-                break;
-            }
-        }
-        if (quest == null) {
-            Debug.error("Quest '" + questName + "' is not defined");
-            return;
-        }
-        Quests.getInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
-    }
+	public QuestEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		questName = parts[1];
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("check-requirements")) {
+				override = false;
+			}
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Quest quest = null;
+		for (Quest q : Quests.getInstance().getQuests()) {
+			if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
+				quest = q;
+				break;
+			}
+		}
+		if (quest == null) {
+			Debug.error("Quest '" + questName + "' is not defined");
+			return;
+		}
+		Quests.getInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
+	}
 
 }

@@ -30,24 +30,24 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class HeroesSkillCondition extends Condition {
-    
-    private String skillName;
 
-    public HeroesSkillCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        skillName = parts[1];
-    }
+	private String skillName;
 
-    @Override
-    public boolean check(String playerID) {
-        Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null) return false;
-        return hero.canUseSkill(skillName);
-    }
+	public HeroesSkillCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		skillName = parts[1];
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+		if (hero == null)
+			return false;
+		return hero.canUseSkill(skillName);
+	}
 
 }

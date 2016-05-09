@@ -38,218 +38,216 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class GlobalLocations extends BukkitRunnable {
 
-    private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
-    private final List<GlobalLocation> finalLocations;
-    private static GlobalLocations instance;
+	private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
+	private final List<GlobalLocation> finalLocations;
+	private static GlobalLocations instance;
 
-    /**
-     * Creates new instance of global locations handler.
-     */
-    public GlobalLocations() {
-        instance = this;
-        // get list of global locations and make it final
-        for (String packName : Config.getPackageNames()) {
-            ConfigPackage pack = Config.getPackage(packName);
-            String rawGlobalLocations = pack.getString("main.global_locations");
-            if (rawGlobalLocations == null || rawGlobalLocations.equals("")) {
-                continue;
-            }
-            String[] parts = rawGlobalLocations.split(",");
-            for (String objective : parts) {
-                GlobalLocation gL = new GlobalLocation(pack, objective);
-                if (gL.isValid())
-                    locations.add(gL);
-            }
-        }
-        finalLocations = locations;
-    }
+	/**
+	 * Creates new instance of global locations handler.
+	 */
+	public GlobalLocations() {
+		instance = this;
+		// get list of global locations and make it final
+		for (String packName : Config.getPackageNames()) {
+			ConfigPackage pack = Config.getPackage(packName);
+			String rawGlobalLocations = pack.getString("main.global_locations");
+			if (rawGlobalLocations == null || rawGlobalLocations.equals("")) {
+				continue;
+			}
+			String[] parts = rawGlobalLocations.split(",");
+			for (String objective : parts) {
+				GlobalLocation gL = new GlobalLocation(pack, objective);
+				if (gL.isValid())
+					locations.add(gL);
+			}
+		}
+		finalLocations = locations;
+	}
 
-    /**
-     * Stops active global locations timer
-     */
-    public static void stop() {
-        instance.cancel();
-    }
+	/**
+	 * Stops active global locations timer
+	 */
+	public static void stop() {
+		instance.cancel();
+	}
 
-    @Override
-    public void run() {
-        // do nothing if there is no defined locations
-        if (finalLocations == null) {
-            this.cancel();
-            return;
-        }
-        // loop all online players
-        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        for (Player player : players) {
-            // for each player loop all available locations
-            locations: for (GlobalLocation location : finalLocations) {
-                // if location is not set, stop everything, there is an error in config
-                if (location.getLocation() == null) {
-                    continue locations;
-                }
-                // if player is inside location, do stuff
-                if (player.getLocation().getWorld().equals(location.getLocation().getWorld())
-                    && player.getLocation().distanceSquared(
-                            new Location(
-                                    location.getLocation().getWorld(), location.getLocation()
-                                    .getX(), location.getLocation().getY(), location.getLocation()
-                                    .getZ())
-                            ) <= location.getDistance()*location.getDistance()) {
-                    // check if player has already triggered this location
-                    if (BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
-                            .hasTag(location.getPack() + ".global_" + location.getLabel())) {
-                        continue locations;
-                    }
-                    // check all conditions
-                    if (location.getConditions() != null) {
-                        for (String condition : location.getConditions()) {
-                            if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                                // if some conditions are not met, skip to next location
-                                continue locations;
-                            }
-                        }
-                    }
-                    // set the tag, player has triggered this location
-                    BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
-                            .addTag(location.getPack() + ".global_" + location.getLabel());
-                    // fire all events for the location
-                    for (String event : location.getEvents()) {
-                        BetonQuest.event(PlayerConverter.getID(player), event);
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	public void run() {
+		// do nothing if there is no defined locations
+		if (finalLocations == null) {
+			this.cancel();
+			return;
+		}
+		// loop all online players
+		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+		for (Player player : players) {
+			// for each player loop all available locations
+			locations: for (GlobalLocation location : finalLocations) {
+				// if location is not set, stop everything, there is an error in
+				// config
+				if (location.getLocation() == null) {
+					continue locations;
+				}
+				// if player is inside location, do stuff
+				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation()
+						.distanceSquared(new Location(location.getLocation().getWorld(), location.getLocation().getX(),
+								location.getLocation().getY(), location.getLocation().getZ())) <= location.getDistance()
+										* location.getDistance()) {
+					// check if player has already triggered this location
+					if (BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
+							.hasTag(location.getPack() + ".global_" + location.getLabel())) {
+						continue locations;
+					}
+					// check all conditions
+					if (location.getConditions() != null) {
+						for (String condition : location.getConditions()) {
+							if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
+								// if some conditions are not met, skip to next
+								// location
+								continue locations;
+							}
+						}
+					}
+					// set the tag, player has triggered this location
+					BetonQuest.getInstance().getDBHandler(PlayerConverter.getID(player))
+							.addTag(location.getPack() + ".global_" + location.getLabel());
+					// fire all events for the location
+					for (String event : location.getEvents()) {
+						BetonQuest.event(PlayerConverter.getID(player), event);
+					}
+				}
+			}
+		}
+	}
 
-    /**
-     * Represents single global location.
-     * 
-     * @author Co0sh
-     */
-    private class GlobalLocation {
+	/**
+	 * Represents single global location.
+	 * 
+	 * @author Co0sh
+	 */
+	private class GlobalLocation {
 
-        private String pack;
-        private Location location;
-        private String[] conditions;
-        private String[] events;
-        private double distance;
-        private String label;
-        private boolean valid = true;
+		private String pack;
+		private Location location;
+		private String[] conditions;
+		private String[] events;
+		private double distance;
+		private String label;
+		private boolean valid = true;
 
-        /**
-         * Creates new global location using objective event's ID.
-         * 
-         * @param event
-         *            ID of the event
-         */
-        public GlobalLocation(ConfigPackage pack, String objective) {
-            Debug.info("Creating new GlobalLocation from " + pack.getName() + "." + objective + " event.");
-            this.pack = pack.getName();
-            label = objective;
-            String instructions = pack.getString("objectives." + objective);
-            if (instructions == null || !instructions.startsWith("location ")) {
-                Debug.error("Location objective not found in objective " + objective);
-                valid = false;
-                return;
-            }
-            // check amount of arguments in event's instruction
-            String[] parts = instructions.split(" ");
-            if (parts.length < 2) {
-                Debug.error("There is an error in global location's objective " + objective);
-                valid = false;
-                return;
-            }
-            // check amount of arguments in location definition
-            String[] rawLocation = parts[1].split(";");
-            if (rawLocation.length != 5) {
-                Debug.error("Wrong location format in global location's objective " + objective);
-                valid = false;
-                return;
-            }
-            double x = 0, y = 0, z = 0;
-            // get x, y and z; check if they are valid numbers
-            try {
-                x = Double.parseDouble(rawLocation[0]);
-                y = Double.parseDouble(rawLocation[1]);
-                z = Double.parseDouble(rawLocation[2]);
-                distance = Double.parseDouble(rawLocation[4]);
-            } catch (NumberFormatException e) {
-                Debug.error("Wrong argument in location definition in global location's objective "
-                    + objective);
-                valid = false;
-                return;
-            }
-            if (Bukkit.getWorld(rawLocation[3]) == null) {
-                Debug.error("The world doesn't exist in global location's objective " + objective);
-                valid = false;
-                return;
-            }
-            location = new Location(Bukkit.getWorld(rawLocation[3]), x, y, z);
-            // extract all conditions and events
-            for (String part : parts) {
-                if (part.contains("conditions:")) {
-                    conditions = part.substring(11).split(",");
-                    for (int i = 0; i < conditions.length; i++) {
-                        if (!conditions[i].contains(".")) {
-                            conditions[i] = pack.getName() + "." + conditions[i];
-                        }
-                    }
-                }
-                if (part.contains("events:")) {
-                    events = part.substring(7).split(",");
-                    for (int i = 0; i < events.length; i++) {
-                        if (!events[i].contains(".")) {
-                            events[i] = pack.getName() + "." + events[i];
-                        }
-                    }
-                }
-            }
-        }
-        
-        /**
-         * @return the package containing this global location
-         */
-        public String getPack() {
-            return pack;
-        }
+		/**
+		 * Creates new global location using objective event's ID.
+		 * 
+		 * @param event
+		 *            ID of the event
+		 */
+		public GlobalLocation(ConfigPackage pack, String objective) {
+			Debug.info("Creating new GlobalLocation from " + pack.getName() + "." + objective + " event.");
+			this.pack = pack.getName();
+			label = objective;
+			String instructions = pack.getString("objectives." + objective);
+			if (instructions == null || !instructions.startsWith("location ")) {
+				Debug.error("Location objective not found in objective " + objective);
+				valid = false;
+				return;
+			}
+			// check amount of arguments in event's instruction
+			String[] parts = instructions.split(" ");
+			if (parts.length < 2) {
+				Debug.error("There is an error in global location's objective " + objective);
+				valid = false;
+				return;
+			}
+			// check amount of arguments in location definition
+			String[] rawLocation = parts[1].split(";");
+			if (rawLocation.length != 5) {
+				Debug.error("Wrong location format in global location's objective " + objective);
+				valid = false;
+				return;
+			}
+			double x = 0, y = 0, z = 0;
+			// get x, y and z; check if they are valid numbers
+			try {
+				x = Double.parseDouble(rawLocation[0]);
+				y = Double.parseDouble(rawLocation[1]);
+				z = Double.parseDouble(rawLocation[2]);
+				distance = Double.parseDouble(rawLocation[4]);
+			} catch (NumberFormatException e) {
+				Debug.error("Wrong argument in location definition in global location's objective " + objective);
+				valid = false;
+				return;
+			}
+			if (Bukkit.getWorld(rawLocation[3]) == null) {
+				Debug.error("The world doesn't exist in global location's objective " + objective);
+				valid = false;
+				return;
+			}
+			location = new Location(Bukkit.getWorld(rawLocation[3]), x, y, z);
+			// extract all conditions and events
+			for (String part : parts) {
+				if (part.contains("conditions:")) {
+					conditions = part.substring(11).split(",");
+					for (int i = 0; i < conditions.length; i++) {
+						if (!conditions[i].contains(".")) {
+							conditions[i] = pack.getName() + "." + conditions[i];
+						}
+					}
+				}
+				if (part.contains("events:")) {
+					events = part.substring(7).split(",");
+					for (int i = 0; i < events.length; i++) {
+						if (!events[i].contains(".")) {
+							events[i] = pack.getName() + "." + events[i];
+						}
+					}
+				}
+			}
+		}
 
-        /**
-         * @return the location
-         */
-        public Location getLocation() {
-            return location;
-        }
+		/**
+		 * @return the package containing this global location
+		 */
+		public String getPack() {
+			return pack;
+		}
 
-        /**
-         * @return the conditions
-         */
-        public String[] getConditions() {
-            return conditions;
-        }
+		/**
+		 * @return the location
+		 */
+		public Location getLocation() {
+			return location;
+		}
 
-        /**
-         * @return the events
-         */
-        public String[] getEvents() {
-            return events;
-        }
+		/**
+		 * @return the conditions
+		 */
+		public String[] getConditions() {
+			return conditions;
+		}
 
-        /**
-         * @return the distance
-         */
-        public double getDistance() {
-            return distance;
-        }
+		/**
+		 * @return the events
+		 */
+		public String[] getEvents() {
+			return events;
+		}
 
-        /**
-         * @return the tag
-         */
-        public String getLabel() {
-            return label;
-        }
+		/**
+		 * @return the distance
+		 */
+		public double getDistance() {
+			return distance;
+		}
 
-        public boolean isValid() {
-            return valid;
-        }
-    }
+		/**
+		 * @return the tag
+		 */
+		public String getLabel() {
+			return label;
+		}
+
+		public boolean isValid() {
+			return valid;
+		}
+	}
 }

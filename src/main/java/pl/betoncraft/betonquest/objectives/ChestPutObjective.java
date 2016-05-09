@@ -38,89 +38,92 @@ import pl.betoncraft.betonquest.events.ChestTakeEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Requires the player to put items in the chest. Items can optionally NOT disappear
- * once the chest is closed.
+ * Requires the player to put items in the chest. Items can optionally NOT
+ * disappear once the chest is closed.
  * 
  * @author Jakub Sapalski
  */
 public class ChestPutObjective extends Objective implements Listener {
-    
-    private final Condition chestItemCondition;
-    private final QuestEvent chestTakeEvent;
-    private final Block block;
 
-    public ChestPutObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        // extract location
-        String[] location = parts[1].split(";");
-        if (location.length < 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(location[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exists");
-        }
-        int x, y, z;
-        try {
-            x = Integer.parseInt(location[0]);
-            y = Integer.parseInt(location[1]);
-            z = Integer.parseInt(location[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        block = new Location(world, x, y, z).getBlock();
-        try {
-            chestItemCondition = new ChestItemCondition(packName, "chestitem " + parts[1] + " " + parts[2]);
-        } catch (InstructionParseException e) {
-            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage());
-        }
-        if (parts.length > 3 && parts[3].equalsIgnoreCase("items-stay")) {
-            chestTakeEvent = null;
-        } else {
-            chestTakeEvent = new ChestTakeEvent(packName, "chesttake " + parts[1] + " " + parts[2]);
-        }
-        
-    }
-    
-    @EventHandler
-    public void onChestClose(InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player)) return;
-        String playerID = PlayerConverter.getID((Player) event.getPlayer());
-        if (!containsPlayer(playerID)) return;
-        InventoryHolder chest;
-        try {
-            chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
-            return;
-        }
-        if (event.getInventory() == null || event.getInventory().getHolder() == null)
-            return;
-        if (!event.getInventory().getHolder().equals(chest)) return;
-        if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
-            completeObjective(playerID);
-            if (chestTakeEvent != null) chestTakeEvent.run(playerID);
-        }
-    }
+	private final Condition chestItemCondition;
+	private final QuestEvent chestTakeEvent;
+	private final Block block;
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public ChestPutObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		// extract location
+		String[] location = parts[1].split(";");
+		if (location.length < 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(location[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exists");
+		}
+		int x, y, z;
+		try {
+			x = Integer.parseInt(location[0]);
+			y = Integer.parseInt(location[1]);
+			z = Integer.parseInt(location[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		block = new Location(world, x, y, z).getBlock();
+		try {
+			chestItemCondition = new ChestItemCondition(packName, "chestitem " + parts[1] + " " + parts[2]);
+		} catch (InstructionParseException e) {
+			throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage());
+		}
+		if (parts.length > 3 && parts[3].equalsIgnoreCase("items-stay")) {
+			chestTakeEvent = null;
+		} else {
+			chestTakeEvent = new ChestTakeEvent(packName, "chesttake " + parts[1] + " " + parts[2]);
+		}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@EventHandler
+	public void onChestClose(InventoryCloseEvent event) {
+		if (!(event.getPlayer() instanceof Player))
+			return;
+		String playerID = PlayerConverter.getID((Player) event.getPlayer());
+		if (!containsPlayer(playerID))
+			return;
+		InventoryHolder chest;
+		try {
+			chest = (InventoryHolder) block.getState();
+		} catch (ClassCastException e) {
+			return;
+		}
+		if (event.getInventory() == null || event.getInventory().getHolder() == null)
+			return;
+		if (!event.getInventory().getHolder().equals(chest))
+			return;
+		if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
+			completeObjective(playerID);
+			if (chestTakeEvent != null)
+				chestTakeEvent.run(playerID);
+		}
+	}
+
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

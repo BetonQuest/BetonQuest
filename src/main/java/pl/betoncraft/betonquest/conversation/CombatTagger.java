@@ -34,71 +34,74 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Tags players that are in combat to prevent them from starting the conversation
+ * Tags players that are in combat to prevent them from starting the
+ * conversation
  * 
  * @author Jakub Sapalski
  */
 public class CombatTagger implements Listener {
-    
-    private static HashMap<String, Boolean> tagged = new HashMap<>();
-    private static HashMap<String, BukkitRunnable> untaggers = new HashMap<>();
-    private int delay = 10;
 
-    /**
-     * Starts the combat listener
-     */
-    public CombatTagger() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        delay = Integer.parseInt(Config.getString("config.combat_delay"));
-    }
-    
-    /**
-     * Checks if the player is combat-tagged
-     * 
-     * @param playerID
-     *          ID of the player
-     * @return true if the player is tagged, false otherwise
-     */
-    public static boolean isTagged(String playerID) {
-        boolean result = false;
-        Boolean state = tagged.get(playerID);
-        if (state != null) {
-            result = state;
-        }
-        return result;
-    }
-    
-    @EventHandler(priority=EventPriority.MONITOR)
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.isCancelled()) return;
-        ArrayList<String> IDs = new ArrayList<>();
-        if (event.getEntity() instanceof Player) {
-            IDs.add(PlayerConverter.getID((Player) event.getEntity()));
-        }
-        if (event.getDamager() instanceof Player) {
-            IDs.add(PlayerConverter.getID((Player) event.getDamager()));
-        }
-        for (final String playerID : IDs) {
-            tagged.put(playerID, true);
-            BukkitRunnable run = untaggers.get(playerID);
-            if (run != null) {
-                run.cancel();
-            }
-            untaggers.put(playerID, new BukkitRunnable() {
-                @Override
-                public void run() {
-                    tagged.put(playerID, false);
-                }
-            });
-            untaggers.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
-        }
-    }
-    
-    @EventHandler(priority=EventPriority.MONITOR)
-    public void onDeath(PlayerDeathEvent event) {
-        String playerID = PlayerConverter.getID(event.getEntity());
-        tagged.remove(playerID);
-        BukkitRunnable runnable = untaggers.remove(playerID);
-        if (runnable != null) runnable.cancel();
-    }
+	private static HashMap<String, Boolean> tagged = new HashMap<>();
+	private static HashMap<String, BukkitRunnable> untaggers = new HashMap<>();
+	private int delay = 10;
+
+	/**
+	 * Starts the combat listener
+	 */
+	public CombatTagger() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+		delay = Integer.parseInt(Config.getString("config.combat_delay"));
+	}
+
+	/**
+	 * Checks if the player is combat-tagged
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @return true if the player is tagged, false otherwise
+	 */
+	public static boolean isTagged(String playerID) {
+		boolean result = false;
+		Boolean state = tagged.get(playerID);
+		if (state != null) {
+			result = state;
+		}
+		return result;
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDamage(EntityDamageByEntityEvent event) {
+		if (event.isCancelled())
+			return;
+		ArrayList<String> IDs = new ArrayList<>();
+		if (event.getEntity() instanceof Player) {
+			IDs.add(PlayerConverter.getID((Player) event.getEntity()));
+		}
+		if (event.getDamager() instanceof Player) {
+			IDs.add(PlayerConverter.getID((Player) event.getDamager()));
+		}
+		for (final String playerID : IDs) {
+			tagged.put(playerID, true);
+			BukkitRunnable run = untaggers.get(playerID);
+			if (run != null) {
+				run.cancel();
+			}
+			untaggers.put(playerID, new BukkitRunnable() {
+				@Override
+				public void run() {
+					tagged.put(playerID, false);
+				}
+			});
+			untaggers.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDeath(PlayerDeathEvent event) {
+		String playerID = PlayerConverter.getID(event.getEntity());
+		tagged.remove(playerID);
+		BukkitRunnable runnable = untaggers.remove(playerID);
+		if (runnable != null)
+			runnable.cancel();
+	}
 }

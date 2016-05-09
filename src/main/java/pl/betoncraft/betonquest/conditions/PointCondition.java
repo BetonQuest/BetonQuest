@@ -31,34 +31,32 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class PointCondition extends Condition {
 
-    private final String category;
-    private final VariableNumber count;
+	private final String category;
+	private final VariableNumber count;
 
-    public PointCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
-        try {
-            count = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point amount");
-        }
-    }
+	public PointCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+		try {
+			count = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point amount");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        int c = count.getInt(playerID);
-        for (Point point : BetonQuest.getInstance().getDBHandler(playerID)
-                .getPoints()) {
-            if (point.getCategory().equalsIgnoreCase(category)) {
-                return point.getCount() >= c;
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		int c = count.getInt(playerID);
+		for (Point point : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
+			if (point.getCategory().equalsIgnoreCase(category)) {
+				return point.getCount() >= c;
+			}
+		}
+		return false;
+	}
 
 }

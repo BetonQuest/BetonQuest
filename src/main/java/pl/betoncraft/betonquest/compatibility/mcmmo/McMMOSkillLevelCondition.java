@@ -25,40 +25,37 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Checks if the player has specified level in an mcMMO skill.
  * 
  * @author Jakub Sapalski
  */
 public class McMMOSkillLevelCondition extends Condition {
-    
-    private final String skillType;
-    private final VariableNumber level;
 
-    public McMMOSkillLevelCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        skillType = parts[1].toUpperCase();
-        if (!SkillAPI.getSkills().contains(skillType)) {
-            throw new InstructionParseException("Invalid skill name");
-        }
-        try {
-            VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
-            level = tempLevel;
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse level");
-        }
-    }
+	private final String skillType;
+	private final VariableNumber level;
 
-    @Override
-    public boolean check(String playerID) {
-        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID),
-                skillType) >= level.getInt(playerID);
-    }
+	public McMMOSkillLevelCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		skillType = parts[1].toUpperCase();
+		if (!SkillAPI.getSkills().contains(skillType)) {
+			throw new InstructionParseException("Invalid skill name");
+		}
+		try {
+			VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
+			level = tempLevel;
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse level");
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), skillType) >= level.getInt(playerID);
+	}
 
 }

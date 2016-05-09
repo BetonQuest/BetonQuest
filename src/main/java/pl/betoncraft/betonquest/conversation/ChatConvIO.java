@@ -42,156 +42,152 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public abstract class ChatConvIO implements ConversationIO, Listener {
-    
-    protected int i; // counts options
-    protected HashMap<Integer, String> options;
-    protected String npcText;
-    protected String npcName;
-    
-    protected final Conversation conv;
-    protected final String name;
-    protected final Player player;
-    protected final HashMap<String, ChatColor[]> colors;
-    
-    protected String answerFormat;
-    protected String textFormat;
-    
-    public ChatConvIO(Conversation conv, String playerID) {
-        this.options = new HashMap<>();
-        this.conv = conv;
-        this.player = PlayerConverter.getPlayer(playerID);
-        this.name = player.getName();
-        this.colors = ConversationColors.getColors();
-        StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("npc")) {
-            string.append(color);
-        }
-        string.append("%npc%" + ChatColor.RESET + ": ");
-        for (ChatColor color : colors.get("text")) {
-            string.append(color);
-        }
-        textFormat = string.toString();
-        string = new StringBuilder();
-        for (ChatColor color : colors.get("player")) {
-            string.append(color);
-        }
-        string.append(name + ChatColor.RESET + ": ");
-        for (ChatColor color : colors.get("answer")) {
-            string.append(color);
-        }
-        answerFormat = string.toString();
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onWalkAway(PlayerMoveEvent event) {
-        // return if it's someone else
-        if (!event.getPlayer().equals(player)) {
-            return;
-        }
-        // if player passes max distance
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld())
-                || event.getTo().distance(conv.getLocation()) > Integer.valueOf(Config
-                        .getString("config.max_npc_distance"))) {
-            // we can stop the player or end conversation
-            if (conv.isMovementBlock()) {
-                moveBack(event);
-            } else {
-                conv.endConversation();
-            }
-        }
-        return;
-    }
 
-    /**
-     * Moves the player back a few blocks in the conversation's center
-     * direction.
-     * 
-     * @param event
-     *            PlayerMoveEvent event, for extracting the necessary data
-     */
-    private void moveBack(PlayerMoveEvent event) {
-        // if the player is in other world (he teleported himself), teleport him
-        // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld())
-                || event.getTo().distance(conv.getLocation()) > Integer.valueOf(Config
-                        .getString("config.max_npc_distance")) * 2) {
-            event.getPlayer().teleport(conv.getLocation());
-            return;
-        }
-        // if not, then calculate the vector
-        float yaw = event.getTo().getYaw();
-        float pitch = event.getTo().getPitch();
-        Vector vector =
-                new Vector(conv.getLocation().getX() - event.getTo().getX(),
-                        conv.getLocation().getY()
-                        - event.getTo().getY(), conv.getLocation().getZ()
-                        - event.getTo().getZ());
-        vector = vector.multiply(1 / vector.length());
-        // and teleport him back using this vector
-        Location newLocation = event.getTo().clone();
-        newLocation.add(vector);
-        newLocation.setPitch(pitch);
-        newLocation.setYaw(yaw);
-        event.getPlayer().teleport(newLocation);
-        if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()),
-                    "pullback");
-        }
-    }
-    
-    @EventHandler(priority=EventPriority.LOWEST)
-    public void onReply(AsyncPlayerChatEvent event) {
-        if (event.isCancelled()) return;
-        if (!event.getPlayer().equals(player)) return;
-        String message = event.getMessage().trim();
-        for (int i : options.keySet()) {
-            if (message.equals(Integer.toString(i))) {
-                player.sendMessage(answerFormat + options.get(i));
-                conv.passPlayerAnswer(i);
-                event.setCancelled(true);
-                return;
-            }
-        }
-        // redisplay the conversation after player's message so he can see it
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                display();
-            }
-        }.runTask(BetonQuest.getInstance());
-    }
+	protected int i; // counts options
+	protected HashMap<Integer, String> options;
+	protected String npcText;
+	protected String npcName;
 
-    @Override
-    public void setNpcResponse(String npcName, String response) {
-        this.npcName = npcName;
-        this.npcText = response.replace('&', '§');
-    }
+	protected final Conversation conv;
+	protected final String name;
+	protected final Player player;
+	protected final HashMap<String, ChatColor[]> colors;
 
-    @Override
-    public void addPlayerOption(String option) {
-        i++;
-        options.put(i, option.replace('&', '§'));
-    }
-    
-    @Override
-    public void display() {
-        if (npcText == null && options.isEmpty()) {
-            end();
-            return;
-        }
-        player.sendMessage(textFormat.replace("%npc%", npcName) + npcText);
-    }
+	protected String answerFormat;
+	protected String textFormat;
 
-    @Override
-    public void clear() {
-        i = 0;
-        options.clear();
-        npcText = null;
-    }
+	public ChatConvIO(Conversation conv, String playerID) {
+		this.options = new HashMap<>();
+		this.conv = conv;
+		this.player = PlayerConverter.getPlayer(playerID);
+		this.name = player.getName();
+		this.colors = ConversationColors.getColors();
+		StringBuilder string = new StringBuilder();
+		for (ChatColor color : colors.get("npc")) {
+			string.append(color);
+		}
+		string.append("%npc%" + ChatColor.RESET + ": ");
+		for (ChatColor color : colors.get("text")) {
+			string.append(color);
+		}
+		textFormat = string.toString();
+		string = new StringBuilder();
+		for (ChatColor color : colors.get("player")) {
+			string.append(color);
+		}
+		string.append(name + ChatColor.RESET + ": ");
+		for (ChatColor color : colors.get("answer")) {
+			string.append(color);
+		}
+		answerFormat = string.toString();
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public void end() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler
+	public void onWalkAway(PlayerMoveEvent event) {
+		// return if it's someone else
+		if (!event.getPlayer().equals(player)) {
+			return;
+		}
+		// if player passes max distance
+		if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
+				.distance(conv.getLocation()) > Integer.valueOf(Config.getString("config.max_npc_distance"))) {
+			// we can stop the player or end conversation
+			if (conv.isMovementBlock()) {
+				moveBack(event);
+			} else {
+				conv.endConversation();
+			}
+		}
+		return;
+	}
+
+	/**
+	 * Moves the player back a few blocks in the conversation's center
+	 * direction.
+	 * 
+	 * @param event
+	 *            PlayerMoveEvent event, for extracting the necessary data
+	 */
+	private void moveBack(PlayerMoveEvent event) {
+		// if the player is in other world (he teleported himself), teleport him
+		// back to the center of the conversation
+		if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
+				.distance(conv.getLocation()) > Integer.valueOf(Config.getString("config.max_npc_distance")) * 2) {
+			event.getPlayer().teleport(conv.getLocation());
+			return;
+		}
+		// if not, then calculate the vector
+		float yaw = event.getTo().getYaw();
+		float pitch = event.getTo().getPitch();
+		Vector vector = new Vector(conv.getLocation().getX() - event.getTo().getX(),
+				conv.getLocation().getY() - event.getTo().getY(), conv.getLocation().getZ() - event.getTo().getZ());
+		vector = vector.multiply(1 / vector.length());
+		// and teleport him back using this vector
+		Location newLocation = event.getTo().clone();
+		newLocation.add(vector);
+		newLocation.setPitch(pitch);
+		newLocation.setYaw(yaw);
+		event.getPlayer().teleport(newLocation);
+		if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
+			Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "pullback");
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onReply(AsyncPlayerChatEvent event) {
+		if (event.isCancelled())
+			return;
+		if (!event.getPlayer().equals(player))
+			return;
+		String message = event.getMessage().trim();
+		for (int i : options.keySet()) {
+			if (message.equals(Integer.toString(i))) {
+				player.sendMessage(answerFormat + options.get(i));
+				conv.passPlayerAnswer(i);
+				event.setCancelled(true);
+				return;
+			}
+		}
+		// redisplay the conversation after player's message so he can see it
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				display();
+			}
+		}.runTask(BetonQuest.getInstance());
+	}
+
+	@Override
+	public void setNpcResponse(String npcName, String response) {
+		this.npcName = npcName;
+		this.npcText = response.replace('&', '§');
+	}
+
+	@Override
+	public void addPlayerOption(String option) {
+		i++;
+		options.put(i, option.replace('&', '§'));
+	}
+
+	@Override
+	public void display() {
+		if (npcText == null && options.isEmpty()) {
+			end();
+			return;
+		}
+		player.sendMessage(textFormat.replace("%npc%", npcName) + npcText);
+	}
+
+	@Override
+	public void clear() {
+		i = 0;
+		options.clear();
+		npcText = null;
+	}
+
+	@Override
+	public void end() {
+		HandlerList.unregisterAll(this);
+	}
 }

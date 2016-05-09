@@ -31,71 +31,70 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Requires the player to type a password in chat.
  * 
  * @author Jakub Sapalski
  */
 public class PasswordObjective extends Objective implements Listener {
-    
-    private final String regex; 
-    private final boolean ignoreCase;
 
-    public PasswordObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        regex = parts[1].replace('_', ' ');
-        ignoreCase = parts.length > 2 && parts[2].equalsIgnoreCase("ignoreCase");
-    }
-    
-    @EventHandler(priority=EventPriority.LOW)
-    public void onChat(AsyncPlayerChatEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID)) {
-            String prefix = Config.getMessage(BetonQuest.getInstance().getDBHandler(playerID).getLanguage(), "password");
-            if (event.getMessage().startsWith(prefix)) {
-                event.setCancelled(true);
-                String password = event.getMessage().substring(prefix.length());
-                if (ignoreCase) {
-                    if (password.toLowerCase().matches(regex) && checkConditions(playerID))
-                    	new BukkitRunnable() {
+	private final String regex;
+	private final boolean ignoreCase;
+
+	public PasswordObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		regex = parts[1].replace('_', ' ');
+		ignoreCase = parts.length > 2 && parts[2].equalsIgnoreCase("ignoreCase");
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void onChat(AsyncPlayerChatEvent event) {
+		final String playerID = PlayerConverter.getID(event.getPlayer());
+		if (containsPlayer(playerID)) {
+			String prefix = Config.getMessage(BetonQuest.getInstance().getDBHandler(playerID).getLanguage(),
+					"password");
+			if (event.getMessage().startsWith(prefix)) {
+				event.setCancelled(true);
+				String password = event.getMessage().substring(prefix.length());
+				if (ignoreCase) {
+					if (password.toLowerCase().matches(regex) && checkConditions(playerID))
+						new BukkitRunnable() {
 							@Override
 							public void run() {
-		                        completeObjective(playerID);
+								completeObjective(playerID);
 							}
 						}.runTask(BetonQuest.getInstance());
-                } else {
-                    if (password.matches(regex) && checkConditions(playerID))
-                    	new BukkitRunnable() {
+				} else {
+					if (password.matches(regex) && checkConditions(playerID))
+						new BukkitRunnable() {
 							@Override
 							public void run() {
-		                        completeObjective(playerID);
+								completeObjective(playerID);
 							}
 						}.runTask(BetonQuest.getInstance());
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+				}
+			}
+		}
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

@@ -22,7 +22,6 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 
-
 /**
  * Gives journal to the player.
  * 
@@ -30,15 +29,14 @@ import pl.betoncraft.betonquest.config.Config;
  */
 public class GiveJournalEvent extends QuestEvent {
 
-    public GiveJournalEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-    }
+	public GiveJournalEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+	}
 
-    @Override
-    public void run(String playerID) {
-        BetonQuest.getInstance().getDBHandler(playerID).getJournal().addToInv(Integer
-                .parseInt(Config.getString("config.default_journal_slot")));
-    }
+	@Override
+	public void run(String playerID) {
+		BetonQuest.getInstance().getDBHandler(playerID).getJournal()
+				.addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
+	}
 
 }

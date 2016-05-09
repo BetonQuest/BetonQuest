@@ -34,26 +34,25 @@ import ch.njol.util.Kleenean;
  */
 public class SkriptConditionBQ extends Condition {
 
-    private Expression<Player> player;
-    private Expression<String> condition;
+	private Expression<Player> player;
+	private Expression<String> condition;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] arg0, int arg1, Kleenean arg2, ParseResult arg3) {
-        player = (Expression<Player>) arg0[0];
-        condition = (Expression<String>) arg0[1];
-        return true;
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean init(Expression<?>[] arg0, int arg1, Kleenean arg2, ParseResult arg3) {
+		player = (Expression<Player>) arg0[0];
+		condition = (Expression<String>) arg0[1];
+		return true;
+	}
 
-    @Override
-    public String toString(Event e, boolean debug) {
-        return player.getSingle(e).getName() + " meets " + condition.toString();
-    }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return player.getSingle(e).getName() + " meets " + condition.toString();
+	}
 
-    @Override
-    public boolean check(Event e) {
-        return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)),
-                condition.getSingle(e));
-    }
+	@Override
+	public boolean check(Event e) {
+		return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), condition.getSingle(e));
+	}
 
 }

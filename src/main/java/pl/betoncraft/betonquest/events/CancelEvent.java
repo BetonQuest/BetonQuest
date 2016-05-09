@@ -27,21 +27,20 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  * @author Jakub Sapalski
  */
 public class CancelEvent extends QuestEvent {
-    
-    private String canceler;
 
-     public CancelEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2)
-            throw new InstructionParseException("Not enough arguments");
-        canceler = packName + "." + parts[1];
-    }
+	private String canceler;
 
-    @Override
-    public void run(String playerID) {
-        BetonQuest.getInstance().getDBHandler(playerID).cancelQuest(canceler);
-    }
+	public CancelEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2)
+			throw new InstructionParseException("Not enough arguments");
+		canceler = packName + "." + parts[1];
+	}
+
+	@Override
+	public void run(String playerID) {
+		BetonQuest.getInstance().getDBHandler(playerID).cancelQuest(canceler);
+	}
 
 }

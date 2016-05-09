@@ -25,39 +25,37 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Adds experience in specified skill.
  * 
  * @author Jakub Sapalski
  */
 public class McMMOAddExpEvent extends QuestEvent {
-    
-    private final String skillType;
-    private final VariableNumber exp;
 
-    public McMMOAddExpEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        skillType = parts[1].toUpperCase();
-        if (!SkillAPI.getSkills().contains(skillType)) {
-            throw new InstructionParseException("Invalid skill name");
-        }
-        try {
-            VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
-            exp = tempLevel;
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse experience amount");
-        }
-    }
+	private final String skillType;
+	private final VariableNumber exp;
 
-    @Override
-    public void run(String playerID) {
-        ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp.getInt(playerID), "UNKNOWN");
-    }
+	public McMMOAddExpEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		skillType = parts[1].toUpperCase();
+		if (!SkillAPI.getSkills().contains(skillType)) {
+			throw new InstructionParseException("Invalid skill name");
+		}
+		try {
+			VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
+			exp = tempLevel;
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse experience amount");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp.getInt(playerID), "UNKNOWN");
+	}
 
 }

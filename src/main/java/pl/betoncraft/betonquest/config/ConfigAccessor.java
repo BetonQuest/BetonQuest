@@ -35,92 +35,93 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigAccessor {
 
-    private final String fileName;
-    private final JavaPlugin plugin;
+	private final String fileName;
+	private final JavaPlugin plugin;
 
-    private File configFile;
-    private FileConfiguration fileConfiguration;
+	private File configFile;
+	private FileConfiguration fileConfiguration;
 
-    /**
-     * Creates a new configuration accessor.
-     * 
-     * @param plugin
-     *          instance of the plugin
-     * @param file
-     *          the file in which the configuration is stored; if it's null the
-     *          config will be loaded from resource, as read-only
-     * @param fileName
-     *          the name of the resource in plugin jar
-     */
-    public ConfigAccessor(JavaPlugin plugin, File file, String fileName) {
-        if (plugin == null)
-            throw new IllegalArgumentException("plugin cannot be null");
-        if (!plugin.isEnabled())
-            throw new IllegalArgumentException("plugin must be enabled");
-        this.plugin = plugin;
-        this.fileName = fileName;
-        File dataFolder = plugin.getDataFolder();
-        if (dataFolder == null)
-            throw new IllegalStateException();
-        this.configFile = file;
-    }
+	/**
+	 * Creates a new configuration accessor.
+	 * 
+	 * @param plugin
+	 *            instance of the plugin
+	 * @param file
+	 *            the file in which the configuration is stored; if it's null
+	 *            the config will be loaded from resource, as read-only
+	 * @param fileName
+	 *            the name of the resource in plugin jar
+	 */
+	public ConfigAccessor(JavaPlugin plugin, File file, String fileName) {
+		if (plugin == null)
+			throw new IllegalArgumentException("plugin cannot be null");
+		if (!plugin.isEnabled())
+			throw new IllegalArgumentException("plugin must be enabled");
+		this.plugin = plugin;
+		this.fileName = fileName;
+		File dataFolder = plugin.getDataFolder();
+		if (dataFolder == null)
+			throw new IllegalStateException();
+		this.configFile = file;
+	}
 
-    public void reloadConfig() {
-        if (configFile == null) {
-            fileConfiguration = YamlConfiguration.loadConfiguration(
-                    new InputStreamReader(plugin.getResource(fileName)));
-        } else {
-            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-            // Look for defaults in the jar
-            InputStream defConfigStream = plugin.getResource(fileName);
-            if (defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(defConfigStream));
-                fileConfiguration.setDefaults(defConfig);
-            }
-        }
-    }
+	public void reloadConfig() {
+		if (configFile == null) {
+			fileConfiguration = YamlConfiguration
+					.loadConfiguration(new InputStreamReader(plugin.getResource(fileName)));
+		} else {
+			fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+			// Look for defaults in the jar
+			InputStream defConfigStream = plugin.getResource(fileName);
+			if (defConfigStream != null) {
+				YamlConfiguration defConfig = YamlConfiguration
+						.loadConfiguration(new InputStreamReader(defConfigStream));
+				fileConfiguration.setDefaults(defConfig);
+			}
+		}
+	}
 
-    public FileConfiguration getConfig() {
-        if (fileConfiguration == null) {
-            this.reloadConfig();
-        }
-        return fileConfiguration;
-    }
+	public FileConfiguration getConfig() {
+		if (fileConfiguration == null) {
+			this.reloadConfig();
+		}
+		return fileConfiguration;
+	}
 
-    public void saveConfig() {
-        if (fileConfiguration == null || configFile == null) {
-            return;
-        } else {
-            try {
-                getConfig().save(configFile);
-            } catch (IOException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
-            }
-        }
-    }
+	public void saveConfig() {
+		if (fileConfiguration == null || configFile == null) {
+			return;
+		} else {
+			try {
+				getConfig().save(configFile);
+			} catch (IOException ex) {
+				plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+			}
+		}
+	}
 
-    public void saveDefaultConfig() {
-        if (configFile == null) return;
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-                InputStream in = plugin.getResource(fileName);
-                if (in == null) {
-                    return;
-                }
-                OutputStream out = new FileOutputStream(configFile);
-                byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
-                }
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	public void saveDefaultConfig() {
+		if (configFile == null)
+			return;
+		if (!configFile.exists()) {
+			try {
+				configFile.createNewFile();
+				InputStream in = plugin.getResource(fileName);
+				if (in == null) {
+					return;
+				}
+				OutputStream out = new FileOutputStream(configFile);
+				byte[] buffer = new byte[1024];
+				int len = in.read(buffer);
+				while (len != -1) {
+					out.write(buffer, 0, len);
+					len = in.read(buffer);
+				}
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

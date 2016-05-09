@@ -31,30 +31,29 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HandCondition extends Condition {
 
-    private final QuestItem questItem;
+	private final QuestItem questItem;
 
-    public HandCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Item name not defined");
-        }
-        String itemName = parts[1];
-        String itemInstruction = pack.getString("items." + itemName);
-        if (itemInstruction == null) {
-            throw new InstructionParseException("Item not defined: " + itemName);
-        }
-        questItem = new QuestItem(itemInstruction);
-    }
+	public HandCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Item name not defined");
+		}
+		String itemName = parts[1];
+		String itemInstruction = pack.getString("items." + itemName);
+		if (itemInstruction == null) {
+			throw new InstructionParseException("Item not defined: " + itemName);
+		}
+		questItem = new QuestItem(itemInstruction);
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
-        if (questItem.equalsI(item)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		ItemStack item = PlayerConverter.getPlayer(playerID).getItemInHand();
+		if (questItem.equalsI(item)) {
+			return true;
+		}
+		return false;
+	}
 
 }

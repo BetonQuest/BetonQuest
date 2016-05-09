@@ -40,108 +40,104 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class SmeltingObjective extends Objective implements Listener {
 
-    private final Material material;
-    private final int amount;
+	private final Material material;
+	private final int amount;
 
-    public SmeltingObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = SmeltData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        material = Material.matchMaterial(parts[1]);
-        if (material == null) {
-            throw new InstructionParseException("Unknown material: " + parts[1]);
-        }
-        try {
-            amount = Integer.parseInt(parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse amount");
-        }
-        if (amount < 1) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
-    }
+	public SmeltingObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = SmeltData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		material = Material.matchMaterial(parts[1]);
+		if (material == null) {
+			throw new InstructionParseException("Unknown material: " + parts[1]);
+		}
+		try {
+			amount = Integer.parseInt(parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse amount");
+		}
+		if (amount < 1) {
+			throw new InstructionParseException("Amount cannot be less than 1");
+		}
+	}
 
-    @EventHandler
-    public void onSmelting(FurnaceExtractEvent event) {
-        String playerID = PlayerConverter.getID((Player) event.getPlayer());
-        if (containsPlayer(playerID)
-            && event.getItemType().equals(material)
-            && checkConditions(playerID)) {
-            SmeltData playerData = (SmeltData) dataMap.get(playerID);
-            playerData.subtract(event.getItemAmount());
-            if (playerData.isZero()) {
-                completeObjective(playerID);
-            }
-        }
-    }
+	@EventHandler
+	public void onSmelting(FurnaceExtractEvent event) {
+		String playerID = PlayerConverter.getID((Player) event.getPlayer());
+		if (containsPlayer(playerID) && event.getItemType().equals(material) && checkConditions(playerID)) {
+			SmeltData playerData = (SmeltData) dataMap.get(playerID);
+			playerData.subtract(event.getItemAmount());
+			if (playerData.isZero()) {
+				completeObjective(playerID);
+			}
+		}
+	}
 
-    @EventHandler
-    public void onShiftSmelting(InventoryClickEvent event) {
-        if (event.getInventory().getType().equals(InventoryType.FURNACE) &&
-                event.getRawSlot() == 2 && event.getClick()
-                .equals(ClickType.SHIFT_LEFT) && event.getWhoClicked()
-                instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (containsPlayer(playerID)) event.setCancelled(true);
-        }
-    }
-    
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	@EventHandler
+	public void onShiftSmelting(InventoryClickEvent event) {
+		if (event.getInventory().getType().equals(InventoryType.FURNACE) && event.getRawSlot() == 2
+				&& event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {
+			String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+			if (containsPlayer(playerID))
+				event.setCancelled(true);
+		}
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            return Integer.toString(amount - ((SmeltData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
-            return Integer.toString(((SmeltData) dataMap.get(playerID)).getAmount());
-        }
-        return "";
-    }
-    
-    public static class SmeltData extends ObjectiveData {
-        
-        private int amount;
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
 
-        public SmeltData(String instruction, String playerID, String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-        
-        private int getAmount() {
-            return amount;
-        }
-        
-        private void subtract(int amount) {
-            this.amount -= amount; 
-            update();
-        }
-        
-        private boolean isZero() {
-            return amount <= 0;
-        }
+	@Override
+	public String getDefaultDataInstruction() {
+		return Integer.toString(amount);
+	}
 
-        @Override
-        public String toString() {
-            return Integer.toString(amount);
-        }
-        
-    }
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("left")) {
+			return Integer.toString(amount - ((SmeltData) dataMap.get(playerID)).getAmount());
+		} else if (name.equalsIgnoreCase("amount")) {
+			return Integer.toString(((SmeltData) dataMap.get(playerID)).getAmount());
+		}
+		return "";
+	}
+
+	public static class SmeltData extends ObjectiveData {
+
+		private int amount;
+
+		public SmeltData(String instruction, String playerID, String objID) {
+			super(instruction, playerID, objID);
+			amount = Integer.parseInt(instruction);
+		}
+
+		private int getAmount() {
+			return amount;
+		}
+
+		private void subtract(int amount) {
+			this.amount -= amount;
+			update();
+		}
+
+		private boolean isZero() {
+			return amount <= 0;
+		}
+
+		@Override
+		public String toString() {
+			return Integer.toString(amount);
+		}
+
+	}
 
 }

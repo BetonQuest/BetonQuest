@@ -34,51 +34,50 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class ExperienceObjective extends Objective implements Listener {
-    
-    private final int level;
 
-    public ExperienceObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            level = Integer.parseInt(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse level");
-        }
-        if (level < 1) {
-            throw new InstructionParseException("Level cannot be less than 1");
-        }
-    }
-    
-    @EventHandler
-    public void onLevelUp(PlayerLevelChangeEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
-            return;
-        }
-        if (event.getNewLevel() >= level && checkConditions(playerID)) {
-            completeObjective(playerID);
-        }
-    }
-    
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	private final int level;
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	public ExperienceObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			level = Integer.parseInt(parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse level");
+		}
+		if (level < 1) {
+			throw new InstructionParseException("Level cannot be less than 1");
+		}
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@EventHandler
+	public void onLevelUp(PlayerLevelChangeEvent event) {
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (!containsPlayer(playerID)) {
+			return;
+		}
+		if (event.getNewLevel() >= level && checkConditions(playerID)) {
+			completeObjective(playerID);
+		}
+	}
+
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

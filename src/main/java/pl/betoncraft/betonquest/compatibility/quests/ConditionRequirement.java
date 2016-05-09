@@ -31,19 +31,19 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class ConditionRequirement extends CustomRequirement {
-    
-    public ConditionRequirement() {
-        setName("BetonQuest condition");
-        setAuthor("Co0sh");
-        addData("Condition");
-        addDescription("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)");
-    }
 
-    @Override
-    public boolean testRequirement(Player player, Map<String, Object> dataMap) {
-        String playerID = PlayerConverter.getID(player);
-        String condition = dataMap.get("Condition").toString();
-        return BetonQuest.condition(playerID, condition);
-    }
+	public ConditionRequirement() {
+		setName("BetonQuest condition");
+		setAuthor("Co0sh");
+		addData("Condition");
+		addDescription("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)");
+	}
+
+	@Override
+	public boolean testRequirement(Player player, Map<String, Object> dataMap) {
+		String playerID = PlayerConverter.getID(player);
+		String condition = dataMap.get("Condition").toString();
+		return BetonQuest.condition(playerID, condition);
+	}
 
 }

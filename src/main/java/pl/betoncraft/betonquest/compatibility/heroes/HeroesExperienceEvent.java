@@ -25,43 +25,44 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Adds the experience the a class.
  * 
  * @author Jakub Sapalski
  */
 public class HeroesExperienceEvent extends QuestEvent {
-    
-    private boolean primary;
-    private VariableNumber amount;
 
-    public HeroesExperienceEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        primary = parts[1].equalsIgnoreCase("primary");
-        try {
-            amount = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse experience amount");
-        }
-    }
+	private boolean primary;
+	private VariableNumber amount;
 
-    @Override
-    public void run(String playerID) {
-        Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null) return;
-        if (primary) {
-            if (hero.getHeroClass() == null) return;
-            hero.addExp(amount.getInt(playerID), hero.getHeroClass(), hero.getPlayer().getLocation());
-        } else {
-            if (hero.getSecondClass() == null) return;
-            hero.addExp(amount.getInt(playerID), hero.getSecondClass(), hero.getPlayer().getLocation());
-        }
-    }
+	public HeroesExperienceEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		primary = parts[1].equalsIgnoreCase("primary");
+		try {
+			amount = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse experience amount");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+		if (hero == null)
+			return;
+		if (primary) {
+			if (hero.getHeroClass() == null)
+				return;
+			hero.addExp(amount.getInt(playerID), hero.getHeroClass(), hero.getPlayer().getLocation());
+		} else {
+			if (hero.getSecondClass() == null)
+				return;
+			hero.addExp(amount.getInt(playerID), hero.getSecondClass(), hero.getPlayer().getLocation());
+		}
+	}
 
 }

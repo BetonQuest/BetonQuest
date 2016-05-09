@@ -40,137 +40,129 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CraftingObjective extends Objective implements Listener {
 
-    private final Material material;
-    private final byte data;
-    private final int amount;
+	private final Material material;
+	private final byte data;
+	private final int amount;
 
-    public CraftingObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = CraftData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        if (parts[1].contains(":")) {
-            String[] materialParts = parts[1].split(":");
-            material = Material.matchMaterial(materialParts[0]);
-            if (material == null) {
-                throw new InstructionParseException("Material does not exist: "
-                        + materialParts[0]);
-            }
-            try {
-                data = Byte.parseByte(materialParts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse data value");
-            }
-        } else {
-            material = Material.matchMaterial(parts[1]);
-            if (material == null) {
-                throw new InstructionParseException("Material does not exist: "
-                        + parts[1]);
-            }
-            data = -1;
-        }
-        try {
-            amount = Integer.parseInt(parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse amount");
-        }
-        if (amount < 1) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
-    }
+	public CraftingObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = CraftData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		if (parts[1].contains(":")) {
+			String[] materialParts = parts[1].split(":");
+			material = Material.matchMaterial(materialParts[0]);
+			if (material == null) {
+				throw new InstructionParseException("Material does not exist: " + materialParts[0]);
+			}
+			try {
+				data = Byte.parseByte(materialParts[1]);
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse data value");
+			}
+		} else {
+			material = Material.matchMaterial(parts[1]);
+			if (material == null) {
+				throw new InstructionParseException("Material does not exist: " + parts[1]);
+			}
+			data = -1;
+		}
+		try {
+			amount = Integer.parseInt(parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse amount");
+		}
+		if (amount < 1) {
+			throw new InstructionParseException("Amount cannot be less than 1");
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @EventHandler
-    public void onCrafting(CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            Player player = (Player) event.getWhoClicked();
-            String playerID = PlayerConverter.getID(player);
-            CraftData playerData = (CraftData) dataMap.get(playerID);
-            if (containsPlayer(playerID)
-                && event.getRecipe().getResult().getType().equals(material)
-                && (data < 0 || event.getRecipe().getResult().getData()
-                        .getData() == data)
-                && checkConditions(playerID)) {
-                playerData.subtract(event.getRecipe().getResult().getAmount());
-                if (playerData.isZero()) {
-                    completeObjective(playerID);
-                }
-            }
-        }
-    }
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onCrafting(CraftItemEvent event) {
+		if (event.getWhoClicked() instanceof Player) {
+			Player player = (Player) event.getWhoClicked();
+			String playerID = PlayerConverter.getID(player);
+			CraftData playerData = (CraftData) dataMap.get(playerID);
+			if (containsPlayer(playerID) && event.getRecipe().getResult().getType().equals(material)
+					&& (data < 0 || event.getRecipe().getResult().getData().getData() == data)
+					&& checkConditions(playerID)) {
+				playerData.subtract(event.getRecipe().getResult().getAmount());
+				if (playerData.isZero()) {
+					completeObjective(playerID);
+				}
+			}
+		}
+	}
 
-    @EventHandler
-    public void onShiftCrafting(InventoryClickEvent event) {
-        if ((event.getInventory().getType().equals(InventoryType.CRAFTING) 
-                && event.getRawSlot() == 9) ||
-                (event.getInventory().getType().equals(InventoryType.WORKBENCH)
-                && event.getRawSlot() == 8)) {
-            if (event.getClick().equals(ClickType.SHIFT_LEFT) &&
-                    event.getWhoClicked() instanceof Player) {
-                Player player = (Player) event.getWhoClicked();
-                String playerID = PlayerConverter.getID(player);
-                if (containsPlayer(playerID)) {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
+	@EventHandler
+	public void onShiftCrafting(InventoryClickEvent event) {
+		if ((event.getInventory().getType().equals(InventoryType.CRAFTING) && event.getRawSlot() == 9)
+				|| (event.getInventory().getType().equals(InventoryType.WORKBENCH) && event.getRawSlot() == 8)) {
+			if (event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {
+				Player player = (Player) event.getWhoClicked();
+				String playerID = PlayerConverter.getID(player);
+				if (containsPlayer(playerID)) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            return Integer.toString(amount - ((CraftData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
-            return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
-        }
-        return "";
-    }
-    
-    public static class CraftData extends ObjectiveData {
-        
-        private int amount;
+	@Override
+	public String getDefaultDataInstruction() {
+		return Integer.toString(amount);
+	}
 
-        public CraftData(String instruction, String playerID, String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-        
-        private void subtract(int amount) {
-            this.amount -= amount;
-            update();
-        }
-        
-        private boolean isZero() {
-            return amount <= 0;
-        }
-        
-        private int getAmount() {
-            return amount;
-        }
-        
-        @Override
-        public String toString() {
-            return String.valueOf(amount);
-        }
-        
-    }
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("left")) {
+			return Integer.toString(amount - ((CraftData) dataMap.get(playerID)).getAmount());
+		} else if (name.equalsIgnoreCase("amount")) {
+			return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
+		}
+		return "";
+	}
+
+	public static class CraftData extends ObjectiveData {
+
+		private int amount;
+
+		public CraftData(String instruction, String playerID, String objID) {
+			super(instruction, playerID, objID);
+			amount = Integer.parseInt(instruction);
+		}
+
+		private void subtract(int amount) {
+			this.amount -= amount;
+			update();
+		}
+
+		private boolean isZero() {
+			return amount <= 0;
+		}
+
+		private int getAmount() {
+			return amount;
+		}
+
+		@Override
+		public String toString() {
+			return String.valueOf(amount);
+		}
+
+	}
 
 }

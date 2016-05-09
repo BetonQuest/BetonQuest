@@ -25,27 +25,27 @@ import org.bukkit.ChatColor;
  * @author Jakub Sapalski
  */
 public class SimpleConvIO extends ChatConvIO {
-    
-    private String optionFormat;
 
-    public SimpleConvIO(Conversation conv, String playerID) {
-        super(conv, playerID);
-        StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("number")) {
-            string.append(color);
-        }
-        string.append("%number%. ");
-        for (ChatColor color : colors.get("option")) {
-            string.append(color);
-        }
-        optionFormat = string.toString();
-    }
-    
-    @Override
-    public void display() {
-        super.display();
-        for (int i = 1; i <= options.size(); i++) {
-            player.sendMessage(optionFormat.replace("%number%", Integer.toString(i)) + options.get(i));
-        }
-    }
+	private String optionFormat;
+
+	public SimpleConvIO(Conversation conv, String playerID) {
+		super(conv, playerID);
+		StringBuilder string = new StringBuilder();
+		for (ChatColor color : colors.get("number")) {
+			string.append(color);
+		}
+		string.append("%number%. ");
+		for (ChatColor color : colors.get("option")) {
+			string.append(color);
+		}
+		optionFormat = string.toString();
+	}
+
+	@Override
+	public void display() {
+		super.display();
+		for (int i = 1; i <= options.size(); i++) {
+			player.sendMessage(optionFormat.replace("%number%", Integer.toString(i)) + options.get(i));
+		}
+	}
 }

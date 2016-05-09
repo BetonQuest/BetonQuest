@@ -29,30 +29,28 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ConversationEvent extends QuestEvent {
 
-    private final String pack;
-    private final String conv;
-    
-    public ConversationEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Conversation not defined");
-        }
-        String convID = parts[1];
-        if (convID.contains(".")) {
-            String[] parts2 = convID.split("\\.");
-            pack = parts2[0];
-            conv = parts2[1];
-        } else {
-            pack = super.pack.getName();
-            conv = convID;
-        }
-    }
-    
-    @Override
-    public void run(String playerID) {
-        new Conversation(playerID, pack, conv,
-                PlayerConverter.getPlayer(playerID).getLocation());
-    }
+	private final String pack;
+	private final String conv;
+
+	public ConversationEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Conversation not defined");
+		}
+		String convID = parts[1];
+		if (convID.contains(".")) {
+			String[] parts2 = convID.split("\\.");
+			pack = parts2[0];
+			conv = parts2[1];
+		} else {
+			pack = super.pack.getName();
+			conv = convID;
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		new Conversation(playerID, pack, conv, PlayerConverter.getPlayer(playerID).getLocation());
+	}
 }

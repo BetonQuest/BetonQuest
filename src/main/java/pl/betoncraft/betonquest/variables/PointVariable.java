@@ -29,58 +29,58 @@ import pl.betoncraft.betonquest.api.Variable;
  * @author Jakub Sapalski
  */
 public class PointVariable extends Variable {
-    
-    private String category;
-    private Type type;
-    private int amount;
 
-    public PointVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length != 3) {
-            throw new InstructionParseException("Incorrect number of arguments");
-        }
-        if (parts[1].contains(".")) {
-            category = parts[1];
-        } else {
-            category = packName + "." + parts[1];
-        }
-        if (parts[2].equalsIgnoreCase("amount")) {
-            type = Type.AMOUNT;
-        } else if (parts[2].toLowerCase().startsWith("left:")) {
-            type = Type.LEFT;
-            try {
-                amount = Integer.parseInt(parts[2].substring(5));
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse point amount");
-            }
-        }
-    }
+	private String category;
+	private Type type;
+	private int amount;
 
-    @Override
-    public String getValue(String playerID) {
-        Point point = null;
-        for (Point p : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
-            if (p.getCategory().equalsIgnoreCase(category)) {
-                point = p;
-                break;
-            }
-        }
-        int count = 0;
-        if (point != null) count = point.getCount();
-        switch (type) {
-            case AMOUNT:
-                return Integer.toString(count);
-            case LEFT:
-                return Integer.toString(amount - count);
-            default:
-                return "";
-        }
-    }
-    
-    private enum Type {
-        AMOUNT, LEFT
-    }
+	public PointVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length != 3) {
+			throw new InstructionParseException("Incorrect number of arguments");
+		}
+		if (parts[1].contains(".")) {
+			category = parts[1];
+		} else {
+			category = packName + "." + parts[1];
+		}
+		if (parts[2].equalsIgnoreCase("amount")) {
+			type = Type.AMOUNT;
+		} else if (parts[2].toLowerCase().startsWith("left:")) {
+			type = Type.LEFT;
+			try {
+				amount = Integer.parseInt(parts[2].substring(5));
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse point amount");
+			}
+		}
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		Point point = null;
+		for (Point p : BetonQuest.getInstance().getDBHandler(playerID).getPoints()) {
+			if (p.getCategory().equalsIgnoreCase(category)) {
+				point = p;
+				break;
+			}
+		}
+		int count = 0;
+		if (point != null)
+			count = point.getCount();
+		switch (type) {
+		case AMOUNT:
+			return Integer.toString(count);
+		case LEFT:
+			return Integer.toString(amount - count);
+		default:
+			return "";
+		}
+	}
+
+	private enum Type {
+		AMOUNT, LEFT
+	}
 
 }

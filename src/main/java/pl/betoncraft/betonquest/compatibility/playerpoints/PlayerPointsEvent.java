@@ -34,45 +34,44 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class PlayerPointsEvent extends QuestEvent {
-    
-    private VariableNumber count;
-    private boolean multi;
-    private PlayerPointsAPI api;
 
-    public PlayerPointsEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        if (parts[1].startsWith("*")) {
-            multi = true;
-            parts[1] = parts[1].replace("*", "");
-        } else {
-            multi = false;
-        }
-        try {
-            count = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point count");
-        }
-        api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
-    }
+	private VariableNumber count;
+	private boolean multi;
+	private PlayerPointsAPI api;
 
-    @Override
-    public void run(String playerID) {
-        UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
-        if (multi) {
-            api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
-        } else {
-            double i = count.getDouble(playerID);
-            if (i < 0) {
-                api.take(uuid, (int) Math.floor(-i));
-            } else {
-                api.give(uuid, (int) Math.floor(i));
-            }
-        }
-    }
+	public PlayerPointsEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		if (parts[1].startsWith("*")) {
+			multi = true;
+			parts[1] = parts[1].replace("*", "");
+		} else {
+			multi = false;
+		}
+		try {
+			count = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point count");
+		}
+		api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
+	}
+
+	@Override
+	public void run(String playerID) {
+		UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
+		if (multi) {
+			api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
+		} else {
+			double i = count.getDouble(playerID);
+			if (i < 0) {
+				api.take(uuid, (int) Math.floor(-i));
+			} else {
+				api.give(uuid, (int) Math.floor(i));
+			}
+		}
+	}
 
 }

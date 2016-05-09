@@ -25,26 +25,25 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  * 
  * @author Jakub Sapalski
  */
-public class CompassEvent extends QuestEvent{
-    
-    private TagEvent tag;
+public class CompassEvent extends QuestEvent {
 
-    public CompassEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String action = (parts[1].equalsIgnoreCase("add")) ? "add" : "del";
-        String compass = "compass-" + parts[2];
-        tag = new TagEvent(packName, "tag " + action + " " + compass);
-    }
-    
-    @Override
-    public void run(String playerID) {
-        tag.run(playerID);
-    }
+	private TagEvent tag;
+
+	public CompassEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String action = (parts[1].equalsIgnoreCase("add")) ? "add" : "del";
+		String compass = "compass-" + parts[2];
+		tag = new TagEvent(packName, "tag " + action + " " + compass);
+	}
+
+	@Override
+	public void run(String playerID) {
+		tag.run(playerID);
+	}
 
 }

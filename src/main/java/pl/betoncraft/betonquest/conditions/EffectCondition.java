@@ -30,26 +30,26 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class EffectCondition extends Condition {
 
-    private final PotionEffectType type;
+	private final PotionEffectType type;
 
-    public EffectCondition(String packName, String instructions) throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Effect type not defined");
-        }
-        type = PotionEffectType.getByName(parts[1]);
-        if (type == null) {
-            throw new InstructionParseException("Effect " + parts[1] + " does not exist");
-        }
-    }
+	public EffectCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Effect type not defined");
+		}
+		type = PotionEffectType.getByName(parts[1]);
+		if (type == null) {
+			throw new InstructionParseException("Effect " + parts[1] + " does not exist");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).hasPotionEffect(type)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		if (PlayerConverter.getPlayer(playerID).hasPotionEffect(type)) {
+			return true;
+		}
+		return false;
+	}
 
 }

@@ -33,59 +33,58 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class MythicSpawnMobEvent extends QuestEvent {
 
-    private final Location loc;
-    private final String mob;
-    private final VariableNumber amount;
-    private final VariableNumber level;
+	private final Location loc;
+	private final String mob;
+	private final VariableNumber amount;
+	private final VariableNumber level;
 
-    public MythicSpawnMobEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 4) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String[] coords = parts[1].split(";");
-        if (coords.length < 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(coords[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exist");
-        }
-        double x, y, z;
-        try {
-            x = Double.parseDouble(coords[0]);
-            y = Double.parseDouble(coords[1]);
-            z = Double.parseDouble(coords[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        loc = new Location(world, x, y, z);
-        String[] mobParts = parts[2].split(":");
-        if (mobParts.length != 2) {
-            throw new InstructionParseException("Wrong mob format");
-        }
-        mob = mobParts[0];
-        try {
-            level = new VariableNumber(packName, parts[2].split(":")[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse mob level");
-        }
-        try {
-            amount = new VariableNumber(packName, parts[3]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse mob amount");
-        }
-    }
+	public MythicSpawnMobEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 4) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String[] coords = parts[1].split(";");
+		if (coords.length < 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(coords[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exist");
+		}
+		double x, y, z;
+		try {
+			x = Double.parseDouble(coords[0]);
+			y = Double.parseDouble(coords[1]);
+			z = Double.parseDouble(coords[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		loc = new Location(world, x, y, z);
+		String[] mobParts = parts[2].split(":");
+		if (mobParts.length != 2) {
+			throw new InstructionParseException("Wrong mob format");
+		}
+		mob = mobParts[0];
+		try {
+			level = new VariableNumber(packName, parts[2].split(":")[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse mob level");
+		}
+		try {
+			amount = new VariableNumber(packName, parts[3]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse mob amount");
+		}
+	}
 
-    @Override
-    public void run(String playerID) {
-        int a = amount.getInt(playerID);
-        int l = level.getInt(playerID);
-        for (int i = 0; i < a; i++) {
-            MobSpawner.SpawnMythicMob(mob, loc, l);
-        }
-    }
+	@Override
+	public void run(String playerID) {
+		int a = amount.getInt(playerID);
+		int l = level.getInt(playerID);
+		for (int i = 0; i < a; i++) {
+			MobSpawner.SpawnMythicMob(mob, loc, l);
+		}
+	}
 
 }

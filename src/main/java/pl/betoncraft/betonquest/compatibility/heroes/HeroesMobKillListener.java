@@ -32,14 +32,14 @@ import pl.betoncraft.betonquest.api.MobKillNotifier;
  * @author Jakub Sapalski
  */
 public class HeroesMobKillListener implements Listener {
-    
-    public HeroesMobKillListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onHeroesKill(HeroKillCharacterEvent event) {
-        MobKillNotifier.addKill(event.getAttacker().getPlayer(), event.getDefender().getEntity());
-    }
+
+	public HeroesMobKillListener() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@EventHandler
+	public void onHeroesKill(HeroKillCharacterEvent event) {
+		MobKillNotifier.addKill(event.getAttacker().getPlayer(), event.getDefender().getEntity());
+	}
 
 }

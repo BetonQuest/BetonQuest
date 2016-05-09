@@ -24,53 +24,53 @@ package pl.betoncraft.betonquest;
  */
 public class Point {
 
-    /**
-     * Category of these points.
-     */
-    private String category;
-    /**
-     * Amount of these points.
-     */
-    private int count;
+	/**
+	 * Category of these points.
+	 */
+	private String category;
+	/**
+	 * Amount of these points.
+	 */
+	private int count;
 
-    /**
-     * Creates new instance of the Point object.
-     * 
-     * @param category
-     *            category of these points
-     * @param count
-     *            amount of these points
-     */
-    public Point(String category, int count) {
-        this.category = category;
-        this.count = count;
-    }
+	/**
+	 * Creates new instance of the Point object.
+	 * 
+	 * @param category
+	 *            category of these points
+	 * @param count
+	 *            amount of these points
+	 */
+	public Point(String category, int count) {
+		this.category = category;
+		this.count = count;
+	}
 
-    /**
-     * Returns the category of these points
-     * 
-     * @return the category of these points
-     */
-    public String getCategory() {
-        return category;
-    }
+	/**
+	 * Returns the category of these points
+	 * 
+	 * @return the category of these points
+	 */
+	public String getCategory() {
+		return category;
+	}
 
-    /**
-     * Returns the amount of these points
-     * 
-     * @return the count of these points
-     */
-    public int getCount() {
-        return count;
-    }
+	/**
+	 * Returns the amount of these points
+	 * 
+	 * @return the count of these points
+	 */
+	public int getCount() {
+		return count;
+	}
 
-    /**
-     * Adds points in this category
-     * 
-     * @param add
-     *            amount of the points to add
-     */
-    public void addPoints(int add) {
-        this.count = this.count + add;
-    }
+	/**
+	 * Adds points in this category
+	 * 
+	 * @param add
+	 *            amount of the points to add
+	 */
+	public void addPoints(int add) {
+		this.count = this.count + add;
+	}
 }

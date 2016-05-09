@@ -37,80 +37,74 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LocationObjective extends Objective implements Listener {
 
-    private final Location location;
-    private final double distance;
+	private final Location location;
+	private final double distance;
 
-    public LocationObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String[] partsOfLoc = parts[1].split(";");
-        if (partsOfLoc.length < 5) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(partsOfLoc[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exist: "
-                    + partsOfLoc[3]);
-        }
-        double x, y, z;
-        try {
-            x = Double.valueOf(partsOfLoc[0]);
-            y = Double.valueOf(partsOfLoc[1]);
-            z = Double.valueOf(partsOfLoc[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        location = new Location(world, x, y, z);
-        try {
-            distance = Double.valueOf(partsOfLoc[4]);
-            if (distance <= 0) {
-                throw new InstructionParseException(
-                        "Distance must be positive");
-            }
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse distance");
-        }
-    }
+	public LocationObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String[] partsOfLoc = parts[1].split(";");
+		if (partsOfLoc.length < 5) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(partsOfLoc[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exist: " + partsOfLoc[3]);
+		}
+		double x, y, z;
+		try {
+			x = Double.valueOf(partsOfLoc[0]);
+			y = Double.valueOf(partsOfLoc[1]);
+			z = Double.valueOf(partsOfLoc[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		location = new Location(world, x, y, z);
+		try {
+			distance = Double.valueOf(partsOfLoc[4]);
+			if (distance <= 0) {
+				throw new InstructionParseException("Distance must be positive");
+			}
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse distance");
+		}
+	}
 
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID)
-            && event.getPlayer().getWorld().equals(location.getWorld())) {
-            if (event.getTo().distanceSquared(location) <= distance*distance
-                    && super.checkConditions(playerID)) {
-                completeObjective(playerID);
-            }
-        }
-    }
-    
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	@EventHandler
+	public void onMove(PlayerMoveEvent event) {
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (containsPlayer(playerID) && event.getPlayer().getWorld().equals(location.getWorld())) {
+			if (event.getTo().distanceSquared(location) <= distance * distance && super.checkConditions(playerID)) {
+				completeObjective(playerID);
+			}
+		}
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("location")) {
-            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() +
-                    ", Z: " + location.getBlockZ();
-        }
-        return "";
-    }
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
+
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("location")) {
+			return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
+		}
+		return "";
+	}
 
 }

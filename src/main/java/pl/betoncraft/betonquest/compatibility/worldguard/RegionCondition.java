@@ -36,30 +36,29 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
  */
 public class RegionCondition extends Condition {
 
-    private final String name;
-    private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
-            Bukkit.getPluginManager().getPlugin("WorldGuard");
-    
-    public RegionCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        name = parts[1];
-    }
+	private final String name;
+	private final WorldGuardPlugin worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
 
-    @Override
-    public boolean check(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        RegionManager manager = worldGuard.getRegionManager(player.getWorld());
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) return true;
-        }
-        return false;
-    }
+	public RegionCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		name = parts[1];
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		RegionManager manager = worldGuard.getRegionManager(player.getWorld());
+		ProtectedRegion region = manager.getRegion(name);
+		ApplicableRegionSet set = manager.getApplicableRegions(player.getLocation());
+		for (ProtectedRegion compare : set) {
+			if (compare.equals(region))
+				return true;
+		}
+		return false;
+	}
 
 }

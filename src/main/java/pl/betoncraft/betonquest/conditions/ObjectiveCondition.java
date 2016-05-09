@@ -29,28 +29,27 @@ import pl.betoncraft.betonquest.api.Objective;
  */
 public class ObjectiveCondition extends Condition {
 
-    public final Objective objective;
+	public final Objective objective;
 
-    public ObjectiveCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String objName = parts[1];
-        if (!objName.contains(".")) {
-            objName = packName + "." + objName;
-        }
-        objective = BetonQuest.getInstance().getObjective(objName);
-        if (objective == null) {
-            throw new InstructionParseException("Objective does not exist");
-        }
-    }
+	public ObjectiveCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String objName = parts[1];
+		if (!objName.contains(".")) {
+			objName = packName + "." + objName;
+		}
+		objective = BetonQuest.getInstance().getObjective(objName);
+		if (objective == null) {
+			throw new InstructionParseException("Objective does not exist");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        return objective.containsPlayer(playerID);
-    }
+	@Override
+	public boolean check(String playerID) {
+		return objective.containsPlayer(playerID);
+	}
 
 }

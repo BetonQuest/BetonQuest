@@ -32,33 +32,32 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class SkillAPILevelCondition extends Condition {
-    
-    private String className;
-    private VariableNumber level;
 
-    public SkillAPILevelCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        className = parts[1];
-        if (!SkillAPI.isClassRegistered(className)) {
-            throw new InstructionParseException("Class '" + className + "' is not registered");
-        }
-        try {
-            level = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse level");
-        }
-    }
+	private String className;
+	private VariableNumber level;
 
-    @Override
-    public boolean check(String playerID) {
-        PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
-        PlayerClass playerClass = data.getClass(className);
-        return playerClass != null && level.getInt(playerID) <= playerClass.getLevel();
-    }
+	public SkillAPILevelCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		className = parts[1];
+		if (!SkillAPI.isClassRegistered(className)) {
+			throw new InstructionParseException("Class '" + className + "' is not registered");
+		}
+		try {
+			level = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse level");
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
+		PlayerClass playerClass = data.getClass(className);
+		return playerClass != null && level.getInt(playerID) <= playerClass.getLevel();
+	}
 
 }

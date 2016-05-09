@@ -34,29 +34,28 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class PlayerPointsCondition extends Condition {
-    
-    private VariableNumber count;
-    private PlayerPointsAPI api;
 
-    public PlayerPointsCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            count = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point count");
-        }
-        api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
-    }
+	private VariableNumber count;
+	private PlayerPointsAPI api;
 
-    @Override
-    public boolean check(String playerID) {
-        UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
-        return api.look(uuid) >= count.getInt(playerID);
-    }
+	public PlayerPointsCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			count = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point count");
+		}
+		api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
+		return api.look(uuid) >= count.getInt(playerID);
+	}
 
 }

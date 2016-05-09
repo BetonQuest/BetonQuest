@@ -37,116 +37,121 @@ import pl.betoncraft.betonquest.config.Config;
  */
 public class DelayObjective extends Objective {
 
-    private final long delay;
-    private BukkitTask runnable;
+	private final long delay;
+	private BukkitTask runnable;
 
-    public DelayObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = DelayData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            delay = Long.parseLong(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse delay");
-        }
-        if (delay < 0) {
-            throw new InstructionParseException("Delay cannot be less than 0");
-        }
-    }
+	public DelayObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = DelayData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			delay = Long.parseLong(parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse delay");
+		}
+		if (delay < 0) {
+			throw new InstructionParseException("Delay cannot be less than 0");
+		}
+	}
 
-    @Override
-    public void start() {
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (String playerID : new ArrayList<>(dataMap.keySet())) {
-                    DelayData playerData = (DelayData) dataMap.get(playerID);
-                    if (new Date().getTime() >= playerData.getTime() &&
-                            checkConditions(playerID)) {
-                        completeObjective(playerID);
-                    }
-                }
-            }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, 20 * 10);
-    }
+	@Override
+	public void start() {
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (String playerID : new ArrayList<>(dataMap.keySet())) {
+					DelayData playerData = (DelayData) dataMap.get(playerID);
+					if (new Date().getTime() >= playerData.getTime() && checkConditions(playerID)) {
+						completeObjective(playerID);
+					}
+				}
+			}
+		}.runTaskTimer(BetonQuest.getInstance(), 0, 20 * 10);
+	}
 
-    @Override
-    public void stop() {
-        if (runnable != null) runnable.cancel();
-    }
+	@Override
+	public void stop() {
+		if (runnable != null)
+			runnable.cancel();
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Long.toString(new Date().getTime() + delay*1000*60);
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
-            String daysWord = Config.getMessage(lang, "days");
-            String hoursWord = Config.getMessage(lang, "hours");
-            String minutesWord = Config.getMessage(lang, "minutes");
-            String secondsWord = Config.getMessage(lang, "seconds");
-            long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            long s = (timeLeft / (1000)) % 60;
-            long m = (timeLeft / (1000 * 60)) % 60;
-            long h = (timeLeft / (1000 * 60 * 60)) % 24;
-            long d = (timeLeft / (1000 * 60 * 60 * 24));
-            StringBuilder time = new StringBuilder();
-            String[] words = new String[3];
-            if (d > 0) words[0] = d + " " + daysWord;
-            if (h > 0) words[1] = h + " " + hoursWord;
-            if (m > 0) words[2] = m + " " + minutesWord;
-            int count = 0;
-            for (String word : words) {
-                if (word != null) count++;
-            }
-            if (count == 0) {
-                time.append(s + " " + secondsWord);
-            } else if (count == 1) {
-                for (String word : words) {
-                    if (word == null) continue;
-                    time.append(word);
-                }
-            } else if (count == 2) {
-                boolean second = false;
-                for (String word : words) {
-                    if (word == null) continue;
-                    if (second) {
-                        time.append(" " + word);
-                    } else {
-                        time.append(word + " " + Config.getMessage(lang, "and"));
-                        second = true;
-                    }
-                }
-            } else {
-                time.append(words[0] + ", " + words[1] + " " + Config.getMessage(lang, "and ") + words[2]);
-            }
-            return time.toString();
-        } else if (name.equalsIgnoreCase("date")) {
-            return new SimpleDateFormat(Config.getString("config.date_format"))
-                    .format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
-        }
-        return "";
-    }
-    
-    public static class DelayData extends ObjectiveData {
-        
-        private final long timestamp;
+	@Override
+	public String getDefaultDataInstruction() {
+		return Long.toString(new Date().getTime() + delay * 1000 * 60);
+	}
 
-        public DelayData(String instruction, String playerID, String objID) {
-            super(instruction, playerID, objID);
-            timestamp = Long.parseLong(instruction);
-        }
-        
-        private long getTime() {
-            return timestamp;
-        }
-        
-    }
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("left")) {
+			String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+			String daysWord = Config.getMessage(lang, "days");
+			String hoursWord = Config.getMessage(lang, "hours");
+			String minutesWord = Config.getMessage(lang, "minutes");
+			String secondsWord = Config.getMessage(lang, "seconds");
+			long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+			long s = (timeLeft / (1000)) % 60;
+			long m = (timeLeft / (1000 * 60)) % 60;
+			long h = (timeLeft / (1000 * 60 * 60)) % 24;
+			long d = (timeLeft / (1000 * 60 * 60 * 24));
+			StringBuilder time = new StringBuilder();
+			String[] words = new String[3];
+			if (d > 0)
+				words[0] = d + " " + daysWord;
+			if (h > 0)
+				words[1] = h + " " + hoursWord;
+			if (m > 0)
+				words[2] = m + " " + minutesWord;
+			int count = 0;
+			for (String word : words) {
+				if (word != null)
+					count++;
+			}
+			if (count == 0) {
+				time.append(s + " " + secondsWord);
+			} else if (count == 1) {
+				for (String word : words) {
+					if (word == null)
+						continue;
+					time.append(word);
+				}
+			} else if (count == 2) {
+				boolean second = false;
+				for (String word : words) {
+					if (word == null)
+						continue;
+					if (second) {
+						time.append(" " + word);
+					} else {
+						time.append(word + " " + Config.getMessage(lang, "and"));
+						second = true;
+					}
+				}
+			} else {
+				time.append(words[0] + ", " + words[1] + " " + Config.getMessage(lang, "and ") + words[2]);
+			}
+			return time.toString();
+		} else if (name.equalsIgnoreCase("date")) {
+			return new SimpleDateFormat(Config.getString("config.date_format"))
+					.format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
+		}
+		return "";
+	}
+
+	public static class DelayData extends ObjectiveData {
+
+		private final long timestamp;
+
+		public DelayData(String instruction, String playerID, String objID) {
+			super(instruction, playerID, objID);
+			timestamp = Long.parseLong(instruction);
+		}
+
+		private long getTime() {
+			return timestamp;
+		}
+
+	}
 }

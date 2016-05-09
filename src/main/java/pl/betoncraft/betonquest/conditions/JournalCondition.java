@@ -29,30 +29,28 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class JournalCondition extends Condition {
 
-    private final String targetPointer;
+	private final String targetPointer;
 
-    public JournalCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Journal entry not defined");
-        }
-        if (parts[1].contains(".")) {
-            targetPointer = parts[1];
-        } else {
-            targetPointer = packName + "." + parts[1];
-        }
-    }
+	public JournalCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Journal entry not defined");
+		}
+		if (parts[1].contains(".")) {
+			targetPointer = parts[1];
+		} else {
+			targetPointer = packName + "." + parts[1];
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID)
-                .getJournal().getPointers()) {
-            if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		for (Pointer pointer : BetonQuest.getInstance().getDBHandler(playerID).getJournal().getPointers()) {
+			if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -28,32 +28,31 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Runs specified Denizen task script. 
+ * Runs specified Denizen task script.
  * 
  * @author Jakub Sapalski
  */
 public class DenizenTaskScriptEvent extends QuestEvent {
-    
-    private TaskScriptContainer taskScript;
 
-    public DenizenTaskScriptEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        taskScript = ScriptRegistry.getScriptContainerAs(parts[1], TaskScriptContainer.class);
-        if (taskScript == null) {
-            throw new InstructionParseException("Denizen script '" + parts[1] + "' is not defined");
-        }
-    }
+	private TaskScriptContainer taskScript;
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        BukkitScriptEntryData data = new BukkitScriptEntryData(dPlayer.mirrorBukkitPlayer(player), null); 
-        taskScript.runTaskScript(data, null);
-    }
+	public DenizenTaskScriptEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		taskScript = ScriptRegistry.getScriptContainerAs(parts[1], TaskScriptContainer.class);
+		if (taskScript == null) {
+			throw new InstructionParseException("Denizen script '" + parts[1] + "' is not defined");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		BukkitScriptEntryData data = new BukkitScriptEntryData(dPlayer.mirrorBukkitPlayer(player), null);
+		taskScript.runTaskScript(data, null);
+	}
 
 }

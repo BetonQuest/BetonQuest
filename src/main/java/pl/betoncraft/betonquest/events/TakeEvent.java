@@ -41,120 +41,118 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class TakeEvent extends QuestEvent {
 
-    private final Item[]  questItems;
-    private final boolean notify;
-    
-    private int counter;
+	private final Item[] questItems;
+	private final boolean notify;
 
-    public TakeEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not eoungh arguments");
-        }
-        notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
-        String[] itemsToRemove = parts[1].split(",");
-        ArrayList<Item> list = new ArrayList<>();
-        for (String rawItem : itemsToRemove) {
-            String[] rawItemParts = rawItem.split(":");
-            String itemName = rawItemParts[0];
-            VariableNumber amount = new VariableNumber(1);
-            if (rawItemParts.length > 1) {
-                try {
-                    amount = new VariableNumber(packName, rawItemParts[1]);
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException(
-                            "Could not parse item amount");
-                }
-            }
-            String itemInstruction = pack.getString("items." + itemName);
-            if (itemInstruction == null) {
-                throw new InstructionParseException("Item not defined");
-            }
-            QuestItem questItem = new QuestItem(itemInstruction);
-            list.add(new Item(questItem, amount));
-        }
-        Item[] tempQuestItems = new Item[list.size()];
-        tempQuestItems = list.toArray(tempQuestItems);
-        questItems = tempQuestItems;
-    }
+	private int counter;
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (Item item : questItems) {
-            QuestItem questItem = item.getItem();
-            VariableNumber amount = item.getAmount();
-            
-            // cache the amount
-            counter = amount.getInt(playerID);
-            
-            // notify the player
-            if (notify) {
-                Config.sendMessage(playerID, "items_taken", new String[]{
-                        (questItem.getName() != null) ? questItem.getName() :
-                                questItem.getMaterial().toString().toLowerCase()
-                                .replace("_", " "), String.valueOf(counter)});
-            }
+	public TakeEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not eoungh arguments");
+		}
+		notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
+		String[] itemsToRemove = parts[1].split(",");
+		ArrayList<Item> list = new ArrayList<>();
+		for (String rawItem : itemsToRemove) {
+			String[] rawItemParts = rawItem.split(":");
+			String itemName = rawItemParts[0];
+			VariableNumber amount = new VariableNumber(1);
+			if (rawItemParts.length > 1) {
+				try {
+					amount = new VariableNumber(packName, rawItemParts[1]);
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse item amount");
+				}
+			}
+			String itemInstruction = pack.getString("items." + itemName);
+			if (itemInstruction == null) {
+				throw new InstructionParseException("Item not defined");
+			}
+			QuestItem questItem = new QuestItem(itemInstruction);
+			list.add(new Item(questItem, amount));
+		}
+		Item[] tempQuestItems = new Item[list.size()];
+		tempQuestItems = list.toArray(tempQuestItems);
+		questItems = tempQuestItems;
+	}
 
-            //Remove Quest items from player's inventory
-            player.getInventory().setContents(
-                    removeItems(player.getInventory().getContents(), questItem));
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		for (Item item : questItems) {
+			QuestItem questItem = item.getItem();
+			VariableNumber amount = item.getAmount();
 
-            //Remove Quest items from player's armor slots
-            if (counter > 0) {
-                player.getInventory().setArmorContents(removeItems(
-                        player.getInventory().getArmorContents(), questItem));
-            }
+			// cache the amount
+			counter = amount.getInt(playerID);
 
-            //Remove Quest items from player's backpack
-            if (counter > 0) {
-                List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
-                ItemStack[] array = new ItemStack[] {};
-                array = backpack.toArray(array);
-                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
-                list.removeAll(Collections.singleton(null));
-                BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
-            }
-        }
-    }
+			// notify the player
+			if (notify) {
+				Config.sendMessage(playerID, "items_taken",
+						new String[] {
+								(questItem.getName() != null) ? questItem.getName()
+										: questItem.getMaterial().toString().toLowerCase().replace("_", " "),
+								String.valueOf(counter) });
+			}
 
-    private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {
-        for (int i = 0; i < items.length; i++) {
-            ItemStack item = items[i];
-            if (questItem.equalsI(item)) {
-                if (item.getAmount() - counter <= 0) {
-                    counter -= item.getAmount();
-                    items[i] = null;
-                } else {
-                    item.setAmount(item.getAmount() - counter);
-                    counter = 0;
-                }
-                if (counter <= 0) {
-                    break;
-                }
-            }
-        }
-        return items;
-    }
+			// Remove Quest items from player's inventory
+			player.getInventory().setContents(removeItems(player.getInventory().getContents(), questItem));
 
-    private class Item {
+			// Remove Quest items from player's armor slots
+			if (counter > 0) {
+				player.getInventory()
+						.setArmorContents(removeItems(player.getInventory().getArmorContents(), questItem));
+			}
 
-        private final QuestItem item;
-        private final VariableNumber amount;
+			// Remove Quest items from player's backpack
+			if (counter > 0) {
+				List<ItemStack> backpack = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
+				ItemStack[] array = new ItemStack[] {};
+				array = backpack.toArray(array);
+				LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
+				list.removeAll(Collections.singleton(null));
+				BetonQuest.getInstance().getDBHandler(playerID).setBackpack(list);
+			}
+		}
+	}
 
-        public Item(QuestItem item, VariableNumber amount) {
-            this.item = item;
-            this.amount = amount;
-        }
+	private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {
+		for (int i = 0; i < items.length; i++) {
+			ItemStack item = items[i];
+			if (questItem.equalsI(item)) {
+				if (item.getAmount() - counter <= 0) {
+					counter -= item.getAmount();
+					items[i] = null;
+				} else {
+					item.setAmount(item.getAmount() - counter);
+					counter = 0;
+				}
+				if (counter <= 0) {
+					break;
+				}
+			}
+		}
+		return items;
+	}
 
-        public QuestItem getItem() {
-            return item;
-        }
+	private class Item {
 
-        public VariableNumber getAmount() {
-            return amount;
-        }
-    }
+		private final QuestItem item;
+		private final VariableNumber amount;
+
+		public Item(QuestItem item, VariableNumber amount) {
+			this.item = item;
+			this.amount = amount;
+		}
+
+		public QuestItem getItem() {
+			return item;
+		}
+
+		public VariableNumber getAmount() {
+			return amount;
+		}
+	}
 }

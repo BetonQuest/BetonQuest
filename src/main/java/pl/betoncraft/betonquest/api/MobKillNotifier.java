@@ -36,75 +36,78 @@ import pl.betoncraft.betonquest.BetonQuest;
  * @author Jakub Sapalski
  */
 public class MobKillNotifier {
-    
-    private static final HandlerList handlers = new HandlerList();
-    
-    private static MobKillNotifier instance;
-    private BukkitRunnable cleaner;
-    private ArrayList<Entity> entities = new ArrayList<>();
-    
-    public MobKillNotifier() {
-        instance = this;
-        cleaner = new BukkitRunnable() {
-            @Override
-            public void run() {
-                entities.clear();
-            }
-        };
-        cleaner.runTaskTimer(BetonQuest.getInstance(), 1, 1);
-    }
-    
-    /**
-     * Call this method when you detect that a player killed a mob in a non-standard way
-     * (i.e. a spell, projectile weapon etc.)
-     * 
-     * @param killer the player that killed the mob
-     * @param killed the mob that was killed
-     */
-    public static void addKill(Player killer, Entity killed) {
-    	if (instance == null) new MobKillNotifier();
-        if (instance.entities.contains(killed)) return;
-        instance.entities.add(killed);
-        MobKilledEvent event = new MobKilledEvent(killer, killed);
-        Bukkit.getPluginManager().callEvent(event);
-    }
-    
-    /**
-     * Is fired when BetonQuests receives info about a new, unique mob kill.
-     */
-    public static class MobKilledEvent extends Event {
-        
-        private Player killer;
-        private Entity killed;
 
-        public MobKilledEvent(Player killer, Entity killed) {
-            this.killer = killer;
-            this.killed = killed;
-        }
-        
-        /**
-         * @return the player that killed this entity
-         */
-        public Player getPlayer() {
-            return killer;
-        }
+	private static final HandlerList handlers = new HandlerList();
 
-        
-        /**
-         * @return the entity that was killed
-         */
-        public Entity getEntity() {
-            return killed;
-        }
+	private static MobKillNotifier instance;
+	private BukkitRunnable cleaner;
+	private ArrayList<Entity> entities = new ArrayList<>();
 
-        public HandlerList getHandlers() {
-            return handlers;
-        }
-         
-        public static HandlerList getHandlerList() {
-            return handlers;
-        }
-        
-    }
+	public MobKillNotifier() {
+		instance = this;
+		cleaner = new BukkitRunnable() {
+			@Override
+			public void run() {
+				entities.clear();
+			}
+		};
+		cleaner.runTaskTimer(BetonQuest.getInstance(), 1, 1);
+	}
+
+	/**
+	 * Call this method when you detect that a player killed a mob in a
+	 * non-standard way (i.e. a spell, projectile weapon etc.)
+	 * 
+	 * @param killer
+	 *            the player that killed the mob
+	 * @param killed
+	 *            the mob that was killed
+	 */
+	public static void addKill(Player killer, Entity killed) {
+		if (instance == null)
+			new MobKillNotifier();
+		if (instance.entities.contains(killed))
+			return;
+		instance.entities.add(killed);
+		MobKilledEvent event = new MobKilledEvent(killer, killed);
+		Bukkit.getPluginManager().callEvent(event);
+	}
+
+	/**
+	 * Is fired when BetonQuests receives info about a new, unique mob kill.
+	 */
+	public static class MobKilledEvent extends Event {
+
+		private Player killer;
+		private Entity killed;
+
+		public MobKilledEvent(Player killer, Entity killed) {
+			this.killer = killer;
+			this.killed = killed;
+		}
+
+		/**
+		 * @return the player that killed this entity
+		 */
+		public Player getPlayer() {
+			return killer;
+		}
+
+		/**
+		 * @return the entity that was killed
+		 */
+		public Entity getEntity() {
+			return killed;
+		}
+
+		public HandlerList getHandlers() {
+			return handlers;
+		}
+
+		public static HandlerList getHandlerList() {
+			return handlers;
+		}
+
+	}
 
 }

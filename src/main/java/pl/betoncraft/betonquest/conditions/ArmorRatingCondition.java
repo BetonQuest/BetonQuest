@@ -33,86 +33,84 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ArmorRatingCondition extends Condition {
 
-    private final VariableNumber required;
+	private final VariableNumber required;
 
-    public ArmorRatingCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
+	public ArmorRatingCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
 
-        String[] parts = instructions.split(" ");
+		String[] parts = instructions.split(" ");
 
-        if (parts.length < 2) {
-            throw new InstructionParseException("Armor rating not defined");
-        }
+		if (parts.length < 2) {
+			throw new InstructionParseException("Armor rating not defined");
+		}
 
-        try {
-            required = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse rating amount");
-        }
-    }
+		try {
+			required = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse rating amount");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        PlayerInventory inv =
-                PlayerConverter.getPlayer(playerID).getInventory();
-        int rating = 0;
-        ItemStack boots = inv.getBoots();
-        ItemStack helmet = inv.getHelmet();
-        ItemStack chest = inv.getChestplate();
-        ItemStack leggings = inv.getLeggings();
-        if (helmet != null) {
-            if (helmet.getType() == Material.LEATHER_HELMET)
-                rating += 1;
-            else if (helmet.getType() == Material.GOLD_HELMET)
-                rating += 2;
-            else if (helmet.getType() == Material.CHAINMAIL_HELMET)
-                rating += 2;
-            else if (helmet.getType() == Material.IRON_HELMET)
-                rating += 2;
-            else if (helmet.getType() == Material.DIAMOND_HELMET)
-                rating += 3;
-        }
-        if (boots != null) {
-            if (boots.getType() == Material.LEATHER_BOOTS)
-                rating += 1;
-            else if (boots.getType() == Material.GOLD_BOOTS)
-                rating += 1;
-            else if (boots.getType() == Material.CHAINMAIL_BOOTS)
-                rating += 1;
-            else if (boots.getType() == Material.IRON_BOOTS)
-                rating += 2;
-            else if (boots.getType() == Material.DIAMOND_BOOTS)
-                rating += 3;
-        }
-        if (leggings != null) {
-            if (leggings.getType() == Material.LEATHER_LEGGINGS)
-                rating += 2;
-            else if (leggings.getType() == Material.GOLD_LEGGINGS)
-                rating += 3;
-            else if (leggings.getType() == Material.CHAINMAIL_LEGGINGS)
-                rating += 4;
-            else if (leggings.getType() == Material.IRON_LEGGINGS)
-                rating += 5;
-            else if (leggings.getType() == Material.DIAMOND_LEGGINGS)
-                rating += 6;
-        }
-        if (chest != null) {
-            if (chest.getType() == Material.LEATHER_CHESTPLATE)
-                rating += 3;
-            else if (chest.getType() == Material.GOLD_CHESTPLATE)
-                rating += 5;
-            else if (chest.getType() == Material.CHAINMAIL_CHESTPLATE)
-                rating += 5;
-            else if (chest.getType() == Material.IRON_CHESTPLATE)
-                rating += 6;
-            else if (chest.getType() == Material.DIAMOND_CHESTPLATE)
-                rating += 8;
-        }
-        if (rating >= required.getInt(playerID)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+		int rating = 0;
+		ItemStack boots = inv.getBoots();
+		ItemStack helmet = inv.getHelmet();
+		ItemStack chest = inv.getChestplate();
+		ItemStack leggings = inv.getLeggings();
+		if (helmet != null) {
+			if (helmet.getType() == Material.LEATHER_HELMET)
+				rating += 1;
+			else if (helmet.getType() == Material.GOLD_HELMET)
+				rating += 2;
+			else if (helmet.getType() == Material.CHAINMAIL_HELMET)
+				rating += 2;
+			else if (helmet.getType() == Material.IRON_HELMET)
+				rating += 2;
+			else if (helmet.getType() == Material.DIAMOND_HELMET)
+				rating += 3;
+		}
+		if (boots != null) {
+			if (boots.getType() == Material.LEATHER_BOOTS)
+				rating += 1;
+			else if (boots.getType() == Material.GOLD_BOOTS)
+				rating += 1;
+			else if (boots.getType() == Material.CHAINMAIL_BOOTS)
+				rating += 1;
+			else if (boots.getType() == Material.IRON_BOOTS)
+				rating += 2;
+			else if (boots.getType() == Material.DIAMOND_BOOTS)
+				rating += 3;
+		}
+		if (leggings != null) {
+			if (leggings.getType() == Material.LEATHER_LEGGINGS)
+				rating += 2;
+			else if (leggings.getType() == Material.GOLD_LEGGINGS)
+				rating += 3;
+			else if (leggings.getType() == Material.CHAINMAIL_LEGGINGS)
+				rating += 4;
+			else if (leggings.getType() == Material.IRON_LEGGINGS)
+				rating += 5;
+			else if (leggings.getType() == Material.DIAMOND_LEGGINGS)
+				rating += 6;
+		}
+		if (chest != null) {
+			if (chest.getType() == Material.LEATHER_CHESTPLATE)
+				rating += 3;
+			else if (chest.getType() == Material.GOLD_CHESTPLATE)
+				rating += 5;
+			else if (chest.getType() == Material.CHAINMAIL_CHESTPLATE)
+				rating += 5;
+			else if (chest.getType() == Material.IRON_CHESTPLATE)
+				rating += 6;
+			else if (chest.getType() == Material.DIAMOND_CHESTPLATE)
+				rating += 8;
+		}
+		if (rating >= required.getInt(playerID)) {
+			return true;
+		}
+		return false;
+	}
 
 }

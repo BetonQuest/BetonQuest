@@ -30,33 +30,35 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class PlayerConversationEndEvent extends PlayerEvent {
 
-    private static final HandlerList handlers = new HandlerList();
-    private Conversation conversation;
+	private static final HandlerList handlers = new HandlerList();
+	private Conversation conversation;
 
-    /**
-     * Creates new conversation start event
-     * 
-     * @param who player
-     * @param conversation conversation which has been started
-     */
-    public PlayerConversationEndEvent(Player who, Conversation conversation) {
-        super(who);
-        this.conversation = conversation;
-    }
-    
-    /**
-     * @return the conversation which has been started
-     */
-    public Conversation getConversation() {
-        return conversation;
-    }
-    
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-     
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	/**
+	 * Creates new conversation start event
+	 * 
+	 * @param who
+	 *            player
+	 * @param conversation
+	 *            conversation which has been started
+	 */
+	public PlayerConversationEndEvent(Player who, Conversation conversation) {
+		super(who);
+		this.conversation = conversation;
+	}
+
+	/**
+	 * @return the conversation which has been started
+	 */
+	public Conversation getConversation() {
+		return conversation;
+	}
+
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
 }

@@ -26,36 +26,36 @@ import org.bukkit.event.HandlerList;
  * @author Jakub Sapalski
  */
 public class QuestDataUpdateEvent extends Event {
-    
-    private static final HandlerList handlers = new HandlerList();
-    
-    private String playerID;
-    private String objID;
-    private String data;
 
-    public QuestDataUpdateEvent(String playerID, String objID, String data) {
-        this.playerID = playerID;
-        this.objID = objID;
-        this.data = data;
-    }
-    
-    public String getPlayerID() {
-        return playerID;
-    }
-    
-    public String getObjID() {
-        return objID;
-    }
-    
-    public String getData() {
-        return data;
-    }
-    
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-     
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	private static final HandlerList handlers = new HandlerList();
+
+	private String playerID;
+	private String objID;
+	private String data;
+
+	public QuestDataUpdateEvent(String playerID, String objID, String data) {
+		this.playerID = playerID;
+		this.objID = objID;
+		this.data = data;
+	}
+
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public String getObjID() {
+		return objID;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }

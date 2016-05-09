@@ -36,93 +36,91 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ItemCondition extends Condition {
 
-    private final List<Item> questItems = new ArrayList<>();
+	private final List<Item> questItems = new ArrayList<>();
 
-    public ItemCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Items not defined");
-        }
-        String items = parts[1];
-        for (String item : items.split(",")) {
-            String[] itemParts = item.split(":");
-            String name = itemParts[0];
-            VariableNumber amount = new VariableNumber(1);
-            if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
-                try {
-                    amount = new VariableNumber(packName, item.split(":")[1]);
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException(
-                            "Cannot parse item amount");
-                }
-            }
-            String itemInstruction = pack.getString("items." + name);
-            if (itemInstruction == null) {
-                throw new InstructionParseException("Item not defined: " + name);
-            }
-            QuestItem questItem = new QuestItem(itemInstruction);
-            questItems.add(new Item(questItem, amount));
-        }
-    }
+	public ItemCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Items not defined");
+		}
+		String items = parts[1];
+		for (String item : items.split(",")) {
+			String[] itemParts = item.split(":");
+			String name = itemParts[0];
+			VariableNumber amount = new VariableNumber(1);
+			if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
+				try {
+					amount = new VariableNumber(packName, item.split(":")[1]);
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Cannot parse item amount");
+				}
+			}
+			String itemInstruction = pack.getString("items." + name);
+			if (itemInstruction == null) {
+				throw new InstructionParseException("Item not defined: " + name);
+			}
+			QuestItem questItem = new QuestItem(itemInstruction);
+			questItems.add(new Item(questItem, amount));
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        int counter = 0;
-        for (Item questItem : questItems) {
-            int amount = questItem.getAmount().getInt(playerID);
-            ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-            for (ItemStack item : inventoryItems) {
-                if (item == null) {
-                    continue;
-                }
-                if (!questItem.isItemEqual(item)) {
-                    continue;
-                }
-                amount -= item.getAmount();
-                if (amount <= 0) {
-                    counter++;
-                    break;
-                }
-            }
-            List<ItemStack> backpackItems = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
-            for (ItemStack item : backpackItems) {
-                if (item == null) {
-                    continue;
-                }
-                if (!questItem.isItemEqual(item)) {
-                    continue;
-                }
-                amount -= item.getAmount();
-                if (amount <= 0) {
-                    counter++;
-                    break;
-                }
-            }
-        }
-        if (counter == questItems.size()) {
-            return true;
-        }
-        return false;
-    }
-    
-    private class Item {
-        
-        private QuestItem questItem;
-        private VariableNumber amount;
-        
-        public Item(QuestItem questItem, VariableNumber amount) {
-            this.questItem = questItem;
-            this.amount = amount;
-        }
+	@Override
+	public boolean check(String playerID) {
+		int counter = 0;
+		for (Item questItem : questItems) {
+			int amount = questItem.getAmount().getInt(playerID);
+			ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+			for (ItemStack item : inventoryItems) {
+				if (item == null) {
+					continue;
+				}
+				if (!questItem.isItemEqual(item)) {
+					continue;
+				}
+				amount -= item.getAmount();
+				if (amount <= 0) {
+					counter++;
+					break;
+				}
+			}
+			List<ItemStack> backpackItems = BetonQuest.getInstance().getDBHandler(playerID).getBackpack();
+			for (ItemStack item : backpackItems) {
+				if (item == null) {
+					continue;
+				}
+				if (!questItem.isItemEqual(item)) {
+					continue;
+				}
+				amount -= item.getAmount();
+				if (amount <= 0) {
+					counter++;
+					break;
+				}
+			}
+		}
+		if (counter == questItems.size()) {
+			return true;
+		}
+		return false;
+	}
 
-        public boolean isItemEqual(ItemStack item) {
-            return questItem.equalsI(item);
-        }
+	private class Item {
 
-        public VariableNumber getAmount() {
-            return amount;
-        }
-    }
+		private QuestItem questItem;
+		private VariableNumber amount;
+
+		public Item(QuestItem questItem, VariableNumber amount) {
+			this.questItem = questItem;
+			this.amount = amount;
+		}
+
+		public boolean isItemEqual(ItemStack item) {
+			return questItem.equalsI(item);
+		}
+
+		public VariableNumber getAmount() {
+			return amount;
+		}
+	}
 }

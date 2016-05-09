@@ -24,76 +24,71 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 
-
 /**
  * Allows for checking multiple conditions with one instruction string.
  * 
  * @author Jakub Sapalski
  */
 public class CheckCondition extends Condition {
-    
-    ArrayList<Condition> internalConditions = new ArrayList<>();
 
-    public CheckCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.substring(5).trim().split(" ");
-        if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            if (part.startsWith("^")) {
-                if (builder.length() != 0) {
-                    internalConditions.add(createCondition(builder.toString().trim()));
-                    builder = new StringBuilder();
-                }
-                builder.append(part.substring(1) + " ");
-            } else {
-                builder.append(part + " ");
-            }
-        }
-        internalConditions.add(createCondition(builder.toString().trim()));
-    }
+	ArrayList<Condition> internalConditions = new ArrayList<>();
 
-    /**
-     * Constructs a condition with given instruction and returns it.
-     */
-    private Condition createCondition(String instruction) throws InstructionParseException {
-        String[] parts = instruction.split(" ");
-        if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments in internal condition");
-        }
-        Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
-        if (conditionClass == null) {
-            // if it's null then there is no such type registered, log an error
-            throw new InstructionParseException(
-                    "Condition type " + parts[0] + " is not registered, check if it's"
-                    + " spelled correctly in internal condition"
-            );
-        }
-        try {
-            return conditionClass.getConstructor(String.class,
-                    String.class).newInstance(pack.getName(), instruction);
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in internal condition: "
-                        + e.getCause().getMessage());
-            } else {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-        
-    }
+	public CheckCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.substring(5).trim().split(" ");
+		if (parts.length < 1) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		StringBuilder builder = new StringBuilder();
+		for (String part : parts) {
+			if (part.startsWith("^")) {
+				if (builder.length() != 0) {
+					internalConditions.add(createCondition(builder.toString().trim()));
+					builder = new StringBuilder();
+				}
+				builder.append(part.substring(1) + " ");
+			} else {
+				builder.append(part + " ");
+			}
+		}
+		internalConditions.add(createCondition(builder.toString().trim()));
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        for (Condition condition : internalConditions) {
-            if (!condition.check(playerID)) return false;
-        }
-        return true;
-    }
+	/**
+	 * Constructs a condition with given instruction and returns it.
+	 */
+	private Condition createCondition(String instruction) throws InstructionParseException {
+		String[] parts = instruction.split(" ");
+		if (parts.length < 1) {
+			throw new InstructionParseException("Not enough arguments in internal condition");
+		}
+		Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
+		if (conditionClass == null) {
+			// if it's null then there is no such type registered, log an error
+			throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"
+					+ " spelled correctly in internal condition");
+		}
+		try {
+			return conditionClass.getConstructor(String.class, String.class).newInstance(pack.getName(), instruction);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof InstructionParseException) {
+				throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage());
+			} else {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		for (Condition condition : internalConditions) {
+			if (!condition.check(playerID))
+				return false;
+		}
+		return true;
+	}
 }

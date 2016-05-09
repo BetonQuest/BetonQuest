@@ -40,87 +40,87 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CubeNPCListener implements Listener {
 
-    /**
-     * Creates new instance of the default NPC listener
-     */
-    public CubeNPCListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	/**
+	 * Creates new instance of the default NPC listener
+	 */
+	public CubeNPCListener() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    /**
-     * This limits NPC creation by canceling all sign edits where first line is
-     * "[NPC]"
-     * 
-     * @param event
-     *            SignChangeEvent
-     */
-    @EventHandler
-    public void onSignPlace(SignChangeEvent event) {
-        if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
-            // if the player doesn't have the required permission deny the editing
-            event.setCancelled(true);
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "no_permission");
-        }
-    }
+	/**
+	 * This limits NPC creation by canceling all sign edits where first line is
+	 * "[NPC]"
+	 * 
+	 * @param event
+	 *            SignChangeEvent
+	 */
+	@EventHandler
+	public void onSignPlace(SignChangeEvent event) {
+		if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
+			// if the player doesn't have the required permission deny the
+			// editing
+			event.setCancelled(true);
+			Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "no_permission");
+		}
+	}
 
-    /**
-     * This checks if the player clicked on valid NPC, and starts the
-     * conversation
-     * 
-     * @param event
-     *            PlayerInteractEvent
-     */
-    @EventHandler
-    public void onNPCClick(final PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        // check if the player has required permission
-        if (!event.getPlayer().hasPermission("betonquest.conversation")) {
-            return;
-        }
-        // check if the blocks are placed in the correct way
-        String conversationID = null;
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-            && event.getClickedBlock().getType().equals(Material.SKULL)) {
-            Block block = event.getClickedBlock().getLocation().clone().add(0, -1, 0).getBlock();
-            if (block.getType().equals(Material.STAINED_CLAY)) {
-                Block[] signs = new Block[] { block.getRelative(BlockFace.EAST),
-                    block.getRelative(BlockFace.WEST), block.getRelative(BlockFace.NORTH),
-                    block.getRelative(BlockFace.SOUTH) };
-                Sign theSign = null;
-                byte count = 0;
-                for (Block sign : signs) {
-                    if (sign.getType().equals(Material.WALL_SIGN)
-                        && sign.getState() instanceof Sign) {
-                        theSign = (Sign) sign.getState();
-                        count++;
-                    }
-                }
-                if (count == 1 && theSign != null && theSign.getLine(0).equalsIgnoreCase("[NPC]")) {
-                    conversationID = theSign.getLine(1);
-                }
-            }
+	/**
+	 * This checks if the player clicked on valid NPC, and starts the
+	 * conversation
+	 * 
+	 * @param event
+	 *            PlayerInteractEvent
+	 */
+	@EventHandler
+	public void onNPCClick(final PlayerInteractEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		// check if the player has required permission
+		if (!event.getPlayer().hasPermission("betonquest.conversation")) {
+			return;
+		}
+		// check if the blocks are placed in the correct way
+		String conversationID = null;
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+				&& event.getClickedBlock().getType().equals(Material.SKULL)) {
+			Block block = event.getClickedBlock().getLocation().clone().add(0, -1, 0).getBlock();
+			if (block.getType().equals(Material.STAINED_CLAY)) {
+				Block[] signs = new Block[] { block.getRelative(BlockFace.EAST), block.getRelative(BlockFace.WEST),
+						block.getRelative(BlockFace.NORTH), block.getRelative(BlockFace.SOUTH) };
+				Sign theSign = null;
+				byte count = 0;
+				for (Block sign : signs) {
+					if (sign.getType().equals(Material.WALL_SIGN) && sign.getState() instanceof Sign) {
+						theSign = (Sign) sign.getState();
+						count++;
+					}
+				}
+				if (count == 1 && theSign != null && theSign.getLine(0).equalsIgnoreCase("[NPC]")) {
+					conversationID = theSign.getLine(1);
+				}
+			}
 
-        }
-        // if the conversation ID was extracted from NPC then start the conversation
-        if (conversationID != null) {
-            String assignment = Config.getNpc(conversationID);
-            if (assignment != null) {
-                if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
-                    Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "busy");
-                    return;
-                }
-                String[] parts = assignment.split("\\.");
-                final String convName = parts[1];
-                final String packName = parts[0];
-                event.setCancelled(true);
-                new Conversation(PlayerConverter.getID(event.getPlayer()), packName,
-                                convName, event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
-            } else {
-                Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
-                return;
-            }
-        }
-    }
+		}
+		// if the conversation ID was extracted from NPC then start the
+		// conversation
+		if (conversationID != null) {
+			String assignment = Config.getNpc(conversationID);
+			if (assignment != null) {
+				if (CombatTagger.isTagged(PlayerConverter.getID(event.getPlayer()))) {
+					Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "busy");
+					return;
+				}
+				String[] parts = assignment.split("\\.");
+				final String convName = parts[1];
+				final String packName = parts[0];
+				event.setCancelled(true);
+				new Conversation(PlayerConverter.getID(event.getPlayer()), packName, convName,
+						event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
+			} else {
+				Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
+				return;
+			}
+		}
+	}
 }

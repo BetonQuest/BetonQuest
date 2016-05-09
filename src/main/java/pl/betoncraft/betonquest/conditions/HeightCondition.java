@@ -29,40 +29,39 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HeightCondition extends Condition {
 
-    private final VariableNumber height;
+	private final VariableNumber height;
 
-    public HeightCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Height not defined");
-        }
-        if (parts[1].matches("\\-?\\d+\\.?\\d*")) {
-            try {
-                height = new VariableNumber(packName, parts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse height");
-            }
-        } else {
-            String[] locParts = parts[1].split(";");
-            if (locParts.length < 4) {
-                throw new InstructionParseException("Could not parse height");
-            }
-            try {
-                height = new VariableNumber(packName, locParts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse height");
-            }
-        }
-    }
+	public HeightCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Height not defined");
+		}
+		if (parts[1].matches("\\-?\\d+\\.?\\d*")) {
+			try {
+				height = new VariableNumber(packName, parts[1]);
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse height");
+			}
+		} else {
+			String[] locParts = parts[1].split(";");
+			if (locParts.length < 4) {
+				throw new InstructionParseException("Could not parse height");
+			}
+			try {
+				height = new VariableNumber(packName, locParts[1]);
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse height");
+			}
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).getLocation().getY() < height.getDouble(playerID)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		if (PlayerConverter.getPlayer(playerID).getLocation().getY() < height.getDouble(playerID)) {
+			return true;
+		}
+		return false;
+	}
 
 }

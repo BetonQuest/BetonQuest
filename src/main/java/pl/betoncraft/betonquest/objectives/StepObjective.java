@@ -39,84 +39,80 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class StepObjective extends Objective implements Listener {
-    
-    private final Block block;
 
-    public StepObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String[] partsOfLoc = parts[1].split(";");
-        if (partsOfLoc.length < 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(partsOfLoc[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exist: "
-                    + partsOfLoc[3]);
-        }
-        double x, y, z;
-        try {
-            x = Double.valueOf(partsOfLoc[0]);
-            y = Double.valueOf(partsOfLoc[1]);
-            z = Double.valueOf(partsOfLoc[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        block = new Location(world, x, y, z).getBlock();
-    }
-    
-    @EventHandler
-    public void onStep(PlayerInteractEvent e) {
-        if (e.getAction() != Action.PHYSICAL) {
-            return;
-        }
-        if (e.getClickedBlock() == null) {
-            return;
-        }
-        if (!e.getClickedBlock().equals(block)) {
-            return;
-        }
-        Material type = e.getClickedBlock().getType();
-        if (type != Material.STONE_PLATE &&
-            type != Material.WOOD_PLATE  &&
-            type != Material.GOLD_PLATE  &&
-            type != Material.IRON_PLATE) {
-            return;
-        }
-        String playerID = PlayerConverter.getID(e.getPlayer());
-        if (!containsPlayer(playerID)) {
-            return;
-        }
-        // player stepped on the pressure plate
-        if (checkConditions(playerID)) completeObjective(playerID); 
-    }
+	private final Block block;
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public StepObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String[] partsOfLoc = parts[1].split(";");
+		if (partsOfLoc.length < 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(partsOfLoc[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exist: " + partsOfLoc[3]);
+		}
+		double x, y, z;
+		try {
+			x = Double.valueOf(partsOfLoc[0]);
+			y = Double.valueOf(partsOfLoc[1]);
+			z = Double.valueOf(partsOfLoc[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		block = new Location(world, x, y, z).getBlock();
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler
+	public void onStep(PlayerInteractEvent e) {
+		if (e.getAction() != Action.PHYSICAL) {
+			return;
+		}
+		if (e.getClickedBlock() == null) {
+			return;
+		}
+		if (!e.getClickedBlock().equals(block)) {
+			return;
+		}
+		Material type = e.getClickedBlock().getType();
+		if (type != Material.STONE_PLATE && type != Material.WOOD_PLATE && type != Material.GOLD_PLATE
+				&& type != Material.IRON_PLATE) {
+			return;
+		}
+		String playerID = PlayerConverter.getID(e.getPlayer());
+		if (!containsPlayer(playerID)) {
+			return;
+		}
+		// player stepped on the pressure plate
+		if (checkConditions(playerID))
+			completeObjective(playerID);
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("location")) {
-            return "X: " + block.getX() + ", Y: " + block.getY() +
-                    ", Z: " + block.getZ();
-        }
-        return "";
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
+
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("location")) {
+			return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
+		}
+		return "";
+	}
 }

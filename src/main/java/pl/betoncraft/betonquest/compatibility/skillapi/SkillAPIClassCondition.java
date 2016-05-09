@@ -30,37 +30,38 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class SkillAPIClassCondition extends Condition {
-    
-    private String className;
-    private boolean exact = false;
 
-    public SkillAPIClassCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        className = parts[1];
-        if (!SkillAPI.isClassRegistered(className)) {
-            throw new InstructionParseException("Class '" + className + "' is not registered");
-        }
-        for (String part : parts) {
-            if (part.equalsIgnoreCase("exact")) {
-                exact = true;
-            }
-        }
-    }
+	private String className;
+	private boolean exact = false;
 
-    @Override
-    public boolean check(String playerID) {
-        PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
-        if (exact) {
-            if (data.isExactClass(SkillAPI.getClass(className))) return true;
-        } else {
-            if (data.isClass(SkillAPI.getClass(className))) return true;
-        }
-        return false;
-    }
+	public SkillAPIClassCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		className = parts[1];
+		if (!SkillAPI.isClassRegistered(className)) {
+			throw new InstructionParseException("Class '" + className + "' is not registered");
+		}
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("exact")) {
+				exact = true;
+			}
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
+		if (exact) {
+			if (data.isExactClass(SkillAPI.getClass(className)))
+				return true;
+		} else {
+			if (data.isClass(SkillAPI.getClass(className)))
+				return true;
+		}
+		return false;
+	}
 
 }

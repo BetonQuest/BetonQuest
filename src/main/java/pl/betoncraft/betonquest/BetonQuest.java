@@ -158,930 +158,915 @@ import pl.betoncraft.betonquest.variables.VersionVariable;
  */
 public final class BetonQuest extends JavaPlugin {
 
-    private final static String ERROR = "There was some error. Please send it to the"
-            + " developer: <coosheck@gmail.com>";
+	private final static String ERROR = "There was some error. Please send it to the"
+			+ " developer: <coosheck@gmail.com>";
 
-    private static BetonQuest instance;
+	private static BetonQuest instance;
 
-    private Database database;
-    private boolean isMySQLUsed;
-    private Saver saver;
-    private BukkitRunnable keeper;
-    private Compatibility compatibility;
-    private Updater updater;
+	private Database database;
+	private boolean isMySQLUsed;
+	private Saver saver;
+	private BukkitRunnable keeper;
+	private Compatibility compatibility;
+	private Updater updater;
 
-    private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, DatabaseHandler> dbHandlers = new ConcurrentHashMap<>();
 
-    private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
-    
-    private static HashMap<String, Condition> conditions = new HashMap<>();
-    private static HashMap<String, QuestEvent> events = new HashMap<>();
-    private static HashMap<String, Objective> objectives = new HashMap<>();
-    private static HashMap<String, ConversationData> conversations = new HashMap<>();
-    private static HashMap<String, Variable> variables = new HashMap<>();
+	private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
+	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
+	private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
+	private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
+	private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
 
-    @Override
-    public void onEnable() {
+	private static HashMap<String, Condition> conditions = new HashMap<>();
+	private static HashMap<String, QuestEvent> events = new HashMap<>();
+	private static HashMap<String, Objective> objectives = new HashMap<>();
+	private static HashMap<String, ConversationData> conversations = new HashMap<>();
+	private static HashMap<String, Variable> variables = new HashMap<>();
 
-        instance = this;
+	@Override
+	public void onEnable() {
 
-        // initialize debugger
-        new Debug();
+		instance = this;
 
-        // load configuration
-        new Config();
+		// initialize debugger
+		new Debug();
 
-        // try to connect to database
-        Debug.info("Connecting to MySQL database");
-        this.database = new MySQL(this, getConfig().getString("mysql.host"),
-                getConfig().getString("mysql.port"), getConfig().getString(
-                "mysql.base"), getConfig().getString("mysql.user"), getConfig()
-                .getString("mysql.pass"));
+		// load configuration
+		new Config();
 
-        // try to connect to MySQL
-        Connection con = database.getConnection();
-        if (con != null) {
-            Debug.broadcast("Using MySQL for storing data!");
-            isMySQLUsed = true;
-            // if it fails use SQLite
-        } else {
-            this.database = new SQLite(this, "database.db");
-            Debug.broadcast("Using SQLite for storing data!");
-            isMySQLUsed = false;
-        }
+		// try to connect to database
+		Debug.info("Connecting to MySQL database");
+		this.database = new MySQL(this, getConfig().getString("mysql.host"), getConfig().getString("mysql.port"),
+				getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
+				getConfig().getString("mysql.pass"));
 
-        // create tables in the database
-        database.createTables(isMySQLUsed);
+		// try to connect to MySQL
+		Connection con = database.getConnection();
+		if (con != null) {
+			Debug.broadcast("Using MySQL for storing data!");
+			isMySQLUsed = true;
+			// if it fails use SQLite
+		} else {
+			this.database = new SQLite(this, "database.db");
+			Debug.broadcast("Using SQLite for storing data!");
+			isMySQLUsed = false;
+		}
 
-        // create and start the saver object, which handles correct asynchronous saving to the database
-        saver = new Saver();
-        saver.start();
-        
-        // load database backup
-        Utils.loadDatabaseFromBackup();
+		// create tables in the database
+		database.createTables(isMySQLUsed);
 
-        // update configuration if needed
-        new ConfigUpdater();
+		// create and start the saver object, which handles correct asynchronous
+		// saving to the database
+		saver = new Saver();
+		saver.start();
 
-        // if it's a first start of the plugin, debug option is not there
-        // add it so debug option is turned off after first start
-        if (getConfig().getString("debug", null) == null) {
-            getConfig().set("debug", "false");
-            saveConfig();
-        }
+		// load database backup
+		Utils.loadDatabaseFromBackup();
 
-        // instantiating of these important things
-        new JoinQuitListener();
+		// update configuration if needed
+		new ConfigUpdater();
 
-        // instantiate default conversation start listener
-        new CubeNPCListener();
+		// if it's a first start of the plugin, debug option is not there
+		// add it so debug option is turned off after first start
+		if (getConfig().getString("debug", null) == null) {
+			getConfig().set("debug", "false");
+			saveConfig();
+		}
 
-        // instantiate journal handler
-        new QuestItemHandler();
-        
-        // initialize static events
-        new StaticEvents();
-        
-        // initialize combat tagging
-        new CombatTagger();
-        
-        // load colors for conversations
-        new ConversationColors();
+		// instantiating of these important things
+		new JoinQuitListener();
 
-        // start timer for global locations
-        new GlobalLocations().runTaskTimer(this, 20, 20);
-        
-        // start mob kill listener
-        new MobKillListener();
+		// instantiate default conversation start listener
+		new CubeNPCListener();
 
-        // register commands
-        new QuestCommand();
-        new JournalCommand();
-        new BackpackCommand();
-        new CancelQuestCommand();
-        new CompassCommand();
-        new LangCommand();
+		// instantiate journal handler
+		new QuestItemHandler();
 
-        // register conditions
-        registerConditions("health", HealthCondition.class);
-        registerConditions("permission", PermissionCondition.class);
-        registerConditions("experience", ExperienceCondition.class);
-        registerConditions("tag", TagCondition.class);
-        registerConditions("point", PointCondition.class);
-        registerConditions("and", ConjunctionCondition.class);
-        registerConditions("or", AlternativeCondition.class);
-        registerConditions("time", TimeCondition.class);
-        registerConditions("weather", WeatherCondition.class);
-        registerConditions("height", HeightCondition.class);
-        registerConditions("item", ItemCondition.class);
-        registerConditions("hand", HandCondition.class);
-        registerConditions("location", LocationCondition.class);
-        registerConditions("armor", ArmorCondition.class);
-        registerConditions("effect", EffectCondition.class);
-        registerConditions("rating", ArmorRatingCondition.class);
-        registerConditions("sneak", SneakCondition.class);
-        registerConditions("random", RandomCondition.class);
-        registerConditions("journal", JournalCondition.class);
-        registerConditions("testforblock", TestForBlockCondition.class);
-        registerConditions("empty", EmptySlotsCondition.class);
-        registerConditions("party", PartyCondition.class);
-        registerConditions("monsters", MonstersCondition.class);
-        registerConditions("objective", ObjectiveCondition.class);
-        registerConditions("check", CheckCondition.class);
-        registerConditions("chestitem", ChestItemCondition.class);
-        registerConditions("score", ScoreboardCondition.class);
+		// initialize static events
+		new StaticEvents();
 
-        // register events
-        registerEvents("message", MessageEvent.class);
-        registerEvents("objective", ObjectiveEvent.class);
-        registerEvents("command", CommandEvent.class);
-        registerEvents("tag", TagEvent.class);
-        registerEvents("journal", JournalEvent.class);
-        registerEvents("teleport", TeleportEvent.class);
-        registerEvents("explosion", ExplosionEvent.class);
-        registerEvents("lightning", LightningEvent.class);
-        registerEvents("point", PointEvent.class);
-        registerEvents("give", GiveEvent.class);
-        registerEvents("take", TakeEvent.class);
-        registerEvents("conversation", ConversationEvent.class);
-        registerEvents("kill", KillEvent.class);
-        registerEvents("effect", EffectEvent.class);
-        registerEvents("spawn", SpawnMobEvent.class);
-        registerEvents("time", TimeEvent.class);
-        registerEvents("weather", WeatherEvent.class);
-        registerEvents("folder", FolderEvent.class);
-        registerEvents("setblock", SetBlockEvent.class);
-        registerEvents("damage", DamageEvent.class);
-        registerEvents("party", PartyEvent.class);
-        registerEvents("clear", ClearEvent.class);
-        registerEvents("run", RunEvent.class);
-        registerEvents("givejournal", GiveJournalEvent.class);
-        registerEvents("sudo", SudoEvent.class);
-        registerEvents("chestgive", ChestGiveEvent.class);
-        registerEvents("chesttake", ChestTakeEvent.class);
-        registerEvents("chestclear", ChestClearEvent.class);
-        registerEvents("compass", CompassEvent.class);
-        registerEvents("cancel", CancelEvent.class);
-        registerEvents("score", ScoreboardEvent.class);
+		// initialize combat tagging
+		new CombatTagger();
 
-        // register objectives
-        registerObjectives("location", LocationObjective.class);
-        registerObjectives("block", BlockObjective.class);
-        registerObjectives("mobkill", MobKillObjective.class);
-        registerObjectives("action", ActionObjective.class);
-        registerObjectives("die", DieObjective.class);
-        registerObjectives("craft", CraftingObjective.class);
-        registerObjectives("smelt", SmeltingObjective.class);
-        registerObjectives("tame", TameObjective.class);
-        registerObjectives("delay", DelayObjective.class);
-        registerObjectives("arrow", ArrowShootObjective.class);
-        registerObjectives("experience", ExperienceObjective.class);
-        registerObjectives("step", StepObjective.class);
-        registerObjectives("logout", LogoutObjective.class);
-        registerObjectives("password", PasswordObjective.class);
-        registerObjectives("fish", FishObjective.class);
-        registerObjectives("enchant", EnchantObjective.class);
-        registerObjectives("shear", ShearObjective.class);
-        registerObjectives("chestput", ChestPutObjective.class);
-        registerObjectives("potion", PotionObjective.class);
+		// load colors for conversations
+		new ConversationColors();
 
-        // register conversation IO types
-        registerConversationIO("simple", SimpleConvIO.class);
-        registerConversationIO("tellraw", TellrawConvIO.class);
-        registerConversationIO("chest", InventoryConvIO.class);
-        
-        // register variable types
-        registerVariable("player", PlayerNameVariable.class);
-        registerVariable("npc", NpcNameVariable.class);
-        registerVariable("objective", ObjectivePropertyVariable.class);
-        registerVariable("point", PointVariable.class);
-        registerVariable("item", ItemAmountVariable.class);
-        registerVariable("version", VersionVariable.class);
+		// start timer for global locations
+		new GlobalLocations().runTaskTimer(this, 20, 20);
 
-        // initialize compatibility with other plugins
-        compatibility = new Compatibility();
+		// start mob kill listener
+		new MobKillListener();
 
-        // schedule quest data loading on the first tick, so all other
-        // plugins can register their types
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-            public void run() {
-                // Load all events and conditions
-                loadData();
-                // load data for all online players
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerID = PlayerConverter.getID(player);
-                    DatabaseHandler dbh = new DatabaseHandler(playerID);
-                    dbHandlers.put(playerID, dbh);
-                    dbh.startObjectives();
-                    dbh.getJournal().update();
-                    if (dbh.getConversation() != null)
-                        new ConversationResumer(playerID, dbh.getConversation());
-                }
-            }
-        });
-        
-        // schedule database pinging to keep connection
-        keeper = new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    database.getConnection().prepareStatement("SELECT 1")
-                            .executeQuery();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        keeper.runTaskTimerAsynchronously(this, 60*20, 60*20);
+		// register commands
+		new QuestCommand();
+		new JournalCommand();
+		new BackpackCommand();
+		new CancelQuestCommand();
+		new CompassCommand();
+		new LangCommand();
 
-        // block betonquestanswer logging (it's just a spam)
-        try {
-            Class.forName("org.apache.logging.log4j.core.Filter");
-            Logger coreLogger = (Logger) LogManager.getRootLogger();
-            coreLogger.addFilter(new AnswerFilter());
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            Debug.info("Could not disable /betonquestanswer logging");
-        }
+		// register conditions
+		registerConditions("health", HealthCondition.class);
+		registerConditions("permission", PermissionCondition.class);
+		registerConditions("experience", ExperienceCondition.class);
+		registerConditions("tag", TagCondition.class);
+		registerConditions("point", PointCondition.class);
+		registerConditions("and", ConjunctionCondition.class);
+		registerConditions("or", AlternativeCondition.class);
+		registerConditions("time", TimeCondition.class);
+		registerConditions("weather", WeatherCondition.class);
+		registerConditions("height", HeightCondition.class);
+		registerConditions("item", ItemCondition.class);
+		registerConditions("hand", HandCondition.class);
+		registerConditions("location", LocationCondition.class);
+		registerConditions("armor", ArmorCondition.class);
+		registerConditions("effect", EffectCondition.class);
+		registerConditions("rating", ArmorRatingCondition.class);
+		registerConditions("sneak", SneakCondition.class);
+		registerConditions("random", RandomCondition.class);
+		registerConditions("journal", JournalCondition.class);
+		registerConditions("testforblock", TestForBlockCondition.class);
+		registerConditions("empty", EmptySlotsCondition.class);
+		registerConditions("party", PartyCondition.class);
+		registerConditions("monsters", MonstersCondition.class);
+		registerConditions("objective", ObjectiveCondition.class);
+		registerConditions("check", CheckCondition.class);
+		registerConditions("chestitem", ChestItemCondition.class);
+		registerConditions("score", ScoreboardCondition.class);
 
-        // metrics
-        try {
-            Metrics metrics = new Metrics(this);
-            if (metrics.start()) {
-                Debug.broadcast("Metrics enabled!");
-            } else {
-                Debug.broadcast("Metrics disabled!");
-            }
-        } catch (IOException e) {
-            Debug.broadcast("Metrics faild to enable!");
-        }
+		// register events
+		registerEvents("message", MessageEvent.class);
+		registerEvents("objective", ObjectiveEvent.class);
+		registerEvents("command", CommandEvent.class);
+		registerEvents("tag", TagEvent.class);
+		registerEvents("journal", JournalEvent.class);
+		registerEvents("teleport", TeleportEvent.class);
+		registerEvents("explosion", ExplosionEvent.class);
+		registerEvents("lightning", LightningEvent.class);
+		registerEvents("point", PointEvent.class);
+		registerEvents("give", GiveEvent.class);
+		registerEvents("take", TakeEvent.class);
+		registerEvents("conversation", ConversationEvent.class);
+		registerEvents("kill", KillEvent.class);
+		registerEvents("effect", EffectEvent.class);
+		registerEvents("spawn", SpawnMobEvent.class);
+		registerEvents("time", TimeEvent.class);
+		registerEvents("weather", WeatherEvent.class);
+		registerEvents("folder", FolderEvent.class);
+		registerEvents("setblock", SetBlockEvent.class);
+		registerEvents("damage", DamageEvent.class);
+		registerEvents("party", PartyEvent.class);
+		registerEvents("clear", ClearEvent.class);
+		registerEvents("run", RunEvent.class);
+		registerEvents("givejournal", GiveJournalEvent.class);
+		registerEvents("sudo", SudoEvent.class);
+		registerEvents("chestgive", ChestGiveEvent.class);
+		registerEvents("chesttake", ChestTakeEvent.class);
+		registerEvents("chestclear", ChestClearEvent.class);
+		registerEvents("compass", CompassEvent.class);
+		registerEvents("cancel", CancelEvent.class);
+		registerEvents("score", ScoreboardEvent.class);
 
-        // updater
-        updater = new Updater(this.getFile());
+		// register objectives
+		registerObjectives("location", LocationObjective.class);
+		registerObjectives("block", BlockObjective.class);
+		registerObjectives("mobkill", MobKillObjective.class);
+		registerObjectives("action", ActionObjective.class);
+		registerObjectives("die", DieObjective.class);
+		registerObjectives("craft", CraftingObjective.class);
+		registerObjectives("smelt", SmeltingObjective.class);
+		registerObjectives("tame", TameObjective.class);
+		registerObjectives("delay", DelayObjective.class);
+		registerObjectives("arrow", ArrowShootObjective.class);
+		registerObjectives("experience", ExperienceObjective.class);
+		registerObjectives("step", StepObjective.class);
+		registerObjectives("logout", LogoutObjective.class);
+		registerObjectives("password", PasswordObjective.class);
+		registerObjectives("fish", FishObjective.class);
+		registerObjectives("enchant", EnchantObjective.class);
+		registerObjectives("shear", ShearObjective.class);
+		registerObjectives("chestput", ChestPutObjective.class);
+		registerObjectives("potion", PotionObjective.class);
 
-        // done
-        Debug.broadcast("BetonQuest succesfully enabled!");
-    }
+		// register conversation IO types
+		registerConversationIO("simple", SimpleConvIO.class);
+		registerConversationIO("tellraw", TellrawConvIO.class);
+		registerConversationIO("chest", InventoryConvIO.class);
 
-    /**
-     * Loads events and conditions to the maps
-     */
-    public void loadData() {
-        // save data of all objectives to the players
-        for (Objective objective : objectives.values()) {
-            objective.close();
-        }
-        // clear previously loaded data
-        events.clear();
-        conditions.clear();
-        conversations.clear();
-        objectives.clear();
-        variables.clear();
-        // load new data
-        for (String packName : Config.getPackageNames()) {
-            Debug.info("Loading stuff in package " + packName);
-            ConfigPackage pack = Config.getPackage(packName);
-            FileConfiguration eConfig = Config.getPackage(packName).getEvents()
-                    .getConfig();
-            for (String key : eConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    Debug.error("Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                String ID = packName + "." + key;
-                String instruction = pack.getString("events." + key);
-                if (instruction == null) {
-                    continue;
-                }
-                String[] parts = instruction.split(" ");
-                if (parts.length < 1) {
-                    Debug.error("Not enough arguments in event " + ID);
-                    continue;
-                }
-                Class<? extends QuestEvent> eventClass = eventTypes.get(parts[0]);
-                if (eventClass == null) {
-                    // if it's null then there is no such type registered, log an error
-                    Debug.error(
-                            "Event type " + parts[0] + " is not registered, check if it's"
-                            + " spelled correctly in " + ID + " event."
-                    );
-                    continue;
-                }
-                try {
-                    QuestEvent event = eventClass.getConstructor(String.class,
-                            String.class).newInstance(packName, instruction);
-                    events.put(ID, event);
-                    Debug.info("  Event " + ID + " loaded");
-                } catch (InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        Debug.error("Error in " + ID + " event: "
-                                + e.getCause().getMessage());
-                    } else {
-                        e.printStackTrace();
-                        Debug.error(ERROR);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Debug.error(ERROR);
-                }
-            }
-            FileConfiguration cConfig = pack.getConditions().getConfig();
-            for (String key : cConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    Debug.error("Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                String ID = packName + "." + key;
-                String instruction = pack.getString("conditions." + key);
-                if (instruction == null) {
-                    continue;
-                }
-                String[] parts = instruction.split(" ");
-                if (parts.length < 1) {
-                    Debug.error("Not enough arguments in condition " + ID);
-                    continue;
-                }
-                Class<? extends Condition> conditionClass = conditionTypes
-                        .get(parts[0]);
-                // if it's null then there is no such type registered, log an error
-                if (conditionClass == null) {
-                    Debug.error("Condition type " + parts[0] + " is not registered,"
-                            + " check if it's spelled correctly in " + ID
-                            + " condition."
-                    );
-                    continue;
-                }
-                try {
-                    Condition condition = conditionClass.getConstructor(String.class,
-                            String.class).newInstance(packName, instruction);
-                    conditions.put(ID, condition);
-                    Debug.info("  Condition " + ID + " loaded");
-                } catch (InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        Debug.error("Error in " + ID + " condition: "
-                                + e.getCause().getMessage());
-                    } else {
-                        e.printStackTrace();
-                        Debug.error(ERROR);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Debug.error(ERROR);
-                }
-            }
-            FileConfiguration oConfig = pack.getObjectives().getConfig();
-            for (String key : oConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    Debug.error("Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                String ID = packName + "." + key;
-                String instruction = pack.getString("objectives." + key);
-                if (instruction == null) {
-                    continue;
-                }
-                String[] parts = instruction.split(" ");
-                if (parts.length < 1) {
-                    Debug.error("Not enough arguments in objectives " + ID);
-                    continue;
-                }
-                Class<? extends Objective> objectiveClass = objectiveTypes
-                        .get(parts[0]);
-                // if it's null then there is no such type registered, log an error
-                if (objectiveClass == null) {
-                    Debug.error("Objective type " + parts[0] +
-                            " is not registered, check if it's" + 
-                            " spelled correctly in " + ID + " objective.");
-                    continue;
-                }
-                try {
-                    Objective objective = objectiveClass.getConstructor(
-                            String.class, String.class, String.class)
-                            .newInstance(packName, ID, instruction);
-                    objectives.put(ID, objective);
-                    Debug.info("  Objective " + ID + " loaded");
-                } catch (InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        Debug.error("Error in " + ID + " objective: "
-                                + e.getCause().getMessage());
-                    } else {
-                        e.printStackTrace();
-                        Debug.error(ERROR);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Debug.error(ERROR);
-                }
-            }
-            for (String convName : pack.getConversationNames()) {
-                if (convName.contains(" ")) {
-                    Debug.error("Conversation name cannot contain spaces: '" + convName + "' (in " + packName + " package)");
-                    continue;
-                }
-                try {
-                    conversations.put(pack.getName() + "." + convName,
-                            new ConversationData(packName, convName));
-                } catch (InstructionParseException e) {
-                    Debug.error("Error in " + convName + " conversation from "
-                            + packName + " package: " + e.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Debug.error(ERROR);
-                }
-            }
-            // check external pointers
-            ConversationData.postEnableCheck();
-            Debug.info("Everything in package " + packName + " loaded");
-        }
-        Debug.broadcast("There are " + conditions.size() + " conditions, "
-                + events.size() + " events, " + objectives.size()
-                + " objectives and " + conversations.size()
-                + " conversations loaded from " + Config.getPackageNames().size()
-                + " packages.");
-        // start those freshly loaded objectives for all players
-        for (DatabaseHandler dbHandler : dbHandlers.values()) {
-            dbHandler.startObjectives();
-        }
-    }
+		// register variable types
+		registerVariable("player", PlayerNameVariable.class);
+		registerVariable("npc", NpcNameVariable.class);
+		registerVariable("objective", ObjectivePropertyVariable.class);
+		registerVariable("point", PointVariable.class);
+		registerVariable("item", ItemAmountVariable.class);
+		registerVariable("version", VersionVariable.class);
 
-    @Override
-    public void onDisable() {
-        // suspend all conversations
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Conversation conv = Conversation.getConversation(PlayerConverter
-                    .getID(player));
-            if (conv != null) conv.suspend();
-            player.closeInventory();
-        }
-        // cancel database saver
-        saver.end();
-        keeper.cancel();
-        compatibility.disable();
-        // stop global location listener
-        GlobalLocations.stop();
-        database.closeConnection();
-        // cancel static events (they are registered outside of Bukkit so it won't happen automatically)
-        StaticEvents.stop();
-        // update if needed
-        updater.updateBugfixes();
-        // done
-        Debug.broadcast("BetonQuest succesfully disabled!");
-    }
+		// initialize compatibility with other plugins
+		compatibility = new Compatibility();
 
-    /**
-     * Returns the plugin's instance
-     * 
-     * @return the plugin's instance
-     */
-    public static BetonQuest getInstance() {
-        return instance;
-    }
+		// schedule quest data loading on the first tick, so all other
+		// plugins can register their types
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+			public void run() {
+				// Load all events and conditions
+				loadData();
+				// load data for all online players
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					String playerID = PlayerConverter.getID(player);
+					DatabaseHandler dbh = new DatabaseHandler(playerID);
+					dbHandlers.put(playerID, dbh);
+					dbh.startObjectives();
+					dbh.getJournal().update();
+					if (dbh.getConversation() != null)
+						new ConversationResumer(playerID, dbh.getConversation());
+				}
+			}
+		});
 
-    /**
-     * Returns the database instance
-     * 
-     * @return Database instance
-     */
-    public Database getDB() {
-        return database;
-    }
-    
-    public Updater getUpdater() {
-        return updater;
-    }
+		// schedule database pinging to keep connection
+		keeper = new BukkitRunnable() {
+			@Override
+			public void run() {
+				try {
+					database.getConnection().prepareStatement("SELECT 1").executeQuery();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		keeper.runTaskTimerAsynchronously(this, 60 * 20, 60 * 20);
 
-    /**
-     * Checks if MySQL is used or not
-     * 
-     * @return if MySQL is used (false means that SQLite is being used)
-     */
-    public boolean isMySQLUsed() {
-        return isMySQLUsed;
-    }
+		// block betonquestanswer logging (it's just a spam)
+		try {
+			Class.forName("org.apache.logging.log4j.core.Filter");
+			Logger coreLogger = (Logger) LogManager.getRootLogger();
+			coreLogger.addFilter(new AnswerFilter());
+		} catch (ClassNotFoundException | NoClassDefFoundError e) {
+			Debug.info("Could not disable /betonquestanswer logging");
+		}
 
-    /**
-     * Stores the DatabaseHandler in a map, so it can be retrieved using
-     * getDBHandler(String playerID)
-     * 
-     * @param playerID
-     *            ID of the player
-     * @param handler
-     *            DatabaseHandler object to store
-     */
-    public void putDBHandler(String playerID, DatabaseHandler handler) {
-        Debug.info("Inserting data for " + PlayerConverter.getName(playerID));
-        dbHandlers.put(playerID, handler);
-    }
+		// metrics
+		try {
+			Metrics metrics = new Metrics(this);
+			if (metrics.start()) {
+				Debug.broadcast("Metrics enabled!");
+			} else {
+				Debug.broadcast("Metrics disabled!");
+			}
+		} catch (IOException e) {
+			Debug.broadcast("Metrics faild to enable!");
+		}
 
-    /**
-     * Retrieves DatabaseHandler object for specified player. If the handler does not exist
-     * but the player is online, it will create new handler on the main thread and put it
-     * into the map.
-     * 
-     * @param playerID
-     *            ID of the player
-     * @return DatabaseHandler object for the player
-     */
-    public DatabaseHandler getDBHandler(String playerID) {
-        DatabaseHandler dbh = dbHandlers.get(playerID);
-        if (dbh == null && PlayerConverter.getPlayer(playerID) != null) {
-            dbh = new DatabaseHandler(playerID);
-            putDBHandler(playerID, dbh);
-        }
-        return dbh;
-    }
-    
-    /**
-     * Removes the database handler from the map
-     * 
-     * @param playerID
-     *          ID of the player whose handler is to be removed
-     */
-    public void removeDBHandler(String playerID) {
-        dbHandlers.remove(playerID);
-    }
+		// updater
+		updater = new Updater(this.getFile());
 
-    /**
-     * Registers new condition classes by their names
-     * 
-     * @param name
-     *            name of the condition type
-     * @param conditionClass
-     *            class object for the condition
-     */
-    public void registerConditions(String name, Class<? extends Condition>
-            conditionClass) {
-        Debug.info("Registering " + name + " condition type");
-        conditionTypes.put(name, conditionClass);
-    }
+		// done
+		Debug.broadcast("BetonQuest succesfully enabled!");
+	}
 
-    /**
-     * Registers new event classes by their names
-     * 
-     * @param name
-     *            name of the event type
-     * @param eventClass
-     *            class object for the condition
-     */
-    public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
-        Debug.info("Registering " + name + " event type");
-        eventTypes.put(name, eventClass);
-    }
+	/**
+	 * Loads events and conditions to the maps
+	 */
+	public void loadData() {
+		// save data of all objectives to the players
+		for (Objective objective : objectives.values()) {
+			objective.close();
+		}
+		// clear previously loaded data
+		events.clear();
+		conditions.clear();
+		conversations.clear();
+		objectives.clear();
+		variables.clear();
+		// load new data
+		for (String packName : Config.getPackageNames()) {
+			Debug.info("Loading stuff in package " + packName);
+			ConfigPackage pack = Config.getPackage(packName);
+			FileConfiguration eConfig = Config.getPackage(packName).getEvents().getConfig();
+			for (String key : eConfig.getKeys(false)) {
+				if (key.contains(" ")) {
+					Debug.error("Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+					continue;
+				}
+				String ID = packName + "." + key;
+				String instruction = pack.getString("events." + key);
+				if (instruction == null) {
+					continue;
+				}
+				String[] parts = instruction.split(" ");
+				if (parts.length < 1) {
+					Debug.error("Not enough arguments in event " + ID);
+					continue;
+				}
+				Class<? extends QuestEvent> eventClass = eventTypes.get(parts[0]);
+				if (eventClass == null) {
+					// if it's null then there is no such type registered, log
+					// an error
+					Debug.error("Event type " + parts[0] + " is not registered, check if it's"
+							+ " spelled correctly in " + ID + " event.");
+					continue;
+				}
+				try {
+					QuestEvent event = eventClass.getConstructor(String.class, String.class).newInstance(packName,
+							instruction);
+					events.put(ID, event);
+					Debug.info("  Event " + ID + " loaded");
+				} catch (InvocationTargetException e) {
+					if (e.getCause() instanceof InstructionParseException) {
+						Debug.error("Error in " + ID + " event: " + e.getCause().getMessage());
+					} else {
+						e.printStackTrace();
+						Debug.error(ERROR);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					Debug.error(ERROR);
+				}
+			}
+			FileConfiguration cConfig = pack.getConditions().getConfig();
+			for (String key : cConfig.getKeys(false)) {
+				if (key.contains(" ")) {
+					Debug.error("Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+					continue;
+				}
+				String ID = packName + "." + key;
+				String instruction = pack.getString("conditions." + key);
+				if (instruction == null) {
+					continue;
+				}
+				String[] parts = instruction.split(" ");
+				if (parts.length < 1) {
+					Debug.error("Not enough arguments in condition " + ID);
+					continue;
+				}
+				Class<? extends Condition> conditionClass = conditionTypes.get(parts[0]);
+				// if it's null then there is no such type registered, log an
+				// error
+				if (conditionClass == null) {
+					Debug.error("Condition type " + parts[0] + " is not registered,"
+							+ " check if it's spelled correctly in " + ID + " condition.");
+					continue;
+				}
+				try {
+					Condition condition = conditionClass.getConstructor(String.class, String.class)
+							.newInstance(packName, instruction);
+					conditions.put(ID, condition);
+					Debug.info("  Condition " + ID + " loaded");
+				} catch (InvocationTargetException e) {
+					if (e.getCause() instanceof InstructionParseException) {
+						Debug.error("Error in " + ID + " condition: " + e.getCause().getMessage());
+					} else {
+						e.printStackTrace();
+						Debug.error(ERROR);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					Debug.error(ERROR);
+				}
+			}
+			FileConfiguration oConfig = pack.getObjectives().getConfig();
+			for (String key : oConfig.getKeys(false)) {
+				if (key.contains(" ")) {
+					Debug.error("Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+					continue;
+				}
+				String ID = packName + "." + key;
+				String instruction = pack.getString("objectives." + key);
+				if (instruction == null) {
+					continue;
+				}
+				String[] parts = instruction.split(" ");
+				if (parts.length < 1) {
+					Debug.error("Not enough arguments in objectives " + ID);
+					continue;
+				}
+				Class<? extends Objective> objectiveClass = objectiveTypes.get(parts[0]);
+				// if it's null then there is no such type registered, log an
+				// error
+				if (objectiveClass == null) {
+					Debug.error("Objective type " + parts[0] + " is not registered, check if it's"
+							+ " spelled correctly in " + ID + " objective.");
+					continue;
+				}
+				try {
+					Objective objective = objectiveClass.getConstructor(String.class, String.class, String.class)
+							.newInstance(packName, ID, instruction);
+					objectives.put(ID, objective);
+					Debug.info("  Objective " + ID + " loaded");
+				} catch (InvocationTargetException e) {
+					if (e.getCause() instanceof InstructionParseException) {
+						Debug.error("Error in " + ID + " objective: " + e.getCause().getMessage());
+					} else {
+						e.printStackTrace();
+						Debug.error(ERROR);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					Debug.error(ERROR);
+				}
+			}
+			for (String convName : pack.getConversationNames()) {
+				if (convName.contains(" ")) {
+					Debug.error("Conversation name cannot contain spaces: '" + convName + "' (in " + packName
+							+ " package)");
+					continue;
+				}
+				try {
+					conversations.put(pack.getName() + "." + convName, new ConversationData(packName, convName));
+				} catch (InstructionParseException e) {
+					Debug.error(
+							"Error in " + convName + " conversation from " + packName + " package: " + e.getMessage());
+				} catch (Exception e) {
+					e.printStackTrace();
+					Debug.error(ERROR);
+				}
+			}
+			// check external pointers
+			ConversationData.postEnableCheck();
+			Debug.info("Everything in package " + packName + " loaded");
+		}
+		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
+				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
+				+ Config.getPackageNames().size() + " packages.");
+		// start those freshly loaded objectives for all players
+		for (DatabaseHandler dbHandler : dbHandlers.values()) {
+			dbHandler.startObjectives();
+		}
+	}
 
-    /**
-     * Registers new objective classes by their names
-     * 
-     * @param name
-     *            name of the objective type
-     * @param objectiveClass
-     *            class object for the objective
-     */
-    public void registerObjectives(String name, Class<? extends Objective>
-            objectiveClass) {
-        Debug.info("Registering " + name + " objective type");
-        objectiveTypes.put(name, objectiveClass);
-    }
-    
-    /**
-     * Registers new conversation input/output class.
-     * 
-     * @param name
-     *          name of the IO type
-     * @param convIOClass
-     *          class object to register
-     */
-    public void registerConversationIO(String name, Class<? extends ConversationIO>
-            convIOClass) {
-        Debug.info("Registering " + name + " conversation IO type");
-        convIOTypes.put(name, convIOClass);
-    }
-    
-    /**
-     * Registers new variable type.
-     * 
-     * @param name
-     *          name of the variable type
-     * @param variable
-     *          class object of this type
-     */
-    public void registerVariable(String name, Class<? extends Variable> variable) {
-        Debug.info("Registering " + name + " variable type");
-        variableTypes.put(name, variable);
-    }
+	@Override
+	public void onDisable() {
+		// suspend all conversations
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
+			if (conv != null)
+				conv.suspend();
+			player.closeInventory();
+		}
+		// cancel database saver
+		saver.end();
+		keeper.cancel();
+		compatibility.disable();
+		// stop global location listener
+		GlobalLocations.stop();
+		database.closeConnection();
+		// cancel static events (they are registered outside of Bukkit so it
+		// won't happen automatically)
+		StaticEvents.stop();
+		// update if needed
+		updater.updateBugfixes();
+		// done
+		Debug.broadcast("BetonQuest succesfully disabled!");
+	}
 
-    /**
-     * Checks if the condition described by conditionID is met
-     * 
-     * @param conditionID
-     *            ID of the condition to check, as defined in conditions.yml
-     * @param playerID
-     *            ID of the player which should be checked
-     * @return if the condition is met
-     */
-    public static boolean condition(String playerID, String conditionID) {
-        // null check
-        if (conditionID == null) {
-            Debug.info("Null arguments for the condition!");
-            return false;
-        }
-        // check for inverted condition
-        boolean inverted = false;
-        if (conditionID.contains("!")) {
-            conditionID = conditionID.replace("!", "");
-            inverted = true;
-        }
-        // get the condition
-        Condition condition = conditions.get(conditionID);
-        if (condition == null) {
-            Debug.error("The condition " + conditionID + " is not defined!");
-            return false;
-        }
-        // check for null player
-        if (playerID == null && !condition.isStatic()) {
-            Debug.info("Cannot check non-static condition without a player, returning false");
-            return false;
-        }
-        // check for online player
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null && !condition.isPersistent()) {
-            Debug.info("Player was offline, condition is not persistent, returning false");
-            return false;
-        }
-        // and check if it's met or not
-        boolean outcome = condition.check(playerID);
-        boolean isMet = (outcome && !inverted) || (!outcome && inverted);
-        Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "")
-                + " condition " + conditionID + " for player " + PlayerConverter
-                .getName(playerID));
-        return isMet;
-    }
+	/**
+	 * Returns the plugin's instance
+	 * 
+	 * @return the plugin's instance
+	 */
+	public static BetonQuest getInstance() {
+		return instance;
+	}
 
-    /**
-     * Fires the event described by eventID
-     * 
-     * @param eventID
-     *            ID of the event to fire, as defined in events.yml
-     * @param playerID
-     *            ID of the player who the event is firing for
-     */
-    public static void event(String playerID, String eventID) {
-        // null check
-        if (eventID == null) {
-            Debug.info("Null argument for the event!");
-            return;
-        }
-        // get the event
-        QuestEvent event = events.get(eventID);
-        if (event == null) {
-            Debug.error("Event " + eventID + " is not defined");
-            return;
-        }
-        // fire the event
-        if (playerID == null) {
-            Debug.info("Firing static event " + eventID);
-        } else {
-            Debug.info("Firing event " + eventID + " for "
-                    + PlayerConverter.getName(playerID));
-        }
-        event.fire(playerID);
-    }
+	/**
+	 * Returns the database instance
+	 * 
+	 * @return Database instance
+	 */
+	public Database getDB() {
+		return database;
+	}
 
-    /**
-     * Creates new objective for given player
-     * 
-     * @param playerID
-     *            ID of the player
-     * @param objectiveID
-     *          ID of the objective
-     */
-    public static void newObjective(String playerID, String objectiveID) {
-        // null check
-        if (playerID == null || objectiveID == null) {
-            Debug.info("Null arguments for the objective!");
-            return;
-        }
-        Objective objective = objectives.get(objectiveID);
-        if (objective.containsPlayer(playerID)) {
-            Debug.info("Player " + PlayerConverter.getName(playerID) +
-                    " already has the " + objectiveID + " objective");
-            return;
-        }
-        objective.newPlayer(playerID);
-    }
-    
-    /**
-     * Resumes the existing objective for given player
-     * 
-     * @param playerID
-     *          ID of the player
-     * @param objectiveID
-     *          ID of the objective
-     * @param instruction
-     *          data instruction string
-     */
-    public static void resumeObjective(String playerID, String objectiveID,
-            String instruction) {
-        // null check
-        if (playerID == null || objectiveID == null || instruction == null) {
-            Debug.info("Null arguments for the objective!");
-            return;
-        }
-        Objective objective = objectives.get(objectiveID);
-        if (objective == null) {
-            Debug.error("Objective " + objectiveID + " does not exist");
-            return;
-        }
-        if (objective.containsPlayer(playerID)) {
-            Debug.info("Player " + PlayerConverter.getName(playerID) +
-                    " already has the " + objectiveID + " objective!");
-            return;
-        }
-        objective.addPlayer(playerID, instruction);
-    }
-    
-    /**
-     * Creates a new instance of a variable and puts it into the hashmap.
-     * @param pack 
-     * 
-     * @param instruction
-     *          instruction of the variable, including both % characters.
-     */
-    public static Variable createVariable(ConfigPackage pack, String instruction) {
-        String ID = pack.getName() + "-" + instruction;
-        // no need to create duplicated variables
-        if (variables.containsKey(ID)) return variables.get(ID);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length < 1) {
-            Debug.error("Not enough arguments in variable " + ID);
-            return null;
-        }
-        Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
-        // if it's null then there is no such type registered, log an error
-        if (variableClass == null) {
-            Debug.error("Variable type " + parts[0] + " is not registered,"
-                    + " check if it's spelled correctly in " + ID
-                    + " variable."
-            );
-            return null;
-        }
-        try {
-            Variable variable = variableClass.getConstructor(String.class,
-                    String.class).newInstance(pack.getName(), instruction);
-            variables.put(ID, variable);
-            Debug.info("Variable " + ID + " loaded");
-            return variable;
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                Debug.error("Error in " + ID + " variable: "
-                        + e.getCause().getMessage());
-            } else {
-                e.printStackTrace();
-                Debug.error(ERROR);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Debug.error(ERROR);
-        }
-        return null;
-    }
-    
-    /**
-     * Resolves variables in the supplied text and returns them as a list of
-     * instruction strings, including % characters. Variables are unique, so
-     * if the user uses the same variables multiple times, the list will
-     * contain only one occurence of this variable.
-     * 
-     * @param text
-     *          text from which the variables will be resolved
-     * @return the list of unique variable instructions
-     */
-    public static ArrayList<String> resolveVariables(String text) {
-        ArrayList<String> variables = new ArrayList<>();
-        boolean inside = false;
-        char[] charArr = text.toCharArray();
-        StringBuilder variable = new StringBuilder();
-        for (int i = 0; i < text.length(); i++) {
-            if (inside) {
-                if (charArr[i] == ' ') {
-                    // it's not a variable if it contains a space
-                    inside = false;
-                    variable = new StringBuilder();
-                }
-                variable.append(charArr[i]);
-                if (charArr[i] == '%') {
-                    // end of the variable
-                    inside = false;
-                    String finalVariable = variable.toString();
-                    variable = new StringBuilder();
-                    if (!variables.contains(finalVariable)) {
-                        variables.add(finalVariable);
-                    }
-                }
-            } else {
-                if (charArr[i] == '%') {
-                    inside = true;
-                    variable.append('%');
-                }
-            }
-        }
-        return variables;
-    }
-    
-    /**
-     * Returns the list of objectives of this player
-     * 
-     * @param playerID
-     *          ID of the player
-     * @return list of this player's active objectives
-     */
-    public ArrayList<Objective> getPlayerObjectives(String playerID) {
-        ArrayList<Objective> list = new ArrayList<>();
-        for (String objective : objectives.keySet()) {
-            if (objectives.get(objective).containsPlayer(playerID)) {
-                list.add(objectives.get(objective));
-            }
-        }
-        return list;
-    }
-    
-    /**
-     * @param name
-     *          package name, dot and name of the conversation
-     * @return ConversationData object for this conversation or null if it does
-     *         not exist
-     */
-    public ConversationData getConversation(String name) {
-        return conversations.get(name);
-    }
-    
-    /**
-     * @param objectiveID
-     *          package name, dot and ID of the objective
-     * @return Objective object or null if it does not exist
-     */
-    public Objective getObjective(String objectiveID) {
-        return objectives.get(objectiveID);
-    }
-    
-    /**
-     * Returns the instance of Saver
-     * 
-     * @return the Saver
-     */
-    public Saver getSaver() {
-        return saver;
-    }
-    
-    /**
-     * @param name
-     *          name of the conversation IO type
-     * @return the class object for this conversation IO type
-     */
-    public Class<? extends ConversationIO> getConvIO(String name) {
-        return convIOTypes.get(name);
-    }
-    
-    /**
-     * Resoles the variable for specified player. If the variable is not loaded yet
-     * it will load it on the main thread.
-     * 
-     * @param packName
-     *          name of the package
-     * @param name
-     *          name of the variable (instruction, with % characters)
-     * @param playerID
-     *          ID of the player
-     * @return the value of this variable for given player
-     */
-    public String getVariableValue(String packName, String name, String playerID) {
-        Variable var = createVariable(Config.getPackage(packName), name);
-        if (var == null) return "could not resolve variable";
-        return var.getValue(playerID);
-    }
+	public Updater getUpdater() {
+		return updater;
+	}
 
-    /**
-     * @return the class of the event
-     */
-    public Class<? extends QuestEvent> getEventClass(String name) {
-        return eventTypes.get(name);
-    }
+	/**
+	 * Checks if MySQL is used or not
+	 * 
+	 * @return if MySQL is used (false means that SQLite is being used)
+	 */
+	public boolean isMySQLUsed() {
+		return isMySQLUsed;
+	}
 
-    /**
-     * @return the class of the event
-     */
-    public Class<? extends Condition> getConditionClass(String name) {
-        return conditionTypes.get(name);
-    }
-    
-    /**
-     * Renames the objective instance.
-     * 
-     * @param name the current name
-     * @param rename the name it should have now
-     */
-    public void renameObjective(String name, String rename) {
-        objectives.put(rename, objectives.remove(name));
-    }
+	/**
+	 * Stores the DatabaseHandler in a map, so it can be retrieved using
+	 * getDBHandler(String playerID)
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @param handler
+	 *            DatabaseHandler object to store
+	 */
+	public void putDBHandler(String playerID, DatabaseHandler handler) {
+		Debug.info("Inserting data for " + PlayerConverter.getName(playerID));
+		dbHandlers.put(playerID, handler);
+	}
+
+	/**
+	 * Retrieves DatabaseHandler object for specified player. If the handler
+	 * does not exist but the player is online, it will create new handler on
+	 * the main thread and put it into the map.
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @return DatabaseHandler object for the player
+	 */
+	public DatabaseHandler getDBHandler(String playerID) {
+		DatabaseHandler dbh = dbHandlers.get(playerID);
+		if (dbh == null && PlayerConverter.getPlayer(playerID) != null) {
+			dbh = new DatabaseHandler(playerID);
+			putDBHandler(playerID, dbh);
+		}
+		return dbh;
+	}
+
+	/**
+	 * Removes the database handler from the map
+	 * 
+	 * @param playerID
+	 *            ID of the player whose handler is to be removed
+	 */
+	public void removeDBHandler(String playerID) {
+		dbHandlers.remove(playerID);
+	}
+
+	/**
+	 * Registers new condition classes by their names
+	 * 
+	 * @param name
+	 *            name of the condition type
+	 * @param conditionClass
+	 *            class object for the condition
+	 */
+	public void registerConditions(String name, Class<? extends Condition> conditionClass) {
+		Debug.info("Registering " + name + " condition type");
+		conditionTypes.put(name, conditionClass);
+	}
+
+	/**
+	 * Registers new event classes by their names
+	 * 
+	 * @param name
+	 *            name of the event type
+	 * @param eventClass
+	 *            class object for the condition
+	 */
+	public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
+		Debug.info("Registering " + name + " event type");
+		eventTypes.put(name, eventClass);
+	}
+
+	/**
+	 * Registers new objective classes by their names
+	 * 
+	 * @param name
+	 *            name of the objective type
+	 * @param objectiveClass
+	 *            class object for the objective
+	 */
+	public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
+		Debug.info("Registering " + name + " objective type");
+		objectiveTypes.put(name, objectiveClass);
+	}
+
+	/**
+	 * Registers new conversation input/output class.
+	 * 
+	 * @param name
+	 *            name of the IO type
+	 * @param convIOClass
+	 *            class object to register
+	 */
+	public void registerConversationIO(String name, Class<? extends ConversationIO> convIOClass) {
+		Debug.info("Registering " + name + " conversation IO type");
+		convIOTypes.put(name, convIOClass);
+	}
+
+	/**
+	 * Registers new variable type.
+	 * 
+	 * @param name
+	 *            name of the variable type
+	 * @param variable
+	 *            class object of this type
+	 */
+	public void registerVariable(String name, Class<? extends Variable> variable) {
+		Debug.info("Registering " + name + " variable type");
+		variableTypes.put(name, variable);
+	}
+
+	/**
+	 * Checks if the condition described by conditionID is met
+	 * 
+	 * @param conditionID
+	 *            ID of the condition to check, as defined in conditions.yml
+	 * @param playerID
+	 *            ID of the player which should be checked
+	 * @return if the condition is met
+	 */
+	public static boolean condition(String playerID, String conditionID) {
+		// null check
+		if (conditionID == null) {
+			Debug.info("Null arguments for the condition!");
+			return false;
+		}
+		// check for inverted condition
+		boolean inverted = false;
+		if (conditionID.contains("!")) {
+			conditionID = conditionID.replace("!", "");
+			inverted = true;
+		}
+		// get the condition
+		Condition condition = conditions.get(conditionID);
+		if (condition == null) {
+			Debug.error("The condition " + conditionID + " is not defined!");
+			return false;
+		}
+		// check for null player
+		if (playerID == null && !condition.isStatic()) {
+			Debug.info("Cannot check non-static condition without a player, returning false");
+			return false;
+		}
+		// check for online player
+		if (playerID != null && PlayerConverter.getPlayer(playerID) == null && !condition.isPersistent()) {
+			Debug.info("Player was offline, condition is not persistent, returning false");
+			return false;
+		}
+		// and check if it's met or not
+		boolean outcome = condition.check(playerID);
+		boolean isMet = (outcome && !inverted) || (!outcome && inverted);
+		Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition " + conditionID
+				+ " for player " + PlayerConverter.getName(playerID));
+		return isMet;
+	}
+
+	/**
+	 * Fires the event described by eventID
+	 * 
+	 * @param eventID
+	 *            ID of the event to fire, as defined in events.yml
+	 * @param playerID
+	 *            ID of the player who the event is firing for
+	 */
+	public static void event(String playerID, String eventID) {
+		// null check
+		if (eventID == null) {
+			Debug.info("Null argument for the event!");
+			return;
+		}
+		// get the event
+		QuestEvent event = events.get(eventID);
+		if (event == null) {
+			Debug.error("Event " + eventID + " is not defined");
+			return;
+		}
+		// fire the event
+		if (playerID == null) {
+			Debug.info("Firing static event " + eventID);
+		} else {
+			Debug.info("Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
+		}
+		event.fire(playerID);
+	}
+
+	/**
+	 * Creates new objective for given player
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @param objectiveID
+	 *            ID of the objective
+	 */
+	public static void newObjective(String playerID, String objectiveID) {
+		// null check
+		if (playerID == null || objectiveID == null) {
+			Debug.info("Null arguments for the objective!");
+			return;
+		}
+		Objective objective = objectives.get(objectiveID);
+		if (objective.containsPlayer(playerID)) {
+			Debug.info(
+					"Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective");
+			return;
+		}
+		objective.newPlayer(playerID);
+	}
+
+	/**
+	 * Resumes the existing objective for given player
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @param objectiveID
+	 *            ID of the objective
+	 * @param instruction
+	 *            data instruction string
+	 */
+	public static void resumeObjective(String playerID, String objectiveID, String instruction) {
+		// null check
+		if (playerID == null || objectiveID == null || instruction == null) {
+			Debug.info("Null arguments for the objective!");
+			return;
+		}
+		Objective objective = objectives.get(objectiveID);
+		if (objective == null) {
+			Debug.error("Objective " + objectiveID + " does not exist");
+			return;
+		}
+		if (objective.containsPlayer(playerID)) {
+			Debug.info(
+					"Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
+			return;
+		}
+		objective.addPlayer(playerID, instruction);
+	}
+
+	/**
+	 * Creates a new instance of a variable and puts it into the hashmap.
+	 * 
+	 * @param pack
+	 * 
+	 * @param instruction
+	 *            instruction of the variable, including both % characters.
+	 */
+	public static Variable createVariable(ConfigPackage pack, String instruction) {
+		String ID = pack.getName() + "-" + instruction;
+		// no need to create duplicated variables
+		if (variables.containsKey(ID))
+			return variables.get(ID);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length < 1) {
+			Debug.error("Not enough arguments in variable " + ID);
+			return null;
+		}
+		Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
+		// if it's null then there is no such type registered, log an error
+		if (variableClass == null) {
+			Debug.error("Variable type " + parts[0] + " is not registered," + " check if it's spelled correctly in "
+					+ ID + " variable.");
+			return null;
+		}
+		try {
+			Variable variable = variableClass.getConstructor(String.class, String.class).newInstance(pack.getName(),
+					instruction);
+			variables.put(ID, variable);
+			Debug.info("Variable " + ID + " loaded");
+			return variable;
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof InstructionParseException) {
+				Debug.error("Error in " + ID + " variable: " + e.getCause().getMessage());
+			} else {
+				e.printStackTrace();
+				Debug.error(ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Debug.error(ERROR);
+		}
+		return null;
+	}
+
+	/**
+	 * Resolves variables in the supplied text and returns them as a list of
+	 * instruction strings, including % characters. Variables are unique, so if
+	 * the user uses the same variables multiple times, the list will contain
+	 * only one occurence of this variable.
+	 * 
+	 * @param text
+	 *            text from which the variables will be resolved
+	 * @return the list of unique variable instructions
+	 */
+	public static ArrayList<String> resolveVariables(String text) {
+		ArrayList<String> variables = new ArrayList<>();
+		boolean inside = false;
+		char[] charArr = text.toCharArray();
+		StringBuilder variable = new StringBuilder();
+		for (int i = 0; i < text.length(); i++) {
+			if (inside) {
+				if (charArr[i] == ' ') {
+					// it's not a variable if it contains a space
+					inside = false;
+					variable = new StringBuilder();
+				}
+				variable.append(charArr[i]);
+				if (charArr[i] == '%') {
+					// end of the variable
+					inside = false;
+					String finalVariable = variable.toString();
+					variable = new StringBuilder();
+					if (!variables.contains(finalVariable)) {
+						variables.add(finalVariable);
+					}
+				}
+			} else {
+				if (charArr[i] == '%') {
+					inside = true;
+					variable.append('%');
+				}
+			}
+		}
+		return variables;
+	}
+
+	/**
+	 * Returns the list of objectives of this player
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @return list of this player's active objectives
+	 */
+	public ArrayList<Objective> getPlayerObjectives(String playerID) {
+		ArrayList<Objective> list = new ArrayList<>();
+		for (String objective : objectives.keySet()) {
+			if (objectives.get(objective).containsPlayer(playerID)) {
+				list.add(objectives.get(objective));
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * @param name
+	 *            package name, dot and name of the conversation
+	 * @return ConversationData object for this conversation or null if it does
+	 *         not exist
+	 */
+	public ConversationData getConversation(String name) {
+		return conversations.get(name);
+	}
+
+	/**
+	 * @param objectiveID
+	 *            package name, dot and ID of the objective
+	 * @return Objective object or null if it does not exist
+	 */
+	public Objective getObjective(String objectiveID) {
+		return objectives.get(objectiveID);
+	}
+
+	/**
+	 * Returns the instance of Saver
+	 * 
+	 * @return the Saver
+	 */
+	public Saver getSaver() {
+		return saver;
+	}
+
+	/**
+	 * @param name
+	 *            name of the conversation IO type
+	 * @return the class object for this conversation IO type
+	 */
+	public Class<? extends ConversationIO> getConvIO(String name) {
+		return convIOTypes.get(name);
+	}
+
+	/**
+	 * Resoles the variable for specified player. If the variable is not loaded
+	 * yet it will load it on the main thread.
+	 * 
+	 * @param packName
+	 *            name of the package
+	 * @param name
+	 *            name of the variable (instruction, with % characters)
+	 * @param playerID
+	 *            ID of the player
+	 * @return the value of this variable for given player
+	 */
+	public String getVariableValue(String packName, String name, String playerID) {
+		Variable var = createVariable(Config.getPackage(packName), name);
+		if (var == null)
+			return "could not resolve variable";
+		return var.getValue(playerID);
+	}
+
+	/**
+	 * @return the class of the event
+	 */
+	public Class<? extends QuestEvent> getEventClass(String name) {
+		return eventTypes.get(name);
+	}
+
+	/**
+	 * @return the class of the event
+	 */
+	public Class<? extends Condition> getConditionClass(String name) {
+		return conditionTypes.get(name);
+	}
+
+	/**
+	 * Renames the objective instance.
+	 * 
+	 * @param name
+	 *            the current name
+	 * @param rename
+	 *            the name it should have now
+	 */
+	public void renameObjective(String name, String rename) {
+		objectives.put(rename, objectives.remove(name));
+	}
 }

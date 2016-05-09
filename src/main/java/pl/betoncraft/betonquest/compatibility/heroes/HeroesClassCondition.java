@@ -34,67 +34,68 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class HeroesClassCondition extends Condition {
-    
-    private HeroClass heroClass;
-    private boolean any;
-    private boolean primary;
-    private boolean mastered;
-    private VariableNumber level = new VariableNumber(-1);
 
-    public HeroesClassCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        primary = parts[1].equalsIgnoreCase("primary");
-        mastered = parts[1].equals("mastered");
-        if (parts[2].equalsIgnoreCase("any")) {
-            any = true;
-        } else {
-            heroClass = Heroes.getInstance().getClassManager().getClass(parts[2]);
-            if (heroClass == null) {
-                throw new InstructionParseException("Class '" + parts[2] + "' does not exist");
-            }
-        }
-        for (String part : parts) {
-            if (part.startsWith("level:")) {
-                try {
-                    level = new VariableNumber(packName, part.substring(6));
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse level");
-                }
-            }
-        }
-    }
+	private HeroClass heroClass;
+	private boolean any;
+	private boolean primary;
+	private boolean mastered;
+	private VariableNumber level = new VariableNumber(-1);
 
-    @Override
-    public boolean check(String playerID) {
-        Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null) return false;
-        ArrayList<HeroClass> heroClasses = new ArrayList<>();
-        if (mastered) {
-            for (String heroClass : hero.getMasteredClasses()) {
-                heroClasses.add(Heroes.getInstance().getClassManager().getClass(heroClass));
-            }
-        } else if (primary) {
-            heroClasses.add(hero.getHeroClass());
-        } else {
-            heroClasses.add(hero.getSecondClass());
-        }
-        if (heroClasses.isEmpty()) return false;
-        boolean matchingClass = true, matchingLevel = true;
-        int l = level.getInt(playerID);
-        if (!any) {
-            matchingClass = heroClasses.contains(heroClass);
-            if (l > 0) {
-                matchingLevel = hero.getLevel(heroClass) >= l;
-            }
-        } else {
-            matchingLevel = hero.getLevel() >= l;
-        }
-        return matchingClass && matchingLevel;
-    }
+	public HeroesClassCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		primary = parts[1].equalsIgnoreCase("primary");
+		mastered = parts[1].equals("mastered");
+		if (parts[2].equalsIgnoreCase("any")) {
+			any = true;
+		} else {
+			heroClass = Heroes.getInstance().getClassManager().getClass(parts[2]);
+			if (heroClass == null) {
+				throw new InstructionParseException("Class '" + parts[2] + "' does not exist");
+			}
+		}
+		for (String part : parts) {
+			if (part.startsWith("level:")) {
+				try {
+					level = new VariableNumber(packName, part.substring(6));
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse level");
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+		if (hero == null)
+			return false;
+		ArrayList<HeroClass> heroClasses = new ArrayList<>();
+		if (mastered) {
+			for (String heroClass : hero.getMasteredClasses()) {
+				heroClasses.add(Heroes.getInstance().getClassManager().getClass(heroClass));
+			}
+		} else if (primary) {
+			heroClasses.add(hero.getHeroClass());
+		} else {
+			heroClasses.add(hero.getSecondClass());
+		}
+		if (heroClasses.isEmpty())
+			return false;
+		boolean matchingClass = true, matchingLevel = true;
+		int l = level.getInt(playerID);
+		if (!any) {
+			matchingClass = heroClasses.contains(heroClass);
+			if (l > 0) {
+				matchingLevel = hero.getLevel(heroClass) >= l;
+			}
+		} else {
+			matchingLevel = hero.getLevel() >= l;
+		}
+		return matchingClass && matchingLevel;
+	}
 
 }

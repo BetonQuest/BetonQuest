@@ -32,65 +32,63 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class MessageEvent extends QuestEvent {
-    
-    private final HashMap<String, String> messages = new HashMap<>();
-    private final ArrayList<String> variables = new ArrayList<>();
 
-    public MessageEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts;
-        try {
-            parts = instructions.substring(8).split(" ");
-        } catch (IndexOutOfBoundsException e) {
-            throw new InstructionParseException("Message missing");
-        }
-        if (parts.length < 1) {
-            throw new InstructionParseException("Message missing");
-        }
-        String currentLang = Config.getLanguage();
-        StringBuilder string = new StringBuilder();
-        for (String part : parts) {
-            if (part.startsWith("conditions:")) {
-                continue;
-            } else if (part.matches("^\\{.+\\}$")) {
-                if (string.length() > 0) {
-                    messages.put(currentLang, string.toString().trim());
-                    string = new StringBuilder();
-                }
-                currentLang = part.substring(1, part.length() - 1);
-            } else {
-                string.append(part + " ");
-            }
-        }
-        if (string.length() > 0) {
-            messages.put(currentLang, string.toString().trim());
-        }
-        if (messages.isEmpty()) {
-            throw new InstructionParseException("Message missing");
-        }
-        for (String message : messages.values()) {
-            for (String variable : BetonQuest.resolveVariables(message)) {
-                BetonQuest.createVariable(pack, variable);
-                if (!variables.contains(variable)) variables.add(variable);
-            }
-        }
-    }
-    
-    @Override
-    public void run(String playerID) {
-        String lang = BetonQuest.getInstance().getDBHandler(playerID)
-                .getLanguage();
-        String message = messages.get(lang);
-        if (message == null) {
-            message = messages.get(Config.getLanguage());
-        }
-        for (String variable : variables) {
-            message = message.replace(variable, BetonQuest.getInstance()
-                    .getVariableValue(pack.getName(), variable, playerID));
-        }
-        PlayerConverter.getPlayer(playerID).sendMessage(
-                message.replaceAll("&", "§"));
-    }
+	private final HashMap<String, String> messages = new HashMap<>();
+	private final ArrayList<String> variables = new ArrayList<>();
+
+	public MessageEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts;
+		try {
+			parts = instructions.substring(8).split(" ");
+		} catch (IndexOutOfBoundsException e) {
+			throw new InstructionParseException("Message missing");
+		}
+		if (parts.length < 1) {
+			throw new InstructionParseException("Message missing");
+		}
+		String currentLang = Config.getLanguage();
+		StringBuilder string = new StringBuilder();
+		for (String part : parts) {
+			if (part.startsWith("conditions:")) {
+				continue;
+			} else if (part.matches("^\\{.+\\}$")) {
+				if (string.length() > 0) {
+					messages.put(currentLang, string.toString().trim());
+					string = new StringBuilder();
+				}
+				currentLang = part.substring(1, part.length() - 1);
+			} else {
+				string.append(part + " ");
+			}
+		}
+		if (string.length() > 0) {
+			messages.put(currentLang, string.toString().trim());
+		}
+		if (messages.isEmpty()) {
+			throw new InstructionParseException("Message missing");
+		}
+		for (String message : messages.values()) {
+			for (String variable : BetonQuest.resolveVariables(message)) {
+				BetonQuest.createVariable(pack, variable);
+				if (!variables.contains(variable))
+					variables.add(variable);
+			}
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		String lang = BetonQuest.getInstance().getDBHandler(playerID).getLanguage();
+		String message = messages.get(lang);
+		if (message == null) {
+			message = messages.get(Config.getLanguage());
+		}
+		for (String variable : variables) {
+			message = message.replace(variable,
+					BetonQuest.getInstance().getVariableValue(pack.getName(), variable, playerID));
+		}
+		PlayerConverter.getPlayer(playerID).sendMessage(message.replaceAll("&", "§"));
+	}
 
 }

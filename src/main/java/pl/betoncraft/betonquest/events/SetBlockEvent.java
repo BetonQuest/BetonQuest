@@ -32,63 +32,59 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class SetBlockEvent extends QuestEvent {
 
-    private final Material block;
-    private final byte     data;
-    private final Location loc;
+	private final Material block;
+	private final byte data;
+	private final Location loc;
 
-    public SetBlockEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        // match material
-        block = Material.matchMaterial(parts[1]);
-        if (block == null) {
-            throw new InstructionParseException("Block type " + parts[1]
-                    + " does not exist");
-        }
-        // parse location
-        String[] coords = parts[2].split(";");
-        if (coords.length != 4) {
-            throw new InstructionParseException("Wrong locatio format");
-        }
-        World world = Bukkit.getWorld(coords[3]);
-        if (world == null) {
-            throw new InstructionParseException("World "
-                    + coords[3] + " does not exist");
-        }
-        double x, y, z;
-        try {
-            x = Double.parseDouble(coords[0]);
-            y = Double.parseDouble(coords[1]);
-            z = Double.parseDouble(coords[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        loc = new Location(world, x, y, z);
-        // get data value
-        byte tempData = 0;
-        for (String part : parts) {
-            if (part.contains("data:")) {
-                try {
-                    tempData = Byte.parseByte(part.substring(5));
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException(
-                            "Could not parse data value");
-                }
-            }
-        }
-        data = tempData;
-    }
+	public SetBlockEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		// match material
+		block = Material.matchMaterial(parts[1]);
+		if (block == null) {
+			throw new InstructionParseException("Block type " + parts[1] + " does not exist");
+		}
+		// parse location
+		String[] coords = parts[2].split(";");
+		if (coords.length != 4) {
+			throw new InstructionParseException("Wrong locatio format");
+		}
+		World world = Bukkit.getWorld(coords[3]);
+		if (world == null) {
+			throw new InstructionParseException("World " + coords[3] + " does not exist");
+		}
+		double x, y, z;
+		try {
+			x = Double.parseDouble(coords[0]);
+			y = Double.parseDouble(coords[1]);
+			z = Double.parseDouble(coords[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		loc = new Location(world, x, y, z);
+		// get data value
+		byte tempData = 0;
+		for (String part : parts) {
+			if (part.contains("data:")) {
+				try {
+					tempData = Byte.parseByte(part.substring(5));
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse data value");
+				}
+			}
+		}
+		data = tempData;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void run(String playerID) {
-        loc.getBlock().setType(block);
-        loc.getBlock().setData(data);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public void run(String playerID) {
+		loc.getBlock().setType(block);
+		loc.getBlock().setData(data);
+	}
 
 }

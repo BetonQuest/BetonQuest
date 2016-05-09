@@ -33,58 +33,58 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class PointEvent extends QuestEvent {
-    
-    final VariableNumber count;
-    final boolean multi;
-    final String category; 
 
-    public PointEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
-        if (parts[2].startsWith("*")) {
-            multi = true;
-            parts[2] = parts[2].replace("*", "");
-        } else {
-            multi = false;
-        }
-        try {
-            count = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point count");
-        }
-    }
+	final VariableNumber count;
+	final boolean multi;
+	final String category;
 
-    @Override
-    public void run(final String playerID) {
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    DatabaseHandler dbHandler = new DatabaseHandler(playerID);
-                    addPoints(playerID, dbHandler);
-                }
-            }.runTaskAsynchronously(BetonQuest.getInstance());
-        } else {
-            DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
-            addPoints(playerID, dbHandler);
-        }
-    }
+	public PointEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+		if (parts[2].startsWith("*")) {
+			multi = true;
+			parts[2] = parts[2].replace("*", "");
+		} else {
+			multi = false;
+		}
+		try {
+			count = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point count");
+		}
+	}
 
-    private void addPoints(String playerID, DatabaseHandler dbHandler) {
-        if (multi) {
-            for (Point p : dbHandler.getPoints()) {
-                if (p.getCategory().equalsIgnoreCase(category)) {
-                    dbHandler.addPoints(category, (int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
-                }
-            }
-        } else {
-            dbHandler.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
-        }
-    }
+	@Override
+	public void run(final String playerID) {
+		if (PlayerConverter.getPlayer(playerID) == null) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					DatabaseHandler dbHandler = new DatabaseHandler(playerID);
+					addPoints(playerID, dbHandler);
+				}
+			}.runTaskAsynchronously(BetonQuest.getInstance());
+		} else {
+			DatabaseHandler dbHandler = BetonQuest.getInstance().getDBHandler(playerID);
+			addPoints(playerID, dbHandler);
+		}
+	}
+
+	private void addPoints(String playerID, DatabaseHandler dbHandler) {
+		if (multi) {
+			for (Point p : dbHandler.getPoints()) {
+				if (p.getCategory().equalsIgnoreCase(category)) {
+					dbHandler.addPoints(category,
+							(int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
+				}
+			}
+		} else {
+			dbHandler.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
+		}
+	}
 }

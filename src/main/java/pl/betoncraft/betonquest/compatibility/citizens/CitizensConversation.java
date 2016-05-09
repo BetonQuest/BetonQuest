@@ -29,23 +29,23 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  * @author Jakub Sapalski
  */
 public class CitizensConversation extends Conversation {
-    
-    private final NPC n;
 
-    public CitizensConversation(String playerID, String packName, String conversationID, Location location, NPC npc) {
-        super(playerID, packName, conversationID, location);
-        this.n = npc;
-    }
-    
-    /**
-     * This will return the NPC associated with this conversation only
-     * after the coversation is created (all player options are listed
-     * and ready to receive player input)
-     * 
-     * @return the NPC or null if it's too early
-     */
-    public NPC getNPC() {
-        return n;
-    }
+	private final NPC n;
+
+	public CitizensConversation(String playerID, String packName, String conversationID, Location location, NPC npc) {
+		super(playerID, packName, conversationID, location);
+		this.n = npc;
+	}
+
+	/**
+	 * This will return the NPC associated with this conversation only after the
+	 * coversation is created (all player options are listed and ready to
+	 * receive player input)
+	 * 
+	 * @return the NPC or null if it's too early
+	 */
+	public NPC getNPC() {
+		return n;
+	}
 
 }

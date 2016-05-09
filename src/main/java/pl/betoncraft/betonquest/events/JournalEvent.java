@@ -32,37 +32,35 @@ import pl.betoncraft.betonquest.config.Config;
  * @author Jakub Sapalski
  */
 public class JournalEvent extends QuestEvent {
-    
-    private final String name;
-    private final boolean add;
 
-    public JournalEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        if (parts.length < 3) {
-            add = false;
-            name = null;
-        } else {
-            add = parts[1].equalsIgnoreCase("add");
-            name = packName + "." + parts[2];
-        }
-    }
+	private final String name;
+	private final boolean add;
 
-    @Override
-    public void run(String playerID) {
-        Journal journal = BetonQuest.getInstance().getDBHandler(playerID)
-                .getJournal();
-        if (add) {
-            journal.addPointer(new Pointer(name, new Date().getTime()));
-            Config.sendMessage(playerID, "new_journal_entry", null, "journal");
-        } else if (name != null) {
-            journal.removePointer(name);
-        }
-        journal.update();
-    }
+	public JournalEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		if (parts.length < 3) {
+			add = false;
+			name = null;
+		} else {
+			add = parts[1].equalsIgnoreCase("add");
+			name = packName + "." + parts[2];
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Journal journal = BetonQuest.getInstance().getDBHandler(playerID).getJournal();
+		if (add) {
+			journal.addPointer(new Pointer(name, new Date().getTime()));
+			Config.sendMessage(playerID, "new_journal_entry", null, "journal");
+		} else if (name != null) {
+			journal.removePointer(name);
+		}
+		journal.update();
+	}
 
 }
