@@ -1,4 +1,6 @@
-﻿v1.8.4
+﻿v1.9-dev
+
+v1.8.4
 Fixes:
     * Conversations are no longer started twice
 
