@@ -140,7 +140,7 @@ public abstract class QuestEvent {
 		} else if (PlayerConverter.getPlayer(playerID) == null) {
 			// handle persistent event
 			if (!persistent) {
-				Debug.info("Player " + playerID + " is offline, cannot fire event" + " because it's not persistent.");
+				Debug.info("Player " + playerID + " is offline, cannot fire event because it's not persistent.");
 				return;
 			}
 			run(playerID);

@@ -905,7 +905,7 @@ public final class BetonQuest extends JavaPlugin {
 		Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
 		// if it's null then there is no such type registered, log an error
 		if (variableClass == null) {
-			Debug.error("Variable type " + parts[0] + " is not registered," + " check if it's spelled correctly in "
+			Debug.error("Variable type " + parts[0] + " is not registered, check if it's spelled correctly in "
 					+ ID + " variable.");
 			return null;
 		}

@@ -148,7 +148,7 @@ public class DatabaseHandler {
 			// log data to debugger
 			if (Debug.debugging()) {
 				Debug.info("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
-						+ " points, " + entries.size() + " journal entries" + " and " + backpack.size()
+						+ " points, " + entries.size() + " journal entries and " + backpack.size()
 						+ " items loaded for player " + PlayerConverter.getName(playerID));
 			}
 

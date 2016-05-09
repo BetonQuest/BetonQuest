@@ -76,7 +76,7 @@ public abstract class Database {
 							+ autoIncrement + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL);");
 			connection.createStatement()
 					.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER PRIMARY KEY "
-							+ autoIncrement + ", playerID " + "VARCHAR(256) NOT NULL, category VARCHAR(256) "
+							+ autoIncrement + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) "
 							+ "NOT NULL, count INT NOT NULL);");
 			connection.createStatement()
 					.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "journal (id INTEGER PRIMARY KEY "

@@ -126,7 +126,7 @@ public class ConversationData {
 		startingOptions = rawStartingOptions.split(",");
 		for (String startingOption : startingOptions) {
 			if (startingOption.contains(".")) {
-				String entirePointer = pack.getName() + "." + convName + "." + "<starting_option>" + "."
+				String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
 						+ startingOption;
 				externalPointers.add(entirePointer);
 			} else if (!NPCOptions.containsKey(startingOption)) {

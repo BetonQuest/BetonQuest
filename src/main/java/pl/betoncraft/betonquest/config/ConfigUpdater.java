@@ -69,7 +69,7 @@ public class ConfigUpdater {
 			+ "downgrade to the previous working version of the plugin and restore your "
 			+ "configuration from the backup. Don't forget to send this error to the developer"
 			+ ", so he can fix it! Sorry for inconvenience, here's the link:"
-			+ " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: " + "<http://i.imgur.com/iR4UMH5.png>";
+			+ " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: <http://i.imgur.com/iR4UMH5.png>";
 
 	/**
 	 * BetonQuest's instance
@@ -929,7 +929,7 @@ public class ConfigUpdater {
 			Debug.info("Adding conversation column to player table");
 			if (instance.isMySQLUsed()) {
 				con.prepareStatement(
-						"ALTER TABLE " + prefix + "player ADD conversation VARCHAR(512)" + " AFTER language;")
+						"ALTER TABLE " + prefix + "player ADD conversation VARCHAR(512) AFTER language;")
 						.executeUpdate();
 			} else {
 				con.prepareStatement("BEGIN TRANSACTION").executeUpdate();
@@ -937,9 +937,9 @@ public class ConfigUpdater {
 						.executeUpdate();
 				con.prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix
 						+ "player (id INTEGER PRIMARY KEY AUTOINCREMENT, playerID"
-						+ " VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, " + "conversation VARCHAR(512));")
+						+ " VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, conversation VARCHAR(512));")
 						.executeUpdate();
-				con.prepareStatement("INSERT INTO " + prefix + "player" + " SELECT id, playerID, language, 'null'"
+				con.prepareStatement("INSERT INTO " + prefix + "player SELECT id, playerID, language, 'null'"
 						+ " FROM " + prefix + "player_old").executeUpdate();
 				con.prepareStatement("COMMIT").executeUpdate();
 			}
@@ -1308,7 +1308,7 @@ public class ConfigUpdater {
 			Debug.info("Updating the database format");
 			if (instance.isMySQLUsed()) {
 				con.prepareStatement(
-						"ALTER TABLE " + prefix + "objectives ADD objective VARCHAR(512) NOT" + " NULL AFTER playerID;")
+						"ALTER TABLE " + prefix + "objectives ADD objective VARCHAR(512) NOT NULL AFTER playerID;")
 						.executeUpdate();
 			} else {
 				con.prepareStatement("BEGIN TRANSACTION").executeUpdate();
@@ -1320,7 +1320,7 @@ public class ConfigUpdater {
 								+ " NOT NULL, instructions VARCHAR(2048) NOT NULL);")
 						.executeUpdate();
 				con.prepareStatement("INSERT INTO " + prefix + "objectives"
-						+ " SELECT id, playerID, 'null', instructions" + " FROM " + prefix + "objectives_old")
+						+ " SELECT id, playerID, 'null', instructions FROM " + prefix + "objectives_old")
 						.executeUpdate();
 				con.prepareStatement("COMMIT").executeUpdate();
 			}
@@ -1376,14 +1376,14 @@ public class ConfigUpdater {
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Debug.info("    Could not read data from objective " + label + ", removing");
 					PreparedStatement stmt = con
-							.prepareStatement("DELETE FROM " + prefix + "objectives " + "WHERE id = ?");
+							.prepareStatement("DELETE FROM " + prefix + "objectives WHERE id = ?");
 					stmt.setInt(1, res.getInt("id"));
 					stmt.executeUpdate();
 					continue;
 				}
 				Debug.info("    Updating the " + label + " objective: '" + newInst + "'");
 				PreparedStatement stmt = con.prepareStatement(
-						"UPDATE " + prefix + "objectives SET objective=?, instructions=?" + " WHERE id = ?");
+						"UPDATE " + prefix + "objectives SET objective=?, instructions=? WHERE id = ?");
 				stmt.setString(1, label);
 				stmt.setString(2, newInst);
 				stmt.setInt(3, res.getInt("id"));
@@ -1561,14 +1561,14 @@ public class ConfigUpdater {
 			con.createStatement().executeUpdate("DELETE FROM " + prefix + "journal");
 			for (String[] objective : objectives) {
 				PreparedStatement stmt = con.prepareStatement(
-						"INSERT INTO " + prefix + "objectives " + "(playerID, instructions) VALUES (?,?)");
+						"INSERT INTO " + prefix + "objectives (playerID, instructions) VALUES (?,?)");
 				stmt.setString(1, objective[0]);
 				stmt.setString(2, objective[1]);
 				stmt.executeUpdate();
 			}
 			for (String[] pointer : pointers) {
 				PreparedStatement stmt = con.prepareStatement(
-						"INSERT INTO " + prefix + "journal " + "(playerID, pointer, date) VALUES (?,?,?)");
+						"INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?,?,?)");
 				stmt.setString(1, pointer[0]);
 				stmt.setString(2, pointer[1]);
 				stmt.setString(3, pointer[2]);
@@ -1639,7 +1639,7 @@ public class ConfigUpdater {
 					}
 				}
 				if (label == null) {
-					Debug.info("  Found objective without a label, that's strange... Anyway," + " skipping. Player: "
+					Debug.info("  Found objective without a label, that's strange... Anyway, skipping. Player: "
 							+ playerID);
 					continue;
 				}
@@ -2072,7 +2072,7 @@ public class ConfigUpdater {
 			e.printStackTrace();
 			Debug.error(ERROR);
 		}
-		Debug.broadcast("Made instruction strings more beautiful! Please read the" + " documentation again.");
+		Debug.broadcast("Made instruction strings more beautiful! Please read the documentation again.");
 		config.set("version", "v11");
 		instance.saveConfig();
 	}
@@ -2141,7 +2141,7 @@ public class ConfigUpdater {
 						+ " (id INTEGER PRIMARY KEY AUTOINCREMENT, playerID VARCHAR(256) NOT NULL, "
 						+ "tag TEXT NOT NULL);").executeUpdate();
 				connection.prepareStatement(
-						"INSERT INTO " + prefix + "tags SELECT id, " + "playerID, tag FROM " + prefix + "tags_old")
+						"INSERT INTO " + prefix + "tags SELECT id, playerID, tag FROM " + prefix + "tags_old")
 						.executeUpdate();
 				connection.prepareStatement("DROP TABLE " + prefix + "tags_old").executeUpdate();
 				connection.prepareStatement("COMMIT").executeUpdate();

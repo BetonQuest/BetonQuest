@@ -78,7 +78,7 @@ public class StaticEvents {
 					Debug.error("Incorrect time value in static event declaration (" + key + "), skipping this one");
 					continue;
 				}
-				Debug.info("Scheduling static event " + value + " at hour " + key + ". Current " + "timestamp: "
+				Debug.info("Scheduling static event " + value + " at hour " + key + ". Current timestamp: "
 						+ new Date().getTime() + ", target timestamp: " + timeStamp);
 				// add the timer to static list, so it can be canceled if needed
 				timers.add(new EventTimer(timeStamp, value));

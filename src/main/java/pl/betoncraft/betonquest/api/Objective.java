@@ -211,7 +211,7 @@ public abstract class Objective {
 	 *            instruction string for player's data
 	 */
 	public final void addPlayer(String playerID, String instruction) {
-		final String ERROR = "There was some error. Please send it to the" + " developer: <coosheck@gmail.com>";
+		final String ERROR = "There was some error. Please send it to the developer: <coosheck@gmail.com>";
 		ObjectiveData data = null;
 		try {
 			data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,

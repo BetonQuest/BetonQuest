@@ -1185,8 +1185,8 @@ public class QuestCommand implements CommandExecutor {
 			String lang = BetonQuest.getInstance().getDBHandler(PlayerConverter.getID((Player) sender)).getLanguage();
 			for (String command : cmds.keySet()) {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-						"tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"" + "§c/" + alias + " "
-								+ cmds.get(command) + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + "§b"
+						"tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "
+								+ cmds.get(command) + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
 								+ Config.getMessage(lang, "command_" + command) + "\"}}]}");
 			}
 		} else {

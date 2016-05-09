@@ -209,13 +209,13 @@ public class ConfigPackage {
 				String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
 				String innerVarVal = main.getConfig().getString("variables." + innerVarName);
 				if (innerVarVal == null) {
-					Debug.error(String.format("Location variable %s is not defined, in variable" + " %s, package %s.",
+					Debug.error(String.format("Location variable %s is not defined, in variable %s, package %s.",
 							innerVarName, varName, name));
 					return null;
 				}
 				if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
 					Debug.error(
-							String.format("Inner variable %s is not valid location, in" + " variable %s, package %s.",
+							String.format("Inner variable %s is not valid location, in variable %s, package %s.",
 									innerVarName, varName, name));
 					return null;
 				}
@@ -232,7 +232,7 @@ public class ConfigPackage {
 					rest = innerVarVal.substring(k, innerVarVal.length());
 				} catch (NumberFormatException e) {
 					Debug.error(String.format(
-							"Could not parse coordinates in " + "inner variable %s in variable %s in package %s",
+							"Could not parse coordinates in inner variable %s in variable %s in package %s",
 							innerVarName, varName, name));
 					return null;
 				}
@@ -247,7 +247,7 @@ public class ConfigPackage {
 					y2 = Double.parseDouble(varVal.substring(i + 1, j));
 					z2 = Double.parseDouble(varVal.substring(j + 1, e));
 				} catch (NumberFormatException e) {
-					Debug.error(String.format("Could not parse vector in" + "location variable %s in package %s",
+					Debug.error(String.format("Could not parse vector inlocation variable %s in package %s",
 							varName, name));
 					return null;
 				}

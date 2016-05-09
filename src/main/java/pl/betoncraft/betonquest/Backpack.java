@@ -493,7 +493,7 @@ public class Backpack implements Listener {
 							y = Integer.parseInt(parts[1]);
 							z = Integer.parseInt(parts[2]);
 						} catch (NumberFormatException e) {
-							Debug.error("Could not parse location " + "coordinates in a compass pointer in " + packName
+							Debug.error("Could not parse location coordinates in a compass pointer in " + packName
 									+ " package: " + key);
 							player.closeInventory();
 							return;
