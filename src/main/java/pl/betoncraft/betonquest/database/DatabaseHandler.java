@@ -354,12 +354,7 @@ public class DatabaseHandler {
      */
     public void deleteObjective(String label) {
         // search active objectives
-        for (Objective objective : getObjectives()) {
-            if (objective.getLabel().equalsIgnoreCase(label)) {
-                objective.removePlayer(playerID);
-            }
-        }
-        // search inactive objectives
+    	BetonQuest.getInstance().getObjective(label).removePlayer(playerID);
         objectives.remove(label);
         removeObjFromDB(label);
     }

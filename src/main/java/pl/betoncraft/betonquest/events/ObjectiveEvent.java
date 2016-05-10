@@ -88,8 +88,7 @@ public class ObjectiveEvent extends QuestEvent {
                 BetonQuest.getInstance().getObjective(objective)
                         .completeObjective(playerID);
             } else {
-                BetonQuest.getInstance().getObjective(objective)
-                        .removePlayer(playerID);
+                BetonQuest.getInstance().getDBHandler(playerID).deleteObjective(objective);
             }
         }
     }

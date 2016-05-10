@@ -880,8 +880,16 @@ public class QuestCommand implements CommandExecutor {
             case "r":
             case "d":
                 // remove the objective
+                String objectiveID2 = args[3];
+                if (!objectiveID2.contains(".")) {
+                    objectiveID2 = defaultPack + "." + args[3];
+                }
                 Debug.info("Deleting objective with tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
-                dbHandler.deleteObjective(args[3]);
+                if (BetonQuest.getInstance().getObjective(objectiveID2) == null) {
+                    sendMessage(sender, "specify_objective");
+                    return;
+                }
+                dbHandler.deleteObjective(objectiveID2);
                 sendMessage(sender, "objective_removed");
                 break;
             default:
