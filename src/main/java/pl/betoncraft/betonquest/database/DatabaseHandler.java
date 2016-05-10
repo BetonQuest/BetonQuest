@@ -173,8 +173,8 @@ public class DatabaseHandler {
     }
     
     /**
-     * Adds new objective to a list of not initialized objectives,
-     * ready to be started or saved to the database.
+     * Adds new objective to a list of not initialized objectives
+     * and to the database.
      * 
      * @param objectiveID
      *          ID of the objective
@@ -184,24 +184,27 @@ public class DatabaseHandler {
         if (obj == null) {
             return;
         }
-        addRawObjective(objectiveID, obj.getDefaultDataInstruction());
+        String data = obj.getDefaultDataInstruction();
+        if (addRawObjective(objectiveID, data))
+            saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
     }
     
     /**
-     * Adds objective to a list of not initialized objectives and the database,
-     * ready to be started.
+     * Adds objective to a list of not initialized objectives. Returns
+     * true if it has been added successfully, false if it was already there.
      * 
      * @param objectiveID
      *          ID of the objective
      * @param data
      *          data instruction string to use
+     * @return true if added, false if it was already there
      */
-    public void addRawObjective(String objectiveID, String data) {
+    public boolean addRawObjective(String objectiveID, String data) {
         if (objectives.containsKey(objectiveID)) {
-            return;
+            return false;
         }
         objectives.put(objectiveID, data);
-        saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
+        return true;
     }
     
     /**
