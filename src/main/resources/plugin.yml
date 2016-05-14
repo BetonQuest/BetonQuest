@@ -5,7 +5,7 @@ authors: [Co0sh]
 website: http://dev.bukkit.org/bukkit-plugins/betonquest/
 softdepend: [Skript, Citizens, MythicMobs, Vault, Multiverse-Core, EffectLib, PlayerPoints, Heroes, Magic, Denizen, WorldGuard, mcMMO]
 loadbefore: [SkillAPI, Quests]
-version: 1.8.5-dev
+version: 1.8.5
 commands:
   betonquest:
     description: General quest command

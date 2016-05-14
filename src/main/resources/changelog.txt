@@ -1,4 +1,10 @@
-﻿v1.8.4
+﻿v1.8.5
+Fixes:
+    * Objectives are now correctly deleted with "objective delete" event and do not
+      reappear after "/q reload".
+    * Objectives are no longer duplicated in the database when using "/q reload".
+
+v1.8.4
 Fixes:
     * Conversations are no longer started twice
 
