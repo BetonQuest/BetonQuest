@@ -434,7 +434,6 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		String playerID = PlayerConverter.getID(args[1]);
-		boolean isOnline = (PlayerConverter.getPlayer(playerID) != null);
 		PlayerData playerData = instance.getPlayerData(playerID);
 		// if the player is offline then get his PlayerData outside of the
 		// list
@@ -482,12 +481,8 @@ public class QuestCommand implements CommandExecutor {
 				}
 			}
 			// add the pointer
-			if (isOnline) {
-				journal.addPointer(pointer);
-				journal.update();
-			} else {
-				playerData.addPointer(pointer);
-			}
+			journal.addPointer(pointer);
+			journal.update();
 			sendMessage(sender, "pointer_added");
 			break;
 		case "remove":
@@ -495,19 +490,10 @@ public class QuestCommand implements CommandExecutor {
 		case "del":
 		case "r":
 		case "d":
-			// remove the pointer (this is unnecessary as adding negativ
+			// remove the pointer
 			Debug.info("Removing pointer");
-			if (isOnline) {
-				journal.removePointer(pointerName);
-				journal.update();
-			} else {
-				for (Pointer pointer2 : journal.getPointers()) {
-					if (pointer2.getPointer().equals(pointerName)) {
-						playerData.removePointer(pointer2);
-						break;
-					}
-				}
-			}
+			journal.removePointer(pointerName);
+			journal.update();
 			sendMessage(sender, "pointer_removed");
 			break;
 		default:
@@ -564,7 +550,7 @@ public class QuestCommand implements CommandExecutor {
 			}
 			// add the point
 			Debug.info("Adding points");
-			playerData.addPoints(category, Integer.parseInt(args[4]));
+			playerData.modifyPoints(category, Integer.parseInt(args[4]));
 			sendMessage(sender, "points_added");
 			break;
 		case "remove":
@@ -832,7 +818,7 @@ public class QuestCommand implements CommandExecutor {
 				// active
 				// objectives
 				tags = new ArrayList<>();
-				for (Objective objective : playerData.getObjectives()) {
+				for (Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
 					tags.add(objective.getLabel());
 				}
 			}
@@ -878,8 +864,17 @@ public class QuestCommand implements CommandExecutor {
 		case "r":
 		case "d":
 			// remove the objective
+			String objectiveID2 = args[3];
+			if (!objectiveID2.contains(".")) {
+				objectiveID2 = defaultPack + "." + args[3];
+			}
 			Debug.info("Deleting objective with tag " + args[3] + " for player " + PlayerConverter.getName(playerID));
-			playerData.deleteObjective(args[3]);
+			if (BetonQuest.getInstance().getObjective(objectiveID2) == null) {
+				sendMessage(sender, "specify_objective");
+				return;
+			}
+			BetonQuest.getInstance().getObjective(objectiveID2).removePlayer(playerID);
+			playerData.removeRawObjective(objectiveID2);
 			sendMessage(sender, "objective_removed");
 			break;
 		default:
@@ -982,7 +977,7 @@ public class QuestCommand implements CommandExecutor {
 					}
 				}
 				playerData.removePointsCategory(name);
-				playerData.addPoints(rename, points);
+				playerData.modifyPoints(rename, points);
 			}
 			break;
 		case "objectives":
@@ -1010,10 +1005,10 @@ public class QuestCommand implements CommandExecutor {
 			BetonQuest.getInstance().getObjective(rename).setLabel(rename);
 			// renaming an active objective probably isn't needed
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+				String playerID = PlayerConverter.getID(player);
 				boolean found = false;
 				String data = null;
-				for (Objective obj : playerData.getObjectives()) {
+				for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
 					if (obj.getLabel().equals(name)) {
 						found = true;
 						data = obj.getData(PlayerConverter.getID(player));
@@ -1025,7 +1020,8 @@ public class QuestCommand implements CommandExecutor {
 					continue;
 				if (data == null)
 					data = "";
-				playerData.deleteObjective(name);
+				BetonQuest.getInstance().getObjective(name).removePlayer(playerID);
+				BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(name);
 				BetonQuest.resumeObjective(PlayerConverter.getID(player), rename, data);
 			}
 			break;
@@ -1097,8 +1093,9 @@ public class QuestCommand implements CommandExecutor {
 		case "o":
 			updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-				playerData.deleteObjective(name);
+				String playerID = PlayerConverter.getID(player);
+				BetonQuest.getInstance().getObjective(name).removePlayer(playerID);
+				BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(name);
 			}
 			break;
 		case "journals":

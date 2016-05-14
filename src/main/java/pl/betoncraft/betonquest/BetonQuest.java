@@ -848,8 +848,8 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		Objective objective = objectives.get(objectiveID);
 		if (objective.containsPlayer(playerID)) {
-			Debug.info(
-					"Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective");
+			Debug.info("Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID +
+					" objective");
 			return;
 		}
 		objective.newPlayer(playerID);

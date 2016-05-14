@@ -94,8 +94,7 @@ public class JoinQuitListener implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		String playerID = PlayerConverter.getID(event.getPlayer());
-		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-		for (Objective objective : playerData.getObjectives()) {
+		for (Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
 			objective.removePlayer(playerID);
 		}
 		BetonQuest.getInstance().removePlayerData(playerID);

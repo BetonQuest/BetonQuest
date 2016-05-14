@@ -186,11 +186,14 @@ public class QuestCanceler {
 		if (objectives != null) {
 			for (String obj : objectives) {
 				Debug.info("  Removing objective " + obj);
+				String objectiveID;
 				if (!obj.contains(".")) {
-					playerData.deleteObjective(packName + "." + obj);
+					objectiveID = packName + "." + obj;
 				} else {
-					playerData.deleteObjective(obj);
+					objectiveID = obj;
 				}
+				BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
+				playerData.removeRawObjective(objectiveID);
 			}
 		}
 		if (journal != null) {

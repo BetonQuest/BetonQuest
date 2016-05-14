@@ -79,12 +79,12 @@ public class PointEvent extends QuestEvent {
 		if (multi) {
 			for (Point p : playerData.getPoints()) {
 				if (p.getCategory().equalsIgnoreCase(category)) {
-					playerData.addPoints(category,
+					playerData.modifyPoints(category,
 							(int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
 				}
 			}
 		} else {
-			playerData.addPoints(category, (int) Math.floor(count.getDouble(playerID)));
+			playerData.modifyPoints(category, (int) Math.floor(count.getDouble(playerID)));
 		}
 	}
 }

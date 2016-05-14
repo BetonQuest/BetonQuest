@@ -19,9 +19,7 @@ package pl.betoncraft.betonquest.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -158,154 +156,12 @@ public class PlayerData {
 	}
 
 	/**
-	 * Starts all Objectives for this player. The instruction strings are
-	 * deleted afterwards.
-	 */
-	public void startObjectives() {
-		for (String objective : objectives.keySet()) {
-			BetonQuest.resumeObjective(playerID, objective, objectives.get(objective));
-		}
-		objectives.clear();
-	}
-
-	public HashMap<String, String> getRawObjectives() {
-		return objectives;
-	}
-
-	/**
-	 * Adds new objective to a list of not initialized objectives, ready to be
-	 * started or saved to the database.
-	 * 
-	 * @param objectiveID
-	 *            ID of the objective
-	 */
-	public void addNewRawObjective(String objectiveID) {
-		Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
-		if (obj == null) {
-			return;
-		}
-		addRawObjective(objectiveID, obj.getDefaultDataInstruction());
-	}
-
-	/**
-	 * Adds objective to a list of not initialized objectives and the database,
-	 * ready to be started.
-	 * 
-	 * @param objectiveID
-	 *            ID of the objective
-	 * @param data
-	 *            data instruction string to use
-	 */
-	public void addRawObjective(String objectiveID, String data) {
-		if (objectives.containsKey(objectiveID)) {
-			return;
-		}
-		objectives.put(objectiveID, data);
-		saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objectiveID, data }));
-	}
-
-	/**
-	 * Removes the raw objective from the plugin and the database.
-	 * 
-	 * @param objectiveID
-	 */
-	public void removeRawObjective(String objectiveID) {
-		objectives.remove(objectiveID);
-		saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[] { playerID, objectiveID }));
-	}
-
-	/**
-	 * Returns the List of active Objectives for this player;
-	 * 
-	 * @return the List of active Objectives
-	 */
-	public ArrayList<Objective> getObjectives() {
-		return BetonQuest.getInstance().getPlayerObjectives(playerID);
-	}
-
-	/**
 	 * Returns the List of Tags for this player.
 	 * 
 	 * @return the List of Tags
 	 */
 	public List<String> getTags() {
 		return tags;
-	}
-
-	/**
-	 * Returns the List of Points for this player.
-	 * 
-	 * @return the List of Points
-	 */
-	public List<Point> getPoints() {
-		return points;
-	}
-
-	/**
-	 * Creates new Journal instance for this player and populates it with
-	 * entries.
-	 * 
-	 * @return new Journal instance
-	 */
-	public Journal getJournal() {
-		if (journal == null) {
-			journal = new Journal(playerID, lang, entries);
-		}
-		return journal;
-	}
-
-	/**
-	 * Adds the pointer to the database
-	 * 
-	 * @param pointer
-	 */
-	public void addPointer(Pointer pointer) {
-		// SQLite doesn't accept formatted date and MySQL doesn't accept numeric
-		// timestamp
-		String date = (BetonQuest.getInstance().isMySQLUsed())
-				? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
-				: Long.toString(pointer.getTimestamp());
-		saver.add(new Record(UpdateType.ADD_JOURNAL, new String[] { playerID, pointer.getPointer(), date }));
-	}
-
-	/**
-	 * Removes the pointer from the database
-	 * 
-	 * @param pointer
-	 */
-	public void removePointer(Pointer pointer) {
-		String date = (BetonQuest.getInstance().isMySQLUsed())
-				? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
-				: Long.toString(pointer.getTimestamp());
-		saver.add(new Record(UpdateType.REMOVE_JOURNAL, new String[] { playerID, pointer.getPointer(), date }));
-	}
-
-	/**
-	 * Purges all player's data from the database and from this object.
-	 */
-	public void purgePlayer() {
-		for (Objective obj : getObjectives()) {
-			obj.removePlayer(playerID);
-		}
-		// clear all lists
-		objectives.clear();
-		tags.clear();
-		points.clear();
-		entries.clear();
-		getJournal().clear(); // journal can be null, so use a method to get it
-		backpack.clear();
-		// clear the database
-		Connector database = new Connector();
-		database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-		database.updateSQL(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID });
-		// update the journal so it's empty
-		if (PlayerConverter.getPlayer(playerID) != null) {
-			getJournal().update();
-		}
 	}
 
 	/**
@@ -345,41 +201,41 @@ public class PlayerData {
 	}
 
 	/**
-	 * Deletes all the objectives with the specified tag.
+	 * Returns the List of Points for this player.
 	 * 
-	 * @param tag
-	 *            objective's tag
+	 * @return the List of Points
 	 */
-	public void deleteObjective(String label) {
-		// search active objectives
-		for (Objective objective : getObjectives()) {
-			if (objective.getLabel().equalsIgnoreCase(label)) {
-				objective.removePlayer(playerID);
+	public List<Point> getPoints() {
+		return points;
+	}
+	
+	/**
+	 * Returns the amount of point the player has in specified category. If the
+	 * category does not exist, it will return 0.
+	 * 
+	 * @param category
+	 *            name of the category
+	 * @return amount of points
+	 */
+	public int hasPointsFromCategory(String category) {
+		for (Point p : points) {
+			if (p.getCategory().equals(category)) {
+				return p.getCount();
 			}
 		}
-		// search inactive objectives
-		objectives.remove(label);
-		removeObjFromDB(label);
-	}
-
-	public void removeObjFromDB(String label) {
-		saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[] { playerID, label }));
-	}
-
-	public void addObjToDB(String label, String data) {
-		saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[] { playerID, label, data }));
+		return 0;
 	}
 
 	/**
-	 * Adds points to specified category. If there is no such category it will
+	 * Adds or subtracts points to/from specified category. If there is no such category it will
 	 * be created.
 	 * 
 	 * @param category
 	 *            points will be added to this category
 	 * @param count
-	 *            how much points will be added (or subtracted)
+	 *            how much points will be added (or subtracted if negative)
 	 */
-	public void addPoints(String category, int count) {
+	public void modifyPoints(String category, int count) {
 		saver.add(new Record(UpdateType.REMOVE_POINTS, new String[] { playerID, category }));
 		// check if the category already exists
 		for (Point point : points) {
@@ -396,6 +252,12 @@ public class PlayerData {
 		saver.add(new Record(UpdateType.ADD_POINTS, new String[] { playerID, category, String.valueOf(count) }));
 	}
 
+	/**
+	 * Removes the whole category of points.
+	 * 
+	 * @param category
+	 *            name of a point category
+	 */
 	public void removePointsCategory(String category) {
 		Point pointToRemove = null;
 		for (Point point : points) {
@@ -407,6 +269,102 @@ public class PlayerData {
 			points.remove(pointToRemove);
 		}
 		saver.add(new Record(UpdateType.REMOVE_POINTS, new String[] { playerID, category }));
+	}
+
+	/**
+	 * Returns a Journal instance or creates it if it does not exist.
+	 * 
+	 * @return new Journal instance
+	 */
+	public Journal getJournal() {
+		if (journal == null) {
+			journal = new Journal(playerID, lang, entries);
+		}
+		return journal;
+	}
+
+	/**
+	 * Starts all Objectives for this player. It takes all "raw" objectives and
+	 * initializes them. Raw objectives are deleted from their HashMap after
+	 * this action (so they won't be started twice)
+	 */
+	public void startObjectives() {
+		for (String objective : objectives.keySet()) {
+			BetonQuest.resumeObjective(playerID, objective, objectives.get(objective));
+		}
+		objectives.clear();
+	}
+
+	/**
+	 * @return the map containing objective IDs and their objective data; these
+	 *         are not initialized yet
+	 */
+	public HashMap<String, String> getRawObjectives() {
+		return objectives;
+	}
+
+	/**
+	 * Adds new objective to a list of not initialized objectives. It's added to the
+	 * database and can be started by running {@link #startObjectives()}.
+	 * 
+	 * @param objectiveID
+	 *            ID of the objective
+	 */
+	public void addNewRawObjective(String objectiveID) {
+		Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
+		if (obj == null) {
+			return;
+		}
+		String data = obj.getDefaultDataInstruction();
+		if (addRawObjective(objectiveID, data))
+			saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
+	}
+
+	/**
+	 * Adds objective to a list of not initialized objectives. This does not add
+	 * the objective to the database because it's not a new objective, hence
+	 * it's already in the database.
+	 * 
+	 * @param objectiveID
+	 *            ID of the objective
+	 * @param data
+	 *            data instruction string to use
+	 */
+	public boolean addRawObjective(String objectiveID, String data) {
+		if (objectives.containsKey(objectiveID)) {
+			return false;
+		}
+		objectives.put(objectiveID, data);
+		return true;
+	}
+
+	/**
+	 * Removes not initialized objective from the plugin and the database.
+	 * 
+	 * @param objectiveID
+	 */
+	public void removeRawObjective(String objectiveID) {
+		objectives.remove(objectiveID);
+		removeObjFromDB(objectiveID);
+	}
+
+	/**
+	 * Directly adds specified objectiveID and data string to the database.
+	 * 
+	 * @param objectiveID
+	 * @param data
+	 */
+	public void addObjToDB(String objectiveID, String data) {
+		saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objectiveID, data }));
+	}
+
+	/**
+	 * Directly removes from the database specified objective.
+	 * 
+	 * @param objectiveID
+	 */
+	public void removeObjFromDB(String objectiveID) {
+		saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[] { playerID, objectiveID }));
 	}
 
 	/**
@@ -436,7 +394,8 @@ public class PlayerData {
 
 	/**
 	 * Adds the item to backpack. The amount of the itemstack doesn't matter,
-	 * it's overwritten by amount parameter.
+	 * it's overwritten by amount parameter. Amount can be greater than max
+	 * stack size.
 	 * 
 	 * @param item
 	 *            ItemStack to add to backpack
@@ -488,7 +447,7 @@ public class PlayerData {
 	}
 
 	/**
-	 * Cancels the quest by removing all defined tags, objectives
+	 * Cancels the quest by removing all defined tags, points, objectives etc.
 	 * 
 	 * @param name
 	 *            name of the canceler
@@ -523,10 +482,38 @@ public class PlayerData {
 	}
 
 	/**
-	 * @return the conversation string if the player had active conversation or
-	 *         null if he did not.
+	 * @return the name of a conversation if the player has active one or
+	 *         null if he does not.
 	 */
 	public String getConversation() {
 		return conv;
+	}
+
+	/**
+	 * Purges all player's data from the database and from this object.
+	 */
+	public void purgePlayer() {
+		for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+			obj.removePlayer(playerID);
+		}
+		// clear all lists
+		objectives.clear();
+		tags.clear();
+		points.clear();
+		entries.clear();
+		getJournal().clear(); // journal can be null, so use a method to get it
+		backpack.clear();
+		// clear the database
+		Connector database = new Connector();
+		database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
+		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
+		database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
+		database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
+		database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
+		database.updateSQL(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID });
+		// update the journal so it's empty
+		if (PlayerConverter.getPlayer(playerID) != null) {
+			getJournal().update();
+		}
 	}
 }

@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -35,6 +37,8 @@ import com.google.common.collect.Lists;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -84,7 +88,13 @@ public class Journal {
 	 */
 	public void addPointer(Pointer pointer) {
 		pointers.add(pointer);
-		BetonQuest.getInstance().getPlayerData(playerID).addPointer(pointer);
+		// SQLite doesn't accept formatted date and MySQL doesn't accept numeric
+		// timestamp
+		String date = (BetonQuest.getInstance().isMySQLUsed())
+				? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+				: Long.toString(pointer.getTimestamp());
+		BetonQuest.getInstance().getSaver()
+				.add(new Record(UpdateType.ADD_JOURNAL, new String[] { playerID, pointer.getPointer(), date }));
 	}
 
 	/**
@@ -97,7 +107,11 @@ public class Journal {
 		for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
 			Pointer pointer = (Pointer) iterator.next();
 			if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
-				BetonQuest.getInstance().getPlayerData(playerID).removePointer(pointer);
+				String date = (BetonQuest.getInstance().isMySQLUsed())
+						? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+						: Long.toString(pointer.getTimestamp());
+				BetonQuest.getInstance().getSaver()
+						.add(new Record(UpdateType.REMOVE_JOURNAL, new String[] { playerID, pointer.getPointer(), date }));
 				iterator.remove();
 				break;
 			}
@@ -255,7 +269,7 @@ public class Journal {
 	}
 
 	/**
-	 * Clears the Journal completely.
+	 * Clears the Journal completely but doesn't touch the database.
 	 */
 	public void clear() {
 		texts.clear();
@@ -336,8 +350,8 @@ public class Journal {
 	 *            ID of the player
 	 */
 	public void update() {
-		lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		if (hasJournal(playerID)) {
+			lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 			int slot = removeFromInv();
 			addToInv(slot);
 		}
@@ -384,14 +398,18 @@ public class Journal {
 	}
 
 	/**
-	 * Checks if the player has his journal in the inventory
+	 * Checks if the player has his journal in the inventory. Returns false if
+	 * the player is not online.
 	 * 
 	 * @param playerID
 	 *            ID of the player
 	 * @return true if the player has his journal, false otherwise
 	 */
 	public static boolean hasJournal(String playerID) {
-		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		if (player == null)
+			return false;
+		for (ItemStack item : player.getInventory().getContents()) {
 			if (isJournal(playerID, item)) {
 				return true;
 			}
