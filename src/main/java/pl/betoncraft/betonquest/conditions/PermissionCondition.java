@@ -28,24 +28,23 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PermissionCondition extends Condition {
 
-    private final String permission;
+	private final String permission;
 
-    public PermissionCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("There is no permission defined");
-        }
-        permission = parts[1];
-    }
+	public PermissionCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("There is no permission defined");
+		}
+		permission = parts[1];
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).hasPermission(permission)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		if (PlayerConverter.getPlayer(playerID).hasPermission(permission)) {
+			return true;
+		}
+		return false;
+	}
 
 }

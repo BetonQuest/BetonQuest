@@ -31,43 +31,43 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class PlayerConversationStartEvent extends PlayerEvent implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
-    private Conversation conversation;
-    private boolean canceled = false;
+	private static final HandlerList handlers = new HandlerList();
+	private Conversation conversation;
+	private boolean canceled = false;
 
-    /**
-     * Creates new conversation end event
-     * 
-     * @param who
-     */
-    public PlayerConversationStartEvent(Player who, Conversation conversation) {
-        super(who);
-        this.conversation = conversation;
-    }
+	/**
+	 * Creates new conversation end event
+	 * 
+	 * @param who
+	 */
+	public PlayerConversationStartEvent(Player who, Conversation conversation) {
+		super(who);
+		this.conversation = conversation;
+	}
 
-    /**
-     * @return the conversation which has been ended
-     */
-    public Conversation getConversation() {
-        return conversation;
-    }
-    
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-     
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-    
-    @Override
-    public boolean isCancelled() {
-        return canceled;
-    }
+	/**
+	 * @return the conversation which has been ended
+	 */
+	public Conversation getConversation() {
+		return conversation;
+	}
 
-    @Override
-    public void setCancelled(boolean arg) {
-        canceled = arg;
-    }
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
+
+	@Override
+	public boolean isCancelled() {
+		return canceled;
+	}
+
+	@Override
+	public void setCancelled(boolean arg) {
+		canceled = arg;
+	}
 
 }

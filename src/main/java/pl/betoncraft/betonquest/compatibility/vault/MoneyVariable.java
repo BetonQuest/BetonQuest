@@ -29,42 +29,41 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MoneyVariable extends Variable {
 
-    private Type type;
-    private int amount;
+	private Type type;
+	private int amount;
 
-    public MoneyVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length != 2) {
-            throw new InstructionParseException("Incorrect number of arguments");
-        }
-        if (parts[1].equalsIgnoreCase("amount")) {
-            type = Type.AMOUNT;
-        } else if (parts[1].toLowerCase().startsWith("left:")) {
-            type = Type.LEFT;
-            try {
-                amount = Integer.parseInt(parts[1].substring(5));
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse money amount");
-            }
-        }
-    }
+	public MoneyVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length != 2) {
+			throw new InstructionParseException("Incorrect number of arguments");
+		}
+		if (parts[1].equalsIgnoreCase("amount")) {
+			type = Type.AMOUNT;
+		} else if (parts[1].toLowerCase().startsWith("left:")) {
+			type = Type.LEFT;
+			try {
+				amount = Integer.parseInt(parts[1].substring(5));
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse money amount");
+			}
+		}
+	}
 
-    @Override
-    public String getValue(String playerID) {
-        switch (type) {
-            case AMOUNT:
-                return String.valueOf(Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
-            case LEFT:
-                return String.valueOf(amount - Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
-            default:
-                return "";
-        }
-    }
-    
-    private enum Type {
-        AMOUNT, LEFT
-    }
+	@Override
+	public String getValue(String playerID) {
+		switch (type) {
+		case AMOUNT:
+			return String.valueOf(Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+		case LEFT:
+			return String.valueOf(amount - Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+		default:
+			return "";
+		}
+	}
+
+	private enum Type {
+		AMOUNT, LEFT
+	}
 
 }

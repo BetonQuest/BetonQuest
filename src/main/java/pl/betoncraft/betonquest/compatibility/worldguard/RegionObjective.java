@@ -41,56 +41,54 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
  */
 public class RegionObjective extends Objective implements Listener {
 
-    private final String name;
-    private final WorldGuardPlugin worldGuard = (WorldGuardPlugin)
-            Bukkit.getPluginManager().getPlugin("WorldGuard");
-    
-    public RegionObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        name = parts[1];
-    }
-    
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
-            return;
-        }
-        Location loc = event.getTo();
-        RegionManager manager = worldGuard.getRegionManager(loc.getWorld());
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(loc);
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) {
-                if (checkConditions(playerID)) {
-                    completeObjective(playerID);
-                } else {
-                    return;
-                }
-            }
-        }
-        
-    }
+	private final String name;
+	private final WorldGuardPlugin worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public RegionObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		name = parts[1];
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler
+	public void onMove(PlayerMoveEvent event) {
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (!containsPlayer(playerID)) {
+			return;
+		}
+		Location loc = event.getTo();
+		RegionManager manager = worldGuard.getRegionManager(loc.getWorld());
+		ProtectedRegion region = manager.getRegion(name);
+		ApplicableRegionSet set = manager.getApplicableRegions(loc);
+		for (ProtectedRegion compare : set) {
+			if (compare.equals(region)) {
+				if (checkConditions(playerID)) {
+					completeObjective(playerID);
+				} else {
+					return;
+				}
+			}
+		}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	}
+
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

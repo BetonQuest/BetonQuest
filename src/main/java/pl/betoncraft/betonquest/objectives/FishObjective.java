@@ -39,113 +39,116 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class FishObjective extends Objective implements Listener {
-    
-    private final Material fish;
-    private final byte data;
-    private final int amount;
-    private final boolean notify;
 
-    public FishObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = FishData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3)
-            throw new InstructionParseException("Not enough arguments");
-        String[] fishParts = parts[1].split(":");
-        fish = Material.matchMaterial(fishParts[0]);
-        if (fish == null)
-            throw new InstructionParseException("Unknown fish type");
-        if (fishParts.length > 1) {
-            try {
-                data = Byte.parseByte(fishParts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse fish data value");
-            }
-        } else {
-            data = -1;
-        }
-        try {
-            amount = Integer.parseInt(parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse fish amount");
-        }
-        boolean tempNotify = false;
-        for (String part : parts) {
-            if (part.equalsIgnoreCase("notify")) {
-                tempNotify = true;
-            }
-        }
-        notify = tempNotify;
-    }
-    
-    @SuppressWarnings("deprecation")
-    @EventHandler
-    public void onFishCatch(PlayerFishEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) return;
-        if (event.getCaught() == null) return;
-        if (event.getCaught().getType() != EntityType.DROPPED_ITEM) return;
-        ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (item.getType() != fish) return;
-        if (data >= 0 && item.getData().getData() != data) return;
-        FishData data = (FishData) dataMap.get(playerID);
-        if (checkConditions(playerID))
-            data.catchFish();
-        if (data.getAmount() <= 0)
-            completeObjective(playerID);
-        else if (notify)
-            Config.sendMessage(playerID, "fish_to_catch",
-                    new String[]{String.valueOf(data.getAmount())});
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
-            return Integer.toString(amount - ((FishData) dataMap.get(playerID)).getAmount());
-        }
-        return "";
-    }
+	private final Material fish;
+	private final byte data;
+	private final int amount;
+	private final boolean notify;
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public FishObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = FishData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3)
+			throw new InstructionParseException("Not enough arguments");
+		String[] fishParts = parts[1].split(":");
+		fish = Material.matchMaterial(fishParts[0]);
+		if (fish == null)
+			throw new InstructionParseException("Unknown fish type");
+		if (fishParts.length > 1) {
+			try {
+				data = Byte.parseByte(fishParts[1]);
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse fish data value");
+			}
+		} else {
+			data = -1;
+		}
+		try {
+			amount = Integer.parseInt(parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse fish amount");
+		}
+		boolean tempNotify = false;
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("notify")) {
+				tempNotify = true;
+			}
+		}
+		notify = tempNotify;
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onFishCatch(PlayerFishEvent event) {
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (!containsPlayer(playerID))
+			return;
+		if (event.getCaught() == null)
+			return;
+		if (event.getCaught().getType() != EntityType.DROPPED_ITEM)
+			return;
+		ItemStack item = ((Item) event.getCaught()).getItemStack();
+		if (item.getType() != fish)
+			return;
+		if (data >= 0 && item.getData().getData() != data)
+			return;
+		FishData data = (FishData) dataMap.get(playerID);
+		if (checkConditions(playerID))
+			data.catchFish();
+		if (data.getAmount() <= 0)
+			completeObjective(playerID);
+		else if (notify)
+			Config.sendMessage(playerID, "fish_to_catch", new String[] { String.valueOf(data.getAmount()) });
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-    
-    public static class FishData extends ObjectiveData {
-        
-        private int amount;
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("left")) {
+			return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
+		} else if (name.equalsIgnoreCase("amount")) {
+			return Integer.toString(amount - ((FishData) dataMap.get(playerID)).getAmount());
+		}
+		return "";
+	}
 
-        public FishData(String instruction, String playerID, String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-        
-        public void catchFish() {
-            amount--;
-            update();
-        }
-        
-        public int getAmount() {
-            return amount;
-        }
-        
-        @Override
-        public String toString() {
-            return String.valueOf(amount);
-        }
-        
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return Integer.toString(amount);
+	}
+
+	public static class FishData extends ObjectiveData {
+
+		private int amount;
+
+		public FishData(String instruction, String playerID, String objID) {
+			super(instruction, playerID, objID);
+			amount = Integer.parseInt(instruction);
+		}
+
+		public void catchFish() {
+			amount--;
+			update();
+		}
+
+		public int getAmount() {
+			return amount;
+		}
+
+		@Override
+		public String toString() {
+			return String.valueOf(amount);
+		}
+
+	}
 }

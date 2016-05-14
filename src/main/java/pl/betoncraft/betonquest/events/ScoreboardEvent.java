@@ -34,47 +34,46 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class ScoreboardEvent extends QuestEvent {
-    
-    final VariableNumber count;
-    final boolean multi;
-    final String objective;
 
-    public ScoreboardEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        objective = parts[1];
-        if (parts[2].startsWith("*")) {
-            multi = true;
-            parts[2] = parts[2].replace("*", "");
-        } else {
-            multi = false;
-        }
-        try {
-            count = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse score count");
-        }
-    }
+	final VariableNumber count;
+	final boolean multi;
+	final String objective;
 
-    @Override
-    public void run(String playerID) {
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        Objective obj = board.getObjective(objective);
-        if (obj == null) {
-            Debug.error("Scoreboard objective " + objective + " does not exist!");
-            return;
-        }
-        Score score = obj.getScore(PlayerConverter.getName(playerID));
-        if (multi) {
-            score.setScore((int) Math.floor(score.getScore() * count.getDouble(playerID)));
-        } else {
-            score.setScore((int) Math.floor(score.getScore() + count.getDouble(playerID)));
-        }
-    }
+	public ScoreboardEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		objective = parts[1];
+		if (parts[2].startsWith("*")) {
+			multi = true;
+			parts[2] = parts[2].replace("*", "");
+		} else {
+			multi = false;
+		}
+		try {
+			count = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse score count");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+		Objective obj = board.getObjective(objective);
+		if (obj == null) {
+			Debug.error("Scoreboard objective " + objective + " does not exist!");
+			return;
+		}
+		Score score = obj.getScore(PlayerConverter.getName(playerID));
+		if (multi) {
+			score.setScore((int) Math.floor(score.getScore() * count.getDouble(playerID)));
+		} else {
+			score.setScore((int) Math.floor(score.getScore() + count.getDouble(playerID)));
+		}
+	}
 
 }

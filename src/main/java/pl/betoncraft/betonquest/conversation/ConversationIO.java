@@ -23,42 +23,42 @@ package pl.betoncraft.betonquest.conversation;
  * @author Jakub Sapalski
  */
 public interface ConversationIO {
-    
-    /**
-     * Set the text of response choosen by the NPC. Should be called once per
-     * conversation cycle.
-     * 
-     * @param npcName
-     *         the name of the NPC
-     * @param response
-     *         the text the NPC chose
-     */
-    public void setNpcResponse(String npcName, String response);
-    
-    /**
-     * Adds the text of the player option. Should be called for each option in
-     * a conversation cycle.
-     * 
-     * @param option
-     */
-    public void addPlayerOption(String option);
-    
-    /**
-     * Displays all data to the player. Should be called after setting all
-     * options.
-     */
-    public void display();
-    
-    /**
-     * Clears the data. Should be called before the cycle begins to ensure
-     * nothing is left from previous one.
-     */
-    public void clear();
-    
-    /**
-     * Ends the work of this conversation IO. Should be called when the
-     * conversation ends.
-     */
-    public void end();
-    
+
+	/**
+	 * Set the text of response choosen by the NPC. Should be called once per
+	 * conversation cycle.
+	 * 
+	 * @param npcName
+	 *            the name of the NPC
+	 * @param response
+	 *            the text the NPC chose
+	 */
+	public void setNpcResponse(String npcName, String response);
+
+	/**
+	 * Adds the text of the player option. Should be called for each option in a
+	 * conversation cycle.
+	 * 
+	 * @param option
+	 */
+	public void addPlayerOption(String option);
+
+	/**
+	 * Displays all data to the player. Should be called after setting all
+	 * options.
+	 */
+	public void display();
+
+	/**
+	 * Clears the data. Should be called before the cycle begins to ensure
+	 * nothing is left from previous one.
+	 */
+	public void clear();
+
+	/**
+	 * Ends the work of this conversation IO. Should be called when the
+	 * conversation ends.
+	 */
+	public void end();
+
 }

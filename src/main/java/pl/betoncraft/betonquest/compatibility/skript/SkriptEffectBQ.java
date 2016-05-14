@@ -35,31 +35,29 @@ import ch.njol.util.Kleenean;
  */
 public class SkriptEffectBQ extends Effect {
 
-    private Expression<String> event;
-    private Expression<Player> player;
+	private Expression<String> event;
+	private Expression<Player> player;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed,
-            ParseResult parseResult) {
-        this.event = (Expression<String>) exprs[0];
-        this.player = (Expression<Player>) exprs[1];
-        return true;
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		this.event = (Expression<String>) exprs[0];
+		this.player = (Expression<Player>) exprs[1];
+		return true;
+	}
 
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "fire " + event.toString() + " for " + player.getSingle(e).getName();
-    }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "fire " + event.toString() + " for " + player.getSingle(e).getName();
+	}
 
-    @Override
-    protected void execute(final Event e) {
-        new BukkitRunnable() {
-            public void run() {
-                BetonQuest.event(PlayerConverter.getID(player.getSingle(e)),
-                        event.getSingle(e));
-            }
-        }.runTask(BetonQuest.getInstance());
-    }
+	@Override
+	protected void execute(final Event e) {
+		new BukkitRunnable() {
+			public void run() {
+				BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), event.getSingle(e));
+			}
+		}.runTask(BetonQuest.getInstance());
+	}
 
 }

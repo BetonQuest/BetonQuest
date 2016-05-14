@@ -28,32 +28,32 @@ import pl.betoncraft.betonquest.api.Variable;
  * @author Jakub Sapalski
  */
 public class ObjectivePropertyVariable extends Variable {
-    
-    private String objective;
-    private String propertyName;
 
-    public ObjectivePropertyVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length != 3) {
-            throw new InstructionParseException("Incorrect number of arguments");
-        }
-        if (parts[1].contains(".")) {
-            objective = parts[1];
-        } else {
-            objective = packName + "." + parts[1];
-        }
-        propertyName = parts[2];
-    }
+	private String objective;
+	private String propertyName;
 
-    @Override
-    public String getValue(String playerID) {
-        Objective objective = BetonQuest.getInstance().getObjective(this.objective);
-        // existence of an objective is checked now because it may not exist yet
-        // when variable is created (in case of "message" event)
-        if (objective == null) return "";
-        return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
-    }
+	public ObjectivePropertyVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length != 3) {
+			throw new InstructionParseException("Incorrect number of arguments");
+		}
+		if (parts[1].contains(".")) {
+			objective = parts[1];
+		} else {
+			objective = packName + "." + parts[1];
+		}
+		propertyName = parts[2];
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		Objective objective = BetonQuest.getInstance().getObjective(this.objective);
+		// existence of an objective is checked now because it may not exist yet
+		// when variable is created (in case of "message" event)
+		if (objective == null)
+			return "";
+		return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
+	}
 
 }

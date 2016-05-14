@@ -30,29 +30,29 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MoneyCondition extends Condition {
 
-    private final VariableNumber amount;
+	private final VariableNumber amount;
 
-    public MoneyCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Money amount not specified");
-        }
-        try {
-            VariableNumber tempAmount = new VariableNumber(packName, parts[1]);
-            amount = tempAmount;
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse money amount");
-        }
-    }
+	public MoneyCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Money amount not specified");
+		}
+		try {
+			VariableNumber tempAmount = new VariableNumber(packName, parts[1]);
+			amount = tempAmount;
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse money amount");
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean check(String playerID) {
-        double a = amount.getDouble(playerID);
-        if (a < 0) a = -a;
-        return Compatibility.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean check(String playerID) {
+		double a = amount.getDouble(playerID);
+		if (a < 0)
+			a = -a;
+		return Compatibility.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
+	}
 
 }

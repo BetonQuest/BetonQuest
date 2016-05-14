@@ -35,72 +35,70 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class ItemAmountVariable extends Variable {
-    
-    private QuestItem questItem;
-    private Type type;
-    private int amount;
 
-    public ItemAmountVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length != 3) {
-            throw new InstructionParseException("Incorrect number of arguments");
-        }
-        String name = parts[1];
-        String itemInstruction = pack.getString("items." + name);
-        if (itemInstruction == null) {
-            throw new InstructionParseException("Item not defined: " + name);
-        }
-        questItem = new QuestItem(itemInstruction);
-        if (parts[2].toLowerCase().startsWith("left:")) {
-            type = Type.LEFT;
-            try {
-                amount = Integer.parseInt(parts[2].substring(5));
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse item amount");
-            }
-        } else if (parts[2].equalsIgnoreCase("amount")) {
-            type = Type.AMOUNT;
-        }
-    }
+	private QuestItem questItem;
+	private Type type;
+	private int amount;
 
-    @Override
-    public String getValue(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        int playersAmount = 0;
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null) {
-                continue;
-            }
-            if (!questItem.equalsI(item)) {
-                continue;
-            }
-            playersAmount += item.getAmount();
-        }
-        List<ItemStack> backpackItems = BetonQuest.getInstance()
-                .getDBHandler(playerID).getBackpack();
-        for (ItemStack item : backpackItems) {
-            if (item == null) {
-                continue;
-            }
-            if (!questItem.equalsI(item)) {
-                continue;
-            }
-            playersAmount += item.getAmount();
-        }
-        switch (type) {
-            case AMOUNT:
-                return Integer.toString(playersAmount);
-            case LEFT:
-                return Integer.toString(amount - playersAmount);
-            default:
-                return "";
-        }
-    }
-    
-    private enum Type {
-        AMOUNT, LEFT
-    }
+	public ItemAmountVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length != 3) {
+			throw new InstructionParseException("Incorrect number of arguments");
+		}
+		String name = parts[1];
+		String itemInstruction = pack.getString("items." + name);
+		if (itemInstruction == null) {
+			throw new InstructionParseException("Item not defined: " + name);
+		}
+		questItem = new QuestItem(itemInstruction);
+		if (parts[2].toLowerCase().startsWith("left:")) {
+			type = Type.LEFT;
+			try {
+				amount = Integer.parseInt(parts[2].substring(5));
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse item amount");
+			}
+		} else if (parts[2].equalsIgnoreCase("amount")) {
+			type = Type.AMOUNT;
+		}
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		int playersAmount = 0;
+		for (ItemStack item : player.getInventory().getContents()) {
+			if (item == null) {
+				continue;
+			}
+			if (!questItem.equalsI(item)) {
+				continue;
+			}
+			playersAmount += item.getAmount();
+		}
+		List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+		for (ItemStack item : backpackItems) {
+			if (item == null) {
+				continue;
+			}
+			if (!questItem.equalsI(item)) {
+				continue;
+			}
+			playersAmount += item.getAmount();
+		}
+		switch (type) {
+		case AMOUNT:
+			return Integer.toString(playersAmount);
+		case LEFT:
+			return Integer.toString(amount - playersAmount);
+		default:
+			return "";
+		}
+	}
+
+	private enum Type {
+		AMOUNT, LEFT
+	}
 
 }

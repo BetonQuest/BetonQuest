@@ -28,48 +28,43 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import pl.betoncraft.betonquest.api.MobKillNotifier;
 
-
 /**
  * Listens to standard kills and adds them to MobKillNotifier.
  * 
  * @author Jakub Sapalski
  */
 public class MobKillListener implements Listener {
-    
-    public MobKillListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        // check if the damage cause actually exists; if it does not,
-        // the whole checking is pointless
-        if (event.getEntity() == null || event.getEntity().getLastDamageCause()
-                == null || event.getEntity().getLastDamageCause().getCause()
-                == null) {
-            return;
-        }
-        // handle the normal attack
-        if (event.getEntity().getLastDamageCause().getCause()
-                .equals(DamageCause.ENTITY_ATTACK)) {
-            EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent)
-                    event.getEntity().getLastDamageCause();
-            // if the damager is player, check if he has this objective
-            if (damage.getDamager() instanceof Player) {
-                Player player = (Player) damage.getDamager();
-                MobKillNotifier.addKill(player, event.getEntity());
-            }
-        // handle projectile attack
-        } else if (event.getEntity().getLastDamageCause().getCause()
-                .equals(DamageCause.PROJECTILE)) {
-            Projectile projectile = (Projectile) ((EntityDamageByEntityEvent)
-                    event.getEntity().getLastDamageCause()).getDamager();
-            // check if the shooter was a player
-            if (projectile.getShooter() instanceof Player) {
-                Player player = (Player) projectile.getShooter();
-                MobKillNotifier.addKill(player, event.getEntity());
-            }
-        }
-    }
+
+	public MobKillListener() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@EventHandler
+	public void onEntityDeath(EntityDeathEvent event) {
+		// check if the damage cause actually exists; if it does not,
+		// the whole checking is pointless
+		if (event.getEntity() == null || event.getEntity().getLastDamageCause() == null
+				|| event.getEntity().getLastDamageCause().getCause() == null) {
+			return;
+		}
+		// handle the normal attack
+		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
+			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+			// if the damager is player, check if he has this objective
+			if (damage.getDamager() instanceof Player) {
+				Player player = (Player) damage.getDamager();
+				MobKillNotifier.addKill(player, event.getEntity());
+			}
+			// handle projectile attack
+		} else if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
+			Projectile projectile = (Projectile) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause())
+					.getDamager();
+			// check if the shooter was a player
+			if (projectile.getShooter() instanceof Player) {
+				Player player = (Player) projectile.getShooter();
+				MobKillNotifier.addKill(player, event.getEntity());
+			}
+		}
+	}
 
 }

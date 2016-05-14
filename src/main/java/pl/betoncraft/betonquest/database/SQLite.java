@@ -32,44 +32,44 @@ import org.bukkit.plugin.Plugin;
  * @author tips48
  */
 public class SQLite extends Database {
-    private final String dbLocation;
+	private final String dbLocation;
 
-    /**
-     * Creates a new SQLite instance
-     * 
-     * @param plugin
-     *            Plugin instance
-     * @param dbLocation
-     *            Location of the Database (Must end in .db)
-     */
-    public SQLite(Plugin plugin, String dbLocation) {
-        super(plugin);
-        this.dbLocation = dbLocation;
-    }
+	/**
+	 * Creates a new SQLite instance
+	 * 
+	 * @param plugin
+	 *            Plugin instance
+	 * @param dbLocation
+	 *            Location of the Database (Must end in .db)
+	 */
+	public SQLite(Plugin plugin, String dbLocation) {
+		super(plugin);
+		this.dbLocation = dbLocation;
+	}
 
-    @Override
-    public Connection openConnection() {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdirs();
-        }
-        File file = new File(plugin.getDataFolder(), dbLocation);
-        if (!(file.exists())) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "Unable to create database!");
-            }
-        }
-        Connection connection = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:"
-                + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
+	@Override
+	public Connection openConnection() {
+		if (!plugin.getDataFolder().exists()) {
+			plugin.getDataFolder().mkdirs();
+		}
+		File file = new File(plugin.getDataFolder(), dbLocation);
+		if (!(file.exists())) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				plugin.getLogger().log(Level.SEVERE, "Unable to create database!");
+			}
+		}
+		Connection connection = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			connection = DriverManager
+					.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return connection;
+	}
 }

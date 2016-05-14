@@ -39,102 +39,99 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCKillObjective extends Objective implements Listener {
 
-    private final int ID;
-    private final int amount;
+	private final int ID;
+	private final int amount;
 
-    public NPCKillObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = NPCData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            ID = Integer.parseInt(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse ID");
-        }
-        int tempAmount = 1;
-        for (String part : parts) {
-            if (part.contains("amount:")) {
-                tempAmount = Integer.parseInt(part.substring(7));
-            }
-        }
-        amount = tempAmount;
-        if (amount < 1) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
-    }
+	public NPCKillObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = NPCData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			ID = Integer.parseInt(parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse ID");
+		}
+		int tempAmount = 1;
+		for (String part : parts) {
+			if (part.contains("amount:")) {
+				tempAmount = Integer.parseInt(part.substring(7));
+			}
+		}
+		amount = tempAmount;
+		if (amount < 1) {
+			throw new InstructionParseException("Amount cannot be less than 1");
+		}
+	}
 
-    @EventHandler
-    public void onNPCKilling(NPCDeathEvent event) {
-        if (event.getNPC().getId() == ID
-            && event.getNPC().getEntity().getLastDamageCause().getCause()
-                    .equals(DamageCause.ENTITY_ATTACK)) {
-            EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent)
-                    event.getNPC().getEntity().getLastDamageCause();
-            if (damage.getDamager() instanceof Player) {
-                String playerID = PlayerConverter.getID(
-                        (Player) damage.getDamager());
-                NPCData playerData = (NPCData) dataMap.get(playerID);
-                if (containsPlayer(playerID) && checkConditions(playerID)) {
-                    playerData.kill();
-                    if (playerData.killed()) {
-                        completeObjective(playerID);
-                    }
-                }
-            }
-        }
-    }
+	@EventHandler
+	public void onNPCKilling(NPCDeathEvent event) {
+		if (event.getNPC().getId() == ID
+				&& event.getNPC().getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
+			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getNPC().getEntity()
+					.getLastDamageCause();
+			if (damage.getDamager() instanceof Player) {
+				String playerID = PlayerConverter.getID((Player) damage.getDamager());
+				NPCData playerData = (NPCData) dataMap.get(playerID);
+				if (containsPlayer(playerID) && checkConditions(playerID)) {
+					playerData.kill();
+					if (playerData.killed()) {
+						completeObjective(playerID);
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-    
-    @Override
-    public String getProperty(String name, String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
-            return Integer.toString(((NPCData) dataMap.get(playerID)).getAmount());
-        }
-        return "";
-    }
-    
-    public static class NPCData extends ObjectiveData {
-        
-        private int amount;
+	@Override
+	public String getDefaultDataInstruction() {
+		return Integer.toString(amount);
+	}
 
-        public NPCData(String instruction, String playerID, String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-        
-        private void kill() {
-            amount--;
-            update();
-        }
-        
-        private boolean killed() {
-            return amount <= 0;
-        }
-        
-        private int getAmount() {
-            return amount;
-        }
-        
-    }
+	@Override
+	public String getProperty(String name, String playerID) {
+		if (name.equalsIgnoreCase("left")) {
+			return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
+		} else if (name.equalsIgnoreCase("amount")) {
+			return Integer.toString(((NPCData) dataMap.get(playerID)).getAmount());
+		}
+		return "";
+	}
+
+	public static class NPCData extends ObjectiveData {
+
+		private int amount;
+
+		public NPCData(String instruction, String playerID, String objID) {
+			super(instruction, playerID, objID);
+			amount = Integer.parseInt(instruction);
+		}
+
+		private void kill() {
+			amount--;
+			update();
+		}
+
+		private boolean killed() {
+			return amount <= 0;
+		}
+
+		private int getAmount() {
+			return amount;
+		}
+
+	}
 
 }

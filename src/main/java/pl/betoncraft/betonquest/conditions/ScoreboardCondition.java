@@ -35,34 +35,33 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ScoreboardCondition extends Condition {
 
-    private final String objective;
-    private final VariableNumber count;
-    
-    public ScoreboardCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        objective = parts[1];
-        try {
-            count = new VariableNumber(packName, parts[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point amount");
-        }
-    }
+	private final String objective;
+	private final VariableNumber count;
 
-    @Override
-    public boolean check(String playerID) {
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        Objective obj = board.getObjective(objective);
-        if (obj == null) {
-            Debug.error("Scoreboard objective " + objective + " does not exist!");
-            return false;
-        }
-        Score score = obj.getScore(PlayerConverter.getName(playerID));
-        return score.getScore() >= count.getInt(playerID);
-    }
+	public ScoreboardCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		objective = parts[1];
+		try {
+			count = new VariableNumber(packName, parts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point amount");
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+		Objective obj = board.getObjective(objective);
+		if (obj == null) {
+			Debug.error("Scoreboard objective " + objective + " does not exist!");
+			return false;
+		}
+		Score score = obj.getScore(PlayerConverter.getName(playerID));
+		return score.getScore() >= count.getInt(playerID);
+	}
 
 }

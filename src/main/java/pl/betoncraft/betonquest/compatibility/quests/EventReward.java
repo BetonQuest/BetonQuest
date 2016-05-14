@@ -31,20 +31,20 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class EventReward extends CustomReward {
-    
-    public EventReward() {
-        setName("BetonQuest event");
-        setAuthor("Co0sh");
-        setRewardName("Event");
-        addData("Event");
-        addDescription("Event", "Specify BetonQuest event name (with the package, like: package.event)");
-    }
 
-    @Override
-    public void giveReward(Player player, Map<String, Object> dataMap) {
-        String playerID = PlayerConverter.getID(player);
-        String event = dataMap.get("Event").toString();
-        BetonQuest.event(playerID, event);
-    }
+	public EventReward() {
+		setName("BetonQuest event");
+		setAuthor("Co0sh");
+		setRewardName("Event");
+		addData("Event");
+		addDescription("Event", "Specify BetonQuest event name (with the package, like: package.event)");
+	}
+
+	@Override
+	public void giveReward(Player player, Map<String, Object> dataMap) {
+		String playerID = PlayerConverter.getID(player);
+		String event = dataMap.get("Event").toString();
+		BetonQuest.event(playerID, event);
+	}
 
 }

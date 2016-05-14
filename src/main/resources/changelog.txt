@@ -1,3 +1,5 @@
+﻿v1.9-dev
+
 ﻿v1.8.5
 Fixes:
     * Objectives are now correctly deleted with "objective delete" event and do not

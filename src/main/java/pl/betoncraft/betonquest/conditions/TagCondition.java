@@ -28,24 +28,23 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class TagCondition extends Condition {
 
-    private final String tag;
+	private final String tag;
 
-    public TagCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("There is no tag defined");
-        }
-        tag = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
-    }
+	public TagCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("There is no tag defined");
+		}
+		tag = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        if (BetonQuest.getInstance().getDBHandler(playerID).hasTag(tag)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		if (BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag)) {
+			return true;
+		}
+		return false;
+	}
 
 }

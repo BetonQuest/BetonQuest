@@ -29,44 +29,42 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class WeatherEvent extends QuestEvent {
-    
-    private final boolean storm;
-    private final boolean thunder;
 
-    public WeatherEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        switch (parts[1]) {
-            case "sun":
-            case "clear":
-                storm = false;
-                thunder = false;
-                break;
-            case "rain":
-            case "rainy":
-                storm = true;
-                thunder = false;
-                break;
-            case "storm":
-            case "thunder":
-                storm = false;
-                thunder = true;
-                break;
-            default:
-                throw new InstructionParseException(
-                        "Weather type does not exist");
-        }
-    }
+	private final boolean storm;
+	private final boolean thunder;
 
-    @Override
-    public void run(String playerID) {
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
-        world.setStorm(storm);
-        world.setThundering(thunder);
-    }
+	public WeatherEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		switch (parts[1]) {
+		case "sun":
+		case "clear":
+			storm = false;
+			thunder = false;
+			break;
+		case "rain":
+		case "rainy":
+			storm = true;
+			thunder = false;
+			break;
+		case "storm":
+		case "thunder":
+			storm = false;
+			thunder = true;
+			break;
+		default:
+			throw new InstructionParseException("Weather type does not exist");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		World world = PlayerConverter.getPlayer(playerID).getWorld();
+		world.setStorm(storm);
+		world.setThundering(thunder);
+	}
 
 }

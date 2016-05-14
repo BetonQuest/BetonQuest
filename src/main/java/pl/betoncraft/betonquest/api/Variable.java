@@ -28,41 +28,40 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
  */
 abstract public class Variable {
 
-    /**
-     * Stores instruction string for the condition.
-     */
-    protected String instruction;
-    /**
-     * ConfigPackage in which this condition is defined
-     */
-    protected ConfigPackage pack;
-    
-    /**
-     * Creates new instance of the variable. The variable should parse the
-     * instruction string at this point and extract all the data from it.
-     * If anything goes wrong, throw {@link InstructionParseException}
-     * with an error message describing the problem.
-     * 
-     * @param packName
-     *            name of the package in which this variable is defined
-     * @param instructions
-     *            instruction string passed at runtime; you need to extract all
-     *            required data from it and display errors if there is anything
-     *            wrong.
-     */
-    public Variable(String packName, String instruction)
-            throws InstructionParseException {
-        this.instruction = instruction;
-        this.pack = Config.getPackage(packName);
-    }
-    
-    /**
-     * This method should return a resolved value of variable for given player.
-     * 
-     * @param playerID
-     *          ID of the player
-     * @return the value of this variable
-     */
-    public abstract String getValue(String playerID);
-    
+	/**
+	 * Stores instruction string for the condition.
+	 */
+	protected String instruction;
+	/**
+	 * ConfigPackage in which this condition is defined
+	 */
+	protected ConfigPackage pack;
+
+	/**
+	 * Creates new instance of the variable. The variable should parse the
+	 * instruction string at this point and extract all the data from it. If
+	 * anything goes wrong, throw {@link InstructionParseException} with an
+	 * error message describing the problem.
+	 * 
+	 * @param packName
+	 *            name of the package in which this variable is defined
+	 * @param instructions
+	 *            instruction string passed at runtime; you need to extract all
+	 *            required data from it and display errors if there is anything
+	 *            wrong.
+	 */
+	public Variable(String packName, String instruction) throws InstructionParseException {
+		this.instruction = instruction;
+		this.pack = Config.getPackage(packName);
+	}
+
+	/**
+	 * This method should return a resolved value of variable for given player.
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @return the value of this variable
+	 */
+	public abstract String getValue(String playerID);
+
 }

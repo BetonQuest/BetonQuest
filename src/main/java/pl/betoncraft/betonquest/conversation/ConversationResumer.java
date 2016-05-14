@@ -32,66 +32,62 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Resumes the conversation for the player
  * 
  * @author Jakub Sapalski
  */
 public class ConversationResumer implements Listener {
-    
-    private String original;
-    private Player player;
-    private String playerID;
-    private String packName;
-    private String conversationID;
-    private String option;
-    private Location loc;
-    private double distance;
 
-    public ConversationResumer(String playerID, String convID) {
-        this.original = convID;
-        this.player = PlayerConverter.getPlayer(playerID);
-        this.playerID = playerID;
-        String[] parts = convID.split(" ");
-        String[] convParts = parts[0].split("\\.");
-        this.packName = convParts[0];
-        this.conversationID = convParts[1];
-        this.option = parts[1];
-        if (option.equalsIgnoreCase("null")) return;
-        String[] locParts = parts[2].split(";");
-        this.loc = new Location(
-                Bukkit.getWorld(locParts[3]),
-                Double.parseDouble(locParts[0]),
-                Double.parseDouble(locParts[1]),
-                Double.parseDouble(locParts[2])
-        );
-        this.distance = Double.valueOf(Config.getString("config.max_npc_distance"));
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        if (!e.getPlayer().equals(player)) {
-            return;
-        }
-        if (e.getTo().getWorld().equals(loc.getWorld())) {
-            if (e.getTo().distanceSquared(loc) < distance*distance) {
-                HandlerList.unregisterAll(this);
-                BetonQuest.getInstance().getSaver().add(new Record(
-                        UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
-                new Conversation(playerID, packName, conversationID, loc, option);
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        if (!e.getPlayer().equals(player)) {
-            return;
-        }
-        HandlerList.unregisterAll(this);
-        BetonQuest.getInstance().getSaver().add(new Record(
-                UpdateType.UPDATE_CONVERSATION, new String[]{original, playerID}));
-    }
+	private String original;
+	private Player player;
+	private String playerID;
+	private String packName;
+	private String conversationID;
+	private String option;
+	private Location loc;
+	private double distance;
+
+	public ConversationResumer(String playerID, String convID) {
+		this.original = convID;
+		this.player = PlayerConverter.getPlayer(playerID);
+		this.playerID = playerID;
+		String[] parts = convID.split(" ");
+		String[] convParts = parts[0].split("\\.");
+		this.packName = convParts[0];
+		this.conversationID = convParts[1];
+		this.option = parts[1];
+		if (option.equalsIgnoreCase("null"))
+			return;
+		String[] locParts = parts[2].split(";");
+		this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
+				Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));
+		this.distance = Double.valueOf(Config.getString("config.max_npc_distance"));
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@EventHandler
+	public void onMove(PlayerMoveEvent e) {
+		if (!e.getPlayer().equals(player)) {
+			return;
+		}
+		if (e.getTo().getWorld().equals(loc.getWorld())) {
+			if (e.getTo().distanceSquared(loc) < distance * distance) {
+				HandlerList.unregisterAll(this);
+				BetonQuest.getInstance().getSaver()
+						.add(new Record(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID }));
+				new Conversation(playerID, packName, conversationID, loc, option);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		if (!e.getPlayer().equals(player)) {
+			return;
+		}
+		HandlerList.unregisterAll(this);
+		BetonQuest.getInstance().getSaver()
+				.add(new Record(UpdateType.UPDATE_CONVERSATION, new String[] { original, playerID }));
+	}
 }

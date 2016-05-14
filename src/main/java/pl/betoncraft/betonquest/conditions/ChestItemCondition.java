@@ -38,111 +38,109 @@ import pl.betoncraft.betonquest.utils.Debug;
  * @author Jakub Sapalski
  */
 public class ChestItemCondition extends Condition {
-    
-    private final ArrayList<Item> questItems = new ArrayList<>();
-    private final Block block;
 
-    public ChestItemCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not eoungh arguments");
-        }
-        // extract location
-        String[] location = parts[1].split(";");
-        if (location.length < 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(location[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exists");
-        }
-        int x, y, z;
-        try {
-            x = Integer.parseInt(location[0]);
-            y = Integer.parseInt(location[1]);
-            z = Integer.parseInt(location[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        block = new Location(world, x, y, z).getBlock();
-        // extract items
-        String items = parts[2];
-        for (String item : items.split(",")) {
-            String[] itemParts = item.split(":");
-            String name = itemParts[0];
-            VariableNumber amount = new VariableNumber(1);
-            if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
-                try {
-                    amount = new VariableNumber(packName, item.split(":")[1]);
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException(
-                            "Cannot parse item amount");
-                }
-            }
-            String itemInstruction = pack.getString("items." + name);
-            if (itemInstruction == null) {
-                throw new InstructionParseException("Item not defined: " + name);
-            }
-            QuestItem questItem = new QuestItem(itemInstruction);
-            questItems.add(new Item(questItem, amount));
-        }
-    }
+	private final ArrayList<Item> questItems = new ArrayList<>();
+	private final Block block;
 
-    @Override
-    public boolean check(String playerID) {
-        InventoryHolder chest;
-        try {
-            chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
-            Debug.error("Trying to check items in a chest, but there's no chest! Location: X"
-                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ());
-            return false;
-        }
-        int counter = 0;
-        for (Item questItem : questItems) {
-            int amount = questItem.getAmount().getInt(playerID);
-            ItemStack[] inventoryItems = chest.getInventory().getContents();
-            for (ItemStack item : inventoryItems) {
-                if (item == null) {
-                    continue;
-                }
-                if (!questItem.isItemEqual(item)) {
-                    continue;
-                }
-                amount -= item.getAmount();
-                if (amount <= 0) {
-                    counter++;
-                    break;
-                }
-            }
-        }
-        if (counter == questItems.size()) {
-            return true;
-        }
-        return false;
-    }
-    
-    private class Item {
-        
-        private QuestItem questItem;
-        private VariableNumber amount;
-        
-        public Item(QuestItem questItem, VariableNumber amount) {
-            this.questItem = questItem;
-            this.amount = amount;
-        }
+	public ChestItemCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not eoungh arguments");
+		}
+		// extract location
+		String[] location = parts[1].split(";");
+		if (location.length < 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(location[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exists");
+		}
+		int x, y, z;
+		try {
+			x = Integer.parseInt(location[0]);
+			y = Integer.parseInt(location[1]);
+			z = Integer.parseInt(location[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		block = new Location(world, x, y, z).getBlock();
+		// extract items
+		String items = parts[2];
+		for (String item : items.split(",")) {
+			String[] itemParts = item.split(":");
+			String name = itemParts[0];
+			VariableNumber amount = new VariableNumber(1);
+			if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
+				try {
+					amount = new VariableNumber(packName, item.split(":")[1]);
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Cannot parse item amount");
+				}
+			}
+			String itemInstruction = pack.getString("items." + name);
+			if (itemInstruction == null) {
+				throw new InstructionParseException("Item not defined: " + name);
+			}
+			QuestItem questItem = new QuestItem(itemInstruction);
+			questItems.add(new Item(questItem, amount));
+		}
+	}
 
-        public boolean isItemEqual(ItemStack item) {
-            return questItem.equalsI(item);
-        }
+	@Override
+	public boolean check(String playerID) {
+		InventoryHolder chest;
+		try {
+			chest = (InventoryHolder) block.getState();
+		} catch (ClassCastException e) {
+			Debug.error("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
+					+ block.getY() + " Z" + block.getZ());
+			return false;
+		}
+		int counter = 0;
+		for (Item questItem : questItems) {
+			int amount = questItem.getAmount().getInt(playerID);
+			ItemStack[] inventoryItems = chest.getInventory().getContents();
+			for (ItemStack item : inventoryItems) {
+				if (item == null) {
+					continue;
+				}
+				if (!questItem.isItemEqual(item)) {
+					continue;
+				}
+				amount -= item.getAmount();
+				if (amount <= 0) {
+					counter++;
+					break;
+				}
+			}
+		}
+		if (counter == questItems.size()) {
+			return true;
+		}
+		return false;
+	}
 
-        public VariableNumber getAmount() {
-            return amount;
-        }
-    }
+	private class Item {
+
+		private QuestItem questItem;
+		private VariableNumber amount;
+
+		public Item(QuestItem questItem, VariableNumber amount) {
+			this.questItem = questItem;
+			this.amount = amount;
+		}
+
+		public boolean isItemEqual(ItemStack item) {
+			return questItem.equalsI(item);
+		}
+
+		public VariableNumber getAmount() {
+			return amount;
+		}
+	}
 
 }

@@ -32,36 +32,36 @@ import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventFo
  */
 public class SkriptEventBQ extends SkriptEvent {
 
-    private Literal<?> literal;
+	private Literal<?> literal;
 
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "on betonquest event";
-    }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "on betonquest event";
+	}
 
-    @Override
-    public boolean init(Literal<?>[] args, int matchedPattern, ParseResult parseResult) {
-        literal = args[0];
-        return true;
-    }
+	@Override
+	public boolean init(Literal<?>[] args, int matchedPattern, ParseResult parseResult) {
+		literal = args[0];
+		return true;
+	}
 
-    @Override
-    public boolean check(Event e) {
-        if (e instanceof CustomEventForSkript) {
-            final CustomEventForSkript event = (CustomEventForSkript) e;
-            return literal.check(e, new Checker<Object>() {
-                @Override
-                public boolean check(Object o) {
-                    if (o instanceof String) {
-                        String id = (String) o;
-                        return (event.getID().equals(id));
-                    }
-                    return false;
-                }
-                
-            });
-        }
-        return false;
-    }
+	@Override
+	public boolean check(Event e) {
+		if (e instanceof CustomEventForSkript) {
+			final CustomEventForSkript event = (CustomEventForSkript) e;
+			return literal.check(e, new Checker<Object>() {
+				@Override
+				public boolean check(Object o) {
+					if (o instanceof String) {
+						String id = (String) o;
+						return (event.getID().equals(id));
+					}
+					return false;
+				}
+
+			});
+		}
+		return false;
+	}
 
 }

@@ -39,98 +39,95 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class GiveEvent extends QuestEvent {
 
-    private final Item[]  questItems;
-    private final boolean notify;
+	private final Item[] questItems;
+	private final boolean notify;
 
-    public GiveEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String[] items = parts[1].split(",");
-        notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
-        ArrayList<Item> list = new ArrayList<>();
-        for (int i = 0; i < items.length; i++) {
-            String rawItem = items[i];
-            String[] itemParts = rawItem.split(":");
-            String name = itemParts[0];
-            VariableNumber amount;
-            if (itemParts.length == 1) {
-                amount = new VariableNumber(1);
-            } else {
-                try {
-                    amount = new VariableNumber(packName, itemParts[1]);
-                } catch (NumberFormatException e) {
-                    throw new InstructionParseException("Wrong number format");
-                }
-            }
-            String itemInstruction = pack.getString("items." + name);
-            if (itemInstruction == null) {
-                throw new InstructionParseException("Item not defined: " + name);
-            }
-            list.add(new Item(new QuestItem(itemInstruction), amount));
-        }
-        Item[] tempQuestItems = new Item[list.size()];
-        tempQuestItems = list.toArray(tempQuestItems);
-        questItems = tempQuestItems;
-    }
+	public GiveEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String[] items = parts[1].split(",");
+		notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
+		ArrayList<Item> list = new ArrayList<>();
+		for (int i = 0; i < items.length; i++) {
+			String rawItem = items[i];
+			String[] itemParts = rawItem.split(":");
+			String name = itemParts[0];
+			VariableNumber amount;
+			if (itemParts.length == 1) {
+				amount = new VariableNumber(1);
+			} else {
+				try {
+					amount = new VariableNumber(packName, itemParts[1]);
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Wrong number format");
+				}
+			}
+			String itemInstruction = pack.getString("items." + name);
+			if (itemInstruction == null) {
+				throw new InstructionParseException("Item not defined: " + name);
+			}
+			list.add(new Item(new QuestItem(itemInstruction), amount));
+		}
+		Item[] tempQuestItems = new Item[list.size()];
+		tempQuestItems = list.toArray(tempQuestItems);
+		questItems = tempQuestItems;
+	}
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (Item theItem : questItems) {
-            QuestItem questItem = theItem.getItem();
-            VariableNumber amount = theItem.getAmount();
-            int amountInt = amount.getInt(playerID);
-            if (notify) {
-                Config.sendMessage(playerID, "items_given", new String[]{
-                        (questItem.getName() != null) ? questItem.getName() :
-                        questItem.getMaterial().toString().toLowerCase()
-                        .replace("_", " "), String.valueOf(amountInt)});
-            }
-            while (amountInt > 0) {
-                int stackSize;
-                if (amountInt > 64) {
-                    stackSize = 64;
-                } else {
-                    stackSize = amountInt;
-                }
-                ItemStack item = questItem.generateItem(stackSize);
-                HashMap<Integer, ItemStack> left =
-                        player.getInventory().addItem(item);
-                for (Integer leftNumber : left.keySet()) {
-                    ItemStack itemStack = left.get(leftNumber);
-                    if (Utils.isQuestItem(itemStack)) {
-                        BetonQuest.getInstance().getDBHandler(playerID)
-                                .addItem(itemStack, stackSize);
-                    } else {
-                        player.getWorld().dropItem(player.getLocation(),
-                                itemStack);
-                    }
-                }
-                amountInt = amountInt - stackSize;
-            }
-        }
-    }
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		for (Item theItem : questItems) {
+			QuestItem questItem = theItem.getItem();
+			VariableNumber amount = theItem.getAmount();
+			int amountInt = amount.getInt(playerID);
+			if (notify) {
+				Config.sendMessage(playerID, "items_given",
+						new String[] {
+								(questItem.getName() != null) ? questItem.getName()
+										: questItem.getMaterial().toString().toLowerCase().replace("_", " "),
+								String.valueOf(amountInt) });
+			}
+			while (amountInt > 0) {
+				int stackSize;
+				if (amountInt > 64) {
+					stackSize = 64;
+				} else {
+					stackSize = amountInt;
+				}
+				ItemStack item = questItem.generateItem(stackSize);
+				HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
+				for (Integer leftNumber : left.keySet()) {
+					ItemStack itemStack = left.get(leftNumber);
+					if (Utils.isQuestItem(itemStack)) {
+						BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
+					} else {
+						player.getWorld().dropItem(player.getLocation(), itemStack);
+					}
+				}
+				amountInt = amountInt - stackSize;
+			}
+		}
+	}
 
-    private class Item {
+	private class Item {
 
-        private final QuestItem item;
-        private final VariableNumber amount;
+		private final QuestItem item;
+		private final VariableNumber amount;
 
-        public Item(QuestItem item, VariableNumber amount) {
-            this.item = item;
-            this.amount = amount;
-        }
+		public Item(QuestItem item, VariableNumber amount) {
+			this.item = item;
+			this.amount = amount;
+		}
 
-        public QuestItem getItem() {
-            return item;
-        }
+		public QuestItem getItem() {
+			return item;
+		}
 
-        public VariableNumber getAmount() {
-            return amount;
-        }
-    }
+		public VariableNumber getAmount() {
+			return amount;
+		}
+	}
 }

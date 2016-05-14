@@ -36,33 +36,32 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LogoutObjective extends Objective implements Listener {
 
-    public LogoutObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = ObjectiveData.class;
-    }
-    
-    @EventHandler(priority=EventPriority.LOWEST)
-    public void onQuit(PlayerQuitEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && checkConditions(playerID)) {
-            completeObjective(playerID);
-        }
-    }
-    
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public LogoutObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = ObjectiveData.class;
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onQuit(PlayerQuitEvent event) {
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (containsPlayer(playerID) && checkConditions(playerID)) {
+			completeObjective(playerID);
+		}
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

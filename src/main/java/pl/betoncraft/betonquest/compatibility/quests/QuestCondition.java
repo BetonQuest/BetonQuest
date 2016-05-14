@@ -28,25 +28,25 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class QuestCondition extends Condition {
-    
-    private String questName;
 
-    public QuestCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        questName = parts[1];
-    }
+	private String questName;
 
-    @Override
-    public boolean check(String playerID) {
-        for (String q : Quests.getInstance().getQuester(PlayerConverter.getName(playerID)).completedQuests) {
-            if (q.replace(' ', '_').equalsIgnoreCase(questName)) return true;
-        }
-        return false;
-    }
+	public QuestCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		questName = parts[1];
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		for (String q : Quests.getInstance().getQuester(PlayerConverter.getName(playerID)).completedQuests) {
+			if (q.replace(' ', '_').equalsIgnoreCase(questName))
+				return true;
+		}
+		return false;
+	}
 
 }

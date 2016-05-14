@@ -30,51 +30,45 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class WeatherCondition extends Condition {
 
-    private final String weather;
+	private final String weather;
 
-    public WeatherCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Weather type not defined");
-        }
-        weather = parts[1].toLowerCase().trim();
-        if (!weather.equals("sun") &&
-            !weather.equals("clear") &&
-            !weather.equals("rain") &&
-            !weather.equals("rainy") &&
-            !weather.equals("storm") &&
-            !weather.equals("thunder")) {
-            throw new InstructionParseException(
-                    "Weather type '" + weather + "' not defined!");
-        }
-    }
+	public WeatherCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Weather type not defined");
+		}
+		weather = parts[1].toLowerCase().trim();
+		if (!weather.equals("sun") && !weather.equals("clear") && !weather.equals("rain") && !weather.equals("rainy")
+				&& !weather.equals("storm") && !weather.equals("thunder")) {
+			throw new InstructionParseException("Weather type '" + weather + "' not defined!");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
-        switch (weather) {
-            case "sun":
-            case "clear":
-                if (!world.isThundering() && !world.hasStorm()) {
-                    return true;
-                }
-                break;
-            case "rain":
-            case "rainy":
-                if (world.hasStorm()) {
-                    return true;
-                }
-                break;
-            case "storm":
-            case "thunder":
-                if (world.isThundering()) {
-                    return true;
-                }
-                break;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		World world = PlayerConverter.getPlayer(playerID).getWorld();
+		switch (weather) {
+		case "sun":
+		case "clear":
+			if (!world.isThundering() && !world.hasStorm()) {
+				return true;
+			}
+			break;
+		case "rain":
+		case "rainy":
+			if (world.hasStorm()) {
+				return true;
+			}
+			break;
+		case "storm":
+		case "thunder":
+			if (world.isThundering()) {
+				return true;
+			}
+			break;
+		}
+		return false;
+	}
 
 }

@@ -29,25 +29,23 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class SudoEvent extends QuestEvent {
-    
-    private final String[] commands;
 
-    public SudoEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        try {
-            commands = instructions.trim()
-                    .substring(instructions.indexOf(" ") + 1).split("\\|");
-        } catch (Exception e) {
-            throw new InstructionParseException("Could not parse commands");
-        }
-    }
+	private final String[] commands;
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (String command : commands)
-            player.performCommand(command.replace("%player%", player.getName()));
-    }
+	public SudoEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		try {
+			commands = instructions.trim().substring(instructions.indexOf(" ") + 1).split("\\|");
+		} catch (Exception e) {
+			throw new InstructionParseException("Could not parse commands");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		for (String command : commands)
+			player.performCommand(command.replace("%player%", player.getName()));
+	}
 
 }

@@ -31,42 +31,43 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class MoneyEvent extends QuestEvent {
-    
-    private final VariableNumber amount;
-    private boolean multi;
 
-    public MoneyEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        if (parts[1].startsWith("*")) {
-            multi = true;
-            parts[1] = parts[1].replace("*", "");
-        }
-        try {
-            amount = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse money amount");
-        }
-    }
+	private final VariableNumber amount;
+	private boolean multi;
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        // get the difference between target money and current money
-        double current = Compatibility.getEconomy().getBalance(player);
-        double target;
-        if (multi) target = current * amount.getDouble(playerID);
-        else target = current + amount.getDouble(playerID);
-        double difference = target - current;
-        if (difference > 0) {
-            Compatibility.getEconomy().depositPlayer(player.getName(), difference);
-        } else if (difference < 0) {
-            Compatibility.getEconomy().withdrawPlayer(player.getName(), -difference);
-        }
-    }
+	public MoneyEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		if (parts[1].startsWith("*")) {
+			multi = true;
+			parts[1] = parts[1].replace("*", "");
+		}
+		try {
+			amount = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse money amount");
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void run(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		// get the difference between target money and current money
+		double current = Compatibility.getEconomy().getBalance(player);
+		double target;
+		if (multi)
+			target = current * amount.getDouble(playerID);
+		else
+			target = current + amount.getDouble(playerID);
+		double difference = target - current;
+		if (difference > 0) {
+			Compatibility.getEconomy().depositPlayer(player.getName(), difference);
+		} else if (difference < 0) {
+			Compatibility.getEconomy().withdrawPlayer(player.getName(), -difference);
+		}
+	}
 }

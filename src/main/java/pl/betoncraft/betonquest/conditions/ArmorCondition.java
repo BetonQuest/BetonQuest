@@ -31,32 +31,29 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ArmorCondition extends Condition {
 
-    private final QuestItem item;
+	private final QuestItem item;
 
-    public ArmorCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Armor not defined in: "
-                    + instructions);
-        }
-        String itemInstruction = pack.getString("items." + parts[1]);
-        if (itemInstruction == null) {
-            throw new InstructionParseException("No such item: " + parts[1]);
-        }
-        item = new QuestItem(itemInstruction);
-    }
+	public ArmorCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Armor not defined in: " + instructions);
+		}
+		String itemInstruction = pack.getString("items." + parts[1]);
+		if (itemInstruction == null) {
+			throw new InstructionParseException("No such item: " + parts[1]);
+		}
+		item = new QuestItem(itemInstruction);
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        for (ItemStack armor : PlayerConverter.getPlayer(playerID)
-                .getEquipment().getArmorContents()) {
-            if (item != null && item.equalsI(armor)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
+			if (item != null && item.equalsI(armor)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

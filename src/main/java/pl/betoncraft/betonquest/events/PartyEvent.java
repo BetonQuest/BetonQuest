@@ -31,50 +31,48 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Jakub Sapalski
  */
 public class PartyEvent extends QuestEvent {
-    
-    private final String[] conditions;
-    private final String[] events;
-    private final VariableNumber range;
 
-    public PartyEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 4) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        // load conditions and events
-        String[] tempConditions = parts[2].split(",");
-        for (int i = 0; i < tempConditions.length; i++) {
-            if (!tempConditions[i].contains(".")) {
-                tempConditions[i] = packName + "." + tempConditions[i];
-            }
-        }
-        conditions = tempConditions;
-        String[] tempEvents = parts[3].split(",");
-        for (int i = 0; i < tempEvents.length; i++) {
-            if (!tempEvents[i].contains(".")) {
-                tempEvents[i] = packName + "." + tempEvents[i];
-            }
-        }
-        events = tempEvents;
-        // load the range
-        try {
-            range = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Cannot parse range");
-        }
-    }
+	private final String[] conditions;
+	private final String[] events;
+	private final VariableNumber range;
 
-    @Override
-    public void run(String playerID) {
-        ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID),
-                pack.getName(), conditions);
-        for (String memberID : members) {
-            for (String event : events) {
-                BetonQuest.event(memberID, event);
-            }
-        }
-    }
+	public PartyEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 4) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		// load conditions and events
+		String[] tempConditions = parts[2].split(",");
+		for (int i = 0; i < tempConditions.length; i++) {
+			if (!tempConditions[i].contains(".")) {
+				tempConditions[i] = packName + "." + tempConditions[i];
+			}
+		}
+		conditions = tempConditions;
+		String[] tempEvents = parts[3].split(",");
+		for (int i = 0; i < tempEvents.length; i++) {
+			if (!tempEvents[i].contains(".")) {
+				tempEvents[i] = packName + "." + tempEvents[i];
+			}
+		}
+		events = tempEvents;
+		// load the range
+		try {
+			range = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Cannot parse range");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
+		for (String memberID : members) {
+			for (String event : events) {
+				BetonQuest.event(memberID, event);
+			}
+		}
+	}
 
 }

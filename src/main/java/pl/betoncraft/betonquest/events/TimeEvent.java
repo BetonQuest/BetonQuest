@@ -29,37 +29,35 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class TimeEvent extends QuestEvent {
-    
-    private final long    amount;
-    private final boolean add;
 
-    public TimeEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            if (add = parts[1].matches("^\\+\\d+$")) {
-                amount = Long.valueOf(parts[1].substring(1, parts[1].length()))
-                        * 1000;
-            } else {
-                amount = Long.valueOf(parts[1]) * 1000 + 18000;
-            }
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse time amount");
-        }
-    }
+	private final long amount;
+	private final boolean add;
 
-    @Override
-    public void run(String playerID) {
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
-        long time = amount;
-        if (add) {
-            time += world.getTime();
-        }
-        world.setTime(time % 24000);
-    }
+	public TimeEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			if (add = parts[1].matches("^\\+\\d+$")) {
+				amount = Long.valueOf(parts[1].substring(1, parts[1].length())) * 1000;
+			} else {
+				amount = Long.valueOf(parts[1]) * 1000 + 18000;
+			}
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse time amount");
+		}
+	}
+
+	@Override
+	public void run(String playerID) {
+		World world = PlayerConverter.getPlayer(playerID).getWorld();
+		long time = amount;
+		if (add) {
+			time += world.getTime();
+		}
+		world.setTime(time % 24000);
+	}
 
 }

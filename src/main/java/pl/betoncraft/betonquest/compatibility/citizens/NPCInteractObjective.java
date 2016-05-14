@@ -36,60 +36,60 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class NPCInteractObjective extends Objective implements Listener {
-    
-    private final int id;
-    private final boolean cancel;
 
-    public NPCInteractObjective(String packName, String label, String instruction)
-            throws InstructionParseException {
-        super(packName, label, instruction);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            id = Integer.parseInt(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse ID");
-        }
-        if (id < 0) {
-            throw new InstructionParseException("ID cannot be negative");
-        }
-        boolean tempCancel = false;
-        for (String part : parts) {
-            if (part.equalsIgnoreCase("cancel")) {
-                tempCancel = true;
-            }
-        }
-        cancel = tempCancel;
-    }
-    
-    @EventHandler(priority=EventPriority.LOWEST)
-    public void onNPCClick(NPCRightClickEvent event) {
-        String playerID = PlayerConverter.getID(event.getClicker());
-        if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
-            return;
-        }
-        if (checkConditions(playerID)) {
-            if (cancel) event.setCancelled(true);
-            completeObjective(playerID);
-        }
-    }
+	private final int id;
+	private final boolean cancel;
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public NPCInteractObjective(String packName, String label, String instruction) throws InstructionParseException {
+		super(packName, label, instruction);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			id = Integer.parseInt(parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse ID");
+		}
+		if (id < 0) {
+			throw new InstructionParseException("ID cannot be negative");
+		}
+		boolean tempCancel = false;
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("cancel")) {
+				tempCancel = true;
+			}
+		}
+		cancel = tempCancel;
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onNPCClick(NPCRightClickEvent event) {
+		String playerID = PlayerConverter.getID(event.getClicker());
+		if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
+			return;
+		}
+		if (checkConditions(playerID)) {
+			if (cancel)
+				event.setCancelled(true);
+			completeObjective(playerID);
+		}
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

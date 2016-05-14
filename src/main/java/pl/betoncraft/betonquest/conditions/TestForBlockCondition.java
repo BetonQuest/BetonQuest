@@ -33,47 +33,46 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class TestForBlockCondition extends Condition {
 
-    private final Block block;
-    private final Material material;
-    
-    public TestForBlockCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        String[] location = parts[1].split(";");
-        if (location.length != 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        double y = 0, x = 0, z = 0;
-        try {
-            x = Double.parseDouble(location[0]);
-            y = Double.parseDouble(location[1]);
-            z = Double.parseDouble(location[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Cannot parse coordinates");
-        }
-        World world = Bukkit.getWorld(location[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exist");
-        }
-        block = new Location(world, x, y, z).getBlock();
-        if (block == null) {
-            throw new InstructionParseException("Error with the block");
-        }
-        material = Material.matchMaterial(parts[2]);
-        if (material == null) {
-            throw new InstructionParseException("Undefined material type");
-        }
-    }
+	private final Block block;
+	private final Material material;
 
-    @Override
-    public boolean check(String playerID) {
-        return block.getType().equals(material);
-    }
+	public TestForBlockCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		String[] location = parts[1].split(";");
+		if (location.length != 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		double y = 0, x = 0, z = 0;
+		try {
+			x = Double.parseDouble(location[0]);
+			y = Double.parseDouble(location[1]);
+			z = Double.parseDouble(location[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Cannot parse coordinates");
+		}
+		World world = Bukkit.getWorld(location[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exist");
+		}
+		block = new Location(world, x, y, z).getBlock();
+		if (block == null) {
+			throw new InstructionParseException("Error with the block");
+		}
+		material = Material.matchMaterial(parts[2]);
+		if (material == null) {
+			throw new InstructionParseException("Undefined material type");
+		}
+	}
+
+	@Override
+	public boolean check(String playerID) {
+		return block.getType().equals(material);
+	}
 
 }

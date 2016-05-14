@@ -31,41 +31,35 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CommandEvent extends QuestEvent {
 
-    private final String[] commands;
+	private final String[] commands;
 
-    public CommandEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        persistent = true;
-        try {
-            commands = instructions.trim()
-                    .substring(instructions.indexOf(" ") + 1).split("\\|");
-        } catch (Exception e) {
-            throw new InstructionParseException("Could not parse commands");
-        }
-    }
+	public CommandEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		persistent = true;
+		try {
+			commands = instructions.trim().substring(instructions.indexOf(" ") + 1).split("\\|");
+		} catch (Exception e) {
+			throw new InstructionParseException("Could not parse commands");
+		}
+	}
 
-    @Override
-    public void run(String playerID) {
-        for (String command : commands) {
-            if (playerID == null) {
-                if (command.contains("%player%")) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        Bukkit.getServer().dispatchCommand(
-                                Bukkit.getConsoleSender(), command.replaceAll(
-                                        "%player%", player.getName()));
-                    }
-                } else {
-                    Bukkit.getServer().dispatchCommand(
-                            Bukkit.getConsoleSender(), command);
-                }
-            } else {
-                Bukkit.getServer().dispatchCommand(
-                        Bukkit.getConsoleSender(),
-                        command.replaceAll(
-                                "%player%", PlayerConverter.getName(playerID)));
-            }
-        }
-    }
+	@Override
+	public void run(String playerID) {
+		for (String command : commands) {
+			if (playerID == null) {
+				if (command.contains("%player%")) {
+					for (Player player : Bukkit.getOnlinePlayers()) {
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+								command.replaceAll("%player%", player.getName()));
+					}
+				} else {
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				}
+			} else {
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						command.replaceAll("%player%", PlayerConverter.getName(playerID)));
+			}
+		}
+	}
 }

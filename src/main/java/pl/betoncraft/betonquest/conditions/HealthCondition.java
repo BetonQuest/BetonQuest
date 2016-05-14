@@ -29,28 +29,27 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HealthCondition extends Condition {
 
-    private final VariableNumber health;
+	private final VariableNumber health;
 
-    public HealthCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        try {
-            health = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse health amount");
-        }
-    }
+	public HealthCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		try {
+			health = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse health amount");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        if (PlayerConverter.getPlayer(playerID).getHealth() >= health.getDouble(playerID)) {
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean check(String playerID) {
+		if (PlayerConverter.getPlayer(playerID).getHealth() >= health.getDouble(playerID)) {
+			return true;
+		}
+		return false;
+	}
 
 }

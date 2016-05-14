@@ -27,88 +27,89 @@ import pl.betoncraft.betonquest.utils.Debug;
  * @author Jakub Sapalski
  */
 public class VariableNumber {
-    
-    private double number;
-    private Variable variable;
-    
-    /**
-     * Parses the string as a number or saves it as a variable if it's not a number.
-     * 
-     * @param packName
-     *          the package in which the variable is defined
-     * @param variable
-     *          the string to parse
-     */
-    public VariableNumber(String packName, String variable) throws NumberFormatException {
-        if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
-            this.variable = BetonQuest.createVariable(Config.getPackage(packName), variable);
-            if (this.variable == null) {
-                throw new NumberFormatException("Could not create variable");
-            }
-        } else {
-            number = Double.parseDouble(variable);
-        }
-    }
-    
-    /**
-     * Creates the VariableNumber using specified number.
-     * 
-     * @param number
-     *          the number to use
-     */
-    public VariableNumber(int number) {
-        this.number = number; 
-    }
-    
-    /**
-     * Creates the VariableNumber using specified number.
-     * 
-     * @param number
-     *          the number to use
-     */
-    public VariableNumber(double number) {
-        this.number = number;
-    }
-    
-    /**
-     * Returns an integer represented by this variable. If it's a double, this method
-     * will return the floor of it.
-     * 
-     * @param playerID
-     *          ID of the player for whom the variable should be resolved
-     * @return the integer represented by this variable number 
-     */
-    public int getInt(String playerID) {
-        return (int) Math.floor(resolveVariable(playerID));
-    }
-    
-    /**
-     * Returns a double represented by this variable.
-     * 
-     * @param playerID
-     *          ID of the player for whom the variable should be resolved
-     * @return the double represented by this variable number 
-     */
-    public double getDouble(String playerID) {
-        return resolveVariable(playerID);
-    }
-    
-    /**
-     * Resolves the variable to a double.
-     */
-    private double resolveVariable(String playerID) {
-        if (variable == null) {
-            return number;
-        } else {
-            String resolved = variable.getValue(playerID);
-            double parsed = 0;
-            try {
-                parsed = Double.parseDouble(resolved);
-            } catch (NumberFormatException e) {
-                Debug.error("Could not parse the as a number, it's value is: '" + resolved + "'; returning 0.");
-            }
-            return parsed;
-        }
-    }
+
+	private double number;
+	private Variable variable;
+
+	/**
+	 * Parses the string as a number or saves it as a variable if it's not a
+	 * number.
+	 * 
+	 * @param packName
+	 *            the package in which the variable is defined
+	 * @param variable
+	 *            the string to parse
+	 */
+	public VariableNumber(String packName, String variable) throws NumberFormatException {
+		if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
+			this.variable = BetonQuest.createVariable(Config.getPackage(packName), variable);
+			if (this.variable == null) {
+				throw new NumberFormatException("Could not create variable");
+			}
+		} else {
+			number = Double.parseDouble(variable);
+		}
+	}
+
+	/**
+	 * Creates the VariableNumber using specified number.
+	 * 
+	 * @param number
+	 *            the number to use
+	 */
+	public VariableNumber(int number) {
+		this.number = number;
+	}
+
+	/**
+	 * Creates the VariableNumber using specified number.
+	 * 
+	 * @param number
+	 *            the number to use
+	 */
+	public VariableNumber(double number) {
+		this.number = number;
+	}
+
+	/**
+	 * Returns an integer represented by this variable. If it's a double, this
+	 * method will return the floor of it.
+	 * 
+	 * @param playerID
+	 *            ID of the player for whom the variable should be resolved
+	 * @return the integer represented by this variable number
+	 */
+	public int getInt(String playerID) {
+		return (int) Math.floor(resolveVariable(playerID));
+	}
+
+	/**
+	 * Returns a double represented by this variable.
+	 * 
+	 * @param playerID
+	 *            ID of the player for whom the variable should be resolved
+	 * @return the double represented by this variable number
+	 */
+	public double getDouble(String playerID) {
+		return resolveVariable(playerID);
+	}
+
+	/**
+	 * Resolves the variable to a double.
+	 */
+	private double resolveVariable(String playerID) {
+		if (variable == null) {
+			return number;
+		} else {
+			String resolved = variable.getValue(playerID);
+			double parsed = 0;
+			try {
+				parsed = Double.parseDouble(resolved);
+			} catch (NumberFormatException e) {
+				Debug.error("Could not parse the as a number, it's value is: '" + resolved + "'; returning 0.");
+			}
+			return parsed;
+		}
+	}
 
 }

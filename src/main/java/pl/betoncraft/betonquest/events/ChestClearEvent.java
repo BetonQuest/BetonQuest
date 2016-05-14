@@ -33,49 +33,48 @@ import pl.betoncraft.betonquest.utils.Debug;
  * @author Jakub Sapalski
  */
 public class ChestClearEvent extends QuestEvent {
-    
-    private final Block block;
 
-    public ChestClearEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        persistent = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not eoungh arguments");
-        }
-        // extract location
-        String[] location = parts[1].split(";");
-        if (location.length < 4) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(location[3]);
-        if (world == null) {
-            throw new InstructionParseException("World does not exists");
-        }
-        int x, y, z;
-        try {
-            x = Integer.parseInt(location[0]);
-            y = Integer.parseInt(location[1]);
-            z = Integer.parseInt(location[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse coordinates");
-        }
-        block = new Location(world, x, y, z).getBlock();
-    }
+	private final Block block;
 
-    @Override
-    public void run(String playerID) {
-        InventoryHolder chest;
-        try {
-            chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
-            Debug.error("Trying to clears items in a chest, but there's no chest! Location: X"
-                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ());
-            return;
-        }
-        chest.getInventory().clear();
-    }
+	public ChestClearEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		persistent = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not eoungh arguments");
+		}
+		// extract location
+		String[] location = parts[1].split(";");
+		if (location.length < 4) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(location[3]);
+		if (world == null) {
+			throw new InstructionParseException("World does not exists");
+		}
+		int x, y, z;
+		try {
+			x = Integer.parseInt(location[0]);
+			y = Integer.parseInt(location[1]);
+			z = Integer.parseInt(location[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse coordinates");
+		}
+		block = new Location(world, x, y, z).getBlock();
+	}
+
+	@Override
+	public void run(String playerID) {
+		InventoryHolder chest;
+		try {
+			chest = (InventoryHolder) block.getState();
+		} catch (ClassCastException e) {
+			Debug.error("Trying to clears items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
+					+ block.getY() + " Z" + block.getZ());
+			return;
+		}
+		chest.getInventory().clear();
+	}
 
 }

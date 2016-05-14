@@ -30,70 +30,70 @@ import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-
 /**
  * Requires the player to enchant an item.
  * 
  * @author Jakub Sapalski
  */
 public class EnchantObjective extends Objective implements Listener {
-    
-    private QuestItem item;
-    private Enchantment enchant;
-    private int level;
 
-    public EnchantObjective(String packName, String label, String instructions)
-            throws InstructionParseException {
-        super(packName, label, instructions);
-        template = ObjectiveData.class;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3)
-            throw new InstructionParseException("Not enough arguments");
-        String itemInstruction = pack.getString("items." + parts[1]);
-        if (itemInstruction == null) {
-            throw new InstructionParseException("Item not defined: " + parts[1]);
-        }
-        item = new QuestItem(itemInstruction);
-        String[] enchantParts = parts[2].split(":");
-        if (enchantParts.length != 2)
-            throw new InstructionParseException("Could not parse enchantment");
-        enchant = Enchantment.getByName(enchantParts[0].toUpperCase());
-        if (enchant == null)
-            throw new InstructionParseException("Enchantment type '" + enchantParts[0] + "' does not exist");
-        try {
-            level = Integer.parseInt(enchantParts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse enchantment level");
-        }
-    }
-    
-    @EventHandler
-    public void onEnchant(EnchantItemEvent event) {
-        String playerID = PlayerConverter.getID(event.getEnchanter());
-        if (!containsPlayer(playerID)) return;
-        if (!item.equalsI(event.getItem())) return;
-        for (Enchantment enchant : event.getEnchantsToAdd().keySet())
-            if (enchant == this.enchant)
-                if (event.getEnchantsToAdd().get(enchant) >= level)
-                    if (checkConditions(playerID)) {
-                        completeObjective(playerID);
-                        return;
-                    }
-    }
+	private QuestItem item;
+	private Enchantment enchant;
+	private int level;
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	public EnchantObjective(String packName, String label, String instructions) throws InstructionParseException {
+		super(packName, label, instructions);
+		template = ObjectiveData.class;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3)
+			throw new InstructionParseException("Not enough arguments");
+		String itemInstruction = pack.getString("items." + parts[1]);
+		if (itemInstruction == null) {
+			throw new InstructionParseException("Item not defined: " + parts[1]);
+		}
+		item = new QuestItem(itemInstruction);
+		String[] enchantParts = parts[2].split(":");
+		if (enchantParts.length != 2)
+			throw new InstructionParseException("Could not parse enchantment");
+		enchant = Enchantment.getByName(enchantParts[0].toUpperCase());
+		if (enchant == null)
+			throw new InstructionParseException("Enchantment type '" + enchantParts[0] + "' does not exist");
+		try {
+			level = Integer.parseInt(enchantParts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse enchantment level");
+		}
+	}
 
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
+	@EventHandler
+	public void onEnchant(EnchantItemEvent event) {
+		String playerID = PlayerConverter.getID(event.getEnchanter());
+		if (!containsPlayer(playerID))
+			return;
+		if (!item.equalsI(event.getItem()))
+			return;
+		for (Enchantment enchant : event.getEnchantsToAdd().keySet())
+			if (enchant == this.enchant)
+				if (event.getEnchantsToAdd().get(enchant) >= level)
+					if (checkConditions(playerID)) {
+						completeObjective(playerID);
+						return;
+					}
+	}
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+	@Override
+	public void start() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getDefaultDataInstruction() {
+		return "";
+	}
 
 }

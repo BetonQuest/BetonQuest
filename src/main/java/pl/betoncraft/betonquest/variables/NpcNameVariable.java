@@ -29,17 +29,16 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class NpcNameVariable extends Variable {
 
-    public NpcNameVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-    }
-    
-    @Override
-    public String getValue(String playerID) {
-        Conversation conv = Conversation.getConversation(playerID);
-        if (conv == null) return "";
-        return conv.getData().getQuester(BetonQuest.getInstance()
-                .getDBHandler(playerID).getLanguage());
-    }
+	public NpcNameVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		Conversation conv = Conversation.getConversation(playerID);
+		if (conv == null)
+			return "";
+		return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
+	}
 
 }

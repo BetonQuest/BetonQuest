@@ -36,31 +36,32 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CitizensListener implements Listener {
 
-    /**
-     * Initializes the listener
-     */
-    public CitizensListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	/**
+	 * Initializes the listener
+	 */
+	public CitizensListener() {
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    @EventHandler(priority=EventPriority.HIGHEST)
-    public void onNPCClick(final NPCRightClickEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        final String playerID = PlayerConverter.getID(event.getClicker());
-        if (CombatTagger.isTagged(playerID)) {
-            Config.sendMessage(playerID, "busy");
-            return;
-        }
-        String id = String.valueOf(event.getNPC().getId());
-        String assignment = Config.getNpc(id);
-        if (assignment != null) {
-            String[] parts = assignment.split("\\.");
-            final String convName = parts[1];
-            final String packName = parts[0];
-            event.setCancelled(true);
-            new CitizensConversation(playerID, packName, convName, event.getNPC().getEntity().getLocation(), event.getNPC());
-        }
-    }
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onNPCClick(final NPCRightClickEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		final String playerID = PlayerConverter.getID(event.getClicker());
+		if (CombatTagger.isTagged(playerID)) {
+			Config.sendMessage(playerID, "busy");
+			return;
+		}
+		String id = String.valueOf(event.getNPC().getId());
+		String assignment = Config.getNpc(id);
+		if (assignment != null) {
+			String[] parts = assignment.split("\\.");
+			final String convName = parts[1];
+			final String packName = parts[0];
+			event.setCancelled(true);
+			new CitizensConversation(playerID, packName, convName, event.getNPC().getEntity().getLocation(),
+					event.getNPC());
+		}
+	}
 }

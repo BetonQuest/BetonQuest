@@ -30,21 +30,20 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class PlayerNameVariable extends Variable {
-    
-    private boolean display = false;
 
-    public PlayerNameVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length > 1 && parts[1].equalsIgnoreCase("display"))
-            display = true;
-    }
+	private boolean display = false;
 
-    @Override
-    public String getValue(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        return (display) ? player.getDisplayName() : player.getName();
-    }
+	public PlayerNameVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length > 1 && parts[1].equalsIgnoreCase("display"))
+			display = true;
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		return (display) ? player.getDisplayName() : player.getName();
+	}
 
 }

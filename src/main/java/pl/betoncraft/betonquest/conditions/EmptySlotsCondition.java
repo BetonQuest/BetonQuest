@@ -31,32 +31,29 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class EmptySlotsCondition extends Condition {
 
-    private final VariableNumber needed;
+	private final VariableNumber needed;
 
-    public EmptySlotsCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException(
-                    "Empty space amount not defined");
-        }
-        try {
-            needed = new VariableNumber(packName, parts[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Cannot parse an integer");
-        }
-    }
+	public EmptySlotsCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Empty space amount not defined");
+		}
+		try {
+			needed = new VariableNumber(packName, parts[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Cannot parse an integer");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        int empty = 0;
-        for (ItemStack item : PlayerConverter.getPlayer(playerID)
-                .getInventory().getContents()) {
-            if (item == null)
-                empty++;
-        }
-        return empty >= needed.getInt(playerID);
-    }
+	@Override
+	public boolean check(String playerID) {
+		int empty = 0;
+		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
+			if (item == null)
+				empty++;
+		}
+		return empty >= needed.getInt(playerID);
+	}
 
 }

@@ -30,70 +30,65 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  * @author Jakub Sapalski
  */
 public class RunEvent extends QuestEvent {
-    
-    ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
-    public RunEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = false;
-        persistent = false;
-        String[] parts = instructions.substring(3).trim().split(" ");
-        if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            if (part.startsWith("^")) {
-                if (builder.length() != 0) {
-                    internalEvents.add(createEvent(builder.toString().trim()));
-                    builder = new StringBuilder();
-                }
-                builder.append(part.substring(1) + " ");
-            } else {
-                builder.append(part + " ");
-            }
-        }
-        internalEvents.add(createEvent(builder.toString().trim()));
-    }
+	ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
-    /**
-     * Constructs an event with given instruction and returns it.
-     */
-    private QuestEvent createEvent(String instruction) throws InstructionParseException {
-        String[] parts = instruction.split(" ");
-        if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments in internal event");
-        }
-        Class<? extends QuestEvent> eventClass = BetonQuest.getInstance().getEventClass(parts[0]);
-        if (eventClass == null) {
-            // if it's null then there is no such type registered, log an error
-            throw new InstructionParseException(
-                    "Event type " + parts[0] + " is not registered, check if it's"
-                    + " spelled correctly in internal event"
-            );
-        }
-        try {
-            return eventClass.getConstructor(String.class,
-                    String.class).newInstance(pack.getName(), instruction);
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in internal event: "
-                        + e.getCause().getMessage());
-            } else {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-        
-    }
+	public RunEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = false;
+		persistent = false;
+		String[] parts = instructions.substring(3).trim().split(" ");
+		if (parts.length < 1) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		StringBuilder builder = new StringBuilder();
+		for (String part : parts) {
+			if (part.startsWith("^")) {
+				if (builder.length() != 0) {
+					internalEvents.add(createEvent(builder.toString().trim()));
+					builder = new StringBuilder();
+				}
+				builder.append(part.substring(1) + " ");
+			} else {
+				builder.append(part + " ");
+			}
+		}
+		internalEvents.add(createEvent(builder.toString().trim()));
+	}
 
-    @Override
-    public void run(String playerID) {
-        for (QuestEvent event : internalEvents) {
-            event.run(playerID);
-        }
-    }
+	/**
+	 * Constructs an event with given instruction and returns it.
+	 */
+	private QuestEvent createEvent(String instruction) throws InstructionParseException {
+		String[] parts = instruction.split(" ");
+		if (parts.length < 1) {
+			throw new InstructionParseException("Not enough arguments in internal event");
+		}
+		Class<? extends QuestEvent> eventClass = BetonQuest.getInstance().getEventClass(parts[0]);
+		if (eventClass == null) {
+			// if it's null then there is no such type registered, log an error
+			throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"
+					+ " spelled correctly in internal event");
+		}
+		try {
+			return eventClass.getConstructor(String.class, String.class).newInstance(pack.getName(), instruction);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof InstructionParseException) {
+				throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage());
+			} else {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	@Override
+	public void run(String playerID) {
+		for (QuestEvent event : internalEvents) {
+			event.run(playerID);
+		}
+	}
 }

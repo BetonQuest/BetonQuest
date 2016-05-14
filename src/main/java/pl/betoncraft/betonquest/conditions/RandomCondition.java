@@ -31,41 +31,39 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class RandomCondition extends Condition {
 
-    private final VariableNumber valueMax;
-    private final VariableNumber rangeOfRandom;
+	private final VariableNumber valueMax;
+	private final VariableNumber rangeOfRandom;
 
-    public RandomCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        persistent = true;
-        String[] values = null;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Randomness not defined");
-        }
-        values = parts[1].split("-");
-        if (values.length != 2) {
-            throw new InstructionParseException("Wrong randomness format");
-        }
-        try {
-            valueMax = new VariableNumber(packName, values[0]);
-            rangeOfRandom = new VariableNumber(packName, values[1]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException(
-                    "Cannot parse randomness values");
-        }
-    }
+	public RandomCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		persistent = true;
+		String[] values = null;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Randomness not defined");
+		}
+		values = parts[1].split("-");
+		if (values.length != 2) {
+			throw new InstructionParseException("Wrong randomness format");
+		}
+		try {
+			valueMax = new VariableNumber(packName, values[0]);
+			rangeOfRandom = new VariableNumber(packName, values[1]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Cannot parse randomness values");
+		}
+	}
 
-    @Override
-    public boolean check(String playerID) {
-        Random generator = new Random();
-        int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
-        if (temp <= valueMax.getInt(playerID)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public boolean check(String playerID) {
+		Random generator = new Random();
+		int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
+		if (temp <= valueMax.getInt(playerID)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

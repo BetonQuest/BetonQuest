@@ -36,108 +36,103 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  * @author Jakub Sapalski
  */
 public class ClearEvent extends QuestEvent {
-    
-    private final EntityType[] types;
-    private final Location location;
-    private final VariableNumber range;
-    private final String name;
-    private final boolean kill;
 
-    public ClearEvent(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        staticness = true;
-        String[] parts = instructions.split(" ");
-        if (parts.length < 3) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        if (parts[1].equalsIgnoreCase("any") || parts[1].equalsIgnoreCase("all")) {
-            types = null;
-        } else {
-            String[] rawTypes = parts[1].split(",");
-            EntityType[] tempTypes = new EntityType[rawTypes.length];
-            for (int i = 0; i < rawTypes.length; i++) {
-                try {
-                    tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    throw new InstructionParseException("Unknown mob type: "
-                            + rawTypes[i]);
-                }
-            }
-            types = tempTypes;
-        }
-        String[] partsOfLoc = parts[2].split(";");
-        if (partsOfLoc.length != 5) {
-            throw new InstructionParseException("Wrong location format");
-        }
-        World world = Bukkit.getWorld(partsOfLoc[3]);
-        if (world == null) {
-            throw new InstructionParseException("World " + partsOfLoc[3]
-                    + " does not exists.");
-        }
-        double x, y, z;
-        try {
-            x = Double.parseDouble(partsOfLoc[0]);
-            y = Double.parseDouble(partsOfLoc[1]);
-            z = Double.parseDouble(partsOfLoc[2]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException(
-                    "Could not parse location coordinates");
-        }
-        location = new Location(world, x, y, z);
-        try {
-            range = new VariableNumber(packName, partsOfLoc[4]);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse range");
-        }
-        String tempName = null;
-        boolean tempKill = false;
-        for (String part : parts) {
-            if (part.startsWith("name:")) {
-                tempName = part.substring(5).replace("_", " ").trim();
-            } else if (part.equalsIgnoreCase("kill")) {
-                tempKill = true;
-            }
-        }
-        name = tempName;
-        kill = tempKill;
-    }
+	private final EntityType[] types;
+	private final Location location;
+	private final VariableNumber range;
+	private final String name;
+	private final boolean kill;
 
-    @Override
-    public void run(String playerID) {
-        Collection<Entity> entities = location.getWorld().getEntities();
-        for (Entity entity : entities) {
-            if (!(entity instanceof LivingEntity)) {
-                continue;
-            }
-            double rangeDouble = range.getDouble(playerID);
-            if (entity.getLocation().distanceSquared(location) < rangeDouble*rangeDouble) {
-                EntityType theType = entity.getType();
-                for (EntityType type : types) {
-                    if (theType == type) {
-                        if (name != null) {
-                            if (entity.getCustomName() != null && entity
-                                    .getCustomName().equals(name)) {
-                                if (kill) {
-                                    LivingEntity living = (LivingEntity) entity;
-                                    living.damage(living.getHealth() + 10);
-                                } else {
-                                    entity.remove();
-                                }
-                            }
-                        } else {
-                            if (kill) {
-                                LivingEntity living = (LivingEntity) entity;
-                                living.damage(living.getHealth() + 10);
-                            } else {
-                                entity.remove();
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
+	public ClearEvent(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		staticness = true;
+		String[] parts = instructions.split(" ");
+		if (parts.length < 3) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		if (parts[1].equalsIgnoreCase("any") || parts[1].equalsIgnoreCase("all")) {
+			types = null;
+		} else {
+			String[] rawTypes = parts[1].split(",");
+			EntityType[] tempTypes = new EntityType[rawTypes.length];
+			for (int i = 0; i < rawTypes.length; i++) {
+				try {
+					tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
+				} catch (IllegalArgumentException e) {
+					throw new InstructionParseException("Unknown mob type: " + rawTypes[i]);
+				}
+			}
+			types = tempTypes;
+		}
+		String[] partsOfLoc = parts[2].split(";");
+		if (partsOfLoc.length != 5) {
+			throw new InstructionParseException("Wrong location format");
+		}
+		World world = Bukkit.getWorld(partsOfLoc[3]);
+		if (world == null) {
+			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
+		}
+		double x, y, z;
+		try {
+			x = Double.parseDouble(partsOfLoc[0]);
+			y = Double.parseDouble(partsOfLoc[1]);
+			z = Double.parseDouble(partsOfLoc[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse location coordinates");
+		}
+		location = new Location(world, x, y, z);
+		try {
+			range = new VariableNumber(packName, partsOfLoc[4]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse range");
+		}
+		String tempName = null;
+		boolean tempKill = false;
+		for (String part : parts) {
+			if (part.startsWith("name:")) {
+				tempName = part.substring(5).replace("_", " ").trim();
+			} else if (part.equalsIgnoreCase("kill")) {
+				tempKill = true;
+			}
+		}
+		name = tempName;
+		kill = tempKill;
+	}
+
+	@Override
+	public void run(String playerID) {
+		Collection<Entity> entities = location.getWorld().getEntities();
+		for (Entity entity : entities) {
+			if (!(entity instanceof LivingEntity)) {
+				continue;
+			}
+			double rangeDouble = range.getDouble(playerID);
+			if (entity.getLocation().distanceSquared(location) < rangeDouble * rangeDouble) {
+				EntityType theType = entity.getType();
+				for (EntityType type : types) {
+					if (theType == type) {
+						if (name != null) {
+							if (entity.getCustomName() != null && entity.getCustomName().equals(name)) {
+								if (kill) {
+									LivingEntity living = (LivingEntity) entity;
+									living.damage(living.getHealth() + 10);
+								} else {
+									entity.remove();
+								}
+							}
+						} else {
+							if (kill) {
+								LivingEntity living = (LivingEntity) entity;
+								living.damage(living.getHealth() + 10);
+							} else {
+								entity.remove();
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
 
 }

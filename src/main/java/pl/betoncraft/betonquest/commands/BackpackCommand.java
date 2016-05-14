@@ -33,24 +33,24 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class BackpackCommand implements CommandExecutor {
-    
-    /**
-     * Registers a new executor of the /backpack command
-     */
-    public BackpackCommand() {
-        BetonQuest.getInstance().getCommand("backpack").setExecutor(this);
-    }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("backpack")) {
-            // command sender must be a player, console can't have a backpack
-            if (sender instanceof Player) {
-                Debug.info("Executing /backpack command for " + sender.getName());
-                new Backpack(PlayerConverter.getID((Player) sender));
-            }
-            return true;
-        }
-        return false;
-    }
+	/**
+	 * Registers a new executor of the /backpack command
+	 */
+	public BackpackCommand() {
+		BetonQuest.getInstance().getCommand("backpack").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("backpack")) {
+			// command sender must be a player, console can't have a backpack
+			if (sender instanceof Player) {
+				Debug.info("Executing /backpack command for " + sender.getName());
+				new Backpack(PlayerConverter.getID((Player) sender));
+			}
+			return true;
+		}
+		return false;
+	}
 }

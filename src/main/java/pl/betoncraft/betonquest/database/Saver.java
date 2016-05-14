@@ -33,95 +33,96 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
  * @author Jakub Sapalski
  */
 public class Saver extends Thread implements Listener {
-    
-    Connector con;
-    ConcurrentLinkedQueue<Record> queue;
-    boolean run;
 
-    /**
-     * Creates new database saver thread
-     */
-    public Saver() {
-        this.con = new Connector();
-        this.queue = new ConcurrentLinkedQueue<>();
-        this.run = true;
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
+	Connector con;
+	ConcurrentLinkedQueue<Record> queue;
+	boolean run;
 
-    public void run() {
-        while (true) {
-            while (queue.isEmpty()) {
-                if (!run) {
-                    return;
-                }
-                synchronized (this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            Record rec = queue.poll();
-            con.updateSQL(rec.getType(), rec.getArgs());
-        }
-    }
+	/**
+	 * Creates new database saver thread
+	 */
+	public Saver() {
+		this.con = new Connector();
+		this.queue = new ConcurrentLinkedQueue<>();
+		this.run = true;
+		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
 
-    /**
-     * Adds new record to the queue, where it will be saved to the database.
-     * 
-     * @param rec
-     *          Record to save
-     */
-    public synchronized void add(Record rec) {
-        queue.add(rec);
-        notify();
-    }
-    
-    /**
-     * Ends this saver's job, letting it save all remaining data.
-     */
-    public synchronized void end() {
-        run = false;
-        notify();
-    }
-    
-    @EventHandler
-    public void onDataUpdate(QuestDataUpdateEvent e) {
-        add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID()}));
-        add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID(), e.getData()}));
-    }
+	public void run() {
+		while (true) {
+			while (queue.isEmpty()) {
+				if (!run) {
+					return;
+				}
+				synchronized (this) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			Record rec = queue.poll();
+			con.updateSQL(rec.getType(), rec.getArgs());
+		}
+	}
 
-    /**
-     * Holds the data and the method of saving them to the database
-     * 
-     * @author Jakub Sapalski
-     */
-    public static class Record {
+	/**
+	 * Adds new record to the queue, where it will be saved to the database.
+	 * 
+	 * @param rec
+	 *            Record to save
+	 */
+	public synchronized void add(Record rec) {
+		queue.add(rec);
+		notify();
+	}
 
-        private UpdateType type;
-        private String[]   args;
+	/**
+	 * Ends this saver's job, letting it save all remaining data.
+	 */
+	public synchronized void end() {
+		run = false;
+		notify();
+	}
 
-        /**
-         * Creates new Record, which can be saved to the database using Saver.add()
-         * 
-         * @param type
-         *              method used for saving the data
-         * @param args
-         *              list of Strings which will be saved to the database
-         */
-        public Record(UpdateType type, String[] args) {
-            this.type = type;
-            this.args = args;
-        }
+	@EventHandler
+	public void onDataUpdate(QuestDataUpdateEvent e) {
+		add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[] { e.getPlayerID(), e.getObjID() }));
+		add(new Record(UpdateType.ADD_OBJECTIVES, new String[] { e.getPlayerID(), e.getObjID(), e.getData() }));
+	}
 
-        private UpdateType getType() {
-            return type;
-        }
+	/**
+	 * Holds the data and the method of saving them to the database
+	 * 
+	 * @author Jakub Sapalski
+	 */
+	public static class Record {
 
-        private String[] getArgs() {
-            return args;
-        }
-    }  
+		private UpdateType type;
+		private String[] args;
+
+		/**
+		 * Creates new Record, which can be saved to the database using
+		 * Saver.add()
+		 * 
+		 * @param type
+		 *            method used for saving the data
+		 * @param args
+		 *            list of Strings which will be saved to the database
+		 */
+		public Record(UpdateType type, String[] args) {
+			this.type = type;
+			this.args = args;
+		}
+
+		private UpdateType getType() {
+			return type;
+		}
+
+		private String[] getArgs() {
+			return args;
+		}
+	}
 
 }

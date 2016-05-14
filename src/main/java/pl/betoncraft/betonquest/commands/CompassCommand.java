@@ -33,24 +33,24 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class CompassCommand implements CommandExecutor {
-    
-    /**
-     * Registers a new executor of the /compass command
-     */
-    public CompassCommand() {
-        BetonQuest.getInstance().getCommand("compass").setExecutor(this);
-    }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("compass")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String playerID = PlayerConverter.getID(player);
-                new Backpack(playerID, DisplayType.COMPASS);
-            }
-            return true;
-        }
-        return false;
-    }
+	/**
+	 * Registers a new executor of the /compass command
+	 */
+	public CompassCommand() {
+		BetonQuest.getInstance().getCommand("compass").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("compass")) {
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
+				String playerID = PlayerConverter.getID(player);
+				new Backpack(playerID, DisplayType.COMPASS);
+			}
+			return true;
+		}
+		return false;
+	}
 }

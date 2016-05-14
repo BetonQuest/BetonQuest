@@ -24,32 +24,30 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 
-
 /**
  * Displays version of the plugin.
  * 
  * @author Jakub Sapalski
  */
 public class VersionVariable extends Variable {
-    
-    private final Plugin plugin;
 
-    public VersionVariable(String packName, String instruction)
-            throws InstructionParseException {
-        super(packName, instruction);
-        String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length > 1) {
-            plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
-            if (plugin == null)
-                throw new InstructionParseException("Plugin " + parts[1] + "does not exist!");
-        } else {
-            plugin = BetonQuest.getInstance();
-        }
-    }
-    
-    @Override
-    public String getValue(String playerID) {
-        return plugin.getDescription().getVersion();
-    }
+	private final Plugin plugin;
+
+	public VersionVariable(String packName, String instruction) throws InstructionParseException {
+		super(packName, instruction);
+		String[] parts = instruction.replace("%", "").split("\\.");
+		if (parts.length > 1) {
+			plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
+			if (plugin == null)
+				throw new InstructionParseException("Plugin " + parts[1] + "does not exist!");
+		} else {
+			plugin = BetonQuest.getInstance();
+		}
+	}
+
+	@Override
+	public String getValue(String playerID) {
+		return plugin.getDescription().getVersion();
+	}
 
 }

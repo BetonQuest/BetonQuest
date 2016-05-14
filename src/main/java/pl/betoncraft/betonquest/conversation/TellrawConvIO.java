@@ -25,86 +25,94 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-
 /**
  * Adds tellraw command handling to the SimpleConvIO
  * 
  * @author Jakub Sapalski
  */
-public class TellrawConvIO  extends ChatConvIO {
-    
-    private HashMap<Integer, String> hashes;
-    private int count = 0;
-    private String color;
-    private boolean italic;
-    private boolean bold;
-    private boolean underline;
-    private boolean strikethrough;
-    private boolean magic;
-    private String number;
+public class TellrawConvIO extends ChatConvIO {
 
-    public TellrawConvIO(Conversation conv, String playerID) {
-        super(conv, playerID);
-        hashes = new HashMap<>();
-        for (ChatColor color : colors.get("option")) {
-            if (color == ChatColor.STRIKETHROUGH) {
-                strikethrough = true;
-            } else if (color == ChatColor.MAGIC) {
-                magic = true;
-            } else if (color == ChatColor.ITALIC) {
-                italic = true;
-            } else if (color == ChatColor.BOLD) {
-                bold = true;
-            } else if (color == ChatColor.UNDERLINE) {
-                underline = true;
-            } else {
-                this.color = color.name().toLowerCase();
-            }
-        }
-        StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("number")) {
-            string.append(color);
-        }
-        string.append("%number%. ");
-        number = string.toString();
-    }
-    
-    @EventHandler
-    public void onCommandAnswer(PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().equals(player)) return;
-        if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) return;
-        event.setCancelled(true);
-        String[] parts = event.getMessage().split(" ");
-        if (parts.length != 2) return;
-        String hash = parts[1];
-        for (int j = 1; j <= hashes.size(); j++) {
-            if (hashes.get(j).equals(hash)) {
-                player.sendMessage(answerFormat + options.get(j));
-                conv.passPlayerAnswer(j);
-                return;
-            }
-        }
-    }
+	private HashMap<Integer, String> hashes;
+	private int count = 0;
+	private String color;
+	private boolean italic;
+	private boolean bold;
+	private boolean underline;
+	private boolean strikethrough;
+	private boolean magic;
+	private String number;
 
-    @Override
-    public void display() {
-        super.display();
-        for (int j = 1; j <= options.size(); j++) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + name + " [{\"text\":\"" + number.replace("%number%", Integer.toString(j)) + "\"},{\"text\":\"" + options.get(j) + "\",\"color\":\"" + color + "\",\"bold\":\"" + bold + "\",\"italic\":\"" + italic + "\",\"underlined\":\"" + underline + "\",\"strikethrough\":\"" + strikethrough + "\",\"obfuscated\":\"" + magic + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/betonquestanswer " + hashes.get(j) + "\"}}]");
-        }
-    }
-    
-    @Override
-    public void addPlayerOption(String option) {
-        super.addPlayerOption(option);
-        count++;
-        hashes.put(count, UUID.randomUUID().toString());
-    }
-    
-    @Override
-    public void clear() {
-        super.clear();
-        hashes.clear();
-        count = 0;
-    }
+	public TellrawConvIO(Conversation conv, String playerID) {
+		super(conv, playerID);
+		hashes = new HashMap<>();
+		for (ChatColor color : colors.get("option")) {
+			if (color == ChatColor.STRIKETHROUGH) {
+				strikethrough = true;
+			} else if (color == ChatColor.MAGIC) {
+				magic = true;
+			} else if (color == ChatColor.ITALIC) {
+				italic = true;
+			} else if (color == ChatColor.BOLD) {
+				bold = true;
+			} else if (color == ChatColor.UNDERLINE) {
+				underline = true;
+			} else {
+				this.color = color.name().toLowerCase();
+			}
+		}
+		StringBuilder string = new StringBuilder();
+		for (ChatColor color : colors.get("number")) {
+			string.append(color);
+		}
+		string.append("%number%. ");
+		number = string.toString();
+	}
+
+	@EventHandler
+	public void onCommandAnswer(PlayerCommandPreprocessEvent event) {
+		if (!event.getPlayer().equals(player))
+			return;
+		if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer "))
+			return;
+		event.setCancelled(true);
+		String[] parts = event.getMessage().split(" ");
+		if (parts.length != 2)
+			return;
+		String hash = parts[1];
+		for (int j = 1; j <= hashes.size(); j++) {
+			if (hashes.get(j).equals(hash)) {
+				player.sendMessage(answerFormat + options.get(j));
+				conv.passPlayerAnswer(j);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void display() {
+		super.display();
+		for (int j = 1; j <= options.size(); j++) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+					"tellraw " + name + " [{\"text\":\"" + number.replace("%number%", Integer.toString(j))
+							+ "\"},{\"text\":\"" + options.get(j) + "\",\"color\":\"" + color + "\",\"bold\":\"" + bold
+							+ "\",\"italic\":\"" + italic + "\",\"underlined\":\"" + underline
+							+ "\",\"strikethrough\":\"" + strikethrough + "\",\"obfuscated\":\"" + magic
+							+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/betonquestanswer "
+							+ hashes.get(j) + "\"}}]");
+		}
+	}
+
+	@Override
+	public void addPlayerOption(String option) {
+		super.addPlayerOption(option);
+		count++;
+		hashes.put(count, UUID.randomUUID().toString());
+	}
+
+	@Override
+	public void clear() {
+		super.clear();
+		hashes.clear();
+		count = 0;
+	}
 }

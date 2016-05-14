@@ -30,41 +30,41 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class PlayerConverter {
 
-    /**
-     * Returns playerID of the passed Player.
-     * 
-     * @param player
-     *            - Player object from which playerID needs to be extracted
-     * @return playerID of the player
-     */
-    public static String getID(Player player) {
-        return player.getUniqueId().toString();
-    }
+	/**
+	 * Returns playerID of the passed Player.
+	 * 
+	 * @param player
+	 *            - Player object from which playerID needs to be extracted
+	 * @return playerID of the player
+	 */
+	public static String getID(Player player) {
+		return player.getUniqueId().toString();
+	}
 
-    /**
-     * Retruns playerID of the player with passed name.
-     * 
-     * @param name
-     *            - name of the player from which playerID needs to be extracted
-     * @return playerID of the player
-     */
-    public static String getID(String name) {
-        return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
-    }
+	/**
+	 * Retruns playerID of the player with passed name.
+	 * 
+	 * @param name
+	 *            - name of the player from which playerID needs to be extracted
+	 * @return playerID of the player
+	 */
+	public static String getID(String name) {
+		return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
+	}
 
-    /**
-     * Returns the Player object described by passed playerID.
-     * 
-     * @param ID
-     *            - playerID
-     * @return the Player object
-     */
-    public static Player getPlayer(String ID) {
-        return Bukkit.getPlayer(UUID.fromString(ID));
-    }
-    
-    public static String getName(String playerID) {
-        return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
-    }
+	/**
+	 * Returns the Player object described by passed playerID.
+	 * 
+	 * @param ID
+	 *            - playerID
+	 * @return the Player object
+	 */
+	public static Player getPlayer(String ID) {
+		return Bukkit.getPlayer(UUID.fromString(ID));
+	}
+
+	public static String getName(String playerID) {
+		return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
+	}
 
 }

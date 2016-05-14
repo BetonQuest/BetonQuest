@@ -33,58 +33,60 @@ import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 
 /**
- * Prevents Citizens NPCs from walking around when in conversation with the player
+ * Prevents Citizens NPCs from walking around when in conversation with the
+ * player
  * 
  * @author Jakub Sapalski
  */
 public class CitizensWalkingListener implements Listener {
-    
-    private HashMap<NPC, Integer>  npcs = new HashMap<>();
-    private HashMap<NPC, Location> locs = new HashMap<>();
 
-    /**
-     * Creates new listener which prevents Citizens NPCs from walking around when in conversation
-     */
-    public CitizensWalkingListener() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-    
-    @EventHandler
-    public void onConversationStart(final PlayerConversationStartEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
-            CitizensConversation conv = (CitizensConversation) event.getConversation();
-            NPC npc = conv.getNPC();
-            if (!npcs.containsKey(npc)) {
-                Navigator nav = npc.getNavigator();
-                npcs.put(npc, new Integer(1));
-                locs.put(npc, nav.getTargetAsLocation());
-                nav.setTarget(conv.getNPC().getEntity().getLocation());
-                nav.setPaused(true);
-            } else {
-                npcs.put(npc, npcs.get(npc) + 1);
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onConversationEnd(final PlayerConversationEndEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
-            new BukkitRunnable() {
-                public void run() {
-                    CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    NPC npc = conv.getNPC();
-                    Integer i = npcs.get(npc);
-                    i--;
-                    if (i == 0) {
-                        npcs.remove(npc);
-                        Navigator nav = npc.getNavigator();
-                        nav.setPaused(false);
-                        nav.setTarget(locs.remove(npc));
-                    } else {
-                        npcs.put(npc, i);
-                    }
-                }
-            }.runTask(BetonQuest.getInstance());
-        }
-    }
+	private HashMap<NPC, Integer> npcs = new HashMap<>();
+	private HashMap<NPC, Location> locs = new HashMap<>();
+
+	/**
+	 * Creates new listener which prevents Citizens NPCs from walking around
+	 * when in conversation
+	 */
+	public CitizensWalkingListener() {
+		Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+	}
+
+	@EventHandler
+	public void onConversationStart(final PlayerConversationStartEvent event) {
+		if (event.getConversation() instanceof CitizensConversation) {
+			CitizensConversation conv = (CitizensConversation) event.getConversation();
+			NPC npc = conv.getNPC();
+			if (!npcs.containsKey(npc)) {
+				Navigator nav = npc.getNavigator();
+				npcs.put(npc, new Integer(1));
+				locs.put(npc, nav.getTargetAsLocation());
+				nav.setTarget(conv.getNPC().getEntity().getLocation());
+				nav.setPaused(true);
+			} else {
+				npcs.put(npc, npcs.get(npc) + 1);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onConversationEnd(final PlayerConversationEndEvent event) {
+		if (event.getConversation() instanceof CitizensConversation) {
+			new BukkitRunnable() {
+				public void run() {
+					CitizensConversation conv = (CitizensConversation) event.getConversation();
+					NPC npc = conv.getNPC();
+					Integer i = npcs.get(npc);
+					i--;
+					if (i == 0) {
+						npcs.remove(npc);
+						Navigator nav = npc.getNavigator();
+						nav.setPaused(false);
+						nav.setTarget(locs.remove(npc));
+					} else {
+						npcs.put(npc, i);
+					}
+				}
+			}.runTask(BetonQuest.getInstance());
+		}
+	}
 }

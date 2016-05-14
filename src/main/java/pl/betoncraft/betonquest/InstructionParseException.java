@@ -18,23 +18,23 @@
 package pl.betoncraft.betonquest;
 
 /**
- * Exception thrown by events and conditions when the instruction
- * string has wrong format.
+ * Exception thrown by events and conditions when the instruction string has
+ * wrong format.
  * 
  * @author Jakub Sapalski
  */
 public class InstructionParseException extends Exception {
 
-    private static final long serialVersionUID = 1L;
-    private final String message;
-    
-    public InstructionParseException(final String message) {
-        this.message = message;
-    }
-    
-    @Override
-    public String getMessage() {
-        return message;
-    }
+	private static final long serialVersionUID = 1L;
+	private final String message;
+
+	public InstructionParseException(final String message) {
+		this.message = message;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
+	}
 
 }

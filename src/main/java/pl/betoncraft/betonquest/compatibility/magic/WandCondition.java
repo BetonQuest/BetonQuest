@@ -39,121 +39,123 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class WandCondition extends Condition {
-    
-    private MagicAPI api;
-    private CheckType type;
-    private HashMap<String, VariableNumber> spells = new HashMap<>();
-    private String name;
 
-    public WandCondition(String packName, String instructions)
-            throws InstructionParseException {
-        super(packName, instructions);
-        api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
-        String[] parts = instructions.split(" ");
-        if (parts.length < 2) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-        switch (parts[1]) {
-            case "hand":
-                type = CheckType.IN_HAND;
-                break;
-            case "inventory":
-                type = CheckType.IN_INVENTORY;
-                break;
-            case "lost":
-                type = CheckType.IS_LOST;
-                break;
-            default:
-                throw new InstructionParseException("Unknown check type");
-        }
-        for (String part : parts) {
-            if (part.startsWith("spells:")) {
-                String[] spells = part.substring(7).split(",");
-                for (String spell : spells) {
-                    VariableNumber level = new VariableNumber(1);
-                    if (spell.contains(":")) {
-                        String[] spellParts = spell.split(":");
-                        spell = spellParts[0];
-                        try {
-                            level = new VariableNumber(packName, spellParts[1]);
-                        } catch (NumberFormatException e) {
-                            throw new InstructionParseException("Could not parse spell level");
-                        }
-                    }
-                    this.spells.put(spell, level);
-                }
-            } else if (part.startsWith("name:")) {
-                name = part.substring(5);
-            }
-        }
-    }
+	private MagicAPI api;
+	private CheckType type;
+	private HashMap<String, VariableNumber> spells = new HashMap<>();
+	private String name;
 
-    @Override
-    public boolean check(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        switch (type) {
-            case IS_LOST:
-                for (LostWand lost : api.getLostWands()) {
-                    Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
-                    if (owner == null) continue;
-                    if (owner.equals(player)) {
-                        return true;
-                    }
-                }
-                return false;
-            case IN_HAND:
-                if (!api.isWand(player.getItemInHand())) {
-                    return false;
-                }
-                Wand wand1 = api.getWand(player.getItemInHand());
-                return checkWand(wand1, playerID);
-            case IN_INVENTORY:
-                for (ItemStack item : player.getInventory().getContents()) {
-                    if (item == null) continue;
-                    if (api.isWand(item)) {
-                        Wand wand2 = api.getWand(item);
-                        if (checkWand(wand2, playerID)) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            default:
-                return false;
-        }
-    }
+	public WandCondition(String packName, String instructions) throws InstructionParseException {
+		super(packName, instructions);
+		api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
+		String[] parts = instructions.split(" ");
+		if (parts.length < 2) {
+			throw new InstructionParseException("Not enough arguments");
+		}
+		switch (parts[1]) {
+		case "hand":
+			type = CheckType.IN_HAND;
+			break;
+		case "inventory":
+			type = CheckType.IN_INVENTORY;
+			break;
+		case "lost":
+			type = CheckType.IS_LOST;
+			break;
+		default:
+			throw new InstructionParseException("Unknown check type");
+		}
+		for (String part : parts) {
+			if (part.startsWith("spells:")) {
+				String[] spells = part.substring(7).split(",");
+				for (String spell : spells) {
+					VariableNumber level = new VariableNumber(1);
+					if (spell.contains(":")) {
+						String[] spellParts = spell.split(":");
+						spell = spellParts[0];
+						try {
+							level = new VariableNumber(packName, spellParts[1]);
+						} catch (NumberFormatException e) {
+							throw new InstructionParseException("Could not parse spell level");
+						}
+					}
+					this.spells.put(spell, level);
+				}
+			} else if (part.startsWith("name:")) {
+				name = part.substring(5);
+			}
+		}
+	}
 
-    /**
-     * Checks if the given wand meets specified name and spells conditions.
-     * 
-     * @param wand
-     *          wand to check
-     * @return true if the wand meets the conditions, false otherwise
-     */
-    private boolean checkWand(Wand wand, String playerID) {
-        if (name != null && !wand.getTemplateKey().equalsIgnoreCase(name)) {
-            return false;
-        }
-        if (!spells.isEmpty()) {
-            spell:
-            for (String spell : spells.keySet()) {
-                int level = spells.get(spell).getInt(playerID);
-                System.out.println("checking if wand has spell " + spell + " with level " + level);
-                for (String wandSpell : wand.getSpells()) {
-                    System.out.println("  checking wand spell " + wandSpell + " with level " + wand.getSpellLevel(wandSpell));
-                    if (wandSpell.toLowerCase().startsWith(spell.toLowerCase()) && wand.getSpellLevel(spell) >= level) {
-                        System.out.println("    matching!");
-                        continue spell;
-                    }
-                }
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    private enum CheckType {
-        IS_LOST, IN_HAND, IN_INVENTORY
-    }
+	@Override
+	public boolean check(String playerID) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		switch (type) {
+		case IS_LOST:
+			for (LostWand lost : api.getLostWands()) {
+				Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
+				if (owner == null)
+					continue;
+				if (owner.equals(player)) {
+					return true;
+				}
+			}
+			return false;
+		case IN_HAND:
+			ItemStack wandItem = player.getInventory().getItemInMainHand();
+			if (!api.isWand(wandItem)) {
+				return false;
+			}
+			Wand wand1 = api.getWand(wandItem);
+			return checkWand(wand1, playerID);
+		case IN_INVENTORY:
+			for (ItemStack item : player.getInventory().getContents()) {
+				if (item == null)
+					continue;
+				if (api.isWand(item)) {
+					Wand wand2 = api.getWand(item);
+					if (checkWand(wand2, playerID)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		default:
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if the given wand meets specified name and spells conditions.
+	 * 
+	 * @param wand
+	 *            wand to check
+	 * @return true if the wand meets the conditions, false otherwise
+	 */
+	private boolean checkWand(Wand wand, String playerID) {
+		if (name != null && !wand.getTemplateKey().equalsIgnoreCase(name)) {
+			return false;
+		}
+		if (!spells.isEmpty()) {
+			spell: for (String spell : spells.keySet()) {
+				int level = spells.get(spell).getInt(playerID);
+				System.out.println("checking if wand has spell " + spell + " with level " + level);
+				for (String wandSpell : wand.getSpells()) {
+					System.out.println(
+							"  checking wand spell " + wandSpell + " with level " + wand.getSpellLevel(wandSpell));
+					if (wandSpell.toLowerCase().startsWith(spell.toLowerCase()) && wand.getSpellLevel(spell) >= level) {
+						System.out.println("    matching!");
+						continue spell;
+					}
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private enum CheckType {
+		IS_LOST, IN_HAND, IN_INVENTORY
+	}
 
 }
