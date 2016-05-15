@@ -2702,9 +2702,10 @@ public class ConfigUpdater {
 		ConfigAccessor convOld = ch.getConfigs().get("conversations");
 		Set<String> keys = convOld.getConfig().getKeys(false);
 		File folder = new File(instance.getDataFolder(), "conversations");
-		for (File file : folder.listFiles()) {
-			file.delete();
-		}
+		if (folder.exists() && folder.isDirectory())
+			for (File file : folder.listFiles()) {
+				file.delete();
+			}
 		for (String convID : keys) {
 			File convFile = new File(folder, convID + ".yml");
 			Map<String, Object> convSection = convOld.getConfig().getConfigurationSection(convID).getValues(true);

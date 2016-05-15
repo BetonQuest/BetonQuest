@@ -163,7 +163,7 @@ public class PotionObjective extends Objective implements Listener {
 			// count how many effects on the potion match the required effects
 			int matchingEffects = 0;
 			for (PotionEffect effect : meta.getCustomEffects()) {
-				if (effects.keySet().contains(effect.getType()) && effects.get(effect) <= effect.getDuration()) {
+				if (effects.keySet().contains(effect.getType()) && effects.get(effect.getType()) <= effect.getDuration()) {
 					matchingEffects++;
 				}
 			}

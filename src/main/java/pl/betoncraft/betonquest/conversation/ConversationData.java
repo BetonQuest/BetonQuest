@@ -96,7 +96,7 @@ public class ConversationData {
 		String stop = pack.getString("conversations." + name + ".stop");
 		blockMovement = stop != null && stop.equalsIgnoreCase("true");
 		// check if all data is valid (or at least exist)
-		if (quester == null || quester.equals("")) {
+		if (quester == null || quester.isEmpty()) {
 			throw new InstructionParseException("Quester's name is not defined");
 		}
 		if (rawStartingOptions == null || rawStartingOptions.equals("")) {

@@ -538,6 +538,7 @@ public class Backpack implements Listener {
 							return;
 						} else {
 							e.printStackTrace();
+							return;
 						}
 					}
 				} else {

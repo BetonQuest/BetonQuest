@@ -119,7 +119,7 @@ public class Connector {
 				statement = connection.prepareStatement("SELECT * FROM " + prefix + "player");
 				break;
 			default:
-				statement = null;
+				statement = connection.prepareStatement("SELECT 1");
 				break;
 			}
 			for (int i = 0; i < args.length; i++) {
@@ -290,7 +290,7 @@ public class Connector {
 						.prepareStatement("UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;");
 				break;
 			default:
-				statement = null;
+				statement = connection.prepareStatement("SELECT 1");
 				break;
 			}
 			for (int i = 0; i < args.length; i++) {
