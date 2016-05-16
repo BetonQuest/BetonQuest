@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import ch.njol.skript.Skript;
 import de.slikey.effectlib.EffectManager;
@@ -206,34 +205,20 @@ public class Compatibility {
 		}
 
 		// hook into SkillAPI
-		if (Bukkit.getPluginManager().getPlugin("SkillAPI") != null
+		if (Bukkit.getPluginManager().isPluginEnabled("SkillAPI")
 				&& plugin.getConfig().getString("hook.skillapi").equalsIgnoreCase("true")) {
-			// SKillAPI 3.37 is already hooking into BetonQuest with outdated
-			// conditions,
-			// so I can't check if it is enabled, let's just hope it is
 			plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
 			plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
 			hooked.add("SkillAPI");
 		}
 
 		// hook into Quests
-		if (Bukkit.getPluginManager().getPlugin("Quests") != null
+		if (Bukkit.getPluginManager().isPluginEnabled("Quests")
 				&& plugin.getConfig().getString("hook.quests").equalsIgnoreCase("true")) {
-			// because SkillAPI wants to load before Quests, that means Quests
-			// will be forced to load
-			// after BetonQuest, so I can't check if it's enabled either; let's
-			// hope it is
 			plugin.registerConditions("quest", QuestCondition.class);
 			plugin.registerEvents("quest", QuestEvent.class);
-			// Quests is not enabled yet (because of SkillAPI...) so add custom
-			// stuff later
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Quests.getInstance().customRewards.add(new EventReward());
-					Quests.getInstance().customRequirements.add(new ConditionRequirement());
-				}
-			}.runTask(plugin);
+			Quests.getInstance().customRewards.add(new EventReward());
+			Quests.getInstance().customRequirements.add(new ConditionRequirement());
 			hooked.add("Quests");
 		}
 		
