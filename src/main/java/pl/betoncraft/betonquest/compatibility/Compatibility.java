@@ -52,6 +52,8 @@ import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
 import pl.betoncraft.betonquest.compatibility.quests.EventReward;
 import pl.betoncraft.betonquest.compatibility.quests.QuestCondition;
 import pl.betoncraft.betonquest.compatibility.quests.QuestEvent;
+import pl.betoncraft.betonquest.compatibility.shopkeepers.HavingShopCondition;
+import pl.betoncraft.betonquest.compatibility.shopkeepers.OpenShopEvent;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPILevelCondition;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
@@ -233,6 +235,14 @@ public class Compatibility {
 				}
 			}.runTask(plugin);
 			hooked.add("Quests");
+		}
+		
+		// hook into Shopkeepers
+		if (Bukkit.getPluginManager().isPluginEnabled("Shopkeepers")
+				&& plugin.getConfig().getString("hook.shopkeepers").equalsIgnoreCase("true")) {
+			plugin.registerEvents("shopkeeper", OpenShopEvent.class);
+			plugin.registerConditions("shopamount", HavingShopCondition.class);
+			hooked.add("Shopkeepers");
 		}
 
 		// log which plugins have been hooked

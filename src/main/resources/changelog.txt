@@ -1,4 +1,6 @@
 ﻿v1.9-dev
+Additions:
+    * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
 
 ﻿v1.8.5
 Fixes:
