@@ -65,8 +65,8 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
 		</repository>
 		<repository>
-			<id>lib</id>
-			<url>file://${project.basedir}/lib</url>
+			<id>betonquest-repo</id>
+			<url>http://betonquest.betoncraft.pl/mvn</url>
 		</repository>
 	</repositories>
 	<dependencies>
