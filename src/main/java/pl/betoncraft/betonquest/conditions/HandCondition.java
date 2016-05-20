@@ -58,7 +58,7 @@ public class HandCondition extends Condition {
 	@Override
 	public boolean check(String playerID) {
 		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
-		ItemStack item = (offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+		ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
 		if (questItem.equalsI(item)) {
 			return true;
 		}
