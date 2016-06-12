@@ -1,4 +1,4 @@
-version: v40
+version: v41
 mysql:
   host: ''
   port: ''
@@ -41,6 +41,7 @@ hook:
   skillapi: 'true'
   quests: 'true'
   shopkeepers: 'true'
+  placeholderapi: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

@@ -46,6 +46,8 @@ import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
+import pl.betoncraft.betonquest.compatibility.placeholderapi.BetonQuestPlaceholder;
+import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderVariable;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
 import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
@@ -230,6 +232,14 @@ public class Compatibility {
 			plugin.registerEvents("shopkeeper", OpenShopEvent.class);
 			plugin.registerConditions("shopamount", HavingShopCondition.class);
 			hooked.add("Shopkeepers");
+		}
+		
+		// hook into PlaceholderAPI
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")
+				&& plugin.getConfig().getString("hook.placeholderapi").equalsIgnoreCase("true")) {
+			plugin.registerVariable("ph", PlaceholderVariable.class);
+			new BetonQuestPlaceholder(plugin, "betonquest").hook();
+			hooked.add("PlaceholderAPI");
 		}
 
 		// log which plugins have been hooked

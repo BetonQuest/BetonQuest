@@ -1,6 +1,9 @@
 ﻿v1.9-dev
+Changes:
+    * New lines in conversations can be made with "\n" 
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
+    * Compatibility with PlaceholderAPI
 
 ﻿v1.8.5
 Fixes:
