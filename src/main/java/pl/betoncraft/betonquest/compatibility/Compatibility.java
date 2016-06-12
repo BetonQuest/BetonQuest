@@ -34,6 +34,7 @@ import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
+import pl.betoncraft.betonquest.compatibility.citizens.NPCMoveEvent;
 import pl.betoncraft.betonquest.compatibility.denizen.DenizenTaskScriptEvent;
 import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
@@ -102,6 +103,7 @@ public class Compatibility {
 			new CitizensWalkingListener();
 			plugin.registerObjectives("npckill", NPCKillObjective.class);
 			plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
+			plugin.registerEvents("movenpc", NPCMoveEvent.class);
 			hooked.add("Citizens");
 		}
 

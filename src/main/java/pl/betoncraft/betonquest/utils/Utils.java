@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -44,6 +45,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.Zipper;
@@ -449,5 +452,80 @@ public class Utils {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * This class parses various location strings.
+	 */
+	public static class LocationData {
+		
+		private Location loc;
+		private VariableNumber data;
+		
+		/**
+		 * Parses the location string. The Location and optional data value can
+		 * be accessed by this object's methods.
+		 * 
+		 * @param packName
+		 *            name of the package, required for variable resolution
+		 * @param string
+		 *            string containing raw location, written like
+		 *            '100;200;300;world;0;0;10', where the first three numbers
+		 *            are x,y,z coordinates, world is name of the world,
+		 *            followed by optional yaw and pitch, followed by optional
+		 *            data value (i.e. radius around location). This data value
+		 *            can be a conversation variable.
+		 * @throws InstructionParseException
+		 *             when there is an error while parsing the location or
+		 *             optional variable
+		 */
+		public LocationData(String packName, String string) throws InstructionParseException {
+			String[] parts = string.split(";");
+			if (parts.length < 4) {
+				throw new InstructionParseException("Wrong location format");
+			}
+			World world = Bukkit.getWorld(parts[3]);
+			if (world == null) {
+				throw new InstructionParseException("World " + parts[3] + " does not exists.");
+			}
+			double x, y, z;
+			float yaw = 0, pitch = 0;
+			try {
+				x = Double.parseDouble(parts[0]);
+				y = Double.parseDouble(parts[1]);
+				z = Double.parseDouble(parts[2]);
+				if (parts.length >= 6) {
+					yaw = Float.parseFloat(parts[4]);
+					pitch = Float.parseFloat(parts[5]);
+				}
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse location coordinates");
+			}
+			loc = new Location(world, x, y, z, yaw, pitch);
+			if (parts.length == 5 || parts.length == 7) {
+				try {
+					data = new VariableNumber(packName, parts[parts.length - 1]);
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse the location data value: " + e.getMessage());
+				}
+			}
+		}
+		
+		/**
+		 * @return the location represented by this object
+		 */
+		public Location getLocation() {
+			return loc;
+		}
+		
+		/**
+		 * @param playerID
+		 *            ID of the player, needed for variable resolution
+		 * @return the data held by this object or 0 if there was no data
+		 */
+		public VariableNumber getData(String playerID) {
+			return data;
+		}
+		
 	}
 }
