@@ -4,6 +4,8 @@ Changes:
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI
+    * New event 'lever' - switches a lever
+    * New event 'door' - opens/closes doors, trapdoors and gates
 
 ﻿v1.8.5
 Fixes:

@@ -98,6 +98,7 @@ import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
+import pl.betoncraft.betonquest.events.DoorEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
@@ -114,6 +115,7 @@ import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.ScoreboardEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
+import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.SudoEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
@@ -327,6 +329,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("compass", CompassEvent.class);
 		registerEvents("cancel", CancelEvent.class);
 		registerEvents("score", ScoreboardEvent.class);
+		registerEvents("lever", LeverEvent.class);
+		registerEvents("door", DoorEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
