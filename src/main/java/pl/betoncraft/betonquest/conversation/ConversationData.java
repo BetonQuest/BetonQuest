@@ -332,15 +332,15 @@ public class ConversationData {
 			FileConfiguration conv = pack.getConversation(convName).getConfig();
 			if (conv.isConfigurationSection(type + "." + name + ".prefix")) {
 				for (String lang : conv.getConfigurationSection(type + "." + name + ".prefix").getKeys(false)) {
-					String pref = pack
-							.getString("conversations." + convName + "." + type + "." + name + ".prefix." + lang);
+					String pref = pack .getString("conversations." + convName + "." + type + "." + name + ".prefix."
+							+ lang);
 					if (pref != null && !pref.equals("")) {
 						inlinePrefix.put(lang, pref);
 					}
 				}
 				if (!inlinePrefix.containsKey(defaultLang)) {
-					throw new InstructionParseException(
-							"No default language for " + name + " " + visibleType + " prefix");
+					throw new InstructionParseException("No default language for " + name + " " + visibleType
+							+ " prefix");
 				}
 			} else {
 				String pref = pack.getString("conversations." + convName + "." + type + "." + name + ".prefix");
@@ -350,14 +350,15 @@ public class ConversationData {
 			}
 			if (conv.isConfigurationSection(type + "." + name + ".text")) {
 				for (String lang : conv.getConfigurationSection(type + "." + name + ".text").getKeys(false)) {
-					text.put(lang,
-							pack.getString("conversations." + convName + "." + type + "." + name + ".text." + lang));
+					text.put(lang, pack.getString("conversations." + convName + "." + type + "." + name + ".text."
+							+ lang).replace("\\n", "\n"));
 				}
 				if (!text.containsKey(defaultLang)) {
 					throw new InstructionParseException("No default language for " + name + " " + visibleType);
 				}
 			} else {
-				text.put(defaultLang, pack.getString("conversations." + convName + "." + type + "." + name + ".text"));
+				text.put(defaultLang, pack.getString("conversations." + convName + "." + type + "." + name + ".text")
+						.replace("\\n", "\n"));
 			}
 			ArrayList<String> variables = new ArrayList<>();
 			for (String theText : text.values()) {

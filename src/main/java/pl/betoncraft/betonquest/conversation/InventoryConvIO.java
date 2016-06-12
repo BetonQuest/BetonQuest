@@ -266,24 +266,28 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		boolean firstLinePrefix = prefix != null;
 		if (prefix == null)
 			prefix = "";
-		String[] arr = (prefix + singleLine).split(" ");
-		StringBuilder line = new StringBuilder();
-		for (int i = 0; i < arr.length; i++) {
-			if (line.length() + arr[i].length() + 1 > 42) {
-				if (firstLinePrefix) {
-					firstLinePrefix = false;
-					multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
-				} else {
-					multiLine.add(color + line.toString().trim());
+		String[] lineBreaks = (prefix + singleLine).split("\n");
+		for (String brokenLine : lineBreaks) {
+			String[] arr = brokenLine.split(" ");
+			StringBuilder line = new StringBuilder();
+			for (int i = 0; i < arr.length; i++) {
+				if (line.length() + arr[i].length() + 1 > 42) {
+					if (firstLinePrefix) {
+						firstLinePrefix = false;
+						multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+					} else {
+						multiLine.add(color + line.toString().trim());
+					}
+					line = new StringBuilder();
 				}
-				line = new StringBuilder();
+				line.append(arr[i] + " ");
 			}
-			line.append(arr[i] + " ");
-		}
-		if (firstLinePrefix) {
-			multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
-		} else {
-			multiLine.add(color + line.toString().trim());
+			if (firstLinePrefix) {
+				firstLinePrefix = false;
+				multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+			} else {
+				multiLine.add(color + line.toString().trim());
+			}
 		}
 		return multiLine;
 	}
