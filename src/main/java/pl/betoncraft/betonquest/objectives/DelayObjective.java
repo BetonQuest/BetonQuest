@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.objectives;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map.Entry;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -75,9 +75,11 @@ public class DelayObjective extends Objective {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (String playerID : new ArrayList<>(dataMap.keySet())) {
-					DelayData playerData = (DelayData) dataMap.get(playerID);
-					if (new Date().getTime() >= playerData.getTime() && checkConditions(playerID)) {
+				long time = new Date().getTime();
+				for (Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
+					String playerID = entry.getKey();
+					DelayData playerData = (DelayData) entry.getValue();
+					if (time >= playerData.getTime() && checkConditions(playerID)) {
 						completeObjective(playerID);
 					}
 				}
