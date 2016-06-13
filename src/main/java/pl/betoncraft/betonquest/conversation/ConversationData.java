@@ -41,12 +41,8 @@ public class ConversationData {
 	private ConfigPackage pack;
 	private String convName;
 
-	private HashMap<String, String> quester = new HashMap<>(); // maps for
-																// multiple
-																// languages
-	private HashMap<String, String> prefix = new HashMap<>(); // global
-																// conversation
-																// prefix
+	private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
+	private HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
 	private String[] finalEvents;
 	private String[] startingOptions;
 	private boolean blockMovement;
@@ -124,6 +120,10 @@ public class ConversationData {
 		}
 		// check if all starting options point to existing NPC options
 		startingOptions = rawStartingOptions.split(",");
+		// remove spaces between the options
+		for (int i = 0; i < startingOptions.length; i++) {
+			startingOptions[i] = startingOptions[i].trim();
+		}
 		for (String startingOption : startingOptions) {
 			if (startingOption.contains(".")) {
 				String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
