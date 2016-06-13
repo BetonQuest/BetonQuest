@@ -39,6 +39,7 @@ public class DelayObjective extends Objective {
 
 	private final long delay;
 	private BukkitTask runnable;
+	private int interval = 20 * 10;
 
 	public DelayObjective(String packName, String label, String instruction) throws InstructionParseException {
 		super(packName, label, instruction);
@@ -55,6 +56,18 @@ public class DelayObjective extends Objective {
 		if (delay < 0) {
 			throw new InstructionParseException("Delay cannot be less than 0");
 		}
+		for (String part : parts) {
+			if (part.startsWith("interval:")) {
+				try {
+					interval = Integer.parseInt(part.substring(9));
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse delay interval");
+				}
+				if (interval < 1) {
+					throw new InstructionParseException("Interval cannot be less than 1 tick");
+				}
+			}
+		}
 	}
 
 	@Override
@@ -69,7 +82,7 @@ public class DelayObjective extends Objective {
 					}
 				}
 			}
-		}.runTaskTimer(BetonQuest.getInstance(), 0, 20 * 10);
+		}.runTaskTimer(BetonQuest.getInstance(), 0, interval);
 	}
 
 	@Override
