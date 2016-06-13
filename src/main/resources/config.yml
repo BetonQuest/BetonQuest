@@ -13,7 +13,7 @@ update:
   notify_new_release: true
 default_journal_slot: '-1'
 max_npc_distance: '5'
-default_conversation_IO: simple
+default_conversation_IO: chest
 combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
