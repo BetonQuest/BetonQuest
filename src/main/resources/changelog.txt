@@ -6,6 +6,7 @@ Additions:
     * Compatibility with PlaceholderAPI
     * New event 'lever' - switches a lever
     * New event 'door' - opens/closes doors, trapdoors and gates
+    * When a conversation option is selected, a Bukkit event is called (for developers)
 
 ﻿v1.8.5
 Fixes:

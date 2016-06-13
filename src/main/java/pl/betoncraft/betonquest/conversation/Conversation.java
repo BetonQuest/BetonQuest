@@ -34,6 +34,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.api.ConversationOptionEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
@@ -378,6 +379,20 @@ public class Conversation implements Listener {
 	public ConversationData getData() {
 		return data;
 	}
+	
+	/**
+	 * @return the package containing this conversation
+	 */
+	public String getPackage() {
+		return packName;
+	}
+	
+	/**
+	 * @return the ID of the conversation
+	 */
+	public String getID() {
+		return convID;
+	}
 
 	/**
 	 * Starts the conversation, should be called asynchronously.
@@ -450,6 +465,8 @@ public class Conversation implements Listener {
 
 			// print NPC's text
 			printNPCText();
+			ConversationOptionEvent e = new ConversationOptionEvent(player, conv, option, conv.option);
+			Bukkit.getPluginManager().callEvent(e);
 		}
 	}
 
@@ -515,6 +532,8 @@ public class Conversation implements Listener {
 			selectOption(data.getData(option, OptionType.PLAYER, RequestType.POINTER), false);
 			// print to player npc's answer
 			printNPCText();
+			ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
+			Bukkit.getPluginManager().callEvent(event);
 		}
 	}
 
