@@ -72,6 +72,7 @@ import pl.betoncraft.betonquest.conditions.TestForBlockCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
 import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
+import pl.betoncraft.betonquest.conditions.WorldCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
@@ -299,6 +300,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("chestitem", ChestItemCondition.class);
 		registerConditions("score", ScoreboardCondition.class);
 		registerConditions("riding", VehicleCondition.class);
+		registerConditions("world", WorldCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
