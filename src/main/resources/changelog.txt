@@ -4,8 +4,10 @@ Changes:
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI
+    * New condition 'riding' - check if the player is riding an entity
     * New event 'lever' - switches a lever
     * New event 'door' - opens/closes doors, trapdoors and gates
+    * New objective 'vehicle' - entering a vehicle entity
     * When a conversation option is selected, a Bukkit event is called (for developers)
 
 ﻿v1.8.5
