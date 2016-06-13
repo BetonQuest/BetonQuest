@@ -53,6 +53,7 @@ import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.GameModeCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
@@ -301,6 +302,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("score", ScoreboardCondition.class);
 		registerConditions("riding", VehicleCondition.class);
 		registerConditions("world", WorldCondition.class);
+		registerConditions("gamemode", GameModeCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
