@@ -83,7 +83,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v41";
+	private final String destination = "v42";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -190,6 +190,89 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v41() {
+		try {
+			// change raw material names in craft objectives to items from items.yml
+			for (String packName : Config.getPackageNames()) {
+				ConfigPackage pack = Config.getPackage(packName);
+				ConfigAccessor objectives = pack.getObjectives();
+				ConfigAccessor items = pack.getItems();
+				ArrayList<String> materials = new ArrayList<>();
+				// get a list of materials and their data values
+				for (String key : objectives.getConfig().getKeys(false)) {
+					String objective = objectives.getConfig().getString(key);
+					if (objective.startsWith("craft ")) {
+						String[] parts = objective.split(" ");
+						if (parts.length > 1) {
+							materials.add(parts[1]);
+						}
+					}
+				}
+				// translate materials to item instructions
+				ArrayList<String> itemInstructions = new ArrayList<>();
+				for (String material : materials) {
+					if (material.contains(":")) {
+						String[] parts = material.split(":");
+						String materialName = parts[0];
+						String data = parts[1];
+						itemInstructions.add(materialName + " data:" + data);
+					} else {
+						itemInstructions.add(material);
+					}
+				}
+				// find items with the same instruction and store them in map (material, itemID)
+				HashMap<String, String> itemIDs = new HashMap<>();
+				for (int i = 0; i < materials.size(); i++) {
+					String material = materials.get(i);
+					String itemInstruction = itemInstructions.get(i);
+					String itemID = null;
+					// look for existing items
+					for (String key : items.getConfig().getKeys(false)) {
+						if (items.getConfig().getString(key).equalsIgnoreCase(itemInstruction)) {
+							itemID = key;
+							break;
+						}
+					}
+					// if there are no such items, create them
+					if (itemID == null) {
+						String materialName = material.contains(":") ? material.split(":")[0] : material;
+						if (items.getConfig().contains(materialName)) {
+							int index = 2;
+							while (items.getConfig().contains(materialName + index)) {
+								index++;
+							}
+							items.getConfig().set(materialName + index, itemInstruction);
+							itemID = materialName + index;
+						} else {
+							items.getConfig().set(materialName, itemInstruction);
+							itemID = materialName;
+						}
+					}
+					itemIDs.put(material, itemID);
+				}
+				items.saveConfig();
+				// replace materials in craft objectives
+				for (String key : objectives.getConfig().getKeys(false)) {
+					String objective = objectives.getConfig().getString(key);
+					if (objective.startsWith("craft ")) {
+						String[] parts = objective.split(" ");
+						if (parts.length > 1) {
+							objectives.getConfig().set(key, objective.replace(parts[1], itemIDs.get(parts[1])));
+						}
+					}
+				}
+				objectives.saveConfig();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Debug.error(ERROR);
+		}
+		Debug.broadcast("Changed 'craft' objective to use items.yml");
+		config.set("version", "v42");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

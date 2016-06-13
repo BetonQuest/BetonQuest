@@ -18,7 +18,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -30,7 +29,9 @@ import org.bukkit.event.inventory.InventoryType;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -40,8 +41,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CraftingObjective extends Objective implements Listener {
 
-	private final Material material;
-	private final byte data;
+	private final QuestItem item;
 	private final int amount;
 
 	public CraftingObjective(String packName, String label, String instruction) throws InstructionParseException {
@@ -51,24 +51,9 @@ public class CraftingObjective extends Objective implements Listener {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		if (parts[1].contains(":")) {
-			String[] materialParts = parts[1].split(":");
-			material = Material.matchMaterial(materialParts[0]);
-			if (material == null) {
-				throw new InstructionParseException("Material does not exist: " + materialParts[0]);
-			}
-			try {
-				data = Byte.parseByte(materialParts[1]);
-			} catch (NumberFormatException e) {
-				throw new InstructionParseException("Could not parse data value");
-			}
-		} else {
-			material = Material.matchMaterial(parts[1]);
-			if (material == null) {
-				throw new InstructionParseException("Material does not exist: " + parts[1]);
-			}
-			data = -1;
-		}
+		String itemPack = parts[1].contains(".") ? parts[1].split("\\.")[0] : packName;
+		String itemID = parts[1].contains(".") ? parts[1].split("\\.")[1] : parts[1];
+		item = new QuestItem(Config.getString(itemPack + ".items." + itemID));
 		try {
 			amount = Integer.parseInt(parts[2]);
 		} catch (NumberFormatException e) {
@@ -79,16 +64,13 @@ public class CraftingObjective extends Objective implements Listener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCrafting(CraftItemEvent event) {
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
 			String playerID = PlayerConverter.getID(player);
 			CraftData playerData = (CraftData) dataMap.get(playerID);
-			if (containsPlayer(playerID) && event.getRecipe().getResult().getType().equals(material)
-					&& (data < 0 || event.getRecipe().getResult().getData().getData() == data)
-					&& checkConditions(playerID)) {
+			if (containsPlayer(playerID) && item.equalsI(event.getRecipe().getResult()) && checkConditions(playerID)) {
 				playerData.subtract(event.getRecipe().getResult().getAmount());
 				if (playerData.isZero()) {
 					completeObjective(playerID);
