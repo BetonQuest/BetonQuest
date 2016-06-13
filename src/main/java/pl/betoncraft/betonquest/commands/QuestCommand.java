@@ -628,12 +628,12 @@ public class QuestCommand implements CommandExecutor {
 	 */
 	private void handleEvents(CommandSender sender, String[] args) {
 		// the player has to be specified every time
-		if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {
+		if (args.length < 2 || (Bukkit.getPlayer(args[1]) == null && !args[1].equals("-"))) {
 			Debug.info("Player's name is missing or he's offline");
 			sendMessage(sender, "specify_player");
 			return;
 		}
-		String playerID = PlayerConverter.getID(args[1]);
+		String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
 		if (args.length < 3) {
 			Debug.info("Event's ID is missing");
 			sendMessage(sender, "specify_event");
