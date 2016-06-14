@@ -44,6 +44,7 @@ import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.conditions.AchievementCondition;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
@@ -303,6 +304,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("riding", VehicleCondition.class);
 		registerConditions("world", WorldCondition.class);
 		registerConditions("gamemode", GameModeCondition.class);
+		registerConditions("achievement", AchievementCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);

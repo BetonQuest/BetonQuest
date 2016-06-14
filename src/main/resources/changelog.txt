@@ -11,6 +11,7 @@ Additions:
     * New condition 'riding' - check if the player is riding an entity
     * New condition 'world' - check the world in which the player is
     * New condition 'gamemode' - check player's game mode
+    * New condition 'achievement' - check if the player has an achievement
     * New event 'lever' - switches a lever
     * New event 'door' - opens/closes doors, trapdoors and gates
     * New objective 'vehicle' - entering a vehicle entity
