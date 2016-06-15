@@ -161,6 +161,11 @@
 			<version>2.1.7</version>
 		</dependency>
 		<dependency>
+			<groupId>de.tobiyas</groupId>
+			<artifactId>RacesAndClasses</artifactId>
+			<version>1.1.13</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>2.3</version>

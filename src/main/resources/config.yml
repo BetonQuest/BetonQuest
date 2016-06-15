@@ -43,6 +43,7 @@ hook:
   shopkeepers: 'true'
   placeholderapi: 'true'
   holographicdisplays: 'true'
+  racesandclasses: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

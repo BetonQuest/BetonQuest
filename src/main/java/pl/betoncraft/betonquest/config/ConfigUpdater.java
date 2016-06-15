@@ -238,6 +238,8 @@ public class ConfigUpdater {
 			Debug.error(ERROR);
 		}
 		Debug.broadcast("Translated potions to a new format");
+		config.set("hook.racesandclasses", "true");
+		Debug.broadcast("Added compatibility with RacesAndClasses");
 		config.set("version", "v44");
 		instance.saveConfig();
 	}

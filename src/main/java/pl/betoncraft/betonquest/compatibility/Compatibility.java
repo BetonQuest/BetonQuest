@@ -55,6 +55,21 @@ import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
 import pl.betoncraft.betonquest.compatibility.quests.EventReward;
 import pl.betoncraft.betonquest.compatibility.quests.QuestCondition;
 import pl.betoncraft.betonquest.compatibility.quests.QuestEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassCondition;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassVariable;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpCondition;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpVariable;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelCondition;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelVariable;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCManaCondition;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCManaEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceCondition;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceEvent;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceVariable;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCTraitCondition;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.HavingShopCondition;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.OpenShopEvent;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
@@ -250,6 +265,27 @@ public class Compatibility {
 				&& plugin.getConfig().getString("hook.holographicdisplays").equalsIgnoreCase("true")) {
 			hologramLoop = new HologramLoop();
 			hooked.add("HolographicDisplays");
+		}
+		
+		// hook into 
+		if (Bukkit.getPluginManager().isPluginEnabled("RacesAndClasses")
+				&& plugin.getConfig().getString("hook.racesandclasses").equalsIgnoreCase("true")) {
+			plugin.registerConditions("racclass", RaCClassCondition.class);
+			plugin.registerConditions("racrace", RaCRaceCondition.class);
+			plugin.registerConditions("racmana", RaCManaCondition.class);
+			plugin.registerConditions("racexp", RaCExpCondition.class);
+			plugin.registerConditions("raclevel", RaCLevelCondition.class);
+			plugin.registerConditions("ractrait", RaCTraitCondition.class);
+			plugin.registerEvents("racclass", RaCClassEvent.class);
+			plugin.registerEvents("racrace", RaCRaceEvent.class);
+			plugin.registerEvents("racmana", RaCManaEvent.class);
+			plugin.registerEvents("racexp", RaCExpEvent.class);
+			plugin.registerEvents("raclevel", RaCLevelEvent.class);
+			plugin.registerVariable("racclass", RaCClassVariable.class);
+			plugin.registerVariable("racrace", RaCRaceVariable.class);
+			plugin.registerVariable("racexp", RaCExpVariable.class);
+			plugin.registerVariable("raclevel", RaCLevelVariable.class);
+			hooked.add("RacesAndClasses");
 		}
 
 		// log which plugins have been hooked
