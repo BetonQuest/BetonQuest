@@ -246,7 +246,12 @@ public class Conversation implements Listener {
 			}
 			inOut.addPlayerOption(text);
 		}
-		inOut.display();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				inOut.display();
+			}
+		}.runTask(plugin);
 		// end conversations if there are no possible options
 		if (current.isEmpty()) {
 			new ConversationEnder().runTask(plugin);
