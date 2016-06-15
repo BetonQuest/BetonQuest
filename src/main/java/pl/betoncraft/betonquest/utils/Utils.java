@@ -42,6 +42,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -371,6 +372,9 @@ public class Utils {
 		// check if it's a potion and add effect type, duration and power if so
 		if (meta instanceof PotionMeta) {
 			PotionMeta potionMeta = (PotionMeta) meta;
+			PotionData pData = potionMeta.getBasePotionData();
+			effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
+					+ (pData.isUpgraded() ? " upgraded" : "");
 			if (potionMeta.hasCustomEffects()) {
 				StringBuilder string = new StringBuilder();
 				for (PotionEffect effect : potionMeta.getCustomEffects()) {
@@ -378,7 +382,7 @@ public class Utils {
 					int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
 					string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
 				}
-				effects = " effects:" + string.substring(0, string.length() - 1);
+				effects += " effects:" + string.substring(0, string.length() - 1);
 			}
 		}
 		// check for leather armor color

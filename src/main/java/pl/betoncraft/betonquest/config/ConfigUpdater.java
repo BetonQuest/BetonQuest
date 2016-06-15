@@ -39,13 +39,18 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
@@ -83,7 +88,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v43";
+	private final String destination = "v44";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -190,6 +195,51 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v43() {
+		try {
+			Debug.info("Translating potion instructions");
+			
+			for (String packName : Config.getPackageNames()) {
+				Debug.info("  Handling " + packName + " package");
+				ConfigPackage pack = Config.getPackage(packName);
+				FileConfiguration items = pack.getItems().getConfig();
+				for (String key : items.getKeys(false)) {
+					String instruction = items.getString(key);
+					if (!instruction.toLowerCase().startsWith("potion ") && !instruction.startsWith("splash_potion ")) {
+						continue;
+					}
+					Debug.info("    Found " + key + " potion with instruction '" + instruction + "'");
+					try {
+						QuestItem questItem = new QuestItem(instruction);
+						ItemStack itemStack = questItem.generateItem(1);
+						{
+							// it doesn't work without actually spawning the item in-game...
+							World world = Bukkit.getWorlds().get(0);
+							Location loc = new Location(world, 0, 254, 0);
+							Item item = world.dropItem(loc, itemStack);
+							itemStack = item.getItemStack();
+							item.remove();
+							// lol
+						}
+						String updatedInstruction = Utils.itemToString(itemStack);
+						Debug.info("    New instruction: '" + updatedInstruction + "'");
+						items.set(key, updatedInstruction);
+					} catch (InstructionParseException e) {
+						Debug.info("Item " + packName + "." + key + " was incorrect, skipping.");
+					}
+				}
+				pack.getItems().saveConfig();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Debug.error(ERROR);
+		}
+		Debug.broadcast("Translated potions to a new format");
+		config.set("version", "v44");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

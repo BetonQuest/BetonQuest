@@ -33,8 +33,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -54,6 +56,9 @@ public class QuestItem {
 	private String title = null;
 	private String author = null;
 	private String text = null;
+	private PotionType baseEffect = null;
+	private boolean extended = false;
+	private boolean upgraded = false;
 	private List<PotionEffect> effects = null;
 	private Color color = null;
 	private String owner = null;
@@ -109,7 +114,7 @@ public class QuestItem {
 				// get enchantments: if it is set, then enchantments should
 				// be considered in checks
 				enchants = new HashMap<>();
-				if (part.equals("enchants:none")) {
+				if (part.equalsIgnoreCase("enchants:none")) {
 					// none means that map is empty - the item must not have
 					// enchantments
 					continue;
@@ -168,7 +173,7 @@ public class QuestItem {
 					String[] effParts = effect.split(":");
 					PotionEffectType ID = PotionEffectType.getByName(effParts[0]);
 					if (ID == null) {
-						throw new InstructionParseException("Unknown potion type" + effParts[0]);
+						throw new InstructionParseException("Unknown potion effect" + effParts[0]);
 					}
 					int power, duration;
 					try {
@@ -195,6 +200,16 @@ public class QuestItem {
 				} else {
 					owner = part.substring(6);
 				}
+			} else if (part.startsWith("type:")) {
+				try {
+					baseEffect = PotionType.valueOf(part.substring(5));
+				} catch (IllegalArgumentException e) {
+					throw new InstructionParseException("Unknown potion type: " + part.substring(5));
+				}
+			} else if (part.equalsIgnoreCase("extended")) {
+				extended = true;
+			} else if (part.equalsIgnoreCase("upgraded")) {
+				upgraded = true;
 			}
 		}
 	}
@@ -250,6 +265,16 @@ public class QuestItem {
 				|| (item.getOwner() != null && owner != null && item.getOwner().equals(owner)))) {
 			return false;
 		}
+		if (!((item.getBaseEffect() == null && baseEffect == null)
+				|| (item.getBaseEffect() != null && baseEffect != null && item.getBaseEffect().equals(baseEffect)))) {
+			return false;
+		}
+		if (item.isExtended() != extended) {
+			return false;
+		}
+		if (item.isUpgraded() != upgraded) {
+			return false;
+		}
 		return true;
 	}
 
@@ -269,6 +294,7 @@ public class QuestItem {
 			return false;
 		}
 		if (data >= 0 && item.getData().getData() != data) {
+			System.out.println("data not matching");
 			return false;
 		}
 		if (name != null) {
@@ -342,13 +368,19 @@ public class QuestItem {
 			if (title != null && (!bookMeta.hasTitle() || !bookMeta.getTitle().equals(title))) {
 				return false;
 			}
-			if (text != null
-					&& (!bookMeta.hasPages() || !bookMeta.getPages().equals(Utils.pagesFromString(text, false)))) {
+			if (text != null && (!bookMeta.hasPages() || !bookMeta.getPages().equals(
+					Utils.pagesFromString(text, false)))) {
 				return false;
 			}
 		} else if (item.getType().equals(Material.POTION)) {
+			PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+			if (baseEffect != null) {
+				PotionData pData = potionMeta.getBasePotionData();
+				if (pData.getType() != baseEffect || pData.isExtended() != extended || pData.isUpgraded() != upgraded) {
+					return false;
+				}
+			}
 			if (effects != null) {
-				PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
 				if (effects.isEmpty()) {
 					if (potionMeta.hasCustomEffects()) {
 						return false;
@@ -433,10 +465,15 @@ public class QuestItem {
 			}
 			item.setItemMeta(bookMeta);
 			return item;
-		} else if (material.equals(Material.POTION) && effects != null && !effects.isEmpty()) {
+		} else if (material.equals(Material.POTION)) {
 			PotionMeta potionMeta = (PotionMeta) meta;
-			for (int i = 0; i < effects.size(); i++) {
-				potionMeta.addCustomEffect(effects.get(i), true);
+			if (effects != null && !effects.isEmpty()) {
+				for (int i = 0; i < effects.size(); i++) {
+					potionMeta.addCustomEffect(effects.get(i), true);
+				}
+			}
+			if (baseEffect != null) {
+				potionMeta.setBasePotionData(new PotionData(baseEffect, extended, upgraded));
 			}
 			item.setItemMeta(potionMeta);
 			return item;
@@ -561,5 +598,26 @@ public class QuestItem {
 	 */
 	public String getOwner() {
 		return owner;
+	}
+
+	/**
+	 * @return the base effect of the potion
+	 */
+	public PotionType getBaseEffect() {
+		return baseEffect;
+	}
+
+	/**
+	 * @return if the potion is extended
+	 */
+	public boolean isExtended() {
+		return extended;
+	}
+
+	/**
+	 * @return if the potion is upgraded
+	 */
+	public boolean isUpgraded() {
+		return upgraded;
 	}
 }
