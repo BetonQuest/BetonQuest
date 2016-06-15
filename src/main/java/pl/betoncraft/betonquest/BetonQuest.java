@@ -130,6 +130,7 @@ import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
 import pl.betoncraft.betonquest.objectives.ChestPutObjective;
+import pl.betoncraft.betonquest.objectives.ConsumeObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
 import pl.betoncraft.betonquest.objectives.DelayObjective;
 import pl.betoncraft.betonquest.objectives.DieObjective;
@@ -362,6 +363,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("chestput", ChestPutObjective.class);
 		registerObjectives("potion", PotionObjective.class);
 		registerObjectives("vehicle", VehicleObjective.class);
+		registerObjectives("consume", ConsumeObjective.class);
 
 		// register conversation IO types
 		registerConversationIO("simple", SimpleConvIO.class);
