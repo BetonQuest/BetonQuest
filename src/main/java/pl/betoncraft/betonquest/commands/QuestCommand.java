@@ -43,6 +43,7 @@ import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.StaticEvents;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -1137,6 +1138,7 @@ public class QuestCommand implements CommandExecutor {
 		GlobalLocations.stop();
 		new GlobalLocations().runTaskTimer(instance, 0, 20);
 		new ConversationColors();
+		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
 		instance.loadData();
 		// start objectives and update journals for every online player

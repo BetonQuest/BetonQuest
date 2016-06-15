@@ -156,6 +156,11 @@
 			<version>2.5.1</version>
 		</dependency>
 		<dependency>
+			<groupId>com.gmail.filoghost</groupId>
+			<artifactId>HolographicDisplaysAPI</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>2.3</version>

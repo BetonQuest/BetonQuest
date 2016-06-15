@@ -83,7 +83,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v42";
+	private final String destination = "v43";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -190,6 +190,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v42() {
+		config.set("hook.holographicdisplays", "true");
+		Debug.broadcast("Added compatibility with HolographicDisplays");
+		config.set("version", "v43");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

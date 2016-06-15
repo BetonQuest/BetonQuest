@@ -7,7 +7,8 @@ Changes:
     * Static events can now be fired with "/q event - eventID" command
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
-    * Compatibility with PlaceholderAPI
+    * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
+    * Compatibility with HolographicDisplays (holograms visible based on conditions)
     * New condition 'riding' - check if the player is riding an entity
     * New condition 'world' - check the world in which the player is
     * New condition 'gamemode' - check player's game mode

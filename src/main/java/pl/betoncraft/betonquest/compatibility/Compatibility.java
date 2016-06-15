@@ -41,6 +41,7 @@ import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
+import pl.betoncraft.betonquest.compatibility.holographicdisplays.HologramLoop;
 import pl.betoncraft.betonquest.compatibility.magic.WandCondition;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
@@ -86,6 +87,8 @@ public class Compatibility {
 	private Economy economy = null;
 
 	private EffectManager manager;
+	
+	private HologramLoop hologramLoop;
 
 	public Compatibility() {
 		instance = this;
@@ -241,6 +244,13 @@ public class Compatibility {
 			new BetonQuestPlaceholder(plugin, "betonquest").hook();
 			hooked.add("PlaceholderAPI");
 		}
+		
+		// hook into HolographicDisplays
+		if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")
+				&& plugin.getConfig().getString("hook.holographicdisplays").equalsIgnoreCase("true")) {
+			hologramLoop = new HologramLoop();
+			hooked.add("HolographicDisplays");
+		}
 
 		// log which plugins have been hooked
 		if (hooked.size() > 0) {
@@ -281,6 +291,10 @@ public class Compatibility {
 		if (instance.hooked.contains("Citizens") && instance.hooked.contains("EffectLib")) {
 			CitizensParticle.reload();
 		}
+		if (instance.hooked.contains("HolographicDisplays")) {
+			instance.hologramLoop.cancel();
+			instance.hologramLoop = new HologramLoop();
+		}
 	}
 
 	/**
@@ -290,6 +304,9 @@ public class Compatibility {
 	public void disable() {
 		if (hooked.contains("EffectLib")) {
 			manager.dispose();
+		}
+		if (hooked.contains("HolographicDisplays")) {
+			hologramLoop.cancel();
 		}
 	}
 

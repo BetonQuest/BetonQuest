@@ -1,4 +1,4 @@
-version: v42
+version: v43
 mysql:
   host: ''
   port: ''
@@ -42,6 +42,7 @@ hook:
   quests: 'true'
   shopkeepers: 'true'
   placeholderapi: 'true'
+  holographicdisplays: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
