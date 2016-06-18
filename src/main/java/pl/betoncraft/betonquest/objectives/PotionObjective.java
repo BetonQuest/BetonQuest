@@ -38,6 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -50,7 +51,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class PotionObjective extends Objective implements Listener {
 
 	private final HashMap<PotionEffectType, Integer> effects = new HashMap<>();
-	private final int data;
+	private final QuestItem potion;
 	private final int amount;
 	private final boolean notify;
 	private final HashMap<Location, String> locations = new HashMap<>();
@@ -62,11 +63,13 @@ public class PotionObjective extends Objective implements Listener {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
+		String itemPack = parts[1].contains(".") ? parts[1].split("\\.")[0] : packName;
+		String itemID = parts[1].contains(".") ? parts[1].split("\\.")[1] : parts[1];
+		potion = new QuestItem(Config.getString(itemPack + ".items." + itemID));
 		try {
-			data = Integer.parseInt(parts[1]);
 			amount = Integer.parseInt(parts[2]);
 		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse potion type or amount");
+			throw new InstructionParseException("Could not parse amount");
 		}
 		boolean tempNotify = false;
 		for (String part : parts) {
@@ -154,11 +157,9 @@ public class PotionObjective extends Objective implements Listener {
 	private boolean checkPotion(ItemStack item) {
 		if (item == null)
 			return false;
+		if (!potion.equalsI(item))
+			return false;
 		if (item.getItemMeta() instanceof PotionMeta) {
-			// check if potion data is matching
-			if (item.getDurability() != data) {
-				return false;
-			}
 			PotionMeta meta = (PotionMeta) item.getItemMeta();
 			// count how many effects on the potion match the required effects
 			int matchingEffects = 0;

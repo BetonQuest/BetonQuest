@@ -88,7 +88,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v44";
+	private final String destination = "v45";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -195,6 +195,77 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v44() {
+		try {
+			Debug.info("Translating items in 'potion' objectives");
+			for (String packName : Config.getPackageNames()) {
+				Debug.info("  Handling " + packName + " package");
+				ConfigPackage pack = Config.getPackage(packName);
+				FileConfiguration objectives = pack.getObjectives().getConfig();
+				FileConfiguration items = pack.getItems().getConfig();
+				for (String key : objectives.getKeys(false)) {
+					String instruction = objectives.getString(key);
+					if (!instruction.startsWith("potion ")) {
+						continue;
+					}
+					Debug.info("    Found potion objective: '" + instruction + "'");
+					String[] parts = instruction.split(" ");
+					if (parts.length < 2) {
+						Debug.info("    It's incorrect.");
+						continue;
+					}
+					int data;
+					try {
+						data = Integer.parseInt(parts[1]);
+					} catch (NumberFormatException e) {
+						Debug.info("    It's incorrect");
+						continue;
+					}
+					ItemStack itemStack = new QuestItem("potion data:" + data).generateItem(1);
+					{
+						// it doesn't work without actually spawning the item in-game...
+						World world = Bukkit.getWorlds().get(0);
+						Location loc = new Location(world, 0, 254, 0);
+						Item item = world.dropItem(loc, itemStack);
+						itemStack = item.getItemStack();
+						item.remove();
+					}
+					String updatedInstruction = Utils.itemToString(itemStack);
+					Debug.info("    Potion instruction: '" + updatedInstruction + "'");
+					String item = null;
+					for (String itemKey : items.getKeys(false)) {
+						if (items.getString(itemKey).equals(updatedInstruction)) {
+							item = itemKey;
+						}
+					}
+					if (item == null) {
+						if (items.contains("potion")) {
+							int index = 2;
+							while (items.contains("potion" + index)) {
+								index++;
+							}
+							item = "potion" + index;
+						} else {
+							item = "potion";
+						}
+					}
+					Debug.info("    The item with this instruction has key " + item);
+					items.set(item, updatedInstruction);
+					objectives.set(key, instruction.replace(String.valueOf(data), item));
+				}
+				pack.getItems().saveConfig();
+				pack.getObjectives().saveConfig();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Debug.error(ERROR);
+		}
+		Debug.broadcast("Translated items in 'potion' objective");
+		config.set("version", "v45");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

@@ -1,4 +1,4 @@
-version: v44
+version: v45
 mysql:
   host: ''
   port: ''
