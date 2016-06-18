@@ -109,6 +109,7 @@ import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.GiveJournalEvent;
+import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
@@ -344,6 +345,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("score", ScoreboardEvent.class);
 		registerEvents("lever", LeverEvent.class);
 		registerEvents("door", DoorEvent.class);
+		registerEvents("if", IfElseEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);

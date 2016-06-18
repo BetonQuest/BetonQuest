@@ -459,6 +459,22 @@ public class Utils {
 	}
 	
 	/**
+	 * Inserts a package before this string if there is no package,
+	 * or does nothing if the package is already there.
+	 * 
+	 * @param packName name of the package
+	 * @param string ID of event/condition/objective/item etc.
+	 * @return full ID with package prefix
+	 */
+	public static String addPackage(String packName, String string) {
+		if (string.contains(".")) {
+			return string;
+		} else {
+			return packName + "." + string;
+		}
+	}
+	
+	/**
 	 * This class parses various location strings.
 	 */
 	public static class LocationData {
