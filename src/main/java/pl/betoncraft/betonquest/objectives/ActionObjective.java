@@ -174,10 +174,12 @@ public class ActionObjective extends Objective implements Listener {
 			}
 			if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 					|| event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
-					&& (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(type))
+					&& (event.getClickedBlock() != null && ((type == Material.FIRE
+					&& event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type) 
+					|| event.getClickedBlock().getType().equals(type)))
 					&& (data < 0 || event.getClickedBlock().getData() == data)
 					&& (loc == null || (event.getClickedBlock().getWorld().equals(loc.getWorld())
-							&& event.getClickedBlock().getLocation().distance(loc) <= range))
+					&& event.getClickedBlock().getLocation().distance(loc) <= range))
 					&& checkConditions(playerID)) {
 				if (cancel)
 					event.setCancelled(true);

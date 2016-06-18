@@ -1,4 +1,6 @@
 ﻿v1.9-dev
+Fixes:
+    * 'action' objective now detects fire interaction
 Changes:
     * New lines in conversations can be made with "\n"
     * Interval in 'delay' objective is now configurable
