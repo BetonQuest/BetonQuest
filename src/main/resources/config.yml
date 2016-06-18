@@ -14,6 +14,7 @@ update:
 default_journal_slot: '-1'
 max_npc_distance: '5'
 default_conversation_IO: chest
+display_chat_after_conversation: 'true'
 combat_delay: '10'
 notify_pullback: 'true'
 default_package: default

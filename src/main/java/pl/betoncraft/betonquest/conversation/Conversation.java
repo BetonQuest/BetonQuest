@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conversation;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,9 +27,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,8 +70,11 @@ public class Conversation implements Listener {
 	private final Conversation conv;
 	private final BetonQuest plugin;
 	private boolean ended = false;
+	private boolean messagesDelaying = false;
+	private ArrayList<String> messages = new ArrayList<>();
 
 	private HashMap<Integer, String> current = new HashMap<>();
+
 
 	/**
 	 * Starts a new conversation between player and npc at given location.
@@ -115,6 +121,7 @@ public class Conversation implements Listener {
 		this.convID = packName + "." + conversationID;
 		this.data = plugin.getConversation(convID);
 		this.blacklist = plugin.getConfig().getStringList("cmd_blacklist");
+		this.messagesDelaying = plugin.getConfig().getString("display_chat_after_conversation").equalsIgnoreCase("true");
 
 		// check if data is present
 		if (data == null) {
@@ -277,7 +284,14 @@ public class Conversation implements Listener {
 		// delete conversation
 		list.remove(playerID);
 		HandlerList.unregisterAll(this);
+		displayStoredMessages();
 		Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, this));
+	}
+
+	private void displayStoredMessages() {
+		for (String message : messages) {
+			player.sendMessage(message);
+		}
 	}
 
 	/**
@@ -323,6 +337,29 @@ public class Conversation implements Listener {
 				endConversation();
 			}
 		}
+	}
+
+	@EventHandler(priority=EventPriority.HIGHEST)
+	public void onChat(AsyncPlayerChatEvent event) {
+		// store all messages so they can be displayed to the player
+		// once the conversation is finished
+		if (!messagesDelaying) {
+			return;
+		}
+		if (event.isCancelled()) {
+			return;
+		}
+		if (event.getPlayer() != player && event.getRecipients().contains(player)) {
+			event.getRecipients().remove(player);
+			addMessage(String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage()));
+		}
+	}
+
+	/**
+	 * This method prevents concurrent list modification
+	 */
+	private synchronized void addMessage(String message) {
+		messages.add(message);
 	}
 
 	/**
@@ -440,7 +477,7 @@ public class Conversation implements Listener {
 				return;
 			}
 
-			// register listeners for immunity and blocking commands
+			// register listener for immunity, blocking commands and storing chat messages
 			Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance());
 
 			if (options == null) {

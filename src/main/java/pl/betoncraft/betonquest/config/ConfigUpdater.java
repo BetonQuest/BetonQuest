@@ -264,6 +264,8 @@ public class ConfigUpdater {
 			Debug.error(ERROR);
 		}
 		Debug.broadcast("Translated items in 'potion' objective");
+		config.set("display_chat_after_conversation", "false");
+		Debug.broadcast("Added an option to display chat messages after the conversation");
 		config.set("version", "v45");
 		instance.saveConfig();
 	}
