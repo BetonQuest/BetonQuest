@@ -72,6 +72,7 @@ import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
 import pl.betoncraft.betonquest.conditions.TestForBlockCondition;
 import pl.betoncraft.betonquest.conditions.TimeCondition;
+import pl.betoncraft.betonquest.conditions.VariableCondition;
 import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.conditions.WorldCondition;
@@ -146,6 +147,7 @@ import pl.betoncraft.betonquest.objectives.ShearObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
 import pl.betoncraft.betonquest.objectives.StepObjective;
 import pl.betoncraft.betonquest.objectives.TameObjective;
+import pl.betoncraft.betonquest.objectives.VariableObjective;
 import pl.betoncraft.betonquest.objectives.VehicleObjective;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Metrics;
@@ -306,6 +308,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("world", WorldCondition.class);
 		registerConditions("gamemode", GameModeCondition.class);
 		registerConditions("achievement", AchievementCondition.class);
+		registerConditions("variable", VariableCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -364,6 +367,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("potion", PotionObjective.class);
 		registerObjectives("vehicle", VehicleObjective.class);
 		registerObjectives("consume", ConsumeObjective.class);
+		registerObjectives("variable", VariableObjective.class);
 
 		// register conversation IO types
 		registerConversationIO("simple", SimpleConvIO.class);

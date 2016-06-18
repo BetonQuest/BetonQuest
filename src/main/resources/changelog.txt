@@ -15,9 +15,11 @@ Additions:
     * New condition 'world' - check the world in which the player is
     * New condition 'gamemode' - check player's game mode
     * New condition 'achievement' - check if the player has an achievement
+    * New condition 'variable' - check if a variable matches a pattern
     * New event 'lever' - switches a lever
     * New event 'door' - opens/closes doors, trapdoors and gates
     * New objective 'vehicle' - entering a vehicle entity
+    * New objective 'variable' - lets players define their own variables for you to use
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
 
