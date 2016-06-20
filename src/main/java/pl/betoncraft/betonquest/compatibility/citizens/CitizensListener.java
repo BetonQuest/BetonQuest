@@ -48,6 +48,9 @@ public class CitizensListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
+		if (NPCMoveEvent.isNPCMoving(event.getNPC())) {
+			return;
+		}
 		final String playerID = PlayerConverter.getID(event.getClicker());
 		if (CombatTagger.isTagged(playerID)) {
 			Config.sendMessage(playerID, "busy");

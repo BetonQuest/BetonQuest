@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
+import java.util.LinkedList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -39,6 +41,8 @@ import pl.betoncraft.betonquest.utils.Utils.LocationData;
  * @author Jakub Sapalski
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
+	
+	private static LinkedList<NPC> movingNPCs = new LinkedList<>();
 	
 	private final Listener ths;
 	private int id;
@@ -106,6 +110,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		if (currentPlayer == null) {
 			npc.getNavigator().setTarget(loc);
 			currentPlayer = playerID;
+			movingNPCs.add(npc);
 			Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
 		} else {
 			for (String event : failEvents) {
@@ -128,11 +133,24 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 			public void run() {
 				npc.getNavigator().setPaused(false);
 				currentPlayer = null;
+				movingNPCs.remove(npc);
 				for (String event : doneEvents) {
 					BetonQuest.event(currentPlayer, event);
 				}
 			}
 		}.runTaskLater(BetonQuest.getInstance(), waitTicks);
+	}
+	
+	/**
+	 * Checks whenever this NPC is moving because of a 'move' event or not.
+	 * 
+	 * @param npc
+	 *            NPC to check
+	 * @return true if the NPC is moving because of 'move' event, false if it's
+	 *         standing or moving because other reasons
+	 */
+	public static boolean isNPCMoving(NPC npc) {
+		return movingNPCs.contains(npc);
 	}
 
 }
