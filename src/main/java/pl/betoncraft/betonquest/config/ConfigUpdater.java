@@ -88,7 +88,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v45";
+	private final String destination = "v46";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -195,6 +195,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v45() {
+		config.set("hook.legendquest", "true");
+		Debug.broadcast("Added compatibility with LegendQuest");
+		config.set("version", "v46");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

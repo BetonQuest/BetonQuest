@@ -1,4 +1,4 @@
-version: v45
+version: v46
 mysql:
   host: ''
   port: ''
@@ -45,6 +45,7 @@ hook:
   placeholderapi: 'true'
   holographicdisplays: 'true'
   racesandclasses: 'true'
+  legendquest: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

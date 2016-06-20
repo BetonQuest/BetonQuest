@@ -42,6 +42,14 @@ import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
 import pl.betoncraft.betonquest.compatibility.holographicdisplays.HologramLoop;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQAttributeCondition;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQAttributeVariable;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQClassCondition;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQClassVariable;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQKarmaCondition;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQKarmaVariable;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQRaceCondition;
+import pl.betoncraft.betonquest.compatibility.legendquest.LQRaceVariable;
 import pl.betoncraft.betonquest.compatibility.magic.WandCondition;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
@@ -267,7 +275,7 @@ public class Compatibility {
 			hooked.add("HolographicDisplays");
 		}
 		
-		// hook into 
+		// hook into RacesAndClasses
 		if (Bukkit.getPluginManager().isPluginEnabled("RacesAndClasses")
 				&& plugin.getConfig().getString("hook.racesandclasses").equalsIgnoreCase("true")) {
 			plugin.registerConditions("racclass", RaCClassCondition.class);
@@ -286,6 +294,20 @@ public class Compatibility {
 			plugin.registerVariable("racexp", RaCExpVariable.class);
 			plugin.registerVariable("raclevel", RaCLevelVariable.class);
 			hooked.add("RacesAndClasses");
+		}
+		
+		// hook into LegendQuest
+		if (Bukkit.getPluginManager().isPluginEnabled("LegendQuest")
+				&& plugin.getConfig().getString("hook.legendquest").equalsIgnoreCase("true")) {
+			plugin.registerConditions("lqclass", LQClassCondition.class);
+			plugin.registerConditions("lqrace", LQRaceCondition.class);
+			plugin.registerConditions("lqattribute", LQAttributeCondition.class);
+			plugin.registerConditions("lqkarma", LQKarmaCondition.class);
+			plugin.registerVariable("lqclass", LQClassVariable.class);
+			plugin.registerVariable("lqrace", LQRaceVariable.class);
+			plugin.registerVariable("lqattribute", LQAttributeVariable.class);
+			plugin.registerVariable("lqkarma", LQKarmaVariable.class);
+			hooked.add("LegendQuest");
 		}
 
 		// log which plugins have been hooked

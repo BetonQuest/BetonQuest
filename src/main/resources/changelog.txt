@@ -12,7 +12,8 @@ Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
     * Compatibility with HolographicDisplays (holograms visible based on conditions)
-    * Compatibility with RacesAndClasses (races, classes, exp, level, mana conditions/events)
+    * Compatibility with RacesAndClasses (race, class, exp, level, mana conditions/events/variables)
+    * Compatibility with LegendQuest (race, class, attribute, karma conditions/variables)
     * New condition 'riding' - check if the player is riding an entity
     * New condition 'world' - check the world in which the player is
     * New condition 'gamemode' - check player's game mode
