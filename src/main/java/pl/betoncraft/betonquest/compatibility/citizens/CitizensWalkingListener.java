@@ -60,8 +60,11 @@ public class CitizensWalkingListener implements Listener {
 				Navigator nav = npc.getNavigator();
 				npcs.put(npc, new Integer(1));
 				locs.put(npc, nav.getTargetAsLocation());
+				nav.setPaused(true);
+				nav.cancelNavigation();
 				nav.setTarget(conv.getNPC().getEntity().getLocation());
 				nav.setPaused(true);
+				nav.cancelNavigation();
 			} else {
 				npcs.put(npc, npcs.get(npc) + 1);
 			}
