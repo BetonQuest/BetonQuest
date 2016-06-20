@@ -24,6 +24,7 @@ Additions:
     * New event 'if' - run one of two events, depending on condition
     * New objective 'vehicle' - entering a vehicle entity
     * New objective 'variable' - lets players define their own variables for you to use
+    * New objective 'kill' - kill players who meet specified conditions
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
 

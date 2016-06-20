@@ -139,6 +139,7 @@ import pl.betoncraft.betonquest.objectives.DieObjective;
 import pl.betoncraft.betonquest.objectives.EnchantObjective;
 import pl.betoncraft.betonquest.objectives.ExperienceObjective;
 import pl.betoncraft.betonquest.objectives.FishObjective;
+import pl.betoncraft.betonquest.objectives.KillPlayerObjective;
 import pl.betoncraft.betonquest.objectives.LocationObjective;
 import pl.betoncraft.betonquest.objectives.LogoutObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
@@ -370,6 +371,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("vehicle", VehicleObjective.class);
 		registerObjectives("consume", ConsumeObjective.class);
 		registerObjectives("variable", VariableObjective.class);
+		registerObjectives("kill", KillPlayerObjective.class);
 
 		// register conversation IO types
 		registerConversationIO("simple", SimpleConvIO.class);
