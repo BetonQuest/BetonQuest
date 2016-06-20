@@ -201,6 +201,8 @@ public class ConfigUpdater {
 	private void update_from_v45() {
 		config.set("hook.legendquest", "true");
 		Debug.broadcast("Added compatibility with LegendQuest");
+		config.set("hook.worldedit", "true");
+		Debug.broadcast("Added compatibility with WorldEdit");
 		config.set("version", "v46");
 		instance.saveConfig();
 	}

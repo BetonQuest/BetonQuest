@@ -91,6 +91,7 @@ import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
 import pl.betoncraft.betonquest.compatibility.vault.MoneyVariable;
 import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
+import pl.betoncraft.betonquest.compatibility.worldedit.PasteSchematicEvent;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionCondition;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionObjective;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -180,6 +181,13 @@ public class Compatibility {
 			plugin.registerConditions("region", RegionCondition.class);
 			plugin.registerObjectives("region", RegionObjective.class);
 			hooked.add("WorldGuard");
+		}
+
+		// hook into WorldEdit
+		if (Bukkit.getPluginManager().isPluginEnabled("WorldEdit")
+				&& plugin.getConfig().getString("hook.worldedit").equalsIgnoreCase("true")) {
+			plugin.registerEvents("paste", PasteSchematicEvent.class);
+			hooked.add("WorldEdit");
 		}
 
 		// hook into mcMMO
