@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.bukkit.scheduler.BukkitRunnable;
@@ -75,13 +76,19 @@ public class DelayObjective extends Objective {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
+				LinkedList<String> players = new LinkedList<>();
 				long time = new Date().getTime();
 				for (Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
 					String playerID = entry.getKey();
 					DelayData playerData = (DelayData) entry.getValue();
 					if (time >= playerData.getTime() && checkConditions(playerID)) {
-						completeObjective(playerID);
+						// don't complete the objective, it will throw CME/
+						// store the player instead, complete later
+						players.add(playerID);
 					}
+				}
+				for (String playerID : players) {
+					completeObjective(playerID);
 				}
 			}
 		}.runTaskTimer(BetonQuest.getInstance(), 0, interval);

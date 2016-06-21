@@ -208,7 +208,7 @@ public abstract class Objective {
 	 * @param instruction
 	 *            instruction string for player's data
 	 */
-	public final void addPlayer(String playerID, String instruction) {
+	public final synchronized void addPlayer(String playerID, String instruction) {
 		final String ERROR = "There was some error. Please send it to the developer: <coosheck@gmail.com>";
 		ObjectiveData data = null;
 		try {
@@ -241,7 +241,7 @@ public abstract class Objective {
 	 * @param playerID
 	 *            ID of the player
 	 */
-	public final void removePlayer(String playerID) {
+	public final synchronized void removePlayer(String playerID) {
 		dataMap.remove(playerID);
 		if (dataMap.isEmpty()) {
 			stop();
