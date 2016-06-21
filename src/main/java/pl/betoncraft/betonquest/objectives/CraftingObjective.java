@@ -31,7 +31,6 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -51,9 +50,7 @@ public class CraftingObjective extends Objective implements Listener {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String itemPack = parts[1].contains(".") ? parts[1].split("\\.")[0] : packName;
-		String itemID = parts[1].contains(".") ? parts[1].split("\\.")[1] : parts[1];
-		item = new QuestItem(Config.getString(itemPack + ".items." + itemID));
+		item = QuestItem.newQuestItem(packName, parts[1]);
 		try {
 			amount = Integer.parseInt(parts[2]);
 		} catch (NumberFormatException e) {

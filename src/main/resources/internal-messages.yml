@@ -53,4 +53,4 @@ en:
   command_backup: creates configuration and database backup. Use only from console on empty server!
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
-  error: '&cThere has been some error!'
+  error: '&cThere has been an error: {1}'

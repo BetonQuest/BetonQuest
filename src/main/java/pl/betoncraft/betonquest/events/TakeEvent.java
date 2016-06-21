@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
@@ -66,11 +67,7 @@ public class TakeEvent extends QuestEvent {
 					throw new InstructionParseException("Could not parse item amount");
 				}
 			}
-			String itemInstruction = pack.getString("items." + itemName);
-			if (itemInstruction == null) {
-				throw new InstructionParseException("Item not defined");
-			}
-			QuestItem questItem = new QuestItem(itemInstruction);
+			QuestItem questItem = QuestItem.newQuestItem(packName, itemName);
 			list.add(new Item(questItem, amount));
 		}
 		Item[] tempQuestItems = new Item[list.size()];
@@ -79,7 +76,7 @@ public class TakeEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
 		for (Item item : questItems) {
 			QuestItem questItem = item.getItem();

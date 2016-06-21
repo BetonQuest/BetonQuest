@@ -21,10 +21,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Starts an objective for the player
@@ -43,11 +45,7 @@ public class ObjectiveEvent extends QuestEvent {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		action = parts[1];
-		if (!parts[2].contains(".")) {
-			objective = packName + "." + parts[2];
-		} else {
-			objective = parts[2];
-		}
+		objective = Utils.addPackage(packName, parts[2]);
 		if (!action.equalsIgnoreCase("start") && !action.equalsIgnoreCase("delete")
 				&& !action.equalsIgnoreCase("complete")) {
 			throw new InstructionParseException("Unknown action " + action);
@@ -60,10 +58,9 @@ public class ObjectiveEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(final String playerID) {
+	public void run(final String playerID) throws QuestRuntimeException {
 		if (BetonQuest.getInstance().getObjective(objective) == null) {
-			Debug.error("Objective '" + objective + "' is not defined, cannot run objective event");
-			return;
+			throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
 		}
 		if (PlayerConverter.getPlayer(playerID) == null) {
 			new BukkitRunnable() {

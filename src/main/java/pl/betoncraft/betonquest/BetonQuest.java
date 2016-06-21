@@ -820,7 +820,13 @@ public final class BetonQuest extends JavaPlugin {
 			return false;
 		}
 		// and check if it's met or not
-		boolean outcome = condition.check(playerID);
+		boolean outcome = false;
+		try {
+			outcome = condition.check(playerID);
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while checking '" + conditionID + "' condition: " + e.getMessage());
+			return false;
+		}
 		boolean isMet = (outcome && !inverted) || (!outcome && inverted);
 		Debug.info((isMet ? "TRUE" : "FALSE") + ": " + (inverted ? "inverted" : "") + " condition " + conditionID
 				+ " for player " + PlayerConverter.getName(playerID));
@@ -853,7 +859,11 @@ public final class BetonQuest extends JavaPlugin {
 		} else {
 			Debug.info("Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
 		}
-		event.fire(playerID);
+		try {
+			event.fire(playerID);
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while firing '" + eventID + "' event: " + e.getMessage());
+		}
 	}
 
 	/**

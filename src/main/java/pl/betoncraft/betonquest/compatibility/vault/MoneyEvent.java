@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.vault;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -54,7 +55,7 @@ public class MoneyEvent extends QuestEvent {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
 		// get the difference between target money and current money
 		double current = Compatibility.getEconomy().getBalance(player);

@@ -21,6 +21,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -54,7 +55,7 @@ public class McMMOAddExpEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp.getInt(playerID), "UNKNOWN");
 	}
 

@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Requires the player to have specified tag
@@ -36,7 +37,7 @@ public class TagCondition extends Condition {
 		if (parts.length < 2) {
 			throw new InstructionParseException("There is no tag defined");
 		}
-		tag = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+		tag = Utils.addPackage(packName, parts[1]);
 	}
 
 	@Override

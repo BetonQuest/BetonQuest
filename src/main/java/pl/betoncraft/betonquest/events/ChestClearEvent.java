@@ -17,15 +17,13 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Clears a specified chest from all items inside.
@@ -34,7 +32,7 @@ import pl.betoncraft.betonquest.utils.Debug;
  */
 public class ChestClearEvent extends QuestEvent {
 
-	private final Block block;
+	private final LocationData loc;
 
 	public ChestClearEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -45,34 +43,18 @@ public class ChestClearEvent extends QuestEvent {
 			throw new InstructionParseException("Not eoungh arguments");
 		}
 		// extract location
-		String[] location = parts[1].split(";");
-		if (location.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exists");
-		}
-		int x, y, z;
-		try {
-			x = Integer.parseInt(location[0]);
-			y = Integer.parseInt(location[1]);
-			z = Integer.parseInt(location[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		block = new Location(world, x, y, z).getBlock();
+		loc = new LocationData(packName, parts[1]);
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
+		Block block = loc.getLocation(playerID).getBlock();
 		InventoryHolder chest;
 		try {
 			chest = (InventoryHolder) block.getState();
 		} catch (ClassCastException e) {
-			Debug.error("Trying to clears items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
-					+ block.getY() + " Z" + block.getZ());
-			return;
+			throw new QuestRuntimeException("Trying to clears items in a chest, but there's no chest! Location: X"
+					+ block.getX() + " Y" + block.getY() + " Z" + block.getZ());
 		}
 		chest.getInventory().clear();
 	}

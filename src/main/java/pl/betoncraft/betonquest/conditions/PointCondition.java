@@ -20,8 +20,10 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Requires the player to have specified amount of points (or more) in specified
@@ -40,7 +42,7 @@ public class PointCondition extends Condition {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+		category = Utils.addPackage(packName, parts[1]);
 		try {
 			count = new VariableNumber(packName, parts[2]);
 		} catch (NumberFormatException e) {
@@ -49,7 +51,7 @@ public class PointCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		int c = count.getInt(playerID);
 		for (Point point : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
 			if (point.getCategory().equalsIgnoreCase(category)) {

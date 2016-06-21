@@ -28,6 +28,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Superclass for all objectives. You need to extend it in order to create new
@@ -107,14 +108,10 @@ public abstract class Objective {
 		}
 		// add package names
 		for (int i = 0; i < events.length; i++) {
-			if (!events[i].contains(".")) {
-				events[i] = packName + "." + events[i];
-			}
+			events[i] = Utils.addPackage(packName, events[i]);
 		}
 		for (int i = 0; i < conditions.length; i++) {
-			if (!conditions[i].contains(".")) {
-				conditions[i] = packName + "." + conditions[i];
-			}
+			conditions[i] = Utils.addPackage(packName, conditions[i]);
 		}
 		persistent = tempPersistent;
 	}

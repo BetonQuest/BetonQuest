@@ -18,8 +18,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,11 +28,14 @@ import org.bukkit.inventory.InventoryHolder;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.events.ChestTakeEvent;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -47,7 +48,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
 	private final Condition chestItemCondition;
 	private final QuestEvent chestTakeEvent;
-	private final Block block;
+	private final LocationData loc;
 
 	public ChestPutObjective(String packName, String label, String instructions) throws InstructionParseException {
 		super(packName, label, instructions);
@@ -57,23 +58,7 @@ public class ChestPutObjective extends Objective implements Listener {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		// extract location
-		String[] location = parts[1].split(";");
-		if (location.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exists");
-		}
-		int x, y, z;
-		try {
-			x = Integer.parseInt(location[0]);
-			y = Integer.parseInt(location[1]);
-			z = Integer.parseInt(location[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		block = new Location(world, x, y, z).getBlock();
+		loc = new LocationData(packName, parts[1]);
 		try {
 			chestItemCondition = new ChestItemCondition(packName, "chestitem " + parts[1] + " " + parts[2]);
 		} catch (InstructionParseException e) {
@@ -94,20 +79,25 @@ public class ChestPutObjective extends Objective implements Listener {
 		String playerID = PlayerConverter.getID((Player) event.getPlayer());
 		if (!containsPlayer(playerID))
 			return;
-		InventoryHolder chest;
 		try {
-			chest = (InventoryHolder) block.getState();
-		} catch (ClassCastException e) {
-			return;
-		}
-		if (event.getInventory() == null || event.getInventory().getHolder() == null)
-			return;
-		if (!event.getInventory().getHolder().equals(chest))
-			return;
-		if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
-			completeObjective(playerID);
-			if (chestTakeEvent != null)
-				chestTakeEvent.run(playerID);
+			Block block = loc.getLocation(playerID).getBlock();
+			InventoryHolder chest;
+			try {
+				chest = (InventoryHolder) block.getState();
+			} catch (ClassCastException e) {
+				return;
+			}
+			if (event.getInventory() == null || event.getInventory().getHolder() == null)
+				return;
+			if (!event.getInventory().getHolder().equals(chest))
+				return;
+			if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
+				completeObjective(playerID);
+				if (chestTakeEvent != null)
+					chestTakeEvent.run(playerID);
+			}
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
 		}
 	}
 

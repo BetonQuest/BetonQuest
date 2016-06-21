@@ -17,19 +17,19 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 public class DoorEvent extends QuestEvent {
 
-	private Location loc;
+	private LocationData loc;
 	private ToggleType type;
 	
 	private enum ToggleType {
@@ -44,7 +44,7 @@ public class DoorEvent extends QuestEvent {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		loc = new Utils.LocationData(packName, parts[1]).getLocation();
+		loc = new LocationData(packName, parts[1]);
 		try {
 			type = ToggleType.valueOf(parts[2].toUpperCase());
 		} catch (IllegalArgumentException e) {
@@ -53,8 +53,8 @@ public class DoorEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
-		Block block = loc.getBlock();
+	public void run(String playerID) throws QuestRuntimeException {
+		Block block = loc.getLocation(playerID).getBlock();
 		BlockState state = block.getState();
 		MaterialData data = state.getData();
 		if (data instanceof Openable) {

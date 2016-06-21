@@ -17,13 +17,13 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Spawns an explosion in a given location and with given flags
@@ -35,7 +35,7 @@ public class ExplosionEvent extends QuestEvent {
 	private final boolean setsFire;
 	private final boolean breaksBlocks;
 	private final VariableNumber power;
-	private final Location loc;
+	private final LocationData loc;
 
 	public ExplosionEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -51,29 +51,14 @@ public class ExplosionEvent extends QuestEvent {
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse power");
 		}
-		String[] partsOfLoc = parts[4].split(";");
-		if (partsOfLoc.length != 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(partsOfLoc[0]);
-			y = Double.parseDouble(partsOfLoc[1]);
-			z = Double.parseDouble(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		loc = new Location(world, x, y, z);
+		loc = new LocationData(packName, parts[1]);
 
 	}
 
 	@Override
-	public void run(String playerID) {
-		loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), (float) power.getDouble(playerID), setsFire,
-				breaksBlocks);
+	public void run(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
+		location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(),
+				(float) power.getDouble(playerID), setsFire, breaksBlocks);
 	}
 }

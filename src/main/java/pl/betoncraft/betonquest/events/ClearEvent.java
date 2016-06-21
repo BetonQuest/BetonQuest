@@ -19,16 +19,15 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.Collection;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.VariableNumber;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Clears all specified monsters in a certain location
@@ -38,8 +37,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 public class ClearEvent extends QuestEvent {
 
 	private final EntityType[] types;
-	private final Location location;
-	private final VariableNumber range;
+	private final LocationData loc;
 	private final String name;
 	private final boolean kill;
 
@@ -64,28 +62,7 @@ public class ClearEvent extends QuestEvent {
 			}
 			types = tempTypes;
 		}
-		String[] partsOfLoc = parts[2].split(";");
-		if (partsOfLoc.length != 5) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(partsOfLoc[0]);
-			y = Double.parseDouble(partsOfLoc[1]);
-			z = Double.parseDouble(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse location coordinates");
-		}
-		location = new Location(world, x, y, z);
-		try {
-			range = new VariableNumber(packName, partsOfLoc[4]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse range");
-		}
+		loc = new LocationData(packName, parts[1]);
 		String tempName = null;
 		boolean tempKill = false;
 		for (String part : parts) {
@@ -100,13 +77,14 @@ public class ClearEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
 		Collection<Entity> entities = location.getWorld().getEntities();
 		for (Entity entity : entities) {
 			if (!(entity instanceof LivingEntity)) {
 				continue;
 			}
-			double rangeDouble = range.getDouble(playerID);
+			double rangeDouble = loc.getData().getDouble(playerID);
 			if (entity.getLocation().distanceSquared(location) < rangeDouble * rangeDouble) {
 				EntityType theType = entity.getType();
 				for (EntityType type : types) {

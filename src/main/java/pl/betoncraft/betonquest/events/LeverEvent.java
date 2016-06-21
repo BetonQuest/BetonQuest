@@ -17,13 +17,13 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * This event turns on, of or toggles blocks like lever, door, trapdoor etc.
@@ -32,7 +32,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class LeverEvent extends QuestEvent {
 	
-	private Location loc;
+	private LocationData loc;
 	private ToggleType type;
 	
 	private enum ToggleType {
@@ -47,7 +47,7 @@ public class LeverEvent extends QuestEvent {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		loc = new Utils.LocationData(packName, parts[1]).getLocation();
+		loc = new LocationData(packName, parts[1]);
 		try {
 			type = ToggleType.valueOf(parts[2].toUpperCase());
 		} catch (IllegalArgumentException e) {
@@ -57,8 +57,8 @@ public class LeverEvent extends QuestEvent {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void run(String playerID) {
-		Block block = loc.getBlock();
+	public void run(String playerID) throws QuestRuntimeException {
+		Block block = loc.getLocation(playerID).getBlock();
 		if (block.getType() != Material.LEVER) {
 			return;
 		}

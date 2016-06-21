@@ -19,18 +19,16 @@ package pl.betoncraft.betonquest.conditions;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Checks if the chest contains specified items.
@@ -40,7 +38,7 @@ import pl.betoncraft.betonquest.utils.Debug;
 public class ChestItemCondition extends Condition {
 
 	private final ArrayList<Item> questItems = new ArrayList<>();
-	private final Block block;
+	private final LocationData loc;
 
 	public ChestItemCondition(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -51,54 +49,34 @@ public class ChestItemCondition extends Condition {
 			throw new InstructionParseException("Not eoungh arguments");
 		}
 		// extract location
-		String[] location = parts[1].split(";");
-		if (location.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exists");
-		}
-		int x, y, z;
-		try {
-			x = Integer.parseInt(location[0]);
-			y = Integer.parseInt(location[1]);
-			z = Integer.parseInt(location[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		block = new Location(world, x, y, z).getBlock();
+		loc = new LocationData(packName, parts[1]);
 		// extract items
 		String items = parts[2];
 		for (String item : items.split(",")) {
 			String[] itemParts = item.split(":");
 			String name = itemParts[0];
 			VariableNumber amount = new VariableNumber(1);
-			if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
+			if (itemParts.length > 1) {
 				try {
 					amount = new VariableNumber(packName, item.split(":")[1]);
 				} catch (NumberFormatException e) {
 					throw new InstructionParseException("Cannot parse item amount");
 				}
 			}
-			String itemInstruction = pack.getString("items." + name);
-			if (itemInstruction == null) {
-				throw new InstructionParseException("Item not defined: " + name);
-			}
-			QuestItem questItem = new QuestItem(itemInstruction);
+			QuestItem questItem = QuestItem.newQuestItem(packName, name);
 			questItems.add(new Item(questItem, amount));
 		}
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
+		Block block = loc.getLocation(playerID).getBlock();
 		InventoryHolder chest;
 		try {
 			chest = (InventoryHolder) block.getState();
 		} catch (ClassCastException e) {
-			Debug.error("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
+			throw new QuestRuntimeException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
 					+ block.getY() + " Z" + block.getZ());
-			return false;
 		}
 		int counter = 0;
 		for (Item questItem : questItems) {

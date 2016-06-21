@@ -17,13 +17,11 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.conversation.Conversation;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -33,7 +31,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class TeleportEvent extends QuestEvent {
 
-	private final Location loc;
+	private final LocationData loc;
 
 	public TeleportEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -41,34 +39,13 @@ public class TeleportEvent extends QuestEvent {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Location not specified");
 		}
-		String[] location = parts[1].split(";");
-		if (location.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exists");
-		}
-		double x, y, z;
-		float yaw = 0, pitch = 0;
-		try {
-			x = Double.parseDouble(location[0]);
-			y = Double.parseDouble(location[1]);
-			z = Double.parseDouble(location[2]);
-			if (location.length == 6) {
-				yaw = Float.parseFloat(location[4]);
-				pitch = Float.parseFloat(location[5]);
-			}
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		loc = new Location(world, x, y, z, yaw, pitch);
+		loc = new LocationData(packName, parts[1]);
 	}
 
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Conversation conv = Conversation.getConversation(playerID);
 		if (conv != null)
 			conv.endConversation();
-		PlayerConverter.getPlayer(playerID).teleport(loc);
+		PlayerConverter.getPlayer(playerID).teleport(loc.getLocation(playerID));
 	}
 }

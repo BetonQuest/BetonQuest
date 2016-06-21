@@ -24,6 +24,7 @@ import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -53,7 +54,7 @@ public class PlayerPointsCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
 		return api.look(uuid) >= count.getInt(playerID);
 	}

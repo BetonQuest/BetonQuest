@@ -22,10 +22,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Modified player's points
@@ -45,7 +48,7 @@ public class PointEvent extends QuestEvent {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		category = parts[1].contains(".") ? parts[1] : packName + "." + parts[1];
+		category = Utils.addPackage(packName, parts[1]);
 		if (parts[2].startsWith("*")) {
 			multi = true;
 			parts[2] = parts[2].replace("*", "");
@@ -60,13 +63,18 @@ public class PointEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(final String playerID) {
+	public void run(final String playerID) throws QuestRuntimeException {
 		if (PlayerConverter.getPlayer(playerID) == null) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					PlayerData playerData = new PlayerData(playerID);
-					addPoints(playerID, playerData);
+					try {
+						addPoints(playerID, playerData);
+					} catch (QuestRuntimeException e) {
+						Debug.error("Error while asynchronously adding " + count + " points of '" + category
+								+ "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
+					}
 				}
 			}.runTaskAsynchronously(BetonQuest.getInstance());
 		} else {
@@ -75,7 +83,7 @@ public class PointEvent extends QuestEvent {
 		}
 	}
 
-	private void addPoints(String playerID, PlayerData playerData) {
+	private void addPoints(String playerID, PlayerData playerData) throws QuestRuntimeException {
 		if (multi) {
 			for (Point p : playerData.getPoints()) {
 				if (p.getCategory().equalsIgnoreCase(category)) {

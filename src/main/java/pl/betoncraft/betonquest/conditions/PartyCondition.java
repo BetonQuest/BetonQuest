@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -33,11 +34,11 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyCondition extends Condition {
 
-	private final VariableNumber range;
-	private final String[] conditions;
-	private final String[] everyone;
-	private final String[] anyone;
-	private final VariableNumber count;
+	private VariableNumber range;
+	private String[] conditions;
+	private String[] everyone;
+	private String[] anyone;
+	private VariableNumber count;
 
 	public PartyCondition(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -54,48 +55,35 @@ public class PartyCondition extends Condition {
 		// next are conditions
 		conditions = parts[2].split(",");
 		for (int i = 0; i < conditions.length; i++) {
-			if (!conditions[i].contains(".")) {
-				conditions[i] = pack.getName() + "." + conditions[i];
-			}
+			conditions[i] = Utils.addPackage(pack.getName(), conditions[i]);
 		}
 		// now time for everything else
-		String[] tempEvery = new String[] {}, tempAny = new String[] {};
-		VariableNumber tempCount = new VariableNumber(0);
 		for (String part : parts) {
 			if (part.startsWith("every:")) {
-				tempEvery = part.substring(6).split(",");
-				for (int i = 0; i < tempEvery.length; i++) {
-					if (!tempEvery[i].contains(".")) {
-						tempEvery[i] = pack.getName() + "." + tempEvery[i];
-					}
+				everyone = part.substring(6).split(",");
+				for (int i = 0; i < everyone.length; i++) {
+					everyone[i] = Utils.addPackage(pack.getName(), everyone[i]);
 				}
 			} else if (part.startsWith("any:")) {
-				tempAny = part.substring(4).split(",");
-				for (int i = 0; i < tempAny.length; i++) {
-					if (!tempAny[i].contains(".")) {
-						tempAny[i] = pack.getName() + "." + tempAny[i];
-					}
+				anyone = part.substring(4).split(",");
+				for (int i = 0; i < anyone.length; i++) {
+					anyone[i] = Utils.addPackage(pack.getName(), anyone[i]);
 				}
 			} else if (part.startsWith("count:")) {
 				try {
-					tempCount = new VariableNumber(packName, part.substring(6));
+					count = new VariableNumber(packName, part.substring(6));
 				} catch (NumberFormatException e) {
 					throw new InstructionParseException("Could not parse \"count\" argument");
 				}
 			}
 		}
-		everyone = tempEvery;
-		anyone = tempAny;
-		count = tempCount;
-		// everything loaded
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		// get the party
 		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
-		// check every condition against every player - all of them must meet
-		// those conditions
+		// check every condition against every player - all of them must meet those conditions
 		for (String condition : everyone) {
 			for (String memberID : members) {
 				// if this condition wasn't met by someone, return false
@@ -104,8 +92,7 @@ public class PartyCondition extends Condition {
 				}
 			}
 		}
-		// check every condition against every player - at least one of them
-		// must meet each of those
+		// check every condition against every player - at least one of them must meet each of those
 		for (String condition : anyone) {
 			boolean met = false;
 			for (String memberID : members) {

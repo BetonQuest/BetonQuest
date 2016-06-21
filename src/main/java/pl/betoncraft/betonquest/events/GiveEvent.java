@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
@@ -65,11 +66,7 @@ public class GiveEvent extends QuestEvent {
 					throw new InstructionParseException("Wrong number format");
 				}
 			}
-			String itemInstruction = pack.getString("items." + name);
-			if (itemInstruction == null) {
-				throw new InstructionParseException("Item not defined: " + name);
-			}
-			list.add(new Item(new QuestItem(itemInstruction), amount));
+			list.add(new Item(QuestItem.newQuestItem(packName, name), amount));
 		}
 		Item[] tempQuestItems = new Item[list.size()];
 		tempQuestItems = list.toArray(tempQuestItems);
@@ -77,7 +74,7 @@ public class GiveEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
 		for (Item theItem : questItems) {
 			QuestItem questItem = theItem.getItem();

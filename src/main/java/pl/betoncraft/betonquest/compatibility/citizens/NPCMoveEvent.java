@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 import java.util.LinkedList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -31,9 +30,11 @@ import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils.LocationData;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
@@ -46,7 +47,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 	
 	private final Listener ths;
 	private int id;
-	private Location loc;
+	private LocationData loc;
 	private int waitTicks = 0;
 	private String[] doneEvents = new String[0];
 	private String[] failEvents = new String[0];
@@ -67,7 +68,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		if (id < 0) {
 			throw new InstructionParseException("NPC ID cannot be less than 0");
 		}
-		loc = new LocationData(packName, parts[2]).getLocation();
+		loc = new LocationData(packName, parts[2]);
 		for (String part : parts) {
 			if (part.startsWith("wait:")) {
 				try {
@@ -96,7 +97,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		// this event should not run if the player is offline
 		if (PlayerConverter.getPlayer(playerID) == null) {
 			currentPlayer = null;
@@ -108,7 +109,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 			return;
 		}
 		if (currentPlayer == null) {
-			npc.getNavigator().setTarget(loc);
+			npc.getNavigator().setTarget(loc.getLocation(playerID));
 			currentPlayer = playerID;
 			movingNPCs.add(npc);
 			Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
@@ -120,13 +121,17 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 	}
 	
 	@EventHandler
-	public void onNavigationEnd(final NavigationCompleteEvent e) {
-		NPC npc = e.getNPC();
+	public void onNavigationEnd(final NavigationCompleteEvent event) {
+		NPC npc = event.getNPC();
 		if (npc.getId() != id) {
 			return;
 		}
 		HandlerList.unregisterAll(ths);
-		npc.getNavigator().setTarget(loc);
+		try {
+			npc.getNavigator().setTarget(loc.getLocation(currentPlayer));
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
+		}
 		npc.getNavigator().setPaused(true);
 		new BukkitRunnable() {
 			@Override

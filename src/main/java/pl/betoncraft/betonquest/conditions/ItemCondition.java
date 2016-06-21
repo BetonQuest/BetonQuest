@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -56,17 +57,13 @@ public class ItemCondition extends Condition {
 					throw new InstructionParseException("Cannot parse item amount");
 				}
 			}
-			String itemInstruction = pack.getString("items." + name);
-			if (itemInstruction == null) {
-				throw new InstructionParseException("Item not defined: " + name);
-			}
-			QuestItem questItem = new QuestItem(itemInstruction);
+			QuestItem questItem = QuestItem.newQuestItem(packName, name);
 			questItems.add(new Item(questItem, amount));
 		}
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		int counter = 0;
 		for (Item questItem : questItems) {
 			int amount = questItem.getAmount().getInt(playerID);

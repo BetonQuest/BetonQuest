@@ -17,14 +17,12 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Checks block at specified location against specified Material
@@ -33,7 +31,7 @@ import pl.betoncraft.betonquest.api.Condition;
  */
 public class TestForBlockCondition extends Condition {
 
-	private final Block block;
+	private final LocationData loc;
 	private final Material material;
 
 	public TestForBlockCondition(String packName, String instructions) throws InstructionParseException {
@@ -44,26 +42,7 @@ public class TestForBlockCondition extends Condition {
 		if (parts.length < 3) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] location = parts[1].split(";");
-		if (location.length != 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		double y = 0, x = 0, z = 0;
-		try {
-			x = Double.parseDouble(location[0]);
-			y = Double.parseDouble(location[1]);
-			z = Double.parseDouble(location[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Cannot parse coordinates");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exist");
-		}
-		block = new Location(world, x, y, z).getBlock();
-		if (block == null) {
-			throw new InstructionParseException("Error with the block");
-		}
+		loc = new LocationData(packName, parts[1]);
 		material = Material.matchMaterial(parts[2]);
 		if (material == null) {
 			throw new InstructionParseException("Undefined material type");
@@ -71,8 +50,8 @@ public class TestForBlockCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
-		return block.getType().equals(material);
+	public boolean check(String playerID) throws QuestRuntimeException {
+		return loc.getLocation(playerID).getBlock().getType().equals(material);
 	}
 
 }

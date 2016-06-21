@@ -19,18 +19,16 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Removes items from a chest.
@@ -40,7 +38,7 @@ import pl.betoncraft.betonquest.utils.Debug;
 public class ChestTakeEvent extends QuestEvent {
 
 	private Item[] questItems;
-	private Block block;
+	private LocationData loc;
 
 	public ChestTakeEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -51,23 +49,7 @@ public class ChestTakeEvent extends QuestEvent {
 			throw new InstructionParseException("Not eoungh arguments");
 		}
 		// extract location
-		String[] location = parts[1].split(";");
-		if (location.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(location[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exists");
-		}
-		int x, y, z;
-		try {
-			x = Integer.parseInt(location[0]);
-			y = Integer.parseInt(location[1]);
-			z = Integer.parseInt(location[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		block = new Location(world, x, y, z).getBlock();
+		loc = new LocationData(packName, parts[1]);
 		// extract items
 		String[] itemsToRemove = parts[2].split(",");
 		ArrayList<Item> list = new ArrayList<>();
@@ -82,11 +64,7 @@ public class ChestTakeEvent extends QuestEvent {
 					throw new InstructionParseException("Could not parse item amount");
 				}
 			}
-			String itemInstruction = pack.getString("items." + itemName);
-			if (itemInstruction == null) {
-				throw new InstructionParseException("Item not defined");
-			}
-			QuestItem questItem = new QuestItem(itemInstruction);
+			QuestItem questItem = QuestItem.newQuestItem(packName, itemName);
 			list.add(new Item(questItem, amount));
 		}
 		Item[] tempQuestItems = new Item[list.size()];
@@ -95,14 +73,14 @@ public class ChestTakeEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
+		Block block = loc.getLocation(playerID).getBlock();
 		InventoryHolder chest;
 		try {
 			chest = (InventoryHolder) block.getState();
 		} catch (ClassCastException e) {
-			Debug.error("Trying to take items from chest, but there's no chest! Location: X" + block.getX() + " Y"
-					+ block.getY() + " Z" + block.getZ());
-			return;
+			throw new QuestRuntimeException("Trying to take items from chest, but there's no chest! Location: X"
+					+ block.getX() + " Y" + block.getY() + " Z" + block.getZ());	
 		}
 		for (Item item : questItems) {
 			QuestItem questItem = item.getItem();

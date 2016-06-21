@@ -34,9 +34,10 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Pastes a schematic at a given location.
@@ -48,7 +49,7 @@ public class PasteSchematicEvent extends QuestEvent {
 
 	private WorldEditPlugin we;
 	private File file;
-	private Location loc;
+	private LocationData loc;
 	private boolean noAir = true;
 	private int maxBlocks = 32 * 32 * 32;
 
@@ -58,7 +59,7 @@ public class PasteSchematicEvent extends QuestEvent {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		loc = new Utils.LocationData(packName, parts[1]).getLocation();
+		loc = new LocationData(packName, parts[1]);
 		we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 		File folder = new File(we.getDataFolder(), "schematics");
 		if (!folder.exists() || !folder.isDirectory()) {
@@ -85,13 +86,14 @@ public class PasteSchematicEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		try {
+			Location location = loc.getLocation(playerID);
 			SchematicFormat schematic = SchematicFormat.getFormat(file);
 			CuboidClipboard clipboard = schematic.load(file);
-			BukkitWorld world = new BukkitWorld(loc.getWorld());
+			BukkitWorld world = new BukkitWorld(location.getWorld());
 			EditSession editSession = we.getWorldEdit().getEditSessionFactory().getEditSession(world, maxBlocks);
-			Vector newOrigin = BukkitUtil.toVector(loc);
+			Vector newOrigin = BukkitUtil.toVector(location);
 			clipboard.paste(editSession, newOrigin, noAir);
 		} catch (DataException | IOException | MaxChangedBlocksException e) {
 			Debug.error("Error while pasting a schematic: " + e.getMessage());

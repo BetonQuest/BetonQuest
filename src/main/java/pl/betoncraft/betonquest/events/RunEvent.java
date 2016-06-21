@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 
 /**
@@ -86,7 +87,7 @@ public class RunEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		for (QuestEvent event : internalEvents) {
 			event.run(playerID);
 		}

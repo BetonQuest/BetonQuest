@@ -21,6 +21,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -54,7 +55,7 @@ public class McMMOSkillLevelCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), skillType) >= level.getInt(playerID);
 	}
 

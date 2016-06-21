@@ -21,6 +21,7 @@ package pl.betoncraft.betonquest.conditions;
 import java.util.Random;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 
@@ -56,7 +57,7 @@ public class RandomCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		Random generator = new Random();
 		int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
 		if (temp <= valueMax.getInt(playerID)) {

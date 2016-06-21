@@ -22,10 +22,12 @@ import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Superclass for all events. You need to extend it in order to create new
@@ -95,9 +97,7 @@ public abstract class QuestEvent {
 					: tempConditions1[i];
 		}
 		for (int i = 0; i < conditions.length; i++) {
-			if (!conditions[i].contains(".")) {
-				conditions[i] = pack.getName() + "." + conditions[i];
-			}
+			conditions[i] = Utils.addPackage(pack.getName(), conditions[i]);
 		}
 	}
 
@@ -109,7 +109,7 @@ public abstract class QuestEvent {
 	 * @param playerID
 	 *            ID of the player for whom the event will fire
 	 */
-	abstract public void run(String playerID);
+	abstract public void run(String playerID) throws QuestRuntimeException;
 
 	/**
 	 * Fires an event for the player. The event conditions are checked, so it's
@@ -118,7 +118,7 @@ public abstract class QuestEvent {
 	 * @param playerID
 	 *            ID of the player for whom the event will fire
 	 */
-	public final void fire(String playerID) {
+	public final void fire(String playerID) throws QuestRuntimeException {
 		if (playerID == null) {
 			// handle static event
 			if (!staticness) {

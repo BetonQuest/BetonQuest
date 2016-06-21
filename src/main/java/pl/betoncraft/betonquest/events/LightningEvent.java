@@ -17,12 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Strikes a lightning at specified location
@@ -31,7 +31,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class LightningEvent extends QuestEvent {
 
-	private final Location loc;
+	private final LocationData loc;
 
 	public LightningEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -40,28 +40,13 @@ public class LightningEvent extends QuestEvent {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] partsOfLoc = parts[1].split(";");
-		if (partsOfLoc.length != 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(partsOfLoc[0]);
-			y = Double.parseDouble(partsOfLoc[1]);
-			z = Double.parseDouble(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse location coordinates");
-		}
-		loc = new Location(world, x, y, z);
+		loc = new LocationData(packName, parts[1]);
 	}
 
 	@Override
-	public void run(String playerID) {
-		loc.getWorld().strikeLightning(loc);
+	public void run(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
+		location.getWorld().strikeLightning(location);
 	}
 
 }

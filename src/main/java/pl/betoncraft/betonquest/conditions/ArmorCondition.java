@@ -39,11 +39,7 @@ public class ArmorCondition extends Condition {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Armor not defined in: " + instructions);
 		}
-		String itemInstruction = pack.getString("items." + parts[1]);
-		if (itemInstruction == null) {
-			throw new InstructionParseException("No such item: " + parts[1]);
-		}
-		item = new QuestItem(itemInstruction);
+		item = QuestItem.newQuestItem(packName, parts[1]);
 	}
 
 	@Override

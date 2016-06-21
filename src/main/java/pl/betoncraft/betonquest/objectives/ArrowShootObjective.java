@@ -19,7 +19,6 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -31,7 +30,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -41,8 +43,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ArrowShootObjective extends Objective implements Listener {
 
-	private final Location location;
-	private final double precision;
+	private final LocationData loc;
 
 	public ArrowShootObjective(String packName, String label, String instruction) throws InstructionParseException {
 		super(packName, label, instruction);
@@ -51,31 +52,7 @@ public class ArrowShootObjective extends Objective implements Listener {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] partsOfLoc = parts[1].split(";");
-		if (partsOfLoc.length < 5) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exist: " + partsOfLoc[3]);
-		}
-		double x, y, z;
-		try {
-			x = Double.valueOf(partsOfLoc[0]);
-			y = Double.valueOf(partsOfLoc[1]);
-			z = Double.valueOf(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		location = new Location(world, x, y, z);
-		try {
-			precision = Double.valueOf(partsOfLoc[4]);
-			if (precision <= 0) {
-				throw new InstructionParseException("Precision must be positive");
-			}
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse precision");
-		}
+		loc = new LocationData(packName, parts[1]);
 	}
 
 	@EventHandler
@@ -93,22 +70,28 @@ public class ArrowShootObjective extends Objective implements Listener {
 		if (!containsPlayer(playerID)) {
 			return;
 		}
-		// check if the arrow is in the right place in the next tick
-		// wait one tick, let the arrow land completely
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				Location arrowLocation = arrow.getLocation();
-				if (arrowLocation == null) {
-					return;
+		try {
+			final Location location = loc.getLocation(playerID);
+			final double precision = loc.getData().getDouble(playerID); 
+			// check if the arrow is in the right place in the next tick
+			// wait one tick, let the arrow land completely
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Location arrowLocation = arrow.getLocation();
+					if (arrowLocation == null) {
+						return;
+					}
+					if (arrowLocation.getWorld().equals(location.getWorld())
+							&& arrowLocation.distanceSquared(location) < precision * precision
+							&& checkConditions(playerID)) {
+						completeObjective(playerID);
+					}
 				}
-				if (arrowLocation.getWorld().equals(location.getWorld())
-						&& arrowLocation.distanceSquared(location) < precision * precision
-						&& checkConditions(playerID)) {
-					completeObjective(playerID);
-				}
-			}
-		}.runTask(BetonQuest.getInstance());
+			}.runTask(BetonQuest.getInstance());
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
+		}
 	}
 
 	@Override

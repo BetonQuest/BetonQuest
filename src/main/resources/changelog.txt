@@ -1,6 +1,7 @@
 ﻿v1.9-dev
 Fixes:
     * 'action' objective now detects fire interaction
+    * Items can be used cross-package
 Changes:
     * New lines in conversations can be made with "\n"
     * Interval in 'delay' objective is now configurable
@@ -8,6 +9,7 @@ Changes:
     * Potion items are now defined with 'type:' argument instead of data value
     * You can now use spaces between "first" options in conversations
     * Static events can now be fired with "/q event - eventID" command
+    * Locations can have vectors defined directly in instruction strings
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
@@ -26,6 +28,7 @@ Additions:
     * New objective 'vehicle' - entering a vehicle entity
     * New objective 'variable' - lets players define their own variables for you to use
     * New objective 'kill' - kill players who meet specified conditions
+    * Keyword "player" can be used as a location
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
 

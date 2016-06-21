@@ -21,7 +21,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class WorldCondition extends Condition {
@@ -36,7 +38,11 @@ public class WorldCondition extends Condition {
 		}
 		world = Bukkit.getWorld(parts[1]);
 		if (world == null) {
-			throw new InstructionParseException("There is no such world: " + parts[1]);
+			try {
+				world = new LocationData(packName, parts[1]).getLocation(null).getWorld();
+			} catch (InstructionParseException | QuestRuntimeException e) {
+				throw new InstructionParseException("There is no such world: " + parts[1]);
+			}
 		}
 	}
 

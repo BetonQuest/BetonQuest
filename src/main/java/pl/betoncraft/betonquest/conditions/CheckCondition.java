@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 
 /**
@@ -84,7 +85,7 @@ public class CheckCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		for (Condition condition : internalConditions) {
 			if (!condition.check(playerID))
 				return false;

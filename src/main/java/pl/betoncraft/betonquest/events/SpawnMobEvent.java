@@ -17,16 +17,16 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Spawns mobs at given location
@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class SpawnMobEvent extends QuestEvent {
 
-	private final Location loc;
+	private final LocationData loc;
 	private final EntityType type;
 	private final VariableNumber amount;
 	private final String name;
@@ -47,23 +47,7 @@ public class SpawnMobEvent extends QuestEvent {
 		if (parts.length < 4) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] coords = parts[1].split(";");
-		if (coords.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(coords[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exist");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(coords[0]);
-			y = Double.parseDouble(coords[1]);
-			z = Double.parseDouble(coords[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		loc = new Location(world, x, y, z);
+		loc = new LocationData(packName, parts[1]);
 		try {
 			type = EntityType.valueOf(parts[2].toUpperCase());
 		} catch (IllegalArgumentException e) {
@@ -85,10 +69,11 @@ public class SpawnMobEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
 		int a = amount.getInt(playerID);
 		for (int i = 0; i < a; i++) {
-			Entity entity = loc.getWorld().spawnEntity(loc, type);
+			Entity entity = location.getWorld().spawnEntity(location, type);
 			if (name != null && entity instanceof LivingEntity) {
 				LivingEntity livingEntity = (LivingEntity) entity;
 				livingEntity.setCustomName(name);

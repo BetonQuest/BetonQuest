@@ -84,6 +84,37 @@ public class QuestItem {
 		this.name = name;
 		this.lore = lore;
 	}
+	
+	/**
+	 * Loads an item with given ID from the items.yml file.
+	 * 
+	 * @param packName
+	 *            name of the package to load it from
+	 * @param itemID
+	 *            ID of the item
+	 * @return the loaded item
+	 * @throws InstructionParseException
+	 *             when item parsing goes wrong
+	 */
+	public static QuestItem newQuestItem(String packName, String itemID) throws InstructionParseException {
+		String pack, ID;
+		if (itemID.contains(".")) {
+			String[] parts = itemID.split("\\.");
+			if (parts.length != 2) {
+				throw new InstructionParseException("Incorrect item ID: " + itemID);
+			}
+			pack = parts[0];
+			ID = parts[1];
+		} else {
+			pack = packName;
+			ID = itemID;
+		}
+		String instruction = Config.getString(pack + ".items." + ID);
+		if (instruction == null) {
+			throw new InstructionParseException("Item is not defined");
+		}
+		return new QuestItem(instruction);
+	}
 
 	/**
 	 * Creates new instance of the quest item using the instruction string

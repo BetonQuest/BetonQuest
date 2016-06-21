@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.api;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 
@@ -100,5 +101,5 @@ abstract public class Condition {
 	 *            ID of the player for whom the condition will be checked
 	 * @return the result of the check
 	 */
-	abstract public boolean check(String playerID);
+	abstract public boolean check(String playerID) throws QuestRuntimeException;
 }

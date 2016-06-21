@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Adds or removes tags from the player
@@ -45,9 +46,7 @@ public class TagEvent extends QuestEvent {
 		add = parts[1].equalsIgnoreCase("add");
 		tags = parts[2].split(",");
 		for (int i = 0; i < tags.length; i++) {
-			if (!tags[i].contains(".")) {
-				tags[i] = packName + "." + tags[i];
-			}
+			tags[i] = Utils.addPackage(packName, tags[i]);
 		}
 	}
 

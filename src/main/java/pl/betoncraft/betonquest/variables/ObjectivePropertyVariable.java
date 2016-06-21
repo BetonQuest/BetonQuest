@@ -21,6 +21,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Resolves to a specified property of an objective.
@@ -38,11 +39,7 @@ public class ObjectivePropertyVariable extends Variable {
 		if (parts.length != 3) {
 			throw new InstructionParseException("Incorrect number of arguments");
 		}
-		if (parts[1].contains(".")) {
-			objective = parts[1];
-		} else {
-			objective = packName + "." + parts[1];
-		}
+		objective = Utils.addPackage(packName, objective);
 		propertyName = parts[2];
 	}
 

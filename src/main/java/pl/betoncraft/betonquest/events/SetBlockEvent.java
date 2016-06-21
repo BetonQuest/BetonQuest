@@ -17,13 +17,13 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Sets the block at specified location
@@ -34,7 +34,7 @@ public class SetBlockEvent extends QuestEvent {
 
 	private final Material block;
 	private final byte data;
-	private final Location loc;
+	private final LocationData loc;
 
 	public SetBlockEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -49,23 +49,7 @@ public class SetBlockEvent extends QuestEvent {
 			throw new InstructionParseException("Block type " + parts[1] + " does not exist");
 		}
 		// parse location
-		String[] coords = parts[2].split(";");
-		if (coords.length != 4) {
-			throw new InstructionParseException("Wrong locatio format");
-		}
-		World world = Bukkit.getWorld(coords[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + coords[3] + " does not exist");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(coords[0]);
-			y = Double.parseDouble(coords[1]);
-			z = Double.parseDouble(coords[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		loc = new Location(world, x, y, z);
+		loc = new LocationData(packName, parts[1]);
 		// get data value
 		byte tempData = 0;
 		for (String part : parts) {
@@ -82,9 +66,10 @@ public class SetBlockEvent extends QuestEvent {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void run(String playerID) {
-		loc.getBlock().setType(block);
-		loc.getBlock().setData(data);
+	public void run(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
+		location.getBlock().setType(block);
+		location.getBlock().setData(data);
 	}
 
 }

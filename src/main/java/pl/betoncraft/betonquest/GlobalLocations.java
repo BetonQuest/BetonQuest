@@ -28,7 +28,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -81,39 +83,45 @@ public class GlobalLocations extends BukkitRunnable {
 		// loop all online players
 		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
+			String playerID = PlayerConverter.getID(player);
 			// for each player loop all available locations
 			locations: for (GlobalLocation location : finalLocations) {
-				// if location is not set, stop everything, there is an error in
-				// config
+				// if location is not set, stop everything, there is an error in config
 				if (location.getLocation() == null) {
 					continue locations;
 				}
 				// if player is inside location, do stuff
-				if (player.getLocation().getWorld().equals(location.getLocation().getWorld()) && player.getLocation()
-						.distanceSquared(new Location(location.getLocation().getWorld(), location.getLocation().getX(),
-								location.getLocation().getY(), location.getLocation().getZ())) <= location.getDistance()
-										* location.getDistance()) {
+				Location loc;
+				double distance;
+				try {
+					loc = location.getLocation().getLocation(playerID);
+					distance = location.getLocation().getData().getDouble(playerID);
+				} catch (QuestRuntimeException e) {
+					Debug.error("Error while parsing location in global location '" + location.pack + "."
+							+ location.label + "': " + e.getMessage());
+					continue;
+				}
+				if (player.getLocation().getWorld().equals(loc.getWorld())
+						&& player.getLocation().distanceSquared(loc) <= distance*distance) {
 					// check if player has already triggered this location
-					if (BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player))
-							.hasTag(location.getPack() + ".global_" + location.getLabel())) {
+					PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+					if (playerData.hasTag(location.getPack() + ".global_" + location.getLabel())) {
 						continue locations;
 					}
 					// check all conditions
 					if (location.getConditions() != null) {
 						for (String condition : location.getConditions()) {
-							if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-								// if some conditions are not met, skip to next
-								// location
+							if (!BetonQuest.condition(playerID, condition)) {
+								// if some conditions are not met, skip to next location
 								continue locations;
 							}
 						}
 					}
 					// set the tag, player has triggered this location
-					BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player))
-							.addTag(location.getPack() + ".global_" + location.getLabel());
+					playerData.addTag(location.getPack() + ".global_" + location.getLabel());
 					// fire all events for the location
 					for (String event : location.getEvents()) {
-						BetonQuest.event(PlayerConverter.getID(player), event);
+						BetonQuest.event(playerID, event);
 					}
 				}
 			}
@@ -128,10 +136,9 @@ public class GlobalLocations extends BukkitRunnable {
 	private class GlobalLocation {
 
 		private String pack;
-		private Location location;
+		private LocationData location;
 		private String[] conditions;
 		private String[] events;
-		private double distance;
 		private String label;
 		private boolean valid = true;
 
@@ -158,31 +165,11 @@ public class GlobalLocations extends BukkitRunnable {
 				valid = false;
 				return;
 			}
-			// check amount of arguments in location definition
-			String[] rawLocation = parts[1].split(";");
-			if (rawLocation.length != 5) {
-				Debug.error("Wrong location format in global location's objective " + objective);
-				valid = false;
-				return;
-			}
-			double x = 0, y = 0, z = 0;
-			// get x, y and z; check if they are valid numbers
 			try {
-				x = Double.parseDouble(rawLocation[0]);
-				y = Double.parseDouble(rawLocation[1]);
-				z = Double.parseDouble(rawLocation[2]);
-				distance = Double.parseDouble(rawLocation[4]);
-			} catch (NumberFormatException e) {
-				Debug.error("Wrong argument in location definition in global location's objective " + objective);
-				valid = false;
-				return;
+				location = new LocationData(pack.getName(), parts[1]);
+			} catch (InstructionParseException e) {
+				Debug.error("Error while parsing global location: " + e.getMessage());
 			}
-			if (Bukkit.getWorld(rawLocation[3]) == null) {
-				Debug.error("The world doesn't exist in global location's objective " + objective);
-				valid = false;
-				return;
-			}
-			location = new Location(Bukkit.getWorld(rawLocation[3]), x, y, z);
 			// extract all conditions and events
 			for (String part : parts) {
 				if (part.contains("conditions:")) {
@@ -214,7 +201,7 @@ public class GlobalLocations extends BukkitRunnable {
 		/**
 		 * @return the location
 		 */
-		public Location getLocation() {
+		public LocationData getLocation() {
 			return location;
 		}
 
@@ -230,13 +217,6 @@ public class GlobalLocations extends BukkitRunnable {
 		 */
 		public String[] getEvents() {
 			return events;
-		}
-
-		/**
-		 * @return the distance
-		 */
-		public double getDistance() {
-			return distance;
 		}
 
 		/**

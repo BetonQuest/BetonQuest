@@ -79,7 +79,7 @@ public class VariableNumber {
 	 *            ID of the player for whom the variable should be resolved
 	 * @return the integer represented by this variable number
 	 */
-	public int getInt(String playerID) {
+	public int getInt(String playerID) throws QuestRuntimeException {
 		return (int) Math.floor(resolveVariable(playerID));
 	}
 
@@ -90,16 +90,18 @@ public class VariableNumber {
 	 *            ID of the player for whom the variable should be resolved
 	 * @return the double represented by this variable number
 	 */
-	public double getDouble(String playerID) {
+	public double getDouble(String playerID) throws QuestRuntimeException {
 		return resolveVariable(playerID);
 	}
 
 	/**
 	 * Resolves the variable to a double.
 	 */
-	private double resolveVariable(String playerID) {
+	private double resolveVariable(String playerID) throws QuestRuntimeException {
 		if (variable == null) {
 			return number;
+		} else if (playerID == null) {
+			return 0;
 		} else {
 			String resolved = variable.getValue(playerID);
 			double parsed = 0;

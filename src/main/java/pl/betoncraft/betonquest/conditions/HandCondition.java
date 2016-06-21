@@ -41,12 +41,7 @@ public class HandCondition extends Condition {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Item name not defined");
 		}
-		String itemName = parts[1];
-		String itemInstruction = pack.getString("items." + itemName);
-		if (itemInstruction == null) {
-			throw new InstructionParseException("Item not defined: " + itemName);
-		}
-		questItem = new QuestItem(itemInstruction);
+		questItem = QuestItem.newQuestItem(packName, parts[1]);
 		for (String part : parts) {
 			if (part.equalsIgnoreCase("offhand")) {
 				offhand = true;

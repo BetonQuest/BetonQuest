@@ -504,4 +504,8 @@ public class Config {
 	public static ArrayList<String> getLanguages() {
 		return languages;
 	}
+	
+	public static String getDefaultPackage() {
+		return plugin.getConfig().getString("default_package");
+	}
 }

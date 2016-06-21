@@ -17,14 +17,13 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.VariableNumber;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -34,8 +33,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LocationCondition extends Condition {
 
-	private final Location location;
-	private final VariableNumber distance;
+	private final LocationData loc;
 
 	public LocationCondition(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -43,37 +41,17 @@ public class LocationCondition extends Condition {
 		if (parts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] partsOfLoc = parts[1].split(";");
-		if (partsOfLoc.length != 5) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(partsOfLoc[0]);
-			y = Double.parseDouble(partsOfLoc[1]);
-			z = Double.parseDouble(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse location coordinates");
-		}
-		location = new Location(world, x, y, z);
-		try {
-			distance = new VariableNumber(packName, partsOfLoc[4]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse distance");
-		}
+		loc = new LocationData(packName, parts[1]);
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
 		Player player = PlayerConverter.getPlayer(playerID);
 		if (!location.getWorld().equals(player.getWorld())) {
 			return false;
 		}
-		double dist = distance.getDouble(playerID);
+		double dist = loc.getData().getDouble(playerID);
 		if (player.getLocation().distanceSquared(location) <= dist * dist) {
 			return true;
 		}

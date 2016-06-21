@@ -22,6 +22,7 @@ import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -54,7 +55,7 @@ public class SkillAPILevelCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
 		PlayerClass playerClass = data.getClass(className);
 		return playerClass != null && level.getInt(playerID) <= playerClass.getLevel();

@@ -17,14 +17,14 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import net.elseland.xikage.MythicMobs.Mobs.MobSpawner;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Spawns MythicMobs mobs
@@ -33,7 +33,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class MythicSpawnMobEvent extends QuestEvent {
 
-	private final Location loc;
+	private final LocationData loc;
 	private final String mob;
 	private final VariableNumber amount;
 	private final VariableNumber level;
@@ -44,23 +44,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
 		if (parts.length < 4) {
 			throw new InstructionParseException("Not enough arguments");
 		}
-		String[] coords = parts[1].split(";");
-		if (coords.length < 4) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(coords[3]);
-		if (world == null) {
-			throw new InstructionParseException("World does not exist");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(coords[0]);
-			y = Double.parseDouble(coords[1]);
-			z = Double.parseDouble(coords[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse coordinates");
-		}
-		loc = new Location(world, x, y, z);
+		loc = new LocationData(packName, parts[1]);
 		String[] mobParts = parts[2].split(":");
 		if (mobParts.length != 2) {
 			throw new InstructionParseException("Wrong mob format");
@@ -79,11 +63,12 @@ public class MythicSpawnMobEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		int a = amount.getInt(playerID);
 		int l = level.getInt(playerID);
+		Location location = loc.getLocation(playerID);
 		for (int i = 0; i < a; i++) {
-			MobSpawner.SpawnMythicMob(mob, loc, l);
+			MobSpawner.SpawnMythicMob(mob, location, l);
 		}
 	}
 

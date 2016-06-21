@@ -19,16 +19,16 @@ package pl.betoncraft.betonquest.conditions;
 
 import java.util.Collection;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
  * Checks if there are specified monsters in the area
@@ -39,8 +39,7 @@ public class MonstersCondition extends Condition {
 
 	private final EntityType[] types;
 	private final VariableNumber[] amounts;
-	private final Location location;
-	private final VariableNumber range;
+	private final LocationData loc;
 	private final String name;
 
 	public MonstersCondition(String packName, String instructions) throws InstructionParseException {
@@ -81,28 +80,7 @@ public class MonstersCondition extends Condition {
 		}
 		types = tempTypes;
 		amounts = tempAmounts;
-		String[] partsOfLoc = parts[2].split(";");
-		if (partsOfLoc.length != 5) {
-			throw new InstructionParseException("Wrong location format");
-		}
-		World world = Bukkit.getWorld(partsOfLoc[3]);
-		if (world == null) {
-			throw new InstructionParseException("World " + partsOfLoc[3] + " does not exists.");
-		}
-		double x, y, z;
-		try {
-			x = Double.parseDouble(partsOfLoc[0]);
-			y = Double.parseDouble(partsOfLoc[1]);
-			z = Double.parseDouble(partsOfLoc[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse location coordinates");
-		}
-		location = new Location(world, x, y, z);
-		try {
-			range = new VariableNumber(packName, partsOfLoc[4]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse range");
-		}
+		loc = new LocationData(packName, parts[2]);
 		String tempName = null;
 		for (String part : parts) {
 			if (part.startsWith("name:")) {
@@ -114,18 +92,19 @@ public class MonstersCondition extends Condition {
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
+		Location location = loc.getLocation(playerID);
 		int[] neededAmounts = new int[types.length];
 		for (int i = 0; i < neededAmounts.length; i++) {
 			neededAmounts[i] = 0;
 		}
 		Collection<Entity> entities = location.getWorld().getEntities();
-		double r = range.getDouble(playerID);
+		double range = loc.getData().getDouble(playerID);
 		for (Entity entity : entities) {
 			if (!(entity instanceof LivingEntity)) {
 				continue;
 			}
-			if (entity.getLocation().distanceSquared(location) < r * r) {
+			if (entity.getLocation().distanceSquared(location) < range * range) {
 				EntityType theType = entity.getType();
 				for (int i = 0; i < types.length; i++) {
 					if (theType == types[i]) {

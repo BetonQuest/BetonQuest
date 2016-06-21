@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -32,9 +33,9 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyEvent extends QuestEvent {
 
-	private final String[] conditions;
-	private final String[] events;
-	private final VariableNumber range;
+	private String[] conditions;
+	private String[] events;
+	private VariableNumber range;
 
 	public PartyEvent(String packName, String instructions) throws InstructionParseException {
 		super(packName, instructions);
@@ -43,20 +44,14 @@ public class PartyEvent extends QuestEvent {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		// load conditions and events
-		String[] tempConditions = parts[2].split(",");
-		for (int i = 0; i < tempConditions.length; i++) {
-			if (!tempConditions[i].contains(".")) {
-				tempConditions[i] = packName + "." + tempConditions[i];
-			}
+		conditions = parts[2].split(",");
+		for (int i = 0; i < conditions.length; i++) {
+			conditions[i] = Utils.addPackage(packName, conditions[i]);
 		}
-		conditions = tempConditions;
-		String[] tempEvents = parts[3].split(",");
-		for (int i = 0; i < tempEvents.length; i++) {
-			if (!tempEvents[i].contains(".")) {
-				tempEvents[i] = packName + "." + tempEvents[i];
-			}
+		events = parts[3].split(",");
+		for (int i = 0; i < events.length; i++) {
+			events[i] = Utils.addPackage(packName, events[i]);
 		}
-		events = tempEvents;
 		// load the range
 		try {
 			range = new VariableNumber(packName, parts[1]);
@@ -66,7 +61,7 @@ public class PartyEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
 		for (String memberID : members) {
 			for (String event : events) {

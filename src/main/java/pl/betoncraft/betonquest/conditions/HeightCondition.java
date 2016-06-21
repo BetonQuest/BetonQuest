@@ -18,8 +18,10 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -44,20 +46,16 @@ public class HeightCondition extends Condition {
 				throw new InstructionParseException("Could not parse height");
 			}
 		} else {
-			String[] locParts = parts[1].split(";");
-			if (locParts.length < 4) {
-				throw new InstructionParseException("Could not parse height");
-			}
 			try {
-				height = new VariableNumber(packName, locParts[1]);
-			} catch (NumberFormatException e) {
-				throw new InstructionParseException("Could not parse height");
+				height = new VariableNumber(new LocationData(packName, parts[1]).getLocation(null).getY());
+			} catch (QuestRuntimeException e) {
+				throw new InstructionParseException("Could not parse height"); 
 			}
 		}
 	}
 
 	@Override
-	public boolean check(String playerID) {
+	public boolean check(String playerID) throws QuestRuntimeException {
 		if (PlayerConverter.getPlayer(playerID).getLocation().getY() < height.getDouble(playerID)) {
 			return true;
 		}

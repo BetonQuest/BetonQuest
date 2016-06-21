@@ -24,8 +24,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Folder event is a collection of other events, that can be run after a delay
@@ -50,13 +52,10 @@ public class FolderEvent extends QuestEvent {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		// get those events
-		String[] tempEvents = parts[1].split(",");
-		for (int i = 0; i < tempEvents.length; i++) {
-			if (!tempEvents[i].contains(".")) {
-				tempEvents[i] = pack.getName() + "." + tempEvents[i];
-			}
+		events = parts[1].split(",");
+		for (int i = 0; i < events.length; i++) {
+			events[i] = Utils.addPackage(pack.getName(), events[i]);
 		}
-		events = tempEvents;
 		// parse the rest of arguments
 		for (String part : parts) {
 			if (part.startsWith("delay:")) {
@@ -76,7 +75,7 @@ public class FolderEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(final String playerID) {
+	public void run(final String playerID) throws QuestRuntimeException {
 		final ArrayList<String> chosenList = new ArrayList<>();
 		// choose randomly which events should be fired
 		int randomInt = random != null ? random.getInt(playerID) : 0;

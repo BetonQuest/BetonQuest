@@ -23,9 +23,9 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -61,12 +61,11 @@ public class ScoreboardEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws IllegalStateException, QuestRuntimeException {
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
 		Objective obj = board.getObjective(objective);
 		if (obj == null) {
-			Debug.error("Scoreboard objective " + objective + " does not exist!");
-			return;
+			throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
 		}
 		Score score = obj.getScore(PlayerConverter.getName(playerID));
 		if (multi) {

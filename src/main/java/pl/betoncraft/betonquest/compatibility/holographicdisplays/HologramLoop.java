@@ -32,11 +32,12 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Hides and shows holograms to players, based on conditions.
@@ -84,10 +85,9 @@ public class HologramLoop {
 				}
 				Location location = null;
 				try {
-					location = new Utils.LocationData(packName, rawLocation).getLocation();
-				} catch (InstructionParseException e) {
+					location = new LocationData(packName, rawLocation).getLocation(null);
+				} catch (QuestRuntimeException | InstructionParseException e) {
 					Debug.error("Could not parse location in " + key + " hologram: " + e.getMessage());
-					System.out.println(rawLocation);
 					continue;
 				}
 				Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);

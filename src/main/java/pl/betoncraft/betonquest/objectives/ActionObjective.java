@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.objectives;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -29,7 +28,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -40,12 +42,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ActionObjective extends Objective implements Listener {
 
-	private final String action;
-	private final Material type;
-	private final byte data;
-	private final Location loc;
-	private final double range;
-	private final boolean cancel;
+	private String action;
+	private Material type;
+	private byte data;
+	private LocationData loc;
+	private boolean cancel = false;
 
 	public ActionObjective(String packName, String label, String instruction) throws InstructionParseException {
 		super(packName, label, instruction);
@@ -83,44 +84,14 @@ public class ActionObjective extends Objective implements Listener {
 		if (type == null) {
 			throw new InstructionParseException("Unknown material type");
 		}
-		Location tempLoc = null;
-		double tempRange = 0;
-		boolean tempCancel = false;
 		for (String part : parts) {
 			if (part.contains("loc:")) {
-				String[] partsOfLoc = part.substring(4).split(";");
-				if (partsOfLoc.length < 5) {
-					throw new InstructionParseException("Wrong location format");
-				}
-				World world = Bukkit.getWorld(partsOfLoc[3]);
-				if (world == null) {
-					throw new InstructionParseException("World does not exist: " + partsOfLoc[3]);
-				}
-				double x, y, z;
-				try {
-					x = Double.valueOf(partsOfLoc[0]);
-					y = Double.valueOf(partsOfLoc[1]);
-					z = Double.valueOf(partsOfLoc[2]);
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse coordinates");
-				}
-				tempLoc = new Location(world, x, y, z);
-				try {
-					tempRange = Double.parseDouble(partsOfLoc[4]);
-					if (tempRange <= 0) {
-						throw new InstructionParseException("Range must be positive");
-					}
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse range");
-				}
+				loc = new LocationData(packName, part.substring(4));
 			}
 			if (part.equalsIgnoreCase("cancel")) {
-				tempCancel = true;
+				cancel = true;
 			}
 		}
-		loc = tempLoc;
-		range = tempRange;
-		cancel = tempCancel;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -172,18 +143,24 @@ public class ActionObjective extends Objective implements Listener {
 				actionEnum = null;
 				break;
 			}
-			if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-					|| event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
-					&& (event.getClickedBlock() != null && ((type == Material.FIRE
-					&& event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type) 
-					|| event.getClickedBlock().getType().equals(type)))
-					&& (data < 0 || event.getClickedBlock().getData() == data)
-					&& (loc == null || (event.getClickedBlock().getWorld().equals(loc.getWorld())
-					&& event.getClickedBlock().getLocation().distance(loc) <= range))
-					&& checkConditions(playerID)) {
-				if (cancel)
-					event.setCancelled(true);
-				completeObjective(playerID);
+			try {
+				Location location = loc.getLocation(playerID);
+				double range = loc.getData().getDouble(playerID);
+				if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+						|| event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
+						&& (event.getClickedBlock() != null && ((type == Material.FIRE
+						&& event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type) 
+						|| event.getClickedBlock().getType().equals(type)))
+						&& (data < 0 || event.getClickedBlock().getData() == data)
+						&& (loc == null || (event.getClickedBlock().getWorld().equals(location.getWorld())
+						&& event.getClickedBlock().getLocation().distance(location) <= range))
+						&& checkConditions(playerID)) {
+					if (cancel)
+						event.setCancelled(true);
+					completeObjective(playerID);
+				}
+			} catch (QuestRuntimeException e) {
+				Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
 			}
 		}
 	}
@@ -206,9 +183,18 @@ public class ActionObjective extends Objective implements Listener {
 	@Override
 	public String getProperty(String name, String playerID) {
 		if (name.equalsIgnoreCase("location")) {
-			if (loc == null)
+			if (loc == null) {
 				return "";
-			return "X: " + loc.getBlockX() + ", Y: " + loc.getBlockY() + ", Z: " + loc.getBlockZ();
+			}
+			Location location;
+			try {
+				location = loc.getLocation(playerID);
+			} catch (QuestRuntimeException e) {
+				Debug.error("Error while getting location property in '" + pack.getName() + "." + getLabel() + "' objective: "
+						+ e.getMessage());
+				return "";
+			}
+			return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
 		}
 		return "";
 	}
