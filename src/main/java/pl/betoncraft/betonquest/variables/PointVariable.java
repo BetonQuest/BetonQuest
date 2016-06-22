@@ -41,7 +41,7 @@ public class PointVariable extends Variable {
 		if (parts.length != 3) {
 			throw new InstructionParseException("Incorrect number of arguments");
 		}
-		category = Utils.addPackage(packName, category);
+		category = Utils.addPackage(packName, parts[1]);
 		if (parts[2].equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
 		} else if (parts[2].toLowerCase().startsWith("left:")) {
