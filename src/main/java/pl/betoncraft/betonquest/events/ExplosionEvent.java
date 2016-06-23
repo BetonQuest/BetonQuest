@@ -51,7 +51,7 @@ public class ExplosionEvent extends QuestEvent {
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse power");
 		}
-		loc = new LocationData(packName, parts[1]);
+		loc = new LocationData(packName, parts[4]);
 
 	}
 

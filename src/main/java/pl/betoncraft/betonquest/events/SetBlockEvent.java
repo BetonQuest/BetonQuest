@@ -49,7 +49,7 @@ public class SetBlockEvent extends QuestEvent {
 			throw new InstructionParseException("Block type " + parts[1] + " does not exist");
 		}
 		// parse location
-		loc = new LocationData(packName, parts[1]);
+		loc = new LocationData(packName, parts[2]);
 		// get data value
 		byte tempData = 0;
 		for (String part : parts) {

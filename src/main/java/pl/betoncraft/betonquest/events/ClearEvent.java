@@ -62,7 +62,7 @@ public class ClearEvent extends QuestEvent {
 			}
 			types = tempTypes;
 		}
-		loc = new LocationData(packName, parts[1]);
+		loc = new LocationData(packName, parts[2]);
 		String tempName = null;
 		boolean tempKill = false;
 		for (String part : parts) {
