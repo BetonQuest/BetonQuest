@@ -39,7 +39,7 @@ public class ObjectivePropertyVariable extends Variable {
 		if (parts.length != 3) {
 			throw new InstructionParseException("Incorrect number of arguments");
 		}
-		objective = Utils.addPackage(packName, objective);
+		objective = Utils.addPackage(packName, parts[1]);
 		propertyName = parts[2];
 	}
 
