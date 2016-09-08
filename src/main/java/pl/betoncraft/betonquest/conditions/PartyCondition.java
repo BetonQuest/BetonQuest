@@ -84,26 +84,30 @@ public class PartyCondition extends Condition {
 		// get the party
 		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
 		// check every condition against every player - all of them must meet those conditions
-		for (String condition : everyone) {
-			for (String memberID : members) {
-				// if this condition wasn't met by someone, return false
-				if (!BetonQuest.condition(memberID, condition)) {
-					return false;
+		if(everyone != null) {
+			for (String condition : everyone) {
+				for (String memberID : members) {
+					// if this condition wasn't met by someone, return false
+					if (!BetonQuest.condition(memberID, condition)) {
+						return false;
+					}
 				}
 			}
 		}
 		// check every condition against every player - at least one of them must meet each of those
-		for (String condition : anyone) {
-			boolean met = false;
-			for (String memberID : members) {
-				if (BetonQuest.condition(memberID, condition)) {
-					met = true;
-					break;
+		if(anyone != null) {
+			for (String condition : anyone) {
+				boolean met = false;
+				for (String memberID : members) {
+					if (BetonQuest.condition(memberID, condition)) {
+						met = true;
+						break;
+					}
 				}
-			}
-			// if this condition wasn't met by anyone, return false
-			if (!met) {
-				return false;
+				// if this condition wasn't met by anyone, return false
+				if (!met) {
+					return false;
+				}
 			}
 		}
 		// if the count is more than 0, we need to check if there are more
