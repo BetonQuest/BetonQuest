@@ -48,6 +48,9 @@ public class CitizensListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
+		if (!event.getClicker().hasPermission("betonquest.conversation")) {
+			return;
+		}
 		if (NPCMoveEvent.isNPCMoving(event.getNPC())) {
 			return;
 		}
