@@ -20,12 +20,13 @@ package pl.betoncraft.betonquest.objectives;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -54,8 +55,11 @@ public class CraftingObjective extends Objective implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onCrafting(CraftItemEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
 		if (event.getWhoClicked() instanceof Player) {
 			Player player = (Player) event.getWhoClicked();
 			String playerID = PlayerConverter.getID(player);
@@ -69,16 +73,15 @@ public class CraftingObjective extends Objective implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOW)
 	public void onShiftCrafting(InventoryClickEvent event) {
-		if ((event.getInventory().getType().equals(InventoryType.CRAFTING) && event.getRawSlot() == 9)
-				|| (event.getInventory().getType().equals(InventoryType.WORKBENCH) && event.getRawSlot() == 8)) {
-			if (event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {
-				Player player = (Player) event.getWhoClicked();
-				String playerID = PlayerConverter.getID(player);
-				if (containsPlayer(playerID)) {
-					event.setCancelled(true);
-				}
+		if (event.getSlotType() == SlotType.RESULT
+				&& event.getClick().equals(ClickType.SHIFT_LEFT)
+				&& event.getWhoClicked() instanceof Player) {
+			Player player = (Player) event.getWhoClicked();
+			String playerID = PlayerConverter.getID(player);
+			if (containsPlayer(playerID)) {
+				event.setCancelled(true);
 			}
 		}
 	}
