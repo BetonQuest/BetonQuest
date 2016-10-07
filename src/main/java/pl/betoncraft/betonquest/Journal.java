@@ -193,13 +193,8 @@ public class Journal {
 	 * @return the main page string or null, if there is no main page
 	 */
 	private String generateMainPage() {
-		HashMap<Integer, String> lines = new HashMap<>(); // holds text lines
-															// with their
-															// priority
-		ArrayList<Integer> numbers = new ArrayList<>(); // stores numbers that
-														// are used, so there's
-														// no need to search
-														// them
+		HashMap<Integer, String> lines = new HashMap<>(); // holds text lines with their priority
+		ArrayList<Integer> numbers = new ArrayList<>(); // stores numbers that are used, so there's no need to search them
 		for (String packName : Config.getPackageNames()) {
 			ConfigPackage pack = Config.getPackage(packName);
 			ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
@@ -214,16 +209,19 @@ public class Journal {
 					String rawConditions = s.getString(key + ".conditions");
 					if (rawConditions != null && rawConditions.length() > 0) {
 						for (String condition : rawConditions.split(",")) {
-							if (!condition.contains(".")) {
-								condition = packName + "." + condition;
-							}
-							if (!BetonQuest.condition(playerID, condition)) {
+							try {
+								ConditionID conditionID = new ConditionID(pack, condition);
+								if (!BetonQuest.condition(playerID, conditionID)) {
+									continue keys;
+								}
+							} catch (ObjectNotFoundException e) {
+								Debug.error("Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
+										+ "'s journal - condition '" + condition + "' not found: " + e.getMessage());
 								continue keys;
 							}
 						}
 					}
-					// here conditions are met, get the text in player's
-					// language
+					// here conditions are met, get the text in player's language
 					String text;
 					if (s.isConfigurationSection(key + ".text")) {
 						text = s.getString(key + ".text." + lang);
@@ -239,7 +237,12 @@ public class Journal {
 					}
 					// resolve variables
 					for (String variable : BetonQuest.resolveVariables(text)) {
-						BetonQuest.createVariable(pack, variable);
+						try {
+							BetonQuest.createVariable(pack, variable);
+						} catch (ObjectNotFoundException e) {
+							Debug.error("Error while creating variable '" + variable + "' on main page in "
+									+ PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+						}
 						text = text.replace(variable,
 								BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
 					}

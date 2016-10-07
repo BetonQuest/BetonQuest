@@ -26,6 +26,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -42,36 +43,12 @@ public class MythicMobKillObjective extends Objective implements Listener {
 	private final int amount;
 	private final boolean notify;
 
-	public MythicMobKillObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public MythicMobKillObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = MMData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		name = parts[1];
-		int tempAmount = 1;
-		for (String part : parts) {
-			if (part.contains("amount:")) {
-				try {
-					tempAmount = Integer.parseInt(part.substring(7));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse amount");
-				}
-				break;
-			}
-		}
-		if (tempAmount < 1) {
-			throw new InstructionParseException("Amount cannot be less than 1");
-		}
-		amount = tempAmount;
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("notify")) {
-				tempNotify = true;
-			}
-		}
-		notify = tempNotify;
+		name = instruction.next();
+		amount = instruction.getInt(instruction.getOptional("amount"), 1);
+		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler

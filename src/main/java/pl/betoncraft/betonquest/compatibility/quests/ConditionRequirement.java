@@ -23,6 +23,9 @@ import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomRequirement;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -41,9 +44,15 @@ public class ConditionRequirement extends CustomRequirement {
 
 	@Override
 	public boolean testRequirement(Player player, Map<String, Object> dataMap) {
-		String playerID = PlayerConverter.getID(player);
-		String condition = dataMap.get("Condition").toString();
-		return BetonQuest.condition(playerID, condition);
+		String string = dataMap.get("Condition").toString();
+		try {
+			String playerID = PlayerConverter.getID(player);
+			ConditionID condition = new ConditionID(null, string);
+			return BetonQuest.condition(playerID, condition);
+		} catch (ObjectNotFoundException e) {
+			Debug.error("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage());
+			return false;
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.racesandclasses;
 
 import de.tobiyas.racesandclasses.APIs.ClassAPI;
 import de.tobiyas.racesandclasses.datacontainer.traitholdercontainer.classes.ClassContainer;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,19 +34,15 @@ public class RaCClassCondition extends Condition {
 	private String className;
 	private boolean none = false;
 
-	public RaCClassCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].equalsIgnoreCase("none")) {
+	public RaCClassCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		className = instruction.next();
+		if (className.equalsIgnoreCase("none")) {
 			none = true;
 		} else {
-			if (!ClassAPI.getAllClassNames().contains(parts[1])) {
-				throw new InstructionParseException("No such class: " + parts[1]);
+			if (!ClassAPI.getAllClassNames().contains(className)) {
+				throw new InstructionParseException("No such class: " + className);
 			}
-			className = parts[1];
 		}
 	}
 

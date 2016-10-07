@@ -23,12 +23,14 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Superclass for all objectives. You need to extend it in order to create new
@@ -42,13 +44,10 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public abstract class Objective {
 
-	protected final String instructions;
-	protected final ConfigPackage pack;
-	protected final String[] conditions;
-	protected final String[] events;
-	protected final boolean persistent;
-
-	private String label;
+	protected Instruction instruction;
+	protected ConditionID[] conditions;
+	protected EventID[] events;
+	protected boolean persistent;
 
 	/**
 	 * Contains all data objects of the players with this objective active
@@ -73,47 +72,35 @@ public abstract class Objective {
 	 * @throws InstructionParseException
 	 *             if the syntax is wrong
 	 */
-	public Objective(String packName, String label, String instructions) throws InstructionParseException {
-		this.instructions = instructions;
-		this.pack = Config.getPackage(packName);
-		this.label = label;
+	public Objective(Instruction instruction) throws InstructionParseException {
+		this.instruction = instruction;
 		// extract events and conditions
-		String[] tempEvents1 = new String[] {}, tempEvents2 = new String[] {}, tempConditions1 = new String[] {},
-				tempConditions2 = new String[] {};
-		boolean tempPersistent = false;
-		for (String part : instructions.split(" ")) {
-			if (part.startsWith("events:")) {
-				tempEvents1 = part.substring(7).split(",");
-			} else if (part.startsWith("event:")) {
-				tempEvents2 = part.substring(6).split(",");
-			} else if (part.startsWith("conditions:")) {
-				tempConditions1 = part.substring(11).split(",");
-			} else if (part.startsWith("condition:")) {
-				tempConditions2 = part.substring(10).split(",");
-			} else if (part.equalsIgnoreCase("persistent")) {
-				tempPersistent = true;
-			}
-		}
+		String[] tempEvents1 = instruction.getArray(instruction.getOptional("event")),
+				 tempEvents2 = instruction.getArray(instruction.getOptional("events")),
+				 tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
+				 tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
+		persistent = instruction.hasArgument("persistent");
 		// make them final
 		int length = tempEvents1.length + tempEvents2.length;
-		events = new String[length];
+		events = new EventID[length];
 		for (int i = 0; i < length; i++) {
-			events[i] = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
+			String event = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
+			try {
+				events[i] = new EventID(instruction.getPackage(), event);
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Error while parsing objective events: " + e.getMessage());
+			}
 		}
 		length = tempConditions1.length + tempConditions2.length;
-		conditions = new String[length];
+		conditions = new ConditionID[length];
 		for (int i = 0; i < length; i++) {
-			conditions[i] = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length]
-					: tempConditions1[i];
+			String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+			try {
+				conditions[i] = new ConditionID(instruction.getPackage(), condition);
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage());
+			}
 		}
-		// add package names
-		for (int i = 0; i < events.length; i++) {
-			events[i] = Utils.addPackage(packName, events[i]);
-		}
-		for (int i = 0; i < conditions.length; i++) {
-			conditions[i] = Utils.addPackage(packName, conditions[i]);
-		}
-		persistent = tempPersistent;
 	}
 
 	/**
@@ -158,15 +145,15 @@ public abstract class Objective {
 		// remove the objective from player's list
 		if (!persistent) {
 			removePlayer(playerID);
-			BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(label);
+			BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
 		}
-		Debug.info("Objective \"" + label + "\" has been completed for player " + PlayerConverter.getName(playerID)
+		Debug.info("Objective \"" + instruction.getID().getFullID() + "\" has been completed for player " + PlayerConverter.getName(playerID)
 				+ ", firing events.");
 		// fire all events
-		for (String event : events) {
+		for (EventID event : events) {
 			BetonQuest.event(playerID, event);
 		}
-		Debug.info("Firing events in objective \"" + label + "\" for player " + PlayerConverter.getName(playerID)
+		Debug.info("Firing events in objective \"" + instruction.getID().getFullID() + "\" for player " + PlayerConverter.getName(playerID)
 				+ " finished");
 	}
 
@@ -178,8 +165,8 @@ public abstract class Objective {
 	 * @return if all conditions of this objective has been met
 	 */
 	public final boolean checkConditions(final String playerID) {
-		Debug.info("Condition check in \"" + label + "\" objective for player " + PlayerConverter.getName(playerID));
-		for (String condition : conditions) {
+		Debug.info("Condition check in \"" + instruction.getID().getFullID() + "\" objective for player " + PlayerConverter.getName(playerID));
+		for (ConditionID condition : conditions) {
 			if (!BetonQuest.condition(playerID, condition)) {
 				return false;
 			}
@@ -197,7 +184,7 @@ public abstract class Objective {
 	public final void newPlayer(String playerID) {
 		String def = getDefaultDataInstruction();
 		addPlayer(playerID, def);
-		BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(label, def);
+		BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
 	}
 
 	/**
@@ -213,10 +200,10 @@ public abstract class Objective {
 		ObjectiveData data = null;
 		try {
 			data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
-					label);
+					this.instruction.getID().getFullID());
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof InstructionParseException) {
-				Debug.error("Error while loading " + label + " objective data for player "
+				Debug.error("Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
 						+ PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
 			} else {
 				e.printStackTrace();
@@ -281,7 +268,7 @@ public abstract class Objective {
 	 * @return the label of the objective
 	 */
 	public final String getLabel() {
-		return label;
+		return instruction.getID().getFullID();
 	}
 
 	/**
@@ -291,8 +278,8 @@ public abstract class Objective {
 	 * @param rename
 	 *            new name of the objective
 	 */
-	public void setLabel(String rename) {
-		label = rename;
+	public void setLabel(ObjectiveID rename) {
+		instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
 	}
 
 	/**
@@ -303,7 +290,7 @@ public abstract class Objective {
 	public void close() {
 		stop();
 		for (String playerID : dataMap.keySet()) {
-			BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(label, dataMap.get(playerID).toString());
+			BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(), dataMap.get(playerID).toString());
 		}
 	}
 

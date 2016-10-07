@@ -21,12 +21,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Skript effect, which fires specified BetonQuest's event
@@ -55,7 +58,13 @@ public class SkriptEffectBQ extends Effect {
 	protected void execute(final Event e) {
 		new BukkitRunnable() {
 			public void run() {
-				BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), event.getSingle(e));
+				String eventID = event.getSingle(e);
+				try {
+					BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), new EventID(null, eventID));
+				} catch (ObjectNotFoundException e) {
+					Debug.error("Error when running Skripe event - could not load '" + eventID + "' event: " + e.getMessage());
+				}
+				
 			}
 		}.runTask(BetonQuest.getInstance());
 	}

@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.legendquest;
 import me.sablednah.legendquest.Main;
 import me.sablednah.legendquest.mechanics.Attribute;
 import me.sablednah.legendquest.playercharacters.PC;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,23 +37,15 @@ public class LQAttributeVariable extends Variable {
 	private Type type;
 	private int amount;
 
-	public LQAttributeVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
-		if (parts.length != 3) {
-			throw new InstructionParseException("Incorrect number of arguments");
-		}
-		try {
-			attribute = Attribute.valueOf(parts[1].toUpperCase());
-		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("No such attribute: " + parts[1]);
-		}
-		if (parts[2].equalsIgnoreCase("amount")) {
+	public LQAttributeVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		attribute = instruction.getEnum(Attribute.class);
+		if (instruction.next().equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
-		} else if (parts[2].toLowerCase().startsWith("left:")) {
+		} else if (instruction.current().toLowerCase().startsWith("left:")) {
 			type = Type.LEFT;
 			try {
-				amount = Integer.parseInt(parts[2].substring(5));
+				amount = Integer.parseInt(instruction.current().substring(5));
 			} catch (NumberFormatException e) {
 				throw new InstructionParseException("Could not parse attribute amount");
 			}

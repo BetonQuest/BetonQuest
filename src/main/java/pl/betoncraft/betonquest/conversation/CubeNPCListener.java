@@ -111,11 +111,8 @@ public class CubeNPCListener implements Listener {
 					Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "busy");
 					return;
 				}
-				String[] parts = assignment.split("\\.");
-				final String convName = parts[1];
-				final String packName = parts[0];
 				event.setCancelled(true);
-				new Conversation(PlayerConverter.getID(event.getPlayer()), packName, convName,
+				new Conversation(PlayerConverter.getID(event.getPlayer()), assignment,
 						event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
 			} else {
 				Debug.error("Cannot start conversation: nothing assigned to " + conversationID);

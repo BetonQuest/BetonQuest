@@ -17,8 +17,8 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 
 /**
@@ -31,7 +31,7 @@ abstract public class Variable {
 	/**
 	 * Stores instruction string for the condition.
 	 */
-	protected String instruction;
+	protected Instruction instruction;
 	/**
 	 * ConfigPackage in which this condition is defined
 	 */
@@ -50,9 +50,8 @@ abstract public class Variable {
 	 *            required data from it and display errors if there is anything
 	 *            wrong.
 	 */
-	public Variable(String packName, String instruction) throws InstructionParseException {
+	public Variable(Instruction instruction) throws InstructionParseException {
 		this.instruction = instruction;
-		this.pack = Config.getPackage(packName);
 	}
 
 	/**

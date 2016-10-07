@@ -28,6 +28,8 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.QuestItem;
@@ -55,8 +57,7 @@ public class PlayerData {
 	private List<String> tags = new ArrayList<>();
 	private List<Pointer> entries = new ArrayList<>();
 	private List<Point> points = new ArrayList<>();
-	private HashMap<String, String> objectives = new HashMap<>(); // not active
-																	// ones
+	private HashMap<String, String> objectives = new HashMap<>(); // not active ones
 	private Journal journal;
 	private List<ItemStack> backpack = new ArrayList<>();
 	private String conv;
@@ -290,7 +291,13 @@ public class PlayerData {
 	 */
 	public void startObjectives() {
 		for (String objective : objectives.keySet()) {
-			BetonQuest.resumeObjective(playerID, objective, objectives.get(objective));
+			try {
+				ObjectiveID objectiveID = new ObjectiveID(null, objective);
+				BetonQuest.resumeObjective(playerID, objectiveID, objectives.get(objective));
+			} catch (ObjectNotFoundException e) {
+				Debug.error("Loaded '" + objective
+						+ "' objective from the database, but it is not defined in configuration. Skipping.");
+			}
 		}
 		objectives.clear();
 	}
@@ -310,14 +317,14 @@ public class PlayerData {
 	 * @param objectiveID
 	 *            ID of the objective
 	 */
-	public void addNewRawObjective(String objectiveID) {
+	public void addNewRawObjective(ObjectiveID objectiveID) {
 		Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
 		if (obj == null) {
 			return;
 		}
 		String data = obj.getDefaultDataInstruction();
-		if (addRawObjective(objectiveID, data))
-			saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
+		if (addRawObjective(objectiveID.toString(), data))
+			saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID.toString(), data}));
 	}
 
 	/**
@@ -343,9 +350,9 @@ public class PlayerData {
 	 * 
 	 * @param objectiveID
 	 */
-	public void removeRawObjective(String objectiveID) {
-		objectives.remove(objectiveID);
-		removeObjFromDB(objectiveID);
+	public void removeRawObjective(ObjectiveID objectiveID) {
+		objectives.remove(objectiveID.toString());
+		removeObjFromDB(objectiveID.toString());
 	}
 
 	/**

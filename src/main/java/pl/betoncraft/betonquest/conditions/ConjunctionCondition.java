@@ -17,10 +17,13 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import java.util.List;
+
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * All of specified conditions have to be true
@@ -29,23 +32,16 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class ConjunctionCondition extends Condition {
 
-	private  String[] conditions;
+	private  List<ConditionID> conditions;
 
-	public ConjunctionCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Conditions not defined");
-		}
-		conditions = parts[1].split(",");
-		for (int i = 0; i < conditions.length; i++) {
-			conditions[i] = Utils.addPackage(packName, conditions[i]);
-		}
+	public ConjunctionCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		conditions = instruction.getList(e -> instruction.getCondition(e));
 	}
 
 	@Override
 	public boolean check(String playerID) {
-		for (String condition : conditions) {
+		for (ConditionID condition : conditions) {
 			if (!BetonQuest.condition(playerID, condition)) {
 				return false;
 			}

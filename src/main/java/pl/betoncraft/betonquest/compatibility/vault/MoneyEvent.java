@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.vault;
 
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -36,18 +37,15 @@ public class MoneyEvent extends QuestEvent {
 	private final VariableNumber amount;
 	private boolean multi;
 
-	public MoneyEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].startsWith("*")) {
+	public MoneyEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		if (string.startsWith("*")) {
 			multi = true;
-			parts[1] = parts[1].replace("*", "");
+			string = string.replace("*", "");
 		}
 		try {
-			amount = new VariableNumber(packName, parts[1]);
+			amount = new VariableNumber(instruction.getPackage().getName(), string);
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse money amount");
 		}

@@ -24,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
@@ -38,14 +39,10 @@ public class ConsumeObjective extends Objective implements Listener {
 	
 	private QuestItem item;
 
-	public ConsumeObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public ConsumeObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		item = QuestItem.newQuestItem(packName, parts[1]);
+		item = instruction.getQuestItem();
 	}
 	
 	@EventHandler

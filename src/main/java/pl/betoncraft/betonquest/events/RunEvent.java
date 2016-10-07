@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -34,11 +35,11 @@ public class RunEvent extends QuestEvent {
 
 	ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
-	public RunEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public RunEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = false;
 		persistent = false;
-		String[] parts = instructions.substring(3).trim().split(" ");
+		String[] parts = instruction.getInstruction().substring(3).trim().split(" ");
 		if (parts.length < 1) {
 			throw new InstructionParseException("Not enough arguments");
 		}
@@ -72,7 +73,8 @@ public class RunEvent extends QuestEvent {
 					+ " spelled correctly in internal event");
 		}
 		try {
-			return eventClass.getConstructor(String.class, String.class).newInstance(pack.getName(), instruction);
+			return eventClass.getConstructor(Instruction.class).newInstance(
+					new Instruction(this.instruction.getPackage(), null, instruction));
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof InstructionParseException) {
 				throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage());

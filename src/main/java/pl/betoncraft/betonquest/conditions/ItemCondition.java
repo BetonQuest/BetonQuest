@@ -17,16 +17,15 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -37,29 +36,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ItemCondition extends Condition {
 
-	private final List<Item> questItems = new ArrayList<>();
+	private final Item[] questItems;
 
-	public ItemCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Items not defined");
-		}
-		String items = parts[1];
-		for (String item : items.split(",")) {
-			String[] itemParts = item.split(":");
-			String name = itemParts[0];
-			VariableNumber amount = new VariableNumber(1);
-			if (itemParts.length > 1 && itemParts[1].matches("\\d+")) {
-				try {
-					amount = new VariableNumber(packName, item.split(":")[1]);
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Cannot parse item amount");
-				}
-			}
-			QuestItem questItem = QuestItem.newQuestItem(packName, name);
-			questItems.add(new Item(questItem, amount));
-		}
+	public ItemCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		questItems = instruction.getItemList();
 	}
 
 	@Override
@@ -96,28 +77,9 @@ public class ItemCondition extends Condition {
 				}
 			}
 		}
-		if (counter == questItems.size()) {
+		if (counter == questItems.length) {
 			return true;
 		}
 		return false;
-	}
-
-	private class Item {
-
-		private QuestItem questItem;
-		private VariableNumber amount;
-
-		public Item(QuestItem questItem, VariableNumber amount) {
-			this.questItem = questItem;
-			this.amount = amount;
-		}
-
-		public boolean isItemEqual(ItemStack item) {
-			return questItem.equalsI(item);
-		}
-
-		public VariableNumber getAmount() {
-			return amount;
-		}
 	}
 }

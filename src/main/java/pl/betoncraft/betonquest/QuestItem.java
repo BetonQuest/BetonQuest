@@ -96,24 +96,12 @@ public class QuestItem {
 	 * @throws InstructionParseException
 	 *             when item parsing goes wrong
 	 */
-	public static QuestItem newQuestItem(String packName, String itemID) throws InstructionParseException {
-		String pack, ID;
-		if (itemID.contains(".")) {
-			String[] parts = itemID.split("\\.");
-			if (parts.length != 2) {
-				throw new InstructionParseException("Incorrect item ID: " + itemID);
-			}
-			pack = parts[0];
-			ID = parts[1];
-		} else {
-			pack = packName;
-			ID = itemID;
-		}
-		String instruction = Config.getString(pack + ".items." + ID);
-		if (instruction == null) {
-			throw new InstructionParseException("Item is not defined");
-		}
-		return new QuestItem(instruction);
+	public QuestItem(ItemID itemID) throws InstructionParseException {
+		this(itemID.generateInstruction());
+	}
+	
+	public QuestItem(Instruction instruction) throws InstructionParseException {
+		this(instruction.getInstruction());
 	}
 
 	/**
@@ -125,11 +113,11 @@ public class QuestItem {
 	public QuestItem(String instruction) throws InstructionParseException {
 		if (instruction == null)
 			throw new NullPointerException("Item instruction is null");
+		// get material type
 		String[] parts = instruction.split(" ");
 		if (parts.length < 1) {
-			throw new InstructionParseException("Item type not defined");
+			throw new InstructionParseException("Not enough arguments");
 		}
-		// get material type
 		material = Material.matchMaterial(parts[0]);
 		if (material == null) {
 			throw new InstructionParseException("Unknown item type: " + parts[0]);

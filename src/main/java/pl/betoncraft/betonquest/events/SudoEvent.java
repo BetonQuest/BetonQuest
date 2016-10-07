@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,10 +33,11 @@ public class SudoEvent extends QuestEvent {
 
 	private final String[] commands;
 
-	public SudoEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public SudoEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		try {
-			commands = instructions.trim().substring(instructions.indexOf(" ") + 1).split("\\|");
+			String string = instruction.getInstruction();
+			commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
 		} catch (Exception e) {
 			throw new InstructionParseException("Could not parse commands");
 		}

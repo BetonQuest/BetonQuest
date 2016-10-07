@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
@@ -34,9 +35,9 @@ public class CheckCondition extends Condition {
 
 	ArrayList<Condition> internalConditions = new ArrayList<>();
 
-	public CheckCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.substring(5).trim().split(" ");
+	public CheckCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
 		if (parts.length < 1) {
 			throw new InstructionParseException("Not enough arguments");
 		}
@@ -70,7 +71,8 @@ public class CheckCondition extends Condition {
 					+ " spelled correctly in internal condition");
 		}
 		try {
-			return conditionClass.getConstructor(String.class, String.class).newInstance(pack.getName(), instruction);
+			return conditionClass.getConstructor(Instruction.class).newInstance(
+					new Instruction(this.instruction.getPackage(), null, instruction));
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof InstructionParseException) {
 				throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage());

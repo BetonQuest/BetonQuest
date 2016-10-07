@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import me.sablednah.legendquest.Main;
 import me.sablednah.legendquest.classes.ClassType;
 import me.sablednah.legendquest.playercharacters.PC;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -37,23 +38,14 @@ public class LQClassCondition extends Condition {
 	private String className;
 	private boolean subClass = false;
 
-	public LQClassCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		className = parts[1];
+	public LQClassCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		className = instruction.next();
 		lq = ((Main) Bukkit.getPluginManager().getPlugin("LegendQuest"));
 		if (lq.getClasses().getClass(className) == null) {
 			throw new InstructionParseException("Class " + className + " does not exist");
 		}
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("--subclass")) {
-				subClass = true;
-				break;
-			}
-		}
+		subClass = instruction.hasArgument("--subclass");
 	}
 
 	@Override

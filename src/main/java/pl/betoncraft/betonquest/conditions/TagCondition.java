@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -31,13 +32,9 @@ public class TagCondition extends Condition {
 
 	private final String tag;
 
-	public TagCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("There is no tag defined");
-		}
-		tag = Utils.addPackage(packName, parts[1]);
+	public TagCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		tag = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override

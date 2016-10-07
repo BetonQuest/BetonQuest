@@ -33,6 +33,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -50,39 +51,27 @@ public class PasteSchematicEvent extends QuestEvent {
 	private WorldEditPlugin we;
 	private File file;
 	private LocationData loc;
-	private boolean noAir = true;
-	private int maxBlocks = 32 * 32 * 32;
+	private boolean noAir;
+	private int maxBlocks;
 
-	public PasteSchematicEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+	public PasteSchematicEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		loc = instruction.getLocation();
 		we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 		File folder = new File(we.getDataFolder(), "schematics");
 		if (!folder.exists() || !folder.isDirectory()) {
 			throw new InstructionParseException("Schematic folder does not exist");
 		}
-		file = new File(folder, parts[2] + ".schematic");
+		String schemName = instruction.next();
+		file = new File(folder, schemName + ".schematic");
 		if (!file.exists()) {
-			throw new InstructionParseException("Schematic " + parts[2] + " does not exist");
+			throw new InstructionParseException("Schematic " + schemName + " does not exist");
 		}
-		for (String part : parts) {
-			if (part.toLowerCase().startsWith("maxblocks:")) {
-				try {
-					maxBlocks = Integer.parseInt(part.substring(10));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse max blocks amount");
-				}
-				if (maxBlocks <= 0) {
-					throw new InstructionParseException("Max blocks amount must be greater than 0");
-				}
-			} else if (part.equalsIgnoreCase("noair")) {
-				noAir = true;
-			}
+		instruction.getInt(instruction.getOptional("maxblocks"), 32 * 32 * 32);
+		if (maxBlocks <= 0) {
+			throw new InstructionParseException("Max blocks amount must be greater than 0");
 		}
+		noAir = instruction.hasArgument("noair");
 	}
 
 	@Override

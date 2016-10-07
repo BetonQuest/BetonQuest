@@ -24,6 +24,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
@@ -44,37 +45,16 @@ public class MobKillObjective extends Objective implements Listener {
 	protected final String name;
 	protected final boolean notify;
 
-	public MobKillObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public MobKillObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = MobData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			mobType = EntityType.valueOf(parts[1].toUpperCase());
-		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("Unknown entity type: " + parts[1]);
-		}
-		try {
-			amount = Integer.valueOf(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
+		mobType = instruction.getEnum(EntityType.class);
+		amount = instruction.getInt();
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}
-		String tempName = null;
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.startsWith("name:")) {
-				tempName = part.substring(5).replace("_", " ");
-			} else if (part.equalsIgnoreCase("notify")) {
-				tempNotify = true;
-			}
-		}
-		name = tempName;
-		notify = tempNotify;
+		name = instruction.getOptional("name");
+		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler

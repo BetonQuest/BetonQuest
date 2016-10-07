@@ -64,7 +64,7 @@ public class LocationData {
 		if (string.contains("->")) {
 			String[] main = string.split("->");
 			if (main.length != 2) {
-				throw new InstructionParseException("Incorrect location format");
+				throw new InstructionParseException("Incorrect vector format (" + base + ")");
 			}
 			String vec = main[1];
 			if (!vec.matches("^\\(-?\\d+.?\\d*;-?\\d+.?\\d*;-?\\d+.?\\d*\\)(;.+)?$")) {
@@ -95,7 +95,7 @@ public class LocationData {
 			type = Type.LOCATION;
 			String[] parts = base.split(";");
 			if (parts.length < 4) {
-				throw new InstructionParseException("Wrong location format");
+				throw new InstructionParseException("Wrong location format (" + base + ")");
 			}
 			World world = Bukkit.getWorld(parts[3]);
 			if (world == null) {
@@ -153,7 +153,7 @@ public class LocationData {
 	 * @param playerID
 	 *            ID of the player, needed for location resolution
 	 * @return the location represented by this object
-	 * @throws InstructionParseException
+	 * @throws QuestRuntimeException
 	 *             when location is defined for the player but the player cannot
 	 *             be accessed
 	 */

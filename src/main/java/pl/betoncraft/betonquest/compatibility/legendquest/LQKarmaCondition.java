@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.legendquest;
 import org.bukkit.Bukkit;
 
 import me.sablednah.legendquest.Main;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -34,17 +35,9 @@ public class LQKarmaCondition extends Condition {
 	private Main lq;
 	private long karma;
 
-	public LQKarmaCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			karma = Long.parseLong(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse karma amount");
-		}
+	public LQKarmaCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		karma = instruction.getLong();
 		lq = ((Main) Bukkit.getPluginManager().getPlugin("LegendQuest"));
 	}
 

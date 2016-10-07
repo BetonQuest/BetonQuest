@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -45,22 +46,16 @@ public class TameObjective extends Objective implements Listener {
 	private final TamableMobs type;
 	private final int amount;
 
-	public TameObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public TameObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = TameData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		type = TamableMobs.valueOf(parts[1].toUpperCase());
-		if (type == null) {
-			throw new InstructionParseException("Unknown type: " + parts[1]);
-		}
+		String string = instruction.next();
 		try {
-			amount = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
+			type = TamableMobs.valueOf(string.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			throw new InstructionParseException("Unknown type: " + string);
 		}
+		amount = instruction.getInt();
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}

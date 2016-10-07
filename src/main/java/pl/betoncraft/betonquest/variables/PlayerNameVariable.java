@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.variables;
 
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,11 +34,9 @@ public class PlayerNameVariable extends Variable {
 
 	private boolean display = false;
 
-	public PlayerNameVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
-		if (parts.length > 1 && parts[1].equalsIgnoreCase("display"))
-			display = true;
+	public PlayerNameVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		display = instruction.hasArgument("display");
 	}
 
 	@Override

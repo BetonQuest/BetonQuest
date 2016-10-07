@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.heroes;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,13 +34,9 @@ public class HeroesSkillCondition extends Condition {
 
 	private String skillName;
 
-	public HeroesSkillCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		skillName = parts[1];
+	public HeroesSkillCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		skillName = instruction.next();
 	}
 
 	@Override

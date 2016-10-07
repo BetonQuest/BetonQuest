@@ -31,7 +31,9 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -46,7 +48,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HologramLoop {
 	
-	private HashMap<Hologram, String[]> holograms = new HashMap<>();
+	private HashMap<Hologram, ConditionID[]> holograms = new HashMap<>();
 	private BukkitRunnable runnable;
 	
 	/**
@@ -72,15 +74,17 @@ public class HologramLoop {
 					Debug.error("Location is not specified in " + key + " hologram");
 					continue;
 				}
-				String[] conditions = new String[]{};
+				ConditionID[] conditions = new ConditionID[]{};
 				if (rawConditions != null) {
-					conditions = rawConditions.split(",");
+					String[] parts = rawConditions.split(",");
+					conditions = new ConditionID[parts.length];
 					for (int i = 0; i < conditions.length; i++) {
-						String condition = conditions[i].trim();
-						if (!condition.contains(".")) {
-							condition = packName + "." + condition;
+						try {
+							conditions[i] = new ConditionID(pack, parts[i]);
+						} catch (ObjectNotFoundException e) {
+							Debug.error("Error while loading " + parts[i] + " condition for hologram " + packName + "."
+									+ key + ": " + e.getMessage());
 						}
-						conditions[i] = condition;
 					}
 				}
 				Location location = null;
@@ -105,8 +109,8 @@ public class HologramLoop {
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String playerID = PlayerConverter.getID(player);
 					holograms:
-					for (Entry<Hologram, String[]> entry : holograms.entrySet()) {
-						for (String condition : entry.getValue()) {
+					for (Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
+						for (ConditionID condition : entry.getValue()) {
 							if (!BetonQuest.condition(playerID, condition)) {
 								entry.getKey().getVisibilityManager().hideTo(player);
 								continue holograms;

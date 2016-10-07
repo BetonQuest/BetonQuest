@@ -17,16 +17,14 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import java.util.ArrayList;
-
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.LocationData;
 
@@ -37,35 +35,16 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class ChestItemCondition extends Condition {
 
-	private final ArrayList<Item> questItems = new ArrayList<>();
+	private final Item[] questItems;
 	private final LocationData loc;
 
-	public ChestItemCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public ChestItemCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not eoungh arguments");
-		}
-		// extract location
-		loc = new LocationData(packName, parts[1]);
-		// extract items
-		String items = parts[2];
-		for (String item : items.split(",")) {
-			String[] itemParts = item.split(":");
-			String name = itemParts[0];
-			VariableNumber amount = new VariableNumber(1);
-			if (itemParts.length > 1) {
-				try {
-					amount = new VariableNumber(packName, item.split(":")[1]);
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Cannot parse item amount");
-				}
-			}
-			QuestItem questItem = QuestItem.newQuestItem(packName, name);
-			questItems.add(new Item(questItem, amount));
-		}
+		// extract data
+		loc = instruction.getLocation();
+		questItems = instruction.getItemList();
 	}
 
 	@Override
@@ -96,29 +75,10 @@ public class ChestItemCondition extends Condition {
 				}
 			}
 		}
-		if (counter == questItems.size()) {
+		if (counter == questItems.length) {
 			return true;
 		}
 		return false;
-	}
-
-	private class Item {
-
-		private QuestItem questItem;
-		private VariableNumber amount;
-
-		public Item(QuestItem questItem, VariableNumber amount) {
-			this.questItem = questItem;
-			this.amount = amount;
-		}
-
-		public boolean isItemEqual(ItemStack item) {
-			return questItem.equalsI(item);
-		}
-
-		public VariableNumber getAmount() {
-			return amount;
-		}
 	}
 
 }

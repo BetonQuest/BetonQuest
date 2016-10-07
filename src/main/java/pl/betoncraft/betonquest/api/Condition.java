@@ -17,10 +17,9 @@
  */
 package pl.betoncraft.betonquest.api;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
 
 /**
  * Superclass for all conditions. You need to extend it in order to create new
@@ -37,11 +36,7 @@ abstract public class Condition {
 	/**
 	 * Stores instruction string for the condition.
 	 */
-	protected String instructions;
-	/**
-	 * ConfigPackage in which this condition is defined
-	 */
-	protected ConfigPackage pack;
+	protected Instruction instruction;
 	/**
 	 * If a condition is static it can be used with null player. Static events
 	 * can be run with static events.
@@ -67,9 +62,8 @@ abstract public class Condition {
 	 *            required data from it and display errors if there is anything
 	 *            wrong.
 	 */
-	public Condition(String packName, String instructions) throws InstructionParseException {
-		this.instructions = instructions;
-		this.pack = Config.getPackage(packName);
+	public Condition(Instruction instruction) throws InstructionParseException {
+		this.instruction = instruction;
 	}
 
 	/**

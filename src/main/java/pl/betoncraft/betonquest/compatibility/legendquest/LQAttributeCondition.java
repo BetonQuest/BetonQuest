@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 
 import me.sablednah.legendquest.Main;
 import me.sablednah.legendquest.mechanics.Attribute;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,22 +37,10 @@ public class LQAttributeCondition extends Condition {
 	private Attribute attribute;
 	private int required;
 
-	public LQAttributeCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			attribute = Attribute.valueOf(parts[1].toUpperCase());
-		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("No such attribute: " + parts[1]);
-		}
-		try {
-			required = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse required level");
-		}
+	public LQAttributeCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		attribute = instruction.getEnum(Attribute.class);
+		required = instruction.getInt();
 		lq = ((Main) Bukkit.getPluginManager().getPlugin("LegendQuest"));
 	}
 

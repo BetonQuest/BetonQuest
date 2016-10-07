@@ -24,6 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -37,22 +38,18 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class MonstersCondition extends Condition {
 
-	private final EntityType[] types;
-	private final VariableNumber[] amounts;
-	private final LocationData loc;
-	private final String name;
+	private EntityType[] types;
+	private VariableNumber[] amounts;
+	private LocationData loc;
+	private String name;
 
-	public MonstersCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public MonstersCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		String[] rawTypes = parts[1].split(",");
-		EntityType[] tempTypes = new EntityType[rawTypes.length];
-		VariableNumber[] tempAmounts = new VariableNumber[rawTypes.length];
+		String[] rawTypes = instruction.getArray();
+		types = new EntityType[rawTypes.length];
+		amounts = new VariableNumber[rawTypes.length];
 		for (int i = 0; i < rawTypes.length; i++) {
 			try {
 				if (rawTypes[i].contains(":")) {
@@ -60,35 +57,26 @@ public class MonstersCondition extends Condition {
 					if (typeParts.length == 0) {
 						throw new InstructionParseException("Type not defined");
 					} else if (typeParts.length < 2) {
-						tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
-						tempAmounts[i] = new VariableNumber(1);
+						types[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+						amounts[i] = new VariableNumber(1);
 					} else {
-						tempTypes[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+						types[i] = EntityType.valueOf(typeParts[0].toUpperCase());
 						try {
-							tempAmounts[i] = new VariableNumber(packName, typeParts[1]);
+							amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
 						} catch (NumberFormatException e) {
 							throw new InstructionParseException("Could not parse amount");
 						}
 					}
 				} else {
-					tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
-					tempAmounts[i] = new VariableNumber(1);
+					types[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
+					amounts[i] = new VariableNumber(1);
 				}
 			} catch (IllegalArgumentException e) {
 				throw new InstructionParseException("Unknown mob type: " + rawTypes[i]);
 			}
 		}
-		types = tempTypes;
-		amounts = tempAmounts;
-		loc = new LocationData(packName, parts[2]);
-		String tempName = null;
-		for (String part : parts) {
-			if (part.startsWith("name:")) {
-				tempName = part.substring(5).replace("_", " ").trim();
-				break;
-			}
-		}
-		name = tempName;
+		loc = instruction.getLocation();
+		name = instruction.getOptional("name");
 	}
 
 	@Override

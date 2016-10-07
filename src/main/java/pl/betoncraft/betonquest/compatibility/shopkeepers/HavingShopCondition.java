@@ -21,7 +21,10 @@ import com.nisovin.shopkeepers.Shopkeeper;
 import com.nisovin.shopkeepers.ShopkeepersPlugin;
 import com.nisovin.shopkeepers.shoptypes.PlayerShopkeeper;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -30,24 +33,16 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HavingShopCondition extends Condition {
 	
-	private final int amount;
+	private final VariableNumber amount;
 
-	public HavingShopCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			amount = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse shop amount");
-		}
+	public HavingShopCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		amount = instruction.getVarNum();
 	}
 
 	@Override
-	public boolean check(String playerID) {
-		int count = amount;
+	public boolean check(String playerID) throws QuestRuntimeException {
+		int count = amount.getInt(playerID);
 		for (Shopkeeper s : ShopkeepersPlugin.getInstance().getAllShopkeepers()) {
 			if (s instanceof PlayerShopkeeper) {
 				PlayerShopkeeper ps = (PlayerShopkeeper) s;

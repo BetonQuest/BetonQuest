@@ -22,6 +22,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -38,18 +39,10 @@ public class ScoreboardCondition extends Condition {
 	private final String objective;
 	private final VariableNumber count;
 
-	public ScoreboardCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		objective = parts[1];
-		try {
-			count = new VariableNumber(packName, parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse point amount");
-		}
+	public ScoreboardCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		objective = instruction.next();
+		count = instruction.getVarNum();
 	}
 
 	@Override

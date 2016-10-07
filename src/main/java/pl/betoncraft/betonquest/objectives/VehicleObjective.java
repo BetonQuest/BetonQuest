@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -35,19 +36,16 @@ public class VehicleObjective extends Objective implements Listener {
 	private EntityType vehicle;
 	private boolean any;
 
-	public VehicleObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public VehicleObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].equalsIgnoreCase("any")) {
+		String name = instruction.next();
+		if (name.equalsIgnoreCase("any")) {
 			any = true;
 		} else try {
-			vehicle = EntityType.valueOf(parts[1].toUpperCase());
+			vehicle = EntityType.valueOf(name.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("Entity type " + parts[1] + " does not exist.");
+			throw new InstructionParseException("Entity type " + name + " does not exist.");
 		}
 	}
 

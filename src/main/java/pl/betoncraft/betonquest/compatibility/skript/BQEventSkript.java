@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -35,19 +36,15 @@ public class BQEventSkript extends QuestEvent {
 
 	private final String id;
 
-	public BQEventSkript(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		id = parts[1];
+	public BQEventSkript(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		id = instruction.next();
 	}
 
 	/**
 	 * Custom event, which runs for Skript to listen.
 	 * 
-	 * @author Coosh
+	 * @author Jakub Sapalski
 	 */
 	public static class CustomEventForSkript extends PlayerEvent {
 

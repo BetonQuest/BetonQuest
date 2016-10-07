@@ -18,10 +18,11 @@
 package pl.betoncraft.betonquest.variables;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Resolves to a specified property of an objective.
@@ -30,17 +31,13 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class ObjectivePropertyVariable extends Variable {
 
-	private String objective;
+	private ObjectiveID objective;
 	private String propertyName;
-
-	public ObjectivePropertyVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
-		if (parts.length != 3) {
-			throw new InstructionParseException("Incorrect number of arguments");
-		}
-		objective = Utils.addPackage(packName, parts[1]);
-		propertyName = parts[2];
+	
+	public ObjectivePropertyVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		objective = instruction.getObjective();
+		propertyName = instruction.next();
 	}
 
 	@Override

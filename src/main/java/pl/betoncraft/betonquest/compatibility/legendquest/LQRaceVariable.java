@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.legendquest;
 import org.bukkit.Bukkit;
 
 import me.sablednah.legendquest.Main;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,8 +34,8 @@ public class LQRaceVariable extends Variable {
 	
 	private Main lq;
 
-	public LQRaceVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
+	public LQRaceVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		lq = ((Main) Bukkit.getPluginManager().getPlugin("LegendQuest"));
 	}
 

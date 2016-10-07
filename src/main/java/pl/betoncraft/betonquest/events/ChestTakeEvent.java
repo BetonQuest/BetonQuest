@@ -17,16 +17,15 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import java.util.ArrayList;
-
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.LocationData;
 
@@ -40,36 +39,12 @@ public class ChestTakeEvent extends QuestEvent {
 	private Item[] questItems;
 	private LocationData loc;
 
-	public ChestTakeEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public ChestTakeEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not eoungh arguments");
-		}
-		// extract location
-		loc = new LocationData(packName, parts[1]);
-		// extract items
-		String[] itemsToRemove = parts[2].split(",");
-		ArrayList<Item> list = new ArrayList<>();
-		for (String rawItem : itemsToRemove) {
-			String[] rawItemParts = rawItem.split(":");
-			String itemName = rawItemParts[0];
-			VariableNumber amount = new VariableNumber(1);
-			if (rawItemParts.length > 1) {
-				try {
-					amount = new VariableNumber(packName, rawItemParts[1]);
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse item amount");
-				}
-			}
-			QuestItem questItem = QuestItem.newQuestItem(packName, itemName);
-			list.add(new Item(questItem, amount));
-		}
-		Item[] tempQuestItems = new Item[list.size()];
-		tempQuestItems = list.toArray(tempQuestItems);
-		questItems = tempQuestItems;
+		loc = instruction.getLocation();
+		questItems = instruction.getItemList();
 	}
 
 	@Override
@@ -107,25 +82,6 @@ public class ChestTakeEvent extends QuestEvent {
 			}
 		}
 		return items;
-	}
-
-	private class Item {
-
-		private final QuestItem item;
-		private final VariableNumber amount;
-
-		public Item(QuestItem item, VariableNumber amount) {
-			this.item = item;
-			this.amount = amount;
-		}
-
-		public QuestItem getItem() {
-			return item;
-		}
-
-		public VariableNumber getAmount() {
-			return amount;
-		}
 	}
 
 }

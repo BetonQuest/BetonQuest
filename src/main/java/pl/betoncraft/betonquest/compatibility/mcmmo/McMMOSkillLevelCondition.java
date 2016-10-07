@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.mcmmo;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -36,22 +37,13 @@ public class McMMOSkillLevelCondition extends Condition {
 	private final String skillType;
 	private final VariableNumber level;
 
-	public McMMOSkillLevelCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		skillType = parts[1].toUpperCase();
+	public McMMOSkillLevelCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		skillType = instruction.next().toUpperCase();
 		if (!SkillAPI.getSkills().contains(skillType)) {
 			throw new InstructionParseException("Invalid skill name");
 		}
-		try {
-			VariableNumber tempLevel = new VariableNumber(packName, parts[2]);
-			level = tempLevel;
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse level");
-		}
+		level = instruction.getVarNum();
 	}
 
 	@Override

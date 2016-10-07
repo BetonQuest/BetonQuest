@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.vault;
 
 import net.milkbowl.vault.permission.Permission;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -33,17 +34,13 @@ public class PermissionEvent extends QuestEvent {
 	private final String world, permission;
 	private final boolean add, perm;
 
-	public PermissionEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 4) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		add = parts[1].equalsIgnoreCase("add");
-		perm = parts[2].equalsIgnoreCase("perm");
-		permission = parts[3];
-		if (parts.length >= 5) {
-			world = parts[4];
+	public PermissionEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		add = instruction.next().equalsIgnoreCase("add");
+		perm = instruction.next().equalsIgnoreCase("perm");
+		permission = instruction.next();
+		if (instruction.size() >= 5) {
+			world = instruction.next();
 		} else {
 			world = null;
 		}

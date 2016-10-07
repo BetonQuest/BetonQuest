@@ -23,6 +23,7 @@ import net.aufdemrand.denizen.BukkitScriptEntryData;
 import net.aufdemrand.denizen.objects.dPlayer;
 import net.aufdemrand.denizencore.scripts.ScriptRegistry;
 import net.aufdemrand.denizencore.scripts.containers.core.TaskScriptContainer;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,15 +37,12 @@ public class DenizenTaskScriptEvent extends QuestEvent {
 
 	private TaskScriptContainer taskScript;
 
-	public DenizenTaskScriptEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		taskScript = ScriptRegistry.getScriptContainerAs(parts[1], TaskScriptContainer.class);
+	public DenizenTaskScriptEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		taskScript = ScriptRegistry.getScriptContainerAs(string, TaskScriptContainer.class);
 		if (taskScript == null) {
-			throw new InstructionParseException("Denizen script '" + parts[1] + "' is not defined");
+			throw new InstructionParseException("Denizen script '" + string + "' is not defined");
 		}
 	}
 

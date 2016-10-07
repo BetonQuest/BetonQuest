@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
@@ -35,13 +36,9 @@ public class LocationCondition extends Condition {
 
 	private final LocationData loc;
 
-	public LocationCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+	public LocationCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		loc = instruction.getLocation();
 	}
 
 	@Override

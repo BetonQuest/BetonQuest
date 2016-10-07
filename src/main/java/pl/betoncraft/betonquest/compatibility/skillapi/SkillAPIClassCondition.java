@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.skillapi;
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerData;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,23 +33,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class SkillAPIClassCondition extends Condition {
 
 	private String className;
-	private boolean exact = false;
+	private boolean exact;
 
-	public SkillAPIClassCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		className = parts[1];
+	public SkillAPIClassCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		className = instruction.next();
 		if (!SkillAPI.isClassRegistered(className)) {
 			throw new InstructionParseException("Class '" + className + "' is not registered");
 		}
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("exact")) {
-				exact = true;
-			}
-		}
+		exact = instruction.hasArgument("exact");
 	}
 
 	@Override

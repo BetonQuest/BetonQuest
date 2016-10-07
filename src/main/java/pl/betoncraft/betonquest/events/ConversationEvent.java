@@ -17,10 +17,12 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Fires the conversation for the player
@@ -29,28 +31,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ConversationEvent extends QuestEvent {
 
-	private final String pack;
 	private final String conv;
 
-	public ConversationEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Conversation not defined");
-		}
-		String convID = parts[1];
-		if (convID.contains(".")) {
-			String[] parts2 = convID.split("\\.");
-			pack = parts2[0];
-			conv = parts2[1];
-		} else {
-			pack = super.pack.getName();
-			conv = convID;
-		}
+	public ConversationEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		conv = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override
 	public void run(String playerID) {
-		new Conversation(playerID, pack, conv, PlayerConverter.getPlayer(playerID).getLocation());
+		new Conversation(playerID, conv, PlayerConverter.getPlayer(playerID).getLocation());
 	}
 }

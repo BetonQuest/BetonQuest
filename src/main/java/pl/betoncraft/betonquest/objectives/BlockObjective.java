@@ -26,6 +26,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -45,43 +46,14 @@ public class BlockObjective extends Objective implements Listener {
 	private final int neededAmount;
 	private final boolean notify;
 
-	public BlockObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public BlockObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = BlockData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].contains(":")) {
-			String[] materialParts = parts[1].split(":");
-			material = Material.matchMaterial(materialParts[0]);
-			if (material == null) {
-				throw new InstructionParseException("Unknown block type: " + materialParts[0]);
-			}
-			try {
-				data = Byte.valueOf(materialParts[1]);
-			} catch (NumberFormatException e) {
-				throw new InstructionParseException("Could not parse data value");
-			}
-		} else {
-			material = Material.matchMaterial(parts[1]);
-			if (material == null) {
-				throw new InstructionParseException("Unknown block type: " + parts[1]);
-			}
-			data = -1;
-		}
-		try {
-			neededAmount = Integer.valueOf(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("notify")) {
-				tempNotify = true;
-			}
-		}
-		notify = tempNotify;
+		String[] string = instruction.next().split(":");
+		material = instruction.getMaterial(string[0]);
+		data = string.length > 1 ? instruction.getByte(string[1], (byte) -1) : -1;
+		neededAmount = instruction.getInt();
+		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler

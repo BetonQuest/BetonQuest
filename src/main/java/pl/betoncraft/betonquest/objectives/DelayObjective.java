@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -40,34 +41,18 @@ public class DelayObjective extends Objective {
 
 	private final long delay;
 	private BukkitTask runnable;
-	private int interval = 20 * 10;
+	private int interval;
 
-	public DelayObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public DelayObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = DelayData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			delay = Long.parseLong(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse delay");
-		}
+		delay = instruction.getLong();
 		if (delay < 0) {
 			throw new InstructionParseException("Delay cannot be less than 0");
 		}
-		for (String part : parts) {
-			if (part.startsWith("interval:")) {
-				try {
-					interval = Integer.parseInt(part.substring(9));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse delay interval");
-				}
-				if (interval < 1) {
-					throw new InstructionParseException("Interval cannot be less than 1 tick");
-				}
-			}
+		interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
+		if (interval < 1) {
+			throw new InstructionParseException("Interval cannot be less than 1 tick");
 		}
 	}
 

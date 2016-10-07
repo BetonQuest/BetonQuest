@@ -20,13 +20,14 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
- * This event turns on, of or toggles blocks like lever, door, trapdoor etc.
+ * This event turns on, of or toggles levers.
  * 
  * @author Jakub Sapalski
  */
@@ -39,19 +40,16 @@ public class LeverEvent extends QuestEvent {
 		ON, OFF, TOGGLE
 	}
 
-	public LeverEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public LeverEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
+		String action = instruction.next();
 		try {
-			type = ToggleType.valueOf(parts[2].toUpperCase());
+			type = ToggleType.valueOf(action.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			type = ToggleType.TOGGLE;
+			throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle");
 		}
 	}
 

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Condition;
@@ -32,13 +33,9 @@ public class JournalCondition extends Condition {
 
 	private final String targetPointer;
 
-	public JournalCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Journal entry not defined");
-		}
-		targetPointer = Utils.addPackage(packName, parts[1]);
+	public JournalCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		targetPointer = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override

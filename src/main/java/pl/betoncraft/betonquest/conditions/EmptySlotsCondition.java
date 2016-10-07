@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -34,17 +35,9 @@ public class EmptySlotsCondition extends Condition {
 
 	private final VariableNumber needed;
 
-	public EmptySlotsCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Empty space amount not defined");
-		}
-		try {
-			needed = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Cannot parse an integer");
-		}
+	public EmptySlotsCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		needed = instruction.getVarNum();
 	}
 
 	@Override

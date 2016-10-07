@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -38,23 +39,20 @@ public class EffectEvent extends QuestEvent {
 	private final VariableNumber amplifier;
 	private final boolean ambient;
 
-	public EffectEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 4) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		effect = PotionEffectType.getByName(parts[1]);
+	public EffectEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String type = instruction.next();
+		effect = PotionEffectType.getByName(type);
 		if (effect == null) {
-			throw new InstructionParseException("Effect type does not exist");
+			throw new InstructionParseException("Effect type '" + type + "' does not exist");
 		}
 		try {
-			duration = new VariableNumber(packName, parts[2]);
-			amplifier = new VariableNumber(packName, parts[3]);
+			duration = instruction.getVarNum();
+			amplifier = instruction.getVarNum();
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse number arguments");
 		}
-		ambient = instructions.contains("--ambient");
+		ambient = instruction.hasArgument("--ambient");
 	}
 
 	@Override

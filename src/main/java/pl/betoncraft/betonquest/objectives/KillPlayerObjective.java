@@ -24,43 +24,30 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 public class KillPlayerObjective extends Objective implements Listener {
 
 	private int amount = 1;
 	private String name = null;
-	private String[] required = new String[0];
+	private ConditionID[] required;
 	private boolean notify = false;
 	
-	public KillPlayerObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public KillPlayerObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = KillData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
+		amount = instruction.getInt();
+		if (amount < 1) {
+			throw new InstructionParseException("Amount cannot be less than 0");
 		}
-		try {
-			amount = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
-		for (String part : parts) {
-			if (part.toLowerCase().startsWith("name:")) {
-				name = part.substring(5);
-			} else if (part.toLowerCase().startsWith("required:")) {
-				required = part.substring(9).split(",");
-				for (int i = 0; i < required.length; i++) {
-					required[i] = Utils.addPackage(packName, required[i]);
-				}
-			} else if (part.equalsIgnoreCase("notify")) {
-				notify = true;
-			}
-		}
+		name = instruction.getOptional("name");
+		required = instruction.getList(instruction.getOptional("required"), e -> instruction.getCondition(e))
+				.toArray(new ConditionID[0]);
 	}
 	
 	@EventHandler
@@ -74,7 +61,7 @@ public class KillPlayerObjective extends Objective implements Listener {
 			if (name != null && !event.getEntity().getName().equalsIgnoreCase(name)) {
 				return;
 			}
-			for (String condition : required) {
+			for (ConditionID condition : required) {
 				if (!BetonQuest.condition(victim, condition)) {
 					return;
 				}

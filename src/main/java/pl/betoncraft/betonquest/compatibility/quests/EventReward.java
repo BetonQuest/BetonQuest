@@ -23,6 +23,9 @@ import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomReward;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -42,9 +45,14 @@ public class EventReward extends CustomReward {
 
 	@Override
 	public void giveReward(Player player, Map<String, Object> dataMap) {
-		String playerID = PlayerConverter.getID(player);
-		String event = dataMap.get("Event").toString();
-		BetonQuest.event(playerID, event);
+		String string = dataMap.get("Event").toString();
+		try {
+			String playerID = PlayerConverter.getID(player);
+			EventID event = new EventID(null, string);
+			BetonQuest.event(playerID, event);
+		} catch (ObjectNotFoundException e) {
+			Debug.error("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage());
+		}
 	}
 
 }

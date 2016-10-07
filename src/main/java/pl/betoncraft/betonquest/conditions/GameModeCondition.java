@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.GameMode;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -27,16 +28,13 @@ public class GameModeCondition extends Condition {
 	
 	private GameMode gameMode;
 
-	public GameModeCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
+	public GameModeCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next().toUpperCase();
 		try {
-			gameMode = GameMode.valueOf(parts[1].toUpperCase());
+			gameMode = GameMode.valueOf(string);
 		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("No such gamemode: " + parts[1]);
+			throw new InstructionParseException("No such gamemode: " + string);
 		}
 	}
 

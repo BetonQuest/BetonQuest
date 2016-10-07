@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.vault;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -33,18 +34,9 @@ public class MoneyCondition extends Condition {
 
 	private final VariableNumber amount;
 
-	public MoneyCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Money amount not specified");
-		}
-		try {
-			VariableNumber tempAmount = new VariableNumber(packName, parts[1]);
-			amount = tempAmount;
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse money amount");
-		}
+	public MoneyCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		amount = instruction.getVarNum();
 	}
 
 	@SuppressWarnings("deprecation")

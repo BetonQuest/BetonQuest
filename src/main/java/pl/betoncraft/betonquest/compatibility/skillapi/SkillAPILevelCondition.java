@@ -21,6 +21,7 @@ import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -37,21 +38,13 @@ public class SkillAPILevelCondition extends Condition {
 	private String className;
 	private VariableNumber level;
 
-	public SkillAPILevelCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		className = parts[1];
+	public SkillAPILevelCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		className = instruction.next();
 		if (!SkillAPI.isClassRegistered(className)) {
 			throw new InstructionParseException("Class '" + className + "' is not registered");
 		}
-		try {
-			level = new VariableNumber(packName, parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse level");
-		}
+		level = instruction.getVarNum();
 	}
 
 	@Override

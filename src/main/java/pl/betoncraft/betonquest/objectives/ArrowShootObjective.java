@@ -29,6 +29,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
@@ -45,14 +46,10 @@ public class ArrowShootObjective extends Objective implements Listener {
 
 	private final LocationData loc;
 
-	public ArrowShootObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public ArrowShootObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
 	}
 
 	@EventHandler
@@ -90,7 +87,7 @@ public class ArrowShootObjective extends Objective implements Listener {
 				}
 			}.runTask(BetonQuest.getInstance());
 		} catch (QuestRuntimeException e) {
-			Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
+			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
 		}
 	}
 

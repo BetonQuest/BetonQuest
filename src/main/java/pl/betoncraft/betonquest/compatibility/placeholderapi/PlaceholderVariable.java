@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -26,9 +27,9 @@ public class PlaceholderVariable extends Variable {
 	
 	private String placeholder;
 
-	public PlaceholderVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		placeholder = instruction.substring(4, instruction.length() - 1);
+	public PlaceholderVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		placeholder = instruction.next();
 	}
 
 	@Override

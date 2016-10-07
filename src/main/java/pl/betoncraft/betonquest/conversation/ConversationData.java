@@ -24,7 +24,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -43,7 +46,7 @@ public class ConversationData {
 
 	private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
 	private HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
-	private String[] finalEvents;
+	private EventID[] finalEvents;
 	private String[] startingOptions;
 	private boolean blockMovement;
 
@@ -99,15 +102,17 @@ public class ConversationData {
 			throw new InstructionParseException("Starting options are not defined");
 		}
 		if (rawFinalEvents != null && !rawFinalEvents.equals("")) {
-			finalEvents = rawFinalEvents.split(",");
-		} else {
-			finalEvents = new String[] {};
-		}
-		// attach package names
-		for (int i = 0; i < finalEvents.length; i++) {
-			if (!finalEvents[i].contains(".")) {
-				finalEvents[i] = pack.getName() + "." + finalEvents[i];
+			String[] array = rawFinalEvents.split(",");
+			finalEvents = new EventID[array.length];
+			for (int i = 0; i < array.length; i++) {
+				try {
+					finalEvents[i] = new EventID(pack, array[i]);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while loading final events: " + e.getMessage());
+				}
 			}
+		} else {
+			finalEvents = new EventID[0];
 		}
 		// load all NPC options
 		ConfigurationSection NPCSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");
@@ -222,7 +227,7 @@ public class ConversationData {
 	/**
 	 * @return the final events
 	 */
-	public String[] getFinalEvents() {
+	public EventID[] getFinalEvents() {
 		return finalEvents;
 	}
 
@@ -258,23 +263,35 @@ public class ConversationData {
 	public String getPackName() {
 		return pack.getName();
 	}
-
-	public String[] getData(String option, OptionType type, RequestType req) {
+	
+	public ConditionID[] getConditionIDs(String option, OptionType type) {
 		HashMap<String, Option> options;
 		if (type == OptionType.NPC) {
 			options = NPCOptions;
 		} else {
 			options = playerOptions;
 		}
-		switch (req) {
-		case CONDITION:
-			return options.get(option).getConditions();
-		case EVENT:
-			return options.get(option).getEvents();
-		case POINTER:
-			return options.get(option).getPointers();
+		return options.get(option).getConditions();
+	}
+	
+	public EventID[] getEventIDs(String option, OptionType type) {
+		HashMap<String, Option> options;
+		if (type == OptionType.NPC) {
+			options = NPCOptions;
+		} else {
+			options = playerOptions;
 		}
-		return null;
+		return options.get(option).getEvents();
+	}
+	
+	public String[] getPointers(String option, OptionType type) {
+		HashMap<String, Option> options;
+		if (type == OptionType.NPC) {
+			options = NPCOptions;
+		} else {
+			options = playerOptions;
+		}
+		return options.get(option).getPointers();
 	}
 
 	/**
@@ -322,8 +339,8 @@ public class ConversationData {
 		private HashMap<String, String> inlinePrefix = new HashMap<>();
 
 		private HashMap<String, String> text = new HashMap<>();
-		private String[] conditions;
-		private String[] events;
+		private ConditionID[] conditions;
+		private EventID[] events;
 		private String[] pointers;
 
 		public Option(String name, String type, String visibleType) throws InstructionParseException {
@@ -374,7 +391,12 @@ public class ConversationData {
 				}
 			}
 			for (String variable : variables) {
-				BetonQuest.createVariable(pack, variable);
+				try {
+					BetonQuest.createVariable(pack, variable);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while creating '" + variable + "' variable: "
+							+ e.getMessage());
+				}
 			}
 			String rawConditions = pack
 					.getString("conversations." + convName + "." + type + "." + name + ".conditions");
@@ -387,20 +409,19 @@ public class ConversationData {
 			if (rawCondition != null && !rawCondition.equals("")) {
 				cond2 = rawCondition.split(",");
 			}
-			conditions = new String[cond1.length + cond2.length];
+			conditions = new ConditionID[cond1.length + cond2.length];
 			int count = 0;
-			for (String cond : cond1) {
-				conditions[count] = cond.trim();
-				count++;
-			}
-			for (String cond : cond2) {
-				conditions[count] = cond.trim();
-				count++;
-			}
-			for (int i = 0; i < conditions.length; i++) {
-				if (!conditions[i].contains(".")) {
-					conditions[i] = pack.getName() + "." + conditions[i];
+			try {
+				for (String cond : cond1) {
+					conditions[count] = new ConditionID(pack, cond.trim());
+					count++;
 				}
+				for (String cond : cond2) {
+					conditions[count] = new ConditionID(pack, cond.trim());
+					count++;
+				}
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Error while loading conversation conditions: " + e.getMessage());
 			}
 			String rawEvents = pack.getString("conversations." + convName + "." + type + "." + name + ".events");
 			String[] event1 = new String[] {};
@@ -412,20 +433,19 @@ public class ConversationData {
 			if (rawEvent != null && !rawEvent.equals("")) {
 				event2 = rawEvent.split(",");
 			}
-			events = new String[event1.length + event2.length];
+			events = new EventID[event1.length + event2.length];
 			count = 0;
-			for (String event : event1) {
-				events[count] = event.trim();
-				count++;
-			}
-			for (String event : event2) {
-				events[count] = event.trim();
-				count++;
-			}
-			for (int i = 0; i < events.length; i++) {
-				if (!events[i].contains(".")) {
-					events[i] = pack.getName() + "." + events[i];
+			try {
+				for (String event : event1) {
+					events[count] = new EventID(pack, event.trim());
+					count++;
 				}
+				for (String event : event2) {
+					events[count] = new EventID(pack, event.trim());
+					count++;
+				}
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Error while loading conversation events: " + e.getMessage());
 			}
 			String rawPointers = pack.getString("conversations." + convName + "." + type + "." + name + ".pointers");
 			String[] pointer1 = new String[] {};
@@ -469,11 +489,11 @@ public class ConversationData {
 			return theText;
 		}
 
-		public String[] getConditions() {
+		public ConditionID[] getConditions() {
 			return conditions;
 		}
 
-		public String[] getEvents() {
+		public EventID[] getEvents() {
 			return events;
 		}
 
@@ -502,9 +522,5 @@ public class ConversationData {
 
 	public static enum OptionType {
 		NPC, PLAYER
-	}
-
-	public static enum RequestType {
-		CONDITION, EVENT, POINTER
 	}
 }

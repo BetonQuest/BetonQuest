@@ -22,6 +22,7 @@ import java.util.UUID;
 import com.nisovin.shopkeepers.Shopkeeper;
 import com.nisovin.shopkeepers.ShopkeepersPlugin;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -35,21 +36,16 @@ public class OpenShopEvent extends QuestEvent {
 
 	private Shopkeeper shopkeeper;
 
-	public OpenShopEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		UUID uuid;
+	public OpenShopEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
 		try {
-			uuid = UUID.fromString(parts[1]);
+			shopkeeper = ShopkeepersPlugin.getInstance().getShopkeeper(UUID.fromString(string));
 		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("Could not parse UUID: '" + parts[1] + "'");
+			throw new InstructionParseException("Could not parse UUID: '" + string + "'");
 		}
-		shopkeeper = ShopkeepersPlugin.getInstance().getShopkeeper(uuid);
 		if (shopkeeper == null) {
-			throw new InstructionParseException("Shopkeeper with this UUID does not exist: '" + parts[1] + "'");
+			throw new InstructionParseException("Shopkeeper with this UUID does not exist: '" + string + "'");
 		}
 	}
 

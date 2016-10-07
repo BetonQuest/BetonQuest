@@ -29,6 +29,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -48,52 +50,22 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 	private final Listener ths;
 	private int id;
 	private LocationData loc;
-	private int waitTicks = 0;
-	private String[] doneEvents = new String[0];
-	private String[] failEvents = new String[0];
+	private int waitTicks;
+	private EventID[] doneEvents;
+	private EventID[] failEvents;
 	private String currentPlayer;
 
-	public NPCMoveEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		ths = this;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			id = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse NPC ID");
-		}
+		id = instruction.getInt();
 		if (id < 0) {
 			throw new InstructionParseException("NPC ID cannot be less than 0");
 		}
-		loc = new LocationData(packName, parts[2]);
-		for (String part : parts) {
-			if (part.startsWith("wait:")) {
-				try {
-					waitTicks = Integer.parseInt(part.substring(5));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse waiting time");
-				}
-			} else if (part.startsWith("done:")) {
-				String[] events = part.substring(5).split(",");
-				for (int i = 0; i < events.length; i++) {
-					if (!events[i].contains(".")) {
-						events[i] = packName + "." + events[i];
-					}
-				}
-				doneEvents = events;
-			} else if (part.startsWith("fail:")) {
-				String[] events = part.substring(5).split(",");
-				for (int i = 0; i < events.length; i++) {
-					if (!events[i].contains(".")) {
-						events[i] = packName + "." + events[i];
-					}
-				}
-				failEvents = events;
-			}
-		}
+		loc = instruction.getLocation();
+		waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
+		doneEvents = instruction.getList(instruction.getOptional("done"), e -> instruction.getEvent(e)).toArray(new EventID[0]);
+		failEvents = instruction.getList(instruction.getOptional("fail"), e -> instruction.getEvent(e)).toArray(new EventID[0]);
 	}
 
 	@Override
@@ -114,7 +86,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 			movingNPCs.add(npc);
 			Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
 		} else {
-			for (String event : failEvents) {
+			for (EventID event : failEvents) {
 				BetonQuest.event(playerID, event);
 			}
 		}
@@ -139,7 +111,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 				npc.getNavigator().setPaused(false);
 				currentPlayer = null;
 				movingNPCs.remove(npc);
-				for (String event : doneEvents) {
+				for (EventID event : doneEvents) {
 					BetonQuest.event(currentPlayer, event);
 				}
 			}

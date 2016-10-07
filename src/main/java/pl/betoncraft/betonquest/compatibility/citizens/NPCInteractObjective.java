@@ -26,6 +26,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -40,28 +41,14 @@ public class NPCInteractObjective extends Objective implements Listener {
 	private final int id;
 	private final boolean cancel;
 
-	public NPCInteractObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public NPCInteractObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			id = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse ID");
-		}
+		id = instruction.getInt();
 		if (id < 0) {
 			throw new InstructionParseException("ID cannot be negative");
 		}
-		boolean tempCancel = false;
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("cancel")) {
-				tempCancel = true;
-			}
-		}
-		cancel = tempCancel;
+		cancel = instruction.hasArgument("cancel");
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

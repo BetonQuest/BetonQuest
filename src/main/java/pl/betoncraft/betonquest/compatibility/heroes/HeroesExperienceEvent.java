@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.heroes;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -36,18 +37,10 @@ public class HeroesExperienceEvent extends QuestEvent {
 	private boolean primary;
 	private VariableNumber amount;
 
-	public HeroesExperienceEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		primary = parts[1].equalsIgnoreCase("primary");
-		try {
-			amount = new VariableNumber(packName, parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse experience amount");
-		}
+	public HeroesExperienceEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		primary = instruction.next().equalsIgnoreCase("primary");
+		amount = instruction.getVarNum();
 	}
 
 	@Override

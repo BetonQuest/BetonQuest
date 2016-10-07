@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,8 +37,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LogoutObjective extends Objective implements Listener {
 
-	public LogoutObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public LogoutObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
 	}
 

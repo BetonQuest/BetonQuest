@@ -18,10 +18,10 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Checks if the player has specified objective active.
@@ -32,13 +32,9 @@ public class ObjectiveCondition extends Condition {
 
 	public final Objective objective;
 
-	public ObjectiveCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		objective = BetonQuest.getInstance().getObjective(Utils.addPackage(packName, parts[1]));
+	public ObjectiveCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		objective = BetonQuest.getInstance().getObjective(instruction.getObjective());
 		if (objective == null) {
 			throw new InstructionParseException("Objective does not exist");
 		}

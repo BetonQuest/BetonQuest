@@ -18,7 +18,10 @@
 package pl.betoncraft.betonquest.compatibility.racesandclasses;
 
 import de.tobiyas.racesandclasses.APIs.LevelAPI;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -29,27 +32,20 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class RaCLevelEvent extends QuestEvent {
 
-	private int number;
+	private VariableNumber number;
 
-	public RaCLevelEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			number = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse a number");
-		}
+	public RaCLevelEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		number = instruction.getVarNum();
 	}
 
 	@Override
-	public void run(String playerID) {
-		if (number >= 0) {
-			LevelAPI.addLevel(PlayerConverter.getPlayer(playerID), number);
+	public void run(String playerID) throws QuestRuntimeException {
+		int i = number.getInt(playerID);
+		if (i >= 0) {
+			LevelAPI.addLevel(PlayerConverter.getPlayer(playerID), i);
 		} else {
-			LevelAPI.removeLevel(PlayerConverter.getPlayer(playerID), -number);
+			LevelAPI.removeLevel(PlayerConverter.getPlayer(playerID), -i);
 		}
 	}
 

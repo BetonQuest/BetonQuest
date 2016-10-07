@@ -37,12 +37,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.api.ConversationOptionEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
-import pl.betoncraft.betonquest.conversation.ConversationData.RequestType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -59,7 +61,7 @@ public class Conversation implements Listener {
 
 	private final String playerID;
 	private final Player player;
-	private final String packName;
+	private final ConfigPackage pack;
 	private final String language;
 	private ConversationData data;
 	private final Location location;
@@ -88,8 +90,8 @@ public class Conversation implements Listener {
 	 * @param location
 	 *            location where the conversation has been started
 	 */
-	public Conversation(String playerID, String packName, String conversationID, Location location) {
-		this(playerID, packName, conversationID, location, null);
+	public Conversation(String playerID, String conversationID, Location location) {
+		this(playerID, conversationID, location, null);
 	}
 
 	/**
@@ -108,24 +110,24 @@ public class Conversation implements Listener {
 	 * @param option
 	 *            ID of the option from where to start
 	 */
-	public Conversation(final String playerID, final String packName, final String conversationID,
+	public Conversation(final String playerID, final String conversationID,
 			final Location location, String option) {
 
 		this.conv = this;
 		this.plugin = BetonQuest.getInstance();
 		this.playerID = playerID;
 		this.player = PlayerConverter.getPlayer(playerID);
-		this.packName = packName;
+		this.pack = Config.getPackage(conversationID.substring(0, conversationID.indexOf('.')));
 		this.language = plugin.getPlayerData(playerID).getLanguage();
 		this.location = location;
-		this.convID = packName + "." + conversationID;
+		this.convID = conversationID;
 		this.data = plugin.getConversation(convID);
 		this.blacklist = plugin.getConfig().getStringList("cmd_blacklist");
 		this.messagesDelaying = plugin.getConfig().getString("display_chat_after_conversation").equalsIgnoreCase("true");
 
 		// check if data is present
 		if (data == null) {
-			Debug.error("Conversation doesn't exist: " + packName + "." + conversationID);
+			Debug.error("Conversation doesn't exist: " + conversationID);
 			return;
 		}
 
@@ -176,9 +178,9 @@ public class Conversation implements Listener {
 				convName = data.getName();
 				optionName = option;
 			}
-			ConversationData currentData = plugin.getConversation(packName + "." + convName);
+			ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
 			if (!force)
-				for (String condition : currentData.getData(optionName, OptionType.NPC, RequestType.CONDITION)) {
+				for (ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
 					if (!BetonQuest.condition(this.playerID, condition)) {
 						continue options;
 					}
@@ -238,7 +240,7 @@ public class Conversation implements Listener {
 		// i is for counting replies, like 1. something, 2. something else
 		int i = 0;
 		answers: for (String option : options) {
-			for (String condition : data.getData(option, OptionType.PLAYER, RequestType.CONDITION)) {
+			for (ConditionID condition : data.getConditionIDs(option, OptionType.PLAYER)) {
 				if (!BetonQuest.condition(playerID, condition)) {
 					continue answers;
 				}
@@ -276,7 +278,7 @@ public class Conversation implements Listener {
 		ended = true;
 		inOut.end();
 		// fire final events
-		for (String event : data.getFinalEvents()) {
+		for (EventID event : data.getFinalEvents()) {
 			BetonQuest.event(playerID, event);
 		}
 		// print message
@@ -425,8 +427,8 @@ public class Conversation implements Listener {
 	/**
 	 * @return the package containing this conversation
 	 */
-	public String getPackage() {
-		return packName;
+	public ConfigPackage getPackage() {
+		return pack;
 	}
 	
 	/**
@@ -527,7 +529,7 @@ public class Conversation implements Listener {
 
 		public void run() {
 			// fire events
-			for (String event : data.getData(option, OptionType.NPC, RequestType.EVENT)) {
+			for (EventID event : data.getEventIDs(option, OptionType.NPC)) {
 				BetonQuest.event(playerID, event);
 			}
 			new OptionPrinter(option).runTaskAsynchronously(plugin);
@@ -549,7 +551,7 @@ public class Conversation implements Listener {
 
 		public void run() {
 			// fire events
-			for (String event : data.getData(option, OptionType.PLAYER, RequestType.EVENT)) {
+			for (EventID event : data.getEventIDs(option, OptionType.PLAYER)) {
 				BetonQuest.event(playerID, event);
 			}
 			new ResponsePrinter(option).runTaskAsynchronously(plugin);
@@ -571,7 +573,7 @@ public class Conversation implements Listener {
 
 		public void run() {
 			// don't forget to select the option prior to printing its text
-			selectOption(data.getData(option, OptionType.PLAYER, RequestType.POINTER), false);
+			selectOption(data.getPointers(option, OptionType.PLAYER), false);
 			// print to player npc's answer
 			printNPCText();
 			ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
@@ -594,7 +596,7 @@ public class Conversation implements Listener {
 
 		public void run() {
 			// print options
-			printOptions(data.getData(option, OptionType.NPC, RequestType.POINTER));
+			printOptions(data.getPointers(option, OptionType.NPC));
 		}
 	}
 

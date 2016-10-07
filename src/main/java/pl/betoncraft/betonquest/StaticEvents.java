@@ -70,9 +70,6 @@ public class StaticEvents {
 			// for each hour, create an event timer
 			for (String key : config.getKeys(false)) {
 				String value = config.getString(key);
-				if (!value.contains(".")) {
-					value = packName + "." + value;
-				}
 				long timeStamp = getTimestamp(key);
 				if (timeStamp < 0) {
 					Debug.error("Incorrect time value in static event declaration (" + key + "), skipping this one");
@@ -81,7 +78,11 @@ public class StaticEvents {
 				Debug.info("Scheduling static event " + value + " at hour " + key + ". Current timestamp: "
 						+ new Date().getTime() + ", target timestamp: " + timeStamp);
 				// add the timer to static list, so it can be canceled if needed
-				timers.add(new EventTimer(timeStamp, value));
+				try {
+					timers.add(new EventTimer(timeStamp, new EventID(pack, value)));
+				} catch (ObjectNotFoundException e) {
+					Debug.error("Could not load static event '" + packName + "." + key + "': " + e.getMessage());
+				}
 			}
 		}
 		Debug.info("Static events initialization done");
@@ -129,7 +130,7 @@ public class StaticEvents {
 	 */
 	private class EventTimer extends TimerTask {
 
-		protected final String event;
+		protected final EventID event;
 
 		/**
 		 * Creates and schedules a new timer for specified event, based on given
@@ -138,7 +139,7 @@ public class StaticEvents {
 		 * @param timeStamp
 		 * @param event
 		 */
-		public EventTimer(long timeStamp, String eventID) {
+		public EventTimer(long timeStamp, EventID eventID) {
 			event = eventID;
 			new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
 		}

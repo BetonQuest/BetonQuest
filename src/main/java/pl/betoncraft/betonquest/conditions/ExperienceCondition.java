@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -32,17 +33,9 @@ public class ExperienceCondition extends Condition {
 
 	private final VariableNumber experience;
 
-	public ExperienceCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Experience level not defined");
-		}
-		try {
-			experience = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse experience level");
-		}
+	public ExperienceCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		experience = instruction.getVarNum();
 	}
 
 	@Override

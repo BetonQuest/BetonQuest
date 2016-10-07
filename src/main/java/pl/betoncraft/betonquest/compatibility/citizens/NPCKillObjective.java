@@ -28,6 +28,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -42,25 +43,11 @@ public class NPCKillObjective extends Objective implements Listener {
 	private final int ID;
 	private final int amount;
 
-	public NPCKillObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public NPCKillObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = NPCData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			ID = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse ID");
-		}
-		int tempAmount = 1;
-		for (String part : parts) {
-			if (part.contains("amount:")) {
-				tempAmount = Integer.parseInt(part.substring(7));
-			}
-		}
-		amount = tempAmount;
+		ID = instruction.getInt();
+		amount = instruction.getInt(instruction.getOptional("amount"), 1);
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}

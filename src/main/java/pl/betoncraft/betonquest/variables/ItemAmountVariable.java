@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Variable;
@@ -40,26 +41,17 @@ public class ItemAmountVariable extends Variable {
 	private Type type;
 	private int amount;
 
-	public ItemAmountVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
-		if (parts.length != 3) {
-			throw new InstructionParseException("Incorrect number of arguments");
-		}
-		String name = parts[1];
-		String itemInstruction = pack.getString("items." + name);
-		if (itemInstruction == null) {
-			throw new InstructionParseException("Item not defined: " + name);
-		}
-		questItem = new QuestItem(itemInstruction);
-		if (parts[2].toLowerCase().startsWith("left:")) {
+	public ItemAmountVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		questItem = instruction.getQuestItem();
+		if (instruction.next().toLowerCase().startsWith("left:")) {
 			type = Type.LEFT;
 			try {
-				amount = Integer.parseInt(parts[2].substring(5));
+				amount = Integer.parseInt(instruction.current().substring(5));
 			} catch (NumberFormatException e) {
 				throw new InstructionParseException("Could not parse item amount");
 			}
-		} else if (parts[2].equalsIgnoreCase("amount")) {
+		} else if (instruction.current().equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
 		}
 	}

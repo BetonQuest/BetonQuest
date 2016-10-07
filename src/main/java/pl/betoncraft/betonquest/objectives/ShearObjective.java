@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -43,31 +44,13 @@ public class ShearObjective extends Objective implements Listener {
 	private final int amount;
 	private final boolean notify;
 
-	public ShearObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public ShearObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = SheepData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			amount = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
-		String tempName = null, tempColor = null;
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.startsWith("color:")) {
-				tempColor = part.substring(6);
-			} else if (part.startsWith("name:")) {
-				tempName = part.substring(5);
-			} else if (part.equalsIgnoreCase("notify"))
-				tempNotify = true;
-		}
-		name = tempName;
-		color = tempColor;
-		notify = tempNotify;
+		amount = instruction.getInt();
+		name = instruction.getOptional("name");
+		color = instruction.getOptional("color");
+		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler
@@ -77,8 +60,7 @@ public class ShearObjective extends Objective implements Listener {
 		String playerID = PlayerConverter.getID(event.getPlayer());
 		if (!containsPlayer(playerID))
 			return;
-		if (name != null
-				&& (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name)))
+		if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name)))
 			return;
 		if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
 			return;

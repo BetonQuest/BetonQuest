@@ -58,9 +58,13 @@ public class GlobalLocations extends BukkitRunnable {
 			}
 			String[] parts = rawGlobalLocations.split(",");
 			for (String objective : parts) {
-				GlobalLocation gL = new GlobalLocation(pack, objective);
-				if (gL.isValid())
+				try {
+					ObjectiveID objectiveID = new ObjectiveID(pack, objective);
+					GlobalLocation gL = new GlobalLocation(objectiveID);
 					locations.add(gL);
+				} catch (ObjectNotFoundException | InstructionParseException e) {
+					Debug.error("Error while parsing global location objective '" + objective + "': " + e.getMessage());
+				}
 			}
 		}
 		finalLocations = locations;
@@ -97,20 +101,20 @@ public class GlobalLocations extends BukkitRunnable {
 					loc = location.getLocation().getLocation(playerID);
 					distance = location.getLocation().getData().getDouble(playerID);
 				} catch (QuestRuntimeException e) {
-					Debug.error("Error while parsing location in global location '" + location.pack + "."
-							+ location.label + "': " + e.getMessage());
+					Debug.error("Error while parsing location in global location '" + location.getObjectiveID()
+							+ "': " + e.getMessage());
 					continue;
 				}
 				if (player.getLocation().getWorld().equals(loc.getWorld())
 						&& player.getLocation().distanceSquared(loc) <= distance*distance) {
 					// check if player has already triggered this location
 					PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-					if (playerData.hasTag(location.getPack() + ".global_" + location.getLabel())) {
+					if (playerData.hasTag(location.getTag())) {
 						continue locations;
 					}
 					// check all conditions
 					if (location.getConditions() != null) {
-						for (String condition : location.getConditions()) {
+						for (ConditionID condition : location.getConditions()) {
 							if (!BetonQuest.condition(playerID, condition)) {
 								// if some conditions are not met, skip to next location
 								continue locations;
@@ -118,9 +122,9 @@ public class GlobalLocations extends BukkitRunnable {
 						}
 					}
 					// set the tag, player has triggered this location
-					playerData.addTag(location.getPack() + ".global_" + location.getLabel());
+					playerData.addTag(location.getTag());
 					// fire all events for the location
-					for (String event : location.getEvents()) {
+					for (EventID event : location.getEvents()) {
 						BetonQuest.event(playerID, event);
 					}
 				}
@@ -135,67 +139,58 @@ public class GlobalLocations extends BukkitRunnable {
 	 */
 	private class GlobalLocation {
 
-		private String pack;
+		private ObjectiveID objectiveID;
 		private LocationData location;
-		private String[] conditions;
-		private String[] events;
-		private String label;
-		private boolean valid = true;
+		private ConditionID[] conditions;
+		private EventID[] events;
+		private String tag;
 
 		/**
 		 * Creates new global location using objective event's ID.
 		 * 
 		 * @param event
 		 *            ID of the event
+		 * @throws InstructionParseException 
 		 */
-		public GlobalLocation(ConfigPackage pack, String objective) {
-			Debug.info("Creating new GlobalLocation from " + pack.getName() + "." + objective + " event.");
-			this.pack = pack.getName();
-			label = objective;
-			String instructions = pack.getString("objectives." + objective);
-			if (instructions == null || !instructions.startsWith("location ")) {
-				Debug.error("Location objective not found in objective " + objective);
-				valid = false;
-				return;
-			}
+		public GlobalLocation(ObjectiveID objectiveID) throws InstructionParseException {
+			this.objectiveID = objectiveID;
+			Debug.info("Creating new GlobalLocation from " + objectiveID + " event.");
+			Instruction instruction = objectiveID.generateInstruction();
 			// check amount of arguments in event's instruction
-			String[] parts = instructions.split(" ");
-			if (parts.length < 2) {
-				Debug.error("There is an error in global location's objective " + objective);
-				valid = false;
-				return;
-			}
-			try {
-				location = new LocationData(pack.getName(), parts[1]);
-			} catch (InstructionParseException e) {
-				Debug.error("Error while parsing global location: " + e.getMessage());
-			}
+			location = instruction.getLocation(instruction.next());
 			// extract all conditions and events
-			for (String part : parts) {
-				if (part.contains("conditions:")) {
-					conditions = part.substring(11).split(",");
-					for (int i = 0; i < conditions.length; i++) {
-						if (!conditions[i].contains(".")) {
-							conditions[i] = pack.getName() + "." + conditions[i];
-						}
-					}
-				}
-				if (part.contains("events:")) {
-					events = part.substring(7).split(",");
-					for (int i = 0; i < events.length; i++) {
-						if (!events[i].contains(".")) {
-							events[i] = pack.getName() + "." + events[i];
-						}
-					}
+			String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
+			         tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
+			int length = tempConditions1.length + tempConditions2.length;
+			conditions = new ConditionID[length];
+			for (int i = 0; i < length; i++) {
+				String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+				try {
+					conditions[i] = new ConditionID(instruction.getPackage(), condition);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage());
 				}
 			}
+			String[] tempEvents1 = instruction.getArray(instruction.getOptional("event")),
+			         tempEvents2 = instruction.getArray(instruction.getOptional("events"));
+			length = tempEvents1.length + tempEvents2.length;
+			events = new EventID[length];
+			for (int i = 0; i < length; i++) {
+				String event = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
+				try {
+					events[i] = new EventID(instruction.getPackage(), event);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while parsing objective events: " + e.getMessage());
+				}
+			}
+			tag = objectiveID.getPackage().getName() + ".global_" + objectiveID;
 		}
 
 		/**
-		 * @return the package containing this global location
+		 * @return the objectiveID of this global location
 		 */
-		public String getPack() {
-			return pack;
+		public ObjectiveID getObjectiveID() {
+			return objectiveID;
 		}
 
 		/**
@@ -208,26 +203,22 @@ public class GlobalLocations extends BukkitRunnable {
 		/**
 		 * @return the conditions
 		 */
-		public String[] getConditions() {
+		public ConditionID[] getConditions() {
 			return conditions;
 		}
 
 		/**
 		 * @return the events
 		 */
-		public String[] getEvents() {
+		public EventID[] getEvents() {
 			return events;
 		}
-
+		
 		/**
-		 * @return the tag
+		 * @return the tag required to pass this global location
 		 */
-		public String getLabel() {
-			return label;
-		}
-
-		public boolean isValid() {
-			return valid;
+		public String getTag() {
+			return tag;
 		}
 	}
 }

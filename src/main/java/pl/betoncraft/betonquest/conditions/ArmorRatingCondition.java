@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -36,20 +37,9 @@ public class ArmorRatingCondition extends Condition {
 
 	private final VariableNumber required;
 
-	public ArmorRatingCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-
-		String[] parts = instructions.split(" ");
-
-		if (parts.length < 2) {
-			throw new InstructionParseException("Armor rating not defined");
-		}
-
-		try {
-			required = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse rating amount");
-		}
+	public ArmorRatingCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		required = instruction.getVarNum();
 	}
 
 	@Override

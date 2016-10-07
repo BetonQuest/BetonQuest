@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -34,16 +35,11 @@ public class ChestClearEvent extends QuestEvent {
 
 	private final LocationData loc;
 
-	public ChestClearEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public ChestClearEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not eoungh arguments");
-		}
-		// extract location
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
 	}
 
 	@Override

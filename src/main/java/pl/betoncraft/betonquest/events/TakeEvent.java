@@ -17,7 +17,6 @@
  */
 package pl.betoncraft.betonquest.events;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,6 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -47,32 +48,10 @@ public class TakeEvent extends QuestEvent {
 
 	private int counter;
 
-	public TakeEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not eoungh arguments");
-		}
-		notify = parts.length >= 3 && parts[2].equalsIgnoreCase("notify");
-		String[] itemsToRemove = parts[1].split(",");
-		ArrayList<Item> list = new ArrayList<>();
-		for (String rawItem : itemsToRemove) {
-			String[] rawItemParts = rawItem.split(":");
-			String itemName = rawItemParts[0];
-			VariableNumber amount = new VariableNumber(1);
-			if (rawItemParts.length > 1) {
-				try {
-					amount = new VariableNumber(packName, rawItemParts[1]);
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse item amount");
-				}
-			}
-			QuestItem questItem = QuestItem.newQuestItem(packName, itemName);
-			list.add(new Item(questItem, amount));
-		}
-		Item[] tempQuestItems = new Item[list.size()];
-		tempQuestItems = list.toArray(tempQuestItems);
-		questItems = tempQuestItems;
+	public TakeEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		questItems = instruction.getItemList();
+		notify = instruction.hasArgument("notify");
 	}
 
 	@Override
@@ -132,24 +111,5 @@ public class TakeEvent extends QuestEvent {
 			}
 		}
 		return items;
-	}
-
-	private class Item {
-
-		private final QuestItem item;
-		private final VariableNumber amount;
-
-		public Item(QuestItem item, VariableNumber amount) {
-			this.item = item;
-			this.amount = amount;
-		}
-
-		public QuestItem getItem() {
-			return item;
-		}
-
-		public VariableNumber getAmount() {
-			return amount;
-		}
 	}
 }

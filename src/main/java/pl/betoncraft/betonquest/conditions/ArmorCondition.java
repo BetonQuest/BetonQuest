@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.inventory.ItemStack;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Condition;
@@ -33,13 +34,9 @@ public class ArmorCondition extends Condition {
 
 	private final QuestItem item;
 
-	public ArmorCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Armor not defined in: " + instructions);
-		}
-		item = QuestItem.newQuestItem(packName, parts[1]);
+	public ArmorCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		item = new QuestItem(instruction.getItem());
 	}
 
 	@Override

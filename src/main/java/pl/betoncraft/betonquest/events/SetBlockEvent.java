@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -36,32 +37,12 @@ public class SetBlockEvent extends QuestEvent {
 	private final byte data;
 	private final LocationData loc;
 
-	public SetBlockEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public SetBlockEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		// match material
-		block = Material.matchMaterial(parts[1]);
-		if (block == null) {
-			throw new InstructionParseException("Block type " + parts[1] + " does not exist");
-		}
-		// parse location
-		loc = new LocationData(packName, parts[2]);
-		// get data value
-		byte tempData = 0;
-		for (String part : parts) {
-			if (part.contains("data:")) {
-				try {
-					tempData = Byte.parseByte(part.substring(5));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse data value");
-				}
-			}
-		}
-		data = tempData;
+		block = instruction.getMaterial(instruction.next());
+		loc = instruction.getLocation();
+		data = instruction.getByte(instruction.getOptional("data"), (byte) 0);
 	}
 
 	@SuppressWarnings("deprecation")

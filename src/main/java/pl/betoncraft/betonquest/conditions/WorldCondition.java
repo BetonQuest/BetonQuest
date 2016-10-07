@@ -20,28 +20,31 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+/**
+ * Checks if the player is in the specified world.
+ * 
+ * @author Jakub Sapalski
+ */
 public class WorldCondition extends Condition {
 	
 	private World world;
 
-	public WorldCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		world = Bukkit.getWorld(parts[1]);
+	public WorldCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String name = instruction.next();
+		world = Bukkit.getWorld(name);
 		if (world == null) {
 			try {
-				world = new LocationData(packName, parts[1]).getLocation(null).getWorld();
+				world = new LocationData(instruction.getPackage().getName(), name).getLocation(null).getWorld();
 			} catch (InstructionParseException | QuestRuntimeException e) {
-				throw new InstructionParseException("There is no such world: " + parts[1]);
+				throw new InstructionParseException("There is no such world: " + name);
 			}
 		}
 	}

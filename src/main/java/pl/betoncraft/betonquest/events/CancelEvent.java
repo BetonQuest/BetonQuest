@@ -18,8 +18,10 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Cancels the quest for the player.
@@ -30,12 +32,9 @@ public class CancelEvent extends QuestEvent {
 
 	private String canceler;
 
-	public CancelEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2)
-			throw new InstructionParseException("Not enough arguments");
-		canceler = packName + "." + parts[1];
+	public CancelEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		canceler = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override

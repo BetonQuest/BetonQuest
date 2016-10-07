@@ -37,6 +37,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
@@ -56,44 +57,32 @@ public class PotionObjective extends Objective implements Listener {
 	private final boolean notify;
 	private final HashMap<Location, String> locations = new HashMap<>();
 
-	public PotionObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public PotionObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = PotionData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		potion = QuestItem.newQuestItem(packName, parts[1]);
-		try {
-			amount = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.startsWith("effects:")) {
-				String[] effectsArray = part.substring(8).split(",");
-				for (String effect : effectsArray) {
-					String[] eParts = effect.split(":");
-					if (eParts.length != 2) {
-						throw new InstructionParseException("Could not parse effects");
-					}
-					PotionEffectType type = PotionEffectType.getByName(eParts[0].toUpperCase());
-					if (type == null) {
-						throw new InstructionParseException("Potion type '" + eParts[0] + "' does not exist");
-					}
-					int duration;
-					try {
-						duration = Integer.parseInt(eParts[1]) * 20;
-					} catch (NumberFormatException e) {
-						throw new InstructionParseException("Could not parse duration of an effect");
-					}
-					effects.put(type, duration);
+		potion = instruction.getQuestItem();
+		amount = instruction.getInt();
+		String[] effectsArray = instruction.getArray(instruction.getOptional("effects"));
+		if (effectsArray != null) {
+			for (String effect : effectsArray) {
+				String[] eParts = effect.split(":");
+				if (eParts.length != 2) {
+					throw new InstructionParseException("Could not parse effects");
 				}
-			} else if (part.equalsIgnoreCase("notify"))
-				tempNotify = true;
+				PotionEffectType type = PotionEffectType.getByName(eParts[0].toUpperCase());
+				if (type == null) {
+					throw new InstructionParseException("Potion type '" + eParts[0] + "' does not exist");
+				}
+				int duration;
+				try {
+					duration = Integer.parseInt(eParts[1]) * 20;
+				} catch (NumberFormatException e) {
+					throw new InstructionParseException("Could not parse duration of an effect");
+				}
+				effects.put(type, duration);
+			}
 		}
-		notify = tempNotify;
+		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler

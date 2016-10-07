@@ -62,11 +62,8 @@ public class CitizensListener implements Listener {
 		String id = String.valueOf(event.getNPC().getId());
 		String assignment = Config.getNpc(id);
 		if (assignment != null) {
-			String[] parts = assignment.split("\\.");
-			final String convName = parts[1];
-			final String packName = parts[0];
 			event.setCancelled(true);
-			new CitizensConversation(playerID, packName, convName, event.getNPC().getEntity().getLocation(),
+			new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
 					event.getNPC());
 		}
 	}

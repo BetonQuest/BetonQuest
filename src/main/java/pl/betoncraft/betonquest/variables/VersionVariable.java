@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 
@@ -33,9 +34,9 @@ public class VersionVariable extends Variable {
 
 	private final Plugin plugin;
 
-	public VersionVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
+	public VersionVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String[] parts = instruction.getInstruction().split("\\.");
 		if (parts.length > 1) {
 			plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
 			if (plugin == null)

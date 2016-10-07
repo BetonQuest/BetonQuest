@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import java.util.Random;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -35,16 +36,12 @@ public class RandomCondition extends Condition {
 	private final VariableNumber valueMax;
 	private final VariableNumber rangeOfRandom;
 
-	public RandomCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public RandomCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] values = null;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Randomness not defined");
-		}
-		values = parts[1].split("-");
+		String[] values = instruction.next().split("-");
+		String packName = instruction.getPackage().getName();
 		if (values.length != 2) {
 			throw new InstructionParseException("Wrong randomness format");
 		}

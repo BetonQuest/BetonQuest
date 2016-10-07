@@ -20,12 +20,15 @@ package pl.betoncraft.betonquest.compatibility.skript;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Skript condition, which checks specified BetonQuest's condition
@@ -52,7 +55,13 @@ public class SkriptConditionBQ extends Condition {
 
 	@Override
 	public boolean check(Event e) {
-		return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), condition.getSingle(e));
+		String conditionID = condition.getSingle(e);
+		try {
+			return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), new ConditionID(null, conditionID));
+		} catch (ObjectNotFoundException e1) {
+			Debug.error("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e1.getMessage());
+			return false;
+		}
 	}
 
 }

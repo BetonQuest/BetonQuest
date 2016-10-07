@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.legendquest;
 import org.bukkit.Bukkit;
 
 import me.sablednah.legendquest.Main;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -34,13 +35,9 @@ public class LQRaceCondition extends Condition {
 	private Main lq;
 	private String raceName;
 
-	public LQRaceCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		raceName = parts[1];
+	public LQRaceCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		raceName = instruction.next();
 		lq = ((Main) Bukkit.getPluginManager().getPlugin("LegendQuest"));
 		if (lq.getRaces().getRace(raceName) == null) {
 			throw new InstructionParseException("Race " + raceName + " does not exist");

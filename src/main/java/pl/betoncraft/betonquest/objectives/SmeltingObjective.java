@@ -29,6 +29,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -43,22 +44,11 @@ public class SmeltingObjective extends Objective implements Listener {
 	private final Material material;
 	private final int amount;
 
-	public SmeltingObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public SmeltingObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = SmeltData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		material = Material.matchMaterial(parts[1]);
-		if (material == null) {
-			throw new InstructionParseException("Unknown material: " + parts[1]);
-		}
-		try {
-			amount = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
+		material = instruction.getEnum(Material.class);
+		amount = instruction.getInt();
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}

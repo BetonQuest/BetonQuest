@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Achievement;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,16 +33,13 @@ public class AchievementCondition extends Condition {
 	
 	private Achievement achievement;
 
-	public AchievementCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
+	public AchievementCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String a = instruction.next();
 		try {
-			achievement = Achievement.valueOf(parts[1].toUpperCase());
+			achievement = Achievement.valueOf(a.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("No such achievement: " + parts[1]);
+			throw new InstructionParseException("No such achievement: " + a);
 		}
 	}
 

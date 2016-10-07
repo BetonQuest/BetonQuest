@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.racesandclasses;
 
 import de.tobiyas.racesandclasses.APIs.ClassAPI;
 import de.tobiyas.racesandclasses.datacontainer.traitholdercontainer.classes.ClassContainer;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -30,8 +31,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class RaCClassVariable extends Variable {
 
-	public RaCClassVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
+	public RaCClassVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 	}
 
 	@Override

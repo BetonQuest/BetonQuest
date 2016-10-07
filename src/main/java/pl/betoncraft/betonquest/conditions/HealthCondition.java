@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -32,17 +33,9 @@ public class HealthCondition extends Condition {
 
 	private final VariableNumber health;
 
-	public HealthCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			health = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse health amount");
-		}
+	public HealthCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		health = instruction.getVarNum();
 	}
 
 	@Override

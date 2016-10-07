@@ -22,11 +22,17 @@ import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.LocationData;
 
+/**
+ * This event opens/closes/toggles doors, trapdoors and gates.
+ * 
+ * @author Jakub Sapalski
+ */
 public class DoorEvent extends QuestEvent {
 
 	private LocationData loc;
@@ -36,19 +42,16 @@ public class DoorEvent extends QuestEvent {
 		ON, OFF, TOGGLE
 	}
 
-	public DoorEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public DoorEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
+		String action = instruction.next();
 		try {
-			type = ToggleType.valueOf(parts[2].toUpperCase());
+			type = ToggleType.valueOf(action.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			type = ToggleType.TOGGLE;
+			throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle");
 		}
 	}
 

@@ -23,6 +23,7 @@ import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -39,17 +40,9 @@ public class PlayerPointsCondition extends Condition {
 	private VariableNumber count;
 	private PlayerPointsAPI api;
 
-	public PlayerPointsCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			count = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse point count");
-		}
+	public PlayerPointsCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		count = instruction.getVarNum();
 		api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
 	}
 

@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -46,14 +47,10 @@ public class WandCondition extends Condition {
 	private HashMap<String, VariableNumber> spells = new HashMap<>();
 	private String name;
 
-	public WandCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		switch (parts[1]) {
+	public WandCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		switch (string) {
 		case "hand":
 			type = CheckType.IN_HAND;
 			break;
@@ -64,28 +61,28 @@ public class WandCondition extends Condition {
 			type = CheckType.IS_LOST;
 			break;
 		default:
-			throw new InstructionParseException("Unknown check type");
+			throw new InstructionParseException("Unknown check type '" + string + "'");
 		}
-		for (String part : parts) {
-			if (part.startsWith("spells:")) {
-				String[] spells = part.substring(7).split(",");
-				for (String spell : spells) {
-					VariableNumber level = new VariableNumber(1);
-					if (spell.contains(":")) {
-						String[] spellParts = spell.split(":");
-						spell = spellParts[0];
-						try {
-							level = new VariableNumber(packName, spellParts[1]);
-						} catch (NumberFormatException e) {
-							throw new InstructionParseException("Could not parse spell level");
-						}
+		String[] array = instruction.getArray(instruction.getOptional("spells"));
+		if (array != null) {
+			for (String spell : array) {
+				VariableNumber level = new VariableNumber(1);
+				if (spell.contains(":")) {
+					String[] spellParts = spell.split(":");
+					spell = spellParts[0];
+					try {
+						level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
+					} catch (NumberFormatException e) {
+						throw new InstructionParseException("Could not parse spell level");
 					}
 					this.spells.put(spell, level);
+				} else {
+					throw new InstructionParseException("Incorrect spell format");
 				}
-			} else if (part.startsWith("name:")) {
-				name = part.substring(5);
 			}
 		}
+		name = instruction.getOptional("name");
+		api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
 	}
 
 	@Override

@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Location;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -33,14 +34,10 @@ public class LightningEvent extends QuestEvent {
 
 	private final LocationData loc;
 
-	public LightningEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public LightningEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -45,13 +46,10 @@ public class FishObjective extends Objective implements Listener {
 	private final int amount;
 	private final boolean notify;
 
-	public FishObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public FishObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = FishData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3)
-			throw new InstructionParseException("Not enough arguments");
-		String[] fishParts = parts[1].split(":");
+		String[] fishParts = instruction.next().split(":");
 		fish = Material.matchMaterial(fishParts[0]);
 		if (fish == null)
 			throw new InstructionParseException("Unknown fish type");
@@ -64,18 +62,11 @@ public class FishObjective extends Objective implements Listener {
 		} else {
 			data = -1;
 		}
-		try {
-			amount = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse fish amount");
+		amount = instruction.getInt();
+		if (amount < 1) {
+			throw new InstructionParseException("Fish amount cannot be less than 0");
 		}
-		boolean tempNotify = false;
-		for (String part : parts) {
-			if (part.equalsIgnoreCase("notify")) {
-				tempNotify = true;
-			}
-		}
-		notify = tempNotify;
+		notify = instruction.hasArgument("notify");
 	}
 
 	@SuppressWarnings("deprecation")

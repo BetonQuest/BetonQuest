@@ -32,8 +32,8 @@ public class CitizensConversation extends Conversation {
 
 	private final NPC n;
 
-	public CitizensConversation(String playerID, String packName, String conversationID, Location location, NPC npc) {
-		super(playerID, packName, conversationID, location);
+	public CitizensConversation(String playerID, String conversationID, Location location, NPC npc) {
+		super(playerID, conversationID, location);
 		this.n = npc;
 	}
 

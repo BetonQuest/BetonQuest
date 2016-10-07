@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -40,32 +41,18 @@ public class SpawnMobEvent extends QuestEvent {
 	private final VariableNumber amount;
 	private final String name;
 
-	public SpawnMobEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 4) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
+		String entity = instruction.next();
 		try {
-			type = EntityType.valueOf(parts[2].toUpperCase());
+			type = EntityType.valueOf(entity.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("Entity type does not exist");
+			throw new InstructionParseException("Entity type '" + entity + "' does not exist");
 		}
-		try {
-			amount = new VariableNumber(packName, parts[3]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
-		String tempName = null;
-		for (String part : parts) {
-			if (part.startsWith("name:")) {
-				tempName = part.substring(5).replace("_", " ");
-				break;
-			}
-		}
-		name = tempName;
+		amount = instruction.getVarNum();
+		name = instruction.getOptional("name");
 	}
 
 	@Override

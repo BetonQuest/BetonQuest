@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,12 +37,13 @@ public class CommandEvent extends QuestEvent {
 
 	private final Command[] commands;
 
-	public CommandEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public CommandEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
 		try {
-			String[] rawCommands = instructions.trim().substring(instructions.indexOf(" ") + 1).split("\\|");
+			String string = instruction.getInstruction();
+			String[] rawCommands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
 			commands = new Command[rawCommands.length];
 			for (int i = 0; i < rawCommands.length; i++) {
 				commands[i] = new Command(rawCommands[i]);
@@ -64,7 +66,7 @@ public class CommandEvent extends QuestEvent {
 						String com = command.command;
 						for (String var : command.variables) {
 							com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-									pack.getName(), var, PlayerConverter.getID(player)));
+									instruction.getPackage().getName(), var, PlayerConverter.getID(player)));
 						}
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
 					}
@@ -79,7 +81,7 @@ public class CommandEvent extends QuestEvent {
 						String com = command.command;
 						for (String var : command.variables) {
 							com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-									pack.getName(), var, playerID));
+									instruction.getPackage().getName(), var, playerID));
 						}
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
 					}

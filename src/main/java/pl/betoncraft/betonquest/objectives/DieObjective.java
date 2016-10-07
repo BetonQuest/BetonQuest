@@ -18,8 +18,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,8 +29,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -43,48 +44,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class DieObjective extends Objective implements Listener {
 
 	private final boolean cancel;
-	private final Location location;
+	private final LocationData location;
 
-	public DieObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public DieObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		boolean tempCancel = false;
-		Location tempLoc = null;
-		for (String part : instructions.split(" ")) {
-			if (part.startsWith("respawn:")) {
-				String[] rawLocParts = part.substring(8).split(";");
-				if (rawLocParts.length == 4 || rawLocParts.length == 6) {
-					World world = Bukkit.getWorld(rawLocParts[3]);
-					if (world == null) {
-						throw new InstructionParseException("World " + rawLocParts[3] + " does not exist");
-					}
-					double x, y, z;
-					try {
-						x = Double.parseDouble(rawLocParts[0]);
-						y = Double.parseDouble(rawLocParts[1]);
-						z = Double.parseDouble(rawLocParts[2]);
-					} catch (NumberFormatException e) {
-						throw new InstructionParseException("Could not parse coordinated");
-					}
-					float yaw = 0, pitch = 0;
-					if (rawLocParts.length == 6) {
-						try {
-							yaw = Float.parseFloat(rawLocParts[4]);
-							pitch = Float.parseFloat(rawLocParts[5]);
-						} catch (NumberFormatException e) {
-							throw new InstructionParseException("Could not parse direction");
-						}
-					}
-					tempLoc = new Location(world, x, y, z, yaw, pitch);
-				} else {
-					throw new InstructionParseException("Could not parse location");
-				}
-			} else if (part.equalsIgnoreCase("cancel")) {
-				tempCancel = true;
-			}
-		}
-		cancel = tempCancel;
-		location = tempLoc;
+		cancel = instruction.hasArgument("cancel");
+		location = instruction.getLocation(instruction.getOptional("respawn"));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -119,7 +85,11 @@ public class DieObjective extends Objective implements Listener {
 					player.removePotionEffect(effect.getType());
 				}
 				if (location != null) {
-					player.teleport(location);
+					try {
+						player.teleport(location.getLocation(playerID));
+					} catch (QuestRuntimeException e) {
+						e.printStackTrace();
+					}
 				}
 				new BukkitRunnable() {
 					@Override

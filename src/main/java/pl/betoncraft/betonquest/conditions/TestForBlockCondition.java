@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Material;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
@@ -34,19 +35,12 @@ public class TestForBlockCondition extends Condition {
 	private final LocationData loc;
 	private final Material material;
 
-	public TestForBlockCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public TestForBlockCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
-		material = Material.matchMaterial(parts[2]);
-		if (material == null) {
-			throw new InstructionParseException("Undefined material type");
-		}
+		loc = instruction.getLocation();
+		material = instruction.getEnum(Material.class);
 	}
 
 	@Override

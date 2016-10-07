@@ -23,11 +23,12 @@ import java.util.Random;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Folder event is a collection of other events, that can be run after a delay
@@ -39,50 +40,26 @@ public class FolderEvent extends QuestEvent {
 
 	public VariableNumber delay;
 	public VariableNumber random;
-	public String[] events;
+	public EventID[] events;
 
-	public FolderEvent(final String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public FolderEvent(final Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
 		persistent = true;
-		// declare variables used later
-		String[] parts = instructions.split(" ");
-		// parse the instuction string
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		// get those events
-		events = parts[1].split(",");
-		for (int i = 0; i < events.length; i++) {
-			events[i] = Utils.addPackage(pack.getName(), events[i]);
-		}
-		// parse the rest of arguments
-		for (String part : parts) {
-			if (part.startsWith("delay:")) {
-				try {
-					delay = new VariableNumber(packName, part.substring(6));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Wrong number format");
-				}
-			} else if (part.startsWith("random:")) {
-				try {
-					random = new VariableNumber(packName, part.substring(7));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Wrong number format");
-				}
-			}
-		}
+		events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
+		delay = instruction.getVarNum(instruction.getOptional("delay"));
+		random = instruction.getVarNum(instruction.getOptional("random"));
 	}
 
 	@Override
 	public void run(final String playerID) throws QuestRuntimeException {
-		final ArrayList<String> chosenList = new ArrayList<>();
+		final ArrayList<EventID> chosenList = new ArrayList<>();
 		// choose randomly which events should be fired
 		int randomInt = random != null ? random.getInt(playerID) : 0;
 		if (randomInt > 0 && randomInt <= events.length) {
 			// copy events into the modifyable ArrayList
-			ArrayList<String> eventsList = new ArrayList<>();
-			for (String event : events) {
+			ArrayList<EventID> eventsList = new ArrayList<>();
+			for (EventID event : events) {
 				eventsList.add(event);
 			}
 			// remove choosen events from that ArrayList and place them in a new
@@ -93,7 +70,7 @@ public class FolderEvent extends QuestEvent {
 			}
 		} else {
 			// add all events if it's not random
-			for (String event : events) {
+			for (EventID event : events) {
 				chosenList.add(event);
 			}
 		}
@@ -101,7 +78,7 @@ public class FolderEvent extends QuestEvent {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (String event : chosenList) {
+				for (EventID event : chosenList) {
 					BetonQuest.event(playerID, event);
 				}
 			} // 20 ticks is a second

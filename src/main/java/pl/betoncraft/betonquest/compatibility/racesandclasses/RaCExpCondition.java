@@ -18,7 +18,10 @@
 package pl.betoncraft.betonquest.compatibility.racesandclasses;
 
 import de.tobiyas.racesandclasses.APIs.LevelAPI;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -29,24 +32,16 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class RaCExpCondition extends Condition {
 	
-	private int number;
+	private VariableNumber number;
 
-	public RaCExpCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			number = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse a number");
-		}
+	public RaCExpCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		number = instruction.getVarNum();
 	}
 
 	@Override
-	public boolean check(String playerID) {
-		return LevelAPI.getCurrentExpOfLevel(PlayerConverter.getPlayer(playerID)) >= number;
+	public boolean check(String playerID) throws QuestRuntimeException {
+		return LevelAPI.getCurrentExpOfLevel(PlayerConverter.getPlayer(playerID)) >= number.getInt(playerID);
 	}
 
 }

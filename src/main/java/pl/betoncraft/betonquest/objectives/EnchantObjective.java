@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
@@ -41,20 +42,13 @@ public class EnchantObjective extends Objective implements Listener {
 	private Enchantment enchant;
 	private int level;
 
-	public EnchantObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public EnchantObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3)
-			throw new InstructionParseException("Not enough arguments");
-		String itemInstruction = pack.getString("items." + parts[1]);
-		if (itemInstruction == null) {
-			throw new InstructionParseException("Item not defined: " + parts[1]);
-		}
-		item = new QuestItem(itemInstruction);
-		String[] enchantParts = parts[2].split(":");
+		item = instruction.getQuestItem();
+		String[] enchantParts = instruction.next().split(":");
 		if (enchantParts.length != 2)
-			throw new InstructionParseException("Could not parse enchantment");
+			throw new InstructionParseException("Could not parse enchantment: " + instruction.current());
 		enchant = Enchantment.getByName(enchantParts[0].toUpperCase());
 		if (enchant == null)
 			throw new InstructionParseException("Enchantment type '" + enchantParts[0] + "' does not exist");

@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -31,14 +32,9 @@ public class TimeCondition extends Condition {
 	private final double timeMin;
 	private final double timeMax;
 
-	public TimeCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		String[] theTime = null;
-		if (parts.length < 2) {
-			throw new InstructionParseException("Time not defined");
-		}
-		theTime = parts[1].split("-");
+	public TimeCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String[] theTime = instruction.next().split("-");
 		if (theTime.length != 2) {
 			throw new InstructionParseException("Wrong time format");
 		}

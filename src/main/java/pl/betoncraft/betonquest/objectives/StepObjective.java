@@ -27,6 +27,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
@@ -43,14 +44,10 @@ public class StepObjective extends Objective implements Listener {
 
 	private final LocationData loc;
 
-	public StepObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public StepObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
 	}
 
 	@EventHandler
@@ -79,7 +76,7 @@ public class StepObjective extends Objective implements Listener {
 			if (checkConditions(playerID))
 				completeObjective(playerID);
 		} catch (QuestRuntimeException e) {
-			Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
+			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
 		}
 	}
 
@@ -105,7 +102,7 @@ public class StepObjective extends Objective implements Listener {
 			try {
 				block = loc.getLocation(playerID).getBlock();
 			} catch (QuestRuntimeException e) {
-				Debug.error("Error while getting location property in '" + pack.getName() + "." + getLabel() + "' objective: "
+				Debug.error("Error while getting location property in '" + instruction.getID() + "' objective: "
 						+ e.getMessage());
 				return "";
 			}

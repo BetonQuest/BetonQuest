@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -36,18 +37,10 @@ public class PointCondition extends Condition {
 	private final String category;
 	private final VariableNumber count;
 
-	public PointCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		category = Utils.addPackage(packName, parts[1]);
-		try {
-			count = new VariableNumber(packName, parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse point amount");
-		}
+	public PointCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		category = Utils.addPackage(instruction.getPackage(), instruction.next());
+		count = instruction.getVarNum();
 	}
 
 	@Override

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.variables;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.conversation.Conversation;
@@ -29,8 +30,8 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class NpcNameVariable extends Variable {
 
-	public NpcNameVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
+	public NpcNameVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 	}
 
 	@Override

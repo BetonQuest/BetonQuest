@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -36,11 +38,11 @@ public class MessageEvent extends QuestEvent {
 	private final HashMap<String, String> messages = new HashMap<>();
 	private final ArrayList<String> variables = new ArrayList<>();
 
-	public MessageEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public MessageEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		String[] parts;
 		try {
-			parts = instructions.substring(8).split(" ");
+			parts = instruction.getInstruction().substring(8).split(" ");
 		} catch (IndexOutOfBoundsException e) {
 			throw new InstructionParseException("Message missing");
 		}
@@ -70,7 +72,12 @@ public class MessageEvent extends QuestEvent {
 		}
 		for (String message : messages.values()) {
 			for (String variable : BetonQuest.resolveVariables(message)) {
-				BetonQuest.createVariable(pack, variable);
+				try {
+					BetonQuest.createVariable(instruction.getPackage(), variable);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Could not create '" + variable + "' variable: "
+							+ e.getMessage());
+				}
 				if (!variables.contains(variable))
 					variables.add(variable);
 			}
@@ -86,7 +93,7 @@ public class MessageEvent extends QuestEvent {
 		}
 		for (String variable : variables) {
 			message = message.replace(variable,
-					BetonQuest.getInstance().getVariableValue(pack.getName(), variable, playerID));
+					BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
 		}
 		PlayerConverter.getPlayer(playerID).sendMessage(message.replaceAll("&", "§"));
 	}

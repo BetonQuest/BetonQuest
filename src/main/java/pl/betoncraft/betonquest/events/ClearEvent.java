@@ -24,6 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -41,39 +42,21 @@ public class ClearEvent extends QuestEvent {
 	private final String name;
 	private final boolean kill;
 
-	public ClearEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public ClearEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].equalsIgnoreCase("any") || parts[1].equalsIgnoreCase("all")) {
-			types = null;
-		} else {
-			String[] rawTypes = parts[1].split(",");
-			EntityType[] tempTypes = new EntityType[rawTypes.length];
-			for (int i = 0; i < rawTypes.length; i++) {
-				try {
-					tempTypes[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
-				} catch (IllegalArgumentException e) {
-					throw new InstructionParseException("Unknown mob type: " + rawTypes[i]);
-				}
-			}
-			types = tempTypes;
-		}
-		loc = new LocationData(packName, parts[2]);
-		String tempName = null;
-		boolean tempKill = false;
-		for (String part : parts) {
-			if (part.startsWith("name:")) {
-				tempName = part.substring(5).replace("_", " ").trim();
-			} else if (part.equalsIgnoreCase("kill")) {
-				tempKill = true;
+		String[] entities = instruction.getArray();
+		types = new EntityType[entities.length];
+		for (int i = 0; i < types.length; i++) {
+			try {
+				types[i] = EntityType.valueOf(entities[i].toUpperCase());
+			} catch (IllegalArgumentException e) {
+				throw new InstructionParseException("Entity type '" + entities[i] + "' does not exist");
 			}
 		}
-		name = tempName;
-		kill = tempKill;
+		loc = instruction.getLocation();
+		name = instruction.getOptional("name");
+		kill = instruction.hasArgument("kill");
 	}
 
 	@Override

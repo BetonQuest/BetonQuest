@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -33,13 +34,9 @@ public class TeleportEvent extends QuestEvent {
 
 	private final LocationData loc;
 
-	public TeleportEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Location not specified");
-		}
-		loc = new LocationData(packName, parts[1]);
+	public TeleportEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		loc = instruction.getLocation();
 	}
 
 	public void run(String playerID) throws QuestRuntimeException {

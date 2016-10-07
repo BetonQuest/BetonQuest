@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -32,17 +33,9 @@ public class DamageEvent extends QuestEvent {
 
 	private final VariableNumber damage;
 
-	public DamageEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			damage = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Wrong number format");
-		}
+	public DamageEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		damage = instruction.getVarNum();
 	}
 
 	@Override

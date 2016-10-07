@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.potion.PotionEffectType;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,15 +33,12 @@ public class EffectCondition extends Condition {
 
 	private final PotionEffectType type;
 
-	public EffectCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Effect type not defined");
-		}
-		type = PotionEffectType.getByName(parts[1]);
+	public EffectCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		type = PotionEffectType.getByName(string);
 		if (type == null) {
-			throw new InstructionParseException("Effect " + parts[1] + " does not exist");
+			throw new InstructionParseException("Effect " + string + " does not exist");
 		}
 	}
 

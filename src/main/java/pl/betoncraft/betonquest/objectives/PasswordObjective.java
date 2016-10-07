@@ -26,6 +26,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
@@ -41,15 +42,11 @@ public class PasswordObjective extends Objective implements Listener {
 	private final String regex;
 	private final boolean ignoreCase;
 
-	public PasswordObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public PasswordObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		regex = parts[1].replace('_', ' ');
-		ignoreCase = parts.length > 2 && parts[2].equalsIgnoreCase("ignoreCase");
+		regex = instruction.next().replace('_', ' ');
+		ignoreCase = instruction.hasArgument("ignoreCase");
 	}
 
 	@EventHandler(priority = EventPriority.LOW)

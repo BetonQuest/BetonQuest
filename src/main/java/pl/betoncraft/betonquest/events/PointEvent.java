@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -41,22 +42,19 @@ public class PointEvent extends QuestEvent {
 	final boolean multi;
 	final String category;
 
-	public PointEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public PointEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		category = Utils.addPackage(packName, parts[1]);
-		if (parts[2].startsWith("*")) {
+		category = Utils.addPackage(instruction.getPackage(), instruction.next());
+		String number = instruction.next();
+		if (number.startsWith("*")) {
 			multi = true;
-			parts[2] = parts[2].replace("*", "");
+			number = number.replace("*", "");
 		} else {
 			multi = false;
 		}
 		try {
-			count = new VariableNumber(packName, parts[2]);
+			count = new VariableNumber(instruction.getPackage().getName(), number);
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse point count");
 		}

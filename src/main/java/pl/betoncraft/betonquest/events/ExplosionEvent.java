@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Location;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -37,21 +38,13 @@ public class ExplosionEvent extends QuestEvent {
 	private final VariableNumber power;
 	private final LocationData loc;
 
-	public ExplosionEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public ExplosionEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		staticness = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 5) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		setsFire = parts[1].equals("1") ? true : false;
-		breaksBlocks = parts[2].equals("1") ? true : false;
-		try {
-			power = new VariableNumber(packName, parts[3]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse power");
-		}
-		loc = new LocationData(packName, parts[4]);
+		setsFire = instruction.next().equals("1") ? true : false;
+		breaksBlocks = instruction.next().equals("1") ? true : false;
+		power = instruction.getVarNum();
+		loc = instruction.getLocation();
 
 	}
 

@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
@@ -36,17 +37,13 @@ public class TagEvent extends QuestEvent {
 	private final String[] tags;
 	private final boolean add;
 
-	public TagEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
+	public TagEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		persistent = true;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		add = parts[1].equalsIgnoreCase("add");
-		tags = parts[2].split(",");
+		add = instruction.next().equalsIgnoreCase("add");
+		tags = instruction.getArray();
 		for (int i = 0; i < tags.length; i++) {
-			tags[i] = Utils.addPackage(packName, tags[i]);
+			tags[i] = Utils.addPackage(instruction.getPackage(), tags[i]);
 		}
 	}
 

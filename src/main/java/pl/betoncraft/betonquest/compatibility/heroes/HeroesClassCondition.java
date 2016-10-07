@@ -23,6 +23,7 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -42,31 +43,21 @@ public class HeroesClassCondition extends Condition {
 	private boolean mastered;
 	private VariableNumber level = new VariableNumber(-1);
 
-	public HeroesClassCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		primary = parts[1].equalsIgnoreCase("primary");
-		mastered = parts[1].equals("mastered");
-		if (parts[2].equalsIgnoreCase("any")) {
+	public HeroesClassCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		primary = string.equalsIgnoreCase("primary");
+		mastered = string.equals("mastered");
+		string = instruction.next();
+		if (string.equalsIgnoreCase("any")) {
 			any = true;
 		} else {
-			heroClass = Heroes.getInstance().getClassManager().getClass(parts[2]);
+			heroClass = Heroes.getInstance().getClassManager().getClass(string);
 			if (heroClass == null) {
-				throw new InstructionParseException("Class '" + parts[2] + "' does not exist");
+				throw new InstructionParseException("Class '" + string + "' does not exist");
 			}
 		}
-		for (String part : parts) {
-			if (part.startsWith("level:")) {
-				try {
-					level = new VariableNumber(packName, part.substring(6));
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse level");
-				}
-			}
-		}
+		level = instruction.getVarNum(instruction.getOptional("level"));
 	}
 
 	@Override

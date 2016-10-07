@@ -42,7 +42,6 @@ public class ConversationResumer implements Listener {
 	private String original;
 	private Player player;
 	private String playerID;
-	private String packName;
 	private String conversationID;
 	private String option;
 	private Location loc;
@@ -53,9 +52,7 @@ public class ConversationResumer implements Listener {
 		this.player = PlayerConverter.getPlayer(playerID);
 		this.playerID = playerID;
 		String[] parts = convID.split(" ");
-		String[] convParts = parts[0].split("\\.");
-		this.packName = convParts[0];
-		this.conversationID = convParts[1];
+		this.conversationID = parts[0];
 		this.option = parts[1];
 		if (option.equalsIgnoreCase("null"))
 			return;
@@ -76,7 +73,7 @@ public class ConversationResumer implements Listener {
 				HandlerList.unregisterAll(this);
 				BetonQuest.getInstance().getSaver()
 						.add(new Record(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID }));
-				new Conversation(playerID, packName, conversationID, loc, option);
+				new Conversation(playerID, conversationID, loc, option);
 			}
 		}
 	}

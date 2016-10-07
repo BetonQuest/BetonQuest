@@ -20,6 +20,9 @@ package pl.betoncraft.betonquest.events;
 import java.util.ArrayList;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -33,38 +36,23 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PartyEvent extends QuestEvent {
 
-	private String[] conditions;
-	private String[] events;
+	private ConditionID[] conditions;
+	private EventID[] events;
 	private VariableNumber range;
 
-	public PartyEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 4) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		// load conditions and events
-		conditions = parts[2].split(",");
-		for (int i = 0; i < conditions.length; i++) {
-			conditions[i] = Utils.addPackage(packName, conditions[i]);
-		}
-		events = parts[3].split(",");
-		for (int i = 0; i < events.length; i++) {
-			events[i] = Utils.addPackage(packName, events[i]);
-		}
-		// load the range
-		try {
-			range = new VariableNumber(packName, parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Cannot parse range");
-		}
+	public PartyEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		range = instruction.getVarNum();
+		conditions = instruction.getList(e -> instruction.getCondition()).toArray(new ConditionID[0]);
+		events = instruction.getList(e -> instruction.getEvent()).toArray(new EventID[0]);
 	}
 
 	@Override
 	public void run(String playerID) throws QuestRuntimeException {
-		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), pack.getName(), conditions);
+		ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
+				.getName(), conditions);
 		for (String memberID : members) {
-			for (String event : events) {
+			for (EventID event : events) {
 				BetonQuest.event(memberID, event);
 			}
 		}

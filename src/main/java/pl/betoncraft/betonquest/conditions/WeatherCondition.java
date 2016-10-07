@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.World;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -32,16 +33,12 @@ public class WeatherCondition extends Condition {
 
 	private final String weather;
 
-	public WeatherCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Weather type not defined");
-		}
-		weather = parts[1].toLowerCase().trim();
+	public WeatherCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		weather = instruction.next().toLowerCase().trim();
 		if (!weather.equals("sun") && !weather.equals("clear") && !weather.equals("rain") && !weather.equals("rainy")
 				&& !weather.equals("storm") && !weather.equals("thunder")) {
-			throw new InstructionParseException("Weather type '" + weather + "' not defined!");
+			throw new InstructionParseException("Weather type '" + weather + "' does not exist");
 		}
 	}
 

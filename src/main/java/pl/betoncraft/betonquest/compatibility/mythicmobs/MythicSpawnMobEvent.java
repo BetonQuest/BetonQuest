@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.mythicmobs;
 import org.bukkit.Location;
 
 import net.elseland.xikage.MythicMobs.Mobs.MobSpawner;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -38,28 +39,16 @@ public class MythicSpawnMobEvent extends QuestEvent {
 	private final VariableNumber amount;
 	private final VariableNumber level;
 
-	public MythicSpawnMobEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 4) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		loc = new LocationData(packName, parts[1]);
-		String[] mobParts = parts[2].split(":");
+	public MythicSpawnMobEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		loc = instruction.getLocation();
+		String[] mobParts = instruction.next().split(":");
 		if (mobParts.length != 2) {
 			throw new InstructionParseException("Wrong mob format");
 		}
 		mob = mobParts[0];
-		try {
-			level = new VariableNumber(packName, parts[2].split(":")[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse mob level");
-		}
-		try {
-			amount = new VariableNumber(packName, parts[3]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse mob amount");
-		}
+		level = instruction.getVarNum(mobParts[1]);
+		amount = instruction.getVarNum();
 	}
 
 	@Override

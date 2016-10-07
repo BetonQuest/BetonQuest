@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.World;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,17 +34,14 @@ public class TimeEvent extends QuestEvent {
 	private final long amount;
 	private final boolean add;
 
-	public TimeEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
+	public TimeEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String time = instruction.next();
 		try {
-			if (add = parts[1].matches("^\\+\\d+$")) {
-				amount = Long.valueOf(parts[1].substring(1, parts[1].length())) * 1000;
+			if (add = time.startsWith("+")) {
+				amount = Long.valueOf(time.substring(1)) * 1000;
 			} else {
-				amount = Long.valueOf(parts[1]) * 1000 + 18000;
+				amount = Long.valueOf(time) * 1000 + 18000;
 			}
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse time amount");

@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.vault;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -32,18 +33,14 @@ public class MoneyVariable extends Variable {
 	private Type type;
 	private int amount;
 
-	public MoneyVariable(String packName, String instruction) throws InstructionParseException {
-		super(packName, instruction);
-		String[] parts = instruction.replace("%", "").split("\\.");
-		if (parts.length != 2) {
-			throw new InstructionParseException("Incorrect number of arguments");
-		}
-		if (parts[1].equalsIgnoreCase("amount")) {
+	public MoneyVariable(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		if (instruction.next().equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
-		} else if (parts[1].toLowerCase().startsWith("left:")) {
+		} else if (instruction.current().toLowerCase().startsWith("left:")) {
 			type = Type.LEFT;
 			try {
-				amount = Integer.parseInt(parts[1].substring(5));
+				amount = Integer.parseInt(instruction.current().substring(5));
 			} catch (NumberFormatException e) {
 				throw new InstructionParseException("Could not parse money amount");
 			}

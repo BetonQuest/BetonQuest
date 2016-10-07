@@ -24,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -37,18 +38,10 @@ public class ExperienceObjective extends Objective implements Listener {
 
 	private final int level;
 
-	public ExperienceObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public ExperienceObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		try {
-			level = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse level");
-		}
+		level = instruction.getInt();
 		if (level < 1) {
 			throw new InstructionParseException("Level cannot be less than 1");
 		}

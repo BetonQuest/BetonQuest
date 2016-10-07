@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -30,13 +31,9 @@ public class PermissionCondition extends Condition {
 
 	private final String permission;
 
-	public PermissionCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("There is no permission defined");
-		}
-		permission = parts[1];
+	public PermissionCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		permission = instruction.next();
 	}
 
 	@Override

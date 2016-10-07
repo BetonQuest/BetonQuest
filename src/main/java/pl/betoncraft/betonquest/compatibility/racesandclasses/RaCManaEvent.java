@@ -20,7 +20,10 @@ package pl.betoncraft.betonquest.compatibility.racesandclasses;
 import org.bukkit.entity.Player;
 
 import de.tobiyas.racesandclasses.APIs.ManaAPI;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -31,34 +34,30 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class RaCManaEvent extends QuestEvent {
 
-	private int number;
+	private VariableNumber number;
 	private boolean refill = false;
 
-	public RaCManaEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts[1].equalsIgnoreCase("refill")) {
+	public RaCManaEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		if (string.equalsIgnoreCase("refill")) {
 			refill = true;
-		} else try {
-			number = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse a number");
+		} else {
+			number = instruction.getVarNum(string);
 		}
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Player p = PlayerConverter.getPlayer(playerID);
 		if (refill) {
 			ManaAPI.fillMana(p, ManaAPI.getMaxMana(p) - ManaAPI.getCurrentMana(p));
 		} else {
-			if (number >= 0) {
-				ManaAPI.fillMana(p, number);
+			int i = number.getInt(playerID);
+			if (i >= 0) {
+				ManaAPI.fillMana(p, i);
 			} else {
-				ManaAPI.drainMana(p, -number);
+				ManaAPI.drainMana(p, -i);
 			}
 		}
 	}

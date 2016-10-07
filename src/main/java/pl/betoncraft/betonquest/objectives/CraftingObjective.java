@@ -28,6 +28,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
@@ -43,19 +44,11 @@ public class CraftingObjective extends Objective implements Listener {
 	private final QuestItem item;
 	private final int amount;
 
-	public CraftingObjective(String packName, String label, String instruction) throws InstructionParseException {
-		super(packName, label, instruction);
+	public CraftingObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = CraftData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		item = QuestItem.newQuestItem(packName, parts[1]);
-		try {
-			amount = Integer.parseInt(parts[2]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse amount");
-		}
+		item = instruction.getQuestItem();
+		amount = instruction.getInt();
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}

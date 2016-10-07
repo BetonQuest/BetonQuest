@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.racesandclasses;
 
 import de.tobiyas.racesandclasses.APIs.ClassAPI;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -31,16 +32,12 @@ public class RaCClassEvent extends QuestEvent {
 
 	private String className;
 
-	public RaCClassEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
+	public RaCClassEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		className = instruction.next();
+		if (!ClassAPI.getAllClassNames().contains(className)) {
+			throw new InstructionParseException("No such class: " + className);
 		}
-		if (!ClassAPI.getAllClassNames().contains(parts[1])) {
-			throw new InstructionParseException("No such class: " + parts[1]);
-		}
-		className = parts[1];
 	}
 
 	@Override

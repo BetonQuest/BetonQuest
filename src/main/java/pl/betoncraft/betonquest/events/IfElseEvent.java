@@ -18,9 +18,11 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Runs one or another event, depending of the condition outcome.
@@ -29,22 +31,18 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class IfElseEvent extends QuestEvent {
 	
-	private String condition;
-	private String event;
-	private String elseEvent;
+	private ConditionID condition;
+	private EventID event;
+	private EventID elseEvent;
 
-	public IfElseEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 5) {
-			throw new InstructionParseException("Not enough arguments");
+	public IfElseEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		condition = instruction.getCondition();
+		event = instruction.getEvent();
+		if (!instruction.next().equalsIgnoreCase("else")) {
+			throw new InstructionParseException("Missing 'else' keyword");
 		}
-		condition = Utils.addPackage(packName, parts[1]);
-		event = Utils.addPackage(packName, parts[2]);
-		if (!parts[3].equalsIgnoreCase("else")) {
-			throw new InstructionParseException("Third argument should be 'else'");
-		}
-		elseEvent = Utils.addPackage(packName, parts[4]);
+		elseEvent = instruction.getEvent();
 	}
 
 	@Override

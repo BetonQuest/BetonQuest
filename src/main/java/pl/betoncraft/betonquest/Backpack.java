@@ -204,17 +204,14 @@ public class Backpack implements Listener {
 			// if there are other pages, place the buttons
 			if (page > 0) {
 				ItemStack previous = null;
-				String item = Config.getString("default.items.previous_button");
-				if (item != null) {
-					try {
-						previous = new QuestItem(item).generateItem(1);
-					} catch (InstructionParseException e) {
-						Debug.error("Could not load previous button: " + e.getMessage());
-						player.closeInventory();
-						return;
-					}
-				} else {
+				try {
+					previous = new QuestItem(new ItemID(Config.getPackage("default"), "previous_button")).generateItem(1);
+				} catch (ObjectNotFoundException e) {
 					previous = new ItemStack(Material.GLOWSTONE_DUST);
+				} catch (InstructionParseException e) {
+					Debug.error("Could not load previous button: " + e.getMessage());
+					player.closeInventory();
+					return;
 				}
 				ItemMeta meta = previous.getItemMeta();
 				meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
@@ -223,17 +220,14 @@ public class Backpack implements Listener {
 			}
 			if (backpackItems.size() > (page + 1) * 45 - 1) {
 				ItemStack next;
-				String item = Config.getString("default.items.next_button");
-				if (item != null) {
-					try {
-						next = new QuestItem(item).generateItem(1);
-					} catch (InstructionParseException e) {
-						Debug.error("Could not load next button: " + e.getMessage());
-						player.closeInventory();
-						return;
-					}
-				} else {
+				try {
+					next = new QuestItem(new ItemID(Config.getPackage("default"), "next_button")).generateItem(1);
+				} catch (ObjectNotFoundException e) {
 					next = new ItemStack(Material.REDSTONE);
+				} catch (InstructionParseException e) {
+					Debug.error("Could not load next button: " + e.getMessage());
+					player.closeInventory();
+					return;
 				}
 				ItemMeta meta = next.getItemMeta();
 				meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
@@ -242,16 +236,14 @@ public class Backpack implements Listener {
 			}
 			// set "cancel quest" button
 			ItemStack cancel;
-			String item = Config.getString("default.items.cancel_button");
-			if (item != null) {
-				try {
-					cancel = new QuestItem(item).generateItem(1);
-				} catch (InstructionParseException e) {
-					Debug.error("Could not load cancel button: " + e.getMessage());
-					cancel = new ItemStack(Material.BONE);
-				}
-			} else {
+			try {
+				cancel = new QuestItem(new ItemID(Config.getPackage("default"), "cancel_button")).generateItem(1);
+			} catch (ObjectNotFoundException e) {
 				cancel = new ItemStack(Material.BONE);
+			} catch (InstructionParseException e) {
+				Debug.error("Could not load cancel button: " + e.getMessage());
+				player.closeInventory();
+				return;
 			}
 			ItemMeta meta = cancel.getItemMeta();
 			meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
@@ -259,16 +251,14 @@ public class Backpack implements Listener {
 			content[45] = cancel;
 			// set "compass targets" button
 			ItemStack compassItem;
-			String compassInstruction = Config.getString("default.items.compass_button");
-			if (compassInstruction != null) {
-				try {
-					compassItem = new QuestItem(compassInstruction).generateItem(1);
-				} catch (InstructionParseException e) {
-					Debug.error("Could not load compass button: " + e.getMessage());
-					compassItem = new ItemStack(Material.COMPASS);
-				}
-			} else {
+			try {
+				compassItem = new QuestItem(new ItemID(Config.getPackage("default"), "compass_button")).generateItem(1);
+			} catch (ObjectNotFoundException e) {
 				compassItem = new ItemStack(Material.COMPASS);
+			} catch (InstructionParseException e) {
+				Debug.error("Could not load compass button: " + e.getMessage());
+				player.closeInventory();
+				return;
 			}
 			ItemMeta compassMeta = compassItem.getItemMeta();
 			compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));
@@ -523,25 +513,23 @@ public class Backpack implements Listener {
 			int i = 0;
 			for (Integer slot : locations.keySet()) {
 				String name = names.get(slot);
-				String itemID = items.get(slot);
+				String item = items.get(slot);
 				ItemStack compass = null;
-				if (itemID != null) {
-					try {
-						compass = new QuestItem(Config.getString(itemID)).generateItem(1);
-					} catch (InstructionParseException e) {
-						Debug.error("Could not load compass button: " + e.getMessage());
+				try {
+					compass = new QuestItem(new ItemID(Config.getPackage("default"), item)).generateItem(1);
+				} catch (InstructionParseException e) {
+					Debug.error("Could not load compass button: " + e.getMessage());
+					player.closeInventory();
+					return;
+				} catch (NullPointerException e) {
+					if (e.getMessage().equals("Item instruction is null")) {
 						player.closeInventory();
 						return;
-					} catch (NullPointerException e) {
-						if (e.getMessage().equals("Item instruction is null")) {
-							player.closeInventory();
-							return;
-						} else {
-							e.printStackTrace();
-							return;
-						}
+					} else {
+						e.printStackTrace();
+						return;
 					}
-				} else {
+				} catch (ObjectNotFoundException e) {
 					compass = new ItemStack(Material.COMPASS);
 				}
 				ItemMeta meta = compass.getItemMeta();

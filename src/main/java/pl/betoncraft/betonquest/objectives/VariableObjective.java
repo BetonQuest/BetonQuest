@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -40,8 +41,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class VariableObjective extends Objective implements Listener {
 
-	public VariableObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public VariableObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = VariableData.class;
 	}
 

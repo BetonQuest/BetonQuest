@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import java.util.Date;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.Pointer;
@@ -36,18 +37,15 @@ public class JournalEvent extends QuestEvent {
 	private final String name;
 	private final boolean add;
 
-	public JournalEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		if (parts.length < 3) {
-			add = false;
+	public JournalEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String first = instruction.next();
+		if (first.equalsIgnoreCase("update")) {
 			name = null;
+			add = false;
 		} else {
-			add = parts[1].equalsIgnoreCase("add");
-			name = packName + "." + parts[2];
+			 add = first.equalsIgnoreCase("add");
+			 name = instruction.next();
 		}
 	}
 

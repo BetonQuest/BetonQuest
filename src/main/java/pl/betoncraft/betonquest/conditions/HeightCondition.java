@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -33,21 +34,19 @@ public class HeightCondition extends Condition {
 
 	private final VariableNumber height;
 
-	public HeightCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Height not defined");
-		}
-		if (parts[1].matches("\\-?\\d+\\.?\\d*")) {
+	public HeightCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String string = instruction.next();
+		String packName = instruction.getPackage().getName();
+		if (string.matches("\\-?\\d+\\.?\\d*")) {
 			try {
-				height = new VariableNumber(packName, parts[1]);
+				height = new VariableNumber(packName, string);
 			} catch (NumberFormatException e) {
 				throw new InstructionParseException("Could not parse height");
 			}
 		} else {
 			try {
-				height = new VariableNumber(new LocationData(packName, parts[1]).getLocation(null).getY());
+				height = new VariableNumber(new LocationData(packName, string).getLocation(null).getY());
 			} catch (QuestRuntimeException e) {
 				throw new InstructionParseException("Could not parse height"); 
 			}

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 
@@ -31,19 +32,15 @@ public class VariableCondition extends Condition {
 	private String variable;
 	private String regex;
 
-	public VariableCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		variable = parts[1];
-		regex = parts[2].replace('_', ' ');
+	public VariableCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		variable = instruction.next();
+		regex = instruction.next().replace('_', ' ');
 	}
 
 	@Override
 	public boolean check(String playerID) {
-		return BetonQuest.getInstance().getVariableValue(pack.getName(), variable, playerID).matches(regex);
+		return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID).matches(regex);
 	}
 
 }

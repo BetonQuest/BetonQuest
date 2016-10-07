@@ -45,8 +45,10 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.Zipper;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
@@ -429,7 +431,7 @@ public class Utils {
 		return false;
 	}
 
-	public static ArrayList<String> getParty(String playerID, double range, String pack, String[] conditions) {
+	public static ArrayList<String> getParty(String playerID, double range, String pack, ConditionID[] conditions) {
 		final ArrayList<String> list = new ArrayList<>();
 		Player player = PlayerConverter.getPlayer(playerID);
 		Location loc = player.getLocation();
@@ -438,10 +440,7 @@ public class Utils {
 			if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
 				String otherPlayerID = PlayerConverter.getID(otherPlayer);
 				boolean meets = true;
-				for (String condition : conditions) {
-					if (!condition.contains(".")) {
-						condition = pack + "." + condition;
-					}
+				for (ConditionID condition : conditions) {
 					if (!BetonQuest.condition(otherPlayerID, condition)) {
 						meets = false;
 						break;
@@ -463,11 +462,11 @@ public class Utils {
 	 * @param string ID of event/condition/objective/item etc.
 	 * @return full ID with package prefix
 	 */
-	public static String addPackage(String packName, String string) {
+	public static String addPackage(ConfigPackage pack, String string) {
 		if (string.contains(".")) {
 			return string;
 		} else {
-			return packName + "." + string;
+			return pack.getName() + "." + string;
 		}
 	}
 }

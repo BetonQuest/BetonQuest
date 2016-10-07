@@ -20,13 +20,14 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Starts an objective for the player
@@ -35,20 +36,16 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class ObjectiveEvent extends QuestEvent {
 
-	private final String objective;
+	private final ObjectiveID objective;
 	private final String action;
 
-	public ObjectiveEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		action = parts[1];
-		objective = Utils.addPackage(packName, parts[2]);
+	public ObjectiveEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		action = instruction.next();
+		objective = instruction.getObjective();
 		if (!action.equalsIgnoreCase("start") && !action.equalsIgnoreCase("delete")
 				&& !action.equalsIgnoreCase("complete")) {
-			throw new InstructionParseException("Unknown action " + action);
+			throw new InstructionParseException("Unknown action: " + action);
 		}
 		if (action.equalsIgnoreCase("complete")) {
 			persistent = false;

@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.quests;
 
 import me.blackvein.quests.Quests;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -31,13 +32,9 @@ public class QuestCondition extends Condition {
 
 	private String questName;
 
-	public QuestCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		questName = parts[1];
+	public QuestCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		questName = instruction.next();
 	}
 
 	@Override

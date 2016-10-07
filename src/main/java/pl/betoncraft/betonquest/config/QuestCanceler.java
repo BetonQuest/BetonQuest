@@ -27,8 +27,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -42,7 +47,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class QuestCanceler {
 
 	private String item;
-	private String[] events, tags, objectives, points, journal, conditions;
+	private String[] tags, points, journal;
+	private ConditionID[] conditions;
+	private EventID[] events;
+	private ObjectiveID[] objectives;
 	private Location loc;
 	private HashMap<String, String> name = new HashMap<>();
 
@@ -89,10 +97,46 @@ public class QuestCanceler {
 			item = Config.getString(packName + ".items.cancel_button");
 		}
 		// parse it to get the data
-		events = (rawEvents != null) ? rawEvents.split(",") : null;
-		conditions = (rawConditions != null) ? rawConditions.split(",") : null;
+		if (rawEvents != null) {
+			String[] arr = rawEvents.split(",");
+			events = new EventID[arr.length];
+			for (int i = 0; i < arr.length; i++) {
+				try {
+					events[i] = new EventID(Config.getPackage(packName), arr[i]);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage());
+				}
+			}
+		} else {
+			events = new EventID[0];
+		}
+		if (rawConditions != null) {
+			String[] arr = rawConditions.split(",");
+			conditions = new ConditionID[arr.length];
+			for (int i = 0; i < arr.length; i++) {
+				try {
+					conditions[i] = new ConditionID(Config.getPackage(packName), arr[i]);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage());
+				}
+			}
+		} else {
+			conditions = new ConditionID[0];
+		}
+		if (rawObjectives != null) {
+			String[] arr = rawObjectives.split(",");
+			objectives = new ObjectiveID[arr.length];
+			for (int i = 0; i < arr.length; i++) {
+				try {
+					objectives[i] = new ObjectiveID(Config.getPackage(packName), arr[i]);
+				} catch (ObjectNotFoundException e) {
+					throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage());
+				}
+			}
+		} else {
+			objectives = new ObjectiveID[0];
+		}
 		tags = (rawTags != null) ? rawTags.split(",") : null;
-		objectives = (rawObjectives != null) ? rawObjectives.split(",") : null;
 		points = (rawPoints != null) ? rawPoints.split(",") : null;
 		journal = (rawJournal != null) ? rawJournal.split(",") : null;
 		String[] locParts = (rawLoc != null) ? rawLoc.split(";") : null;
@@ -142,10 +186,7 @@ public class QuestCanceler {
 	public boolean show(String playerID) {
 		if (conditions == null)
 			return true;
-		for (String condition : conditions) {
-			if (!condition.contains(".")) {
-				condition = packName + "." + condition;
-			}
+		for (ConditionID condition : conditions) {
 			if (!BetonQuest.condition(playerID, condition)) {
 				return false;
 			}
@@ -184,14 +225,8 @@ public class QuestCanceler {
 			}
 		}
 		if (objectives != null) {
-			for (String obj : objectives) {
-				Debug.info("  Removing objective " + obj);
-				String objectiveID;
-				if (!obj.contains(".")) {
-					objectiveID = packName + "." + obj;
-				} else {
-					objectiveID = obj;
-				}
+			for (ObjectiveID objectiveID : objectives) {
+				Debug.info("  Removing objective " + objectiveID);
 				BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
 				playerData.removeRawObjective(objectiveID);
 			}
@@ -215,10 +250,7 @@ public class QuestCanceler {
 		}
 		// fire all events
 		if (events != null) {
-			for (String event : events) {
-				if (!event.contains(".")) {
-					event = packName + "." + event;
-				}
+			for (EventID event : events) {
 				BetonQuest.event(playerID, event);
 			}
 		}
@@ -254,8 +286,9 @@ public class QuestCanceler {
 		ItemStack stack = new ItemStack(Material.BONE);
 		if (item != null) {
 			try {
-				stack = new QuestItem(packName + "." + item).generateItem(1);
-			} catch (InstructionParseException e) {
+				ItemID itemID = new ItemID(Config.getPackage(packName), item);
+				stack = new QuestItem(itemID).generateItem(1);
+			} catch (InstructionParseException | ObjectNotFoundException e) {
 				Debug.error("Could not load cancel button: " + e.getMessage());
 			}
 		}

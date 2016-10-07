@@ -27,7 +27,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.NoID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
@@ -50,24 +53,26 @@ public class ChestPutObjective extends Objective implements Listener {
 	private final QuestEvent chestTakeEvent;
 	private final LocationData loc;
 
-	public ChestPutObjective(String packName, String label, String instructions) throws InstructionParseException {
-		super(packName, label, instructions);
+	public ChestPutObjective(Instruction instruction) throws InstructionParseException {
+		super(instruction);
 		template = ObjectiveData.class;
-		String[] parts = instructions.split(" ");
-		if (parts.length < 3) {
-			throw new InstructionParseException("Not enough arguments");
-		}
 		// extract location
-		loc = new LocationData(packName, parts[1]);
+		loc = instruction.getLocation();
+		String location = instruction.current();
+		String items = instruction.next();
 		try {
-			chestItemCondition = new ChestItemCondition(packName, "chestitem " + parts[1] + " " + parts[2]);
-		} catch (InstructionParseException e) {
+			chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
+		} catch (InstructionParseException | ObjectNotFoundException e) {
 			throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage());
 		}
-		if (parts.length > 3 && parts[3].equalsIgnoreCase("items-stay")) {
+		if (instruction.hasArgument("items-stay")) {
 			chestTakeEvent = null;
 		} else {
-			chestTakeEvent = new ChestTakeEvent(packName, "chesttake " + parts[1] + " " + parts[2]);
+			try {
+				chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage());
+			}
 		}
 
 	}
@@ -97,7 +102,7 @@ public class ChestPutObjective extends Objective implements Listener {
 					chestTakeEvent.run(playerID);
 			}
 		} catch (QuestRuntimeException e) {
-			Debug.error("Error while handling '" + pack.getName() + "." + getLabel() + "' objective: " + e.getMessage());
+			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
 		}
 	}
 

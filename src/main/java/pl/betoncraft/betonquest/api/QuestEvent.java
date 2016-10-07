@@ -21,13 +21,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Superclass for all events. You need to extend it in order to create new
@@ -44,15 +44,11 @@ public abstract class QuestEvent {
 	/**
 	 * Stores instruction string for the event.
 	 */
-	protected final String instructions;
+	protected final Instruction instruction;
 	/**
 	 * Stores conditions that must be met when firing this event
 	 */
-	protected final String[] conditions;
-	/**
-	 * ConfigPackage in which this event is defined
-	 */
-	protected final ConfigPackage pack;
+	protected final ConditionID[] conditions;
 	/**
 	 * Describes if the event is static
 	 */
@@ -77,27 +73,19 @@ public abstract class QuestEvent {
 	 *            required data from it and display errors if there is anything
 	 *            wrong.
 	 */
-	public QuestEvent(String packName, String instructions) throws InstructionParseException {
-		this.instructions = instructions;
-		this.pack = Config.getPackage(packName);
-		String[] tempConditions1 = new String[] {};
-		String[] tempConditions2 = new String[] {};
-		String[] parts = instructions.split(" ");
-		for (String part : parts) {
-			if (part.startsWith("conditions:")) {
-				tempConditions1 = part.substring(11).split(",");
-			} else if (part.startsWith("condition:")) {
-				tempConditions2 = part.substring(10).split(",");
-			}
-		}
+	public QuestEvent(Instruction instruction) throws InstructionParseException {
+		this.instruction = instruction;
+		String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
+		String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
 		int length = tempConditions1.length + tempConditions2.length;
-		conditions = new String[length];
+		conditions = new ConditionID[length];
 		for (int i = 0; i < length; i++) {
-			conditions[i] = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length]
-					: tempConditions1[i];
-		}
-		for (int i = 0; i < conditions.length; i++) {
-			conditions[i] = Utils.addPackage(pack.getName(), conditions[i]);
+			String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+			try {
+				conditions[i] = new ConditionID(instruction.getPackage(), condition);
+			} catch (ObjectNotFoundException e) {
+				throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage());
+			}
 		}
 	}
 
@@ -125,7 +113,7 @@ public abstract class QuestEvent {
 				Debug.info("Static event will be fired once for every player:");
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String ID = PlayerConverter.getID(player);
-					for (String condition : conditions) {
+					for (ConditionID condition : conditions) {
 						if (!BetonQuest.condition(ID, condition)) {
 							Debug.info("  Event conditions were not met for player " + player.getName());
 							continue;
@@ -146,7 +134,7 @@ public abstract class QuestEvent {
 			run(playerID);
 		} else {
 			// handle standard event
-			for (String condition : conditions) {
+			for (ConditionID condition : conditions) {
 				if (!BetonQuest.condition(playerID, condition)) {
 					Debug.info("Event conditions were not met.");
 					return;

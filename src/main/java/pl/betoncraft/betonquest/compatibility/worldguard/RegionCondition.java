@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.worldguard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -39,13 +40,9 @@ public class RegionCondition extends Condition {
 	private final String name;
 	private final WorldGuardPlugin worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
 
-	public RegionCondition(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		name = parts[1];
+	public RegionCondition(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		name = instruction.next();
 	}
 
 	@Override

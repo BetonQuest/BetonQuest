@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.World;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -33,13 +34,10 @@ public class WeatherEvent extends QuestEvent {
 	private final boolean storm;
 	private final boolean thunder;
 
-	public WeatherEvent(String packName, String instructions) throws InstructionParseException {
-		super(packName, instructions);
-		String[] parts = instructions.split(" ");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Not enough arguments");
-		}
-		switch (parts[1]) {
+	public WeatherEvent(Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		String part = instruction.next();
+		switch (part) {
 		case "sun":
 		case "clear":
 			storm = false;
@@ -56,7 +54,7 @@ public class WeatherEvent extends QuestEvent {
 			thunder = true;
 			break;
 		default:
-			throw new InstructionParseException("Weather type does not exist");
+			throw new InstructionParseException("Weather type '" + part + "' does not exist");
 		}
 	}
 
