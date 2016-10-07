@@ -80,6 +80,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 			BetonQuest.getInstance().getLogger().warning("NPC with ID " + id + " does not exist");
 			return;
 		}
+		if (!npc.isSpawned()) {
+			return;
+		}
 		if (currentPlayer == null) {
 			npc.getNavigator().setTarget(loc.getLocation(playerID));
 			currentPlayer = playerID;
