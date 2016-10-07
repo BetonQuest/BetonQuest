@@ -20,9 +20,9 @@ notify_pullback: 'true'
 default_package: default
 remove_items_after_respawn: 'true'
 sounds:
-  start: VILLAGER_HAGGLE
-  end: VILLAGER_YES
-  journal: BAT_TAKEOFF
+  start: ENTITY_VILLAGER_AMBIENT
+  end: ENTITY_VILLAGER_YES
+  journal: ENTITY_BAT_TAKEOFF
   update: 'false'
   full: 'false'
 cmd_blacklist:
