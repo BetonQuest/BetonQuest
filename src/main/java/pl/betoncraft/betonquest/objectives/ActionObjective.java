@@ -121,20 +121,26 @@ public class ActionObjective extends Objective implements Listener {
 				break;
 			}
 			try {
-				Location location = loc.getLocation(playerID);
-				double range = loc.getData().getDouble(playerID);
 				if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 						|| event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
 						&& (event.getClickedBlock() != null && ((type == Material.FIRE
-						&& event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type) 
-						|| event.getClickedBlock().getType().equals(type)))
-						&& (data < 0 || event.getClickedBlock().getData() == data)
-						&& (loc == null || (event.getClickedBlock().getWorld().equals(location.getWorld())
-						&& event.getClickedBlock().getLocation().distance(location) <= range))
-						&& checkConditions(playerID)) {
-					if (cancel)
-						event.setCancelled(true);
-					completeObjective(playerID);
+								&& event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type)
+								|| event.getClickedBlock().getType().equals(type)))
+						&& (data < 0 || event.getClickedBlock().getData() == data)) {
+					if (loc != null) {
+						Location location = loc.getLocation(playerID);
+						double range = loc.getData().getDouble(playerID);
+						if (!event.getClickedBlock().getWorld().equals(location.getWorld())
+								|| event.getClickedBlock().getLocation().distance(location) > range) {
+							return;
+						}
+					}
+					if (checkConditions(playerID)) {
+						if (cancel) {
+							event.setCancelled(true);
+						}
+						completeObjective(playerID);
+					}
 				}
 			} catch (QuestRuntimeException e) {
 				Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
