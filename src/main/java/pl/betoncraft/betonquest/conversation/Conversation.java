@@ -145,7 +145,7 @@ public class Conversation implements Listener {
 			options = null;
 		} else {
 			if (!option.contains("."))
-				option = conversationID + "." + option;
+				option = conversationID.substring(conversationID.indexOf('.') + 1) + "." + option;
 			options = new String[] { option };
 		}
 
@@ -369,6 +369,13 @@ public class Conversation implements Listener {
 	 * where it will be resumed after the player logs in again.
 	 */
 	public void suspend() {
+		if (inOut == null) {
+			Debug.error("Conversation IO is not loaded, conversation will end for player "
+					+ PlayerConverter.getName(playerID));
+			list.remove(playerID);
+			HandlerList.unregisterAll(this);
+			return;
+		}
 		inOut.end();
 		// save the conversation to the database
 		String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
