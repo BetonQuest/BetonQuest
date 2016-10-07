@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -586,7 +587,7 @@ public class QuestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		ItemStack item = player.getInventory().getItemInMainHand();
 		// if item is air then there is nothing to add to items.yml
-		if (item == null) {
+		if (item == null || item.getType() == Material.AIR) {
 			Debug.info("Cannot continue, item must not be air");
 			sendMessage(sender, "no_item");
 			return;
