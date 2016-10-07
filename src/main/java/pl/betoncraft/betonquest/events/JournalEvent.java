@@ -26,6 +26,7 @@ import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Adds the entry to player's journal
@@ -45,7 +46,7 @@ public class JournalEvent extends QuestEvent {
 			add = false;
 		} else {
 			 add = first.equalsIgnoreCase("add");
-			 name = instruction.next();
+			 name = Utils.addPackage(instruction.getPackage(), instruction.next());
 		}
 	}
 
