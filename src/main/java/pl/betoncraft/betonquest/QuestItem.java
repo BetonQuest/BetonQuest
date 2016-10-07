@@ -482,8 +482,6 @@ public class QuestItem {
 			} else {
 				bookMeta.setTitle(Config.getMessage(Config.getLanguage(), "unknown_title"));
 			}
-			item.setItemMeta(bookMeta);
-			return item;
 		} else if (material.equals(Material.POTION)) {
 			PotionMeta potionMeta = (PotionMeta) meta;
 			if (effects != null && !effects.isEmpty()) {
@@ -494,27 +492,19 @@ public class QuestItem {
 			if (baseEffect != null) {
 				potionMeta.setBasePotionData(new PotionData(baseEffect, extended, upgraded));
 			}
-			item.setItemMeta(potionMeta);
-			return item;
 		} else if ((material.equals(Material.LEATHER_BOOTS) || material.equals(Material.LEATHER_CHESTPLATE)
 				|| material.equals(Material.LEATHER_HELMET) || material.equals(Material.LEATHER_LEGGINGS))
 				&& color != null && !color.equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
 			LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
 			armorMeta.setColor(color);
-			item.setItemMeta(armorMeta);
-			return item;
 		} else if (enchants != null && material == Material.ENCHANTED_BOOK && !enchants.isEmpty()) {
-			EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
+			EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
 			for (Enchantment enchant : enchants.keySet()) {
 				storageMeta.addStoredEnchant(enchant, enchants.get(enchant), true);
 			}
-			item.setItemMeta(storageMeta);
-			return item;
 		} else if (material == Material.SKULL_ITEM && owner != null && !owner.equals("")) {
-			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+			SkullMeta skullMeta = (SkullMeta) meta;
 			skullMeta.setOwner(owner);
-			item.setItemMeta(skullMeta);
-			return item;
 		}
 		item.setItemMeta(meta);
 		return item;
