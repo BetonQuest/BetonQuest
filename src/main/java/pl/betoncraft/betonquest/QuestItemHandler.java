@@ -59,8 +59,11 @@ public class QuestItemHandler implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onItemDrop(PlayerDropItemEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
 		if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
 			return;
 		}
