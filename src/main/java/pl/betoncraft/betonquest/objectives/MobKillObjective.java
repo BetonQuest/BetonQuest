@@ -53,7 +53,7 @@ public class MobKillObjective extends Objective implements Listener {
 		if (amount < 1) {
 			throw new InstructionParseException("Amount cannot be less than 1");
 		}
-		name = instruction.getOptional("name");
+		name = instruction.getOptional("name").replace('_', ' ');
 		notify = instruction.hasArgument("notify");
 	}
 
