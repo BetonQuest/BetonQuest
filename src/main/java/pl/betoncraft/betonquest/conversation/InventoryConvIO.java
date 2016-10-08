@@ -155,11 +155,22 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			}
 			// generate an itemstack for this option
 			Material material = Material.ENDER_PEARL;
+			short data = 0;
 			// get the custom material
-			if (option.matches("^\\{[a-zA-Z_ ]+\\}.*$")) {
-				String mName = option.substring(1, option.indexOf('}'));
-				Material m = Material.matchMaterial(mName);
-				option = option.replace("{" + mName + "}", "");
+			if (option.matches("^\\{[a-zA-Z0-9_: ]+\\}.*$")) {
+				String fullMaterial = option.substring(1, option.indexOf('}'));
+				String materialName = fullMaterial;
+				if (materialName.contains(":")) {
+					int colonIndex = materialName.indexOf(':');
+					try {
+						data = Short.valueOf(materialName.substring(colonIndex + 1));
+					} catch (NumberFormatException e) {
+						data = 0;
+					}
+					materialName = materialName.substring(0, colonIndex);
+				}
+				Material m = Material.matchMaterial(materialName);
+				option = option.replace("{" + fullMaterial + "}", "");
 				if (m == null) {
 					material = Material.ENDER_PEARL;
 				} else {
@@ -169,8 +180,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			// remove custom material prefix from the option
 			options.put(next, option);
 			// set the display name and lore of the option
-			buttons[j] = new ItemStack(material);
-			ItemMeta meta = buttons[j].getItemMeta();
+			ItemStack item = new ItemStack(material);
+			item.setDurability(data);
+			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
 			ArrayList<String> lines = stringToLines(response, npcTextColor,
 					npcNameColor + npcName + ChatColor.RESET + ": ");
@@ -180,7 +192,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			}
 			lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
 			meta.setLore(lines);
-			buttons[j].setItemMeta(meta);
+			item.setItemMeta(meta);
+			buttons[j] = item;
 		}
 		player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
 		inv.setContents(buttons);
