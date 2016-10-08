@@ -88,7 +88,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v46";
+	private final String destination = "v47";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -195,6 +195,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v46() {
+		config.set("journal.full_main_page", "false");
+		Debug.broadcast("Added 'full_main_page' option to config");
+		config.set("version", "v47");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

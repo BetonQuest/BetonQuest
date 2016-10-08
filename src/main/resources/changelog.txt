@@ -1,7 +1,13 @@
 ﻿v1.9-dev
 Fixes:
     * 'action' objective now detects fire interaction
+    * 'empty' condition now skips armor and off-hand slots
     * Items can be used cross-package
+    * New sound names are now used by default
+    * Fixed doubled quest items when dropping them is blocked by another plugin
+    * Lore and name now appear on heads and written books with custom data
+    * Fix error when trying to add air (empty hand) with "/q item" command
+    * Main page now can exceed a single page in the journal
 Changes:
     * New lines in conversations can be made with "\n"
     * Interval in 'delay' objective is now configurable
@@ -10,6 +16,8 @@ Changes:
     * You can now use spaces between "first" options in conversations
     * Static events can now be fired with "/q event - eventID" command
     * Locations can have vectors defined directly in instruction strings
+    * Point condition can now check exact point amount with 'equal' argument
+    * In 'chest' conversation IO items can be specified with durability values after a colon
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
@@ -25,12 +33,15 @@ Additions:
     * New event 'lever' - switches a lever
     * New event 'door' - opens/closes doors, trapdoors and gates
     * New event 'if' - run one of two events, depending on condition
+    * New event 'movenpc' - move Citizens NPC to a location
     * New objective 'vehicle' - entering a vehicle entity
     * New objective 'variable' - lets players define their own variables for you to use
     * New objective 'kill' - kill players who meet specified conditions
     * Keyword "player" can be used as a location
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
+    * Objectives can be completed for players with "/q objective player complete"
+    * Option 'full_main_page' controls if the main page is a separate page in the journal
 
 ﻿v1.8.5
 Fixes:

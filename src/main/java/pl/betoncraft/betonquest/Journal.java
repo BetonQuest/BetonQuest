@@ -128,11 +128,8 @@ public class Journal {
 		if (Config.getString("config.journal.reversed_order").equalsIgnoreCase("true")) {
 			list = Lists.reverse(texts);
 		} else {
-			list = texts;
+			list = new ArrayList<>(texts);
 		}
-		list = new ArrayList<>(list);
-		if (mainPage != null)
-			list.add(0, mainPage);
 		return list;
 	}
 
@@ -328,20 +325,26 @@ public class Journal {
 		List<String> lore = new ArrayList<String>();
 		lore.add(Config.getMessage(lang, "journal_lore").replaceAll("&", "§"));
 		meta.setLore(lore);
-
+		// add main page and generate pages from texts
+		List<String> finalList = new ArrayList<>();
 		if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
-			// logic for converting entries into single text and then to pages
+			String color = Config.getString("config.journal_colors.line");
 			StringBuilder stringBuilder = new StringBuilder();
 			for (String entry : getText()) {
-				stringBuilder
-						.append(entry + "\n§" + Config.getString("config.journal_colors.line") + "---------------\n");
+				stringBuilder.append(entry + "\n§" + color + "---------------\n");
+			}
+			if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
+				finalList.addAll(Utils.pagesFromString(mainPage, true));
+			} else {
+				stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
 			}
 			String wholeString = stringBuilder.toString().trim();
-			// return ready journal ItemStack
-			meta.setPages(Utils.pagesFromString(wholeString, true));
+			finalList.addAll(Utils.pagesFromString(wholeString, true));
 		} else {
-			meta.setPages(getText());
+			finalList.addAll(Utils.pagesFromString(mainPage, true));
+			finalList.addAll(getText());
 		}
+		meta.setPages(finalList);
 		item.setItemMeta(meta);
 		return item;
 	}

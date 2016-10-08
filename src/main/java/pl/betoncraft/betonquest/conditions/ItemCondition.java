@@ -48,7 +48,6 @@ public class ItemCondition extends Condition {
 		int counter = 0;
 		for (Item questItem : questItems) {
 			int amount = questItem.getAmount().getInt(playerID);
-			System.out.println("Needed amount = " + amount);
 			ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 			for (ItemStack item : inventoryItems) {
 				if (item == null) {

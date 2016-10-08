@@ -1,4 +1,4 @@
-version: v46
+version: v47
 mysql:
   host: ''
   port: ''
@@ -52,6 +52,7 @@ journal:
   one_entry_per_page: 'false'
   reversed_order: 'true'
   hide_date: 'false'
+  full_main_page: 'false'
 journal_colors:
   date:
     day: '9'
