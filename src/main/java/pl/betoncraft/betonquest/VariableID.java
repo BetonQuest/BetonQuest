@@ -22,8 +22,8 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 public class VariableID extends ID {
 
 	public VariableID(ConfigPackage pack, String id) throws ObjectNotFoundException {
-		super(pack, id);
-		if (!super.id.startsWith("%") && !super.id.startsWith("%")) {
+		super(pack, pack.getName() + "." + id);
+		if (!super.id.startsWith("%") && !super.id.endsWith("%")) {
 			throw new ObjectNotFoundException("Variable instruction has to start and end with '%' characters");
 		}
 		rawInstruction = id;

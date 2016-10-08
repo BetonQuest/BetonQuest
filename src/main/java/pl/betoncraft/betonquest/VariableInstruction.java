@@ -27,7 +27,7 @@ public class VariableInstruction extends Instruction {
 			throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
 		}
 		super.instruction = instruction.substring(1, instruction.length() - 1);
-		super.parts = instruction.split("\\.");
+		super.parts = super.instruction.split("\\.");
 	}
 
 }

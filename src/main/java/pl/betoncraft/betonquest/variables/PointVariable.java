@@ -22,7 +22,6 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Allows you to display total amount of points or amount of points remaining to
@@ -38,7 +37,12 @@ public class PointVariable extends Variable {
 
 	public PointVariable(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		category = Utils.addPackage(null, instruction.next());
+		category = instruction.next();
+		if (category.contains("*")) {
+			category = category.replace('*', '.');
+		} else {
+			category = instruction.getPackage().getName() + "." + category;
+		}
 		if (instruction.next().equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
 		} else if (instruction.current().toLowerCase().startsWith("left:")) {

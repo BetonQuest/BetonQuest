@@ -35,12 +35,13 @@ public abstract class ID {
 			pack = Config.getPackage(Config.getDefaultPackage());
 		}
 		if (id.contains(".")) {
-			String[] parts = id.split("\\.");
-			this.pack = Config.getPackage(parts[0]);
+			int dotIndex = id.indexOf('.');
+			String packName = id.substring(0, dotIndex);
+			this.pack = Config.getPackage(packName);
 			if (this.pack == null) {
-				throw new ObjectNotFoundException("Package not found: " + parts[0]);
+				throw new ObjectNotFoundException("Package not found: " + packName);
 			}
-			this.id = parts[1];
+			this.id = id.substring(dotIndex + 1);
 		} else {
 			this.pack = pack;
 			this.id = id;
