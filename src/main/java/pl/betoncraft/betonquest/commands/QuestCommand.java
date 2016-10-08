@@ -781,23 +781,25 @@ public class QuestCommand implements CommandExecutor {
 			sendMessage(sender, "specify_objective");
 			return;
 		}
-		// if there are arguments, handle them
+		// get the objective
+		ObjectiveID objectiveID;
+		try {
+			objectiveID = new ObjectiveID(null, args[3]);
+		} catch (ObjectNotFoundException e) {
+			sendMessage(sender, "error", new String[]{ e.getMessage() });
+			return;
+		}
+		Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
+		if (objective == null) {
+			sendMessage(sender, "specify_objective");
+			return;
+		}
 		switch (args[2].toLowerCase()) {
+		case "start":
+		case "s":
 		case "add":
 		case "a":
-			// get the instruction
-			ObjectiveID objectiveID;
-			try {
-				objectiveID = new ObjectiveID(null, args[3]);
-			} catch (ObjectNotFoundException e) {
-				sendMessage(sender, "error", new String[]{ e.getMessage() });
-				return;
-			}
 			Debug.info("Adding new objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-			if (BetonQuest.getInstance().getObjective(objectiveID) == null) {
-				sendMessage(sender, "specify_objective");
-				return;
-			}
 			// add the objective
 			if (isOnline) {
 				BetonQuest.newObjective(playerID, objectiveID);
@@ -811,22 +813,20 @@ public class QuestCommand implements CommandExecutor {
 		case "del":
 		case "r":
 		case "d":
-			// remove the objective
-			ObjectiveID objectiveID2;
-			try {
-				objectiveID2 = new ObjectiveID(null, args[3]);
-			} catch (ObjectNotFoundException e) {
-				sendMessage(sender, "error", new String[]{ e.getMessage() });
-				return;
-			}
-			Debug.info("Deleting objective " + objectiveID2 + " for player " + PlayerConverter.getName(playerID));
-			if (BetonQuest.getInstance().getObjective(objectiveID2) == null) {
-				sendMessage(sender, "specify_objective");
-				return;
-			}
-			BetonQuest.getInstance().getObjective(objectiveID2).removePlayer(playerID);
-			playerData.removeRawObjective(objectiveID2);
+			Debug.info("Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+			objective.removePlayer(playerID);
+			playerData.removeRawObjective(objectiveID);
 			sendMessage(sender, "objective_removed");
+			break;
+		case "complete":
+		case "c":
+			Debug.info("Completing objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+			if (isOnline) {
+				objective.completeObjective(playerID);
+			} else {
+				playerData.removeRawObjective(objectiveID);
+			}
+			sendMessage(sender, "objective_completed");
 			break;
 		default:
 			// if there was something else, display error message

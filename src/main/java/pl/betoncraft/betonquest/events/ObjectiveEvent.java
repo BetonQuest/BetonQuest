@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import java.util.Arrays;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -43,8 +45,8 @@ public class ObjectiveEvent extends QuestEvent {
 		super(instruction);
 		action = instruction.next();
 		objective = instruction.getObjective();
-		if (!action.equalsIgnoreCase("start") && !action.equalsIgnoreCase("delete")
-				&& !action.equalsIgnoreCase("complete")) {
+		if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"})
+				.contains(action)) {
 			throw new InstructionParseException("Unknown action: " + action);
 		}
 		if (action.equalsIgnoreCase("complete")) {
@@ -64,23 +66,37 @@ public class ObjectiveEvent extends QuestEvent {
 				@Override
 				public void run() {
 					PlayerData playerData = new PlayerData(playerID);
-					if (action.equals("start")) {
+					switch (action.toLowerCase()) {
+					case "start":
+					case "add":
 						playerData.addNewRawObjective(objective);
-					} else if (action.equals("delete")) {
+						break;
+					case "delete":
+					case "remove":
 						playerData.removeRawObjective(objective);
-					} else {
+						break;
+					case "complete":
+					case "finish":
 						Debug.error("Cannot complete objective for offline player!");
+						break;
 					}
 				}
 			}.runTaskAsynchronously(BetonQuest.getInstance());
 		} else {
-			if (action.equalsIgnoreCase("start")) {
+			switch (action.toLowerCase()) {
+			case "start":
+			case "add":
 				BetonQuest.newObjective(playerID, objective);
-			} else if (action.equalsIgnoreCase("complete")) {
-				BetonQuest.getInstance().getObjective(objective).completeObjective(playerID);
-			} else {
+				break;
+			case "delete":
+			case "remove":
 				BetonQuest.getInstance().getObjective(objective).removePlayer(playerID);
 				BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
+				break;
+			case "complete":
+			case "finish":
+				BetonQuest.getInstance().getObjective(objective).completeObjective(playerID);
+				break;
 			}
 		}
 	}

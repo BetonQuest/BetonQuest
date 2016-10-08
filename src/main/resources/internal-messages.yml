@@ -31,6 +31,7 @@ en:
   tag_removed: '&2Tag removed!'
   objective_added: '&2Objective started!'
   objective_removed: '&2Objective deleted!'
+  objective_completed: '&2Objective completed!'
   pointer_added: '&2Pointer added!'
   pointer_removed: '&2Pointer removed!'
   everything_renamed: '&2Every occurrence renamed!'
