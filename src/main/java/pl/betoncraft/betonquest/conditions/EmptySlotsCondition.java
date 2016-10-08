@@ -43,7 +43,7 @@ public class EmptySlotsCondition extends Condition {
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
 		int empty = 0;
-		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getContents()) {
+		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getStorageContents()) {
 			if (item == null)
 				empty++;
 		}
