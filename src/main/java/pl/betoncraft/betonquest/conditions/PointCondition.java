@@ -36,11 +36,13 @@ public class PointCondition extends Condition {
 
 	private final String category;
 	private final VariableNumber count;
+	private final boolean equal;
 
 	public PointCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		category = Utils.addPackage(instruction.getPackage(), instruction.next());
 		count = instruction.getVarNum();
+		equal = instruction.hasArgument("equal");
 	}
 
 	@Override
@@ -48,7 +50,11 @@ public class PointCondition extends Condition {
 		int c = count.getInt(playerID);
 		for (Point point : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
 			if (point.getCategory().equalsIgnoreCase(category)) {
-				return point.getCount() >= c;
+				if (equal) {
+					return point.getCount() == c;
+				} else {
+					return point.getCount() >= c;
+				}
 			}
 		}
 		return false;
