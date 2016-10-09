@@ -43,8 +43,8 @@ public class PartyEvent extends QuestEvent {
 	public PartyEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		range = instruction.getVarNum();
-		conditions = instruction.getList(e -> instruction.getCondition()).toArray(new ConditionID[0]);
-		events = instruction.getList(e -> instruction.getEvent()).toArray(new EventID[0]);
+		conditions = instruction.getList(e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
+		events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
 	}
 
 	@Override

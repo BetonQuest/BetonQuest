@@ -501,7 +501,7 @@ public final class BetonQuest extends JavaPlugin {
 					Debug.info("  Event '" + ID + "' loaded");
 				} catch (InvocationTargetException e) {
 					if (e.getCause() instanceof InstructionParseException) {
-						Debug.error("Error in '" + ID + "' event: " + e.getCause().getMessage());
+						Debug.error("Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
 					} else {
 						e.printStackTrace();
 						Debug.error(ERROR);
@@ -544,7 +544,7 @@ public final class BetonQuest extends JavaPlugin {
 					Debug.info("  Condition '" + ID + "' loaded");
 				} catch (InvocationTargetException e) {
 					if (e.getCause() instanceof InstructionParseException) {
-						Debug.error("Error in '" + ID + "' condition: " + e.getCause().getMessage());
+						Debug.error("Error in '" + ID + "' condition (" + type + "): " + e.getCause().getMessage());
 					} else {
 						e.printStackTrace();
 						Debug.error(ERROR);
@@ -589,7 +589,7 @@ public final class BetonQuest extends JavaPlugin {
 					Debug.info("  Objective '" + ID + "' loaded");
 				} catch (InvocationTargetException e) {
 					if (e.getCause() instanceof InstructionParseException) {
-						Debug.error("Error in '" + ID + "' objective: " + e.getCause().getMessage());
+						Debug.error("Error in '" + ID + "' objective (" + type + "): " + e.getCause().getMessage());
 					} else {
 						e.printStackTrace();
 						Debug.error(ERROR);
@@ -609,7 +609,7 @@ public final class BetonQuest extends JavaPlugin {
 					conversations.put(pack.getName() + "." + convName, new ConversationData(packName, convName));
 				} catch (InstructionParseException e) {
 					Debug.error(
-							"Error in " + convName + " conversation from " + packName + " package: " + e.getMessage());
+							"Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
 				} catch (Exception e) {
 					e.printStackTrace();
 					Debug.error(ERROR);

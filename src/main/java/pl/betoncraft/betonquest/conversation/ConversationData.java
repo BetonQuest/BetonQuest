@@ -421,7 +421,8 @@ public class ConversationData {
 					count++;
 				}
 			} catch (ObjectNotFoundException e) {
-				throw new InstructionParseException("Error while loading conversation conditions: " + e.getMessage());
+				throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
+						+ e.getMessage());
 			}
 			String rawEvents = pack.getString("conversations." + convName + "." + type + "." + name + ".events");
 			String[] event1 = new String[] {};
@@ -445,7 +446,8 @@ public class ConversationData {
 					count++;
 				}
 			} catch (ObjectNotFoundException e) {
-				throw new InstructionParseException("Error while loading conversation events: " + e.getMessage());
+				throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
+						+ e.getMessage());
 			}
 			String rawPointers = pack.getString("conversations." + convName + "." + type + "." + name + ".pointers");
 			String[] pointer1 = new String[] {};

@@ -269,9 +269,9 @@ public class Instruction {
 			throw new PartParseException("There is no such " + clazz.getSimpleName() + ": " + string);
 		}
 	}
-	
+
 	public Material getMaterial(String string) throws InstructionParseException {
-		return getEnum(string, Material.class);
+		return Material.matchMaterial(string);
 	}
 	
 	public EntityType getEntity(String string) throws InstructionParseException {
