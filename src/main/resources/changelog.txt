@@ -18,6 +18,7 @@ Changes:
     * Locations can have vectors defined directly in instruction strings
     * Point condition can now check exact point amount with 'equal' argument
     * In 'chest' conversation IO items can be specified with durability values after a colon
+    * Mobs spawned with 'spawn' event can have armor, items in hands and custom drops
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
@@ -42,6 +43,7 @@ Additions:
     * Chat can be paused while in conversation, it will display when finished
     * Objectives can be completed for players with "/q objective player complete"
     * Option 'full_main_page' controls if the main page is a separate page in the journal
+    * Mobs spawned with 'spawn' can be "marked"; you can require marked mobs in 'mobkill' objective
 
 ﻿v1.8.5
 Fixes:

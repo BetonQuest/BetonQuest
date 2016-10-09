@@ -270,6 +270,9 @@ public final class BetonQuest extends JavaPlugin {
 
 		// start mob kill listener
 		new MobKillListener();
+		
+		// start custom drop listener
+		new CustomDropListener();
 
 		// register commands
 		new QuestCommand();

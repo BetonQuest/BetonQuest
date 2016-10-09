@@ -18,11 +18,13 @@
 package pl.betoncraft.betonquest.conditions;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.MetadataValue;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
@@ -30,6 +32,7 @@ import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Checks if there are specified monsters in the area
@@ -42,6 +45,7 @@ public class MonstersCondition extends Condition {
 	private VariableNumber[] amounts;
 	private LocationData loc;
 	private String name;
+	private String marked;
 
 	public MonstersCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -77,6 +81,10 @@ public class MonstersCondition extends Condition {
 		}
 		loc = instruction.getLocation();
 		name = instruction.getOptional("name");
+		marked = instruction.getOptional("marked");
+		if (marked != null) {
+			marked = Utils.addPackage(instruction.getPackage(), marked);
+		}
 	}
 
 	@Override
@@ -88,21 +96,30 @@ public class MonstersCondition extends Condition {
 		}
 		Collection<Entity> entities = location.getWorld().getEntities();
 		double range = loc.getData().getDouble(playerID);
+		loop:
 		for (Entity entity : entities) {
 			if (!(entity instanceof LivingEntity)) {
 				continue;
+			}
+			if (name != null && (entity.getCustomName() == null || !entity.getCustomName().equals(name))) {
+				continue;
+			}
+			if (marked != null) {
+				if (!entity.hasMetadata("betonquest-marked")) {
+					continue;
+				}
+				List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
+				for (MetadataValue m : meta) {
+					if (!m.asString().equals(marked)) {
+						continue loop;
+					}
+				}
 			}
 			if (entity.getLocation().distanceSquared(location) < range * range) {
 				EntityType theType = entity.getType();
 				for (int i = 0; i < types.length; i++) {
 					if (theType == types[i]) {
-						if (name != null) {
-							if (entity.getCustomName() != null && entity.getCustomName().equals(name)) {
-								neededAmounts[i]++;
-							}
-						} else {
-							neededAmounts[i]++;
-						}
+						neededAmounts[i]++;
 						break;
 					}
 				}

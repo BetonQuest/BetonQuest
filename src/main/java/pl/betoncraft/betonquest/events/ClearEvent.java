@@ -18,17 +18,20 @@
 package pl.betoncraft.betonquest.events;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.MetadataValue;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Clears all specified monsters in a certain location
@@ -37,10 +40,11 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class ClearEvent extends QuestEvent {
 
-	private final EntityType[] types;
-	private final LocationData loc;
-	private final String name;
-	private final boolean kill;
+	private EntityType[] types;
+	private LocationData loc;
+	private String name;
+	private boolean kill;
+	private String marked;
 
 	public ClearEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -57,37 +61,45 @@ public class ClearEvent extends QuestEvent {
 		loc = instruction.getLocation();
 		name = instruction.getOptional("name");
 		kill = instruction.hasArgument("kill");
+		marked = instruction.getOptional("marked");
+		if (marked != null) {
+			marked = Utils.addPackage(instruction.getPackage(), marked);
+		}
 	}
 
 	@Override
 	public void run(String playerID) throws QuestRuntimeException {
 		Location location = loc.getLocation(playerID);
 		Collection<Entity> entities = location.getWorld().getEntities();
+		loop:
 		for (Entity entity : entities) {
 			if (!(entity instanceof LivingEntity)) {
 				continue;
 			}
+			if (name != null && (entity.getCustomName() == null || !entity.getCustomName().equals(name))) {
+				continue;
+			}
+			if (marked != null) {
+				if (!entity.hasMetadata("betonquest-marked")) {
+					continue;
+				}
+				List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
+				for (MetadataValue m : meta) {
+					if (!m.asString().equals(marked)) {
+						continue loop;
+					}
+				}
+			}
 			double rangeDouble = loc.getData().getDouble(playerID);
 			if (entity.getLocation().distanceSquared(location) < rangeDouble * rangeDouble) {
-				EntityType theType = entity.getType();
-				for (EntityType type : types) {
-					if (theType == type) {
-						if (name != null) {
-							if (entity.getCustomName() != null && entity.getCustomName().equals(name)) {
-								if (kill) {
-									LivingEntity living = (LivingEntity) entity;
-									living.damage(living.getHealth() + 10);
-								} else {
-									entity.remove();
-								}
-							}
+				EntityType entityType = entity.getType();
+				for (EntityType allowedType : types) {
+					if (entityType == allowedType) {
+						if (kill) {
+							LivingEntity living = (LivingEntity) entity;
+							living.damage(living.getHealth() + 10);
 						} else {
-							if (kill) {
-								LivingEntity living = (LivingEntity) entity;
-								living.damage(living.getHealth() + 10);
-							} else {
-								entity.remove();
-							}
+							entity.remove();
 						}
 						break;
 					}

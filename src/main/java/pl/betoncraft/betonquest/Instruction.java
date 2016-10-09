@@ -175,17 +175,17 @@ public class Instruction {
 		Item[] items = new Item[array.length];
 		for (int i = 0; i < items.length; i++) {
 			try {
-				QuestItem questItem;
+				ItemID item;
 				VariableNumber number;
 				if (array[i].contains(":")) {
 					String[] parts = array[i].split(":");
-					questItem = new QuestItem(getItem(parts[0]));
+					item = getItem(parts[0]);
 					number = getVarNum(parts[1]);
 				} else {
-					questItem = new QuestItem(getItem(array[i]));
+					item = getItem(array[i]);
 					number = new VariableNumber(1);
 				}
-				items[i] = new Item(questItem, number);
+				items[i] = new Item(item, number);
 			} catch (InstructionParseException | NumberFormatException e) {
 				throw new PartParseException("Error while parsing '" + array[i] + "' item: " + e.getMessage());
 			}
@@ -451,12 +451,18 @@ public class Instruction {
 
 	public class Item {
 
+		private ItemID itemID;
 		private QuestItem questItem;
 		private VariableNumber amount;
 
-		public Item(QuestItem questItem, VariableNumber amount) {
-			this.questItem = questItem;
+		public Item(ItemID itemID, VariableNumber amount) throws InstructionParseException {
+			this.itemID = itemID;
+			this.questItem = new QuestItem(itemID);
 			this.amount = amount;
+		}
+		
+		public ItemID getID() {
+			return itemID;
 		}
 		
 		public QuestItem getItem() {
