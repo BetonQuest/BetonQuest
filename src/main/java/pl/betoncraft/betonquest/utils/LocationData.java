@@ -130,6 +130,19 @@ public class LocationData {
 		}
 	}
 	
+	/**
+	 * Call this method after creating LocationData object if your code depends
+	 * on data value being set. It will throw an exception if the user did not
+	 * specify additional data.
+	 * 
+	 * @throws InstructionParseException
+	 */
+	public void mustHaveData() throws InstructionParseException {
+		if (data == null) {
+			throw new InstructionParseException("Additional number is needed at the end of this location");
+		}
+	}
+	
 	private Location getBaseLoc(String playerID) throws QuestRuntimeException {
 		switch (type) {
 		case LOCATION:

@@ -46,6 +46,7 @@ public class LocationObjective extends Objective implements Listener {
 		super(instruction);
 		template = ObjectiveData.class;
 		loc = instruction.getLocation();
+		loc.mustHaveData();
 	}
 
 	@EventHandler

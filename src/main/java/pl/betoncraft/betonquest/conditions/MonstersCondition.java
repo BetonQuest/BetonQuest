@@ -80,6 +80,7 @@ public class MonstersCondition extends Condition {
 			}
 		}
 		loc = instruction.getLocation();
+		loc.mustHaveData();
 		name = instruction.getOptional("name");
 		marked = instruction.getOptional("marked");
 		if (marked != null) {

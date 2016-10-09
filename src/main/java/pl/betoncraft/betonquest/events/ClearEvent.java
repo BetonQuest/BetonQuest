@@ -59,6 +59,7 @@ public class ClearEvent extends QuestEvent {
 			}
 		}
 		loc = instruction.getLocation();
+		loc.mustHaveData();
 		name = instruction.getOptional("name");
 		kill = instruction.hasArgument("kill");
 		marked = instruction.getOptional("marked");

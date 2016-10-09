@@ -66,6 +66,9 @@ public class ActionObjective extends Objective implements Listener {
 			data = parts.length > 1 ? instruction.getByte(parts[1], (byte) -1) : -1;
 		}
 		loc = instruction.getLocation(instruction.getOptional("loc"));
+		if (loc != null) {
+			loc.mustHaveData();
+		}
 		cancel = instruction.hasArgument("cancel");
 	}
 

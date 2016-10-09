@@ -39,6 +39,7 @@ public class LocationCondition extends Condition {
 	public LocationCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		loc = instruction.getLocation();
+		loc.mustHaveData();
 	}
 
 	@Override
