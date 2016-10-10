@@ -1,4 +1,4 @@
-version: v47
+version: v48
 mysql:
   host: ''
   port: ''
@@ -19,6 +19,7 @@ combat_delay: '10'
 notify_pullback: 'true'
 default_package: default
 remove_items_after_respawn: 'true'
+quest_items_unbreakable: 'true'
 sounds:
   start: ENTITY_VILLAGER_AMBIENT
   end: ENTITY_VILLAGER_YES

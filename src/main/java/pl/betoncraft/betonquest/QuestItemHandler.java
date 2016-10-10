@@ -196,6 +196,9 @@ public class QuestItemHandler implements Listener {
 
 	@EventHandler
 	public void onItemBreak(PlayerItemBreakEvent event) {
+		if (BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable").equalsIgnoreCase("false")) {
+			return;
+		}
 		// prevent quest items from breaking
 		if (Utils.isQuestItem(event.getBrokenItem())) {
 			event.getBrokenItem().setAmount(1);

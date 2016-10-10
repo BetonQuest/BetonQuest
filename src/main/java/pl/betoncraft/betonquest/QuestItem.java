@@ -59,6 +59,7 @@ public class QuestItem {
 	private PotionType baseEffect = null;
 	private boolean extended = false;
 	private boolean upgraded = false;
+	private Boolean unbreakable = null;
 	private List<PotionEffect> effects = null;
 	private Color color = null;
 	private String owner = null;
@@ -225,10 +226,15 @@ public class QuestItem {
 				} catch (IllegalArgumentException e) {
 					throw new InstructionParseException("Unknown potion type: " + part.substring(5));
 				}
+			} else if (part.startsWith("unbreakable:")) {
+				String bool = part.substring(12);
+				unbreakable = Boolean.valueOf(bool);
 			} else if (part.equalsIgnoreCase("extended")) {
 				extended = true;
 			} else if (part.equalsIgnoreCase("upgraded")) {
 				upgraded = true;
+			} else if (part.equalsIgnoreCase("unbreakable")) {
+				unbreakable = true;
 			}
 		}
 	}
@@ -292,6 +298,9 @@ public class QuestItem {
 			return false;
 		}
 		if (item.isUpgraded() != upgraded) {
+			return false;
+		}
+		if (item.isUnbreakable() != unbreakable) {
 			return false;
 		}
 		return true;
@@ -378,6 +387,9 @@ public class QuestItem {
 					}
 				}
 			}
+		}
+		if (unbreakable != null && item.getItemMeta().spigot().isUnbreakable() != unbreakable) {
+			return false;
 		}
 		if (item.getType().equals(Material.WRITTEN_BOOK)) {
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
@@ -466,6 +478,9 @@ public class QuestItem {
 			for (Enchantment enchant : enchants.keySet()) {
 				meta.addEnchant(enchant, enchants.get(enchant), true);
 			}
+		}
+		if (unbreakable != null) {
+			meta.spigot().setUnbreakable(unbreakable);
 		}
 		if (material.equals(Material.WRITTEN_BOOK)) {
 			BookMeta bookMeta = (BookMeta) meta;
@@ -628,5 +643,12 @@ public class QuestItem {
 	 */
 	public boolean isUpgraded() {
 		return upgraded;
+	}
+	
+	/**
+	 * @return if the item has "Unbreakable" tag
+	 */
+	public boolean isUnbreakable() {
+		return unbreakable;
 	}
 }

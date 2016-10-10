@@ -88,7 +88,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v47";
+	private final String destination = "v48";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -195,6 +195,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v47() {
+		config.set("quest_items_unbreakable", "true");
+		Debug.broadcast("Added option to disable quest item unbreakability");
+		config.set("version", "v48");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

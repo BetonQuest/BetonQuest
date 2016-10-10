@@ -1,4 +1,14 @@
 ﻿v1.9-dev
+Notes:
+  - Development versions can be full of bugs. If you find any, report them on GitHub or Spigot.
+  - This version breaks compatibility with plugins hooking into BetonQuest. I'm sorry for that.
+    Ask devs to update these plugins.
+  - The error reporting feature was improved. If you see a lot of error messages when reloading
+    the plugin (not stack traces, just regular, human-readable messages), it's probably because
+    there are real problems in your quests.
+  - BetonQuest won't accept ".yml" extensions at the end of conversation names in "main.yml".
+    If your conversations aren't working (the plugin says they don't exist), check if you have
+    these extensions and remove them.
 Fixes:
     * 'action' objective now detects fire interaction
     * 'empty' condition now skips armor and off-hand slots
@@ -19,6 +29,7 @@ Changes:
     * Point condition can now check exact point amount with 'equal' argument
     * In 'chest' conversation IO items can be specified with durability values after a colon
     * Mobs spawned with 'spawn' event can have armor, items in hands and custom drops
+    * Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
@@ -39,6 +50,7 @@ Additions:
     * New objective 'variable' - lets players define their own variables for you to use
     * New objective 'kill' - kill players who meet specified conditions
     * New objective 'breed' - breed animals (only 1.10.2+)
+    * Keyword "unbreakable" can be used in items to make them unbreakable
     * Keyword "player" can be used as a location
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
