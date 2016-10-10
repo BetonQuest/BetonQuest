@@ -333,18 +333,26 @@ public class Journal {
 			for (String entry : getText()) {
 				stringBuilder.append(entry + "\n§" + color + "---------------\n");
 			}
-			if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
-				finalList.addAll(Utils.pagesFromString(mainPage, true));
-			} else {
-				stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
+			if (mainPage != null && mainPage.length() > 0) {
+				if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
+					finalList.addAll(Utils.pagesFromString(mainPage, true));
+				} else {
+					stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
+				}
 			}
 			String wholeString = stringBuilder.toString().trim();
 			finalList.addAll(Utils.pagesFromString(wholeString, true));
 		} else {
-			finalList.addAll(Utils.pagesFromString(mainPage, true));
+			if (mainPage != null && mainPage.length() > 0) {
+				finalList.addAll(Utils.pagesFromString(mainPage, true));
+			}
 			finalList.addAll(getText());
 		}
-		meta.setPages(finalList);
+		if (finalList.size() > 0) {
+			meta.setPages(finalList);
+		} else {
+			meta.addPage("");
+		}
 		item.setItemMeta(meta);
 		return item;
 	}
