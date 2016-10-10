@@ -54,10 +54,7 @@ public class MobKillObjective extends Objective implements Listener {
 		super(instruction);
 		template = MobData.class;
 		mobType = instruction.getEnum(EntityType.class);
-		amount = instruction.getInt();
-		if (amount < 1) {
-			throw new InstructionParseException("Amount cannot be less than 1");
-		}
+		amount = instruction.getPositive();
 		name = instruction.getOptional("name");
 		if (name != null) {
 			name = name.replace('_', ' ');

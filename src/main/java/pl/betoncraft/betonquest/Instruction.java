@@ -270,12 +270,24 @@ public class Instruction {
 		}
 	}
 
+	public Material getMaterial() throws InstructionParseException {
+		return Material.matchMaterial(next());
+	}
+
 	public Material getMaterial(String string) throws InstructionParseException {
 		return Material.matchMaterial(string);
 	}
 	
+	public EntityType getEntity() throws InstructionParseException {
+		return getEnum(next(), EntityType.class);
+	}
+	
 	public EntityType getEntity(String string) throws InstructionParseException {
 		return getEnum(string, EntityType.class);
+	}
+	
+	public PotionType getPotion() throws InstructionParseException {
+		return getEnum(next(), PotionType.class);
 	}
 	
 	public PotionType getPotion(String string) throws InstructionParseException {
@@ -363,6 +375,18 @@ public class Instruction {
 		} catch (NumberFormatException e) {
 			throw new PartParseException("Could not parse byte value: " + string);
 		}
+	}
+	
+	public int getPositive() throws InstructionParseException {
+		return getPositive(next(), 0);
+	}
+	
+	public int getPositive(String string, int def) throws InstructionParseException {
+		int i = getInt(string, def);
+		if (i < 1) {
+			throw new InstructionParseException("Number cannot be less than 1");
+		}
+		return i;
 	}
 	
 	public int getInt() throws InstructionParseException {

@@ -132,6 +132,7 @@ import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
+import pl.betoncraft.betonquest.objectives.BreedObjective;
 import pl.betoncraft.betonquest.objectives.ChestPutObjective;
 import pl.betoncraft.betonquest.objectives.ConsumeObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
@@ -376,6 +377,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("consume", ConsumeObjective.class);
 		registerObjectives("variable", VariableObjective.class);
 		registerObjectives("kill", KillPlayerObjective.class);
+		registerObjectives("breed", BreedObjective.class);
 
 		// register conversation IO types
 		registerConversationIO("simple", SimpleConvIO.class);

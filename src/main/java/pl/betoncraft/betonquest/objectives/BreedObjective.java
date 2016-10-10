@@ -19,11 +19,11 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -32,56 +32,37 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-/**
- * Requires the player to shear a sheep.
- * 
- * @author Jakub Sapalski
- */
-public class ShearObjective extends Objective implements Listener {
-
-	private final String color;
-	private final String name;
+public class BreedObjective extends Objective implements Listener {
+	
+	private final EntityType type;
 	private final int amount;
 	private final boolean notify;
 
-	public ShearObjective(Instruction instruction) throws InstructionParseException {
+	public BreedObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		template = SheepData.class;
+		template = BreedData.class;
+		type = instruction.getEntity();
 		amount = instruction.getPositive();
-		String rawName = instruction.getOptional("name");
-		name = rawName == null ? null : rawName.replace('_', ' ');
-		color = instruction.getOptional("color");
 		notify = instruction.hasArgument("notify");
 	}
-
+	
 	@EventHandler
-	public void onShear(PlayerShearEntityEvent event) {
-		if (event.getEntity().getType() != EntityType.SHEEP)
-			return;
-		String playerID = PlayerConverter.getID(event.getPlayer());
-		if (!containsPlayer(playerID))
-			return;
-		if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name)))
-			return;
-		if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
-			return;
-		SheepData data = (SheepData) dataMap.get(playerID);
-		if (checkConditions(playerID))
-			data.shearSheep();
-		if (data.getAmount() <= 0)
-			completeObjective(playerID);
-		else if (notify)
-			Config.sendMessage(playerID, "sheep_to_shear", new String[] { String.valueOf(data.getAmount()) });
-	}
-
-	@Override
-	public String getProperty(String name, String playerID) {
-		if (name.equalsIgnoreCase("left")) {
-			return Integer.toString(((SheepData) dataMap.get(playerID)).getAmount());
-		} else if (name.equalsIgnoreCase("amount")) {
-			return Integer.toString(amount - ((SheepData) dataMap.get(playerID)).getAmount());
+	public void onBreeding(EntityBreedEvent event) {
+		if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
+			String playerID = PlayerConverter.getID((Player) event.getBreeder());
+			if (!containsPlayer(playerID)) {
+				return;
+			}
+			if (checkConditions(playerID)) {
+				BreedData data = (BreedData) dataMap.get(playerID);
+				data.breed();
+				if (data.getAmount() == 0) {
+					completeObjective(playerID);
+				} else if (notify) {
+					Config.sendMessage(playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())});
+				}
+			}
 		}
-		return "";
 	}
 
 	@Override
@@ -98,17 +79,17 @@ public class ShearObjective extends Objective implements Listener {
 	public String getDefaultDataInstruction() {
 		return Integer.toString(amount);
 	}
-
-	public static class SheepData extends ObjectiveData {
-
+	
+	public static class BreedData extends ObjectiveData {
+		
 		private int amount;
 
-		public SheepData(String instruction, String playerID, String objID) {
+		public BreedData(String instruction, String playerID, String objID) {
 			super(instruction, playerID, objID);
 			amount = Integer.parseInt(instruction);
 		}
 
-		public void shearSheep() {
+		public void breed() {
 			amount--;
 			update();
 		}
@@ -121,7 +102,7 @@ public class ShearObjective extends Objective implements Listener {
 		public String toString() {
 			return String.valueOf(amount);
 		}
-
+		
 	}
 
 }
