@@ -40,6 +40,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.QuestCanceler;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -205,7 +206,7 @@ public class Backpack implements Listener {
 			if (page > 0) {
 				ItemStack previous = null;
 				try {
-					previous = new QuestItem(new ItemID(Config.getPackage("default"), "previous_button")).generateItem(1);
+					previous = new QuestItem(new ItemID(Config.getPackage("default"), "previous_button")).generate(1);
 				} catch (ObjectNotFoundException e) {
 					previous = new ItemStack(Material.GLOWSTONE_DUST);
 				} catch (InstructionParseException e) {
@@ -221,7 +222,7 @@ public class Backpack implements Listener {
 			if (backpackItems.size() > (page + 1) * 45 - 1) {
 				ItemStack next;
 				try {
-					next = new QuestItem(new ItemID(Config.getPackage("default"), "next_button")).generateItem(1);
+					next = new QuestItem(new ItemID(Config.getPackage("default"), "next_button")).generate(1);
 				} catch (ObjectNotFoundException e) {
 					next = new ItemStack(Material.REDSTONE);
 				} catch (InstructionParseException e) {
@@ -237,7 +238,7 @@ public class Backpack implements Listener {
 			// set "cancel quest" button
 			ItemStack cancel;
 			try {
-				cancel = new QuestItem(new ItemID(Config.getPackage("default"), "cancel_button")).generateItem(1);
+				cancel = new QuestItem(new ItemID(Config.getPackage("default"), "cancel_button")).generate(1);
 			} catch (ObjectNotFoundException e) {
 				cancel = new ItemStack(Material.BONE);
 			} catch (InstructionParseException e) {
@@ -252,7 +253,7 @@ public class Backpack implements Listener {
 			// set "compass targets" button
 			ItemStack compassItem;
 			try {
-				compassItem = new QuestItem(new ItemID(Config.getPackage("default"), "compass_button")).generateItem(1);
+				compassItem = new QuestItem(new ItemID(Config.getPackage("default"), "compass_button")).generate(1);
 			} catch (ObjectNotFoundException e) {
 				compassItem = new ItemStack(Material.COMPASS);
 			} catch (InstructionParseException e) {
@@ -516,7 +517,7 @@ public class Backpack implements Listener {
 				String item = items.get(slot);
 				ItemStack compass = null;
 				try {
-					compass = new QuestItem(new ItemID(Config.getPackage("default"), item)).generateItem(1);
+					compass = new QuestItem(new ItemID(Config.getPackage("default"), item)).generate(1);
 				} catch (InstructionParseException e) {
 					Debug.error("Could not load compass button: " + e.getMessage());
 					player.closeInventory();

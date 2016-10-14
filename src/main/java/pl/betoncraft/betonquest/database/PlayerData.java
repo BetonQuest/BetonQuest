@@ -32,16 +32,15 @@ import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.QuestCanceler;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -118,7 +117,7 @@ public class PlayerData {
 				int amount = res5.getInt("amount");
 				ItemStack item;
 				try {
-					item = new QuestItem(instruction).generateItem(amount);
+					item = new QuestItem(instruction).generate(amount);
 				} catch (InstructionParseException e) {
 					Debug.error("Could not load backpack item for player " + PlayerConverter.getName(playerID)
 							+ ", with instruction '" + instruction + "', because: " + e.getMessage());
@@ -393,7 +392,7 @@ public class PlayerData {
 		// update the database (quite expensive way, should be changed)
 		saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[] { playerID }));
 		for (ItemStack itemStack : list) {
-			String instruction = Utils.itemToString(itemStack);
+			String instruction = QuestItem.itemToString(itemStack);
 			String amount = String.valueOf(itemStack.getAmount());
 			saver.add(new Record(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, amount }));
 		}
@@ -447,7 +446,7 @@ public class PlayerData {
 		// update the database (quite expensive way, should be changed)
 		saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[] { playerID }));
 		for (ItemStack itemStack : backpack) {
-			String instruction = Utils.itemToString(itemStack);
+			String instruction = QuestItem.itemToString(itemStack);
 			String newAmount = String.valueOf(itemStack.getAmount());
 			saver.add(new Record(UpdateType.ADD_BACKPACK, new String[] { playerID, instruction, newAmount }));
 		}

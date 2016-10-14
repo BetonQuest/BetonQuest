@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -64,7 +64,7 @@ public class ItemAmountVariable extends Variable {
 			if (item == null) {
 				continue;
 			}
-			if (!questItem.equalsI(item)) {
+			if (!questItem.compare(item)) {
 				continue;
 			}
 			playersAmount += item.getAmount();
@@ -74,7 +74,7 @@ public class ItemAmountVariable extends Variable {
 			if (item == null) {
 				continue;
 			}
-			if (!questItem.equalsI(item)) {
+			if (!questItem.compare(item)) {
 				continue;
 			}
 			playersAmount += item.getAmount();

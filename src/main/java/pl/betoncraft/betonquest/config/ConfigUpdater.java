@@ -51,12 +51,12 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Saver.Record;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -250,7 +250,7 @@ public class ConfigUpdater {
 						Debug.info("    It's incorrect");
 						continue;
 					}
-					ItemStack itemStack = new QuestItem("potion data:" + data).generateItem(1);
+					ItemStack itemStack = new QuestItem("potion data:" + data).generate(1);
 					{
 						// it doesn't work without actually spawning the item in-game...
 						World world = Bukkit.getWorlds().get(0);
@@ -259,7 +259,7 @@ public class ConfigUpdater {
 						itemStack = item.getItemStack();
 						item.remove();
 					}
-					String updatedInstruction = Utils.itemToString(itemStack);
+					String updatedInstruction = QuestItem.itemToString(itemStack);
 					Debug.info("    Potion instruction: '" + updatedInstruction + "'");
 					String item = null;
 					for (String itemKey : items.getKeys(false)) {
@@ -313,7 +313,7 @@ public class ConfigUpdater {
 					Debug.info("    Found " + key + " potion with instruction '" + instruction + "'");
 					try {
 						QuestItem questItem = new QuestItem(instruction);
-						ItemStack itemStack = questItem.generateItem(1);
+						ItemStack itemStack = questItem.generate(1);
 						{
 							// it doesn't work without actually spawning the item in-game...
 							World world = Bukkit.getWorlds().get(0);
@@ -323,7 +323,7 @@ public class ConfigUpdater {
 							item.remove();
 							// lol
 						}
-						String updatedInstruction = Utils.itemToString(itemStack);
+						String updatedInstruction = QuestItem.itemToString(itemStack);
 						Debug.info("    New instruction: '" + updatedInstruction + "'");
 						items.set(key, updatedInstruction);
 					} catch (InstructionParseException e) {
@@ -3030,10 +3030,11 @@ public class ConfigUpdater {
 				}
 				// create an item
 				String newItemID = null;
+				@SuppressWarnings("deprecation")
 				QuestItem item = new QuestItem(material, data, enchants, name, lore);
 				boolean contains = false;
 				for (String itemKey : items.keySet()) {
-					if (items.get(itemKey).equalsQ(item)) {
+					if (items.get(itemKey).equals(item)) {
 						contains = true;
 						break;
 					}
@@ -3045,7 +3046,7 @@ public class ConfigUpdater {
 					items.put(newItemID, item);
 				} else {
 					for (String itemName : items.keySet()) {
-						if (items.get(itemName).equalsQ(item)) {
+						if (items.get(itemName).equals(item)) {
 							newItemID = itemName;
 						}
 					}
@@ -3099,10 +3100,11 @@ public class ConfigUpdater {
 				}
 				// create an item
 				String newItemID = null;
+				@SuppressWarnings("deprecation")
 				QuestItem item = new QuestItem(material, data, enchants, name, lore);
 				boolean contains = false;
 				for (String itemKey : items.keySet()) {
-					if (items.get(itemKey).equalsQ(item)) {
+					if (items.get(itemKey).equals(item)) {
 						contains = true;
 						break;
 					}
@@ -3114,7 +3116,7 @@ public class ConfigUpdater {
 					items.put(newItemID, item);
 				} else {
 					for (String itemName : items.keySet()) {
-						if (items.get(itemName).equalsQ(item)) {
+						if (items.get(itemName).equals(item)) {
 							newItemID = itemName;
 						}
 					}

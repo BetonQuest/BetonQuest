@@ -29,10 +29,10 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ItemID;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -101,17 +101,17 @@ public class SpawnMobEvent extends QuestEvent {
 			if (entity instanceof LivingEntity) {
 				LivingEntity living = (LivingEntity) entity;
 				EntityEquipment eq = living.getEquipment();
-				eq.setHelmet(helmet == null ? null : helmet.generateItem(1));
+				eq.setHelmet(helmet == null ? null : helmet.generate(1));
 				eq.setHelmetDropChance(0);
-				eq.setChestplate(chestplate == null ? null : chestplate.generateItem(1));
+				eq.setChestplate(chestplate == null ? null : chestplate.generate(1));
 				eq.setChestplateDropChance(0);
-				eq.setLeggings(leggings == null ? null : leggings.generateItem(1));
+				eq.setLeggings(leggings == null ? null : leggings.generate(1));
 				eq.setLeggingsDropChance(0);
-				eq.setBoots(boots == null ? null : boots.generateItem(1));
+				eq.setBoots(boots == null ? null : boots.generate(1));
 				eq.setBootsDropChance(0);
-				eq.setItemInMainHand(mainHand == null ? null : mainHand.generateItem(1));
+				eq.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
 				eq.setItemInMainHandDropChance(0);
-				eq.setItemInOffHand(offHand == null ? null : offHand.generateItem(1));
+				eq.setItemInOffHand(offHand == null ? null : offHand.generate(1));
 				eq.setItemInOffHandDropChance(0);
 			}
 			int j = 0;

@@ -24,9 +24,9 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
@@ -68,7 +68,7 @@ public class ChestTakeEvent extends QuestEvent {
 	private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem, int amount) {
 		for (int i = 0; i < items.length; i++) {
 			ItemStack item = items[i];
-			if (questItem.equalsI(item)) {
+			if (questItem.compare(item)) {
 				if (item.getAmount() - amount <= 0) {
 					amount = amount - item.getAmount();
 					items[i] = null;

@@ -29,11 +29,11 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -97,7 +97,7 @@ public class TakeEvent extends QuestEvent {
 	private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {
 		for (int i = 0; i < items.length; i++) {
 			ItemStack item = items[i];
-			if (questItem.equalsI(item)) {
+			if (questItem.compare(item)) {
 				if (item.getAmount() - counter <= 0) {
 					counter -= item.getAmount();
 					items[i] = null;

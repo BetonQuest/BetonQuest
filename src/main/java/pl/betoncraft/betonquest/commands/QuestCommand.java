@@ -46,7 +46,6 @@ import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.StaticEvents;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -57,6 +56,7 @@ import pl.betoncraft.betonquest.conversation.ConversationColors;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
@@ -277,7 +277,7 @@ public class QuestCommand implements CommandExecutor {
 		try {
 			ItemID itemID = new ItemID(null, args[1]);
 			QuestItem item = new QuestItem(itemID);
-			((Player) sender).getInventory().addItem(item.generateItem(1));
+			((Player) sender).getInventory().addItem(item.generate(1));
 		} catch (InstructionParseException | ObjectNotFoundException e) {
 			sendMessage(sender, "error", new String[]{e.getMessage()});
 			Debug.error("Error while creating an item: " + e.getMessage());
@@ -600,13 +600,14 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		ConfigAccessor config = configPack.getItems();
-		String instructions = Utils.itemToString(item);
+		String instructions = QuestItem.itemToString(item);
 		// save it in items.yml
 		Debug.info("Saving item to configuration as " + args[1]);
 		config.getConfig().set(name, instructions.trim());
 		config.saveConfig();
 		// done
 		sendMessage(sender, "item_created", new String[] { args[1] });
+		
 	}
 
 	/**

@@ -22,8 +22,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -46,7 +46,7 @@ public class HandCondition extends Condition {
 	public boolean check(String playerID) {
 		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
 		ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
-		if (questItem.equalsI(item)) {
+		if (questItem.compare(item)) {
 			return true;
 		}
 		return false;

@@ -26,8 +26,8 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -48,7 +48,7 @@ public class ConsumeObjective extends Objective implements Listener {
 	@EventHandler
 	public void onConsume(PlayerItemConsumeEvent event) {
 		String playerID = PlayerConverter.getID(event.getPlayer());
-		if (containsPlayer(playerID) && item.equalsI(event.getItem()) && checkConditions(playerID)) {
+		if (containsPlayer(playerID) && item.compare(event.getItem()) && checkConditions(playerID)) {
 			completeObjective(playerID);
 		}
 	}

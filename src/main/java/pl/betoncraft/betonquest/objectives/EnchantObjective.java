@@ -27,8 +27,8 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -64,7 +64,7 @@ public class EnchantObjective extends Objective implements Listener {
 		String playerID = PlayerConverter.getID(event.getEnchanter());
 		if (!containsPlayer(playerID))
 			return;
-		if (!item.equalsI(event.getItem()))
+		if (!item.compare(event.getItem()))
 			return;
 		for (Enchantment enchant : event.getEnchantsToAdd().keySet())
 			if (enchant == this.enchant)

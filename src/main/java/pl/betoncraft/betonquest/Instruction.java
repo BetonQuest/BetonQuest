@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 public class Instruction {
@@ -494,7 +495,7 @@ public class Instruction {
 		}
 
 		public boolean isItemEqual(ItemStack item) {
-			return questItem.equalsI(item);
+			return questItem.compare(item);
 		}
 
 		public VariableNumber getAmount() {

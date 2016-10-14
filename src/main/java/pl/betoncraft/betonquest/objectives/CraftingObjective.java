@@ -31,8 +31,8 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -64,7 +64,7 @@ public class CraftingObjective extends Objective implements Listener {
 			Player player = (Player) event.getWhoClicked();
 			String playerID = PlayerConverter.getID(player);
 			CraftData playerData = (CraftData) dataMap.get(playerID);
-			if (containsPlayer(playerID) && item.equalsI(event.getRecipe().getResult()) && checkConditions(playerID)) {
+			if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
 				playerData.subtract(event.getRecipe().getResult().getAmount());
 				if (playerData.isZero()) {
 					completeObjective(playerID);

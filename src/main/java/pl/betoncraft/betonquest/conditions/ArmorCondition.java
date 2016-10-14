@@ -21,8 +21,8 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -42,7 +42,7 @@ public class ArmorCondition extends Condition {
 	@Override
 	public boolean check(String playerID) {
 		for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
-			if (item != null && item.equalsI(armor)) {
+			if (item != null && item.compare(armor)) {
 				return true;
 			}
 		}

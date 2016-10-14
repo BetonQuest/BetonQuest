@@ -26,9 +26,9 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
@@ -69,7 +69,7 @@ public class ChestGiveEvent extends QuestEvent {
 				} else {
 					stackSize = amount;
 				}
-				ItemStack item = questItem.generateItem(stackSize);
+				ItemStack item = questItem.generate(stackSize);
 				HashMap<Integer, ItemStack> left = chest.getInventory().addItem(item);
 				for (Integer leftNumber : left.keySet()) {
 					ItemStack itemStack = left.get(leftNumber);

@@ -34,8 +34,8 @@ import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.ObjectiveID;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -287,7 +287,7 @@ public class QuestCanceler {
 		if (item != null) {
 			try {
 				ItemID itemID = new ItemID(Config.getPackage(packName), item);
-				stack = new QuestItem(itemID).generateItem(1);
+				stack = new QuestItem(itemID).generate(1);
 			} catch (InstructionParseException | ObjectNotFoundException e) {
 				Debug.error("Could not load cancel button: " + e.getMessage());
 			}

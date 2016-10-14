@@ -39,9 +39,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.QuestItem;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -144,7 +144,7 @@ public class PotionObjective extends Objective implements Listener {
 	private boolean checkPotion(ItemStack item) {
 		if (item == null)
 			return false;
-		if (!potion.equalsI(item))
+		if (!potion.compare(item))
 			return false;
 		if (item.getItemMeta() instanceof PotionMeta) {
 			PotionMeta meta = (PotionMeta) item.getItemMeta();
