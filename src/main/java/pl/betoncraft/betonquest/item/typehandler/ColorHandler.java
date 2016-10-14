@@ -22,6 +22,7 @@ import org.bukkit.Color;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
+import pl.betoncraft.betonquest.utils.Utils;
 
 public class ColorHandler {
 	
@@ -33,14 +34,8 @@ public class ColorHandler {
 			colorE = Existence.FORBIDDEN;
 			return;
 		}
-		try {
-			color = Color.fromRGB(Integer.parseInt(string));
-			colorE = Existence.REQUIRED;
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse color number: " + string);
-		} catch (IllegalArgumentException e) {
-			throw new InstructionParseException("Such color does not exist: " + string);
-		}
+		color = Utils.getColor(string);
+		colorE = Existence.REQUIRED;
 	}
 	
 	public Color get() {

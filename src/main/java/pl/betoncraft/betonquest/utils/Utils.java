@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -353,6 +356,40 @@ public class Utils {
 			return string;
 		} else {
 			return pack.getName() + "." + string;
+		}
+	}
+	
+	/**
+	 * Parses the string as RGB or as DyeColor and returns it as Color.
+	 * 
+	 * @param string
+	 *            string to parse as a Color
+	 * @return the Color (never null)
+	 * @throws InstructionParseException
+	 *             when something goes wrong
+	 */
+	public static Color getColor(String string) throws InstructionParseException {
+		if (string == null || string.isEmpty()) {
+			throw new InstructionParseException("Color is not specified");
+		}
+		try {
+			return Color.fromRGB(Integer.parseInt(string));
+		} catch (NumberFormatException e1) {
+			// string is not a decimal number
+			try {
+				return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
+			} catch (NumberFormatException e2) {
+				// string is not a hexadecimal number, try dye color
+				try {
+					return DyeColor.valueOf(string.trim().toUpperCase().replace(' ', '_')).getColor();
+				} catch (IllegalArgumentException e3) {
+					// this was not a dye color name
+					throw new InstructionParseException("Dye color does not exist: " + string);
+				}
+			}
+		} catch (IllegalArgumentException e1) {
+			// string was a number, but incorrect
+			throw new InstructionParseException("Incorrect RGB code: " + string);
 		}
 	}
 }

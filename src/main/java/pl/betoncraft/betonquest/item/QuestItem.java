@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -547,7 +548,8 @@ public class QuestItem {
 		if (meta instanceof LeatherArmorMeta) {
 			LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
 			if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-				color = " color:" + armorMeta.getColor().asRGB();
+				DyeColor c = DyeColor.getByColor(armorMeta.getColor());
+				color = " color:" + (c == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : c.toString());
 			}
 		}
 		if (meta instanceof EnchantmentStorageMeta) {
