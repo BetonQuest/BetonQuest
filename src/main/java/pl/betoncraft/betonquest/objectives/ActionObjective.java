@@ -25,6 +25,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -75,6 +76,10 @@ public class ActionObjective extends Objective implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		// Only fire the event for the main hand to avoid that the event is triggered two times.
+		if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
+			return; // off hand packet, ignore.
+		}
 		String playerID = PlayerConverter.getID(event.getPlayer());
 		if (!containsPlayer(playerID)) {
 			return;
