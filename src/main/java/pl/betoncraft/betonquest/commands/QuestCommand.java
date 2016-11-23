@@ -38,7 +38,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.EventID;
-import pl.betoncraft.betonquest.GlobalLocations;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.Journal;
@@ -46,13 +45,10 @@ import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
-import pl.betoncraft.betonquest.StaticEvents;
 import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.conversation.ConversationColors;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
@@ -233,7 +229,8 @@ public class QuestCommand implements CommandExecutor {
 				break;
 			case "reload":
 				// just reloading
-				reloadPlugin();
+				defaultPack = Config.getString("config.default_package");
+				instance.reload();
 				sendMessage(sender, "reloaded");
 				break;
 			case "backup":
@@ -1081,39 +1078,6 @@ public class QuestCommand implements CommandExecutor {
 		}
 		BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[] { name }));
 		sendMessage(sender, "everything_removed");
-	}
-
-	/**
-	 * Reloads the configuration.
-	 */
-	private void reloadPlugin() {
-		// reload the configuration
-		Debug.info("Reloading configuration");
-		new Config();
-		defaultPack = Config.getString("config.default_package");
-		// reload updater settings
-		BetonQuest.getInstance().getUpdater().reload();
-		// load new static events
-		new StaticEvents();
-		// stop current global locations listener
-		// and start new one with reloaded configs
-		Debug.info("Restarting global locations");
-		GlobalLocations.stop();
-		new GlobalLocations().runTaskTimer(instance, 0, 20);
-		new ConversationColors();
-		Compatibility.reload();
-		// load all events, conditions, objectives, conversations etc.
-		instance.loadData();
-		// start objectives and update journals for every online player
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			String playerID = PlayerConverter.getID(player);
-			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
-			PlayerData playerData = instance.getPlayerData(playerID);
-			Journal journal = playerData.getJournal();
-			journal.update();
-		}
-		// initialize new debugger
-		new Debug();
 	}
 
 	/**

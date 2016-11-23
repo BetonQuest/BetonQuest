@@ -56,7 +56,7 @@ public class Config {
 
 	private static String lang;
 
-	private static ArrayList<String> languages;
+	private static ArrayList<String> languages = new ArrayList<>();
 
 	private File root;
 
@@ -71,6 +71,10 @@ public class Config {
 	 *            controls if this object should log it's actions to the file
 	 */
 	public Config(boolean verboose) {
+		
+		packages.clear();
+		cancelers.clear();
+		languages.clear();
 
 		instance = this;
 		plugin = BetonQuest.getInstance();
@@ -101,7 +105,6 @@ public class Config {
 		messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
 		messages.saveDefaultConfig();
 		internal = new ConfigAccessor(plugin, null, "internal-messages.yml");
-		languages = new ArrayList<>();
 		for (String key : messages.getConfig().getKeys(false)) {
 			if (!key.equals("global")) {
 				if (verboose)

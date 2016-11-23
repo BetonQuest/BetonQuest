@@ -634,6 +634,38 @@ public final class BetonQuest extends JavaPlugin {
 		}
 	}
 
+	/**
+	 * Reloads the plugin.
+	 */
+	public void reload() {
+		// reload the configuration
+		Debug.info("Reloading configuration");
+		new Config();
+		// reload updater settings
+		BetonQuest.getInstance().getUpdater().reload();
+		// load new static events
+		new StaticEvents();
+		// stop current global locations listener
+		// and start new one with reloaded configs
+		Debug.info("Restarting global locations");
+		GlobalLocations.stop();
+		new GlobalLocations().runTaskTimer(instance, 0, 20);
+		new ConversationColors();
+		Compatibility.reload();
+		// load all events, conditions, objectives, conversations etc.
+		instance.loadData();
+		// start objectives and update journals for every online player
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			String playerID = PlayerConverter.getID(player);
+			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
+			PlayerData playerData = instance.getPlayerData(playerID);
+			Journal journal = playerData.getJournal();
+			journal.update();
+		}
+		// initialize new debugger
+		new Debug();
+	}
+
 	@Override
 	public void onDisable() {
 		// suspend all conversations
