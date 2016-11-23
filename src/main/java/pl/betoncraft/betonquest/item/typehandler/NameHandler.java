@@ -32,7 +32,7 @@ public class NameHandler {
 		if (name.equalsIgnoreCase("none")) {
 			e = Existence.FORBIDDEN;
 		} else {
-			this.name = name.replace('_', ' ');
+			this.name = name.replace('_', ' ').replace('&', '§');
 			e = Existence.REQUIRED;
 		}
 	}
