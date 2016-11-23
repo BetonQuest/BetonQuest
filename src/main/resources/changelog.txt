@@ -19,9 +19,11 @@ Fixes:
     * Fix error when trying to add air (empty hand) with "/q item" command
     * Main page now can exceed a single page in the journal
 Changes:
+    * Complete rewrite of item conditioning - read the docs to discover new features
+      (previous syntax is still working without any behavior changes)
     * New lines in conversations can be made with "\n"
     * Interval in 'delay' objective is now configurable
-    * 'craft' and 'potion' objective now uses items defined in items.yml file
+    * 'craft' and 'potion' objectives now use items defined in items.yml file
     * Potion items are now defined with 'type:' argument instead of data value
     * You can now use spaces between "first" options in conversations
     * Static events can now be fired with "/q event - eventID" command
@@ -57,6 +59,7 @@ Additions:
     * Objectives can be completed for players with "/q objective player complete"
     * Option 'full_main_page' controls if the main page is a separate page in the journal
     * Mobs spawned with 'spawn' can be "marked"; you can require marked mobs in 'mobkill' objective
+    * Firework support in items
 
 ﻿v1.8.5
 Fixes:

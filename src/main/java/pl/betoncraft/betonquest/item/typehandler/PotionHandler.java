@@ -137,6 +137,7 @@ public class PotionHandler {
 			for (PotionEffect e : custom) {
 				if (e.getType().equals(checker.customType)) {
 					effect = e;
+					break;
 				}
 			}
 			if (!checker.check(effect)) {

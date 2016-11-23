@@ -24,11 +24,14 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -43,6 +46,7 @@ import pl.betoncraft.betonquest.item.typehandler.BookHandler;
 import pl.betoncraft.betonquest.item.typehandler.ColorHandler;
 import pl.betoncraft.betonquest.item.typehandler.DataHandler;
 import pl.betoncraft.betonquest.item.typehandler.EnchantmentsHandler;
+import pl.betoncraft.betonquest.item.typehandler.FireworkHandler;
 import pl.betoncraft.betonquest.item.typehandler.HeadOwnerHandler;
 import pl.betoncraft.betonquest.item.typehandler.LoreHandler;
 import pl.betoncraft.betonquest.item.typehandler.NameHandler;
@@ -66,6 +70,7 @@ public class QuestItem {
 	private BookHandler book = new BookHandler();
 	private HeadOwnerHandler head = new HeadOwnerHandler();
 	private ColorHandler color = new ColorHandler();
+	private FireworkHandler firework = new FireworkHandler();
 
 	/**
 	 * Legacy method for the updater, don't use for anything else.
@@ -196,6 +201,12 @@ public class QuestItem {
 				head.set(cut(part));
 			} else if (part.toLowerCase().startsWith("color:")) {
 				color.set(cut(part));
+			} else if (part.toLowerCase().startsWith("firework:")) {
+				firework.setEffects(cut(part));
+			} else if (part.toLowerCase().startsWith("power:")) {
+				firework.setPower(cut(part));
+			} else if (part.toLowerCase().equals("firework-containing")) {
+				firework.setNotExact();
 			}
 		}
 	}
@@ -240,6 +251,9 @@ public class QuestItem {
 			return false;
 		}
 		if (!item.color.equals(color)) {
+			return false;
+		}
+		if (!item.firework.equals(firework)) {
 			return false;
 		}
 		return true;
@@ -319,6 +333,21 @@ public class QuestItem {
 				return false;
 			}
 		}
+		if (meta instanceof FireworkMeta) {
+			FireworkMeta fireworkMeta = (FireworkMeta) item.getItemMeta();
+			if (!firework.checkEffects(fireworkMeta.getEffects())) {
+				return false;
+			}
+			if (!firework.checkPower(fireworkMeta.getPower())) {
+				return false;
+			}
+		}
+		if (meta instanceof FireworkEffectMeta) {
+			FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) item.getItemMeta();
+			if (!firework.checkSingleEffect(fireworkMeta.getEffect())) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -369,6 +398,16 @@ public class QuestItem {
 		if (meta instanceof LeatherArmorMeta) {
 			LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
 			armorMeta.setColor(color.get());
+		}
+		if (meta instanceof FireworkMeta) {
+			FireworkMeta fireworkMeta = (FireworkMeta) meta;
+			fireworkMeta.addEffects(firework.getEffects());
+			fireworkMeta.setPower(firework.getPower());
+		}
+		if (meta instanceof FireworkEffectMeta) {
+			FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+			List<FireworkEffect> list = firework.getEffects();
+			fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
 		}
 		item.setItemMeta(meta);
 		return item;
@@ -474,6 +513,20 @@ public class QuestItem {
 	}
 	
 	/**
+	 * @return the list of firework effects
+	 */
+	public List<FireworkEffect> getFireworkEffects() {
+		return firework.getEffects();
+	}
+	
+	/**
+	 * @return power of the firework
+	 */
+	public int getPower() {
+		return firework.getPower();
+	}
+	
+	/**
 	 * Converts ItemStack to string, which can be later parsed by QuestItem
 	 * 
 	 * @param item
@@ -491,6 +544,7 @@ public class QuestItem {
 		String effects = "";
 		String color = "";
 		String owner = "";
+		String firework = "";
 		ItemMeta meta = item.getItemMeta();
 		if (meta.hasDisplayName()) {
 			name = " name:" + meta.getDisplayName().replace(" ", "_");
@@ -568,8 +622,56 @@ public class QuestItem {
 				owner = " owner:" + skullMeta.getOwner();
 			}
 		}
+		if (meta instanceof FireworkMeta) {
+			FireworkMeta fireworkMeta = (FireworkMeta) meta;
+			if (fireworkMeta.hasEffects()) {
+				StringBuilder builder = new StringBuilder();
+				builder.append(" firework:");
+				for (FireworkEffect effect : fireworkMeta.getEffects()) {
+					builder.append(effect.getType() + ":");
+					for (Color c : effect.getColors()) {
+						DyeColor dye = DyeColor.getByFireworkColor(c);
+						builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+					}
+					// remove last semicolon
+					builder.setLength(Math.max(builder.length() - 1, 0));
+					builder.append(":");
+					for (Color c : effect.getFadeColors()) {
+						DyeColor dye = DyeColor.getByFireworkColor(c);
+						builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+					}
+					builder.setLength(Math.max(builder.length() - 1, 0));
+					builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker() + ",");
+				}
+				builder.setLength(Math.max(builder.length() - 1, 0));
+				builder.append(" power:" + fireworkMeta.getPower());
+				firework = builder.toString();
+			}
+		}
+		if (meta instanceof FireworkEffectMeta) {
+			FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+			if (fireworkMeta.hasEffect()) {
+				FireworkEffect effect = fireworkMeta.getEffect();
+				StringBuilder builder = new StringBuilder();
+				builder.append(" firework:");
+				builder.append(effect.getType() + ":");
+				for (Color c : effect.getColors()) {
+					DyeColor dye = DyeColor.getByFireworkColor(c);
+					builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+				}
+				// remove last semicolon
+				builder.setLength(Math.max(builder.length() - 1, 0));
+				builder.append(":");
+				for (Color c : effect.getFadeColors()) {
+					DyeColor dye = DyeColor.getByFireworkColor(c);
+					builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+				}
+				builder.setLength(Math.max(builder.length() - 1, 0));
+				builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker());
+			}
+		}
 		// put it all together in a single string
 		return item.getType() + " data:" + item.getData().getData() + name + lore + enchants + title + author + text
-				+ effects + color + owner;
+				+ effects + color + owner + firework;
 	}
 }
