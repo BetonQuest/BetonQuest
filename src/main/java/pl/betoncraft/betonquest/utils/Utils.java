@@ -171,7 +171,7 @@ public class Utils {
 	 */
 	public static List<String> pagesFromString(String string) {
 		List<String> pages = new ArrayList<>();
-		List<String> bigPages = Arrays.asList(string.replaceAll("\\\\n", "\n").split("\\|"));
+		List<String> bigPages = Arrays.asList(string.split("\\|"));
 		int chars = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
 		for (String bigPage : bigPages) {
 			StringBuilder page = new StringBuilder();
@@ -182,7 +182,7 @@ public class Utils {
 				}
 				page.append(word + " ");
 			}
-			pages.add(page.toString().trim());
+			pages.add(page.toString().trim().replaceAll("\\\\n", "\n"));
 		}
 		return pages;
 	}

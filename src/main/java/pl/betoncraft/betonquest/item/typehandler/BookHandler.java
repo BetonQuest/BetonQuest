@@ -111,7 +111,7 @@ public class BookHandler {
 				while (line.startsWith("\"")) {
 					line = line.substring(1);
 				}
-				while (list.get(i).endsWith("\"")) {
+				while (line.endsWith("\"") && line.length() > 0) {
 					line = line.substring(0, line.length() - 1);
 				}
 				String pattern = text.get(i).replaceAll("(§0)?\\n(§0)?", "\\n");
