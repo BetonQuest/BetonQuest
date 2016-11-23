@@ -56,7 +56,7 @@ public class BookHandler {
 			text.add(""); // this will prevent "Invalid book tag" message in the empty book
 			textE = Existence.FORBIDDEN;
 		} else {
-			text = Utils.pagesFromString(string.replace("_", " "), false);
+			text = Utils.pagesFromString(string.replace("_", " "));
 			textE = Existence.REQUIRED;
 		}
 	}

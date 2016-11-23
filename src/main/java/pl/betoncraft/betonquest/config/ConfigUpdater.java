@@ -2907,7 +2907,7 @@ public class ConfigUpdater {
 				}
 				if (text != null) {
 					StringBuilder pages = new StringBuilder();
-					for (String page : Utils.pagesFromString(text.replace("_", " "), true)) {
+					for (String page : Utils.pagesFromString(text.replace("_", " "))) {
 						pages.append(page.replaceAll(" ", "_") + "|");
 					}
 					parts.add("text:" + pages.substring(0, pages.length() - 2));

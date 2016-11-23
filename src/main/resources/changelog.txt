@@ -21,6 +21,8 @@ Fixes:
 Changes:
     * Complete rewrite of item conditioning - read the docs to discover new features
       (previous syntax is still working without any behavior changes)
+    * Books in items.yml now automatically wrap pages, like the journal and main page
+    * Main page and entries in the journal can manually split pages with '|' character
     * New lines in conversations can be made with "\n"
     * Interval in 'delay' objective is now configurable
     * 'craft' and 'potion' objectives now use items defined in items.yml file

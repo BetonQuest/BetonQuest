@@ -169,12 +169,13 @@ public class Utils {
 	 *            pages
 	 * @return the list of pages for a book
 	 */
-	public static List<String> pagesFromString(String string, boolean singleString) {
+	public static List<String> pagesFromString(String string) {
 		List<String> pages = new ArrayList<>();
+		List<String> bigPages = Arrays.asList(string.replaceAll("\\\\n", "\n").split("\\|"));
 		int chars = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
-		if (singleString) {
+		for (String bigPage : bigPages) {
 			StringBuilder page = new StringBuilder();
-			for (String word : string.split(" ")) {
+			for (String word : bigPage.split(" ")) {
 				if (page.length() + word.length() + 1 > chars) {
 					pages.add(page.toString().trim());
 					page = new StringBuilder();
@@ -182,8 +183,6 @@ public class Utils {
 				page.append(word + " ");
 			}
 			pages.add(page.toString().trim());
-		} else {
-			pages = Arrays.asList(string.replaceAll("\\\\n", "\n").split("\\|"));
 		}
 		return pages;
 	}

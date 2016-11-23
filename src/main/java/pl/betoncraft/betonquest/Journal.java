@@ -264,7 +264,7 @@ public class Journal {
 		for (int i : sorted) {
 			sortedLines.add(lines.get(i));
 		}
-		String finalLine = StringUtils.join(sortedLines, '\n');
+		String finalLine = StringUtils.join(sortedLines, '\n').replace('&', '§');
 		return finalLine;
 	}
 
@@ -335,16 +335,16 @@ public class Journal {
 			}
 			if (mainPage != null && mainPage.length() > 0) {
 				if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
-					finalList.addAll(Utils.pagesFromString(mainPage, true));
+					finalList.addAll(Utils.pagesFromString(mainPage));
 				} else {
 					stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
 				}
 			}
 			String wholeString = stringBuilder.toString().trim();
-			finalList.addAll(Utils.pagesFromString(wholeString, true));
+			finalList.addAll(Utils.pagesFromString(wholeString));
 		} else {
 			if (mainPage != null && mainPage.length() > 0) {
-				finalList.addAll(Utils.pagesFromString(mainPage, true));
+				finalList.addAll(Utils.pagesFromString(mainPage));
 			}
 			finalList.addAll(getText());
 		}
