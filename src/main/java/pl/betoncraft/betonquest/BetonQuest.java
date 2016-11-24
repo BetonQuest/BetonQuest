@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -32,7 +31,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.Objective;
@@ -91,8 +89,8 @@ import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.MySQL;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.SQLite;
 import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.events.CancelEvent;
@@ -113,6 +111,7 @@ import pl.betoncraft.betonquest.events.GiveJournalEvent;
 import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
+import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
@@ -122,7 +121,6 @@ import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.ScoreboardEvent;
 import pl.betoncraft.betonquest.events.SetBlockEvent;
 import pl.betoncraft.betonquest.events.SpawnMobEvent;
-import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.SudoEvent;
 import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
@@ -181,7 +179,6 @@ public final class BetonQuest extends JavaPlugin {
 	private Database database;
 	private boolean isMySQLUsed;
 	private Saver saver;
-	private BukkitRunnable keeper;
 	private Compatibility compatibility;
 	private Updater updater;
 
@@ -414,19 +411,6 @@ public final class BetonQuest extends JavaPlugin {
 				}
 			}
 		});
-
-		// schedule database pinging to keep connection
-		keeper = new BukkitRunnable() {
-			@Override
-			public void run() {
-				try {
-					database.getConnection().prepareStatement("SELECT 1").executeQuery();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		keeper.runTaskTimerAsynchronously(this, 60 * 20, 60 * 20);
 
 		// block betonquestanswer logging (it's just a spam)
 		try {
@@ -677,7 +661,6 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		// cancel database saver
 		saver.end();
-		keeper.cancel();
 		compatibility.disable();
 		// stop global location listener
 		GlobalLocations.stop();

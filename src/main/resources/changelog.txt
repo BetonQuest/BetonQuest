@@ -18,6 +18,7 @@ Fixes:
     * Lore and name now appear on heads and written books with custom data
     * Fix error when trying to add air (empty hand) with "/q item" command
     * Main page now can exceed a single page in the journal
+    * The plugin will reconnect to the database if something goes wrong
 Changes:
     * Complete rewrite of item conditioning - read the docs to discover new features
       (previous syntax is still working without any behavior changes)

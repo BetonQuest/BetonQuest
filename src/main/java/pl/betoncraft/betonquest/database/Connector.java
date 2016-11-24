@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.Debug;
 
 /**
  * Connects to the database and queries it
@@ -57,6 +58,11 @@ public class Connector {
 	 */
 	public ResultSet querySQL(QueryType type, String[] args) {
 		try {
+			if (!connection.isValid(3)) {
+				Debug.info("Connection timeout, reconnecting");
+				db.closeConnection();
+				connection = db.getConnection();
+			}
 			PreparedStatement statement;
 			switch (type) {
 			case SELECT_JOURNAL:
@@ -142,6 +148,11 @@ public class Connector {
 	 */
 	public void updateSQL(UpdateType type, String[] args) {
 		try {
+			if (!connection.isValid(3)) {
+				Debug.info("Connection timeout, reconnecting");
+				db.closeConnection();
+				connection = db.getConnection();
+			}
 			PreparedStatement statement;
 			switch (type) {
 			case ADD_OBJECTIVES:
