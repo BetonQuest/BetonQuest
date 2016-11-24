@@ -358,6 +358,7 @@ public class QuestItem {
 	 *            size of generated stack
 	 * @return the ItemStack equal to this quest item
 	 */
+	@SuppressWarnings("deprecation")
 	public ItemStack generate(int stackSize) {
 		ItemStack item = new ItemStack(material, stackSize, data.get());
 		ItemMeta meta = item.getItemMeta();
