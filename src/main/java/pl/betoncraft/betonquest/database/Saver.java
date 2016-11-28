@@ -37,6 +37,7 @@ public class Saver extends Thread implements Listener {
 	Connector con;
 	ConcurrentLinkedQueue<Record> queue;
 	boolean run;
+	boolean active;
 
 	/**
 	 * Creates new database saver thread
@@ -56,11 +57,16 @@ public class Saver extends Thread implements Listener {
 				}
 				synchronized (this) {
 					try {
+						active = false;
 						wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
+			}
+			if (!active) {
+				con.refresh();
+				active = true;
 			}
 			Record rec = queue.poll();
 			con.updateSQL(rec.getType(), rec.getArgs());

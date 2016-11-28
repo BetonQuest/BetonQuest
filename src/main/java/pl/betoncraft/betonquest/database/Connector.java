@@ -45,6 +45,20 @@ public class Connector {
 		prefix = plugin.getConfig().getString("mysql.prefix", "");
 		db = plugin.getDB();
 		connection = db.getConnection();
+		refresh();
+	}
+	
+	/**
+	 * This method should be used before any other database operations.
+	 */
+	public void refresh() {
+		try {
+			connection.prepareStatement("SELECT 1").executeQuery();
+		} catch (SQLException e) {
+			Debug.info("Reconnecting to the database");
+			db.closeConnection();
+			connection = db.getConnection();
+		}
 	}
 
 	/**
@@ -54,15 +68,10 @@ public class Connector {
 	 *            type of the query
 	 * @param args
 	 *            arguments
-	 * @return ResultSet with the requsted data
+	 * @return ResultSet with the requested data
 	 */
 	public ResultSet querySQL(QueryType type, String[] args) {
 		try {
-			if (!connection.isValid(3)) {
-				Debug.info("Connection timeout, reconnecting");
-				db.closeConnection();
-				connection = db.getConnection();
-			}
 			PreparedStatement statement;
 			switch (type) {
 			case SELECT_JOURNAL:
@@ -148,11 +157,6 @@ public class Connector {
 	 */
 	public void updateSQL(UpdateType type, String[] args) {
 		try {
-			if (!connection.isValid(3)) {
-				Debug.info("Connection timeout, reconnecting");
-				db.closeConnection();
-				connection = db.getConnection();
-			}
 			PreparedStatement statement;
 			switch (type) {
 			case ADD_OBJECTIVES:

@@ -80,7 +80,7 @@ public class PlayerData {
 	 */
 	public void loadAllPlayerData() {
 		try {
-			// open connection to the database
+			// get connection to the database
 			Connector con = new Connector();
 
 			// load objectives
@@ -140,7 +140,7 @@ public class PlayerData {
 				}
 			} else {
 				lang = Config.getLanguage();
-				con.updateSQL(UpdateType.ADD_PLAYER, new String[] { playerID, "default" });
+				saver.add(new Record(UpdateType.ADD_PLAYER, new String[] { playerID, "default" }));
 			}
 
 			// log data to debugger
@@ -510,13 +510,12 @@ public class PlayerData {
 		getJournal().clear(); // journal can be null, so use a method to get it
 		backpack.clear();
 		// clear the database
-		Connector database = new Connector();
-		database.updateSQL(UpdateType.DELETE_OBJECTIVES, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_JOURNAL, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_POINTS, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_TAGS, new String[] { playerID });
-		database.updateSQL(UpdateType.DELETE_BACKPACK, new String[] { playerID });
-		database.updateSQL(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID });
+		saver.add(new Record(UpdateType.DELETE_OBJECTIVES, new String[] { playerID }));
+		saver.add(new Record(UpdateType.DELETE_JOURNAL, new String[] { playerID }));
+		saver.add(new Record(UpdateType.DELETE_POINTS, new String[] { playerID }));
+		saver.add(new Record(UpdateType.DELETE_TAGS, new String[] { playerID }));
+		saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[] { playerID }));
+		saver.add(new Record(UpdateType.UPDATE_CONVERSATION, new String[] { "null", playerID }));
 		// update the journal so it's empty
 		if (PlayerConverter.getPlayer(playerID) != null) {
 			getJournal().update();
