@@ -40,20 +40,27 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class VariableObjective extends Objective implements Listener {
+	
+	private final boolean noChat;
 
 	public VariableObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		template = VariableData.class;
+		noChat = instruction.hasArgument("no-chat");
 	}
 
 	@Override
 	public void start() {
-		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+		if (!noChat) {
+			Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+		}
 	}
 
 	@Override
 	public void stop() {
-		HandlerList.unregisterAll(this);
+		if (!noChat) {
+			HandlerList.unregisterAll(this);
+		}
 	}
 	
 	@EventHandler
@@ -74,6 +81,27 @@ public class VariableObjective extends Objective implements Listener {
 			((VariableData) dataMap.get(playerID)).add(key, value);
 			event.getPlayer().sendMessage("§2§l\u2713");
 		}
+	}
+
+	/**
+	 * Stores specified string in this objective.
+	 * 
+	 * @param playerID
+	 *            ID of the player
+	 * @param key
+	 *            key of the variable
+	 * @param value
+	 *            string to store
+	 * @return true if it was stored, false if the player doesn't have this
+	 *         objective
+	 */
+	public boolean store(String playerID, String key, String value) {
+		VariableData data = (VariableData) dataMap.get(playerID);
+		if (data == null) {
+			return false;
+		}
+		data.add(key, value);
+		return true;
 	}
 
 	@Override

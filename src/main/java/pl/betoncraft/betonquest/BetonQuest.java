@@ -126,6 +126,7 @@ import pl.betoncraft.betonquest.events.TagEvent;
 import pl.betoncraft.betonquest.events.TakeEvent;
 import pl.betoncraft.betonquest.events.TeleportEvent;
 import pl.betoncraft.betonquest.events.TimeEvent;
+import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
@@ -350,6 +351,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("lever", LeverEvent.class);
 		registerEvents("door", DoorEvent.class);
 		registerEvents("if", IfElseEvent.class);
+		registerEvents("variable", VariableEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
