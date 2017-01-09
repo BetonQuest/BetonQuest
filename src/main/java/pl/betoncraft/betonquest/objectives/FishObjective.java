@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -73,6 +74,8 @@ public class FishObjective extends Objective implements Listener {
 	@EventHandler
 	public void onFishCatch(PlayerFishEvent event) {
 		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (event.getState() != State.CAUGHT_FISH)
+			return;
 		if (!containsPlayer(playerID))
 			return;
 		if (event.getCaught() == null)
