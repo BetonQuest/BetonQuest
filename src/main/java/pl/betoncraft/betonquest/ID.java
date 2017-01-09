@@ -46,6 +46,9 @@ public abstract class ID {
 			this.pack = pack;
 			this.id = id;
 		}
+		if (pack == null) {
+			throw new ObjectNotFoundException("Package of this object does not exist: " + id);
+		}
 	}
 	
 	public ConfigPackage getPackage() {
