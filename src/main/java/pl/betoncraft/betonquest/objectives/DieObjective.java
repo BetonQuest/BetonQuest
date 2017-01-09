@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -77,7 +78,7 @@ public class DieObjective extends Objective implements Listener {
 			if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
 					&& checkConditions(playerID)) {
 				event.setCancelled(true);
-				player.setHealth(player.getMaxHealth());
+				player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 				player.setFoodLevel(20);
 				player.setExhaustion(4);
 				player.setSaturation(20);
