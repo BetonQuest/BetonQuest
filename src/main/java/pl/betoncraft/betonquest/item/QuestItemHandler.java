@@ -69,13 +69,26 @@ public class QuestItemHandler implements Listener {
 			return;
 		}
 		String playerID = PlayerConverter.getID((Player) event.getPlayer());
+		if (playerID == null) {
+			return;
+		}
 		ItemStack item = event.getItemDrop().getItemStack();
-		// if journal is dropped, remove it so noone else can pick it up
-		if (Journal.isJournal(playerID, item)) {
-			event.getItemDrop().remove();
-		} else if (Utils.isQuestItem(item)) {
-			BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
-			event.getItemDrop().remove();
+		if (item == null) {
+			return;
+		}
+		try {
+			// if journal is dropped, remove it so noone else can pick it up
+			if (Journal.isJournal(playerID, item)) {
+				event.getItemDrop().remove();
+			} else if (Utils.isQuestItem(item)) {
+				BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
+				event.getItemDrop().remove();
+			}
+		} catch (Exception e) {
+			// if there is any problem with checking the item, prevent dropping it
+			// it will be frustrating for user but at least they won't duplicate items
+			event.setCancelled(true);
+			e.printStackTrace();
 		}
 	}
 
