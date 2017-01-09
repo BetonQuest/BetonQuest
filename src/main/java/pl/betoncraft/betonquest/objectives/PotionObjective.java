@@ -31,9 +31,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -51,7 +48,6 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PotionObjective extends Objective implements Listener {
 
-	private final HashMap<PotionEffectType, Integer> effects = new HashMap<>();
 	private final QuestItem potion;
 	private final int amount;
 	private final boolean notify;
@@ -62,26 +58,6 @@ public class PotionObjective extends Objective implements Listener {
 		template = PotionData.class;
 		potion = instruction.getQuestItem();
 		amount = instruction.getInt();
-		String[] effectsArray = instruction.getArray(instruction.getOptional("effects"));
-		if (effectsArray != null) {
-			for (String effect : effectsArray) {
-				String[] eParts = effect.split(":");
-				if (eParts.length != 2) {
-					throw new InstructionParseException("Could not parse effects");
-				}
-				PotionEffectType type = PotionEffectType.getByName(eParts[0].toUpperCase());
-				if (type == null) {
-					throw new InstructionParseException("Potion type '" + eParts[0] + "' does not exist");
-				}
-				int duration;
-				try {
-					duration = Integer.parseInt(eParts[1]) * 20;
-				} catch (NumberFormatException e) {
-					throw new InstructionParseException("Could not parse duration of an effect");
-				}
-				effects.put(type, duration);
-			}
-		}
 		notify = instruction.hasArgument("notify");
 	}
 
@@ -144,25 +120,7 @@ public class PotionObjective extends Objective implements Listener {
 	private boolean checkPotion(ItemStack item) {
 		if (item == null)
 			return false;
-		if (!potion.compare(item))
-			return false;
-		if (item.getItemMeta() instanceof PotionMeta) {
-			PotionMeta meta = (PotionMeta) item.getItemMeta();
-			// count how many effects on the potion match the required effects
-			int matchingEffects = 0;
-			for (PotionEffect effect : meta.getCustomEffects()) {
-				if (effects.keySet().contains(effect.getType()) && effects.get(effect.getType()) <= effect.getDuration()) {
-					matchingEffects++;
-				}
-			}
-			// if the amount of matching effects is equal to amount of required
-			// effects, the potion is considered matching
-			if (matchingEffects == effects.size()) {
-				return true;
-			}
-			return false;
-		}
-		return false;
+		return potion.compare(item);
 	}
 
 	@Override
