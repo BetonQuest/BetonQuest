@@ -23,6 +23,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
@@ -41,28 +42,28 @@ public class MobKillListener implements Listener {
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		// check if the damage cause actually exists; if it does not,
-		// the whole checking is pointless
-		if (event.getEntity() == null || event.getEntity().getLastDamageCause() == null
-				|| event.getEntity().getLastDamageCause().getCause() == null) {
+		EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
+		if (damageEvent == null) {
 			return;
 		}
-		// handle the normal attack
-		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
-			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
-			// if the damager is player, check if he has this objective
+		DamageCause cause = damageEvent.getCause();
+		if (cause == null) {
+			return;
+		}
+		if (damageEvent instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) damageEvent;
+			// handle the normal attack
 			if (damage.getDamager() instanceof Player) {
 				Player player = (Player) damage.getDamager();
 				MobKillNotifier.addKill(player, event.getEntity());
-			}
 			// handle projectile attack
-		} else if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
-			Projectile projectile = (Projectile) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause())
-					.getDamager();
-			// check if the shooter was a player
-			if (projectile.getShooter() instanceof Player) {
-				Player player = (Player) projectile.getShooter();
-				MobKillNotifier.addKill(player, event.getEntity());
+			} else if (damage.getDamager() instanceof Projectile) {
+				Projectile projectile = (Projectile) damage.getDamager();
+				// shooter must be a player
+				if (projectile.getShooter() instanceof Player) {
+					Player player = (Player) projectile.getShooter();
+					MobKillNotifier.addKill(player, event.getEntity());
+				}
 			}
 		}
 	}
