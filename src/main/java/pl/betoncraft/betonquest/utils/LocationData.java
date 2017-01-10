@@ -82,6 +82,11 @@ public class LocationData {
 			vector = new Vector(0, 0, 0);
 			base = string;
 		}
+		// special keyword "player" is the same as %location% variable
+		// it's used for backwards compatibility
+		if (base.toLowerCase().equals("player")) {
+			base = "%location%";
+		}
 		// parse the base
 		if (base.startsWith("%") && base.endsWith("%")) {
 			type = Type.VARIABLE;
