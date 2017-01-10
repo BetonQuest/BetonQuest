@@ -982,7 +982,7 @@ public class ConfigUpdater {
             if (item.getName() != null) {
                 instruction = instruction + " name:" + item.getName().replace(" ", "_");
             }
-            if (!item.getLore().isEmpty()) {
+            if (item.getLore() != null && !item.getLore().isEmpty()) {
                 StringBuilder lore = new StringBuilder();
                 for (String line : item.getLore()) {
                     lore.append(line + ";");
@@ -990,7 +990,7 @@ public class ConfigUpdater {
                 instruction = instruction + " lore:"
                     + (lore.substring(0, lore.length() - 1).replace(" ", "_"));
             }
-            if (!item.getEnchants().isEmpty()) {
+            if (item.getEnchants() != null && !item.getEnchants().isEmpty()) {
                 StringBuilder enchants = new StringBuilder();
                 for (Enchantment enchant : item.getEnchants().keySet()) {
                     enchants.append(enchant.toString() + ":" + item.getEnchants().get(enchant)
