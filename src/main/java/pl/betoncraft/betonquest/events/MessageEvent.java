@@ -23,7 +23,6 @@ import java.util.HashMap;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -74,7 +73,7 @@ public class MessageEvent extends QuestEvent {
 			for (String variable : BetonQuest.resolveVariables(message)) {
 				try {
 					BetonQuest.createVariable(instruction.getPackage(), variable);
-				} catch (ObjectNotFoundException e) {
+				} catch (InstructionParseException e) {
 					throw new InstructionParseException("Could not create '" + variable + "' variable: "
 							+ e.getMessage());
 				}

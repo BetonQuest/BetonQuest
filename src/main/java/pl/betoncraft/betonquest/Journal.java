@@ -236,7 +236,7 @@ public class Journal {
 					for (String variable : BetonQuest.resolveVariables(text)) {
 						try {
 							BetonQuest.createVariable(pack, variable);
-						} catch (ObjectNotFoundException e) {
+						} catch (InstructionParseException e) {
 							Debug.error("Error while creating variable '" + variable + "' on main page in "
 									+ PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
 						}

@@ -393,7 +393,7 @@ public class ConversationData {
 			for (String variable : variables) {
 				try {
 					BetonQuest.createVariable(pack, variable);
-				} catch (ObjectNotFoundException e) {
+				} catch (InstructionParseException e) {
 					throw new InstructionParseException("Error while creating '" + variable + "' variable: "
 							+ e.getMessage());
 				}

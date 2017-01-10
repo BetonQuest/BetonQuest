@@ -975,10 +975,15 @@ public final class BetonQuest extends JavaPlugin {
 	 * 
 	 * @param instruction
 	 *            instruction of the variable, including both % characters.
-	 * @throws ObjectNotFoundException 
+	 * @throws InstructionParseException 
 	 */
-	public static Variable createVariable(ConfigPackage pack, String instruction) throws ObjectNotFoundException {
-		VariableID ID = new VariableID(pack, instruction);
+	public static Variable createVariable(ConfigPackage pack, String instruction) throws InstructionParseException {
+		VariableID ID;
+		try {
+			ID = new VariableID(pack, instruction);
+		} catch (ObjectNotFoundException e) {
+			throw new InstructionParseException("Could not load variable: " + e.getMessage());
+		}
 		// no need to create duplicated variables
 		for (Entry<VariableID, Variable> e : variables.entrySet()) {
 			if (e.getKey().equals(ID)) {
@@ -987,15 +992,12 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		String[] parts = instruction.replace("%", "").split("\\.");
 		if (parts.length < 1) {
-			Debug.error("Not enough arguments in variable " + ID);
-			return null;
+			throw new InstructionParseException("Not enough arguments in variable " + ID);
 		}
 		Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
 		// if it's null then there is no such type registered, log an error
 		if (variableClass == null) {
-			Debug.error("Variable type " + parts[0] + " is not registered, check if it's spelled correctly in "
-					+ ID + " variable.");
-			return null;
+			throw new InstructionParseException("Variable type " + parts[0] + " is not registered");
 		}
 		try {
 			Variable variable = variableClass.getConstructor(Instruction.class).newInstance(new VariableInstruction(pack, null, instruction));
@@ -1004,7 +1006,7 @@ public final class BetonQuest extends JavaPlugin {
 			return variable;
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof InstructionParseException) {
-				Debug.error("Error in " + ID + " variable: " + e.getCause().getMessage());
+				throw new InstructionParseException("Error in " + ID + " variable: " + e.getCause().getMessage());
 			} else {
 				e.printStackTrace();
 				Debug.error(ERROR);
@@ -1135,7 +1137,7 @@ public final class BetonQuest extends JavaPlugin {
 			if (var == null)
 				return "could not resolve variable";
 			return var.getValue(playerID);
-		} catch (ObjectNotFoundException e) {
+		} catch (InstructionParseException e) {
 			return "could not resolve variable";
 		}
 	}

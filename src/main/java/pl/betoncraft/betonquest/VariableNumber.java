@@ -44,7 +44,7 @@ public class VariableNumber {
 		if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
 			try {
 				this.variable = BetonQuest.createVariable(Config.getPackage(packName), variable);
-			} catch (ObjectNotFoundException e) {
+			} catch (InstructionParseException e) {
 				throw new NumberFormatException("Could not create variable: " + e.getMessage());
 			}
 			if (this.variable == null) {

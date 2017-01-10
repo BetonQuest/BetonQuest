@@ -25,15 +25,16 @@ import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.config.Config;
 
 /**
  * This class parses various location strings.
  */
 public class LocationData {
-	
-	private String packName;
+
 	private Location loc;
-	private String variable;
+	private Variable variable;
 	private Vector vector = null;
 	private Type type;
 	
@@ -55,7 +56,6 @@ public class LocationData {
 	 *             when there is an error while parsing the location
 	 */
 	public LocationData(String packName, String string) throws InstructionParseException {
-		this.packName = packName;
 		// parse the vector
 		String base = null;
 		if (string.contains("->")) {
@@ -85,7 +85,7 @@ public class LocationData {
 		// parse the base
 		if (base.startsWith("%") && base.endsWith("%")) {
 			type = Type.VARIABLE;
-			variable = base;
+			variable = BetonQuest.createVariable(Config.getPackage(packName), base);
 		} else {
 			type = Type.LOCATION;
 			loc = parseAbsoluteFormat(base);
@@ -127,7 +127,7 @@ public class LocationData {
 				throw new QuestRuntimeException("Variable location cannot accessed without the player;"
 						+ " consider changing it to absolute coordinates");
 			}
-			String value = BetonQuest.getInstance().getVariableValue(packName, variable, playerID);
+			String value = variable.getValue(playerID);
 			try {
 				return loc = parseAbsoluteFormat(value);
 			} catch (InstructionParseException e) {
