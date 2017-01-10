@@ -44,6 +44,7 @@ public class MonstersCondition extends Condition {
 	private EntityType[] types;
 	private VariableNumber[] amounts;
 	private LocationData loc;
+	private VariableNumber range;
 	private String name;
 	private String marked;
 
@@ -80,7 +81,7 @@ public class MonstersCondition extends Condition {
 			}
 		}
 		loc = instruction.getLocation();
-		loc.mustHaveData();
+		range = instruction.getVarNum();
 		name = instruction.getOptional("name");
 		marked = instruction.getOptional("marked");
 		if (marked != null) {
@@ -96,7 +97,6 @@ public class MonstersCondition extends Condition {
 			neededAmounts[i] = 0;
 		}
 		Collection<Entity> entities = location.getWorld().getEntities();
-		double range = loc.getData().getDouble(playerID);
 		loop:
 		for (Entity entity : entities) {
 			if (!(entity instanceof LivingEntity)) {
@@ -116,7 +116,8 @@ public class MonstersCondition extends Condition {
 					}
 				}
 			}
-			if (entity.getLocation().distanceSquared(location) < range * range) {
+			double r = range.getDouble(playerID);
+			if (entity.getLocation().distanceSquared(location) < r * r) {
 				EntityType theType = entity.getType();
 				for (int i = 0; i < types.length; i++) {
 					if (theType == types[i]) {

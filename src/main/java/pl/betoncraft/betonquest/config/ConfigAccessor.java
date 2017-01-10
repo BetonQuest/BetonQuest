@@ -37,9 +37,14 @@ public class ConfigAccessor {
 
 	private final String fileName;
 	private final JavaPlugin plugin;
+	private final AccessorType type;
 
 	private File configFile;
 	private FileConfiguration fileConfiguration;
+	
+	public enum AccessorType {
+		MAIN, EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL, CONVERSATION, OTHER
+	}
 
 	/**
 	 * Creates a new configuration accessor.
@@ -52,7 +57,7 @@ public class ConfigAccessor {
 	 * @param fileName
 	 *            the name of the resource in plugin jar
 	 */
-	public ConfigAccessor(JavaPlugin plugin, File file, String fileName) {
+	public ConfigAccessor(JavaPlugin plugin, File file, String fileName, AccessorType type) {
 		if (plugin == null)
 			throw new IllegalArgumentException("plugin cannot be null");
 		if (!plugin.isEnabled())
@@ -63,6 +68,7 @@ public class ConfigAccessor {
 		if (dataFolder == null)
 			throw new IllegalStateException();
 		this.configFile = file;
+		this.type = type;
 	}
 
 	public void reloadConfig() {
@@ -122,6 +128,10 @@ public class ConfigAccessor {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public AccessorType getType() {
+		return type;
 	}
 
 }

@@ -31,6 +31,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
@@ -48,6 +49,7 @@ public class ActionObjective extends Objective implements Listener {
 	private Material type;
 	private byte data;
 	private LocationData loc;
+	private VariableNumber range;
 	private boolean cancel = false;
 	
 	public enum Click {
@@ -67,9 +69,7 @@ public class ActionObjective extends Objective implements Listener {
 			data = parts.length > 1 ? instruction.getByte(parts[1], (byte) -1) : -1;
 		}
 		loc = instruction.getLocation(instruction.getOptional("loc"));
-		if (loc != null) {
-			loc.mustHaveData();
-		}
+		range = instruction.getVarNum(instruction.getOptional("range"));
 		cancel = instruction.hasArgument("cancel");
 	}
 
@@ -137,9 +137,9 @@ public class ActionObjective extends Objective implements Listener {
 						&& (data < 0 || event.getClickedBlock().getData() == data)) {
 					if (loc != null) {
 						Location location = loc.getLocation(playerID);
-						double range = loc.getData().getDouble(playerID);
+						double r = range.getDouble(playerID);
 						if (!event.getClickedBlock().getWorld().equals(location.getWorld())
-								|| event.getClickedBlock().getLocation().distance(location) > range) {
+								|| event.getClickedBlock().getLocation().distance(location) > r) {
 							return;
 						}
 					}

@@ -29,6 +29,7 @@ import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -42,6 +43,7 @@ public class ClearEvent extends QuestEvent {
 
 	private EntityType[] types;
 	private LocationData loc;
+	private VariableNumber range;
 	private String name;
 	private boolean kill;
 	private String marked;
@@ -59,7 +61,7 @@ public class ClearEvent extends QuestEvent {
 			}
 		}
 		loc = instruction.getLocation();
-		loc.mustHaveData();
+		range = instruction.getVarNum();
 		name = instruction.getOptional("name");
 		kill = instruction.hasArgument("kill");
 		marked = instruction.getOptional("marked");
@@ -91,8 +93,8 @@ public class ClearEvent extends QuestEvent {
 					}
 				}
 			}
-			double rangeDouble = loc.getData().getDouble(playerID);
-			if (entity.getLocation().distanceSquared(location) < rangeDouble * rangeDouble) {
+			double r = range.getDouble(playerID);
+			if (entity.getLocation().distanceSquared(location) < r * r) {
 				EntityType entityType = entity.getType();
 				for (EntityType allowedType : types) {
 					if (entityType == allowedType) {

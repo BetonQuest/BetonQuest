@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
@@ -45,12 +46,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ArrowShootObjective extends Objective implements Listener {
 
 	private final LocationData loc;
+	private final VariableNumber range;
 
 	public ArrowShootObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		template = ObjectiveData.class;
 		loc = instruction.getLocation();
-		loc.mustHaveData();
+		range = instruction.getVarNum();
 	}
 
 	@EventHandler
@@ -70,7 +72,6 @@ public class ArrowShootObjective extends Objective implements Listener {
 		}
 		try {
 			final Location location = loc.getLocation(playerID);
-			final double precision = loc.getData().getDouble(playerID); 
 			// check if the arrow is in the right place in the next tick
 			// wait one tick, let the arrow land completely
 			new BukkitRunnable() {
@@ -80,10 +81,15 @@ public class ArrowShootObjective extends Objective implements Listener {
 					if (arrowLocation == null) {
 						return;
 					}
-					if (arrowLocation.getWorld().equals(location.getWorld())
-							&& arrowLocation.distanceSquared(location) < precision * precision
-							&& checkConditions(playerID)) {
-						completeObjective(playerID);
+					try {
+						double r = range.getDouble(playerID);
+						if (arrowLocation.getWorld().equals(location.getWorld())
+								&& arrowLocation.distanceSquared(location) < r * r
+								&& checkConditions(playerID)) {
+							completeObjective(playerID);
+						}
+					} catch (QuestRuntimeException e) {
+						Debug.error("Could not resolve range variable: " + e.getMessage());
 					}
 				}
 			}.runTask(BetonQuest.getInstance());

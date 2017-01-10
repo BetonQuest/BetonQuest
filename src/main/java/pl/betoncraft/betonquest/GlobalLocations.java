@@ -99,7 +99,7 @@ public class GlobalLocations extends BukkitRunnable {
 				double distance;
 				try {
 					loc = location.getLocation().getLocation(playerID);
-					distance = location.getLocation().getData().getDouble(playerID);
+					distance = location.getRange().getDouble(playerID);
 				} catch (QuestRuntimeException e) {
 					Debug.error("Error while parsing location in global location '" + location.getObjectiveID()
 							+ "': " + e.getMessage());
@@ -141,6 +141,7 @@ public class GlobalLocations extends BukkitRunnable {
 
 		private ObjectiveID objectiveID;
 		private LocationData location;
+		private VariableNumber range;
 		private ConditionID[] conditions;
 		private EventID[] events;
 		private String tag;
@@ -157,7 +158,8 @@ public class GlobalLocations extends BukkitRunnable {
 			Debug.info("Creating new GlobalLocation from " + objectiveID + " event.");
 			Instruction instruction = objectiveID.generateInstruction();
 			// check amount of arguments in event's instruction
-			location = instruction.getLocation(instruction.next());
+			location = instruction.getLocation();
+			range = instruction.getVarNum();
 			// extract all conditions and events
 			String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
 			         tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
@@ -198,6 +200,13 @@ public class GlobalLocations extends BukkitRunnable {
 		 */
 		public LocationData getLocation() {
 			return location;
+		}
+
+		/**
+		 * @return the range variable
+		 */
+		public VariableNumber getRange() {
+			return range;
 		}
 
 		/**

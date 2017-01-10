@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
 
 /**
@@ -58,22 +59,22 @@ public class ConfigPackage {
 				// load normal files
 				switch (file.getName()) {
 				case "main.yml":
-					main = new ConfigAccessor(plugin, file, file.getName());
+					main = new ConfigAccessor(plugin, file, file.getName(), AccessorType.MAIN);
 					break;
 				case "events.yml":
-					events = new ConfigAccessor(plugin, file, file.getName());
+					events = new ConfigAccessor(plugin, file, file.getName(), AccessorType.EVENTS);
 					break;
 				case "conditions.yml":
-					conditions = new ConfigAccessor(plugin, file, file.getName());
+					conditions = new ConfigAccessor(plugin, file, file.getName(), AccessorType.CONDITIONS);
 					break;
 				case "journal.yml":
-					journal = new ConfigAccessor(plugin, file, file.getName());
+					journal = new ConfigAccessor(plugin, file, file.getName(), AccessorType.JOURNAL);
 					break;
 				case "items.yml":
-					items = new ConfigAccessor(plugin, file, file.getName());
+					items = new ConfigAccessor(plugin, file, file.getName(), AccessorType.ITEMS);
 					break;
 				case "objectives.yml":
-					objectives = new ConfigAccessor(plugin, file, file.getName());
+					objectives = new ConfigAccessor(plugin, file, file.getName(), AccessorType.OBJECTIVES);
 					break;
 				default:
 					break;
@@ -84,7 +85,7 @@ public class ConfigPackage {
 				for (File conv : file.listFiles()) {
 					String convName = conv.getName();
 					if (convName.endsWith(".yml")) {
-						ConfigAccessor convAccessor = new ConfigAccessor(plugin, conv, convName);
+						ConfigAccessor convAccessor = new ConfigAccessor(plugin, conv, convName, AccessorType.CONVERSATION);
 						conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
 					}
 				}
@@ -104,7 +105,7 @@ public class ConfigPackage {
 				&& conversations != null) {
 			if (objectives == null) {
 				File newFile = new File(folder, "objectives.yml");
-				objectives = new ConfigAccessor(BetonQuest.getInstance(), newFile, "objectives.yml");
+				objectives = new ConfigAccessor(BetonQuest.getInstance(), newFile, "objectives.yml", AccessorType.OBJECTIVES);
 			}
 			return true;
 		}

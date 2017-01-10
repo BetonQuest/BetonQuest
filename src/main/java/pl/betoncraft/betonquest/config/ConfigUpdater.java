@@ -51,6 +51,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -66,6 +67,8 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Jakub Sapalski
  */
 public class ConfigUpdater {
+
+	// abandon all hope, ye who enter here
 
 	/**
 	 * Error which should be displayed to the player when something goes wrong
@@ -88,7 +91,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v48";
+	private final String destination = "v49";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -195,6 +198,111 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v48() {
+		for (String packName : Config.getPackageNames()) {
+			ConfigPackage pack = Config.getPackage(packName);
+			List<ConfigAccessor> sections = new ArrayList<>();
+			// the idea is to get index of location argument for every type
+			// and use a method to replace last semicolon with a space, because
+			// all range arguments are right next to location arguments
+			sections.add(pack.getConditions());
+			sections.add(pack.getEvents());
+			sections.add(pack.getObjectives());
+			for (ConfigAccessor acc : sections) {
+				AccessorType type = acc.getType();
+				ConfigurationSection sec = acc.getConfig();
+				for (String key : sec.getKeys(false)) {
+					String value = sec.getString(key);
+					int i = value.indexOf(' ');
+					if (i < 0) {
+						continue;
+					}
+					String object = value.substring(0, i).toLowerCase();
+					int index = -1;
+					switch (type) {
+					case CONDITIONS:
+						switch (object) {
+						case "location":
+							index = 1;
+							break;
+						case "monsters":
+							index = 2;
+							break;
+						}
+						break;
+					case EVENTS:
+						switch (object) {
+						case "clear":
+							index = 2;
+							break;
+						}
+						break;
+					case OBJECTIVES:
+						switch (object) {
+						case "action":
+							// action objective uses optional argument, so convert it manually
+							String[] parts = value.split(" ");
+							String loc = null;
+							for (String part : parts) {
+								if (part.startsWith("loc:")) {
+									loc = part;
+									break;
+								}
+							}
+							if (loc != null) {
+								int j = loc.lastIndexOf(';');
+								if (j < 0 || j >= loc.length() - 1) {
+									continue;
+								}
+								String front = loc.substring(0, j);
+								String back = loc.substring(j + 1);
+								String newLoc = front + " range:" + back;
+								sec.set(key, value.replace(loc, newLoc));
+							}
+							break;
+						case "arrow":
+							index = 1;
+							break;
+						case "location":
+							index = 1;
+							break;
+						}
+						break;
+					default:
+						break;
+					}
+					if (index >= 0) {
+						sec.set(key, semicolonToSpace(value, index));
+					}
+				}
+				acc.saveConfig();
+			}
+		}
+		Debug.broadcast("Converted additional location arguments to the new format");
+		config.set("version", "v49");
+		instance.saveConfig();
+	}
+	
+	private String semicolonToSpace(String string, int argument) {
+		if (string == null) {
+			return null;
+		}
+		String[] parts = string.split(" ");
+		if (parts.length <= argument) {
+			return null;
+		}
+		String original = parts[argument];
+		int lastSemicolon = original.lastIndexOf(';');
+		if (lastSemicolon < 0) {
+			return null;
+		}
+		char[] chars = original.toCharArray();
+		chars[lastSemicolon] = ' ';
+		String replaced = new String(chars);
+		return string.replace(original, replaced);
 	}
 
 	@SuppressWarnings("unused")
@@ -3347,26 +3455,26 @@ public class ConfigUpdater {
 		public ConfigHandler() {
 			// put config accesors in fields
 			conversations = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml", AccessorType.CONVERSATION);
 			objectives = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
 			conditions = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml", AccessorType.CONDITIONS);
 			events = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml", AccessorType.EVENTS);
 			npcs = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml", AccessorType.MAIN);
 			journal = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml", AccessorType.JOURNAL);
 			items = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml", AccessorType.ITEMS);
 			messages = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml");
+					new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml", AccessorType.OTHER);
 			if (new File(BetonQuest.getInstance().getDataFolder(), "conversations").exists()) {
 				// put conversations accessors in the hashmap
 				for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
 					conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
-							new ConfigAccessor(BetonQuest.getInstance(), file, file.getName()));
+							new ConfigAccessor(BetonQuest.getInstance(), file, file.getName(), AccessorType.CONVERSATION));
 				}
 			}
 		}

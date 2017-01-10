@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -102,9 +103,9 @@ public class Config {
 		}
 
 		// load messages
-		messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml");
+		messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
 		messages.saveDefaultConfig();
-		internal = new ConfigAccessor(plugin, null, "internal-messages.yml");
+		internal = new ConfigAccessor(plugin, null, "internal-messages.yml", AccessorType.OTHER);
 		for (String key : messages.getConfig().getKeys(false)) {
 			if (!key.equals("global")) {
 				if (verboose)
