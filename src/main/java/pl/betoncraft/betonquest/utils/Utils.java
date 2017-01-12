@@ -98,8 +98,7 @@ public class Utils {
 			boolean done = true;
 			// prepare the config file
 			databaseBackupFile.createNewFile();
-			ConfigAccessor accessor = new ConfigAccessor(instance, databaseBackupFile, databaseBackupFile.getName(),
-					AccessorType.OTHER);
+			ConfigAccessor accessor = new ConfigAccessor(databaseBackupFile, databaseBackupFile.getName(), AccessorType.OTHER);
 			FileConfiguration config = accessor.getConfig();
 			// prepare the database and map
 			HashMap<String, ResultSet> map = new HashMap<>();
@@ -220,7 +219,7 @@ public class Utils {
 						+ "forever. Because of that the loading of backup was aborted!");
 				return;
 			}
-			ConfigAccessor accessor = new ConfigAccessor(instance, file, "database-backup.yml", AccessorType.OTHER);
+			ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
 			FileConfiguration config = accessor.getConfig();
 			Database database = instance.getDB();
 			// create tables if they don't exist, so we can be 100% sure

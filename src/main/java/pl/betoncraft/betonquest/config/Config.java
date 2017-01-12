@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,8 @@ public class Config {
 
 	private static ArrayList<String> languages = new ArrayList<>();
 
+	private final static List<String> utilDirNames = Arrays.asList(new String[]{"logs", "backups", "conversations"});
+
 	private File root;
 
 	public Config() {
@@ -88,24 +91,10 @@ public class Config {
 		plugin.reloadConfig();
 		plugin.saveConfig();
 
-		// if the packages are not on the config list yet, add them
-		List<String> packageList = plugin.getConfig().getStringList("packages");
-		if (plugin.getConfig().getStringList("packages") == null || packageList.isEmpty()) {
-			ArrayList<String> allPackages = new ArrayList<>();
-			for (File file : root.listFiles()) {
-				if (file.isDirectory() && !file.getName().equals("logs") && !file.getName().equals("backups")
-						&& !file.getName().equals("conversations")) {
-					allPackages.add(file.getName());
-				}
-			}
-			plugin.getConfig().set("packages", allPackages);
-			plugin.saveConfig();
-		}
-
 		// load messages
-		messages = new ConfigAccessor(plugin, new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
+		messages = new ConfigAccessor(new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
 		messages.saveDefaultConfig();
-		internal = new ConfigAccessor(plugin, null, "internal-messages.yml", AccessorType.OTHER);
+		internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
 		for (String key : messages.getConfig().getKeys(false)) {
 			if (!key.equals("global")) {
 				if (verboose)
@@ -118,22 +107,8 @@ public class Config {
 		createPackage("default");
 
 		// load packages
-		for (String packPath : plugin.getConfig().getStringList("packages")) {
-			File file = new File(root, packPath.replace("-", File.separator));
-			// get directories which can be quest packages
-			if (!file.isDirectory())
-				continue;
-			if (file.getName().equals("logs") || file.getName().equals("backups")
-					|| file.getName().equals("conversations"))
-				continue;
-			// initialize ConfigPackage objects and if they are valid place them
-			// in the map
-			ConfigPackage pack = new ConfigPackage(file, packPath);
-			if (pack.isValid()) {
-				packages.put(packPath, pack);
-				if (verboose)
-					Debug.info("Loaded " + packPath + " package");
-			}
+		for (File file : plugin.getDataFolder().listFiles()) {
+			searchForPackages(file);
 		}
 
 		// load quest cancelers
@@ -148,6 +123,28 @@ public class Config {
 				} catch (InstructionParseException e) {
 					Debug.error("Could not load '" + name + "' quest canceler: " + e.getMessage());
 				}
+			}
+		}
+	}
+	
+	private void searchForPackages(File file) {
+		if (file.isDirectory() && !utilDirNames.contains(file.getName())) {
+			File[] content = file.listFiles();
+			for (File subFile : content) {
+				if (subFile.getName().equals("main.yml")) {
+					// this is a package, add it and stop searching
+					String packPath = BetonQuest.getInstance().getDataFolder()
+							.toURI().relativize(file.toURI())
+							.toString().replace('/', ' ').trim().replace(' ', '-');
+					ConfigPackage pack = new ConfigPackage(file, packPath);
+					if (pack.isEnabled()) {
+						packages.put(packPath, pack);
+					}
+					return;
+				}
+			}
+			for (File subFile : content) {
+				searchForPackages(subFile);
 			}
 		}
 	}

@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Set;
 
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
 
@@ -34,14 +33,15 @@ public class ConfigPackage {
 
 	private String name;
 	private File folder;
+	private boolean enabled;
 
 	private ConfigAccessor main;
 	private ConfigAccessor events;
 	private ConfigAccessor conditions;
+	private ConfigAccessor objectives;
 	private ConfigAccessor journal;
 	private ConfigAccessor items;
-	private ConfigAccessor objectives;
-	private HashMap<String, ConfigAccessor> conversations;
+	private HashMap<String, ConfigAccessor> conversations = new HashMap<>();
 
 	/**
 	 * Loads a package from specified directory. It doesn't have to be valid
@@ -52,64 +52,30 @@ public class ConfigPackage {
 			return;
 		folder = pack;
 		this.name = name;
-		BetonQuest plugin = BetonQuest.getInstance();
-		// list all files inside a package folder and pick the needed
-		for (File file : pack.listFiles()) {
-			if (file.isFile()) {
-				// load normal files
-				switch (file.getName()) {
-				case "main.yml":
-					main = new ConfigAccessor(plugin, file, file.getName(), AccessorType.MAIN);
-					break;
-				case "events.yml":
-					events = new ConfigAccessor(plugin, file, file.getName(), AccessorType.EVENTS);
-					break;
-				case "conditions.yml":
-					conditions = new ConfigAccessor(plugin, file, file.getName(), AccessorType.CONDITIONS);
-					break;
-				case "journal.yml":
-					journal = new ConfigAccessor(plugin, file, file.getName(), AccessorType.JOURNAL);
-					break;
-				case "items.yml":
-					items = new ConfigAccessor(plugin, file, file.getName(), AccessorType.ITEMS);
-					break;
-				case "objectives.yml":
-					objectives = new ConfigAccessor(plugin, file, file.getName(), AccessorType.OBJECTIVES);
-					break;
-				default:
-					break;
-				}
-			} else if (file.isDirectory() && file.getName().equals("conversations")) {
-				// load all conversations
-				conversations = new HashMap<>();
-				for (File conv : file.listFiles()) {
-					String convName = conv.getName();
-					if (convName.endsWith(".yml")) {
-						ConfigAccessor convAccessor = new ConfigAccessor(plugin, conv, convName, AccessorType.CONVERSATION);
-						conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
-					}
+		main = new ConfigAccessor(new File(pack, "main.yml"), "main.yml", AccessorType.MAIN);
+		events = new ConfigAccessor(new File(pack, "events.yml"), "events.yml", AccessorType.EVENTS);
+		conditions = new ConfigAccessor(new File(pack, "conditions.yml"), "conditions.yml", AccessorType.CONDITIONS);
+		objectives = new ConfigAccessor(new File(pack, "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
+		journal = new ConfigAccessor(new File(pack, "journal.yml"), "journal.yml", AccessorType.JOURNAL);
+		items = new ConfigAccessor(new File(pack, "items.yml"), "items.yml", AccessorType.ITEMS);
+		File convFile = new File(pack, "conversations");
+		if (convFile.exists() && convFile.isDirectory()) {
+			for (File conv : convFile.listFiles()) {
+				String convName = conv.getName();
+				if (convName.endsWith(".yml")) {
+					ConfigAccessor convAccessor = new ConfigAccessor(conv, convName, AccessorType.CONVERSATION);
+					conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
 				}
 			}
 		}
-		if (!isValid()) {
-			Debug.info(pack.getName() + " is not a valid package!");
-		}
+		enabled = main.getConfig().getBoolean("enabled", true);
 	}
 
 	/**
-	 * @return true if every part of the package exists and has been loaded,
-	 *         false otherwise
+	 * @return if the package is enabled (true) or disabled (false)
 	 */
-	public boolean isValid() {
-		if (main != null && events != null && conditions != null && journal != null && items != null
-				&& conversations != null) {
-			if (objectives == null) {
-				File newFile = new File(folder, "objectives.yml");
-				objectives = new ConfigAccessor(BetonQuest.getInstance(), newFile, "objectives.yml", AccessorType.OBJECTIVES);
-			}
-			return true;
-		}
-		return false;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	/**

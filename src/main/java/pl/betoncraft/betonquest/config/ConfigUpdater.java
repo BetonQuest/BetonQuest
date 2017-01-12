@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v49";
+	private final String destination = "v50";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -198,6 +199,30 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v49() {
+		Set<String> enabledPackages = new HashSet<>(config.getStringList("packages"));
+		Debug.info("Disabling packages not listed in the config");
+		for (Iterator<ConfigPackage> iterator = Config.getPackages().values().iterator(); iterator.hasNext();) {
+			ConfigPackage pack = iterator.next();
+			Debug.info("  Looking at package " + pack.getName());
+			if (!enabledPackages.contains(pack.getName())) {
+				Debug.info("    Package is not enabled, removing it from the list.");
+				pack.getMain().getConfig().set("enabled", false);
+				pack.getMain().saveConfig();
+				iterator.remove();
+			} else {
+				pack.getMain().getConfig().set("enabled", true);
+				pack.getMain().saveConfig();
+			}
+		}
+		Debug.info("All packages enabled/disabled, removing 'packages' section from config");
+		config.set("packages", null);
+		Debug.broadcast("Moved package enabling from config to main files");
+		config.set("version", "v50");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")
@@ -3458,27 +3483,19 @@ public class ConfigUpdater {
 		 */
 		public ConfigHandler() {
 			// put config accesors in fields
-			conversations = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml", AccessorType.CONVERSATION);
-			objectives = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
-			conditions = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml", AccessorType.CONDITIONS);
-			events = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml", AccessorType.EVENTS);
-			npcs = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml", AccessorType.MAIN);
-			journal = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml", AccessorType.JOURNAL);
-			items = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml", AccessorType.ITEMS);
-			messages = new ConfigAccessor(BetonQuest.getInstance(),
-					new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml", AccessorType.OTHER);
+			conversations = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "conversations.yml"), "conversations.yml", AccessorType.CONVERSATION);
+			objectives = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
+			conditions = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "conditions.yml"), "conditions.yml", AccessorType.CONDITIONS);
+			events = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "events.yml"), "events.yml", AccessorType.EVENTS);
+			npcs = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "npcs.yml"), "npcs.yml", AccessorType.MAIN);
+			journal = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "journal.yml"), "journal.yml", AccessorType.JOURNAL);
+			items = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "items.yml"), "items.yml", AccessorType.ITEMS);
+			messages = new ConfigAccessor(new File(BetonQuest.getInstance().getDataFolder(), "messages.yml"), "messages.yml", AccessorType.OTHER);
 			if (new File(BetonQuest.getInstance().getDataFolder(), "conversations").exists()) {
 				// put conversations accessors in the hashmap
 				for (File file : new File(BetonQuest.getInstance().getDataFolder(), "conversations").listFiles()) {
 					conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
-							new ConfigAccessor(BetonQuest.getInstance(), file, file.getName(), AccessorType.CONVERSATION));
+							new ConfigAccessor(file, file.getName(), AccessorType.CONVERSATION));
 				}
 			}
 		}
