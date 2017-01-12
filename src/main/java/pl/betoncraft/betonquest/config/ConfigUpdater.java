@@ -202,8 +202,8 @@ public class ConfigUpdater {
 
 	@SuppressWarnings("unused")
 	private void update_from_v48() {
-		for (String packName : Config.getPackageNames()) {
-			ConfigPackage pack = Config.getPackage(packName);
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			String packName = pack.getName();
 			List<ConfigAccessor> sections = new ArrayList<>();
 			// the idea is to get index of location argument for every type
 			// and use a method to replace last semicolon with a space, because
@@ -335,9 +335,9 @@ public class ConfigUpdater {
 	private void update_from_v44() {
 		try {
 			Debug.info("Translating items in 'potion' objectives");
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("  Handling " + packName + " package");
-				ConfigPackage pack = Config.getPackage(packName);
 				FileConfiguration objectives = pack.getObjectives().getConfig();
 				FileConfiguration items = pack.getItems().getConfig();
 				for (String key : objectives.getKeys(false)) {
@@ -408,10 +408,10 @@ public class ConfigUpdater {
 	private void update_from_v43() {
 		try {
 			Debug.info("Translating potion instructions");
-			
-			for (String packName : Config.getPackageNames()) {
+
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("  Handling " + packName + " package");
-				ConfigPackage pack = Config.getPackage(packName);
 				FileConfiguration items = pack.getItems().getConfig();
 				for (String key : items.getKeys(false)) {
 					String instruction = items.getString(key);
@@ -463,8 +463,8 @@ public class ConfigUpdater {
 	private void update_from_v41() {
 		try {
 			// change raw material names in craft objectives to items from items.yml
-			for (String packName : Config.getPackageNames()) {
-				ConfigPackage pack = Config.getPackage(packName);
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				ConfigAccessor objectives = pack.getObjectives();
 				ConfigAccessor items = pack.getItems();
 				ArrayList<String> materials = new ArrayList<>();
@@ -575,8 +575,9 @@ public class ConfigUpdater {
 		try {
 			Debug.info("Updating global location tags in the database");
 			Debug.info("    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
-			for (String packName : Config.getPackageNames()) {
-				String locList = Config.getPackage(packName).getMain().getConfig().getString("global_locations");
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
+				String locList = pack.getMain().getConfig().getString("global_locations");
 				Debug.info("  Handling package '" + packName + "': " + locList);
 				if (locList == null) {
 					continue;
@@ -658,9 +659,9 @@ public class ConfigUpdater {
 	private void update_from_v30() {
 		try {
 			Debug.info("Converting cancelers to a new format");
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("Searching " + packName + " package");
-				ConfigPackage pack = Config.getPackage(packName);
 				ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
 				if (s == null)
 					continue;
@@ -733,8 +734,8 @@ public class ConfigUpdater {
 	@SuppressWarnings("unused")
 	private void update_from_v29() {
 		try {
-			for (String packName : Config.getPackageNames()) {
-				ConfigPackage pack = Config.getPackage(packName);
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("variables");
 				for (String key : section.getKeys(true)) {
 					String variable = section.getString(key);
@@ -763,7 +764,7 @@ public class ConfigUpdater {
 			// this will ensure that there is no "global" package already
 			// defined
 			int i = 1;
-			while (Config.getPackage(globalName) != null) {
+			while (Config.getPackages().get(globalName) != null) {
 				i++;
 				globalName = "global-" + i;
 			}
@@ -777,9 +778,9 @@ public class ConfigUpdater {
 			tags.put(globalName, globalTagList);
 			points.put(globalName, globalPointList);
 			ArrayList<ConfigPackage> packages = new ArrayList<>();
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("  Checking '" + packName + "' package");
-				ConfigPackage pack = Config.getPackage(packName);
 				// skip packages that already use prefixes
 				String prefixOption = pack.getString("main.tag_point_prefix");
 				if (prefixOption != null && prefixOption.equalsIgnoreCase("true"))
@@ -1150,8 +1151,9 @@ public class ConfigUpdater {
 				}
 			}
 			// remove "tag_point_prefix" option from main.yml files
-			for (String packName : Config.getPackageNames()) {
-				ConfigAccessor main = Config.getPackage(packName).getMain();
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
+				ConfigAccessor main = pack.getMain();
 				main.getConfig().set("tag_point_prefix", null);
 				main.saveConfig();
 			}
@@ -1185,9 +1187,10 @@ public class ConfigUpdater {
 	@SuppressWarnings("unused")
 	private void update_from_v26() {
 		try {
-			for (String packName : Config.getPackageNames()) {
-				for (String convName : Config.getPackage(packName).getConversationNames()) {
-					FileConfiguration conv = Config.getPackage(packName).getConversation(convName).getConfig();
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
+				for (String convName : pack.getConversationNames()) {
+					FileConfiguration conv = pack.getConversation(convName).getConfig();
 					ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
 					if (playerSection != null) {
 						for (String playerKey : playerSection.getKeys(false)) {
@@ -1222,7 +1225,7 @@ public class ConfigUpdater {
 							}
 						}
 					}
-					Config.getPackage(packName).getConversation(convName).saveConfig();
+					pack.getConversation(convName).saveConfig();
 				}
 			}
 		} catch (Exception e) {
@@ -1237,8 +1240,8 @@ public class ConfigUpdater {
 	@SuppressWarnings("unused")
 	private void update_from_v25() {
 		try {
-			for (String packName : Config.getPackageNames()) {
-				ConfigPackage pack = Config.getPackage(packName);
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				FileConfiguration events = pack.getEvents().getConfig();
 				for (String key : events.getKeys(false)) {
 					String event = events.getString(key);
@@ -1490,9 +1493,9 @@ public class ConfigUpdater {
 			messages.set("global", null);
 			Debug.broadcast("Moved 'global' messages to main config.");
 			Config.getMessages().saveConfig();
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("Processing " + packName + " package");
-				ConfigPackage pack = Config.getPackage(packName);
 				ConfigurationSection cancelers = pack.getMain().getConfig().getConfigurationSection("cancel");
 				for (String key : cancelers.getKeys(false)) {
 					String canceler = cancelers.getString(key);
@@ -1574,8 +1577,9 @@ public class ConfigUpdater {
 	@SuppressWarnings("unused")
 	private void update_from_v17() {
 		try {
-			for (String packName : Config.getPackageNames()) {
-				ConfigAccessor main = Config.getPackage(packName).getMain();
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
+				ConfigAccessor main = pack.getMain();
 				main.getConfig().set("tag_point_prefix", "false");
 				main.saveConfig();
 			}
@@ -1593,9 +1597,9 @@ public class ConfigUpdater {
 		try {
 			// move objectives from events.yml to objectives.yml
 			Debug.info("Moving objectives to objectives.yml");
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("  Package " + packName);
-				ConfigPackage pack = Config.getPackage(packName);
 				ConfigAccessor events = pack.getEvents();
 				ConfigAccessor objectives = pack.getObjectives();
 				ConfigAccessor main = pack.getMain();
@@ -1713,8 +1717,8 @@ public class ConfigUpdater {
 					continue;
 				}
 				// attack correct package in front of the label
-				for (String packName : Config.getPackageNames()) {
-					ConfigPackage pack = Config.getPackage(packName);
+				for (ConfigPackage pack : Config.getPackages().values()) {
+					String packName = pack.getName();
 					if (pack.getObjectives().getConfig().contains(label)) {
 						label = packName + "." + label;
 						break;
@@ -1805,9 +1809,9 @@ public class ConfigUpdater {
 	private void update_from_v13() {
 		try {
 			Debug.info("Removing empty lines in conversation files");
-			for (String packName : Config.getPackageNames()) {
+			for (ConfigPackage pack : Config.getPackages().values()) {
+				String packName = pack.getName();
 				Debug.info("  Package " + packName);
-				ConfigPackage pack = Config.getPackage(packName);
 				for (String convName : pack.getConversationNames()) {
 					Debug.info("    Conversation " + convName);
 					ConfigAccessor conv = pack.getConversation(convName);
@@ -1834,7 +1838,7 @@ public class ConfigUpdater {
 		try {
 			Debug.info("Moving all configuration to \"default\" package");
 			// clear the default package, which contains only default quest
-			File defPkg = Config.getPackage("default").getFolder();
+			File defPkg = Config.getPackages().get("default").getFolder();
 			Debug.info("  Deleting default files");
 			for (File file : defPkg.listFiles()) {
 				file.delete();

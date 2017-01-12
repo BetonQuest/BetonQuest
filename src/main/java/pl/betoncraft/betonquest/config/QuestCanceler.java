@@ -72,7 +72,7 @@ public class QuestCanceler {
 			throw new InstructionParseException("ID is incorrect");
 		packName = parts[0];
 		cancelerName = parts[1];
-		ConfigPackage pack = Config.getPackage(packName);
+		ConfigPackage pack = Config.getPackages().get(packName);
 		if (pack == null)
 			throw new InstructionParseException("Package does not exist");
 		String rawEvents = pack.getString("main.cancel." + cancelerName + ".events"),
@@ -102,7 +102,7 @@ public class QuestCanceler {
 			events = new EventID[arr.length];
 			for (int i = 0; i < arr.length; i++) {
 				try {
-					events[i] = new EventID(Config.getPackage(packName), arr[i]);
+					events[i] = new EventID(Config.getPackages().get(packName), arr[i]);
 				} catch (ObjectNotFoundException e) {
 					throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage());
 				}
@@ -115,7 +115,7 @@ public class QuestCanceler {
 			conditions = new ConditionID[arr.length];
 			for (int i = 0; i < arr.length; i++) {
 				try {
-					conditions[i] = new ConditionID(Config.getPackage(packName), arr[i]);
+					conditions[i] = new ConditionID(Config.getPackages().get(packName), arr[i]);
 				} catch (ObjectNotFoundException e) {
 					throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage());
 				}
@@ -128,7 +128,7 @@ public class QuestCanceler {
 			objectives = new ObjectiveID[arr.length];
 			for (int i = 0; i < arr.length; i++) {
 				try {
-					objectives[i] = new ObjectiveID(Config.getPackage(packName), arr[i]);
+					objectives[i] = new ObjectiveID(Config.getPackages().get(packName), arr[i]);
 				} catch (ObjectNotFoundException e) {
 					throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage());
 				}
@@ -286,7 +286,7 @@ public class QuestCanceler {
 		ItemStack stack = new ItemStack(Material.BONE);
 		if (item != null) {
 			try {
-				ItemID itemID = new ItemID(Config.getPackage(packName), item);
+				ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
 				stack = new QuestItem(itemID).generate(1);
 			} catch (InstructionParseException | ObjectNotFoundException e) {
 				Debug.error("Could not load cancel button: " + e.getMessage());

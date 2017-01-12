@@ -159,7 +159,7 @@ public class Journal {
 			// get package and name of the pointer
 			String[] parts = pointer.getPointer().split("\\.");
 			String packName = parts[0];
-			ConfigPackage pack = Config.getPackage(packName);
+			ConfigPackage pack = Config.getPackages().get(packName);
 			if (pack == null) {
 				continue;
 			}
@@ -192,8 +192,8 @@ public class Journal {
 	private String generateMainPage() {
 		HashMap<Integer, String> lines = new HashMap<>(); // holds text lines with their priority
 		ArrayList<Integer> numbers = new ArrayList<>(); // stores numbers that are used, so there's no need to search them
-		for (String packName : Config.getPackageNames()) {
-			ConfigPackage pack = Config.getPackage(packName);
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			String packName = pack.getName();
 			ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
 			if (s == null)
 				continue;

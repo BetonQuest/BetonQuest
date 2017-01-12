@@ -56,8 +56,8 @@ public class HologramLoop {
 	 */
 	public HologramLoop() {
 		// get all holograms and their condition
-		for (String packName : Config.getPackageNames()) {
-			ConfigPackage pack = Config.getPackage(packName);
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			String packName = pack.getName();
 			ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("holograms");
 			if (section == null)
 				continue;

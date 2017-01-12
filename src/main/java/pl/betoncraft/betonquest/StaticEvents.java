@@ -58,9 +58,9 @@ public class StaticEvents {
 		if (deleted) {
 			Debug.info("Previous timers has been canceled");
 		}
-		for (String packName : Config.getPackageNames()) {
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			String packName = pack.getName();
 			Debug.info("Searching package " + packName);
-			ConfigPackage pack = Config.getPackage(packName);
 			// get those hours and events
 			ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
 			if (config == null) {

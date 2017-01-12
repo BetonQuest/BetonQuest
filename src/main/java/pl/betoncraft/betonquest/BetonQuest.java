@@ -459,10 +459,10 @@ public final class BetonQuest extends JavaPlugin {
 		objectives.clear();
 		variables.clear();
 		// load new data
-		for (String packName : Config.getPackageNames()) {
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			String packName = pack.getName();
 			Debug.info("Loading stuff in package " + packName);
-			ConfigPackage pack = Config.getPackage(packName);
-			FileConfiguration eConfig = Config.getPackage(packName).getEvents().getConfig();
+			FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
 			for (String key : eConfig.getKeys(false)) {
 				if (key.contains(" ")) {
 					Debug.error("Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
@@ -600,7 +600,7 @@ public final class BetonQuest extends JavaPlugin {
 					continue;
 				}
 				try {
-					conversations.put(pack.getName() + "." + convName, new ConversationData(packName, convName));
+					conversations.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
 				} catch (InstructionParseException e) {
 					Debug.error(
 							"Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
@@ -615,7 +615,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
-				+ Config.getPackageNames().size() + " packages.");
+				+ Config.getPackages().size() + " packages.");
 		// start those freshly loaded objectives for all players
 		for (PlayerData playerData : playerDataMap.values()) {
 			playerData.startObjectives();
@@ -1135,7 +1135,7 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public String getVariableValue(String packName, String name, String playerID) {
 		try {
-			Variable var = createVariable(Config.getPackage(packName), name);
+			Variable var = createVariable(Config.getPackages().get(packName), name);
 			if (var == null)
 				return "could not resolve variable";
 			return var.getValue(playerID);

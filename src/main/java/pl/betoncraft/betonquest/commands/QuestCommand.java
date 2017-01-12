@@ -590,7 +590,7 @@ public class QuestCommand implements CommandExecutor {
 			return;
 		}
 		// define parts of the final string
-		ConfigPackage configPack = Config.getPackage(pack);
+		ConfigPackage configPack = Config.getPackages().get(pack);
 		if (configPack == null) {
 			Debug.info("Cannot continue, package does not exist");
 			sendMessage(sender, "specify_package");

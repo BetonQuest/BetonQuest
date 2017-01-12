@@ -29,6 +29,7 @@ import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
 
 /**
  * Displays a particle above NPCs with conversations.
@@ -56,8 +57,9 @@ public class CitizensParticle extends BukkitRunnable {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (String packName : Config.getPackageNames()) {
-					for (String npcID : Config.getPackage(packName).getMain().getConfig()
+				for (ConfigPackage pack : Config.getPackages().values()) {
+					String packName = pack.getName();
+					for (String npcID : Config.getPackages().get(packName).getMain().getConfig()
 							.getConfigurationSection("npcs").getKeys(false)) {
 						try {
 							int ID = Integer.parseInt(npcID);

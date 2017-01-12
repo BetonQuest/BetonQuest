@@ -43,7 +43,7 @@ public class VariableNumber {
 	public VariableNumber(String packName, String variable) throws NumberFormatException {
 		if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
 			try {
-				this.variable = BetonQuest.createVariable(Config.getPackage(packName), variable);
+				this.variable = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
 			} catch (InstructionParseException e) {
 				throw new NumberFormatException("Could not create variable: " + e.getMessage());
 			}

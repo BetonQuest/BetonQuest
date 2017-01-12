@@ -62,12 +62,13 @@ public class ConversationData {
 	 *            of the conversation
 	 * @throws InstructionParseException
 	 */
-	public ConversationData(String pkg, String name) throws InstructionParseException {
+	public ConversationData(ConfigPackage pack, String name) throws InstructionParseException {
+		this.pack = pack;
+		String pkg = pack.getName();
 		Debug.info(String.format("Loading %s conversation from %s package", name, pkg));
 		// package and name must be correct, it loads only existing
 		// conversations
 		convName = name;
-		pack = Config.getPackage(pkg);
 		// get the main data
 		FileConfiguration conv = pack.getConversation(name).getConfig();
 		if (conv.isConfigurationSection("quester")) {

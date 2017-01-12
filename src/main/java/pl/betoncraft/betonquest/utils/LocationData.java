@@ -90,7 +90,7 @@ public class LocationData {
 		// parse the base
 		if (base.startsWith("%") && base.endsWith("%")) {
 			type = Type.VARIABLE;
-			variable = BetonQuest.createVariable(Config.getPackage(packName), base);
+			variable = BetonQuest.createVariable(Config.getPackages().get(packName), base);
 		} else {
 			type = Type.LOCATION;
 			loc = parseAbsoluteFormat(base);

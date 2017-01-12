@@ -370,7 +370,7 @@ public class ConfigPackage {
 	}
 
 	/**
-	 * @return the set of names of the conversations
+	 * @return the set of conversation names
 	 */
 	public Set<String> getConversationNames() {
 		return conversations.keySet();

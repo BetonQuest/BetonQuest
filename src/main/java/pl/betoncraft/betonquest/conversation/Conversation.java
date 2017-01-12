@@ -117,7 +117,7 @@ public class Conversation implements Listener {
 		this.plugin = BetonQuest.getInstance();
 		this.playerID = playerID;
 		this.player = PlayerConverter.getPlayer(playerID);
-		this.pack = Config.getPackage(conversationID.substring(0, conversationID.indexOf('.')));
+		this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
 		this.language = plugin.getPlayerData(playerID).getLanguage();
 		this.location = location;
 		this.convID = conversationID;

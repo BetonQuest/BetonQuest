@@ -25,7 +25,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -298,21 +298,10 @@ public class Config {
 	}
 
 	/**
-	 * Retrieves the ConfigPackage object for specified package
-	 * 
-	 * @param name
-	 *            name of the package which needs to be retrieved
-	 * @return the ConfigPackage object representing this package
+	 * @return the map of packages and their names
 	 */
-	public static ConfigPackage getPackage(String name) {
-		return packages.get(name);
-	}
-
-	/**
-	 * @return the set of names of valid packages
-	 */
-	public static Set<String> getPackageNames() {
-		return packages.keySet();
+	public static Map<String, ConfigPackage> getPackages() {
+		return packages;
 	}
 
 	/**

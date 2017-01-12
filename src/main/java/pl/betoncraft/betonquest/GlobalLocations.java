@@ -50,8 +50,7 @@ public class GlobalLocations extends BukkitRunnable {
 	public GlobalLocations() {
 		instance = this;
 		// get list of global locations and make it final
-		for (String packName : Config.getPackageNames()) {
-			ConfigPackage pack = Config.getPackage(packName);
+		for (ConfigPackage pack : Config.getPackages().values()) {
 			String rawGlobalLocations = pack.getString("main.global_locations");
 			if (rawGlobalLocations == null || rawGlobalLocations.equals("")) {
 				continue;

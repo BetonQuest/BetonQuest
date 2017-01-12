@@ -32,12 +32,12 @@ public abstract class ID {
 			throw new ObjectNotFoundException("ID is null");
 		}
 		if (pack == null) {
-			pack = Config.getPackage(Config.getDefaultPackage());
+			pack = Config.getPackages().get(Config.getDefaultPackage());
 		}
 		if (id.contains(".")) {
 			int dotIndex = id.indexOf('.');
 			String packName = id.substring(0, dotIndex);
-			this.pack = Config.getPackage(packName);
+			this.pack = Config.getPackages().get(packName);
 			if (this.pack == null) {
 				throw new ObjectNotFoundException("Package not found: " + packName);
 			}
