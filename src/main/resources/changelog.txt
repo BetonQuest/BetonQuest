@@ -39,6 +39,7 @@ Changes:
     * Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)
     * Ranges in locations are now a separate argument ("10;20;30;world;4" is now "10;20;30;world 4")
     * "main.yml" is now the only required file in the package. Empty files can be deleted
+    * Custom settings (i.e. EffectLib particle effects) are moved from "main.yml" to "custom.yml"
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)

@@ -41,6 +41,7 @@ public class ConfigPackage {
 	private ConfigAccessor objectives;
 	private ConfigAccessor journal;
 	private ConfigAccessor items;
+	private ConfigAccessor custom;
 	private HashMap<String, ConfigAccessor> conversations = new HashMap<>();
 
 	/**
@@ -58,6 +59,7 @@ public class ConfigPackage {
 		objectives = new ConfigAccessor(new File(pack, "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
 		journal = new ConfigAccessor(new File(pack, "journal.yml"), "journal.yml", AccessorType.JOURNAL);
 		items = new ConfigAccessor(new File(pack, "items.yml"), "items.yml", AccessorType.ITEMS);
+		custom = new ConfigAccessor(new File(pack, "custom.yml"), "custom.yml", AccessorType.CUSTOM);
 		File convFile = new File(pack, "conversations");
 		if (convFile.exists() && convFile.isDirectory()) {
 			for (File conv : convFile.listFiles()) {
@@ -324,6 +326,13 @@ public class ConfigPackage {
 	 */
 	public ConfigAccessor getObjectives() {
 		return objectives;
+	}
+	
+	/**
+	 * @return the config with custom settings
+	 */
+	public ConfigAccessor getCustom() {
+		return custom;
 	}
 
 	/**

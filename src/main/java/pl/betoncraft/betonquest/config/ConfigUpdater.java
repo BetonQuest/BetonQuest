@@ -92,7 +92,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v50";
+	private final String destination = "v51";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -199,6 +199,35 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v50() {
+		Debug.info("Moving custom settings from main.yml to custom.yml");
+		List<String> coreSettings = Arrays.asList(new String[]{"npcs", "variables", "static", "global_locations",
+				"cancel", "journal_main_page", "compass", "enabled"});
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			Debug.info("  Moving custom settings in package " + pack.getName());
+			ConfigAccessor main = pack.getMain();
+			ConfigAccessor custom = pack.getCustom();
+			main:
+			for (String key : main.getConfig().getKeys(false)) {
+				for (String coreSetting : coreSettings) {
+					if (key.equals(coreSetting)) {
+						Debug.info("    Key " + key + " is core setting, skipping");
+						continue main;
+					}
+				}
+				Debug.info("    Key " + key + " is custom, moving it");
+				custom.getConfig().set(key, main.getConfig().get(key));
+				main.getConfig().set(key, null);
+			}
+			main.saveConfig();
+			custom.saveConfig();
+		}
+		Debug.broadcast("Moved custom settings from main.yml to custom.yml file");
+		config.set("version", "v51");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

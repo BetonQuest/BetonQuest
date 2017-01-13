@@ -44,7 +44,7 @@ public class ConfigAccessor {
 	private FileConfiguration fileConfiguration;
 	
 	public enum AccessorType {
-		MAIN, EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL, CONVERSATION, OTHER
+		MAIN, EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL, CONVERSATION, CUSTOM, OTHER
 	}
 
 	/**
