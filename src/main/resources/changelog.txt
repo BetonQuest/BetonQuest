@@ -19,6 +19,7 @@ Fixes:
     * Fix error when trying to add air (empty hand) with "/q item" command
     * Main page now can exceed a single page in the journal
     * The plugin will reconnect to the database if something goes wrong
+    * Fishing objective now only accepts stuff from water
 Changes:
     * Complete rewrite of item conditioning - read the docs to discover new features
       (previous syntax is still working without any behavior changes)
@@ -31,10 +32,13 @@ Changes:
     * You can now use spaces between "first" options in conversations
     * Static events can now be fired with "/q event - eventID" command
     * Locations can have vectors defined directly in instruction strings
+    * Locations can be variables which resolve to location format
     * Point condition can now check exact point amount with 'equal' argument
     * In 'chest' conversation IO items can be specified with durability values after a colon
     * Mobs spawned with 'spawn' event can have armor, items in hands and custom drops
     * Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)
+    * Ranges in locations are now a separate argument ("10;20;30;world;4" is now "10;20;30;world 4")
+    * "main.yml" is now the only required file in the package. Empty files can be deleted
 Additions:
     * Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)
     * Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)
@@ -51,18 +55,20 @@ Additions:
     * New event 'door' - opens/closes doors, trapdoors and gates
     * New event 'if' - run one of two events, depending on condition
     * New event 'movenpc' - move Citizens NPC to a location
+    * New event 'variable' - set a variable in "variable" objective
     * New objective 'vehicle' - entering a vehicle entity
     * New objective 'variable' - lets players define their own variables for you to use
     * New objective 'kill' - kill players who meet specified conditions
     * New objective 'breed' - breed animals (only 1.10.2+)
+    * New variable '%location%' - resolves to player's location
     * Keyword "unbreakable" can be used in items to make them unbreakable
-    * Keyword "player" can be used as a location
     * When a conversation option is selected, a Bukkit event is called (for developers)
     * Chat can be paused while in conversation, it will display when finished
     * Objectives can be completed for players with "/q objective player complete"
     * Option 'full_main_page' controls if the main page is a separate page in the journal
     * Mobs spawned with 'spawn' can be "marked"; you can require marked mobs in 'mobkill' objective
     * Firework support in items
+    * Relative package paths, where '_' means "one package up"
 
 ﻿v1.8.5
 Fixes:
