@@ -82,6 +82,7 @@ public class VariableNumber {
 	 * @param playerID
 	 *            ID of the player for whom the variable should be resolved
 	 * @return the integer represented by this variable number
+	 * @throws QuestRuntimeException when the variable does not resolve to a number
 	 */
 	public int getInt(String playerID) throws QuestRuntimeException {
 		return (int) Math.floor(resolveVariable(playerID));
@@ -93,14 +94,12 @@ public class VariableNumber {
 	 * @param playerID
 	 *            ID of the player for whom the variable should be resolved
 	 * @return the double represented by this variable number
+	 * @throws QuestRuntimeException when the variable does not resolve to a number
 	 */
 	public double getDouble(String playerID) throws QuestRuntimeException {
 		return resolveVariable(playerID);
 	}
 
-	/**
-	 * Resolves the variable to a double.
-	 */
 	private double resolveVariable(String playerID) throws QuestRuntimeException {
 		if (variable == null) {
 			return number;

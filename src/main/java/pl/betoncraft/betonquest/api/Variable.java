@@ -32,6 +32,7 @@ abstract public class Variable {
 	 * Stores instruction string for the condition.
 	 */
 	protected Instruction instruction;
+
 	/**
 	 * ConfigPackage in which this condition is defined
 	 */
@@ -43,12 +44,12 @@ abstract public class Variable {
 	 * anything goes wrong, throw {@link InstructionParseException} with an
 	 * error message describing the problem.
 	 * 
-	 * @param packName
-	 *            name of the package in which this variable is defined
-	 * @param instructions
-	 *            instruction string passed at runtime; you need to extract all
-	 *            required data from it and display errors if there is anything
-	 *            wrong.
+	 * @param instruction
+	 *            the Instruction object representing this variable; you need to
+	 *            extract all required data from it and throw
+	 *            {@link InstructionParseException} if there is anything wrong
+	 * @throws InstructionParseException
+	 *             when the syntax is incorrect or there is a parsing error
 	 */
 	public Variable(Instruction instruction) throws InstructionParseException {
 		this.instruction = instruction;

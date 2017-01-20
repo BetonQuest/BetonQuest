@@ -284,7 +284,7 @@ public class QuestCommand implements CommandExecutor {
 	/**
 	 * Creates new package
 	 */
-	public void createNewPackage(CommandSender sender, String[] args) {
+	private void createNewPackage(CommandSender sender, String[] args) {
 		if (args.length < 2) {
 			Debug.info("Package name is missing");
 			sendMessage(sender, "specify_package");
@@ -888,7 +888,7 @@ public class QuestCommand implements CommandExecutor {
 	/**
 	 * Renames stuff.
 	 */
-	protected void handleRenaming(CommandSender sender, String[] args) {
+	private void handleRenaming(CommandSender sender, String[] args) {
 		if (args.length < 4) {
 			sendMessage(sender, "arguments");
 			return;
@@ -1013,7 +1013,7 @@ public class QuestCommand implements CommandExecutor {
 	/**
 	 * Deleted stuff.
 	 */
-	protected void handleDeleting(CommandSender sender, String[] args) {
+	private void handleDeleting(CommandSender sender, String[] args) {
 		if (args.length < 3) {
 			sendMessage(sender, "arguments");
 			return;

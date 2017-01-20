@@ -98,6 +98,8 @@ public class ConfigAccessor {
 	/**
 	 * Returns the configuration. If there's no configuration yet, it will call
 	 * {@link #reloadConfig()} to create one.
+	 * 
+	 * @return the FileConfiguration
 	 */
 	public FileConfiguration getConfig() {
 		if (fileConfiguration == null) {

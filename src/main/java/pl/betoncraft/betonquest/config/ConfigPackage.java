@@ -47,6 +47,11 @@ public class ConfigPackage {
 	/**
 	 * Loads a package from specified directory. It doesn't have to be valid
 	 * package directory.
+	 * 
+	 * @param pack
+	 *            the directory containing this package
+	 * @param name
+	 *            the name of this package
 	 */
 	public ConfigPackage(File pack, String name) {
 		if (!pack.isDirectory())

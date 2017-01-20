@@ -59,8 +59,12 @@ public class Journal {
 	/**
 	 * Creates new Journal instance from List of Pointers.
 	 * 
+	 * @param playerID
+	 *            ID of the player whose journal is created
 	 * @param list
 	 *            list of pointers to journal entries
+	 * @param lang
+	 *            default language to use when generating the journal
 	 */
 	public Journal(String playerID, String lang, List<Pointer> list) {
 		// generate texts from list of pointers
@@ -83,8 +87,6 @@ public class Journal {
 	 * 
 	 * @param pointer
 	 *            the pointer to be added
-	 * @param timestamp
-	 *            Timestamp object containing the date of aquiring the entry
 	 */
 	public void addPointer(Pointer pointer) {
 		pointers.add(pointer);
@@ -100,8 +102,8 @@ public class Journal {
 	/**
 	 * Removes the pointer from journal. It needs to be updated now.
 	 * 
-	 * @param pointer
-	 *            the pointer to remove
+	 * @param pointerName
+	 *            the name of the pointer to remove
 	 */
 	public void removePointer(String pointerName) {
 		for (Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext();) {
@@ -135,6 +137,8 @@ public class Journal {
 
 	/**
 	 * Generates texts for every pointer and places them inside a List
+	 * 
+	 * @param lang the language to use while generating text
 	 */
 	public void generateTexts(String lang) {
 		// remove previous texts
@@ -312,8 +316,6 @@ public class Journal {
 	/**
 	 * Generates the journal as ItemStack
 	 * 
-	 * @param playerID
-	 *            ID of the player
 	 * @return the journal ItemStack
 	 */
 	public ItemStack getAsItem() {
@@ -359,9 +361,6 @@ public class Journal {
 
 	/**
 	 * Updates journal by removing it and adding it again
-	 * 
-	 * @param playerID
-	 *            ID of the player
 	 */
 	public void update() {
 		if (hasJournal(playerID)) {
@@ -374,8 +373,6 @@ public class Journal {
 	/**
 	 * Removes journal from player's inventory.
 	 * 
-	 * @param playerID
-	 *            ID of the player
 	 * @return the slot from which the journal was removed
 	 */
 	public int removeFromInv() {
@@ -393,6 +390,8 @@ public class Journal {
 	/**
 	 * Checks if the item is journal
 	 * 
+	 * @param playerID
+	 *            ID of the player
 	 * @param item
 	 *            ItemStack to check against being the journal
 	 * @return true if the ItemStack is the journal, false otherwise

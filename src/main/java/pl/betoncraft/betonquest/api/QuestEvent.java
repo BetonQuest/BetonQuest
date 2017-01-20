@@ -30,12 +30,14 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * <p>
  * Superclass for all events. You need to extend it in order to create new
  * custom events.
- * <p/>
+ * </p>
+ * <p>
  * Registering your events is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerEvents(String, Class<?
- * extends QuestEvent>) registerEvents} method.
+ * {@link pl.betoncraft.betonquest.BetonQuest#registerEvents(String, Class) registerEvents()} method.
+ * </p>
  * 
  * @author Jakub Sapalski
  */
@@ -64,14 +66,12 @@ public abstract class QuestEvent {
 	 * {@link InstructionParseException} with error message describing the
 	 * problem.
 	 * 
-	 * @param packName
-	 *            ID of the player this event is related to. It will be passed
-	 *            at runtime, you only need to use it according to what your
-	 *            event does.
-	 * @param instructions
-	 *            instruction string passed at runtime. You need to extract all
-	 *            required data from it and display errors if there is anything
-	 *            wrong.
+	 * @param instruction
+	 *            the Instruction object representing this event; you need to
+	 *            extract all required data from it and throw
+	 *            {@link InstructionParseException} if there is anything wrong
+	 * @throws InstructionParseException
+	 *             when the is an error in the syntax or argument parsing
 	 */
 	public QuestEvent(Instruction instruction) throws InstructionParseException {
 		this.instruction = instruction;
@@ -96,15 +96,19 @@ public abstract class QuestEvent {
 	 * 
 	 * @param playerID
 	 *            ID of the player for whom the event will fire
+	 * @throws QuestRuntimeException
+	 *             when there is an error while running the event (for example a
+	 *             numeric variable resolved to a string)
 	 */
 	abstract public void run(String playerID) throws QuestRuntimeException;
 
 	/**
-	 * Fires an event for the player. The event conditions are checked, so it's
-	 * not needed to check them explicitly.
+	 * Fires an event for the player. It checks event conditions, so there's no need to
+	 * do that in {@link #run(String) run()} method.
 	 * 
 	 * @param playerID
 	 *            ID of the player for whom the event will fire
+	 * @throws QuestRuntimeException passes the exception from the event up the stack
 	 */
 	public final void fire(String playerID) throws QuestRuntimeException {
 		if (playerID == null) {

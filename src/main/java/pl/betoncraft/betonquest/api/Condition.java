@@ -22,12 +22,16 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 
 /**
+ * <p>
  * Superclass for all conditions. You need to extend it in order to create new
  * custom conditions.
- * <p/>
+ * </p>
+ * 
+ * <p>
  * Registering your condition is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerConditions( String,
- * Class<? extends Condition>) registerConditions} method.
+ * {@link pl.betoncraft.betonquest.BetonQuest#registerConditions(String, Class)
+ * registerConditions()} method.
+ * </p>
  * 
  * @author Jakub Sapalski
  */
@@ -55,12 +59,13 @@ abstract public class Condition {
 	 * anything goes wrong, throw {@link InstructionParseException} with an
 	 * error message describing the problem.
 	 * 
-	 * @param packName
-	 *            name of the package in which this condition is defined
-	 * @param instructions
-	 *            instruction string passed at runtime; you need to extract all
-	 *            required data from it and display errors if there is anything
-	 *            wrong.
+	 * @param instruction
+	 *            the Instruction object; you can get one from ID instance with
+	 *            {@link pl.betoncraft.betonquest.ID#generateInstruction()
+	 *            ID.generateInstruction()} or create it from an instruction
+	 *            string
+	 * @throws InstructionParseException
+	 *             when parsing an instruction failed
 	 */
 	public Condition(Instruction instruction) throws InstructionParseException {
 		this.instruction = instruction;
@@ -89,11 +94,14 @@ abstract public class Condition {
 	 * This method should contain all logic for the condition and use data
 	 * parsed by the constructor. Don't worry about inverting the condition,
 	 * it's done by the rest of BetonQuest's logic. When this method is called
-	 * all the required data is present and parsed correctly.
+	 * all the required data must be present and parsed correctly.
 	 * 
 	 * @param playerID
 	 *            ID of the player for whom the condition will be checked
 	 * @return the result of the check
+	 * @throws QuestRuntimeException
+	 *             when an error happens at runtime (for example a numeric
+	 *             variable resolves to a string)
 	 */
 	abstract public boolean check(String playerID) throws QuestRuntimeException;
 }

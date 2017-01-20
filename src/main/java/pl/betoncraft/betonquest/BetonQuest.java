@@ -971,13 +971,16 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	/**
-	 * Creates a new instance of a variable and puts it into the hashmap.
+	 * Generates new instance of a Variable. If a similar one was already
+	 * created, it will return it instead of creating a new one.
 	 * 
 	 * @param pack
-	 * 
+	 *            package in which the variable is defined
 	 * @param instruction
 	 *            instruction of the variable, including both % characters.
-	 * @throws InstructionParseException 
+	 * @return the Variable instance
+	 * @throws InstructionParseException
+	 *             when the variable parsing fails
 	 */
 	public static Variable createVariable(ConfigPackage pack, String instruction) throws InstructionParseException {
 		VariableID ID;
@@ -1145,6 +1148,7 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	/**
+	 * @param name the name of the event class, as previously registered
 	 * @return the class of the event
 	 */
 	public Class<? extends QuestEvent> getEventClass(String name) {
@@ -1152,6 +1156,7 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	/**
+	 * @param name the name of the condition class, as previously registered
 	 * @return the class of the event
 	 */
 	public Class<? extends Condition> getConditionClass(String name) {

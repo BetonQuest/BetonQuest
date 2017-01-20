@@ -79,14 +79,13 @@ public class Conversation implements Listener {
 
 
 	/**
-	 * Starts a new conversation between player and npc at given location.
+	 * Starts a new conversation between player and npc at given location. It uses
+	 * starting options to determine where to start.
 	 * 
 	 * @param playerID
 	 *            ID of the player
-	 * @param packName
-	 *            name of the package in which this conversation is defined
 	 * @param conversationID
-	 *            name of the conversation
+	 *            ID of the conversation
 	 * @param location
 	 *            location where the conversation has been started
 	 */
@@ -97,14 +96,12 @@ public class Conversation implements Listener {
 	/**
 	 * Starts a new conversation between player and npc at given location,
 	 * starting with the given option. If the option is null, then it will start
-	 * rom the beginning.
+	 * from the beginning.
 	 * 
 	 * @param playerID
 	 *            ID of the player
-	 * @param packName
-	 *            name of the package in which this conversation is defined
 	 * @param conversationID
-	 *            name of the conversation
+	 *            ID of the conversation
 	 * @param location
 	 *            location where the conversation has been started
 	 * @param option

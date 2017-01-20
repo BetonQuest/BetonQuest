@@ -335,6 +335,8 @@ public class PlayerData {
 	 *            ID of the objective
 	 * @param data
 	 *            data instruction string to use
+	 * @return true if the objective was successfully added, false if it was
+	 *         already there
 	 */
 	public boolean addRawObjective(String objectiveID, String data) {
 		if (objectives.containsKey(objectiveID)) {
@@ -348,6 +350,7 @@ public class PlayerData {
 	 * Removes not initialized objective from the plugin and the database.
 	 * 
 	 * @param objectiveID
+	 *            the ID of the objective
 	 */
 	public void removeRawObjective(ObjectiveID objectiveID) {
 		objectives.remove(objectiveID.toString());
@@ -358,7 +361,9 @@ public class PlayerData {
 	 * Directly adds specified objectiveID and data string to the database.
 	 * 
 	 * @param objectiveID
+	 *            the ID of the objective
 	 * @param data
+	 *            the data string of this objective (the one associated with ObjectiveData)
 	 */
 	public void addObjToDB(String objectiveID, String data) {
 		saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[] { playerID, objectiveID, data }));
@@ -368,6 +373,7 @@ public class PlayerData {
 	 * Directly removes from the database specified objective.
 	 * 
 	 * @param objectiveID
+	 *            the ID of the objective to remove
 	 */
 	public void removeObjFromDB(String objectiveID) {
 		saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[] { playerID, objectiveID }));
@@ -386,6 +392,7 @@ public class PlayerData {
 	 * Updates the database with a list of backpack items.
 	 * 
 	 * @param list
+	 *            list of all items in the backpack
 	 */
 	public void setBackpack(List<ItemStack> list) {
 		this.backpack = list;

@@ -75,13 +75,18 @@ public class QuestItem {
 	/**
 	 * Legacy method for the updater, don't use for anything else.
 	 * 
-	 * @deprecated
+	 * @deprecated Use a different constructor.
 	 * 
 	 * @param material
+	 *            material name
 	 * @param data
+	 *            data value
 	 * @param enchants
+	 *            map of enchantments and their levels
 	 * @param name
+	 *            name of the item
 	 * @param lore
+	 *            list of lore lines
 	 */
 	public QuestItem(String material, int data, Map<String, Integer> enchants, String name, List<String> lore) {
 		this.material = Material.matchMaterial(material);
@@ -118,8 +123,6 @@ public class QuestItem {
 	/**
 	 * Creates new instance of the quest item using the ID from items.yml file.
 	 * 
-	 * @param packName
-	 *            name of the package to load it from
 	 * @param itemID
 	 *            ID of the item
 	 * @throws InstructionParseException

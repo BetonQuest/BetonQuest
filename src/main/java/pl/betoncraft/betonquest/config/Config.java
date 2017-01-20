@@ -233,11 +233,9 @@ public class Config {
 	}
 
 	/**
-	 * Returns a quest canceler object, ready to cancel players' quests.
+	 * Returns a map containing all quest cancelers from across all packages.
 	 * 
-	 * @param name
-	 *            name of the object (package.name)
-	 * @return the QuestCanceler object with given name
+	 * @return the map with quest cancelers
 	 */
 	public static HashMap<String, QuestCanceler> getCancelers() {
 		return cancelers;
@@ -377,6 +375,12 @@ public class Config {
 	}
 
 	/**
+	 * Returns the ID of a conversation assigned to specified NPC, across all
+	 * packages. If there are multiple assignments for the same value, the first
+	 * one will be returned.
+	 * 
+	 * @param value
+	 *            the name of the NPC (as defined in <i>main.yml</i>)
 	 * @return the ID of the conversation assigned to this NPC or null if there
 	 *         isn't one
 	 */

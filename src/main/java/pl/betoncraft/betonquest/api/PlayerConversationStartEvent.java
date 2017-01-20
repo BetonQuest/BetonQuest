@@ -36,9 +36,12 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
 	private boolean canceled = false;
 
 	/**
-	 * Creates new conversation end event
+	 * Creates new conversation end event.
 	 * 
 	 * @param who
+	 *            the player who started the conversation
+	 * @param conversation
+	 *            conversation which is about to start
 	 */
 	public PlayerConversationStartEvent(Player who, Conversation conversation) {
 		super(who);

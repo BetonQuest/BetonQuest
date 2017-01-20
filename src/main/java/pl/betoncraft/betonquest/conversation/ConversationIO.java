@@ -25,7 +25,7 @@ package pl.betoncraft.betonquest.conversation;
 public interface ConversationIO {
 
 	/**
-	 * Set the text of response choosen by the NPC. Should be called once per
+	 * Set the text of response chosen by the NPC. Should be called once per
 	 * conversation cycle.
 	 * 
 	 * @param npcName
@@ -39,7 +39,7 @@ public interface ConversationIO {
 	 * Adds the text of the player option. Should be called for each option in a
 	 * conversation cycle.
 	 * 
-	 * @param option
+	 * @param option the text of an option
 	 */
 	public void addPlayerOption(String option);
 

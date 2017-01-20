@@ -33,12 +33,15 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
+ * <p>
  * Superclass for all objectives. You need to extend it in order to create new
  * custom objectives.
- * <p/>
+ * </p>
+ * <p>
  * Registering your objectives is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerObjectives(String, Class<?
- * extends Objective>) registerObjectives} method.
+ * {@link pl.betoncraft.betonquest.BetonQuest#registerObjectives(String, Class)
+ * registerObjectives()} method.
+ * </p>
  * 
  * @author Jakub Sapalski
  */
@@ -59,18 +62,18 @@ public abstract class Objective {
 	protected Class<? extends ObjectiveData> template;
 
 	/**
+	 * <p>
 	 * Creates new instance of the objective. The objective should parse
 	 * instruction string at this point and extract all the data from it.
 	 * </p>
 	 * <b>Do not register listeners here!</b> There is a {@link #start()} method
 	 * for it.
 	 * 
-	 * @param instructions
-	 *            instruction string passed at runtime. You need to extract all
-	 *            required data from it and display errors if there is anything
-	 *            wrong.
+	 * @param instruction
+	 *            Instruction object representing the objective; you need to extract
+	 *            all required information from it
 	 * @throws InstructionParseException
-	 *             if the syntax is wrong
+	 *             if the syntax is wrong or any error happens while parsing
 	 */
 	public Objective(Instruction instruction) throws InstructionParseException {
 		this.instruction = instruction;
@@ -128,8 +131,14 @@ public abstract class Objective {
 	 * as readable Strings. An example would be "5h 5min" for "time_left"
 	 * keyword in "delay" objective or "12" for keyword "mobs_killed" in
 	 * "mobkill" objective. The method is not abstract since not all objectives
-	 * need to have properties, i.e. "die" objective.
+	 * need to have properties, i.e. "die" objective. By default it returns an
+	 * empty string.
 	 * 
+	 * @param name
+	 *            the name of the property you need to return; you can parse it
+	 *            to extract additional information
+	 * @param playerID
+	 *            ID of the player for whom the property is to be returned
 	 * @return the property with given name
 	 */
 	public String getProperty(String name, String playerID) {
@@ -140,6 +149,9 @@ public abstract class Objective {
 	 * This method fires events for the objective and removes it from player's
 	 * list of active objectives. Use it when you detect that the objective has
 	 * been completed. It deletes the objective using delete() method.
+	 * 
+	 * @param playerID
+	 *            the ID of the player for whom the objective is to be completed
 	 */
 	public final void completeObjective(final String playerID) {
 		// remove the objective from player's list
@@ -162,6 +174,9 @@ public abstract class Objective {
 	 * something that modifies data (e.g. killing zombies). If conditions are
 	 * met, you can safely modify the data.
 	 * 
+	 * @param playerID
+	 *            ID of the player for whom the conditions are to be checked
+	 * 
 	 * @return if all conditions of this objective has been met
 	 */
 	public final boolean checkConditions(final String playerID) {
@@ -180,6 +195,7 @@ public abstract class Objective {
 	 * objective.
 	 * 
 	 * @param playerID
+	 *            ID of the player
 	 */
 	public final void newPlayer(String playerID) {
 		String def = getDefaultDataInstruction();
@@ -276,7 +292,7 @@ public abstract class Objective {
 	 * the rest of BetonQuest's logic.
 	 * 
 	 * @param rename
-	 *            new name of the objective
+	 *            new ID of the objective
 	 */
 	public void setLabel(ObjectiveID rename) {
 		instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
@@ -306,10 +322,18 @@ public abstract class Objective {
 		protected String objID;
 
 		/**
-		 * The constructor needs to parse the data in instruction string and
-		 * place it the fields.
+		 * The ObjectiveData object is loaded from the database and the
+		 * constructor needs to parse the data in the instruction, so it can be
+		 * later retrieved and modified by your objective code.
 		 * 
 		 * @param instruction
+		 *            the instruction of the data object; parse it to get all
+		 *            required information
+		 * @param playerID
+		 *            ID of the player
+		 * @param objID
+		 *            ID of the objective, used by BetonQuest to store this
+		 *            ObjectiveData in the database
 		 */
 		public ObjectiveData(String instruction, String playerID, String objID) {
 			this.instruction = instruction;
@@ -319,7 +343,9 @@ public abstract class Objective {
 
 		/**
 		 * This method should return the whole instruction string, which can be
-		 * successfully parsed by the constructor.
+		 * successfully parsed by the constructor. This method is used by BetonQuest
+		 * to save the ObjectiveData to the database. That's why the output syntax here
+		 * must be compatible with input syntax in the constructor.
 		 * 
 		 * @return the instruction string
 		 */
@@ -328,8 +354,13 @@ public abstract class Objective {
 		}
 
 		/**
-		 * Should be called when the data inside ObjectiveData changes. It will
-		 * update the database with the changes.
+		 * <p>Should be called when the data inside ObjectiveData changes. It will
+		 * update the database with the changes.</p>
+		 * 
+		 * <p>If you forget it, the objective
+		 * will still work for players who don't leave the server. However, if someone
+		 * leaves before completing, they will have to start this objective from
+		 * scratch.</p>
 		 */
 		protected void update() {
 			QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());

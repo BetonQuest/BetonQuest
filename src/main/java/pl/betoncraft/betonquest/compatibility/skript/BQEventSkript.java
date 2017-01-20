@@ -49,23 +49,13 @@ public class BQEventSkript extends QuestEvent {
 	public static class CustomEventForSkript extends PlayerEvent {
 
 		private static final HandlerList handlers = new HandlerList();
-		/**
-		 * ID of the event, as defined by the BetonQuest's event
-		 */
 		private final String id;
 
-		/**
-		 * @param the
-		 *            Player
-		 */
 		public CustomEventForSkript(Player who, String id) {
 			super(who);
 			this.id = id;
 		}
 
-		/**
-		 * @return ID of the event, as defined by the BetonQuest's event
-		 */
 		public String getID() {
 			return id;
 		}

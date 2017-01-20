@@ -56,11 +56,12 @@ public class ConversationData {
 	/**
 	 * Loads conversation from package.
 	 * 
-	 * @param pkg
-	 *            Name of the package
-	 * @param Name
-	 *            of the conversation
+	 * @param pack
+	 *            the package containing this conversation
+	 * @param name
+	 *            the name of the conversation
 	 * @throws InstructionParseException
+	 *             when there is a syntax error in the defined conversation
 	 */
 	public ConversationData(ConfigPackage pack, String name) throws InstructionParseException {
 		this.pack = pack;

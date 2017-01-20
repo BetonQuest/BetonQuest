@@ -159,15 +159,10 @@ public class Utils {
 	}
 
 	/**
-	 * Converts string to list of pages for a book. SingleString defines if you
-	 * passed a string separated by "|" for every page. False means that it is
-	 * separated, true that it isn't.
+	 * Converts string to list of pages for a book.
 	 * 
 	 * @param string
 	 *            text to convert
-	 * @param singleString
-	 *            if it's a single string or it has characters splitting it to
-	 *            pages
 	 * @return the list of pages for a book
 	 */
 	public static List<String> pagesFromString(String string) {
@@ -344,11 +339,13 @@ public class Utils {
 	}
 	
 	/**
-	 * Inserts a package before this string if there is no package,
-	 * or does nothing if the package is already there.
+	 * Inserts a package before this string if there is no package, or does
+	 * nothing if the package is already there.
 	 * 
-	 * @param packName name of the package
-	 * @param string ID of event/condition/objective/item etc.
+	 * @param pack
+	 *            the package
+	 * @param string
+	 *            ID of event/condition/objective/item etc.
 	 * @return full ID with package prefix
 	 */
 	public static String addPackage(ConfigPackage pack, String string) {

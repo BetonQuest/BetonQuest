@@ -62,6 +62,8 @@ public class QuestCanceler {
 	 * 
 	 * @param cancelerID
 	 *            ID of the canceler (package.name)
+	 * @throws InstructionParseException
+	 *             when parsing the canceler fails for some reason
 	 */
 	public QuestCanceler(String cancelerID) throws InstructionParseException {
 		if (cancelerID == null)

@@ -72,6 +72,9 @@ public class Updater {
 	/**
 	 * Initializes the updater. Does not do anything if updater is disabled in
 	 * the config.
+	 * 
+	 * @param file
+	 *            the file to which the update will be saved
 	 */
 	public Updater(File file) {
 		fileName = file.getName();
