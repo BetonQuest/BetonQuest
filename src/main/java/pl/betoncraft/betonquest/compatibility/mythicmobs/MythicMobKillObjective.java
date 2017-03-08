@@ -17,14 +17,13 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import net.elseland.xikage.MythicMobs.API.Bukkit.Events.MythicMobDeathEvent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;

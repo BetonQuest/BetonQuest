@@ -19,7 +19,8 @@ package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
 import org.bukkit.Location;
 
-import net.elseland.xikage.MythicMobs.Mobs.MobSpawner;
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -57,7 +58,11 @@ public class MythicSpawnMobEvent extends QuestEvent {
 		int l = level.getInt(playerID);
 		Location location = loc.getLocation(playerID);
 		for (int i = 0; i < a; i++) {
-			MobSpawner.SpawnMythicMob(mob, location, l);
+			try {
+				new BukkitAPIHelper().spawnMythicMob(mob, location, l);
+			} catch (InvalidMobTypeException e) {
+				throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.");
+			}
 		}
 	}
 
