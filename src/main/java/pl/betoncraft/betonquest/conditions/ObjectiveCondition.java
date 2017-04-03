@@ -20,8 +20,8 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.api.Objective;
 
 /**
  * Checks if the player has specified objective active.
@@ -30,11 +30,11 @@ import pl.betoncraft.betonquest.api.Objective;
  */
 public class ObjectiveCondition extends Condition {
 
-	public final Objective objective;
+	public final ObjectiveID objective;
 
 	public ObjectiveCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		objective = BetonQuest.getInstance().getObjective(instruction.getObjective());
+		objective = instruction.getObjective();
 		if (objective == null) {
 			throw new InstructionParseException("Objective does not exist");
 		}
@@ -42,7 +42,7 @@ public class ObjectiveCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) {
-		return objective.containsPlayer(playerID);
+		return BetonQuest.getInstance().getObjective(objective).containsPlayer(playerID);
 	}
 
 }
