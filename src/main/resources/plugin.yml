@@ -4,7 +4,7 @@ description: Advanced quest plugin
 authors: [Co0sh]
 website: http://dev.bukkit.org/bukkit-plugins/betonquest/
 softdepend: [Skript, Citizens, MythicMobs, Vault, Multiverse-Core, EffectLib, PlayerPoints, Heroes, Magic, Denizen, WorldEdit, WorldGuard, mcMMO, Shopkeepers, SkillAPI, Quests, PlaceholderAPI, HolographicDisplays, RacesAndClasses, LegendQuest]
-version: 1.9-dev
+version: 1.9
 commands:
   betonquest:
     description: General quest command

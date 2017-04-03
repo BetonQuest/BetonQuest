@@ -1,6 +1,5 @@
-﻿v1.9-dev
+﻿v1.9
 Notes:
-  - Development versions can be full of bugs. If you find any, report them on GitHub or Spigot.
   - This version breaks compatibility with plugins hooking into BetonQuest. I'm sorry for that.
     Ask devs to update these plugins.
   - The error reporting feature was improved. If you see a lot of error messages when reloading
@@ -8,7 +7,7 @@ Notes:
     there are real problems in your quests.
   - BetonQuest won't accept ".yml" extensions at the end of conversation names in "main.yml".
     If your conversations aren't working (the plugin says they don't exist), check if you have
-    these extensions and remove them.
+    these extensions IN THE "MAIN.YML" file and remove them.
 Fixes:
     * 'action' objective now detects fire interaction
     * 'empty' condition now skips armor and off-hand slots
@@ -20,6 +19,7 @@ Fixes:
     * Main page now can exceed a single page in the journal
     * The plugin will reconnect to the database if something goes wrong
     * Fishing objective now only accepts stuff from water
+    * Properties in 'mobkill' objective (left and amount) has switched places
 Changes:
     * Complete rewrite of item conditioning - read the docs to discover new features
       (previous syntax is still working without any behavior changes)
