@@ -175,12 +175,13 @@ public class Journal {
 				if (text == null) {
 					text = pack.getString("journal." + pointerName + "." + Config.getLanguage());
 				}
-				if (text == null) {
-					Debug.error("No default language defined for journal pointer " + pointerName);
-					text = "error";
-				}
 			} else {
 				text = pack.getString("journal." + pointerName);
+			}
+			// handle case when the text isn't defined
+			if (text == null) {
+				Debug.error("No text defined for journal entry " + pointerName + " in language " + lang);
+				text = "error";
 			}
 			// add the entry to the list
 			texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + "\n"
