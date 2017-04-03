@@ -29,6 +29,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * 
  * @author Jakub Sapalski
  */
+@SuppressWarnings("deprecation")
 public class AchievementCondition extends Condition {
 	
 	private Achievement achievement;

@@ -19,38 +19,50 @@ package pl.betoncraft.betonquest.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-/**
- * Sends a message to the player, in his language
- * 
- * @author Jakub Sapalski
- */
-public class MessageEvent extends QuestEvent {
+public class TitleEvent extends QuestEvent {
+	
+	private TitleType type;
+	private Map<String, String> messages = new HashMap<>();
+	private List<String> variables = new ArrayList<>();
+	private int fadeIn, stay, fadeOut;
+	
+	private enum TitleType {
+		TITLE, SUBTITLE
+	}
 
-	private final HashMap<String, String> messages = new HashMap<>();
-	private final ArrayList<String> variables = new ArrayList<>();
-
-	public MessageEvent(Instruction instruction) throws InstructionParseException {
+	public TitleEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		String[] parts;
+		type = instruction.getEnum(TitleType.class);
+		String times = instruction.next();
+		if (!times.matches("^\\d+;\\d+;\\d+$")) {
+			throw new InstructionParseException("Could not parse title time.");
+		}
+		String[] timeParts = times.split(";");
 		try {
-			parts = instruction.getInstruction().substring(8).split(" ");
-		} catch (IndexOutOfBoundsException e) {
-			throw new InstructionParseException("Message missing");
+			fadeIn = Integer.parseInt(timeParts[0]);
+			stay = Integer.parseInt(timeParts[1]);
+			fadeOut = Integer.parseInt(timeParts[2]);
+		} catch (NumberFormatException e) {
+			throw new InstructionParseException("Could not parse title time.");
 		}
-		if (parts.length < 1) {
-			throw new InstructionParseException("Message missing");
-		}
+		String[] parts = instruction.getInstruction().split(" ");
 		String currentLang = Config.getLanguage();
 		StringBuilder string = new StringBuilder();
-		for (String part : parts) {
+		for (int i = 3; i < parts.length; i++) {
+			String part = parts[i];
 			if (part.startsWith("conditions:") || part.startsWith("condition:")) {
 				continue;
 			} else if (part.matches("^\\{.+\\}$")) {
@@ -84,7 +96,7 @@ public class MessageEvent extends QuestEvent {
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
 		String message = messages.get(lang);
 		if (message == null) {
@@ -97,7 +109,14 @@ public class MessageEvent extends QuestEvent {
 			message = message.replace(variable,
 					BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
 		}
-		PlayerConverter.getPlayer(playerID).sendMessage(message.replaceAll("&", "§"));
+		String name = PlayerConverter.getName(playerID);
+		if ((fadeIn != 20 || stay != 100 || fadeOut != 20) && (fadeIn != 0 || stay != 0 || fadeOut != 0)) {
+			String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
+		}
+		String title = String.format("title %s %s {\"text\":\"%s\"}",
+				name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
 	}
 
 }
