@@ -52,7 +52,6 @@ public class PasteSchematicEvent extends QuestEvent {
 	private File file;
 	private LocationData loc;
 	private boolean noAir;
-	private int maxBlocks;
 
 	public PasteSchematicEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -67,10 +66,6 @@ public class PasteSchematicEvent extends QuestEvent {
 		if (!file.exists()) {
 			throw new InstructionParseException("Schematic " + schemName + " does not exist");
 		}
-		instruction.getInt(instruction.getOptional("maxblocks"), 32 * 32 * 32);
-		if (maxBlocks <= 0) {
-			throw new InstructionParseException("Max blocks amount must be greater than 0");
-		}
 		noAir = instruction.hasArgument("noair");
 	}
 
@@ -81,7 +76,7 @@ public class PasteSchematicEvent extends QuestEvent {
 			SchematicFormat schematic = SchematicFormat.getFormat(file);
 			CuboidClipboard clipboard = schematic.load(file);
 			BukkitWorld world = new BukkitWorld(location.getWorld());
-			EditSession editSession = we.getWorldEdit().getEditSessionFactory().getEditSession(world, maxBlocks);
+			EditSession editSession = we.getWorldEdit().getEditSessionFactory().getEditSession(world, 64*64*64);
 			Vector newOrigin = BukkitUtil.toVector(location);
 			clipboard.paste(editSession, newOrigin, noAir);
 		} catch (DataException | IOException | MaxChangedBlocksException e) {
