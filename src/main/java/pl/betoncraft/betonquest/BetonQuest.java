@@ -641,7 +641,7 @@ public final class BetonQuest extends JavaPlugin {
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
-		instance.loadData();
+		loadData();
 		// start objectives and update journals for every online player
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			String playerID = PlayerConverter.getID(player);
