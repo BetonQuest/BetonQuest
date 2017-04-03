@@ -69,7 +69,8 @@ public class ActionObjective extends Objective implements Listener {
 			data = parts.length > 1 ? instruction.getByte(parts[1], (byte) -1) : -1;
 		}
 		loc = instruction.getLocation(instruction.getOptional("loc"));
-		range = instruction.getVarNum(instruction.getOptional("range"));
+		String r = instruction.getOptional("range");
+		range = instruction.getVarNum(r == null ? "1" : r);
 		cancel = instruction.hasArgument("cancel");
 	}
 
