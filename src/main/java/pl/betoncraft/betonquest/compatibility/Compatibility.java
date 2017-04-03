@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import ch.njol.skript.Skript;
@@ -28,7 +32,10 @@ import de.slikey.effectlib.EffectManager;
 import me.blackvein.quests.Quests;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import pl.betoncraft.betonlangapi.BetonLangAPI;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIEvent;
+import pl.betoncraft.betonquest.compatibility.betonlangapi.LangChangeListener;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
@@ -94,7 +101,10 @@ import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
 import pl.betoncraft.betonquest.compatibility.worldedit.PasteSchematicEvent;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionCondition;
 import pl.betoncraft.betonquest.compatibility.worldguard.RegionObjective;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Compatibility with other plugins
@@ -317,6 +327,23 @@ public class Compatibility {
 			plugin.registerVariable("lqkarma", LQKarmaVariable.class);
 			hooked.add("LegendQuest");
 		}
+		
+		// hook into BetonLangAPI
+		if (Bukkit.getPluginManager().isPluginEnabled("BetonLangAPI")
+				&& plugin.getConfig().getString("hook.betonlangapi").equalsIgnoreCase("true")) {
+			new LangChangeListener();
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				updateLang(player);
+			}
+			Bukkit.getPluginManager().registerEvents( new Listener() {
+				@EventHandler
+				public void onJoin(PlayerJoinEvent event) {
+					updateLang(event.getPlayer());
+				}
+			}, BetonQuest.getInstance());
+			plugin.registerEvents("language", BetonLangAPIEvent.class);
+			hooked.add("BetonLangAPI");
+		}
 
 		// log which plugins have been hooked
 		if (hooked.size() > 0) {
@@ -373,6 +400,21 @@ public class Compatibility {
 		}
 		if (hooked.contains("HolographicDisplays")) {
 			hologramLoop.cancel();
+		}
+	}
+	
+	/**
+	 * Updates the player's language to match the one specified in BetonLangAPI.
+	 *
+	 * @param player the player whose language needs to be changed
+	 */
+	private void updateLang(Player player) {
+		String lang = BetonLangAPI.getLanguage(player);
+		if (Config.getLanguages().contains(lang)) {
+			PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+			if (!data.getLanguage().equals(lang)) {
+				data.setLanguage(lang);
+			}
 		}
 	}
 

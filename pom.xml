@@ -216,6 +216,11 @@
 			<version>1.9.7</version>
 		</dependency>
 		<dependency>
+			<groupId>pl.betoncraft</groupId>
+			<artifactId>BetonLangAPI</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>2.3</version>

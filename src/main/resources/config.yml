@@ -1,4 +1,4 @@
-version: v51
+version: v52
 mysql:
   host: ''
   port: ''
@@ -48,6 +48,7 @@ hook:
   racesandclasses: 'true'
   legendquest: 'true'
   worldedit: 'true'
+  betonlangapi: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
