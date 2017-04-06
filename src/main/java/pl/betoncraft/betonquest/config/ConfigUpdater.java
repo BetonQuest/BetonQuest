@@ -92,7 +92,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v52";
+	private final String destination = "v53";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -199,6 +199,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v52() {
+		config.set("hook.bountifulapi", "true");
+		Debug.broadcast("Added compatibility with BountifulAPI");
+		config.set("version", "v53");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

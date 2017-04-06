@@ -36,6 +36,7 @@ import pl.betoncraft.betonlangapi.BetonLangAPI;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIEvent;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.LangChangeListener;
+import pl.betoncraft.betonquest.compatibility.bountifulapi.BountifulTitleEvent;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
@@ -343,6 +344,13 @@ public class Compatibility {
 			}, BetonQuest.getInstance());
 			plugin.registerEvents("language", BetonLangAPIEvent.class);
 			hooked.add("BetonLangAPI");
+		}
+		
+		// hook into BountifulAPI
+		if (Bukkit.getPluginManager().isPluginEnabled("BountifulAPI")
+				&& plugin.getConfig().getString("hook.bountifulapi").equalsIgnoreCase("true")) {
+			plugin.registerEvents("title", BountifulTitleEvent.class);
+			hooked.add("BountifulAPI");
 		}
 
 		// log which plugins have been hooked

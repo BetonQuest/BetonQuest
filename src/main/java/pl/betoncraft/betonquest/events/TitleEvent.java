@@ -34,12 +34,12 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class TitleEvent extends QuestEvent {
 	
-	private TitleType type;
-	private Map<String, String> messages = new HashMap<>();
-	private List<String> variables = new ArrayList<>();
-	private int fadeIn, stay, fadeOut;
+	protected TitleType type;
+	protected Map<String, String> messages = new HashMap<>();
+	protected List<String> variables = new ArrayList<>();
+	protected int fadeIn, stay, fadeOut;
 	
-	private enum TitleType {
+	protected enum TitleType {
 		TITLE, SUBTITLE
 	}
 
