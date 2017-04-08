@@ -17,7 +17,6 @@
  */
 package pl.betoncraft.betonquest;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.bstats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -157,7 +157,6 @@ import pl.betoncraft.betonquest.objectives.TameObjective;
 import pl.betoncraft.betonquest.objectives.VariableObjective;
 import pl.betoncraft.betonquest.objectives.VehicleObjective;
 import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.Metrics;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -432,16 +431,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 
 		// metrics
-		try {
-			Metrics metrics = new Metrics(this);
-			if (metrics.start()) {
-				Debug.broadcast("Metrics enabled!");
-			} else {
-				Debug.broadcast("Metrics disabled!");
-			}
-		} catch (IOException e) {
-			Debug.broadcast("Metrics faild to enable!");
-		}
+		new Metrics(this);
 
 		// updater
 		updater = new Updater(this.getFile());
