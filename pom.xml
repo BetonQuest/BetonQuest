@@ -50,8 +50,15 @@
 							<artifactSet>
 								<includes>
 									<include>org.json</include>
+									<include>org.bstats:*</include>
 								</includes>
 							</artifactSet>
+							<relocations>
+								<relocation>
+									<pattern>org.bstats</pattern>
+									<shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>
+								</relocation>
+							</relocations>
 							<minimizeJar>${minimize}</minimizeJar>
 						</configuration>
 					</execution>
@@ -112,6 +119,10 @@
 		<repository>
 			<id>betonquest-repo</id>
 			<url>http://betonquest.betoncraft.pl/mvn</url>
+		</repository>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -229,6 +240,11 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20160212</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 </project>
