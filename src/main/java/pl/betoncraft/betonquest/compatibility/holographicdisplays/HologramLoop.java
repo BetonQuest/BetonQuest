@@ -68,8 +68,8 @@ public class HologramLoop {
 					return;
 				}
 				List<String> lines = section.getStringList(key + ".lines");
-				String rawConditions = pack.getString("main.holograms." + key + ".conditions");
-				String rawLocation = pack.getString("main.holograms." + key + ".location");
+				String rawConditions = section.getString(key + ".conditions");
+				String rawLocation = section.getString(key + ".location");
 				if (rawLocation == null) {
 					Debug.error("Location is not specified in " + key + " hologram");
 					continue;
