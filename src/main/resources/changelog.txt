@@ -1,4 +1,8 @@
-﻿v1.9
+﻿v1.9.1
+Fixes:
+    * Holograms are now correctly loaded.
+
+v1.9
 Notes:
   - This version breaks compatibility with plugins hooking into BetonQuest. I'm sorry for that.
     Ask devs to update these plugins.
