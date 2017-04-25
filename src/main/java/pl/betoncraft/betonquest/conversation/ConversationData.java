@@ -103,7 +103,7 @@ public class ConversationData {
 		}
 		// check if all data is valid (or at least exist)
 		if (BetonQuest.getInstance().getConvIO(convIO) == null) {
-			throw new InstructionParseException("Conversation IO is not registered!");
+			throw new InstructionParseException("Conversation IO " + convIO + " is not registered!");
 		}
 		if (quester == null || quester.isEmpty()) {
 			throw new InstructionParseException("Quester's name is not defined");
