@@ -254,7 +254,14 @@ public class ConversationData {
 	public boolean isMovementBlocked() {
 		return blockMovement;
 	}
-
+	
+	/**
+	* @return the conversationIO
+	*/
+	public String getConversationIO() {
+		return conversationIO;
+	}
+	
 	public String getText(String lang, String option, OptionType type) {
 		Option o = null;
 		if (type == OptionType.NPC) {
