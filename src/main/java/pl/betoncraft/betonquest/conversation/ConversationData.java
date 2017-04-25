@@ -259,7 +259,7 @@ public class ConversationData {
 	* @return the conversationIO
 	*/
 	public String getConversationIO() {
-		return conversationIO;
+		return convIO;
 	}
 	
 	public String getText(String lang, String option, OptionType type) {
