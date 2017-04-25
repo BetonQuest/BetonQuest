@@ -471,10 +471,6 @@ public class Conversation implements Listener {
 			try {
 				String name = data.getConversationIO();
 				Class<? extends ConversationIO> c = plugin.getConvIO(name);
-				if (c == null) {
-					Debug.error("Conversation IO " + name + " is not registered!");
-					return;
-				}
 				conv.inOut = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
