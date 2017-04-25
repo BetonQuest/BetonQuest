@@ -49,7 +49,7 @@ public class ConversationData {
 	private EventID[] finalEvents;
 	private String[] startingOptions;
 	private boolean blockMovement;
-	private String conversationIO;
+	private String convIO;
 
 	private HashMap<String, Option> NPCOptions;
 	private HashMap<String, Option> playerOptions;
@@ -97,12 +97,12 @@ public class ConversationData {
 		String rawStartingOptions = pack.getString("conversations." + name + ".first");
 		String stop = pack.getString("conversations." + name + ".stop");
 		blockMovement = stop != null && stop.equalsIgnoreCase("true");
-		conversationIO = pack.getString("conversations." + name + ".conversationIO");
-		if (conversationIO == null) {
-			conversationIO = plugin.getConfig().getString("default_conversation_IO");
+		convIO = pack.getString("conversations." + name + ".conversationIO");
+		if (convIO == null) {
+			convIO = plugin.getConfig().getString("default_conversation_IO");
 		}
 		// check if all data is valid (or at least exist)
-		if (plugin.getConvIO(name) == null) {
+		if (plugin.getConvIO(convIO) == null) {
 			throw new InstructionParseException("Conversation IO is not registered!");
 		}
 		if (quester == null || quester.isEmpty()) {
