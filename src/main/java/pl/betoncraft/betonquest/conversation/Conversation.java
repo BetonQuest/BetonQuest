@@ -469,7 +469,7 @@ public class Conversation implements Listener {
 			// would leave it active while the conversation is not
 			// started, causing it to display "null" all the time
 			try {
-				String name = plugin.getConfig().getString("default_conversation_IO");
+				String name = data.getConversationIO();
 				Class<? extends ConversationIO> c = plugin.getConvIO(name);
 				if (c == null) {
 					Debug.error("Conversation IO " + name + " is not registered!");
