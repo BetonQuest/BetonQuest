@@ -99,10 +99,10 @@ public class ConversationData {
 		blockMovement = stop != null && stop.equalsIgnoreCase("true");
 		convIO = pack.getString("conversations." + name + ".conversationIO");
 		if (convIO == null) {
-			convIO = plugin.getConfig().getString("default_conversation_IO");
+			convIO = BetonQuest.getInstance().getConfig().getString("default_conversation_IO");
 		}
 		// check if all data is valid (or at least exist)
-		if (plugin.getConvIO(convIO) == null) {
+		if (BetonQuest.getInstance().getConvIO(convIO) == null) {
 			throw new InstructionParseException("Conversation IO is not registered!");
 		}
 		if (quester == null || quester.isEmpty()) {
