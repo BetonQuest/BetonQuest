@@ -49,6 +49,7 @@ public class ConversationData {
 	private EventID[] finalEvents;
 	private String[] startingOptions;
 	private boolean blockMovement;
+	private String convIO;
 
 	private HashMap<String, Option> NPCOptions;
 	private HashMap<String, Option> playerOptions;
@@ -96,7 +97,14 @@ public class ConversationData {
 		String rawStartingOptions = pack.getString("conversations." + name + ".first");
 		String stop = pack.getString("conversations." + name + ".stop");
 		blockMovement = stop != null && stop.equalsIgnoreCase("true");
+		convIO = pack.getString("conversations." + name + ".conversationIO");
+		if (convIO == null) {
+			convIO = BetonQuest.getInstance().getConfig().getString("default_conversation_IO");
+		}
 		// check if all data is valid (or at least exist)
+		if (BetonQuest.getInstance().getConvIO(convIO) == null) {
+			throw new InstructionParseException("Conversation IO " + convIO + " is not registered!");
+		}
 		if (quester == null || quester.isEmpty()) {
 			throw new InstructionParseException("Quester's name is not defined");
 		}
@@ -246,7 +254,14 @@ public class ConversationData {
 	public boolean isMovementBlocked() {
 		return blockMovement;
 	}
-
+	
+	/**
+	* @return the conversationIO
+	*/
+	public String getConversationIO() {
+		return convIO;
+	}
+	
 	public String getText(String lang, String option, OptionType type) {
 		Option o = null;
 		if (type == OptionType.NPC) {
