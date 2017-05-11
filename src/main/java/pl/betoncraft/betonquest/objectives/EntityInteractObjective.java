@@ -156,9 +156,9 @@ public class EntityInteractObjective extends Objective {
 	@Override
 	public String getProperty(String name, String playerID) {
 		if (name.equalsIgnoreCase("left")) {
-			return Integer.toString(((MobData) dataMap.get(playerID)).getAmount());
+			return Integer.toString(((EntityInteractData) dataMap.get(playerID)).getAmount());
 		} else if (name.equalsIgnoreCase("amount")) {
-			return Integer.toString(amount - ((MobData) dataMap.get(playerID)).getAmount());
+			return Integer.toString(amount - ((EntityInteractData) dataMap.get(playerID)).getAmount());
 		}
 		return "";
 	}
