@@ -187,7 +187,7 @@ public class EntityInteractObjective extends Objective {
 		}
 
 		public boolean containsEntity(Entity entity) {
-			return entitys.contains(entity);
+			return entitys.contains(entity.getUniqueId());
 		}
 
 		public int getAmount() {
