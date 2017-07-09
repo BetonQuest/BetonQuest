@@ -53,6 +53,9 @@ public class ItemAmountVariable extends Variable {
 			}
 		} else if (instruction.current().equalsIgnoreCase("amount")) {
 			type = Type.AMOUNT;
+		} else {
+			throw new InstructionParseException(String.format("Unknown variable type: '%s'",
+					instruction.current()));
 		}
 	}
 

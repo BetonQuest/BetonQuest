@@ -52,6 +52,9 @@ public class PointVariable extends Variable {
 			} catch (NumberFormatException e) {
 				throw new InstructionParseException("Could not parse point amount");
 			}
+		} else {
+			throw new InstructionParseException(String.format("Unknown variable type: '%s'",
+					instruction.current()));
 		}
 	}
 
