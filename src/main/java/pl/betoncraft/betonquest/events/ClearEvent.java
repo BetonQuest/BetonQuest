@@ -51,6 +51,7 @@ public class ClearEvent extends QuestEvent {
 	public ClearEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
+		persistent = true;
 		String[] entities = instruction.getArray();
 		types = new EntityType[entities.length];
 		for (int i = 0; i < types.length; i++) {

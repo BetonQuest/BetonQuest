@@ -41,6 +41,7 @@ public class ExplosionEvent extends QuestEvent {
 	public ExplosionEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
+		persistent = true;
 		setsFire = instruction.next().equals("1") ? true : false;
 		breaksBlocks = instruction.next().equals("1") ? true : false;
 		power = instruction.getVarNum();
