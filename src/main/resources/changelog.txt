@@ -1,6 +1,17 @@
-﻿v1.9.1
+﻿v1.9.2
 Fixes:
-    * Holograms are now correctly loaded.
+    * Conversations won't allow taking items from GUI windows
+    * When using wrong 'point' or 'item' variable there will be a nice error message
+    * NPCs can be safely despawned while in the middle of a conversation
+    * Error on '/q reload' when NPC particles are disabled is now gone
+    * Items for compass buttons are now correctly loaded
+Changes:
+    * These events are now correctly persistent: clear, explosion, lightning, setblock, spawn
+    * BetonQuest is using bStats instead of McStats
+
+v1.9.1
+Fixes:
+    * Holograms are now correctly loaded
 
 v1.9
 Notes:
