@@ -494,7 +494,7 @@ public class Backpack implements Listener {
 						locations.put(counter, loc);
 						names.put(counter, name);
 						if (itemName != null)
-							items.put(counter, packName + ".items." + itemName);
+							items.put(counter, packName + "." + itemName);
 						counter++;
 					}
 				}

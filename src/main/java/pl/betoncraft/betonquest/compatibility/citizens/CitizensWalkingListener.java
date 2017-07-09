@@ -82,9 +82,11 @@ public class CitizensWalkingListener implements Listener {
 					i--;
 					if (i == 0) {
 						npcs.remove(npc);
-						Navigator nav = npc.getNavigator();
-						nav.setPaused(false);
-						nav.setTarget(locs.remove(npc));
+						if (npc.isSpawned()) {
+							Navigator nav = npc.getNavigator();
+							nav.setPaused(false);
+							nav.setTarget(locs.remove(npc));
+						}
 					} else {
 						npcs.put(npc, i);
 					}

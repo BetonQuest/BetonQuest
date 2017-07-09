@@ -40,6 +40,7 @@ public class SetBlockEvent extends QuestEvent {
 	public SetBlockEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
+		persistent = true;
 		block = instruction.getMaterial(instruction.next());
 		loc = instruction.getLocation();
 		data = instruction.getByte(instruction.getOptional("data"), (byte) 0);

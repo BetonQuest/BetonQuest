@@ -42,13 +42,14 @@ public class CitizensParticle extends BukkitRunnable {
 	private String name;
 	private ConfigurationSection section;
 	private static CitizensParticle instance;
+	private boolean enabled = false;
 
 	public CitizensParticle() {
 		instance = this;
 		section = BetonQuest.getInstance().getConfig().getConfigurationSection("effectlib_npc_effect");
 		if (section == null)
 			return;
-		if (section.getString("disabled") != null)
+		if ("true".equalsIgnoreCase(section.getString("disabled")))
 			return;
 		name = section.getString("class");
 		if (name == null)
@@ -71,6 +72,7 @@ public class CitizensParticle extends BukkitRunnable {
 			}
 		}.runTaskLater(BetonQuest.getInstance(), 10);
 		runTaskTimer(BetonQuest.getInstance(), delay * 20, delay * 20);
+		enabled = true;
 	}
 
 	@Override
@@ -93,7 +95,9 @@ public class CitizensParticle extends BukkitRunnable {
 	 * Reloads the particle effect
 	 */
 	public static void reload() {
-		instance.cancel();
+		if (instance.enabled) {
+			instance.cancel();
+		}
 		new CitizensParticle();
 	}
 

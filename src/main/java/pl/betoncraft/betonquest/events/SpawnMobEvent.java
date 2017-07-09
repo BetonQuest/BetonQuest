@@ -60,6 +60,7 @@ public class SpawnMobEvent extends QuestEvent {
 	public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
+		persistent = true;
 		loc = instruction.getLocation();
 		String entity = instruction.next();
 		try {

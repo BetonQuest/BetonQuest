@@ -115,6 +115,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
 	@Override
 	public void display() {
+		// prevent displaying anything if the player closed the conversation
+		// in the meantime
+		if (conv.isEnded()) {
+			return;
+		}
 		if (response == null) {
 			end();
 			player.closeInventory();
@@ -209,10 +214,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if (!(event.getWhoClicked() instanceof Player))
+		if (!(event.getWhoClicked() instanceof Player)) {
 			return;
-		if (!((Player) event.getWhoClicked()).equals(player))
+		}
+		if (!((Player) event.getWhoClicked()).equals(player)) {
 			return;
+		}
 		event.setCancelled(true);
 		int slot = event.getRawSlot();
 		// calculate the option number
@@ -233,10 +240,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
 	@EventHandler
 	public void onClose(InventoryCloseEvent event) {
-		if (!(event.getPlayer() instanceof Player))
+		if (!(event.getPlayer() instanceof Player)) {
 			return;
-		if (!((Player) event.getPlayer()).equals(player))
+		}
+		if (!((Player) event.getPlayer()).equals(player)) {
 			return;
+		}
 		// allow for closing previous option inventory
 		if (switching) {
 			return;

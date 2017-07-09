@@ -37,6 +37,7 @@ public class LightningEvent extends QuestEvent {
 	public LightningEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
+		persistent = true;
 		loc = instruction.getLocation();
 	}
 
