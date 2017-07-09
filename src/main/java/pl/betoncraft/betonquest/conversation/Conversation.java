@@ -286,6 +286,13 @@ public class Conversation implements Listener {
 		displayStoredMessages();
 		Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, this));
 	}
+	
+	/**
+	 * @return whenever this conversation has already ended
+	 */
+	public boolean isEnded() {
+		return ended;
+	}
 
 	private void displayStoredMessages() {
 		for (String message : messages) {
