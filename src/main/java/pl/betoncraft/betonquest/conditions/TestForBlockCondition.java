@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Material;
 
+import org.bukkit.block.Block;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -34,6 +35,7 @@ public class TestForBlockCondition extends Condition {
 
 	private final LocationData loc;
 	private final Material material;
+	private final byte data;
 
 	public TestForBlockCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -41,11 +43,14 @@ public class TestForBlockCondition extends Condition {
 		persistent = true;
 		loc = instruction.getLocation();
 		material = instruction.getEnum(Material.class);
+		data = instruction.getByte(instruction.getOptional("data"), (byte) 0);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean check(String playerID) throws QuestRuntimeException {
-		return loc.getLocation(playerID).getBlock().getType().equals(material);
+		Block block = loc.getLocation(playerID).getBlock();
+		return (block.getType() == material && block.getData() == data);
 	}
 
 }
