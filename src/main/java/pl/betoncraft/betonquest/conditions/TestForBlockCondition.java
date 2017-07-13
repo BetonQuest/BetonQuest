@@ -47,7 +47,7 @@ public class TestForBlockCondition extends Condition {
 		material = instruction.getEnum(Material.class);
 		String dataString = instruction.getOptional("data");
 		if (dataString != null) {
-			data = Optional.ofNullable(instruction.getByte(dataString, (byte) 0));
+			data = Optional.of(instruction.getByte(dataString, (byte) 0));
 		} else {
 			data = Optional.empty();
 		}
