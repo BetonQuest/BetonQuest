@@ -43,6 +43,7 @@ import pl.betoncraft.betonquest.commands.JournalCommand;
 import pl.betoncraft.betonquest.commands.LangCommand;
 import pl.betoncraft.betonquest.commands.QuestCommand;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.conditions.AchievementCondition;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
