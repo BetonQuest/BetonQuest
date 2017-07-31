@@ -42,7 +42,7 @@ public class PlayerConverter {
 	}
 
 	/**
-	 * Retruns playerID of the player with passed name.
+	 * Returns playerID of the player with passed name.
 	 * 
 	 * @param name
 	 *            - name of the player from which playerID needs to be extracted
@@ -64,7 +64,7 @@ public class PlayerConverter {
 	}
 
 	public static String getName(String playerID) {
-		return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
+		return playerID == null ? null : Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
 	}
 
 }

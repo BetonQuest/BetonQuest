@@ -43,7 +43,7 @@ abstract public class Condition {
 	protected Instruction instruction;
 	/**
 	 * If a condition is static it can be used with null player. Static events
-	 * can be run with static events.
+	 * can be run with static conditions.
 	 */
 	protected boolean staticness = false;
 	/**

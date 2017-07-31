@@ -4,7 +4,7 @@ en:
   arguments: '&cNot enough arguments.'
   specify_condition: '&cSpecify correct condition name.'
   specify_event: '&cSpecify correct event name.'
-  specify_player: '&cSpecify player''s nick.'
+  specify_player: '&cSpecify player''s name.'
   specify_item: '&cSpecify correct item''s name.'
   specify_tag: '&cSpecify tag.'
   specify_objective: '&cSpecify correct objective name.'
