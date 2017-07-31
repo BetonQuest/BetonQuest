@@ -17,7 +17,6 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import de.slikey.effectlib.Effect;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -43,49 +42,48 @@ import java.util.Set;
  * 
  * @author Jakub Sapalski
  */
-public class CitizensParticle extends BukkitRunnable implements Listener{
+public class CitizensParticle extends BukkitRunnable{
 
-	private ArrayList<NPC> npcs = new ArrayList<>();
-	private String name;
-	private ConfigurationSection section;
-	private static CitizensParticle instance;
-	private boolean enabled = false;
+    private ArrayList<NPC> npcs = new ArrayList<>();
+    private String name;
+    private ConfigurationSection section;
+    private static CitizensParticle instance;
+    private boolean enabled = false;
 
-	public CitizensParticle() {
-		instance = this;
-		section = BetonQuest.getInstance().getConfig().getConfigurationSection("effectlib_npc_effect");
-		if (section == null)
-			return;
-		if ("true".equalsIgnoreCase(section.getString("disabled")))
-			return;
-		name = section.getString("class");
-		if (name == null)
-			return;
-		int delay = section.getInt("delay");
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (ConfigPackage pack : Config.getPackages().values()) {
-					String packName = pack.getName();
-					for (String npcID : Config.getPackages().get(packName).getMain().getConfig()
-							.getConfigurationSection("npcs").getKeys(false)) {
-						try {
-							int ID = Integer.parseInt(npcID);
-							npcs.add(CitizensAPI.getNPCRegistry().getById(ID));
-						} catch (NumberFormatException e) {
-						}
-					}
-				}
-			}
-		}.runTaskLater(BetonQuest.getInstance(), 10);
-		runTaskTimer(BetonQuest.getInstance(), delay * 20, delay * 20);
-		enabled = true;
-	}
+    public CitizensParticle() {
+        instance = this;
+        section = BetonQuest.getInstance().getConfig().getConfigurationSection("effectlib_npc_effect");
+        if (section == null)
+            return;
+        if ("true".equalsIgnoreCase(section.getString("disabled")))
+            return;
+        name = section.getString("class");
+        if (name == null)
+            return;
+        int delay = section.getInt("delay");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ConfigPackage pack : Config.getPackages().values()) {
+                    String packName = pack.getName();
+                    for (String npcID : Config.getPackages().get(packName).getMain().getConfig()
+                            .getConfigurationSection("npcs").getKeys(false)) {
+                        try {
+                            int ID = Integer.parseInt(npcID);
+                            npcs.add(CitizensAPI.getNPCRegistry().getById(ID));
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                }
+            }
+        }.runTaskLater(BetonQuest.getInstance(), 10);
+        runTaskTimer(BetonQuest.getInstance(), delay * 20, delay * 20);
+        enabled = true;
+    }
 
 
-	@Override
-	public void run() {
-	    // Bukkit.getLogger().info("Particle: RUN:89: Online Players: " + Bukkit.getOnlinePlayers().size() + "NPC:" + npcs.size());
+    @Override
+    public void run() {
         for (NPC npc : npcs) {
             if (npc == null) {
                 continue;
@@ -94,36 +92,33 @@ public class CitizensParticle extends BukkitRunnable implements Listener{
             if (e == null) {
                 continue;
             }
-            // Bukkit.getLogger().info("NPC Name: " + npc.getName());
             Location loc = e.getLocation().clone();
             loc.setPitch(-90);
-            // Compatibility.getEffectManager().start(name, section, loc);
+
+            Compatibility.getEffectManager().start(name, section, loc);
+
         }
 
 
         Config.getPackages().forEach((n, c) -> activateEffects(n, c));
-	}
+    }
 
-    void activateEffects(String name, ConfigPackage cfgPack){
+    private void activateEffects(String name, ConfigPackage cfgPack){
         ConfigurationSection cfg = cfgPack.getCustom().getConfig().getConfigurationSection("particles");
         if(cfg == null) return;
 
 
         Set<String> keys = cfg.getKeys(false);
 
-        // Bukkit.getLogger().info("Keys : " + keys.size());
         for(String key: keys){
-            // Bukkit.getLogger().info("Key: " + key);
             String npcID = cfg.getString(key + ".NPC");
             if(npcID == null){
-            	Bukkit.getLogger().warning("Malformed particles for NPC Key: " + key);
+                Bukkit.getLogger().warning("Malformed particles for NPC Key: " + key);
                 continue;
             }
 
-            // Bukkit.getLogger().info("Particle: npcID:" + npcID + " Integer: " + Integer.parseInt(npcID));
             NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
             if(npc == null) continue;
-            // Bukkit.getLogger().info("npcID: " + npcID + " toString(): " + Integer.toString(npc.getId()));
 
             Location loc = npc.getStoredLocation().clone();
             loc.setPitch(-90);
@@ -131,24 +126,21 @@ public class CitizensParticle extends BukkitRunnable implements Listener{
             String type = cfg.getString(key + ".type");
             String condition = cfg.getString(key + ".conditions");
 
-            // Bukkit.getLogger().info("Particle: Key: " + key + "Type: " + type + " Conditions: " + condition);
 
             ArrayList<ConditionID> condID = new ArrayList<>();
             try{
                 for(String cond: condition.split(","))
                     condID.add(new ConditionID(cfgPack, cond));
             } catch (ObjectNotFoundException e1) {
-                e1.printStackTrace();
                 continue;
             }
+
             player: for(Player p: Bukkit.getOnlinePlayers()) {
                 for (ConditionID cond : condID)
                     if (!BetonQuest.condition(PlayerConverter.getID(p), cond))
                         continue player;
-                // Bukkit.getLogger().info("Particle:144: Player: " +p.getPlayerListName() +"Effect on NPC:" + npc.getId() + " Particle Type: " + type + " Loc: " + loc.toString());
 
                 ConfigurationSection sec = cfgPack.getCustom().getConfig().getConfigurationSection("effects." + type);
-                // ec.getKeys(false).forEach((str) -> Bukkit.getLogger().info("SecKey: " + str));
 
                 Compatibility.getEffectManager().start(sec.getString("class"), sec, loc, p);
             }
@@ -157,14 +149,14 @@ public class CitizensParticle extends BukkitRunnable implements Listener{
 
 
 
-	/**
-	 * Reloads the particle effect
-	 */
-	public static void reload() {
-		if (instance.enabled) {
-			instance.cancel();
-		}
-		new CitizensParticle();
-	}
+    /**
+     * Reloads the particle effect
+     */
+    public static void reload() {
+        if (instance.enabled) {
+            instance.cancel();
+        }
+        new CitizensParticle();
+    }
 
 }

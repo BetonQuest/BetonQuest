@@ -144,10 +144,6 @@ public class Compatibility {
 			plugin.registerObjectives("npckill", NPCKillObjective.class);
 			plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
 			plugin.registerEvents("movenpc", NPCMoveEvent.class);
-
-			//Register Citizens Events
-			Bukkit.getServer().getPluginManager().registerEvents(new CitizensParticle(), Bukkit.getPluginManager().getPlugin("BetonQuest"));
-
 			hooked.add("Citizens");
 		}
 
