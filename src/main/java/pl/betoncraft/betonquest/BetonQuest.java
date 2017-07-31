@@ -76,6 +76,7 @@ import pl.betoncraft.betonquest.conditions.VariableCondition;
 import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.conditions.WorldCondition;
+import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
@@ -131,6 +132,7 @@ import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
+import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
@@ -320,6 +322,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("achievement", AchievementCondition.class);
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
+		registerConditions("biome", BiomeCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -359,6 +362,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("variable", VariableEvent.class);
 		registerEvents("title", TitleEvent.class);
 		registerEvents("language", LanguageEvent.class);
+		registerEvents("playsound", PlaysoundEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);

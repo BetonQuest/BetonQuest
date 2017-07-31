@@ -19,11 +19,14 @@ package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Material;
 
+import org.bukkit.block.Block;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.LocationData;
+
+import java.util.Optional;
 
 /**
  * Checks block at specified location against specified Material
@@ -34,6 +37,7 @@ public class TestForBlockCondition extends Condition {
 
 	private final LocationData loc;
 	private final Material material;
+	private final Optional<Byte> data;
 
 	public TestForBlockCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -41,11 +45,23 @@ public class TestForBlockCondition extends Condition {
 		persistent = true;
 		loc = instruction.getLocation();
 		material = instruction.getEnum(Material.class);
+		String dataString = instruction.getOptional("data");
+		if (dataString != null) {
+			data = Optional.of(instruction.getByte(dataString, (byte) 0));
+		} else {
+			data = Optional.empty();
+		}
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean check(String playerID) throws QuestRuntimeException {
-		return loc.getLocation(playerID).getBlock().getType().equals(material);
+		Block block = loc.getLocation(playerID).getBlock();
+		if (data.isPresent()) {
+			return (block.getType() == material && block.getData() == data.get());
+		} else {
+			return (block.getType() == material);
+		}
 	}
 
 }
