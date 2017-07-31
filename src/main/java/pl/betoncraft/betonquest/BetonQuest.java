@@ -405,13 +405,12 @@ public final class BetonQuest extends JavaPlugin {
 		registerVariable("version", VersionVariable.class);
 		registerVariable("location", LocationVariable.class);
 
-		// initialize compatibility with other plugins
-		compatibility = new Compatibility();
-
 		// schedule quest data loading on the first tick, so all other
 		// plugins can register their types
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
+				// initialize compatibility with other plugins
+				compatibility = new Compatibility();
 				// Load all events and conditions
 				loadData();
 				// load data for all online players
