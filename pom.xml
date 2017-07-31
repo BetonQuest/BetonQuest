@@ -166,14 +166,10 @@
 			<artifactId>mcmmo</artifactId>
 			<version>1.5.04-SNAPSHOT</version>
 		</dependency>
-		<!-- Effect Lib Custom Build with setTargetPlayer(Player) -->
 		<dependency>
 			<groupId>de.slikey.effectlib</groupId>
 			<artifactId>EffectLib</artifactId>
 			<version>3.8</version>
-
-			<scope>system</scope>
-			<systemPath>${basedir}/../EffectLib/EffectLib.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.black_ixx</groupId>
