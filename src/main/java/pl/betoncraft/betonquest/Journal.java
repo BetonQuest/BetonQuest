@@ -351,7 +351,22 @@ public class Journal {
 			}
 			finalList.addAll(getText());
 		}
-		if (finalList.size() > 0) {
+		// If Book is not empty and Plugin is loaded
+        if(finalList.size() > 0 && Bukkit.getPluginManager().isPluginEnabled("BetterBetonQuestJournal")) {
+            Bukkit.getLogger().info("BetterBetonQuestJournal");
+            try {
+            	// finalList.add("Sono un pro[[BOLD;;RED;;HoverEvent:SHOW_TEXT:ITALIC:YELLOW:Hoveriamo Tutto;; Tanto Pro]] Oppure No");
+
+                Plugin BBetonQuestJournal = Bukkit.getPluginManager().getPlugin("BetterBetonQuestJournal");
+                Method method = BBetonQuestJournal.getClass().getMethod("getBookMeta", BookMeta.class, List.class);
+                //Get Meta By The Plugin
+                meta = (BookMeta) method.invoke(null, meta, finalList);
+
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+                meta.setPages(finalList);
+            }
+        }else if (finalList.size() > 0) {
 			meta.setPages(finalList);
 		} else {
 			meta.addPage("");
