@@ -41,6 +41,8 @@ public class FolderEvent extends QuestEvent {
 	public VariableNumber delay;
 	public VariableNumber random;
 	public EventID[] events;
+	public boolean ticks;
+	public boolean minutes;
 
 	public FolderEvent(final Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -49,6 +51,8 @@ public class FolderEvent extends QuestEvent {
 		events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
 		delay = instruction.getVarNum(instruction.getOptional("delay"));
 		random = instruction.getVarNum(instruction.getOptional("random"));
+		ticks = instruction.hasArgument("ticks");
+		minutes = instruction.hasArgument("minutes");
 	}
 
 	@Override
@@ -57,12 +61,12 @@ public class FolderEvent extends QuestEvent {
 		// choose randomly which events should be fired
 		int randomInt = random != null ? random.getInt(playerID) : 0;
 		if (randomInt > 0 && randomInt <= events.length) {
-			// copy events into the modifyable ArrayList
+			// copy events into the modifiable ArrayList
 			ArrayList<EventID> eventsList = new ArrayList<>();
 			for (EventID event : events) {
 				eventsList.add(event);
 			}
-			// remove choosen events from that ArrayList and place them in a new
+			// remove chosen events from that ArrayList and place them in a new
 			// list
 			for (int i = randomInt; i > 0; i--) {
 				int chosen = new Random().nextInt(eventsList.size());
@@ -74,15 +78,22 @@ public class FolderEvent extends QuestEvent {
 				chosenList.add(event);
 			}
 		}
-		int seconds = (delay == null) ? 0 : delay.getInt(playerID);
+		double time = (delay == null) ? 0d : delay.getDouble(playerID);
+		if (ticks) {
+		    // do nothing
+		} else if (minutes) {
+		    time *= (20 * 60);
+		} else {
+		    time *= 20;
+		}
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				for (EventID event : chosenList) {
 					BetonQuest.event(playerID, event);
 				}
-			} // 20 ticks is a second
-		}.runTaskLater(BetonQuest.getInstance(), seconds * 20);
+			}
+		}.runTaskLater(BetonQuest.getInstance(), (int) time);
 	}
 
 }

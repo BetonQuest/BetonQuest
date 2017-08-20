@@ -39,14 +39,20 @@ import pl.betoncraft.betonquest.config.Config;
  */
 public class DelayObjective extends Objective {
 
-	private final long delay;
+	private final double delay;
 	private BukkitTask runnable;
 	private int interval;
 
 	public DelayObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		template = DelayData.class;
-		delay = instruction.getLong();
+		if (instruction.hasArgument("ticks")) {
+		    delay = instruction.getDouble() * 50;
+		} else if (instruction.hasArgument("seconds")) {
+		    delay = instruction.getDouble() * 1000;
+		} else {
+		    delay = instruction.getDouble() * 1000 * 60;
+		}
 		if (delay < 0) {
 			throw new InstructionParseException("Delay cannot be less than 0");
 		}
@@ -87,7 +93,7 @@ public class DelayObjective extends Objective {
 
 	@Override
 	public String getDefaultDataInstruction() {
-		return Long.toString(new Date().getTime() + delay * 1000 * 60);
+		return Long.toString(new Date().getTime() + (long) delay);
 	}
 
 	@Override
