@@ -18,20 +18,16 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -56,14 +52,7 @@ public class NPCKillObjective extends Objective implements Listener {
 	}
 
 	@EventHandler
-	public void onNpcKill(EntityDamageByEntityEvent event) {
-		if (!(event.getEntityType() == EntityType.PLAYER)) {
-			return;
-		}
-		LivingEntity entity = (LivingEntity) event.getEntity();
-		if (entity.getHealth() > event.getFinalDamage()) {
-			return;
-		}
+	public void onNpcKill(MobKilledEvent event) {
 		NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
 		if (npc == null) {
 			return;
@@ -71,24 +60,12 @@ public class NPCKillObjective extends Objective implements Listener {
 		if (npc.getId() != ID) {
 			return;
 		}
-		String playerID = null;
-		if (event.getDamager() instanceof Player) {
-			Player player = (Player) event.getDamager();
-			playerID = PlayerConverter.getID(player);
-		} else if (event.getDamager() instanceof Projectile) {
-			Projectile projectile = (Projectile) event.getDamager();
-			if (projectile.getShooter() instanceof Player) {
-				Player player = (Player) projectile.getShooter();
-				playerID = PlayerConverter.getID(player);
-			}
-		}
-		if (playerID != null) {
-			NPCData playerData = (NPCData) dataMap.get(playerID);
-			if (containsPlayer(playerID) && checkConditions(playerID)) {
-				playerData.kill();
-				if (playerData.killed()) {
-					completeObjective(playerID);
-				}
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		NPCData playerData = (NPCData) dataMap.get(playerID);
+		if (containsPlayer(playerID) && checkConditions(playerID)) {
+			playerData.kill();
+			if (playerData.killed()) {
+				completeObjective(playerID);
 			}
 		}
 	}
