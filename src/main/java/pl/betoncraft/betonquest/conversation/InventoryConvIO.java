@@ -39,6 +39,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Inventory GUI for conversations
@@ -104,13 +105,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	@Override
 	public void setNpcResponse(String npcName, String response) {
 		this.npcName = npcName;
-		this.response = response.replace('&', '§');
+		this.response = Utils.multiLineColorCodes(response.replace('&', '§'), npcTextColor);
 	}
 
 	@Override
 	public void addPlayerOption(String option) {
 		i++;
-		options.put(i, option.replace('&', '§'));
+		options.put(i, Utils.multiLineColorCodes(option.replace('&', '§'), optionColor));
 	}
 
 	@Override
