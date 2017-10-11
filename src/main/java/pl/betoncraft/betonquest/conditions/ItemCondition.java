@@ -45,38 +45,31 @@ public class ItemCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
-		int counter = 0;
+		int successfulChecks = 0; // Count of successful checks
+
 		for (Item questItem : questItems) {
+			int counter = 0; // Reset counter for each item
 			int amount = questItem.getAmount().getInt(playerID);
+
 			ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 			for (ItemStack item : inventoryItems) {
-				if (item == null) {
+				if (item == null || !questItem.isItemEqual(item)) {
 					continue;
 				}
-				if (!questItem.isItemEqual(item)) {
-					continue;
-				}
-				amount -= item.getAmount();
-				if (amount <= 0) {
-					counter++;
-					break;
-				}
+				counter += item.getAmount();
 			}
+
 			List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
 			for (ItemStack item : backpackItems) {
-				if (item == null) {
+				if (item == null || !questItem.isItemEqual(item)) {
 					continue;
 				}
-				if (!questItem.isItemEqual(item)) {
-					continue;
-				}
-				amount -= item.getAmount();
-				if (amount <= 0) {
-					counter++;
-					break;
-				}
+				counter += item.getAmount();
+			}
+			if (counter >= amount) {
+				successfulChecks++;
 			}
 		}
-		return counter >= questItems.length;
+		return successfulChecks == questItems.length;
 	}
 }
