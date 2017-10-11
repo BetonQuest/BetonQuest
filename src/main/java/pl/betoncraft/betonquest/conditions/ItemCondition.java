@@ -77,9 +77,6 @@ public class ItemCondition extends Condition {
 				}
 			}
 		}
-		if (counter == questItems.length) {
-			return true;
-		}
-		return false;
+		return counter >= questItems.length;
 	}
 }
