@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -41,9 +42,9 @@ import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
+import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.Zipper;
-import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -388,5 +389,27 @@ public class Utils {
 			// string was a number, but incorrect
 			throw new InstructionParseException("Incorrect RGB code: " + string);
 		}
+	}
+	
+	/**
+	 * Copies all color codes before each word, so they are correctly displayed regardless of line breaks.
+	 *
+	 * @param string the string to process
+	 * @param def default color code to use instead of resetting; use null for regular reset code
+	 * @return the colorful string ready to split into multiple lines
+	 */
+	public static String multiLineColorCodes(String string, String def) {
+	    StringBuilder builder = new StringBuilder();
+	    String[] words = string.split(" ");
+	    String lastCodes = "";
+	    for (String word : words) {
+	        word = lastCodes + word;
+	        lastCodes = ChatColor.getLastColors(word);
+	        builder.append(word);
+	        builder.append(' ');
+	    }
+	    String result = builder.toString();
+	    result = result.replace(ChatColor.RESET.toString(), ChatColor.RESET + def);
+	    return result.length() == 0 ? "" : result.substring(0, result.length() - 1);
 	}
 }

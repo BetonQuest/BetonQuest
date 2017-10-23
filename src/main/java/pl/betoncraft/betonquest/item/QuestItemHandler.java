@@ -216,7 +216,11 @@ public class QuestItemHandler implements Listener {
 		}
 		// prevent quest items from breaking
 		if (Utils.isQuestItem(event.getBrokenItem())) {
-			event.getBrokenItem().setAmount(1);
+			ItemStack original = event.getBrokenItem();
+			original.setDurability((short) 0);
+			ItemStack copy = original.clone();
+			event.getPlayer().getInventory().removeItem(original);
+		    event.getPlayer().getInventory().addItem(copy);
 		}
 	}
 

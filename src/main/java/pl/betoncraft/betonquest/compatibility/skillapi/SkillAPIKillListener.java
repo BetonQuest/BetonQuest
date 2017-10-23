@@ -15,54 +15,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest;
+package pl.betoncraft.betonquest.compatibility.skillapi;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.sucy.skill.api.event.SkillDamageEvent;
+
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.MobKillNotifier;
 
 /**
- * Listens to standard kills and adds them to MobKillNotifier.
- * 
+ * Listens to kills by SkillAPI skills.
+ *
  * @author Jakub Sapalski
  */
-public class MobKillListener implements Listener {
-
-	public MobKillListener() {
-		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-	}
-
+public class SkillAPIKillListener implements Listener {
+    
+    public SkillAPIKillListener() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+    
     @EventHandler(priority=EventPriority.MONITOR)
-    public void onKillingHit(EntityDamageByEntityEvent event) {
+    public void onKill(SkillDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        if (!(event.getEntity() instanceof LivingEntity)) {
+        if (!(event.getDamager() instanceof Player)) {
             return;
         }
-        LivingEntity entity = (LivingEntity) event.getEntity();
-        if (entity.getHealth() > event.getFinalDamage()) {
+        Player player = (Player) event.getDamager();
+        if (event.getTarget().getHealth() > event.getDamage()) {
             return;
         }
-        Player player = null;
-        if (event.getDamager() instanceof Player) {
-            player = (Player) event.getDamager();
-        } else if (event.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) event.getDamager();
-            if (projectile.getShooter() instanceof Player) {
-                player = (Player) projectile.getShooter();
-            }
-        }
-        if (player != null) {
-            MobKillNotifier.addKill(player, entity);
-        }
+        MobKillNotifier.addKill(player, event.getTarget());
     }
 
 }

@@ -167,7 +167,7 @@ public class ConfigUpdater {
 		instance.saveConfig();
 		// reload configuration file to apply all possible changes
 		new Config(false);
-		Debug.broadcast("Successfully updated configuration!");
+		Debug.broadcast("Updating done!");
 		addChangelog();
 	}
 
@@ -193,7 +193,7 @@ public class ConfigUpdater {
 			Debug.info("Update to " + config.getString("version") + " done!");
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			e.printStackTrace();
+			Debug.error("Cannot update configuration. Maybe it comes from an even newer version and you did a downgrade?");
 			// return, so it does not fall into an infinite loop
 			return;
 		}

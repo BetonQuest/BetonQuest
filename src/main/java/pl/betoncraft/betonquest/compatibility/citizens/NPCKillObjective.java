@@ -17,19 +17,17 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import net.citizensnpcs.api.event.NPCDeathEvent;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -54,20 +52,20 @@ public class NPCKillObjective extends Objective implements Listener {
 	}
 
 	@EventHandler
-	public void onNPCKilling(NPCDeathEvent event) {
-		if (event.getNPC().getId() == ID
-				&& event.getNPC().getEntity().getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
-			EntityDamageByEntityEvent damage = (EntityDamageByEntityEvent) event.getNPC().getEntity()
-					.getLastDamageCause();
-			if (damage.getDamager() instanceof Player) {
-				String playerID = PlayerConverter.getID((Player) damage.getDamager());
-				NPCData playerData = (NPCData) dataMap.get(playerID);
-				if (containsPlayer(playerID) && checkConditions(playerID)) {
-					playerData.kill();
-					if (playerData.killed()) {
-						completeObjective(playerID);
-					}
-				}
+	public void onNpcKill(MobKilledEvent event) {
+		NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
+		if (npc == null) {
+			return;
+		}
+		if (npc.getId() != ID) {
+			return;
+		}
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		NPCData playerData = (NPCData) dataMap.get(playerID);
+		if (containsPlayer(playerID) && checkConditions(playerID)) {
+			playerData.kill();
+			if (playerData.killed()) {
+				completeObjective(playerID);
 			}
 		}
 	}
