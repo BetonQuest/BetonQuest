@@ -19,15 +19,14 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 
 import java.util.HashMap;
 
-import net.citizensnpcs.api.ai.Navigator;
-import net.citizensnpcs.api.npc.NPC;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import net.citizensnpcs.api.ai.Navigator;
+import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
@@ -51,30 +50,38 @@ public class CitizensWalkingListener implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 
-	@EventHandler
-	public void onConversationStart(final PlayerConversationStartEvent event) {
-		if (event.getConversation() instanceof CitizensConversation) {
-			CitizensConversation conv = (CitizensConversation) event.getConversation();
-			NPC npc = conv.getNPC();
-			if (!npcs.containsKey(npc)) {
-				Navigator nav = npc.getNavigator();
-				npcs.put(npc, new Integer(1));
-				locs.put(npc, nav.getTargetAsLocation());
-				nav.setPaused(true);
-				nav.cancelNavigation();
-				nav.setTarget(conv.getNPC().getEntity().getLocation());
-				nav.setPaused(true);
-				nav.cancelNavigation();
-			} else {
-				npcs.put(npc, npcs.get(npc) + 1);
-			}
-		}
-	}
+    @EventHandler
+    public void onConversationStart(final PlayerConversationStartEvent event) {
+        if (event.getConversation() instanceof CitizensConversation) {
+            new BukkitRunnable() {
+                
+                @Override
+                public void run() {
+                    CitizensConversation conv = (CitizensConversation) event.getConversation();
+                    NPC npc = conv.getNPC();
+                    if (!npcs.containsKey(npc)) {
+                        Navigator nav = npc.getNavigator();
+                        npcs.put(npc, new Integer(1));
+                        locs.put(npc, nav.getTargetAsLocation());
+                        nav.setPaused(true);
+                        nav.cancelNavigation();
+                        nav.setTarget(conv.getNPC().getEntity().getLocation());
+                        nav.setPaused(true);
+                        nav.cancelNavigation();
+                    } else {
+                        npcs.put(npc, npcs.get(npc) + 1);
+                    }
+                }
+            }.runTask(BetonQuest.getInstance());
+        }
+    }
 
 	@EventHandler
 	public void onConversationEnd(final PlayerConversationEndEvent event) {
 		if (event.getConversation() instanceof CitizensConversation) {
 			new BukkitRunnable() {
+			    
+			    @Override
 				public void run() {
 					CitizensConversation conv = (CitizensConversation) event.getConversation();
 					NPC npc = conv.getNPC();
