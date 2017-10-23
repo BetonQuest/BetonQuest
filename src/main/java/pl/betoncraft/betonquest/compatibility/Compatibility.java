@@ -81,6 +81,7 @@ import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCTraitCondition;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.HavingShopCondition;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.OpenShopEvent;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
+import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIKillListener;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPILevelCondition;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
 import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
@@ -222,8 +223,6 @@ public class Compatibility {
 			plugin.registerConditions("heroesclass", HeroesClassCondition.class);
 			plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
 			plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
-			// create mobkill listener for passing Heroes kills to
-			// MobKillObjective
 			new HeroesMobKillListener();
 			hooked.add("Heroes");
 		}
@@ -247,6 +246,7 @@ public class Compatibility {
 				&& plugin.getConfig().getString("hook.skillapi").equalsIgnoreCase("true")) {
 			plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
 			plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
+			new SkillAPIKillListener();
 			hooked.add("SkillAPI");
 		}
 
