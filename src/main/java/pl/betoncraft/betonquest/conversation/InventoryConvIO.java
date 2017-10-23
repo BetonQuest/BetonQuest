@@ -163,7 +163,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			Material material = Material.ENDER_PEARL;
 			short data = 0;
 			// get the custom material
-			if (option.matches("^\\{[a-zA-Z0-9_: ]+\\}.*$")) {
+			if (option.matches("^\\{[a-zA-Z0-9_: ]+\\}(?s:.*)$")) {
 				String fullMaterial = option.substring(1, option.indexOf('}'));
 				String materialName = fullMaterial;
 				if (materialName.contains(":")) {
