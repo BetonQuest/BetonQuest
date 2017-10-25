@@ -288,3 +288,45 @@ nl:
   seconds: 'seconden'
   and: 'en'
   password: 'wachtwoord: '
+it:
+  conversation_prefix: '&2[&9{1}&2] '
+  conversation_start: '&e====&bConversazione con {1} iniziata!&e===='
+  conversation_end: '&e====&bConversazione con {1} finita!&e===='
+  no_permission: '&cNon hai il permesso.'
+  new_journal_entry: '&e*&bDiario aggiornato!&e*'
+  journal_title: Diario
+  journal_lore: Diario di %player.display%, contiene informazioni sulle quest
+  quest_item: '&2Oggetto quest'
+  backpack_title: Zaino
+  previous: '&2Precedente'
+  next: '&2Successivo'
+  inventory_full: '&e*&bIl tuo inventario è pieno!&e*'
+  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the
+    changes and delete or rename the file to dismiss this message!&e*'
+  pullback: '&cDevi finire la conversazione!'
+  items_given: '&2Hai ricevuto {1} x{2}'
+  items_taken: '&2Hai perso {1} x{2}'
+  blocks_to_break: '&2{1} blocchi rimasti da rompere'
+  blocks_to_place: '&2{1} blocchi rimasti da piazzare'
+  mobs_to_kill: '&2{1} nemici rimasti da uccidere'
+  players_to_kill: '&2{1} giocatori rimasti da uccidere'
+  fish_to_catch: '&2{1} pesci rimasti da pescare'
+  sheep_to_shear: '&2{1} pecore rimaste da tosare'
+  potions_to_brew: '&2{1} pozioni da preparare'
+  animals_to_breed: '&2{1} animali rimasti da far accoppiare'
+  busy: '&cNon puoi parlare mentre stai combattendo.'
+  quest_canceled: '&2Quest {1} annullata!'
+  cancel: '&cAnnulla quest'
+  cancel_page: Cancellazione quests
+  compass: '&cObiettivi bussola'
+  compass_page: Scegli l'obiettivo
+  command_blocked: '&cNon puoi usare questo comando mentre stai parlando.'
+  language_changed: '&2Language changed!'
+  language_missing: '&cSpecify language'
+  language_not_exist: '&cThis language is not defined, possible options: '
+  days: giorni
+  hours: ore
+  minutes: minuti
+  seconds: secondi
+  and: e
+  password: 'password: '
