@@ -47,6 +47,7 @@ public class ItemCondition extends Condition {
 	public boolean check(String playerID) throws QuestRuntimeException {
 		int counter = 0;
 		for (Item questItem : questItems) {
+			boolean skipBackpack=false;
 			int amount = questItem.getAmount().getInt(playerID);
 			ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 			for (ItemStack item : inventoryItems) {
@@ -59,9 +60,11 @@ public class ItemCondition extends Condition {
 				amount -= item.getAmount();
 				if (amount <= 0) {
 					counter++;
+					skipBackpack=true;
 					break;
 				}
 			}
+			if(skipBackpack) continue;
 			List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
 			for (ItemStack item : backpackItems) {
 				if (item == null) {
@@ -77,6 +80,6 @@ public class ItemCondition extends Condition {
 				}
 			}
 		}
-		return counter >= questItems.length;
+		return counter == questItems.length;
 	}
 }
