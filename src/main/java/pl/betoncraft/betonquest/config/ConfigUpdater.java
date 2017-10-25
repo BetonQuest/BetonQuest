@@ -43,6 +43,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -92,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v53";
+	private final String destination = "v54";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -200,6 +201,23 @@ public class ConfigUpdater {
 		// update again until destination is reached
 		update();
 	}
+
+    @SuppressWarnings("unused")
+    private void update_from_v53() {
+        ConfigurationSection section = config.getConfigurationSection("effectlib_npc_effect");
+        if (section != null) {
+            ConfigAccessor custom = Config.getPackages().get(Config.getDefaultPackage()).getCustom();
+            Configuration config = custom.getConfig();
+            config.set("npc_effects.default", section);
+            config.set("npc_effects.default.interval", config.getInt("npc_effects.default.delay") * 20);
+            config.set("npc_effects.default.delay", null);
+            custom.saveConfig();
+        }
+        config.set("effectlib_npc_effect", null);
+        Debug.broadcast("Moved NPC effects to custom.yml");
+        config.set("version", "v54");
+        instance.saveConfig();
+    }
 
 	@SuppressWarnings("unused")
 	private void update_from_v52() {

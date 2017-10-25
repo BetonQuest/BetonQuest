@@ -169,7 +169,7 @@
 		<dependency>
 			<groupId>de.slikey.effectlib</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>3.8</version>
+			<version>5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.black_ixx</groupId>

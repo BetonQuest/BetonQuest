@@ -1,4 +1,4 @@
-version: v53
+version: v54
 mysql:
   host: ''
   port: ''
@@ -70,13 +70,3 @@ conversation_colors:
   number: yellow
   option: aqua
 date_format: dd.MM.yyyy HH:mm
-effectlib_npc_effect:
-  class: VortexEffect
-  iterations: 20
-  particle: crit_magic
-  helixes: 3
-  circles: 1
-  grow: 0.1
-  radius: 0.5
-  delay: 5
-  
