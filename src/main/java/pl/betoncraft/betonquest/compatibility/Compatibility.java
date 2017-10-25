@@ -37,6 +37,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIEvent;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.LangChangeListener;
 import pl.betoncraft.betonquest.compatibility.bountifulapi.BountifulTitleEvent;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensInventoryConvIO;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
@@ -145,6 +146,7 @@ public class Compatibility {
 			plugin.registerObjectives("npckill", NPCKillObjective.class);
 			plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
 			plugin.registerEvents("movenpc", NPCMoveEvent.class);
+			plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
 			hooked.add("Citizens");
 		}
 

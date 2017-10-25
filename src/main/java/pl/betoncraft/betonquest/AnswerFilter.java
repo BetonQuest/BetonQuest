@@ -44,29 +44,6 @@ public class AnswerFilter implements Filter {
 	}
 
 	@Override
-	public State getState() {
-		return null;
-	}
-
-	@Override
-	public boolean isStarted() {
-		return false;
-	}
-
-	@Override
-	public boolean isStopped() {
-		return false;
-	}
-
-	@Override
-	public void start() {
-	}
-
-	@Override
-	public void stop() {
-	}
-
-	@Override
 	public Result filter(Logger arg0, Level arg1, Marker arg2, String arg3, Object... arg4) {
 		return null;
 	}
@@ -90,4 +67,29 @@ public class AnswerFilter implements Filter {
 	public Result getOnMismatch() {
 		return null;
 	}
+
+    @Override
+    public State getState() {
+        return null;
+    }
+
+    @Override
+    public void start() {
+        
+    }
+
+    @Override
+    public void stop() {
+        
+    }
+
+    @Override
+    public boolean isStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
 }

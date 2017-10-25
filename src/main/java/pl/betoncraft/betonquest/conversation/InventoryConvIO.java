@@ -48,21 +48,21 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class InventoryConvIO implements Listener, ConversationIO {
 
-	private String response = null;
-	private HashMap<Integer, String> options = new HashMap<>();
-	private int i = 0;
-	private String npcName;
-	private String npcNameColor;
-	private String npcTextColor;
-	private String numberFormat;
-	private String optionColor;
-	private String answerPrefix;
-	private Conversation conv;
-	private Player player;
-	private Inventory inv;
-	private boolean allowClose = false;
-	private boolean switching = false;
-	private Location loc;
+	protected String response = null;
+	protected HashMap<Integer, String> options = new HashMap<>();
+	protected int i = 0;
+	protected String npcName;
+	protected String npcNameColor;
+	protected String npcTextColor;
+	protected String numberFormat;
+	protected String optionColor;
+	protected String answerPrefix;
+	protected Conversation conv;
+	protected Player player;
+	protected Inventory inv;
+	protected boolean allowClose = false;
+	protected boolean switching = false;
+	protected Location loc;
 
 	public InventoryConvIO(Conversation conv, String playerID) {
 		this.conv = conv;
