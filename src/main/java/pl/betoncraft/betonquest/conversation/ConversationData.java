@@ -390,9 +390,11 @@ public class ConversationData {
 				if (!text.containsKey(defaultLang)) {
 					throw new InstructionParseException("No default language for " + name + " " + visibleType);
 				}
-			} else {
+			} else if (conv.isSet(type + "." + name + ".text")) {
 				text.put(defaultLang, pack.getString("conversations." + convName + "." + type + "." + name + ".text")
 						.replace("\\n", "\n"));
+			} else {
+			    throw new InstructionParseException(String.format("Text is not defined in '%s' %s.", name, visibleType));
 			}
 			ArrayList<String> variables = new ArrayList<>();
 			for (String theText : text.values()) {
