@@ -1,0 +1,10 @@
+npc_effects:
+  default:
+    class: VortexEffect
+    iterations: 20
+    particle: crit_magic
+    helixes: 3
+    circles: 1
+    grow: 0.1
+    radius: 0.5
+    interval: 100
