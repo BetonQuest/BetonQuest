@@ -17,10 +17,8 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -39,12 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-
-import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.compatibility.citizens.CitizensConversation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -54,21 +47,21 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class InventoryConvIO implements Listener, ConversationIO {
 
-	private String response = null;
-	private HashMap<Integer, String> options = new HashMap<>();
-	private int i = 0;
-	private String npcName;
-	private String npcNameColor;
-	private String npcTextColor;
-	private String numberFormat;
-	private String optionColor;
-	private String answerPrefix;
-	private Conversation conv;
-	private Player player;
-	private Inventory inv;
-	private boolean allowClose = false;
-	private boolean switching = false;
-	private Location loc;
+	protected String response = null;
+	protected HashMap<Integer, String> options = new HashMap<>();
+	protected int i = 0;
+	protected String npcName;
+	protected String npcNameColor;
+	protected String npcTextColor;
+	protected String numberFormat;
+	protected String optionColor;
+	protected String answerPrefix;
+	protected Conversation conv;
+	protected Player player;
+	protected Inventory inv;
+	protected boolean allowClose = false;
+	protected boolean switching = false;
+	protected Location loc;
 
 	public InventoryConvIO(Conversation conv, String playerID) {
 		this.conv = conv;
@@ -149,21 +142,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		npcMeta.setOwner(npcName);
 		npcMeta.setDisplayName(npcNameColor + npcName);
 		npcMeta.setLore(stringToLines(response, npcTextColor, null));
-		CitizensConversation citizensConv = (CitizensConversation) conv;
-		String texture = citizensConv.getNPC().data().get(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA);
-		if (texture != null) { // Can be null if not cached yet
-			GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-			Property property = new Property("textures", texture, citizensConv.getNPC().data().get(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA));
-			profile.getProperties().put("textures", property);
-
-			try {
-				Field field = npcMeta.getClass().getDeclaredField("profile");
-				field.setAccessible(true);
-				field.set(npcMeta, profile);
-			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
 		npc.setItemMeta(npcMeta);
 		buttons[0] = npc;
 		// this is the number of an option

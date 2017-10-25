@@ -67,4 +67,29 @@ public class AnswerFilter implements Filter {
 	public Result getOnMismatch() {
 		return null;
 	}
+
+    @Override
+    public State getState() {
+        return null;
+    }
+
+    @Override
+    public void start() {
+        
+    }
+
+    @Override
+    public void stop() {
+        
+    }
+
+    @Override
+    public boolean isStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
 }
