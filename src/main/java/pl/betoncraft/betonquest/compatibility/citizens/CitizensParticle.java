@@ -40,6 +40,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -225,9 +226,12 @@ public class CitizensParticle extends BukkitRunnable {
                     continue;
                 }
 
-                // get the NPC from its ID and skip if there are no such NPC
+                // get the NPC from its ID
                 NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                if (npc == null) {
+                
+                // skip if there are no such NPC or it's not spawned or not visible
+                if (npc == null || !npc.isSpawned() ||
+                        (NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc))) {
                     continue;
                 }
                 

@@ -1,4 +1,4 @@
-version: v54
+version: v55
 mysql:
   host: ''
   port: ''
@@ -50,6 +50,7 @@ hook:
   worldedit: 'true'
   betonlangapi: 'true'
   bountifulapi: 'true'
+  protocollib: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'

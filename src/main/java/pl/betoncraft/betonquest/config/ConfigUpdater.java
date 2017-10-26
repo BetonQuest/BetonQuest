@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v54";
+	private final String destination = "v55";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -201,6 +201,14 @@ public class ConfigUpdater {
 		// update again until destination is reached
 		update();
 	}
+
+    @SuppressWarnings("unused")
+    private void update_from_v54() {
+        config.set("hook.protocollib", "true");
+        Debug.broadcast("Added compatibility with ProtocolLib");
+        config.set("version", "v55");
+        instance.saveConfig();
+    }
 
     @SuppressWarnings("unused")
     private void update_from_v53() {
