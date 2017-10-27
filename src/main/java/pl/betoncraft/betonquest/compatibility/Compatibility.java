@@ -362,7 +362,7 @@ public class Compatibility {
 		        && plugin.getConfig().getString("hook.protocollib").equalsIgnoreCase("true")) {
 		    // if Citizens is hooked, start NPCHider
 		    if (hooked.contains("Citizens")) {
-		        new NPCHider();
+		        NPCHider.start();
 		        plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
 		    }
 		    hooked.add("ProtocolLib");
@@ -412,8 +412,7 @@ public class Compatibility {
 			instance.hologramLoop = new HologramLoop();
 		}
 		if (instance.hooked.contains("Citizens") && instance.hooked.contains("ProtocolLib")) {
-		    NPCHider.getInstance().stop();
-		    new NPCHider();
+            NPCHider.start();
 		}
 	}
 

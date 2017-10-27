@@ -51,22 +51,34 @@ public class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance;
 
-    private EntityHider hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-    private Map<Integer, Set<ConditionID>> npcs = new HashMap<>();
-    private Integer updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+    private EntityHider hider;
+    private Map<Integer, Set<ConditionID>> npcs;
+    private Integer updateInterval;
 
-    public NPCHider() {
-        instance = this;
-
-        loadFromConfig();
-
-        runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    /**
+     * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
+     */
+    public static void start() {
+        if (instance != null) {
+            instance.stop();
+        }
+        instance = new NPCHider();
     }
-
     
+    /**
+     * @return the currently used NPCHider instance
+     */
     public static NPCHider getInstance() {
         return instance;
+    }
+    
+    private NPCHider() {
+        npcs = new HashMap<>();
+        updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
+        loadFromConfig();
+        runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     private void loadFromConfig() {
@@ -117,11 +129,21 @@ public class NPCHider extends BukkitRunnable implements Listener {
         applyVisibility();
     }
     
+    /**
+     * Stops the NPCHider, cleaning up all listeners, runnables etc.
+     */
     public void stop() {
+        hider.close();
         cancel();
         HandlerList.unregisterAll(this);
     }
 
+    /**
+     * Updates the visibility of the specified NPC for this player.
+     * 
+     * @param player the player
+     * @param npcID ID of the NPC
+     */
     public void applyVisibility(Player player, Integer npcID) {
         boolean hidden = true;
         Set<ConditionID> conditions = npcs.get(npcID);
@@ -147,18 +169,31 @@ public class NPCHider extends BukkitRunnable implements Listener {
         }
     }
 
+    /**
+     * Updates the visibility of all NPCs for this player.
+     * 
+     * @param player the player
+     */
     public void applyVisibility(Player player) {
         for (Integer npcID : npcs.keySet()) {
             applyVisibility(player, npcID);
         }
     }
 
+    /**
+     * Updates the visibility of this NPC for all players.
+     * 
+     * @param npcID ID of the NPC
+     */
     public void applyVisibility(NPC npcID) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             applyVisibility(p, npcID.getId());
         }
     }
 
+    /**
+     * Updates the visibility of all NPCs for all players.
+     */
     public void applyVisibility() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             for (Integer npcID : npcs.keySet()) {
@@ -167,7 +202,13 @@ public class NPCHider extends BukkitRunnable implements Listener {
         }
     }
 
-
+    /**
+     * Checks whenever the NPC is visible to the player.
+     * 
+     * @param player the player
+     * @param npc ID of the NPC
+     * @return true if the NPC is visible to that player, false otherwise
+     */
     public boolean isInvisible(Player player, NPC npc) {
         return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
