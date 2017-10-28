@@ -53,19 +53,18 @@ public class PasswordObjective extends Objective implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onChat(AsyncPlayerChatEvent event) {
-		if(chatInput(event.getPlayer(), event.getMessage())) {
+		if(chatInput(false, event.getPlayer(), event.getMessage())) {
 			event.setCancelled(true);
 		}
 	}
 	@EventHandler(priority = EventPriority.LOW)
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		System.out.println(event.getMessage());
-		if(chatInput(event.getPlayer(), event.getMessage())) {
+		if(chatInput(true, event.getPlayer(), event.getMessage())) {
 			event.setCancelled(true);
 		}
 	}
 
-	private boolean chatInput(Player player, String message) {
+	private boolean chatInput(boolean fromCommand, Player player, String message) {
 		final String playerID = PlayerConverter.getID(player);
 		if (containsPlayer(playerID)) {
 			String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
@@ -73,23 +72,27 @@ public class PasswordObjective extends Objective implements Listener {
 			if (message.startsWith(prefix)) {
 				String password = message.substring(prefix.length());
 				if (ignoreCase) {
-					if (password.toLowerCase().matches(regex) && checkConditions(playerID))
+					if (password.toLowerCase().matches(regex) && checkConditions(playerID)) {
 						new BukkitRunnable() {
 							@Override
 							public void run() {
 								completeObjective(playerID);
 							}
 						}.runTask(BetonQuest.getInstance());
+						return true;
+					}
 				} else {
-					if (password.matches(regex) && checkConditions(playerID))
+					if (password.matches(regex) && checkConditions(playerID)) {
 						new BukkitRunnable() {
 							@Override
 							public void run() {
 								completeObjective(playerID);
 							}
 						}.runTask(BetonQuest.getInstance());
+						return true;
+					}
 				}
-				return true;
+				if(!fromCommand || !prefix.isEmpty()) return true;
 			}
 		}
 		return false;
