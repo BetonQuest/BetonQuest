@@ -18,11 +18,13 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -51,13 +53,25 @@ public class PasswordObjective extends Objective implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onChat(AsyncPlayerChatEvent event) {
-		final String playerID = PlayerConverter.getID(event.getPlayer());
+		if(chatInput(event.getPlayer(), event.getMessage())) {
+			event.setCancelled(true);
+		}
+	}
+	@EventHandler(priority = EventPriority.LOW)
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		System.out.println(event.getMessage());
+		if(chatInput(event.getPlayer(), event.getMessage())) {
+			event.setCancelled(true);
+		}
+	}
+
+	private boolean chatInput(Player player, String message) {
+		final String playerID = PlayerConverter.getID(player);
 		if (containsPlayer(playerID)) {
 			String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
 					"password");
-			if (event.getMessage().startsWith(prefix)) {
-				event.setCancelled(true);
-				String password = event.getMessage().substring(prefix.length());
+			if (message.startsWith(prefix)) {
+				String password = message.substring(prefix.length());
 				if (ignoreCase) {
 					if (password.toLowerCase().matches(regex) && checkConditions(playerID))
 						new BukkitRunnable() {
@@ -75,8 +89,10 @@ public class PasswordObjective extends Objective implements Listener {
 							}
 						}.runTask(BetonQuest.getInstance());
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	@Override
