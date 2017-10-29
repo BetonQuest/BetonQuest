@@ -27,6 +27,7 @@ softdepend:
 - BetonLangAPI
 - BountifulAPI
 - ProtocolLib
+- Brewery
 version: 1.10-dev
 commands:
   betonquest:

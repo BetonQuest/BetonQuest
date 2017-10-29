@@ -37,6 +37,10 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIEvent;
 import pl.betoncraft.betonquest.compatibility.betonlangapi.LangChangeListener;
 import pl.betoncraft.betonquest.compatibility.bountifulapi.BountifulTitleEvent;
+import pl.betoncraft.betonquest.compatibility.brewery.DrunkCondition;
+import pl.betoncraft.betonquest.compatibility.brewery.DrunkQualityCondition;
+import pl.betoncraft.betonquest.compatibility.brewery.GiveBrewEvent;
+import pl.betoncraft.betonquest.compatibility.brewery.TakeBrewEvent;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensInventoryConvIO;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
@@ -366,6 +370,17 @@ public class Compatibility {
 		        plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
 		    }
 		    hooked.add("ProtocolLib");
+		}
+
+		// hook into Brewery
+		if(Bukkit.getPluginManager().isPluginEnabled("Brewery")
+				&& plugin.getConfig().getString("hook.brewery").equalsIgnoreCase("true")){
+			plugin.registerEvents("givebrew", GiveBrewEvent.class);
+			plugin.registerEvents("takebrew", TakeBrewEvent.class);
+			plugin.registerConditions("drunk", DrunkCondition.class);
+			plugin.registerConditions("drunkquality", DrunkQualityCondition.class);
+
+			hooked.add("Brewery");
 		}
 
 		// log which plugins have been hooked

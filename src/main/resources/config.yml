@@ -51,6 +51,7 @@ hook:
   betonlangapi: 'true'
   bountifulapi: 'true'
   protocollib: 'true'
+  brewery: 'true'
 journal:
   chars_per_page: '245'
   one_entry_per_page: 'false'
