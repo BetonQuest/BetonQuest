@@ -59,7 +59,6 @@
 									<shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>
 								</relocation>
 							</relocations>
-							<minimizeJar>${minimize}</minimizeJar>
 						</configuration>
 					</execution>
 				</executions>
