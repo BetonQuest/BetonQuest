@@ -4,20 +4,19 @@ import com.dre.brewery.BIngredients;
 import com.dre.brewery.BRecipe;
 import com.dre.brewery.Brew;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class TakeBrewEvent extends QuestEvent{
+public class HasBrewCondition extends Condition{
 
     private Integer count;
     private BRecipe brew;
 
-    public TakeBrewEvent(Instruction instruction) throws InstructionParseException {
+    public HasBrewCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
 
         count = instruction.getInt();
@@ -43,8 +42,7 @@ public class TakeBrewEvent extends QuestEvent{
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
-
+    public boolean check(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;
@@ -52,18 +50,14 @@ public class TakeBrewEvent extends QuestEvent{
         for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack item = p.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
-                int amt = item.getAmount() - 1;
-                item.setAmount(amt);
-                p.getInventory().setItem(i, amt > 0 ? item : null);
 
                 remaining--;
                 if(remaining == 0){
-                    p.updateInventory();
-                    return;
+                    return true;
                 }
             }
         }
 
-        p.updateInventory();
+        return false;
     }
 }

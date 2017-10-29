@@ -11,11 +11,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class GiveBrewEvent extends QuestEvent{
 
+    private Integer amount;
     private Integer quality;
     private BRecipe recipe;
 
     public GiveBrewEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
+
+        amount = instruction.getInt();
 
         quality = instruction.getInt();
 
@@ -44,6 +47,11 @@ public class GiveBrewEvent extends QuestEvent{
     public void run(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
 
-        player.getWorld().dropItem(player.getLocation(), recipe.create(quality));
+        int remaining = amount;
+
+        while(remaining > 0){
+            player.getWorld().dropItem(player.getLocation(), recipe.create(quality));
+            remaining--;
+        }
     }
 }
