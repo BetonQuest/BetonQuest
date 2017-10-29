@@ -51,8 +51,8 @@ public class HasBrewCondition extends Condition{
             ItemStack item = p.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
 
-                remaining--;
-                if(remaining == 0){
+                remaining -= item.getAmount();
+                if(remaining <= 0){
                     return true;
                 }
             }

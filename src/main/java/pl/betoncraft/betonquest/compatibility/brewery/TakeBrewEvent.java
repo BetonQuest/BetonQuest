@@ -52,14 +52,15 @@ public class TakeBrewEvent extends QuestEvent{
         for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack item = p.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
-                int amt = item.getAmount() - 1;
-                item.setAmount(amt);
-                p.getInventory().setItem(i, amt > 0 ? item : null);
-
-                remaining--;
-                if(remaining == 0){
-                    p.updateInventory();
-                    return;
+                if (item.getAmount() - remaining <= 0) {
+                    remaining -= item.getAmount();
+                    p.getInventory().setItem(i, null);
+                } else {
+                    item.setAmount(item.getAmount() - remaining);
+                    remaining = 0;
+                }
+                if (remaining <= 0) {
+                    break;
                 }
             }
         }

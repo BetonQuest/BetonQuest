@@ -45,12 +45,23 @@ public class GiveBrewEvent extends QuestEvent{
 
     @Override
     public void run(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+        Player p = PlayerConverter.getPlayer(playerID);
 
         int remaining = amount;
 
-        while(remaining > 0){
-            player.getWorld().dropItem(player.getLocation(), recipe.create(quality));
+        for(int i = 0; i < p.getInventory().getSize(); i++){
+            if(p.getInventory().getItem(i) == null){
+                p.getInventory().setItem(i, recipe.create(quality));
+                remaining--;
+
+                if(remaining == 0){
+                    return;
+                }
+            }
+        }
+
+        while(remaining > 0) {
+            p.getWorld().dropItem(p.getLocation(), recipe.create(quality));
             remaining--;
         }
     }

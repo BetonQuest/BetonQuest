@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v55";
+	private final String destination = "v56";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -200,6 +200,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v55() {
+		config.set("hook.brewery", "true");
+		Debug.broadcast("Added compatibility with Brewery");
+		config.set("version", "v56");
+		instance.saveConfig();
 	}
 
     @SuppressWarnings("unused")
