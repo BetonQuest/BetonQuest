@@ -71,28 +71,15 @@ public class PasswordObjective extends Objective implements Listener {
 					"password");
 			if (message.startsWith(prefix)) {
 				String password = message.substring(prefix.length());
-				if (ignoreCase) {
-					if (password.toLowerCase().matches(regex) && checkConditions(playerID)) {
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								completeObjective(playerID);
-							}
-						}.runTask(BetonQuest.getInstance());
-						return true;
-					}
-				} else {
-					if (password.matches(regex) && checkConditions(playerID)) {
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								completeObjective(playerID);
-							}
-						}.runTask(BetonQuest.getInstance());
-						return true;
-					}
+				if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							completeObjective(playerID);
+						}
+					}.runTask(BetonQuest.getInstance());
 				}
-				if(!fromCommand || !prefix.isEmpty()) return true;
+                return !(fromCommand && prefix.isEmpty());
 			}
 		}
 		return false;
