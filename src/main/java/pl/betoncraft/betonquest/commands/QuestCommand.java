@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,11 +19,7 @@ package pl.betoncraft.betonquest.commands;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +27,8 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -60,10 +58,10 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Main admin command for quest editing.
- * 
+ *
  * @author Jakub Sapalski
  */
-public class QuestCommand implements CommandExecutor {
+public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	private BetonQuest instance = BetonQuest.getInstance();
 	private String defaultPack = Config.getString("config.default_package");
@@ -256,6 +254,134 @@ public class QuestCommand implements CommandExecutor {
 		return false;
 	}
 
+	@Override
+	public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1) {
+			return Arrays.asList(
+					"reload",
+			        "objective",
+			        "tag",
+			        "point",
+			        "journal",
+			        "condition",
+			        "event",
+			        "item",
+			        "give",
+			        "rename",
+			        "delete",
+			        "config",
+			        "vector",
+			        "purge",
+			        "backup");
+		}
+		switch (args[0]) {
+            case "conditions":
+            case "condition":
+            case "c":
+				return completeConditions(sender, args);
+            case "events":
+            case "event":
+            case "e":
+                return completeEvents(sender, args);
+            case "items":
+            case "item":
+            case "i":
+            case "give":
+            case "g":
+                return completeItems(sender, args);
+            case "config":
+                return completeConfig(sender, args);
+            case "objectives":
+            case "objective":
+            case "o":
+                return completeObjectives(sender, args);
+            case "tags":
+            case "tag":
+            case "t":
+                return completeTags(sender, args);
+            case "points":
+            case "point":
+            case "p":
+                return completePoints(sender, args);
+            case "journals":
+            case "journal":
+            case "j":
+                return completeJournals(sender, args);
+            case "delete":
+            case "del":
+            case "d":
+                return completeDeleting(sender, args);
+            case "rename":
+            case "r":
+                return completeRenaming(sender, args);
+            case "vector":
+            case "vec":
+            case "v":
+            	return completeVector(sender, args);
+            case "purge":
+                return null;
+            case "update":
+            	return completeUpdate(sender, args);
+            case "reload":
+			case "backup":
+			case "create":
+			case "package":
+			default:
+                return new ArrayList<>();
+        }
+	}
+
+	private List<String> completeUpdate(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("--dev");
+		else return new ArrayList<>();
+	}
+
+	private List<String> completePackage(CommandSender sender, String[] args) {
+		return new ArrayList<>(Config.getPackages().keySet());
+	}
+
+	private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
+		String last = args[args.length - 1];
+		if (last == null | !last.contains(".")) {
+			return completePackage(sender, args);
+		} else {
+			String pack = last.substring(0,last.indexOf("."));
+			ConfigPackage configPack = Config.getPackages().get(pack);
+			if (configPack == null) return new ArrayList<>();
+			if (type == null) {
+				List<String> completations = new ArrayList<>();
+				completations.add(pack + ".");
+				return completations;
+			}
+			ConfigAccessor accessor;
+			switch (type) {
+				case ITEMS:
+					accessor = configPack.getItems();
+					break;
+				case EVENTS:
+					accessor = configPack.getEvents();
+					break;
+				case JOURNAL:
+					accessor = configPack.getJournal();
+					break;
+				case CONDITIONS:
+					accessor = configPack.getConditions();
+					break;
+				case OBJECTIVES:
+					accessor = configPack.getObjectives();
+					break;
+				default:
+					return new ArrayList<>();
+			}
+			FileConfiguration configuration = accessor.getConfig();
+			List<String> completations = new ArrayList<>();
+			for (String key : configuration.getKeys(false)) {
+				completations.add(pack + "." + key);
+			}
+			return completations;
+		}
+	}
+
 	/**
 	 * Gives an item to the player
 	 */
@@ -406,6 +532,11 @@ public class QuestCommand implements CommandExecutor {
 		}
 	}
 
+	private List<String> completeConfig(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("set", "add" , "read");
+		return new ArrayList<>();
+	}
+
 	/**
 	 * Lists, adds or removes journal entries of certain players
 	 */
@@ -487,6 +618,13 @@ public class QuestCommand implements CommandExecutor {
 		}
 	}
 
+	private List<String> completeJournals(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return Arrays.asList("add", "list", "del");
+		if (args.length == 4) return completeJournals(sender, args);
+		return new ArrayList<>();
+	}
+
 	/**
 	 * Lists, adds or removes points of certain player
 	 */
@@ -555,6 +693,13 @@ public class QuestCommand implements CommandExecutor {
 		}
 	}
 
+	private List<String> completePoints(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return Arrays.asList("add", "list", "del");
+		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
 	/**
 	 * Adds item held in hand to items.yml file
 	 */
@@ -604,7 +749,12 @@ public class QuestCommand implements CommandExecutor {
 		config.saveConfig();
 		// done
 		sendMessage(sender, "item_created", new String[] { args[1] });
-		
+
+	}
+
+	private List<String> completeItems(CommandSender sender, String[] args) {
+		if (args.length == 2) return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
+		return new ArrayList<>();
 	}
 
 	/**
@@ -633,6 +783,12 @@ public class QuestCommand implements CommandExecutor {
 		// fire the event
 		BetonQuest.event(playerID, eventID);
 		sendMessage(sender, "player_event", new String[] { eventID.generateInstruction().getInstruction() });
+	}
+
+	private List<String> completeEvents(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return completeId(sender, args, ConfigAccessor.AccessorType.EVENTS);
+		return new ArrayList<>();
 	}
 
 	/**
@@ -664,6 +820,12 @@ public class QuestCommand implements CommandExecutor {
 				+ conditionID.generateInstruction().getInstruction(),
 				Boolean.toString(BetonQuest.condition(playerID, conditionID)) });
 	}
+
+    private List<String> completeConditions(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
+        return new ArrayList<>();
+    }
 
 	/**
 	 * Lists, adds or removes tags
@@ -725,6 +887,13 @@ public class QuestCommand implements CommandExecutor {
 			sendMessage(sender, "unknown_argument");
 			break;
 		}
+	}
+
+	private List<String> completeTags(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return Arrays.asList("list" + "add" + "del");
+		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
 	}
 
 	/**
@@ -834,9 +1003,16 @@ public class QuestCommand implements CommandExecutor {
 		}
 	}
 
+	private List<String> completeObjectives(CommandSender sender, String[] args) {
+		if (args.length == 2) return null;
+		if (args.length == 3) return Arrays.asList("list", "add", "del", "complete");
+		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+		return new ArrayList<>();
+	}
+
 	/**
 	 * Creates a vector variable
-	 * 
+	 *
 	 * @param sender
 	 * @param args
 	 */
@@ -883,6 +1059,22 @@ public class QuestCommand implements CommandExecutor {
 		Config.setString(pack + ".main.variables.vectors." + args[2],
 				String.format("$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
 		player.sendMessage("§2OK");
+	}
+
+	private List<String> completeVector(CommandSender sender, String[] args) {
+		if (args.length == 2) {
+			if (args[1] == null | !args[1].contains(".")) {
+				return completePackage(sender, args);
+			}
+			String pack = args[1].substring(0,args[1].indexOf("."));
+			ConfigPackage configPack = Config.getPackages().get(pack);
+			if (configPack == null) return new ArrayList<>();
+			ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
+			Collection<String> keys = section.getKeys(false);
+			if (keys.isEmpty()) return new ArrayList<>();
+			return new ArrayList<>(keys);
+		}
+		return new ArrayList<>();
 	}
 
 	/**
@@ -1010,6 +1202,12 @@ public class QuestCommand implements CommandExecutor {
 		sendMessage(sender, "everything_renamed");
 	}
 
+	private List<String> completeRenaming(CommandSender sender, String[] args) {
+		if (args.length <= 3) return completeDeleting(sender, args);
+		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
 	/**
 	 * Deleted stuff.
 	 */
@@ -1078,6 +1276,33 @@ public class QuestCommand implements CommandExecutor {
 		}
 		BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[] { name }));
 		sendMessage(sender, "everything_removed");
+	}
+
+	private List<String> completeDeleting(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("tag" + "point" + "objective" + "entry");
+		if (args.length == 3) {
+			switch (args[1]) {
+				case "tags":
+				case "tag":
+				case "t":
+				case "points":
+				case "point":
+				case "p":
+					return completeId(sender, args, null);
+				case "objectives":
+				case "objective":
+				case "o":
+					return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+				case "journals":
+				case "journal":
+				case "j":
+				case "entries":
+				case "entry":
+				case "e":
+					return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+			}
+		}
+		return new ArrayList<>();
 	}
 
 	/**
