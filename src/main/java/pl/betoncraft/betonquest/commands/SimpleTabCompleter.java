@@ -23,7 +23,7 @@ public interface SimpleTabCompleter extends TabCompleter {
         List<String> out = new ArrayList<>();
         String lastArg = args[args.length - 1];
         for (String completation : completations) {
-            if (lastArg == null || lastArg.matches(" *") || completation.startsWith(lastArg)) {
+            if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase().startsWith(lastArg.toLowerCase())) {
                 out.add(completation);
             }
         }
