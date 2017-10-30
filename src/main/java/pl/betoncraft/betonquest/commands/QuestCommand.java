@@ -71,6 +71,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	 */
 	public QuestCommand() {
 		BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
+		BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
 	}
 
 	@Override
@@ -319,7 +320,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
             case "v":
             	return completeVector(sender, args);
             case "purge":
-                return null;
+                if (args.length == 2) return null;
+                else return new ArrayList<>();
             case "update":
             	return completeUpdate(sender, args);
             case "reload":
@@ -891,7 +893,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	private List<String> completeTags(CommandSender sender, String[] args) {
 		if (args.length == 2) return null;
-		if (args.length == 3) return Arrays.asList("list" + "add" + "del");
+		if (args.length == 3) return Arrays.asList("list", "add", "del");
 		if (args.length == 4) return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
@@ -1279,7 +1281,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	}
 
 	private List<String> completeDeleting(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("tag" + "point" + "objective" + "entry");
+		if (args.length == 2) return Arrays.asList("tag", "point", "objective", "entry");
 		if (args.length == 3) {
 			switch (args[1]) {
 				case "tags":
