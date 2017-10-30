@@ -29,15 +29,19 @@ import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Changes the default language for the player
  * 
  * @author Jakub Sapalski
  */
-public class LangCommand implements CommandExecutor {
+public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
 	public LangCommand() {
 		BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
+		BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);
 	}
 
 	@Override
@@ -82,5 +86,13 @@ public class LangCommand implements CommandExecutor {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1) {
+			return Config.getLanguages();
+		}
+		return new ArrayList<>();
 	}
 }
