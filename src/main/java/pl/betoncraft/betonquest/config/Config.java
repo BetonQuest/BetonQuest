@@ -340,7 +340,6 @@ public class Config {
 	public static boolean setString(String address, String value) {
 		if (address == null)
 			return false;
-		;
 		String[] parts = address.split("\\.");
 		if (parts.length < 2)
 			return false;
