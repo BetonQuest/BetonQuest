@@ -363,7 +363,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	 */
 	private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
 		String last = args[args.length - 1];
-		if (last == null | !last.contains(".")) {
+		if (last == null || !last.contains(".")) {
 			return completePackage(sender, args);
 		} else {
 			String pack = last.substring(0,last.indexOf("."));
@@ -1138,7 +1138,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	 */
 	private List<String> completeVector(CommandSender sender, String[] args) {
 		if (args.length == 2) {
-			if (args[1] == null | !args[1].contains(".")) {
+			if (args[1] == null || !args[1].contains(".")) {
 				return completePackage(sender, args);
 			}
 			String pack = args[1].substring(0,args[1].indexOf("."));
