@@ -260,77 +260,76 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (args.length == 1) {
 			return Arrays.asList(
 					"reload",
-			        "objective",
-			        "tag",
-			        "point",
-			        "journal",
-			        "condition",
-			        "event",
-			        "item",
-			        "give",
-			        "rename",
-			        "delete",
-			        "config",
-			        "vector",
-			        "purge",
-			        "backup");
+					"objective",
+					"tag",
+					"point",
+					"journal",
+					"condition",
+					"event",
+					"item",
+					"give",
+					"rename",
+					"delete",
+					"config",
+					"vector",
+					"backup");
 		}
 		switch (args[0].toLowerCase()) {
-            case "conditions":
-            case "condition":
-            case "c":
+			case "conditions":
+			case "condition":
+			case "c":
 				return completeConditions(sender, args);
-            case "events":
-            case "event":
-            case "e":
-                return completeEvents(sender, args);
-            case "items":
-            case "item":
-            case "i":
-            case "give":
-            case "g":
-                return completeItems(sender, args);
-            case "config":
-                return completeConfig(sender, args);
-            case "objectives":
-            case "objective":
-            case "o":
-                return completeObjectives(sender, args);
-            case "tags":
-            case "tag":
-            case "t":
-                return completeTags(sender, args);
-            case "points":
-            case "point":
-            case "p":
-                return completePoints(sender, args);
-            case "journals":
-            case "journal":
-            case "j":
-                return completeJournals(sender, args);
-            case "delete":
-            case "del":
-            case "d":
-                return completeDeleting(sender, args);
-            case "rename":
-            case "r":
-                return completeRenaming(sender, args);
-            case "vector":
-            case "vec":
-            case "v":
-            	return completeVector(sender, args);
-            case "purge":
-                if (args.length == 2) return null;
-                else return new ArrayList<>();
-            case "update":
-            	return completeUpdate(sender, args);
-            case "reload":
+			case "events":
+			case "event":
+			case "e":
+				return completeEvents(sender, args);
+			case "items":
+			case "item":
+			case "i":
+			case "give":
+			case "g":
+				return completeItems(sender, args);
+			case "config":
+				return completeConfig(sender, args);
+			case "objectives":
+			case "objective":
+			case "o":
+				return completeObjectives(sender, args);
+			case "tags":
+			case "tag":
+			case "t":
+				return completeTags(sender, args);
+			case "points":
+			case "point":
+			case "p":
+				return completePoints(sender, args);
+			case "journals":
+			case "journal":
+			case "j":
+				return completeJournals(sender, args);
+			case "delete":
+			case "del":
+			case "d":
+				return completeDeleting(sender, args);
+			case "rename":
+			case "r":
+				return completeRenaming(sender, args);
+			case "vector":
+			case "vec":
+			case "v":
+				return completeVector(sender, args);
+			case "purge":
+				if (args.length == 2) return null;
+				else return new ArrayList<>();
+			case "update":
+				return completeUpdate(sender, args);
+			case "reload":
 			case "backup":
 			case "create":
 			case "package":
 			default:
-                return new ArrayList<>();
-        }
+				return new ArrayList<>();
+		}
 	}
 
 	/**
@@ -878,11 +877,11 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	 * @param args
 	 * @return
 	 */
-    private List<String> completeConditions(CommandSender sender, String[] args) {
+	private List<String> completeConditions(CommandSender sender, String[] args) {
 		if (args.length == 2) return null;
 		if (args.length == 3) return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
-        return new ArrayList<>();
-    }
+		return new ArrayList<>();
+	}
 
 	/**
 	 * Lists, adds or removes tags

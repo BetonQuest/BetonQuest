@@ -32,19 +32,19 @@ import java.util.List;
 public interface SimpleTabCompleter extends TabCompleter {
 
 
-    @Override
-    default List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completations = this.simpleTabComplete(sender, command, alias, args);
-        if (completations == null) return null;
-        List<String> out = new ArrayList<>();
-        String lastArg = args[args.length - 1];
-        for (String completation : completations) {
-            if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase().startsWith(lastArg.toLowerCase())) {
-                out.add(completation);
-            }
-        }
-        return out;
-    }
+	@Override
+	default List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		List<String> completations = this.simpleTabComplete(sender, command, alias, args);
+		if (completations == null) return null;
+		List<String> out = new ArrayList<>();
+		String lastArg = args[args.length - 1];
+		for (String completation : completations) {
+			if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase().startsWith(lastArg.toLowerCase())) {
+				out.add(completation);
+			}
+		}
+		return out;
+	}
 
-    List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args);
+	List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args);
 }
