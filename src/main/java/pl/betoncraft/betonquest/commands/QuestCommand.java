@@ -363,7 +363,35 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
 		String last = args[args.length - 1];
 		if (last == null || !last.contains(".")) {
-			return completePackage(sender, args);
+			List<String> completations = new ArrayList<>(completePackage(sender, args));
+			completations.remove(Config.getDefaultPackage());
+			ConfigPackage deFault = Config.getPackages().get(Config.getDefaultPackage());
+			if (type == null) return completations;
+			ConfigAccessor accessor;
+			switch (type) {
+				case ITEMS:
+					accessor = deFault.getItems();
+					break;
+				case EVENTS:
+					accessor = deFault.getEvents();
+					break;
+				case JOURNAL:
+					accessor = deFault.getJournal();
+					break;
+				case CONDITIONS:
+					accessor = deFault.getConditions();
+					break;
+				case OBJECTIVES:
+					accessor = deFault.getObjectives();
+					break;
+				default:
+					return completations;
+			}
+			FileConfiguration configuration = accessor.getConfig();
+			for (String key : configuration.getKeys(false)) {
+				completations.add(key);
+			}
+			return completations;
 		} else {
 			String pack = last.substring(0,last.indexOf("."));
 			ConfigPackage configPack = Config.getPackages().get(pack);
@@ -653,7 +681,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	private List<String> completeJournals(CommandSender sender, String[] args) {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("add", "list", "del");
-		if (args.length == 4) return completeJournals(sender, args);
+		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
 		return new ArrayList<>();
 	}
 
