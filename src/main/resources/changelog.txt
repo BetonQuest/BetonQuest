@@ -1,4 +1,17 @@
-﻿v1.9.2
+﻿v1.9.3
+Fixes:
+    * NPC and mob kills will be correctly registered when killed by indirect means
+    * Replaced error with a nice message when config updating fails to start
+    * Unbreakable items are no longer breakable in newer Spigot releases
+    * Moved compatibility hooks to the first server tick to hook into lazy plugins
+    * Colors of text in "chest" conversations are now correctly applied over text breaks
+    * Added a nice message when conversation option is missing "text"
+    * Fixed a rare crash when NPC was stopped and its target was outside of loaded chunks
+    * Fixed checking item amounts in the backpack
+    * Allowed negative data in items for compatibility with dark magics
+    * Removed Denizen script checking, since it didn't work sometimes
+
+v1.9.2
 Fixes:
     * Conversations won't allow taking items from GUI windows
     * When using wrong 'point' or 'item' variable there will be a nice error message
