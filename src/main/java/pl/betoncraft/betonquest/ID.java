@@ -80,7 +80,7 @@ public abstract class ID {
 			if (pack != null) {
 				this.pack = pack;
 			} else {
-				this.pack = Config.getPackages().get(Config.getDefaultPackage());
+				this.pack = Config.getDefaultPackage();
 			}
 			this.id = id;
 		}

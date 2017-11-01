@@ -214,7 +214,7 @@ public class ConfigUpdater {
     private void update_from_v53() {
         ConfigurationSection section = config.getConfigurationSection("effectlib_npc_effect");
         if (section != null) {
-            ConfigAccessor custom = Config.getPackages().get(Config.getDefaultPackage()).getCustom();
+            ConfigAccessor custom = Config.getDefaultPackage().getCustom();
             Configuration config = custom.getConfig();
             config.set("npc_effects.default", section);
             config.set("npc_effects.default.interval", config.getInt("npc_effects.default.delay") * 20);
