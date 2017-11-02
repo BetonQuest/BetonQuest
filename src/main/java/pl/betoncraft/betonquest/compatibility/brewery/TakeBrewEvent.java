@@ -4,7 +4,6 @@ import com.dre.brewery.BIngredients;
 import com.dre.brewery.BRecipe;
 import com.dre.brewery.Brew;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;

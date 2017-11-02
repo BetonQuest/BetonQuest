@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.brewery;
 
 import com.dre.brewery.BPlayer;
-import pl.betoncraft.betonquest.ID;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;

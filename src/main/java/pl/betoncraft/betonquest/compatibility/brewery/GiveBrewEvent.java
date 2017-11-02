@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.brewery;
 import com.dre.brewery.BIngredients;
 import com.dre.brewery.BRecipe;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -47,22 +48,15 @@ public class GiveBrewEvent extends QuestEvent{
     public void run(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
 
-        int remaining = amount;
-
-        for(int i = 0; i < p.getInventory().getSize(); i++){
-            if(p.getInventory().getItem(i) == null){
-                p.getInventory().setItem(i, recipe.create(quality));
-                remaining--;
-
-                if(remaining == 0){
-                    return;
-                }
-            }
+        ItemStack[] brews = new ItemStack[amount];
+        for(int i = 0; i < amount; i++){
+            brews[i] = recipe.create(quality);
         }
 
-        while(remaining > 0) {
-            p.getWorld().dropItem(p.getLocation(), recipe.create(quality));
-            remaining--;
+        ItemStack[] remaining = (ItemStack[]) p.getInventory().addItem(brews).values().toArray();
+
+        for(ItemStack item : remaining) {
+            p.getWorld().dropItem(p.getLocation(), item);
         }
     }
 }
