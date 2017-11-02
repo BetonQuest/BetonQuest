@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +41,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MythicMobKillObjective extends Objective implements Listener {
 
-	private final List<String> names = new ArrayList<>();
+	private final Set<String> names = new HashSet<>();
 	private final int amount;
 	private final boolean notify;
 
