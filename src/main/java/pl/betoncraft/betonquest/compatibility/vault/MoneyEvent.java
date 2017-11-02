@@ -24,7 +24,6 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -56,7 +55,7 @@ public class MoneyEvent extends QuestEvent {
 	public void run(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
 		// get the difference between target money and current money
-		double current = Compatibility.getEconomy().getBalance(player);
+		double current = VaultIntegrator.getEconomy().getBalance(player);
 		double target;
 		if (multi)
 			target = current * amount.getDouble(playerID);
@@ -64,9 +63,9 @@ public class MoneyEvent extends QuestEvent {
 			target = current + amount.getDouble(playerID);
 		double difference = target - current;
 		if (difference > 0) {
-			Compatibility.getEconomy().depositPlayer(player.getName(), difference);
+		    VaultIntegrator.getEconomy().depositPlayer(player.getName(), difference);
 		} else if (difference < 0) {
-			Compatibility.getEconomy().withdrawPlayer(player.getName(), -difference);
+		    VaultIntegrator.getEconomy().withdrawPlayer(player.getName(), -difference);
 		}
 	}
 }

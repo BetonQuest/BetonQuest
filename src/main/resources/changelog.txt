@@ -1,4 +1,8 @@
-﻿v1.9.3
+﻿v1.9.4
+Fixes:
+    * Fixed broken integration loading
+
+v1.9.3
 Fixes:
     * NPC and mob kills will be correctly registered when killed by indirect means
     * Replaced error with a nice message when config updating fails to start

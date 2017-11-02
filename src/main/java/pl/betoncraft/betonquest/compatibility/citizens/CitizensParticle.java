@@ -27,7 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 
@@ -87,7 +87,7 @@ public class CitizensParticle extends BukkitRunnable {
 			}
 			Location loc = e.getLocation().clone();
 			loc.setPitch(-90);
-			Compatibility.getEffectManager().start(name, section, loc);
+			EffectLibIntegrator.getEffectManager().start(name, section, loc);
 		}
 	}
 

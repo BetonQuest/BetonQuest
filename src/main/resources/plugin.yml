@@ -3,8 +3,29 @@ main: pl.betoncraft.betonquest.BetonQuest
 description: Advanced role-playing quests and NPC conversations
 authors: [Co0sh]
 website: https://www.spigotmc.org/resources/betonquest.2117/
-softdepend: [Skript, Citizens, MythicMobs, Vault, Multiverse-Core, EffectLib, PlayerPoints, Heroes, Magic, Denizen, WorldEdit, WorldGuard, mcMMO, Shopkeepers, SkillAPI, Quests, PlaceholderAPI, HolographicDisplays, RacesAndClasses, LegendQuest]
-version: 1.9.3
+version: 1.9.4
+load: STARTUP
+loadbefore: 
+- Skript
+- Citizens
+- MythicMobs
+- Vault
+- Multiverse-Core
+- EffectLib
+- PlayerPoints
+- Heroes
+- Magic
+- Denizen
+- WorldEdit
+- WorldGuard
+- mcMMO
+- Shopkeepers
+- SkillAPI
+- Quests
+- PlaceholderAPI
+- HolographicDisplays
+- RacesAndClasses
+- LegendQuest
 commands:
   betonquest:
     description: General quest command

@@ -23,7 +23,6 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -56,9 +55,9 @@ public class ParticleEvent extends QuestEvent {
 	@Override
 	public void run(String playerID) throws QuestRuntimeException {
 		if (loc == null) {
-			Compatibility.getEffectManager().start(effectClass, parameters, PlayerConverter.getPlayer(playerID));
+			EffectLibIntegrator.getEffectManager().start(effectClass, parameters, PlayerConverter.getPlayer(playerID));
 		} else {
-			Compatibility.getEffectManager().start(effectClass, parameters, loc.getLocation(playerID));
+		    EffectLibIntegrator.getEffectManager().start(effectClass, parameters, loc.getLocation(playerID));
 		}
 	}
 
