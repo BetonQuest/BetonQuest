@@ -39,7 +39,7 @@ import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.ObjectNotFoundException;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -240,7 +240,7 @@ public class CitizensParticle extends BukkitRunnable {
                 loc.setPitch(-90);
 
                 // fire the effect
-                Compatibility.getEffectManager().start(
+                EffectLibIntegrator.getEffectManager().start(
                         effect.name,
                         effect.settings,
                         new DynamicLocation(loc, null),

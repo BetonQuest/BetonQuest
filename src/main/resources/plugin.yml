@@ -3,7 +3,8 @@ main: pl.betoncraft.betonquest.BetonQuest
 description: Advanced role-playing quests and NPC conversations
 authors: [Co0sh]
 website: https://www.spigotmc.org/resources/betonquest.2117/
-softdepend: 
+load: STARTUP
+loadbefore: 
 - Skript
 - Citizens
 - MythicMobs

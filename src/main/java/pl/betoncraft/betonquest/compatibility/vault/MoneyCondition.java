@@ -22,7 +22,6 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -45,7 +44,7 @@ public class MoneyCondition extends Condition {
 		double a = amount.getDouble(playerID);
 		if (a < 0)
 			a = -a;
-		return Compatibility.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
+		return VaultIntegrator.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
 	}
 
 }

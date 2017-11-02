@@ -21,7 +21,6 @@ import net.milkbowl.vault.permission.Permission;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -49,7 +48,7 @@ public class PermissionEvent extends QuestEvent {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(String playerID) {
-		Permission vault = Compatibility.getPermission();
+		Permission vault = VaultIntegrator.getPermission();
 		String player = PlayerConverter.getPlayer(playerID).getName();
 		if (add) {
 			if (perm) {
