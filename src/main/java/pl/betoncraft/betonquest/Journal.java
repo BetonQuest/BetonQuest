@@ -363,7 +363,23 @@ public class Journal {
                 meta.setPages(finalList);
             }
         } else if (finalList.size() > 0) {
-            meta.setPages(finalList);
+            String mainPage = "";
+            List<String> pages = new ArrayList<>();
+            boolean space = false;
+            for (String str : finalList) {
+                if (str.equals("+-+-+-+-+-+-+-+-+")) {
+                    space = true;
+                }
+                if (space && !pages.contains(mainPage))
+                    pages.add(mainPage);
+                if (!space) {
+                    mainPage += str + "\n";
+                } else {
+                    pages.add(str);
+                }
+            }
+            pages.remove("+-+-+-+-+-+-+-+-+");
+            meta.setPages(pages);
         } else {
             meta.addPage("");
         }
