@@ -25,6 +25,7 @@ import net.aufdemrand.denizencore.scripts.ScriptRegistry;
 import net.aufdemrand.denizencore.scripts.containers.core.TaskScriptContainer;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -35,22 +36,22 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class DenizenTaskScriptEvent extends QuestEvent {
 
-	private TaskScriptContainer taskScript;
+	private String name;
 
 	public DenizenTaskScriptEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		String string = instruction.next();
-		taskScript = ScriptRegistry.getScriptContainerAs(string, TaskScriptContainer.class);
-		if (taskScript == null) {
-			throw new InstructionParseException("Denizen script '" + string + "' is not defined");
-		}
+		name = instruction.next();
 	}
 
 	@Override
-	public void run(String playerID) {
+	public void run(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
+		TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
+		if (script == null) {
+		    throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
+		}
 		BukkitScriptEntryData data = new BukkitScriptEntryData(dPlayer.mirrorBukkitPlayer(player), null);
-		taskScript.runTaskScript(data, null);
+		script.runTaskScript(data, null);
 	}
 
 }

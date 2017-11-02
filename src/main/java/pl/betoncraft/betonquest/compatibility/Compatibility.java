@@ -68,6 +68,8 @@ import pl.betoncraft.betonquest.compatibility.placeholderapi.BetonQuestPlacehold
 import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderVariable;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
+import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEvent;
 import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
 import pl.betoncraft.betonquest.compatibility.quests.EventReward;
 import pl.betoncraft.betonquest.compatibility.quests.QuestCondition;
@@ -354,6 +356,17 @@ public class Compatibility {
 			plugin.registerEvents("title", BountifulTitleEvent.class);
 			hooked.add("BountifulAPI");
 		}
+		
+		// hook into ProtocolLib
+		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
+		        && plugin.getConfig().getString("hook.protocollib").equalsIgnoreCase("true")) {
+		    // if Citizens is hooked, start NPCHider
+		    if (hooked.contains("Citizens")) {
+		        NPCHider.start();
+		        plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+		    }
+		    hooked.add("ProtocolLib");
+		}
 
 		// log which plugins have been hooked
 		if (hooked.size() > 0) {
@@ -397,6 +410,9 @@ public class Compatibility {
 		if (instance.hooked.contains("HolographicDisplays")) {
 			instance.hologramLoop.cancel();
 			instance.hologramLoop = new HologramLoop();
+		}
+		if (instance.hooked.contains("Citizens") && instance.hooked.contains("ProtocolLib")) {
+            NPCHider.start();
 		}
 	}
 

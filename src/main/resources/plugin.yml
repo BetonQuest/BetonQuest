@@ -3,7 +3,30 @@ main: pl.betoncraft.betonquest.BetonQuest
 description: Advanced role-playing quests and NPC conversations
 authors: [Co0sh]
 website: https://www.spigotmc.org/resources/betonquest.2117/
-softdepend: [Skript, Citizens, MythicMobs, Vault, Multiverse-Core, EffectLib, PlayerPoints, Heroes, Magic, Denizen, WorldEdit, WorldGuard, mcMMO, Shopkeepers, SkillAPI, Quests, PlaceholderAPI, HolographicDisplays, RacesAndClasses, LegendQuest, BetonLangAPI, BountifulAPI]
+softdepend: 
+- Skript
+- Citizens
+- MythicMobs
+- Vault
+- Multiverse-Core
+- EffectLib
+- PlayerPoints
+- Heroes
+- Magic
+- Denizen
+- WorldEdit
+- WorldGuard
+- mcMMO
+- Shopkeepers
+- SkillAPI
+- Quests
+- PlaceholderAPI
+- HolographicDisplays
+- RacesAndClasses
+- LegendQuest
+- BetonLangAPI
+- BountifulAPI
+- ProtocolLib
 version: 1.10-dev
 commands:
   betonquest:

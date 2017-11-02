@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v54";
+	private final String destination = "v55";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -203,10 +203,18 @@ public class ConfigUpdater {
 	}
 
     @SuppressWarnings("unused")
+    private void update_from_v54() {
+        config.set("hook.protocollib", "true");
+        Debug.broadcast("Added compatibility with ProtocolLib");
+        config.set("version", "v55");
+        instance.saveConfig();
+    }
+
+    @SuppressWarnings("unused")
     private void update_from_v53() {
         ConfigurationSection section = config.getConfigurationSection("effectlib_npc_effect");
         if (section != null) {
-            ConfigAccessor custom = Config.getPackages().get(Config.getDefaultPackage()).getCustom();
+            ConfigAccessor custom = Config.getDefaultPackage().getCustom();
             Configuration config = custom.getConfig();
             config.set("npc_effects.default", section);
             config.set("npc_effects.default.interval", config.getInt("npc_effects.default.delay") * 20);

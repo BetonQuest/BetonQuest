@@ -11,7 +11,7 @@ narrated with NPC conversations, with multiple endings affecting the player's ga
 
 ## Features
 
-* Minecraft **1.9**, **1.10** and **1.11** support
+* Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
 * **Powerful event system**: anything you want can happen anywhere in a quest
 * Even more **powerful condition system**: you can limit whenever something should (or shouldn't) happen
@@ -36,6 +36,7 @@ narrated with NPC conversations, with multiple endings affecting the player's ga
 [MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/),
 [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/),
 [PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/),
+[ProtocolLib](https://dev.bukkit.org/bukkit-plugins/protocollib),
 [Quests](https://dev.bukkit.org/bukkit-plugins/quests/),
 [RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/),
 [Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/),
@@ -113,5 +114,4 @@ are not there yet, just wait an hour or two.
 
 BetonQuest is too complex to add an in-game editor. Minecraft's chat and inventory windows are just too
 limited to allow for editing as many objects as BetonQuest uses. That's why there is a desktop editor.
-It can be either bought on [Sellfy](https://sellfy.com/p/nE5Y/) or compiled from source on [GitHub]
-(https://github.com/Co0sh/BetonQuest-Editor). There is an instruction on how to do it.
+It can be either bought on [Sellfy](https://sellfy.com/p/nE5Y/) or compiled from source on [GitHub](https://github.com/Co0sh/BetonQuest-Editor). There is an instruction on how to do it.
