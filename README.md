@@ -11,7 +11,7 @@ narrated with NPC conversations, with multiple endings affecting the player's ga
 
 ## Features
 
-* Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
+* Spigot **1.8**, **1.9**, **1.10**, **1.11** and **1.12** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
 * **Powerful event system**: anything you want can happen anywhere in a quest
 * Even more **powerful condition system**: you can limit whenever something should (or shouldn't) happen

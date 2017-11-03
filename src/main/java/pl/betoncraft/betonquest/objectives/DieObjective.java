@@ -67,7 +67,8 @@ public class DieObjective extends Objective implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.HIGH)
 	public void onLastDamage(EntityDamageEvent event) {
 		if (event.isCancelled() || !cancel) {
 			return;
@@ -78,7 +79,11 @@ public class DieObjective extends Objective implements Listener {
 			if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
 					&& checkConditions(playerID)) {
 				event.setCancelled(true);
-				player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+				try {
+	                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+				} catch (LinkageError e) {
+				    player.setHealth(player.getMaxHealth());
+				}
 				player.setFoodLevel(20);
 				player.setExhaustion(4);
 				player.setSaturation(20);

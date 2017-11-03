@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.betoncraft.betonquest.Instruction;
@@ -42,8 +43,15 @@ public class EmptySlotsCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
+	    Player player = PlayerConverter.getPlayer(playerID);
+	    ItemStack[] items = null;
+	    try {
+	        items = player.getInventory().getStorageContents();
+	    } catch (LinkageError e) {
+	        items = player.getInventory().getContents();
+	    }
 		int empty = 0;
-		for (ItemStack item : PlayerConverter.getPlayer(playerID).getInventory().getStorageContents()) {
+		for (ItemStack item : items) {
 			if (item == null)
 				empty++;
 		}
