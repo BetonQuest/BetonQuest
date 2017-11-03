@@ -10,6 +10,8 @@ import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Collection;
+
 public class GiveBrewEvent extends QuestEvent{
 
     private Integer amount;
@@ -53,7 +55,7 @@ public class GiveBrewEvent extends QuestEvent{
             brews[i] = recipe.create(quality);
         }
 
-        ItemStack[] remaining = (ItemStack[]) p.getInventory().addItem(brews).values().toArray();
+        Collection<ItemStack> remaining = p.getInventory().addItem(brews).values();
 
         for(ItemStack item : remaining) {
             p.getWorld().dropItem(p.getLocation(), item);
