@@ -40,9 +40,9 @@ public class DataHandler {
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse item data value");
 		}
-		if (this.data < 0) {
-			throw new InstructionParseException("Item data value cannot be negative");
-		}
+//		if (this.data < 0) {
+//			throw new InstructionParseException("Item data value cannot be negative");
+//		}
 	}
 	
 	public short get() {

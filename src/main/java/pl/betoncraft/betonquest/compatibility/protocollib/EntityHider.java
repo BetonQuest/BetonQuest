@@ -164,7 +164,11 @@ public class EntityHider implements Listener {
      * @return TRUE if they are present, FALSE otherwise.
      */
     protected boolean getMembership(Player observer, int entityID) {
-        return observerEntityMap.contains(observer.getEntityId(), entityID);
+        try {
+            return observerEntityMap.contains(observer.getEntityId(), entityID);
+        } catch (UnsupportedOperationException e) {
+            return policy == Policy.WHITELIST;
+        }
     }
 
     /**

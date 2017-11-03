@@ -18,11 +18,13 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -51,32 +53,36 @@ public class PasswordObjective extends Objective implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onChat(AsyncPlayerChatEvent event) {
-		final String playerID = PlayerConverter.getID(event.getPlayer());
+		if(chatInput(false, event.getPlayer(), event.getMessage())) {
+			event.setCancelled(true);
+		}
+	}
+	@EventHandler(priority = EventPriority.LOW)
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		if(chatInput(true, event.getPlayer(), event.getMessage())) {
+			event.setCancelled(true);
+		}
+	}
+
+	private boolean chatInput(boolean fromCommand, Player player, String message) {
+		final String playerID = PlayerConverter.getID(player);
 		if (containsPlayer(playerID)) {
 			String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
 					"password");
-			if (event.getMessage().startsWith(prefix)) {
-				event.setCancelled(true);
-				String password = event.getMessage().substring(prefix.length());
-				if (ignoreCase) {
-					if (password.toLowerCase().matches(regex) && checkConditions(playerID))
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								completeObjective(playerID);
-							}
-						}.runTask(BetonQuest.getInstance());
-				} else {
-					if (password.matches(regex) && checkConditions(playerID))
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								completeObjective(playerID);
-							}
-						}.runTask(BetonQuest.getInstance());
+			if (message.startsWith(prefix)) {
+				String password = message.substring(prefix.length());
+				if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							completeObjective(playerID);
+						}
+					}.runTask(BetonQuest.getInstance());
 				}
+                return !(fromCommand && prefix.isEmpty());
 			}
 		}
+		return false;
 	}
 
 	@Override

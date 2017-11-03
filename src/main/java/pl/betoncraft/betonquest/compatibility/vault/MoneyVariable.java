@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.compatibility.vault;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -51,9 +50,9 @@ public class MoneyVariable extends Variable {
 	public String getValue(String playerID) {
 		switch (type) {
 		case AMOUNT:
-			return String.valueOf(Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+			return String.valueOf(VaultIntegrator.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
 		case LEFT:
-			return String.valueOf(amount - Compatibility.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+			return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
 		default:
 			return "";
 		}
