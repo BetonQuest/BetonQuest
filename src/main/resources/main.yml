@@ -12,6 +12,7 @@ cancel:
       es: '&2Madera_para_el_Tabernero'
       de: '&2Holz_fuer_den_Gastwirt'
       fr: '&2Bois_pour_Aubergiste'
+      hu: '&2Fa_az_Innkeeper_számára'
     conditions: wood_started,!wood_paid
     objectives: wood
     tags: wood_started,wood_done,wood_paid
@@ -27,4 +28,5 @@ journal_main_page:
       cn: '\u4f60\u5b8c\u6210\u4e86\u65c5\u9986\u8001\u677f\u7684\u4efb\u52a1!'
       es: 'Has completado una mision para el tabernero!'
       nl: 'Je hebt een quest afgerond voor Herbergier!'
+      hu: 'Elvégezte az Innkeeper küldetését!'
     conditions: 'wood_paid'
