@@ -55,3 +55,60 @@ en:
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
   error: '&cThere has been an error: {1}'
+hu:
+  unknown_argument: '&cÉrvénytelen argument.'
+  reloaded: '&cA konfiguráció újratöltve!'
+  arguments: '&cNincs elég argumentum.'
+  specify_condition: '&cAdja meg a helyes állapot nevét.'
+  specify_event: '&cAdja meg a helyes esemény nevét.'
+  specify_player: '&cAdja meg a játékos nevét.'
+  specify_item: '&cAdja meg a helyes tárgy nevét.'
+  specify_tag: '&cAdja meg a címkét.'
+  specify_objective: '&cAdja meg a helyes objektum nevét.'
+  specify_category_and_amount: '&cAdja meg a kategória nevét és a módosított pontok mennyiségét.'
+  specify_pointer: '&cAdja meg a helyes mutató nevét.'
+  specify_date: '&cAdja meg a mutató dátumát (formátumban, mint a date_format)'
+  specify_action: '&cAdja meg a műveletet (olvassa el, állítsa be vagy adjon hozzá)'
+  specify_path: '&cAdja meg az útvonalat (pöttyökkel elválasztva))'
+  specify_package: '&cAdja meg a csomag nevét'
+  package_created: '&2Csomag létrehozva'
+  package_exists: '&cA csomag már létezik'
+  config_set_error: '&cNem lehet beállítani a meghatározott útvonalat.'
+  no_item: '&cNem tartasz semmilyen tárgyat!'
+  item_created: '&2A tárgy elmentve a konfigurációba {1}.'
+  player_objectives: '&aA játékos célja:'
+  player_tags: '&aJátékos tagjai:'
+  player_condition: '&aFeltétel {1}: {2}'
+  player_event: '&aEsemény beavatkozva: {1}'
+  player_points: '&aJátékos pontjai:'
+  player_journal: '&ePillantások a folyóiratban:'
+  points_added: '&2Hozzáadott pontok!'
+  points_removed: '&2Pont levonva!'
+  tag_added: '&2Tag hozzáadva!'
+  tag_removed: '&2Tag törölve!'
+  objective_added: '&2A cél megkezdődött!'
+  objective_removed: '&2A cél törölve!'
+  objective_completed: '&2A cél kitöltése!'
+  pointer_added: '&2Mutató hozzá!'
+  pointer_removed: '&2Pointer eltávolítva!'
+  everything_renamed: '&2Minden esemény átnevezve!'
+  everything_removed: '&2Minden előfordulás eltávolítva!'
+  purged: '&4{1} adatai tiszták!'
+  command_reload: újratölti a plugint
+  command_objectives: aktív célokat jelenít meg
+  command_tags: megjeleníti a címkéket
+  command_points: pontokat jelenít meg
+  command_journal: megjeleníti a folyóirat-mutatókat
+  command_condition: ellenőrzi, hogy a játékos megfelel-e a feltételnek
+  command_event: eseményt indít a játékos számára
+  command_item: létrehoz egy tárgyat a birtokodból
+  command_give: megadja a megadott tárgyat
+  command_rename: átnevezi az összes megadott objektumot az adatbázisban
+  command_delete: törli az összes megadott objektumot az adatbázisból
+  command_config: olvassa, állít be vagy illeszt be stringeket a konfigurációs fájlokhoz
+  command_vector: kiszámítja az első változóból származó vektort, és elmenti a második értéket
+  command_purge: törli az összes adatot a játékosról
+  command_backup: létrehozza a konfigurációt és az adatbázis-mentést. Csak az üres kiszolgáló konzolján használható!
+  offline: '&4Minden játékosnak offline kell lennie ahhoz, hogy biztonsági másolatot készítsen!'
+  default_language_changed: '&2Az alapértelmezett nyelv megváltozott!'
+  error: '&cHiba történt: {1}'
