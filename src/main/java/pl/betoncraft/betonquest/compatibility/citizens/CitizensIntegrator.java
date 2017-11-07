@@ -46,7 +46,7 @@ public class CitizensIntegrator implements Integrator {
             NPCHider.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
-        // if EffectLib is hooked, start NPCHider
+        // if EffectLib is hooked, start CitizensParticle
         if (Compatibility.getHooked().contains("EffectLib"))
             new CitizensParticle();
     }
