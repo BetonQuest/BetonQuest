@@ -19,17 +19,13 @@ package pl.betoncraft.betonquest.conditions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.LocationData;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Returns true if given date is matched
@@ -44,11 +40,6 @@ public class DateCondition extends Condition {
 	public DateCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 
-
-
-		System.out.println("---- Instruction: " + instruction);
-
-
 		if(instruction.size() > 3){
 			throw new InstructionParseException("Too many arguments!");
 		}
@@ -56,11 +47,11 @@ public class DateCondition extends Condition {
 			throw new InstructionParseException("not enough arguments!");
 		}
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		try {
-			startDate = cleanDate(sdf.parse(instruction.getPart(1)));
+			startDate = cleanDate(dateFormat.parse(instruction.getPart(1)));
 			if(instruction.size() > 2) {
-				endDate = cleanDate(sdf.parse(instruction.getPart(2)));
+				endDate = cleanDate(dateFormat.parse(instruction.getPart(2)));
 			}
 		} catch (ParseException e) {
 			throw new InstructionParseException("Invalid date format!");
@@ -85,14 +76,10 @@ public class DateCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
-		//System.out.print("----" + date().toString() +" ");
-
 		Date currentDate = cleanDate(new Date());
 		if (endDate == null) {
-			System.out.print("---- No EndDate: " + currentDate.compareTo(startDate));
 			return currentDate.compareTo(startDate) == 0;
 		} else {
-			System.out.print("---- Compare Between: " + currentDate.compareTo(startDate) + " - " + currentDate.compareTo(endDate));
 			return currentDate.compareTo(startDate) > 0 && currentDate.compareTo(endDate) < 0;
 		}
 	}
