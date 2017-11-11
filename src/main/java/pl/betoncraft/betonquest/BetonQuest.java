@@ -50,6 +50,7 @@ import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
 import pl.betoncraft.betonquest.conditions.CheckCondition;
 import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
+import pl.betoncraft.betonquest.conditions.DateCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
@@ -324,6 +325,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
 		registerConditions("biome", BiomeCondition.class);
+		registerConditions("date", DateCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
