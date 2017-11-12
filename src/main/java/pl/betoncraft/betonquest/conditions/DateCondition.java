@@ -39,6 +39,8 @@ public class DateCondition extends Condition {
 
 	public DateCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
+		super.staticness = true;
+        	super.persistent = true;
 
 		if(instruction.size() > 3){
 			throw new InstructionParseException("Too many arguments!");
