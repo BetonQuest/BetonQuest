@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,21 +41,22 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MythicMobKillObjective extends Objective implements Listener {
 
-	private final String name;
+	private final Set<String> names = new HashSet<>();
 	private final int amount;
 	private final boolean notify;
 
 	public MythicMobKillObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		template = MMData.class;
-		name = instruction.next();
+		for(String name: instruction.getArray())
+			names.add(name);
 		amount = instruction.getInt(instruction.getOptional("amount"), 1);
 		notify = instruction.hasArgument("notify");
 	}
 
 	@EventHandler
 	public void onBossKill(MythicMobDeathEvent event) {
-		if (event.getMobType().getInternalName().equals(name) && event.getKiller() instanceof Player) {
+		if (names.contains(event.getMobType().getInternalName()) && event.getKiller() instanceof Player) {
 			String playerID = PlayerConverter.getID((Player) event.getKiller());
 			if (containsPlayer(playerID) && checkConditions(playerID)) {
 				MMData playerData = (MMData) dataMap.get(playerID);
@@ -86,9 +90,9 @@ public class MythicMobKillObjective extends Objective implements Listener {
 	@Override
 	public String getProperty(String name, String playerID) {
 		if (name.equalsIgnoreCase("left")) {
-			return Integer.toString(amount - ((MMData) dataMap.get(playerID)).getAmount());
-		} else if (name.equalsIgnoreCase("amount")) {
 			return Integer.toString(((MMData) dataMap.get(playerID)).getAmount());
+		} else if (name.equalsIgnoreCase("amount")) {
+			return Integer.toString(amount - ((MMData) dataMap.get(playerID)).getAmount());
 		}
 		return "";
 	}

@@ -114,7 +114,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		options.put(i, Utils.multiLineColorCodes(option.replace('&', '§'), optionColor));
 	}
 
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public void display() {
 		// prevent displaying anything if the player closed the conversation
 		// in the meantime

@@ -330,3 +330,44 @@ it:
   seconds: secondi
   and: e
   password: 'password: '
+hu:
+  conversation_prefix: '&2[&9{1}&2] '
+  conversation_start: '&e====&bBeszélgetés a következővel {1} elkezdve!&e===='
+  conversation_end: '&e====&bBeszélgetés a következővel {1} befejezve!&e===='
+  no_permission: '&cNincs jogod ehhez.'
+  new_journal_entry: '&e*&bA folyóirat frissítve!&e*'
+  journal_title: Folyóirat
+  journal_lore: A folyóirat, amely minden információt tartalmaz
+  quest_item: '&2Küldetés tárgy'
+  backpack_title: Hátizsák
+  previous: '&2Előző'
+  next: '&2Következő'
+  inventory_full: '&e*&bAz eszköztárad tele van!&e*'
+  changelog: '&e*&bAz új changelog elérhető a plugin könyvtárában. Olvassa el a változtatásokat, és törölje vagy nevezze át a fájlt, hogy elutasítsa ezt az üzenetet!&e*'
+  pullback: '&cBe kell fejeznie a beszélgetést!'
+  items_given: '&2Kapott {1} x{2}'
+  items_taken: '&2Veszített {1} x{2}'
+  blocks_to_break: '&2{1} blokkot hagyott kitörni'
+  blocks_to_place: '&2{1} blokkot hagyott lerakni'
+  mobs_to_kill: '&2{1} a szörnyek megmaradtak'
+  players_to_kill: '&2{1} a játékosok ölni hagytak'
+  fish_to_catch: '&2{1} a halak elkaptak'
+  sheep_to_shear: '&2{1} juhok nyírni'
+  potions_to_brew: '&2{1} italokat főzni'
+  animals_to_breed: '&2{1} állatokat hagytak szaporodni'
+  busy: '&cNem harcolhat harc közben.'
+  quest_canceled: '&2Küldetés {1} törölve!'
+  cancel: '&cTörölje a küldetést'
+  cancel_page: A küldetések visszavonása
+  compass: '&cIránytű célok'
+  compass_page: Válasszon célt
+  command_blocked: '&cEzt a parancsot nem használhatja beszélgetés közben.'
+  language_changed: '&2A nyelv megváltoztatva!'
+  language_missing: '&cAdja meg a nyelvet'
+  language_not_exist: '&cEz a nyelv nincs meghatározva, lehetséges opciók: '
+  days: 'nap'
+  hours: 'óra'
+  minutes: 'perc'
+  seconds: 'másodperc'
+  and: 'és'
+  password: 'jelszó: '

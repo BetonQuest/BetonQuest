@@ -74,10 +74,15 @@ public class CubeNPCListener implements Listener {
 	 */
 	@EventHandler
 	public void onNPCClick(final PlayerInteractEvent event) {
-		// Only fire the event for the main hand to avoid that the event is triggered two times.
-		if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
-			return; // off hand packet, ignore.
-		}
+		
+	    try {
+	        // Only fire the event for the main hand to avoid that the event is triggered two times.
+	        if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
+	            return; // off hand packet, ignore.
+	        }
+	    } catch (LinkageError e) {
+	        // it's fine, 1.8 doesn't trigger this event twice
+	    }
 
 		if (event.isCancelled()) {
 			return;

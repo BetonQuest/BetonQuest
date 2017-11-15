@@ -741,7 +741,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	/**
 	 * Adds item held in hand to items.yml file
 	 */
-	private void handleItems(CommandSender sender, String[] args) {
+	@SuppressWarnings("deprecation")
+    private void handleItems(CommandSender sender, String[] args) {
 		// sender must be a player
 		if (!(sender instanceof Player)) {
 			Debug.info("Cannot continue, sender must be player");
@@ -765,7 +766,12 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			name = itemID;
 		}
 		Player player = (Player) sender;
-		ItemStack item = player.getInventory().getItemInMainHand();
+		ItemStack item = null;
+		try {
+		    item = player.getInventory().getItemInMainHand();
+		} catch (LinkageError e) {
+		    item = player.getItemInHand();
+		}
 		// if item is air then there is nothing to add to items.yml
 		if (item == null || item.getType() == Material.AIR) {
 			Debug.info("Cannot continue, item must not be air");
