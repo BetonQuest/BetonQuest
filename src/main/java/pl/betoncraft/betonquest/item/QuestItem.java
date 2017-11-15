@@ -280,7 +280,7 @@ public class QuestItem {
 		}
 		// basic meta checks
 		ItemMeta meta = item.getItemMeta();
-		if (!data.check(item.getData().getData())) {
+		if (!data.check(item.getDurability())) {
 			return false;
 		}
 		if (!name.check(meta.getDisplayName())) {
@@ -680,7 +680,7 @@ public class QuestItem {
 			}
 		}
 		// put it all together in a single string
-		return item.getType() + " data:" + item.getData().getData() + name + lore + enchants + title + author + text
+		return item.getType() + " data:" + item.getDurability() + name + lore + enchants + title + author + text
 				+ effects + color + owner + firework;
 	}
 }
