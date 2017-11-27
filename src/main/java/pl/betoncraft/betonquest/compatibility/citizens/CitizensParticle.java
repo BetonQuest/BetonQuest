@@ -45,6 +45,10 @@ public class CitizensParticle extends BukkitRunnable {
 	private boolean enabled = false;
 
 	public CitizensParticle() {
+	    // stop previous runnable if it exists
+        if (instance != null && instance.enabled) {
+            instance.cancel();
+        }
 		instance = this;
 		section = BetonQuest.getInstance().getConfig().getConfigurationSection("effectlib_npc_effect");
 		if (section == null)
@@ -95,10 +99,7 @@ public class CitizensParticle extends BukkitRunnable {
 	 * Reloads the particle effect
 	 */
 	public static void reload() {
-		if (instance.enabled) {
-			instance.cancel();
-		}
-		new CitizensParticle();
+	    new CitizensParticle();
 	}
 
 }
