@@ -48,6 +48,10 @@ public class GlobalLocations extends BukkitRunnable {
 	 * Creates new instance of global locations handler.
 	 */
 	public GlobalLocations() {
+	    // cancel previous instance if it exists
+	    if (instance != null) {
+	        stop();
+	    }
 		instance = this;
 		// get list of global locations and make it final
 		for (ConfigPackage pack : Config.getPackages().values()) {
@@ -67,6 +71,7 @@ public class GlobalLocations extends BukkitRunnable {
 			}
 		}
 		finalLocations = locations;
+		runTaskTimer(BetonQuest.getInstance(), 20, 20);
 	}
 
 	/**
