@@ -155,9 +155,11 @@ public abstract class Objective {
 	 */
 	public final void completeObjective(final String playerID) {
 		// remove the objective from player's list
-		if (!persistent) {
-			removePlayer(playerID);
-			BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
+		removePlayer(playerID);
+		if (persistent) {
+		    addPlayer(playerID, getDefaultDataInstruction());;
+		} else {
+	        BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
 		}
 		Debug.info("Objective \"" + instruction.getID().getFullID() + "\" has been completed for player " + PlayerConverter.getName(playerID)
 				+ ", firing events.");

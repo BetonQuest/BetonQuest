@@ -36,6 +36,8 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         new CitizensListener();
         new CitizensWalkingListener();
+        if (Compatibility.getHooked().contains("EffectLib"))
+            new CitizensParticle();
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
         plugin.registerEvents("movenpc", NPCMoveEvent.class);

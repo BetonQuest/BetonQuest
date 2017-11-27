@@ -272,9 +272,6 @@ public final class BetonQuest extends JavaPlugin {
 		// load colors for conversations
 		new ConversationColors();
 
-		// start timer for global locations
-		new GlobalLocations().runTaskTimer(this, 20, 20);
-
 		// start mob kill listener
 		new MobKillListener();
 		
@@ -616,6 +613,9 @@ public final class BetonQuest extends JavaPlugin {
 			ConversationData.postEnableCheck();
 			Debug.info("Everything in package " + packName + " loaded");
 		}
+		// load global locations
+        new GlobalLocations();
+        // done
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
 				+ Config.getPackages().size() + " packages.");
@@ -639,8 +639,7 @@ public final class BetonQuest extends JavaPlugin {
 		// stop current global locations listener
 		// and start new one with reloaded configs
 		Debug.info("Restarting global locations");
-		GlobalLocations.stop();
-		new GlobalLocations().runTaskTimer(instance, 0, 20);
+		new GlobalLocations();
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.

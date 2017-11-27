@@ -552,6 +552,7 @@ public class QuestItem {
 		String color = "";
 		String owner = "";
 		String firework = "";
+		String unbreakable = "";
 		ItemMeta meta = item.getItemMeta();
 		if (meta.hasDisplayName()) {
 			name = " name:" + meta.getDisplayName().replace(" ", "_");
@@ -569,6 +570,9 @@ public class QuestItem {
 				string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
 			}
 			enchants = " enchants:" + string.substring(0, string.length() - 1);
+		}
+		if (meta.isUnbreakable()) {
+		    unbreakable = " unbreakable";
 		}
 		if (meta instanceof BookMeta) {
 			BookMeta bookMeta = (BookMeta) meta;
@@ -681,6 +685,6 @@ public class QuestItem {
 		}
 		// put it all together in a single string
 		return item.getType() + " data:" + item.getData().getData() + name + lore + enchants + title + author + text
-				+ effects + color + owner + firework;
+				+ effects + color + owner + firework + unbreakable;
 	}
 }
