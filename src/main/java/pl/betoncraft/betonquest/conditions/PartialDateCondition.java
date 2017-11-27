@@ -1,14 +1,18 @@
 package pl.betoncraft.betonquest.conditions;
 
+import com.google.common.base.Joiner;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
- * Checks if the current date matches the given monsters in the area
+ * Checks if the current date matches one of the given dates
  *
  * @author Jonas Blocher
  */
@@ -41,13 +45,14 @@ public class PartialDateCondition extends Condition {
                         int index = arg.indexOf("-");
                         int beginning = instruction.getInt((arg.substring(0,index)), -1);
                         int end = instruction.getInt(arg.substring(index + 1), -1);
+                        if (beginning >= end) throw new InstructionParseException("day " + beginning + " is before " + end);
                         for (int i = beginning; i <= end; i++) {
-                            if (i > 31 ) throw new InstructionParseException(dayOfMonthString + " contains invalid days");
+                            if (i < 1 || i > 31 ) throw new InstructionParseException(dayOfMonthString + " contains invalid days");
                             dayOfMonth.add(i);
                         }
                     } else {
                         int i = instruction.getInt(arg, -1);
-                        if (i > 31 ) throw new InstructionParseException(dayOfMonthString + " contains invalid days");
+                        if (i < 1 || i > 31 ) throw new InstructionParseException(dayOfMonthString + " contains invalid days");
                         dayOfMonth.add(i);
                     }
                 }
@@ -69,13 +74,14 @@ public class PartialDateCondition extends Condition {
                         int index = arg.indexOf("-");
                         int beginning = instruction.getInt(arg.substring(0,index), -1);
                         int end = instruction.getInt(arg.substring(index + 1), -1);
+                        if (beginning >= end) throw new InstructionParseException("month " + beginning + " is before " + end);
                         for (int i = beginning; i <= end; i++) {
-                            if (i > 12 ) throw new InstructionParseException(monthString + " contains invalid months");
+                            if (i < 1 || i > 12 ) throw new InstructionParseException(monthString + " contains invalid months");
                             month.add(i);
                         }
                     } else {
                         int i = instruction.getInt(arg, -1);
-                        if (i > 12 ) throw new InstructionParseException(monthString + " contains invalid months");
+                        if (i < 1 || i > 12 ) throw new InstructionParseException(monthString + " contains invalid months");
                         month.add(i);
                     }
                 }
@@ -85,7 +91,7 @@ public class PartialDateCondition extends Condition {
         if (yearString != null) {
             if (yearString.matches("[^-,]*")) {
                 int i = instruction.getInt(yearString, -1);
-                if (i < 1 || i > 12)
+                if (i < 1)
                     throw new InstructionParseException(yearString + " is not a valid year");
                 year.add(i);
             } else {
@@ -97,13 +103,14 @@ public class PartialDateCondition extends Condition {
                         int index = arg.indexOf("-");
                         int beginning = instruction.getInt(arg.substring(0,index), -1);
                         int end = instruction.getInt(arg.substring(index + 1), -1);
+                        if (beginning >= end) throw new InstructionParseException("year " + beginning + " is before " + end);
                         for (int i = beginning; i <= end; i++) {
-                            if (i > 12 ) throw new InstructionParseException(yearString + " contains invalid years");
+                            if (i < 1) throw new InstructionParseException(yearString + " contains invalid years");
                             year.add(i);
                         }
                     } else {
                         int i = instruction.getInt(arg, -1);
-                        if (i > 12 ) throw new InstructionParseException(yearString + " contains invalid years");
+                        if (i < 1) throw new InstructionParseException(yearString + " contains invalid years");
                         year.add(i);
                     }
                 }
@@ -118,7 +125,8 @@ public class PartialDateCondition extends Condition {
             if (!dayOfMonth.contains(current.get(Calendar.DAY_OF_MONTH))) return false;
         }
         if (!month.isEmpty()) {
-            if (!month.contains(current.get(Calendar.MONTH))) return false;
+            if (!month.contains(current.get(Calendar.MONTH) + 1)) return false;
+            //Dont ask why +1: java.util.times is a complete mess (january is 0, december is 11,...)
         }
         if (!year.isEmpty()) {
             if (!year.contains(current.get(Calendar.YEAR))) return false;
