@@ -36,6 +36,8 @@ public class DayOfWeekCondition extends Condition {
 
     public DayOfWeekCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
+        super.staticness = true;
+        super.persistent = true;
         String dayString = instruction.next();
         DayOfWeek d;
         try {
