@@ -186,7 +186,6 @@ public final class BetonQuest extends JavaPlugin {
 	private Database database;
 	private boolean isMySQLUsed;
 	private Saver saver;
-	private Compatibility compatibility;
 	private Updater updater;
 
 	private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
@@ -202,11 +201,13 @@ public final class BetonQuest extends JavaPlugin {
 	private static HashMap<ObjectiveID, Objective> objectives = new HashMap<>();
 	private static HashMap<String, ConversationData> conversations = new HashMap<>();
 	private static HashMap<VariableID, Variable> variables = new HashMap<>();
+	
+	public BetonQuest() {
+	    instance = this;
+	}
 
 	@Override
 	public void onEnable() {
-
-		instance = this;
 
 		// initialize debugger
 		new Debug();
@@ -270,9 +271,6 @@ public final class BetonQuest extends JavaPlugin {
 
 		// load colors for conversations
 		new ConversationColors();
-
-		// start timer for global locations
-		new GlobalLocations().runTaskTimer(this, 20, 20);
 
 		// start mob kill listener
 		new MobKillListener();
@@ -405,12 +403,13 @@ public final class BetonQuest extends JavaPlugin {
 		registerVariable("version", VersionVariable.class);
 		registerVariable("location", LocationVariable.class);
 
+        // initialize compatibility with other plugins
+        new Compatibility();
+
 		// schedule quest data loading on the first tick, so all other
 		// plugins can register their types
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
-				// initialize compatibility with other plugins
-				compatibility = new Compatibility();
 				// Load all events and conditions
 				loadData();
 				// load data for all online players
@@ -614,6 +613,9 @@ public final class BetonQuest extends JavaPlugin {
 			ConversationData.postEnableCheck();
 			Debug.info("Everything in package " + packName + " loaded");
 		}
+		// load global locations
+        new GlobalLocations();
+        // done
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
 				+ Config.getPackages().size() + " packages.");
@@ -637,8 +639,7 @@ public final class BetonQuest extends JavaPlugin {
 		// stop current global locations listener
 		// and start new one with reloaded configs
 		Debug.info("Restarting global locations");
-		GlobalLocations.stop();
-		new GlobalLocations().runTaskTimer(instance, 0, 20);
+		new GlobalLocations();
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
@@ -666,7 +667,7 @@ public final class BetonQuest extends JavaPlugin {
 		}
 		// cancel database saver
 		saver.end();
-		compatibility.disable();
+		Compatibility.disable();
 		// stop global location listener
 		GlobalLocations.stop();
 		database.closeConnection();

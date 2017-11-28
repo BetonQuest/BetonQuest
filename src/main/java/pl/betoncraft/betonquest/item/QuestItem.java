@@ -305,9 +305,11 @@ public class QuestItem {
 		}
 		if (meta instanceof PotionMeta) {
 			PotionMeta potionMeta = (PotionMeta) meta;
-			if (!potion.checkBase(potionMeta.getBasePotionData())) {
-				return false;
-			}
+			try {
+	            if (!potion.checkBase(potionMeta.getBasePotionData())) {
+	                return false;
+	            }
+			} catch (LinkageError e) {}
 			if (!potion.checkCustom(potionMeta.getCustomEffects())) {
 				return false;
 			}
@@ -383,8 +385,9 @@ public class QuestItem {
 		}
 		if (meta instanceof PotionMeta) {
 			PotionMeta potionMeta = (PotionMeta) meta;
-			potionMeta.setBasePotionData(potion.getBase());
-			// this is getting ridiculous
+			try {
+			    potionMeta.setBasePotionData(potion.getBase());
+			} catch (LinkageError e) {}
 			for (PotionEffect effect : potion.getCustom()) {
 				potionMeta.addCustomEffect(effect, true);
 			}
@@ -549,6 +552,7 @@ public class QuestItem {
 		String color = "";
 		String owner = "";
 		String firework = "";
+		String unbreakable = "";
 		ItemMeta meta = item.getItemMeta();
 		if (meta.hasDisplayName()) {
 			name = " name:" + meta.getDisplayName().replace(" ", "_");
@@ -566,6 +570,9 @@ public class QuestItem {
 				string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
 			}
 			enchants = " enchants:" + string.substring(0, string.length() - 1);
+		}
+		if (meta.isUnbreakable()) {
+		    unbreakable = " unbreakable";
 		}
 		if (meta instanceof BookMeta) {
 			BookMeta bookMeta = (BookMeta) meta;
@@ -590,9 +597,11 @@ public class QuestItem {
 		}
 		if (meta instanceof PotionMeta) {
 			PotionMeta potionMeta = (PotionMeta) meta;
-			PotionData pData = potionMeta.getBasePotionData();
-			effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
-					+ (pData.isUpgraded() ? " upgraded" : "");
+			try {
+	            PotionData pData = potionMeta.getBasePotionData();
+	            effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
+	                    + (pData.isUpgraded() ? " upgraded" : "");
+			} catch (LinkageError e) {}
 			if (potionMeta.hasCustomEffects()) {
 				StringBuilder string = new StringBuilder();
 				for (PotionEffect effect : potionMeta.getCustomEffects()) {
@@ -676,6 +685,6 @@ public class QuestItem {
 		}
 		// put it all together in a single string
 		return item.getType() + " data:" + item.getData().getData() + name + lore + enchants + title + author + text
-				+ effects + color + owner + firework;
+				+ effects + color + owner + firework + unbreakable;
 	}
 }

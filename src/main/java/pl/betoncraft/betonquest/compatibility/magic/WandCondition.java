@@ -85,7 +85,8 @@ public class WandCondition extends Condition {
 		api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
 	}
 
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public boolean check(String playerID) throws QuestRuntimeException {
 		Player player = PlayerConverter.getPlayer(playerID);
 		switch (type) {
@@ -100,7 +101,12 @@ public class WandCondition extends Condition {
 			}
 			return false;
 		case IN_HAND:
-			ItemStack wandItem = player.getInventory().getItemInMainHand();
+			ItemStack wandItem = null;
+			try {
+			    wandItem = player.getInventory().getItemInMainHand();
+			} catch (LinkageError e) {
+			    wandItem = player.getItemInHand();
+			}
 			if (!api.isWand(wandItem)) {
 				return false;
 			}

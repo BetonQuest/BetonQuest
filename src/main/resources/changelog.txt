@@ -19,6 +19,21 @@ Changes:
 	* 'password' objective also accepts commands
 	* Commands can be tab-completed
 
+﻿v1.9.6
+Fixes:
+    * Update version to 1.9.6
+
+v1.9.5
+Fixes:
+    * Fixed global locations loading before the worlds
+    * Fixed loading order of Citizens/EffectLib integration
+    * Fixed restarting of persistent objectives not working correctly
+    * Fixed "unbreakable" tag not being read from items
+
+v1.9.4
+Fixes:
+    * Fixed broken integration loading
+
 v1.9.3
 Fixes:
     * NPC and mob kills will be correctly registered when killed by indirect means

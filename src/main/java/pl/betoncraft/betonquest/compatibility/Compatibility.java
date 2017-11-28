@@ -18,430 +18,175 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import ch.njol.skript.Skript;
-import de.slikey.effectlib.EffectManager;
-import me.blackvein.quests.Quests;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-import pl.betoncraft.betonlangapi.BetonLangAPI;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIEvent;
-import pl.betoncraft.betonquest.compatibility.betonlangapi.LangChangeListener;
-import pl.betoncraft.betonquest.compatibility.bountifulapi.BountifulTitleEvent;
-import pl.betoncraft.betonquest.compatibility.citizens.CitizensInventoryConvIO;
-import pl.betoncraft.betonquest.compatibility.citizens.CitizensListener;
-import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
-import pl.betoncraft.betonquest.compatibility.citizens.CitizensWalkingListener;
-import pl.betoncraft.betonquest.compatibility.citizens.NPCInteractObjective;
-import pl.betoncraft.betonquest.compatibility.citizens.NPCKillObjective;
-import pl.betoncraft.betonquest.compatibility.citizens.NPCMoveEvent;
-import pl.betoncraft.betonquest.compatibility.denizen.DenizenTaskScriptEvent;
-import pl.betoncraft.betonquest.compatibility.effectlib.ParticleEvent;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesClassCondition;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesExperienceEvent;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesMobKillListener;
-import pl.betoncraft.betonquest.compatibility.heroes.HeroesSkillCondition;
-import pl.betoncraft.betonquest.compatibility.holographicdisplays.HologramLoop;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQAttributeCondition;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQAttributeVariable;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQClassCondition;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQClassVariable;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQKarmaCondition;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQKarmaVariable;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQRaceCondition;
-import pl.betoncraft.betonquest.compatibility.legendquest.LQRaceVariable;
-import pl.betoncraft.betonquest.compatibility.magic.WandCondition;
-import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOAddExpEvent;
-import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOSkillLevelCondition;
-import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobKillObjective;
-import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicSpawnMobEvent;
-import pl.betoncraft.betonquest.compatibility.placeholderapi.BetonQuestPlaceholder;
-import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderVariable;
-import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsCondition;
-import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsEvent;
-import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
-import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEvent;
-import pl.betoncraft.betonquest.compatibility.quests.ConditionRequirement;
-import pl.betoncraft.betonquest.compatibility.quests.EventReward;
-import pl.betoncraft.betonquest.compatibility.quests.QuestCondition;
-import pl.betoncraft.betonquest.compatibility.quests.QuestEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassCondition;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCClassVariable;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpCondition;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCExpVariable;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelCondition;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCLevelVariable;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCManaCondition;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCManaEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceCondition;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceEvent;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCRaceVariable;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RaCTraitCondition;
-import pl.betoncraft.betonquest.compatibility.shopkeepers.HavingShopCondition;
-import pl.betoncraft.betonquest.compatibility.shopkeepers.OpenShopEvent;
-import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIClassCondition;
-import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIKillListener;
-import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPILevelCondition;
-import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript;
-import pl.betoncraft.betonquest.compatibility.skript.BQEventSkript.CustomEventForSkript;
-import pl.betoncraft.betonquest.compatibility.skript.SkriptConditionBQ;
-import pl.betoncraft.betonquest.compatibility.skript.SkriptEffectBQ;
-import pl.betoncraft.betonquest.compatibility.skript.SkriptEventBQ;
-import pl.betoncraft.betonquest.compatibility.vault.MoneyCondition;
-import pl.betoncraft.betonquest.compatibility.vault.MoneyEvent;
-import pl.betoncraft.betonquest.compatibility.vault.MoneyVariable;
-import pl.betoncraft.betonquest.compatibility.vault.PermissionEvent;
-import pl.betoncraft.betonquest.compatibility.worldedit.PasteSchematicEvent;
-import pl.betoncraft.betonquest.compatibility.worldguard.RegionCondition;
-import pl.betoncraft.betonquest.compatibility.worldguard.RegionObjective;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIIntegrator;
+import pl.betoncraft.betonquest.compatibility.bountifulapi.BountifulAPIIntegrator;
+import pl.betoncraft.betonquest.compatibility.brewery.BreweryIntegrator;
+import pl.betoncraft.betonquest.compatibility.citizens.CitizensIntegrator;
+import pl.betoncraft.betonquest.compatibility.denizen.DenizenIntegrator;
+import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
+import pl.betoncraft.betonquest.compatibility.heroes.HeroesIntegrator;
+import pl.betoncraft.betonquest.compatibility.holographicdisplays.HolographicDisplaysIntegrator;
+import pl.betoncraft.betonquest.compatibility.legendquest.LegendQuestIntegrator;
+import pl.betoncraft.betonquest.compatibility.magic.MagicIntegrator;
+import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOIntegrator;
+import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
+import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
+import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsIntegrator;
+import pl.betoncraft.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
+import pl.betoncraft.betonquest.compatibility.quests.QuestsIntegrator;
+import pl.betoncraft.betonquest.compatibility.racesandclasses.RacesAndClassesIntegrator;
+import pl.betoncraft.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
+import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIIntegrator;
+import pl.betoncraft.betonquest.compatibility.skript.SkriptIntegrator;
+import pl.betoncraft.betonquest.compatibility.vault.VaultIntegrator;
+import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
+import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Compatibility with other plugins
  * 
  * @author Jakub Sapalski
  */
-public class Compatibility {
+public class Compatibility implements Listener {
 
+    private static Compatibility instance;
+    private Map<String, Integrator> integrators = new HashMap<>();
 	private BetonQuest plugin = BetonQuest.getInstance();
-	private static Compatibility instance;
 	private List<String> hooked = new ArrayList<>();
 
-	private Permission permission = null;
-	private Economy economy = null;
-
-	private EffectManager manager;
+    private void hook(Plugin hook) {
+        
+        // don't want to hook twice
+        if (hooked.contains(hook.getName())) {
+            return;
+        }
+        
+        // don't want to hook into disabled plugins
+        if (!hook.isEnabled()) {
+            return;
+        }
+        
+        String name = hook.getName();
+        Integrator integrator = integrators.get(name);
+        
+        // this plugin is not an integration
+        if (integrator == null) {
+            return;
+        }
+        
+        // hook into the plugin if it's enabled in the config
+        if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase()))) {
+            Debug.broadcast("Hooking into " + name);
+            
+            // log important information in case of an error
+            try {
+                integrator.hook();
+                hooked.add(name);
+            } catch (Exception e) {
+                Debug.error(String.format("There was an error while hooking into %s %s"
+                        + " (BetonQuest %s, Spigot %s). Please post it on GitHub <"
+                        + "https://github.com/Co0sh/BetonQuest/issues>",
+                        name, hook.getDescription().getVersion(),
+                        plugin.getDescription().getVersion(), Bukkit.getVersion()));
+                e.printStackTrace();
+                Debug.error("BetonQuest will work correctly save for that single integration. "
+                        + "You can turn it off by setting 'hook." + name.toLowerCase()
+                        + "' to false in config.yml file.");
+            }
+        }
+    }
 	
-	private HologramLoop hologramLoop;
+	@EventHandler
+	public void onPluginEnable(PluginEnableEvent event) {
+	    hook(event.getPlugin());
+	}
 
 	public Compatibility() {
 		instance = this;
 
-		// hook into MythicMobs
-		if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")
-				&& plugin.getConfig().getString("hook.mythicmobs").equalsIgnoreCase("true")) {
-			plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
-			plugin.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
-			hooked.add("MythicMobs");
-		}
+		integrators.put("MythicMobs", new MythicMobsIntegrator());
+		integrators.put("Citizens", new CitizensIntegrator());
+		integrators.put("Vault", new VaultIntegrator());
+		integrators.put("Skript", new SkriptIntegrator());
+		integrators.put("WorldGuard", new WorldGuardIntegrator());
+		integrators.put("WorldEdit", new WorldEditIntegrator());
+		integrators.put("mcMMO", new McMMOIntegrator());
+		integrators.put("EffectLib", new EffectLibIntegrator());
+		integrators.put("PlayerPoints", new PlayerPointsIntegrator());
+		integrators.put("Heroes", new HeroesIntegrator());
+		integrators.put("Magic", new MagicIntegrator());
+		integrators.put("Denizen", new DenizenIntegrator());
+		integrators.put("SkillAPI", new SkillAPIIntegrator());
+		integrators.put("Quests", new QuestsIntegrator());
+		integrators.put("Shopkeepers", new ShopkeepersIntegrator());
+		integrators.put("PlaceholderAPI", new PlaceholderAPIIntegrator());
+		integrators.put("HolographicDisplays", new HolographicDisplaysIntegrator());
+		integrators.put("RacesAndClasses", new RacesAndClassesIntegrator());
+		integrators.put("LegendQuest", new LegendQuestIntegrator());
+		integrators.put("BetonLangAPI", new BetonLangAPIIntegrator());
+		integrators.put("BountifulAPI", new BountifulAPIIntegrator());
+		integrators.put("ProtocolLib", new ProtocolLibIntegrator());
+		integrators.put("Brewery", new BreweryIntegrator());
 
-		// hook into Citizens
-		if (Bukkit.getPluginManager().isPluginEnabled("Citizens")
-				&& plugin.getConfig().getString("hook.citizens").equalsIgnoreCase("true")) {
-			new CitizensListener();
-			new CitizensWalkingListener();
-			plugin.registerObjectives("npckill", NPCKillObjective.class);
-			plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
-			plugin.registerEvents("movenpc", NPCMoveEvent.class);
-			plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
-			hooked.add("Citizens");
-		}
-
-		// hook into Vault
-		if (Bukkit.getPluginManager().isPluginEnabled("Vault")
-				&& plugin.getConfig().getString("hook.vault").equalsIgnoreCase("true")) {
-			RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager()
-					.getRegistration(net.milkbowl.vault.permission.Permission.class);
-			if (permissionProvider != null) {
-				permission = permissionProvider.getProvider();
-			}
-			RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager()
-					.getRegistration(net.milkbowl.vault.economy.Economy.class);
-			if (economyProvider != null) {
-				economy = economyProvider.getProvider();
-			}
-			if (economy != null) {
-				plugin.registerEvents("money", MoneyEvent.class);
-				plugin.registerConditions("money", MoneyCondition.class);
-				plugin.registerVariable("money", MoneyVariable.class);
-			} else {
-				Debug.error("There is no economy plugin on the server!");
-			}
-			if (permission != null) {
-				plugin.registerEvents("permission", PermissionEvent.class);
-			} else {
-				Debug.error("Could not get permission provider!");
-			}
-			hooked.add("Vault");
-		}
-
-		// hook into Skript
-		if (Bukkit.getPluginManager().isPluginEnabled("Skript")
-				&& plugin.getConfig().getString("hook.skript").equalsIgnoreCase("true")) {
-			Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
-			Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
-			Skript.registerEvent("betonquest", SkriptEventBQ.class, CustomEventForSkript.class,
-					"[betonquest] event %string%");
-			plugin.registerEvents("skript", BQEventSkript.class);
-			hooked.add("Skript");
-		}
-
-		// hook into WorldGuard
-		if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")
-				&& plugin.getConfig().getString("hook.worldguard").equalsIgnoreCase("true")) {
-			plugin.registerConditions("region", RegionCondition.class);
-			plugin.registerObjectives("region", RegionObjective.class);
-			hooked.add("WorldGuard");
-		}
-
-		// hook into WorldEdit
-		if (Bukkit.getPluginManager().isPluginEnabled("WorldEdit")
-				&& plugin.getConfig().getString("hook.worldedit").equalsIgnoreCase("true")) {
-			plugin.registerEvents("paste", PasteSchematicEvent.class);
-			hooked.add("WorldEdit");
-		}
-
-		// hook into mcMMO
-		if (Bukkit.getPluginManager().isPluginEnabled("mcMMO")
-				&& plugin.getConfig().getString("hook.mcmmo").equalsIgnoreCase("true")) {
-			plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
-			plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
-			hooked.add("mcMMO");
-		}
-
-		// hook into EffectLib
-		if (Bukkit.getPluginManager().isPluginEnabled("EffectLib")
-				&& plugin.getConfig().getString("hook.effectlib").equalsIgnoreCase("true")) {
-			manager = new EffectManager(plugin);
-			if (hooked.contains("Citizens"))
-				new CitizensParticle();
-			plugin.registerEvents("particle", ParticleEvent.class);
-			hooked.add("EffectLib");
-		}
-
-		// hook into PlayerPoints
-		if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")
-				&& plugin.getConfig().getString("hook.playerpoints").equalsIgnoreCase("true")) {
-			plugin.registerEvents("playerpoints", PlayerPointsEvent.class);
-			plugin.registerConditions("playerpoints", PlayerPointsCondition.class);
-			hooked.add("PlayerPoints");
-		}
-
-		// hook into Heroes
-		if (Bukkit.getPluginManager().isPluginEnabled("Heroes")
-				&& plugin.getConfig().getString("hook.heroes").equalsIgnoreCase("true")) {
-			plugin.registerConditions("heroesclass", HeroesClassCondition.class);
-			plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
-			plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
-			new HeroesMobKillListener();
-			hooked.add("Heroes");
-		}
-
-		// hook into Magic
-		if (Bukkit.getPluginManager().isPluginEnabled("Magic")
-				&& plugin.getConfig().getString("hook.magic").equalsIgnoreCase("true")) {
-			plugin.registerConditions("wand", WandCondition.class);
-			hooked.add("Magic");
-		}
-
-		// hook into Denizen
-		if (Bukkit.getPluginManager().isPluginEnabled("Denizen")
-				&& plugin.getConfig().getString("hook.denizen").equalsIgnoreCase("true")) {
-			plugin.registerEvents("script", DenizenTaskScriptEvent.class);
-			hooked.add("Denizen");
-		}
-
-		// hook into SkillAPI
-		if (Bukkit.getPluginManager().isPluginEnabled("SkillAPI")
-				&& plugin.getConfig().getString("hook.skillapi").equalsIgnoreCase("true")) {
-			plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
-			plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
-			new SkillAPIKillListener();
-			hooked.add("SkillAPI");
-		}
-
-		// hook into Quests
-		if (Bukkit.getPluginManager().isPluginEnabled("Quests")
-				&& plugin.getConfig().getString("hook.quests").equalsIgnoreCase("true")) {
-			plugin.registerConditions("quest", QuestCondition.class);
-			plugin.registerEvents("quest", QuestEvent.class);
-			Quests.getInstance().customRewards.add(new EventReward());
-			Quests.getInstance().customRequirements.add(new ConditionRequirement());
-			hooked.add("Quests");
+		// hook into already enabled plugins in case Bukkit messes up the loading order
+		for (Plugin hook : Bukkit.getPluginManager().getPlugins()) {
+            hook(hook);
 		}
 		
-		// hook into Shopkeepers
-		if (Bukkit.getPluginManager().isPluginEnabled("Shopkeepers")
-				&& plugin.getConfig().getString("hook.shopkeepers").equalsIgnoreCase("true")) {
-			plugin.registerEvents("shopkeeper", OpenShopEvent.class);
-			plugin.registerConditions("shopamount", HavingShopCondition.class);
-			hooked.add("Shopkeepers");
-		}
-		
-		// hook into PlaceholderAPI
-		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")
-				&& plugin.getConfig().getString("hook.placeholderapi").equalsIgnoreCase("true")) {
-			plugin.registerVariable("ph", PlaceholderVariable.class);
-			new BetonQuestPlaceholder(plugin, "betonquest").hook();
-			hooked.add("PlaceholderAPI");
-		}
-		
-		// hook into HolographicDisplays
-		if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")
-				&& plugin.getConfig().getString("hook.holographicdisplays").equalsIgnoreCase("true")) {
-			hologramLoop = new HologramLoop();
-			hooked.add("HolographicDisplays");
-		}
-		
-		// hook into RacesAndClasses
-		if (Bukkit.getPluginManager().isPluginEnabled("RacesAndClasses")
-				&& plugin.getConfig().getString("hook.racesandclasses").equalsIgnoreCase("true")) {
-			plugin.registerConditions("racclass", RaCClassCondition.class);
-			plugin.registerConditions("racrace", RaCRaceCondition.class);
-			plugin.registerConditions("racmana", RaCManaCondition.class);
-			plugin.registerConditions("racexp", RaCExpCondition.class);
-			plugin.registerConditions("raclevel", RaCLevelCondition.class);
-			plugin.registerConditions("ractrait", RaCTraitCondition.class);
-			plugin.registerEvents("racclass", RaCClassEvent.class);
-			plugin.registerEvents("racrace", RaCRaceEvent.class);
-			plugin.registerEvents("racmana", RaCManaEvent.class);
-			plugin.registerEvents("racexp", RaCExpEvent.class);
-			plugin.registerEvents("raclevel", RaCLevelEvent.class);
-			plugin.registerVariable("racclass", RaCClassVariable.class);
-			plugin.registerVariable("racrace", RaCRaceVariable.class);
-			plugin.registerVariable("racexp", RaCExpVariable.class);
-			plugin.registerVariable("raclevel", RaCLevelVariable.class);
-			hooked.add("RacesAndClasses");
-		}
-		
-		// hook into LegendQuest
-		if (Bukkit.getPluginManager().isPluginEnabled("LegendQuest")
-				&& plugin.getConfig().getString("hook.legendquest").equalsIgnoreCase("true")) {
-			plugin.registerConditions("lqclass", LQClassCondition.class);
-			plugin.registerConditions("lqrace", LQRaceCondition.class);
-			plugin.registerConditions("lqattribute", LQAttributeCondition.class);
-			plugin.registerConditions("lqkarma", LQKarmaCondition.class);
-			plugin.registerVariable("lqclass", LQClassVariable.class);
-			plugin.registerVariable("lqrace", LQRaceVariable.class);
-			plugin.registerVariable("lqattribute", LQAttributeVariable.class);
-			plugin.registerVariable("lqkarma", LQKarmaVariable.class);
-			hooked.add("LegendQuest");
-		}
-		
-		// hook into BetonLangAPI
-		if (Bukkit.getPluginManager().isPluginEnabled("BetonLangAPI")
-				&& plugin.getConfig().getString("hook.betonlangapi").equalsIgnoreCase("true")) {
-			new LangChangeListener();
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				updateLang(player);
-			}
-			Bukkit.getPluginManager().registerEvents( new Listener() {
-				@EventHandler
-				public void onJoin(PlayerJoinEvent event) {
-					updateLang(event.getPlayer());
-				}
-			}, BetonQuest.getInstance());
-			plugin.registerEvents("language", BetonLangAPIEvent.class);
-			hooked.add("BetonLangAPI");
-		}
-		
-		// hook into BountifulAPI
-		if (Bukkit.getPluginManager().isPluginEnabled("BountifulAPI")
-				&& plugin.getConfig().getString("hook.bountifulapi").equalsIgnoreCase("true")) {
-			plugin.registerEvents("title", BountifulTitleEvent.class);
-			hooked.add("BountifulAPI");
-		}
+		Bukkit.getPluginManager().registerEvents(this, plugin);
 		
 		// hook into ProtocolLib
 		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
 		        && plugin.getConfig().getString("hook.protocollib").equalsIgnoreCase("true")) {
-		    // if Citizens is hooked, start NPCHider
-		    if (hooked.contains("Citizens")) {
-		        NPCHider.start();
-		        plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
-		    }
 		    hooked.add("ProtocolLib");
 		}
+		new BukkitRunnable() {
+		    @Override
+		    public void run() {
+		        // log which plugins have been hooked
+		        if (hooked.size() > 0) {
+		            StringBuilder string = new StringBuilder();
+		            for (String plugin : hooked) {
+		                string.append(plugin + ", ");
+		            }
+		            String plugins = string.substring(0, string.length() - 2);
+		            plugin.getLogger().info("Hooked into " + plugins + "!");
+		        }
+		    }
+		}.runTask(plugin);
 
-		// log which plugins have been hooked
-		if (hooked.size() > 0) {
-			StringBuilder string = new StringBuilder();
-			for (String plugin : hooked) {
-				string.append(plugin + ", ");
-			}
-			String plugins = string.substring(0, string.length() - 2);
-			plugin.getLogger().info("Hooked into " + plugins + "!");
-		}
-	}
-
-	/**
-	 * @return the permission
-	 */
-	public static Permission getPermission() {
-		return instance.permission;
-	}
-
-	/**
-	 * @return the economy
-	 */
-	public static Economy getEconomy() {
-		return instance.economy;
-	}
-
-	/**
-	 * @return the EffectLib effect manager
-	 */
-	public static EffectManager getEffectManager() {
-		return instance.manager;
-	}
-
-	/**
-	 * Reloads all stuff connected to other plugins.
-	 */
-	public static void reload() {
-		if (instance.hooked.contains("Citizens") && instance.hooked.contains("EffectLib")) {
-			CitizensParticle.reload();
-		}
-		if (instance.hooked.contains("HolographicDisplays")) {
-			instance.hologramLoop.cancel();
-			instance.hologramLoop = new HologramLoop();
-		}
-		if (instance.hooked.contains("Citizens") && instance.hooked.contains("ProtocolLib")) {
-            NPCHider.start();
-		}
-	}
-
-	/**
-	 * Is called when BetonQuest is being disabled. Does everything the
-	 * compatible plugins require to do on disable.
-	 */
-	public void disable() {
-		if (hooked.contains("EffectLib")) {
-			manager.dispose();
-		}
-		if (hooked.contains("HolographicDisplays")) {
-			hologramLoop.cancel();
-		}
 	}
 	
 	/**
-	 * Updates the player's language to match the one specified in BetonLangAPI.
-	 *
-	 * @param player the player whose language needs to be changed
+	 * @return the list of hooked plugins
 	 */
-	private void updateLang(Player player) {
-		String lang = BetonLangAPI.getLanguage(player);
-		if (Config.getLanguages().contains(lang)) {
-			PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-			if (!data.getLanguage().equals(lang)) {
-				data.setLanguage(lang);
-			}
-		}
+	public static List<String> getHooked() {
+	    return instance.hooked;
+	}
+	
+	public static void reload() {
+	    for (String hooked : getHooked()) {
+	        instance.integrators.get(hooked).reload();
+	    }
+	}
+	
+	public static void disable() {
+        for (String hooked : getHooked()) {
+            instance.integrators.get(hooked).close();
+        }
 	}
 
 }

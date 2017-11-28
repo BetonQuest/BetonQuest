@@ -42,10 +42,16 @@ public class HandCondition extends Condition {
 		offhand = instruction.hasArgument("offhand");
 	}
 
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public boolean check(String playerID) {
 		PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
-		ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+		ItemStack item = null;
+		try {
+		    item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+		} catch (LinkageError e) {
+		    item = inv.getItemInHand();
+		}
 		if (questItem.compare(item)) {
 			return true;
 		}

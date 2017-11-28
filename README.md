@@ -11,7 +11,7 @@ narrated with NPC conversations, with multiple endings affecting the player's ga
 
 ## Features
 
-* Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
+* Spigot **1.8**, **1.9**, **1.10**, **1.11** and **1.12** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
 * **Powerful event system**: anything you want can happen anywhere in a quest
 * Even more **powerful condition system**: you can limit whenever something should (or shouldn't) happen
@@ -43,8 +43,9 @@ narrated with NPC conversations, with multiple endings affecting the player's ga
 [SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/),
 [Skript](https://dev.bukkit.org/bukkit-plugins/skript/),
 [Vault](https://dev.bukkit.org/bukkit-plugins/vault/),
-[WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/) and
-[WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/)
+[WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/),
+[WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/) and
+[Brewery](https://spigotmc.org/resources/brewery.3082/)
 * Multiple languages and easy translating
 * API for creating your own events, conditions and objectives
 * SQLite and **MySQL** support
