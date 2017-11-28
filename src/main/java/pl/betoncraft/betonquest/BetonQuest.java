@@ -47,6 +47,7 @@ import pl.betoncraft.betonquest.conditions.AchievementCondition;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
+import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.conditions.CheckCondition;
 import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
@@ -67,6 +68,7 @@ import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.RandomCondition;
+import pl.betoncraft.betonquest.conditions.RealTimeCondition;
 import pl.betoncraft.betonquest.conditions.ScoreboardCondition;
 import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
@@ -76,7 +78,6 @@ import pl.betoncraft.betonquest.conditions.VariableCondition;
 import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.conditions.WorldCondition;
-import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
@@ -322,6 +323,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
 		registerConditions("biome", BiomeCondition.class);
+		registerConditions("realtime", RealTimeCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
