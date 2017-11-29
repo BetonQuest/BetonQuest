@@ -341,7 +341,9 @@ public class Journal {
                 }
             }
             String wholeString = stringBuilder.toString().trim();
+            // add a line separating the main page from the rest
             finalList.add("+-+-+-+-+-+-+-+-+");
+            // add all the rest in the book
             finalList.addAll(Utils.pagesFromString(wholeString));
         } else {
             if (mainPage != null && mainPage.size() > 0) {
@@ -349,24 +351,26 @@ public class Journal {
             }
             finalList.addAll(getText());
         }
-        // If Book is not empty and Plugin is loaded
+        // if book lines are more than 1 and BBQJ (BetterBetonQuestJournal) has been enabled
         if (finalList.size() > 0 && Bukkit.getPluginManager().isPluginEnabled("BetterBetonQuestJournal")) {
             try {
 
                 Plugin BBetonQuestJournal = Bukkit.getPluginManager().getPlugin("BetterBetonQuestJournal");
                 Method method = BBetonQuestJournal.getClass().getMethod("getBookMeta", BookMeta.class, List.class);
-                //Get Meta By The Plugin
+                //set as book bookmeta the one generated from BBQJ
                 meta = (BookMeta) method.invoke(null, meta, finalList);
 
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
                 meta.setPages(finalList);
             }
+            //or, if BBQJ isn't enabled, generate bookmeta
         } else if (finalList.size() > 0) {
             String mainPage = "";
             List<String> pages = new ArrayList<>();
             boolean space = false;
             for (String str : finalList) {
+                //if string str is equal to +-+-+-+-+-+-+-+-+ do not add \n after the string anymore
                 if (str.equals("+-+-+-+-+-+-+-+-+")) {
                     space = true;
                 }
@@ -378,9 +382,11 @@ public class Journal {
                     pages.add(str);
                 }
             }
+            //remove the string separating the main page from the rest
             pages.remove("+-+-+-+-+-+-+-+-+");
             meta.setPages(pages);
         } else {
+            //if there are no lines in the book, create a blank page
             meta.addPage("");
         }
         item.setItemMeta(meta);

@@ -95,16 +95,36 @@ public class CitizensParticle extends BukkitRunnable {
 
                 NPCs npcs = new NPCs();
 
-                npcs.effect = settings.getString("effect");
+                //EXAMPLES
 
-                // load all NPCs for which this effect can be displayed
+                /*particle_effects:
+                    quest:            <-------------|---->EffectType
+                         disabled: 'false'          |
+                         class: WarpEffect          |
+                         interval: 100              |
+                         iterations: 6              |
+                         particle: dragonbreath     |
+                         grow: 0.14                 |
+                         radius: 1                  |
+                                                    |
+                                                    |
+                npc_effects:                        |
+                    0a:                             |
+                       effect: quest  <-------------|
+                       npcs: '204'
+                       conditions: '_0accept,!_0receipt,!_0end'*/
+
+
+                npcs.effect = settings.getString("effect"); //take the NPC's effect and save it
+
                 npcs.npcs = new HashSet<>();
 
+                // load all NPCs for which this effect can be displayed
                 for (String npc : settings.getString("npcs").split(",")) {
                     npcs.npcs.add(Integer.valueOf(npc));
                 }
 
-                // if the effect does not specify any NPCs then it's global
+                // if no NPCs are selected, get all the NPCs
                 if (npcs.npcs.isEmpty()) {
                     npcs.def = true;
                 }
@@ -131,7 +151,7 @@ public class CitizensParticle extends BukkitRunnable {
                 continue;
             }
 
-            // there's a setting to disable npc effects altogether
+            // there's a setting to disable effects altogether. If the effect is disabled, skip it
             if ("true".equalsIgnoreCase(particleSection.getString("disabled"))) {
                 continue;
             }
@@ -220,7 +240,7 @@ public class CitizensParticle extends BukkitRunnable {
                     }
                 }
 
-                // determine which NPCs should receive this effect
+                // determine which NPCs should receive this effect | if def == true, set the effect on every NPC. Otherwise only on npcs.npcs
                 Collection<Integer> applicableNPCs = npcs.def ? new HashSet<>(npcss) : npcs.npcs;
 
                 // assign this effect to all NPCs which don't have already assigned effects
@@ -231,7 +251,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
             }
-            
+
             // put assignments into the main map
             players.put(player.getUniqueId(), assignments);
         }
@@ -244,7 +264,7 @@ public class CitizensParticle extends BukkitRunnable {
 
             // get NPC-effect assignments for this player
             Map<Integer, NPCs> assignments = players.get(player.getUniqueId());
-            
+
             // skip if there are no assignments for this player
             if (assignments == null) {
                 continue;
@@ -263,13 +283,13 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // get the NPC from its ID
                 NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                
+
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() ||
                         (NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc))) {
                     continue;
                 }
-                
+
                 // prepare effect location
                 Location loc = npc.getStoredLocation().clone();
                 loc.setPitch(-90);
@@ -282,7 +302,7 @@ public class CitizensParticle extends BukkitRunnable {
                         new DynamicLocation(null, null),
                         null,
                         player);
-                
+
             }
         }
     }
