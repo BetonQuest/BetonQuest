@@ -65,9 +65,9 @@ public class BlockObjective extends Objective implements Listener {
 		this.location = instruction.getLocation(instruction.getOptional("loc"));
 		this.worldGuardRegion = instruction.getOptional("region");
 		if (worldGuardRegion != null) {
-		    if (!Compatibility.isHooked("WorldGuard"))
-		        throw new InstructionParseException("Region optional requires BetonQuest to hook WorldGuard to work");
-        }
+			if (!Compatibility.isHooked("WorldGuard"))
+				throw new InstructionParseException("Region optional requires BetonQuest to hook WorldGuard to work");
+		}
 	}
 
 	@EventHandler
@@ -81,7 +81,7 @@ public class BlockObjective extends Objective implements Listener {
 				//only continue if location isn't specified or matched
 				if (location != null && sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
 				//only continue if region isn't specified or matched
-                if (!checkRegion(event.getBlock().getLocation())) return;
+				if (!checkRegion(event.getBlock().getLocation())) return;
 				// add the block to the total amount
 				BlockData playerData = (BlockData) dataMap.get(playerID);
 				playerData.add();
@@ -114,8 +114,8 @@ public class BlockObjective extends Objective implements Listener {
 					&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
 				//only continue if location isn't specified or matched
 				if (location != null && sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
-                //only continue if region isn't specified or matched
-                if (!checkRegion(event.getBlock().getLocation())) return;
+				//only continue if region isn't specified or matched
+				if (!checkRegion(event.getBlock().getLocation())) return;
 				// remove the block from the total amount
 				BlockData playerData = (BlockData) dataMap.get(playerID);
 				playerData.remove();
@@ -171,16 +171,16 @@ public class BlockObjective extends Objective implements Listener {
 	}
 
 	private boolean checkRegion(Location blockLocation) throws QuestRuntimeException {
-	    if (worldGuardRegion == null) return true;
-	    if (!Compatibility.isHooked("WorldGuard")) throw new QuestRuntimeException("WorldGuard isn't hooked");
-	    try {
-            com.sk89q.worldguard.protection.managers.RegionManager regionManager = com.sk89q.worldguard.bukkit.WorldGuardPlugin.inst()
-                    .getRegionManager(blockLocation.getWorld());
-            return regionManager.getApplicableRegions(blockLocation).getRegions().contains(worldGuardRegion);
-        } catch (NoClassDefFoundError e) {
-	        throw new QuestRuntimeException(e.getMessage());
-        }
-    }
+		if (worldGuardRegion == null) return true;
+		if (!Compatibility.isHooked("WorldGuard")) throw new QuestRuntimeException("WorldGuard isn't hooked");
+		try {
+			com.sk89q.worldguard.protection.managers.RegionManager regionManager = com.sk89q.worldguard.bukkit.WorldGuardPlugin.inst()
+					.getRegionManager(blockLocation.getWorld());
+			return regionManager.getApplicableRegions(blockLocation).getRegions().contains(worldGuardRegion);
+		} catch (NoClassDefFoundError e) {
+			throw new QuestRuntimeException(e.getMessage());
+		}
+	}
 
 	public static class BlockData extends ObjectiveData {
 
