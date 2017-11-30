@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -28,8 +29,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -45,6 +49,7 @@ public class BlockObjective extends Objective implements Listener {
 	private final byte data;
 	private final int neededAmount;
 	private final boolean notify;
+	private final LocationData location;
 
 	public BlockObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -54,57 +59,70 @@ public class BlockObjective extends Objective implements Listener {
 		data = string.length > 1 ? instruction.getByte(string[1], (byte) -1) : -1;
 		neededAmount = instruction.getInt();
 		notify = instruction.hasArgument("notify");
+		this.location = instruction.getLocation(instruction.getOptional("loc"));
 	}
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		String playerID = PlayerConverter.getID(event.getPlayer());
-		// if the player has this objective, the event isn't canceled,
-		// the block is correct and conditions are met
-		if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
-				&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
-			// add the block to the total amount
-			BlockData playerData = (BlockData) dataMap.get(playerID);
-			playerData.add();
-			// complete the objective
-			if (playerData.getAmount() == neededAmount) {
-				completeObjective(playerID);
-			} else if (notify) {
-				// or maybe display a notification
-				if (playerData.getAmount() > neededAmount) {
-					Config.sendMessage(playerID, "blocks_to_break",
-							new String[] { String.valueOf(playerData.getAmount() - neededAmount) });
-				} else {
-					Config.sendMessage(playerID, "blocks_to_place",
-							new String[] { String.valueOf(neededAmount - playerData.getAmount()) });
+		try {
+			String playerID = PlayerConverter.getID(event.getPlayer());
+			// if the player has this objective, the event isn't canceled,
+			// the block is correct and conditions are met
+			if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
+					&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
+				//only continue if location isn't specified or matched
+				if (location != null || sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
+				// add the block to the total amount
+				BlockData playerData = (BlockData) dataMap.get(playerID);
+				playerData.add();
+				// complete the objective
+				if (playerData.getAmount() == neededAmount) {
+					completeObjective(playerID);
+				} else if (notify) {
+					// or maybe display a notification
+					if (playerData.getAmount() > neededAmount) {
+						Config.sendMessage(playerID, "blocks_to_break",
+										   new String[]{String.valueOf(playerData.getAmount() - neededAmount)});
+					} else {
+						Config.sendMessage(playerID, "blocks_to_place",
+										   new String[]{String.valueOf(neededAmount - playerData.getAmount())});
+					}
 				}
 			}
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
 		}
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		String playerID = PlayerConverter.getID(event.getPlayer());
-		// if the player has this objective, the event isn't canceled,
-		// the block is correct and conditions are met
-		if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
-				&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
-			// remove the block from the total amount
-			BlockData playerData = (BlockData) dataMap.get(playerID);
-			playerData.remove();
-			// complete the objective
-			if (playerData.getAmount() == neededAmount) {
-				completeObjective(playerID);
-			} else if (notify) {
-				// or maybe display a notification
-				if (playerData.getAmount() > neededAmount) {
-					Config.sendMessage(playerID, "blocks_to_break",
-							new String[] { String.valueOf(playerData.getAmount() - neededAmount) });
-				} else {
-					Config.sendMessage(playerID, "blocks_to_place",
-							new String[] { String.valueOf(neededAmount - playerData.getAmount()) });
+		try {
+			String playerID = PlayerConverter.getID(event.getPlayer());
+			// if the player has this objective, the event isn't canceled,
+			// the block is correct and conditions are met
+			if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
+					&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
+				//only continue if location isn't specified or matched
+				if (location != null || sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
+				// remove the block from the total amount
+				BlockData playerData = (BlockData) dataMap.get(playerID);
+				playerData.remove();
+				// complete the objective
+				if (playerData.getAmount() == neededAmount) {
+					completeObjective(playerID);
+				} else if (notify) {
+					// or maybe display a notification
+					if (playerData.getAmount() > neededAmount) {
+						Config.sendMessage(playerID, "blocks_to_break",
+								new String[] { String.valueOf(playerData.getAmount() - neededAmount) });
+					} else {
+						Config.sendMessage(playerID, "blocks_to_place",
+								new String[] { String.valueOf(neededAmount - playerData.getAmount()) });
+					}
 				}
 			}
+		} catch (QuestRuntimeException e) {
+			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
 		}
 	}
 
@@ -131,6 +149,13 @@ public class BlockObjective extends Objective implements Listener {
 			return Integer.toString(((BlockData) dataMap.get(playerID)).getAmount());
 		}
 		return "";
+	}
+
+	private boolean sameBlock(Location location1, Location location2) {
+		return location1.getWorld().equals(location2.getWorld())
+				&& location1.getBlockX() == location2.getBlockX()
+				&& location1.getBlockY() == location2.getBlockY()
+				&& location1.getBlockZ() == location2.getBlockZ();
 	}
 
 	public static class BlockData extends ObjectiveData {
