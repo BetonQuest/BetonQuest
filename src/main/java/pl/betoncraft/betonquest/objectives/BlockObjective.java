@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.objectives;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -37,6 +36,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
 
 /**
  * Player has to break/place specified amount of blocks. Doing opposite thing
@@ -79,7 +79,7 @@ public class BlockObjective extends Objective implements Listener {
 			if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
 					&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
 				//only continue if location isn't specified or matched
-				if (location != null && sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
+				if (location != null && !sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
 				//only continue if region isn't specified or matched
 				if (!checkRegion(event.getBlock().getLocation())) return;
 				// add the block to the total amount
@@ -113,7 +113,7 @@ public class BlockObjective extends Objective implements Listener {
 			if (containsPlayer(playerID) && !event.isCancelled() && event.getBlock().getType().equals(material)
 					&& (data < 0 || event.getBlock().getData() == data) && checkConditions(playerID)) {
 				//only continue if location isn't specified or matched
-				if (location != null && sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
+				if (location != null && !sameBlock(location.getLocation(playerID), event.getBlock().getLocation())) return;
 				//only continue if region isn't specified or matched
 				if (!checkRegion(event.getBlock().getLocation())) return;
 				// remove the block from the total amount
@@ -176,7 +176,10 @@ public class BlockObjective extends Objective implements Listener {
 		try {
 			com.sk89q.worldguard.protection.managers.RegionManager regionManager = com.sk89q.worldguard.bukkit.WorldGuardPlugin.inst()
 					.getRegionManager(blockLocation.getWorld());
-			return regionManager.getApplicableRegions(blockLocation).getRegions().contains(worldGuardRegion);
+			for (com.sk89q.worldguard.protection.regions.ProtectedRegion region: regionManager.getApplicableRegions(blockLocation)) {
+				if (region.getId().equals(worldGuardRegion)) return true;
+			}
+			return false;
 		} catch (NoClassDefFoundError e) {
 			throw new QuestRuntimeException(e.getMessage());
 		}
