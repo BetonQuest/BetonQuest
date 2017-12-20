@@ -66,12 +66,16 @@ public class ShearObjective extends Objective implements Listener {
 		if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
 			return;
 		SheepData data = (SheepData) dataMap.get(playerID);
-		if (checkConditions(playerID))
+
+		if (checkConditions(playerID)) {
 			data.shearSheep();
-		if (data.getAmount() <= 0)
-			completeObjective(playerID);
-		else if (notify)
-			Config.sendMessage(playerID, "sheep_to_shear", new String[] { String.valueOf(data.getAmount()) });
+
+			// complete quest or notify
+			if (data.getAmount() <= 0)
+				completeObjective(playerID);
+			else if (notify)
+				Config.sendMessage(playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())});
+		}
 	}
 
 	@Override
