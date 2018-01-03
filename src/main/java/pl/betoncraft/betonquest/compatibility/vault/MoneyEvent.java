@@ -51,6 +51,7 @@ public class MoneyEvent extends QuestEvent {
 		} catch (NumberFormatException e) {
 			throw new InstructionParseException("Could not parse money amount");
 		}
+		notify = instruction.hasArgument("notify");
 	}
 
 	@SuppressWarnings("deprecation")
