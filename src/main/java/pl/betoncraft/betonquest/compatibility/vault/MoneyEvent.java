@@ -24,7 +24,9 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import java.text.DecimalFormat;
 
 /**
  * Modifies player's balance
@@ -35,6 +37,7 @@ public class MoneyEvent extends QuestEvent {
 
 	private final VariableNumber amount;
 	private boolean multi;
+	private final boolean notify;
 
 	public MoneyEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -61,11 +64,23 @@ public class MoneyEvent extends QuestEvent {
 			target = current * amount.getDouble(playerID);
 		else
 			target = current + amount.getDouble(playerID);
+
 		double difference = target - current;
+		DecimalFormat df = new DecimalFormat("#.00");
+		String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
+
 		if (difference > 0) {
 		    VaultIntegrator.getEconomy().depositPlayer(player.getName(), difference);
+			if (notify) {
+				Config.sendMessage(playerID, "money_given",
+						new String[] {df.format(difference), currencyName});
+			}
 		} else if (difference < 0) {
 		    VaultIntegrator.getEconomy().withdrawPlayer(player.getName(), -difference);
+			if (notify) {
+				Config.sendMessage(playerID, "money_taken",
+						new String[] {df.format(difference), currencyName});
+			}
 		}
 	}
 }
