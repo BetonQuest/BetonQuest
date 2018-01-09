@@ -32,7 +32,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.betoncraft.betonquest.api.*;
+import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.LoadDataEvent;
+import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.commands.BackpackCommand;
 import pl.betoncraft.betonquest.commands.CancelQuestCommand;
 import pl.betoncraft.betonquest.commands.CompassCommand;
