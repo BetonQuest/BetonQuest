@@ -23,7 +23,7 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Fires after BetonQuest finished loading or reloading all events, conditions, objectives, conversations etc.
- * </p>
+ * <p>
  * Usefull if you like to have a addon which is reloading whenever BetonQuest is reloading.
  *
  * @author Jonas Blocher
