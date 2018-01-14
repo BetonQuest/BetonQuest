@@ -118,6 +118,7 @@ import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.OpSudoEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
@@ -348,6 +349,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("run", RunEvent.class);
 		registerEvents("givejournal", GiveJournalEvent.class);
 		registerEvents("sudo", SudoEvent.class);
+		registerEvents("opsudo", OpSudoEvent.class);
 		registerEvents("chestgive", ChestGiveEvent.class);
 		registerEvents("chesttake", ChestTakeEvent.class);
 		registerEvents("chestclear", ChestClearEvent.class);
