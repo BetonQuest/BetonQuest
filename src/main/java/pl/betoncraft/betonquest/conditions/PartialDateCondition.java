@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 
 /**
@@ -52,16 +51,19 @@ public class PartialDateCondition extends Condition {
         Calendar current = Calendar.getInstance();
         if (dayOfMonth != null) {
             int day = current.get(Calendar.DAY_OF_MONTH);
-            return this.dayOfMonth.stream().anyMatch(interval -> interval.isWithin(day));
+            if (!this.dayOfMonth.stream().anyMatch(interval -> interval.isWithin(day))) return false;
+            //if day is not one of the given ones return false
         }
         if (month != null) {
             int month = current.get(Calendar.MONTH) + 1;
             //Dont ask why +1: java.util.Calendar is a complete mess (january is 0, december is 11,...)
-            return this.month.stream().anyMatch(interval -> interval.isWithin(month));
+            if (!this.month.stream().anyMatch(interval -> interval.isWithin(month))) return false;
+            //if month is not one of the given ones return false
         }
         if (year != null) {
             int year = current.get(Calendar.YEAR);
-            return this.year.stream().anyMatch(interval -> interval.isWithin(year));
+            if (!this.year.stream().anyMatch(interval -> interval.isWithin(year))) return false;
+            //if year is not one of the given ones return false
         }
         return true;
     }
@@ -78,6 +80,7 @@ public class PartialDateCondition extends Condition {
             this.maxValue = maxValue;
         }
 
+
         public boolean isValid(int i) {
             return i > 0 && (maxValue == -1 || i <= maxValue);
         }
@@ -93,23 +96,25 @@ public class PartialDateCondition extends Condition {
         private final int start;
         private final int end;
 
-        public TimeInterval(int start, int end, PartialDate type) throws InstructionParseException {
+        public TimeInterval(int start, int end, PartialDate type) throws IllegalArgumentException {
             this.start = start;
             this.end = end;
-            if (end < start) throw new InstructionParseException(type + " " + end + " is before " + start);
-            if (!type.isValid(start)) throw new InstructionParseException(start + " is not a valid " + type);
-            if (!type.isValid(end)) throw new InstructionParseException(end + " is not a valid " + type);
+            if (end < start) throw new IllegalArgumentException(type + " " + end + " is before " + start);
+            if (!type.isValid(start)) throw new IllegalArgumentException(start + " is not a valid " + type);
+            if (!type.isValid(end)) throw new IllegalArgumentException(end + " is not a valid " + type);
         }
 
-        public TimeInterval(int value, PartialDate type) throws InstructionParseException {
+        public TimeInterval(int value, PartialDate type) throws IllegalArgumentException {
             this(value, value, type);
         }
 
         public static List<TimeInterval> parseFromString(String string, PartialDate type) throws InstructionParseException {
             List<TimeInterval> intervals = new ArrayList<>();
+            // check if the given string is valid (example: 1,3-4,7)
             if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*"))
                 throw new InstructionParseException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
             String[] args = string.split(",");
+            //Add each interval (or single one) to the list
             for (String arg : args) {
                 try {
                     if (arg.contains("-")) {
@@ -120,7 +125,8 @@ public class PartialDateCondition extends Condition {
                     } else {
                         intervals.add(new TimeInterval(Integer.parseInt(arg), type));
                     }
-                } catch (InstructionParseException e) {
+                } catch (IllegalArgumentException e) {
+                    //if some value exceeded minimum or maximum throw IPE
                     throw new InstructionParseException("could not parse " + type + " from '" + string + "'"
                                                             + " (" + e.getMessage() + ")");
                 }
