@@ -40,7 +40,7 @@ public class CalculateVariable extends Variable {
     public CalculateVariable(Instruction instruction) throws InstructionParseException {
         super(instruction);
         String instruction_string = instruction.getInstruction();
-        if (!instruction_string.matches("%calc:.+%")) throw new InstructionParseException("invalid format");
+        if (!instruction_string.matches("calc:.+")) throw new InstructionParseException("invalid format");
         this.calculation = this.parse(instruction_string.substring(6, instruction_string.length() - 1));
     }
 

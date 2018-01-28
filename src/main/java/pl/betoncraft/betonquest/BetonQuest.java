@@ -164,7 +164,14 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
-import pl.betoncraft.betonquest.variables.*;
+import pl.betoncraft.betonquest.variables.CalculateVariable;
+import pl.betoncraft.betonquest.variables.ItemAmountVariable;
+import pl.betoncraft.betonquest.variables.LocationVariable;
+import pl.betoncraft.betonquest.variables.NpcNameVariable;
+import pl.betoncraft.betonquest.variables.ObjectivePropertyVariable;
+import pl.betoncraft.betonquest.variables.PlayerNameVariable;
+import pl.betoncraft.betonquest.variables.PointVariable;
+import pl.betoncraft.betonquest.variables.VersionVariable;
 
 /**
  * Represents BetonQuest plugin
