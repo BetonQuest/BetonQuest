@@ -78,6 +78,12 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 **Example**: `time 2-23`
 
+## Real time: `realtime`
+
+There must a specific (real) time for this condition to return true. You need to specify two times (formatted like `hh:mm`) separated by dash. If the first is before the second the time must be between these two, if its after the second the time must be later than the first and earlier than the second to return true.
+
+**Example:** `realtime 8:00-12:30`
+
 ## Weather: `weather`
 
 There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.
