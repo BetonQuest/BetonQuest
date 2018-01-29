@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,21 +33,24 @@ import java.util.regex.Pattern;
  *
  * @author Jonas Blocher
  */
-public class CalculateVariable extends Variable {
+public class MathVariable extends Variable {
 
     private final Calculable calculation;
 
-    public CalculateVariable(Instruction instruction) throws InstructionParseException {
+    public MathVariable(Instruction instruction) throws InstructionParseException {
         super(instruction);
         String instruction_string = instruction.getInstruction();
-        if (!instruction_string.matches("calc:.+")) throw new InstructionParseException("invalid format");
-        this.calculation = this.parse(instruction_string.substring(6, instruction_string.length() - 1));
+        if (!instruction_string.matches("math\\.calc:.+")) throw new InstructionParseException("invalid format");
+        this.calculation = this.parse(instruction_string.substring("math.calc:".length(), instruction_string.length()));
     }
 
     @Override
     public String getValue(String playerID) {
         try {
-            return String.valueOf(this.calculation.calculate(playerID));
+            double value = this.calculation.calculate(playerID);
+            if (value % 1 == 0)
+                return String.format("%.0f", value);
+            return String.valueOf(value);
         } catch (QuestRuntimeException e) {
             Debug.error("Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
             return "0";
@@ -61,6 +64,12 @@ public class CalculateVariable extends Variable {
      * @throws InstructionParseException if the instruction isn't valid
      */
     private Calculable parse(final String string) throws InstructionParseException {
+        //clarify error messages for invalid calculations
+        if (string.matches(".*[+\\-*/^]{2}.*"))
+            throw new InstructionParseException("invalid calculation (operations doubled)");
+        if (string.matches(".*(\\([^)]*|\\[[^]]*)")
+                || string.matches("([^(]*\\)|[^\\[]*]).*"))
+            throw new InstructionParseException("invalid calculation (uneven braces)");
         //calculate braces
         if (string.matches("(\\(.+\\)|\\[.+])")) return this.parse(string.substring(1, string.length() - 1));
         //calculate the absolute value
@@ -121,7 +130,7 @@ public class CalculateVariable extends Variable {
             return new ClaculableVariable(Double.parseDouble(string));
         //if a variable is specified
         try {
-            return new ClaculableVariable(super.pack, "%" + string + "%");
+            return new ClaculableVariable(super.instruction.getPackage(), "%" + string + "%");
         } catch (NumberFormatException e) {
             throw new InstructionParseException(e.getMessage());
         }
