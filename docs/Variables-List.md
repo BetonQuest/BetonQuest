@@ -41,3 +41,9 @@ This variable displays the version of the plugin. You can optionally add the nam
 This variable resolves to player's current location, formatted as an absolute location format (more about it in the _Reference_ chapter). The location will contain yaw and pitch. You can use it instead of coordinates as location arguments in events, conditions and objectives.
 
 **Example**: `%location%`
+
+## Calculate mathematical expression: `math.calc`
+
+This variable allows you to perform a calculation based on other variables (for example point or objective variables) and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/` and  `^`. You can use `( )` and `[ ]` braces and also calculate absolute values with `| |` (but don't use this in the command event as it splits the commands at every `|`). If you want to use variables in the calculation, don't put `%` around them.
+
+**Example:** `%math.calc:100*(15-point.reputation.amount)%`
