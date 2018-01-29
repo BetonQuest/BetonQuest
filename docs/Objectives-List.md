@@ -10,7 +10,7 @@ Location objective contains one property, `location`. It's a string formatted li
 
 ## Block: `block`
 
-To complete this objective player must break or place specified amount of blocks. First argument after name is type of the block and data value after a colon (WOOD:2 means birch wooden planks). You can find possible types at Bukkit reference page there: [material types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks.
+To complete this objective player must break or place specified amount of blocks. First argument after name is type of the block and data value after a colon (WOOD:2 means birch wooden planks). You can find possible types at Bukkit reference page there: [material types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks. If the block has to be placed/broken at a specific location add a `loc:` argument. You can also specify a region in which the block has to be with `region:`, but only if the plugin has hooked into [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/).
 
 This objective has two properties, `amount` and `left`. Amount is current amount of blocks in the objective, left is amount needed to complete the objective. Note that it may sometimes be negative!
 
