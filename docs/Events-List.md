@@ -114,6 +114,11 @@ It's something like a container for multiple events. You can use it to clarify y
 
 **Example**: `folder event1,event2,event3 delay:5 random:1`
 
+## Pick random: `pickrandom` _persistent_, _static_
+
+Another container for events. It picks one (ore multiple) of the given events and runs it (but only if all conditions are true, if not it will do nothing). You must specify how likely it is that each event is picked by adding the percentage before the events id. By default it picks one event from the list but you can add a `amount:` optional if you want more to be picked. Note that only as many events as specified can be picked and `amount:0` will do nothing.
+
+**Example**: `pickrandom 20.5%event1,0.5%event2,79%event3 amount:2`
 ## Set Block: `setblock` _persistent_, _static_
 
 Sets a block at given location to specified material. Useful for triggering redstone contraptions. There are two required arguments. First is required, and should be  material's name ([List of materials](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)). Second is a location and is also required. Last, optional is `data:` with an integer, which defines block's data value. Default is 0.
