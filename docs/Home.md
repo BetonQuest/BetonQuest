@@ -1,4 +1,4 @@
-![BetonQuest](http://betonquest.betoncraft.pl/logo.png)
+![BetonQuest](https://betonquest.pl/assets/logo.png)
 
 **Documentation for 1.10-dev version**
 
