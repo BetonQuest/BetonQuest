@@ -653,7 +653,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	private List<String> completeJournals(CommandSender sender, String[] args) {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("add", "list", "del");
-		if (args.length == 4) return completeJournals(sender, args);
+		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
 		return new ArrayList<>();
 	}
 
