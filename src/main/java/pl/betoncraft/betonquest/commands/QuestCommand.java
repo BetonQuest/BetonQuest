@@ -48,6 +48,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.item.QuestItem;
@@ -127,6 +128,34 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					@Override
 					public void run() {
 						handleObjectives(finalSender1, finalArgs1);
+					}
+				}.runTaskAsynchronously(instance);
+				break;
+			case "globaltags":
+			case "globaltag":
+			case "gtag":
+			case "gtags":
+				Debug.info("Loading data asynchronously");
+				final CommandSender finalSender8 = sender;
+				final String[] finalArgs8 = args;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						handleGlobalTags(finalSender8, finalArgs8);
+					}
+				}.runTaskAsynchronously(instance);
+				break;
+			case "globalpoints":
+			case "globalpoint":
+			case "gpoints":
+			case "gpoint":
+				Debug.info("Loading data asynchronously");
+				final CommandSender finalSender9 = sender;
+				final String[] finalArgs9 = args;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						handleGlobalPoints(finalSender9, finalArgs9);
 					}
 				}.runTaskAsynchronously(instance);
 				break;
@@ -263,6 +292,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					"objective",
 					"tag",
 					"point",
+					"globaltag",
+					"globalpoint",
 					"journal",
 					"condition",
 					"event",
@@ -303,6 +334,16 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "point":
 			case "p":
 				return completePoints(sender, args);
+			case "globaltags":
+			case "globaltag":
+			case "gtag":
+			case "gtags":
+				return completeGlobalTags(sender, args);
+			case "globalpoints":
+			case "globalpoint":
+			case "gpoints":
+			case "gpoint":
+				return completeGlobalPoints(sender, args);
 			case "journals":
 			case "journal":
 			case "j":
@@ -726,6 +767,68 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	}
 
 	/**
+	 * Lists, adds, removes or purges all global points
+	 * @param sender
+	 * @param args
+	 */
+	private void handleGlobalPoints(CommandSender sender, String[] args) {
+		GlobalData data = instance.getGlobalData();
+		// if there are no arguments then list all global points
+		if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+			List<Point> points = data.getPoints();
+			Debug.info("Listing global points");
+			sendMessage(sender, "global_points");
+			for (Point point : points) {
+				sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
+			}
+			return;
+		}
+		//handle purge
+		if (args[1].equalsIgnoreCase("purge")) {
+			Debug.info("Purging all global points");
+			data.purgePoints();
+			sendMessage(sender, "global_points_purged");
+			return;
+		}
+		// if there is not enough arguments, display warning
+		if (args.length < 3) {
+			Debug.info("Missing category");
+			sendMessage(sender, "specify_category");
+			return;
+		}
+		String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+		// if there are arguments, handle them
+		switch (args[1].toLowerCase()) {
+		case "add":
+		case "a":
+			if (args.length < 4 || !args[3].matches("-?\\d+")) {
+				Debug.info("Missing amount");
+				sendMessage(sender, "specify_amount");
+				return;
+			}
+			// add the point
+			Debug.info("Adding global points");
+			data.modifyPoints(category, Integer.parseInt(args[3]));
+			sendMessage(sender, "points_added");
+			break;
+		case "remove":
+		case "delete":
+		case "del":
+		case "r":
+		case "d":
+			Debug.info("Removing global points");
+			data.removePointsCategory(category);
+			sendMessage(sender, "points_removed");
+			break;
+		default:
+			// if there was something else, display error message
+			Debug.info("The argument was unknown");
+			sendMessage(sender, "unknown_argument");
+			break;
+		}
+	}
+
+	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest points command
 	 * @param sender
 	 * @param args
@@ -735,6 +838,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("add", "list", "del");
 		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
+	/**
+	 * Returns a list including all possible options for tab complete of the /betonquest globalpoints command
+	 * @param sender
+	 * @param args
+	 * @return
+	 */
+	private List<String> completeGlobalPoints(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("add", "list", "del");
+		if (args.length == 3) return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -952,6 +1067,62 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	}
 
 	/**
+	 * Lists, adds or removes global tags
+	 */
+	private void handleGlobalTags(CommandSender sender, String[] args) {
+		GlobalData data = instance.getGlobalData();
+		// if there are no arguments then list all global tags
+		if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+			List<String> tags = data.getTags();
+			Debug.info("Listing global tags");
+			sendMessage(sender, "global_tags");
+			for (String tag : tags) {
+				sender.sendMessage("§b- " + tag);
+			}
+			return;
+		}
+		//handle purge
+		if (args[1].equalsIgnoreCase("purge")) {
+			Debug.info("Purging all global tags");
+			data.purgeTags();
+			sendMessage(sender, "global_tags_purged");
+			return;
+		}
+		// if there is not enough arguments, display warning
+		if (args.length < 3) {
+			Debug.info("Missing tag name");
+			sendMessage(sender, "specify_tag");
+			return;
+		}
+		String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+		// if there are arguments, handle them
+		switch (args[1].toLowerCase()) {
+		case "add":
+		case "a":
+			// add the tag
+			Debug.info("Adding global tag " + tag);
+			data.addTag(tag);
+			sendMessage(sender, "tag_added");
+			break;
+		case "remove":
+		case "delete":
+		case "del":
+		case "r":
+		case "d":
+			// remove the tag
+			Debug.info("Removing global tag " + tag);
+			data.removeTag(tag);
+			sendMessage(sender, "tag_removed");
+			break;
+		default:
+			// if there was something else, display error message
+			Debug.info("The argument was unknown");
+			sendMessage(sender, "unknown_argument");
+			break;
+		}
+	}
+
+	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest tags command
 	 * @param sender
 	 * @param args
@@ -961,6 +1132,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("list", "add", "del");
 		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
+	/**
+	 * Returns a list including all possible options for tab complete of the /betonquest globaltags command
+	 * @param sender
+	 * @param args
+	 * @return
+	 */
+	private List<String> completeGlobalTags(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("list", "add", "del");
+		if (args.length == 3) return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -1406,6 +1589,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		HashMap<String, String> cmds = new HashMap<>();
 		cmds.put("reload", "reload");
 		cmds.put("objectives", "objective <player> [list/add/del] [objective]");
+		cmds.put("globaltags", "globaltags [list/add/del/purge]");
+		cmds.put("globalpoints", "globalpoints [list/add/del/purge]");
 		cmds.put("tags", "tag <player> [list/add/del] [tag]");
 		cmds.put("points", "point <player> [list/add/del] [category] [amount]");
 		cmds.put("journal", "journal <player> [list/add/del] [entry] [date]");

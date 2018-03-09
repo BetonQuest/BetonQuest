@@ -55,6 +55,8 @@ import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
+import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
+import pl.betoncraft.betonquest.conditions.GlobalTagCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
@@ -91,6 +93,7 @@ import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -110,6 +113,8 @@ import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.GiveJournalEvent;
+import pl.betoncraft.betonquest.events.GlobalPointEvent;
+import pl.betoncraft.betonquest.events.GlobalTagEvent;
 import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
@@ -164,6 +169,7 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.GlobalPointVariable;
 import pl.betoncraft.betonquest.variables.ItemAmountVariable;
 import pl.betoncraft.betonquest.variables.LocationVariable;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
@@ -190,6 +196,7 @@ public final class BetonQuest extends JavaPlugin {
 	private Updater updater;
 
 	private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+	private GlobalData globalData;
 
 	private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
@@ -292,7 +299,9 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
+		registerConditions("globaltag", GlobalTagCondition.class);
 		registerConditions("point", PointCondition.class);
+		registerConditions("globalpoint", GlobalPointCondition.class);
 		registerConditions("and", ConjunctionCondition.class);
 		registerConditions("or", AlternativeCondition.class);
 		registerConditions("time", TimeCondition.class);
@@ -328,11 +337,13 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
 		registerEvents("tag", TagEvent.class);
+		registerEvents("globaltag", GlobalTagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
 		registerEvents("explosion", ExplosionEvent.class);
 		registerEvents("lightning", LightningEvent.class);
 		registerEvents("point", PointEvent.class);
+		registerEvents("globalpoint", GlobalPointEvent.class);
 		registerEvents("give", GiveEvent.class);
 		registerEvents("take", TakeEvent.class);
 		registerEvents("conversation", ConversationEvent.class);
@@ -401,6 +412,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerVariable("npc", NpcNameVariable.class);
 		registerVariable("objective", ObjectivePropertyVariable.class);
 		registerVariable("point", PointVariable.class);
+		registerVariable("globalpoint", GlobalPointVariable.class);
 		registerVariable("item", ItemAmountVariable.class);
 		registerVariable("version", VersionVariable.class);
 		registerVariable("location", LocationVariable.class);
@@ -414,6 +426,8 @@ public final class BetonQuest extends JavaPlugin {
 			public void run() {
 				// Load all events and conditions
 				loadData();
+				// Load global tags and points
+				globalData = new GlobalData();
 				// load data for all online players
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String playerID = PlayerConverter.getID(player);
@@ -743,6 +757,15 @@ public final class BetonQuest extends JavaPlugin {
 			putPlayerData(playerID, playerData);
 		}
 		return playerData;
+	}
+
+	/**
+	 * Retrieves GlobalData object which handles all global tags and points
+	 *
+	 * @return GlobalData object
+	 */
+	public GlobalData getGlobalData() {
+		return globalData;
 	}
 
 	/**
