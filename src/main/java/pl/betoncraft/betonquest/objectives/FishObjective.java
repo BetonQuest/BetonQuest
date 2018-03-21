@@ -46,6 +46,7 @@ public class FishObjective extends Objective implements Listener {
 	private final byte data;
 	private final int amount;
 	private final boolean notify;
+	private final int notifyInterval;
 
 	public FishObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -67,7 +68,8 @@ public class FishObjective extends Objective implements Listener {
 		if (amount < 1) {
 			throw new InstructionParseException("Fish amount cannot be less than 0");
 		}
-		notify = instruction.hasArgument("notify");
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -92,7 +94,7 @@ public class FishObjective extends Objective implements Listener {
 			data.catchFish();
 		if (data.getAmount() <= 0)
 			completeObjective(playerID);
-		else if (notify)
+		else if (notify && data.getAmount() % notifyInterval == 0)
 			Config.sendMessage(playerID, "fish_to_catch", new String[] { String.valueOf(data.getAmount()) });
 	}
 
