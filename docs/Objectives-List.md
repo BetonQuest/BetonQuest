@@ -10,15 +10,15 @@ Location objective contains one property, `location`. It's a string formatted li
 
 ## Block: `block`
 
-To complete this objective player must break or place specified amount of blocks. First argument after name is type of the block and data value after a colon (WOOD:2 means birch wooden planks). You can find possible types at Bukkit reference page there: [material types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks.
+To complete this objective player must break or place specified amount of blocks. First argument after name is type of the block and data value after a colon (WOOD:2 means birch wooden planks). You can find possible types at Bukkit reference page there: [material types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks, optionally with the notification interval after colon.
 
 This objective has two properties, `amount` and `left`. Amount is current amount of blocks in the objective, left is amount needed to complete the objective. Note that it may sometimes be negative!
 
-**Example**: `block LOG:2 -16 events:reward notify`
+**Example**: `block LOG:2 -16 events:reward notify:5`
 
 ## Mob Kill: `mobkill`
 
-The player must kill specified amount of mobs You must specify mob type first and then amount. You can find possible mob types here: [mob types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Additionally you can specify names for mobs with `name:Uber_Zombie`, so only killing properly named mobs counts. All `_` are replaced with spaces, so in this example you would have to kill 5 zombies with "Uber Zombie" above their heads. You can also specify `notify` keyword to display messages to the player each time he kills a mob. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the keyword used in that event.
+The player must kill specified amount of mobs You must specify mob type first and then amount. You can find possible mob types here: [mob types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Additionally you can specify names for mobs with `name:Uber_Zombie`, so only killing properly named mobs counts. All `_` are replaced with spaces, so in this example you would have to kill 5 zombies with "Uber Zombie" above their heads. You can also specify `notify` keyword to display messages to the player each time he kills a mob, optionally with the notification interval after colon. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the keyword used in that event.
 
 This objective also has two properties, `amount` and `left`. Amount is current amount of killed mobs, left is amount needed to complete the objective.
 
@@ -104,7 +104,7 @@ This objective requires the player to type the password in the chat. The first a
 
 ## Fishing: `fish`
 
-Requires the player to catch a fish. It doesn't have to be a fish, it can also be a treasure or junk. The first argument is [material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html) name of the item to catch, optionally with data value after a colon. Second argument must be amount of fish to catch. You can also add `notify` argument if you want to display progress.
+Requires the player to catch a fish. It doesn't have to be a fish, it can also be a treasure or junk. The first argument is [material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html) name of the item to catch, optionally with data value after a colon. Second argument must be amount of fish to catch. You can also add `notify` argument if you want to display progress, optionally with the notification interval after colon.
 
 Fishing has the same properties as mob kill objective.
 
@@ -132,7 +132,7 @@ This objective requires the player to put specified items in a specified chest. 
 
 ## Potion brewing: `potion`
 
-To complete this objective the player needs to brew specified amount of specified potions. The first argument is a potion ID from _items.yml_. Second argument is amount of potions. You can optionally add `notify` argument to make the objective display progress to players.
+To complete this objective the player needs to brew specified amount of specified potions. The first argument is a potion ID from _items.yml_. Second argument is amount of potions. You can optionally add `notify` argument to make the objective display progress to players, optionally with the notification interval after colon.
 
 The brewing will be accepted if the player was the last one to click the ingredient slot in the brewing stand and there were no matching potions there already.
 
@@ -156,7 +156,7 @@ You can also use `variable` event to change variables stored in this objective. 
 
 ## Kill player: `kill`
 
-To complete this objective the player needs to kill another player. The first argument is amount of players to kill. You can also specify additional arguments: `name:` followed by the name will only accept killing players with this name, `required:` followed by a list of conditions separated with commas will only accept killing players meeting these conditions and `notify` will display notifications when a player is killed.
+To complete this objective the player needs to kill another player. The first argument is amount of players to kill. You can also specify additional arguments: `name:` followed by the name will only accept killing players with this name, `required:` followed by a list of conditions separated with commas will only accept killing players meeting these conditions and `notify` will display notifications when a player is killed, optionally with the notification interval after colon.
 
 **Example**: `kill 5 required:team_B`
 
@@ -164,12 +164,12 @@ To complete this objective the player needs to kill another player. The first ar
 
 **This works only on Spigot 1.10.2 and later!**
 
-This objective is completed by breeding animals of specified type. The first argument is animal type ([types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) and second is amount (positive integer). You can add `notify` argument to display a message with remaining amount each time the animal is bred. While you can specify any entity, the objective will be completable only for breedable ones.
+This objective is completed by breeding animals of specified type. The first argument is animal type ([types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) and second is amount (positive integer). You can add `notify` argument to display a message with remaining amount each time the animal is bred, optionally with the notification interval after colon. While you can specify any entity, the objective will be completable only for breedable ones.
 
-**Example**: `breed cow 10 notify events:reward`
+**Example**: `breed cow 10 notify:2 events:reward`
 
 ## Interact with entity: `interact`
 
-The player must click on an entity to complete this objective. The first argument is the type of a click. Available values are `right`, `left` and `any`. Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on the same zombie to complete it. There is also an optional `name:` parameter which specifies what name the entity must have and `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). You can also add `notify` argument to make the objective notify players whenever they click a correct entity and `cancel` if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).
+The player must click on an entity to complete this objective. The first argument is the type of a click. Available values are `right`, `left` and `any`. Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on the same zombie to complete it. There is also an optional `name:` parameter which specifies what name the entity must have and `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). You can also add `notify` argument to make the objective notify players whenever they click a correct entity, optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).
 
 **Example**: `interact right creeper 1 marked:sick condition:syringeInHand cancel`
