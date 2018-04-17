@@ -135,6 +135,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "globaltag":
 			case "gtag":
 			case "gtags":
+			case "gt":
 				Debug.info("Loading data asynchronously");
 				final CommandSender finalSender8 = sender;
 				final String[] finalArgs8 = args;
@@ -149,6 +150,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "globalpoint":
 			case "gpoints":
 			case "gpoint":
+			case "gp":
 				Debug.info("Loading data asynchronously");
 				final CommandSender finalSender9 = sender;
 				final String[] finalArgs9 = args;
@@ -338,11 +340,13 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "globaltag":
 			case "gtag":
 			case "gtags":
+			case "gt":
 				return completeGlobalTags(sender, args);
 			case "globalpoints":
 			case "globalpoint":
 			case "gpoints":
 			case "gpoint":
+			case "gp":
 				return completeGlobalPoints(sender, args);
 			case "journals":
 			case "journal":

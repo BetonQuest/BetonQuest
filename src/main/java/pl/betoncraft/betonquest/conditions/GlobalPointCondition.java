@@ -30,7 +30,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * Requires a specified amount of global points (or more) in specified
  * category
  * 
- * @author Jakub Sapalski
+ * @author Jonas Blocher
  */
 public class GlobalPointCondition extends PointCondition {
 
