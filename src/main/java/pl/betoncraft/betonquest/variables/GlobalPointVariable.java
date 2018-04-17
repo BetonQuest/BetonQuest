@@ -15,34 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.conditions;
+package pl.betoncraft.betonquest.variables;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.Point;
 
 /**
- * Requires the player to have specified tag
+ * Allows you to display total amount of global points or amount of global points remaining to
+ * some other amount.
  * 
- * @author Jakub Sapalski
+ * @author Jonas Blocher
  */
-public class TagCondition extends Condition {
+public class GlobalPointVariable extends PointVariable {
 
-	protected final String tag;
+	protected String category;
+	protected Type type;
+	protected int amount;
 
-	public TagCondition(Instruction instruction) throws InstructionParseException {
+	public GlobalPointVariable(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		tag = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override
-	public boolean check(String playerID) {
-		if (BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag)) {
-			return true;
-		}
-		return false;
+	public String getValue(String playerID) {
+		return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
 	}
 
 }

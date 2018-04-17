@@ -31,6 +31,18 @@ This event adds (or removes) a tag to the player. The first argument after event
 
 **Example**: `tag add quest_started,new_entry`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+This works the same way as the normal point event but instead to manipulating the points for a category of a specific player it manipulates points in a global category. These global categories are player independent, so you could for example add a point to such a global category every time a player does a quest and give some special rewards for the 100th player who does the quest.
+
+**Example**: `globalpoint global_knownusers 1`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globaly for all players.
+
+**Example**: `globaltag add global_areNPCsAgressive`
+
 ## Objective: `objective` _persistent_
 
 Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two), _delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.

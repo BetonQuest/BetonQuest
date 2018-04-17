@@ -34,8 +34,8 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class TagEvent extends QuestEvent {
 
-	private final String[] tags;
-	private final boolean add;
+	protected final String[] tags;
+	protected final boolean add;
 
 	public TagEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);

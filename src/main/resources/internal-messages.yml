@@ -29,6 +29,10 @@ en:
   points_removed: '&2Points subtracted!'
   tag_added: '&2Tag added!'
   tag_removed: '&2Tag removed!'
+  global_points: '&aGlobal points:'
+  global_tags: '&aGlobal tags:'
+  global_points_purged: '&4Global points purged!'
+  global_tags_purged: '&4Global tags purged!'
   objective_added: '&2Objective started!'
   objective_removed: '&2Objective deleted!'
   objective_completed: '&2Objective completed!'
@@ -52,6 +56,8 @@ en:
   command_vector: calculates a vector from first variable and saves it to the second
   command_purge: deletes all data about the player
   command_backup: creates configuration and database backup. Use only from console on empty server!
+  command_globaltags: displays global tags
+  command_globalpoints: displays global points
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
   error: '&cThere has been an error: {1}'

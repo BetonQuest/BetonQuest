@@ -26,6 +26,8 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
 
+import java.util.List;
+
 /**
  * Requires the player to have specified amount of points (or more) in specified
  * category
@@ -34,9 +36,9 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class PointCondition extends Condition {
 
-	private final String category;
-	private final VariableNumber count;
-	private final boolean equal;
+	protected final String category;
+	protected final VariableNumber count;
+	protected final boolean equal;
 
 	public PointCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -47,8 +49,12 @@ public class PointCondition extends Condition {
 
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
+		return check(playerID, BetonQuest.getInstance().getPlayerData(playerID).getPoints());
+	}
+
+	protected boolean check(String playerID, List<Point> points) throws QuestRuntimeException {
 		int c = count.getInt(playerID);
-		for (Point point : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
+		for (Point point : points) {
 			if (point.getCategory().equalsIgnoreCase(category)) {
 				if (equal) {
 					return point.getCount() == c;
