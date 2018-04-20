@@ -19,8 +19,10 @@ package pl.betoncraft.betonquest.compatibility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -65,7 +67,7 @@ public class Compatibility implements Listener {
     private static Compatibility instance;
     private Map<String, Integrator> integrators = new HashMap<>();
 	private BetonQuest plugin = BetonQuest.getInstance();
-	private List<String> hooked = new ArrayList<>();
+	private Set<String> hooked = new HashSet<>();
 
     private void hook(Plugin hook) {
         
@@ -174,7 +176,15 @@ public class Compatibility implements Listener {
 	 * @return the list of hooked plugins
 	 */
 	public static List<String> getHooked() {
-	    return instance.hooked;
+	    return new ArrayList<>(instance.hooked);
+	}
+
+	/**
+	 * @param pluginName
+	 * @return if the specifyed plugin is hooked
+	 */
+	public static boolean isHooked(String pluginName) {
+		return instance.hooked.contains(pluginName);
 	}
 	
 	public static void reload() {
