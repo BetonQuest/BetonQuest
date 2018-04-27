@@ -14,6 +14,7 @@ en:
   specify_action: '&cSpecify action (read, set or add)'
   specify_path: '&cSpecify path (separated by dots)'
   specify_package: '&cSpecify package name'
+  speify_conversation: '&cSpecify correct conversation name.'
   package_created: '&2Package created'
   package_exists: '&cPackage already exists'
   config_set_error: '&cCould not set specified path.'
@@ -41,6 +42,7 @@ en:
   everything_renamed: '&2Every occurrence renamed!'
   everything_removed: '&2Every occurrence removed!'
   purged: '&4{1}''s data purged!'
+  npc_created: '&aNpc created!'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
   command_tags: displays tags
@@ -58,6 +60,10 @@ en:
   command_backup: creates configuration and database backup. Use only from console on empty server!
   command_globaltags: displays global tags
   command_globalpoints: displays global points
+  command_createnpc: create a npc from a specific block or entity
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
   error: '&cThere has been an error: {1}'
+  no_commandline: 'Command can''t be run from command line!'
+  createnpc: '&aRight click at a block or a entity to define the npc. Type &7c &ain chat to cancel.'
+  createnpc_cancel: '&aNpc creation canceled!'

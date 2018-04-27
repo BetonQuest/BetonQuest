@@ -89,7 +89,9 @@ import pl.betoncraft.betonquest.conversation.ConversationData;
 import pl.betoncraft.betonquest.conversation.ConversationIO;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
 import pl.betoncraft.betonquest.conversation.CubeNPCListener;
+import pl.betoncraft.betonquest.conversation.EntityNPCListener;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
+import pl.betoncraft.betonquest.conversation.LocationNPCListener;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
@@ -265,8 +267,10 @@ public final class BetonQuest extends JavaPlugin {
 		// instantiating of these important things
 		new JoinQuitListener();
 
-		// instantiate default conversation start listener
+		// instantiate default conversation start listeners
 		new CubeNPCListener();
+		new EntityNPCListener();
+		new LocationNPCListener();
 
 		// instantiate journal handler
 		new QuestItemHandler();

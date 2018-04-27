@@ -17,10 +17,6 @@
  */
 package pl.betoncraft.betonquest.commands;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,9 +26,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.EventID;
@@ -57,12 +60,21 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Main admin command for quest editing.
  *
  * @author Jakub Sapalski
  */
-public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
+public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
 	private BetonQuest instance = BetonQuest.getInstance();
 	private String defaultPack = Config.getString("config.default_package");
@@ -125,6 +137,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender1 = sender;
 				final String[] finalArgs1 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleObjectives(finalSender1, finalArgs1);
@@ -140,6 +153,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender8 = sender;
 				final String[] finalArgs8 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleGlobalTags(finalSender8, finalArgs8);
@@ -155,6 +169,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender9 = sender;
 				final String[] finalArgs9 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleGlobalPoints(finalSender9, finalArgs9);
@@ -168,6 +183,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender2 = sender;
 				final String[] finalArgs2 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleTags(finalSender2, finalArgs2);
@@ -181,6 +197,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender3 = sender;
 				final String[] finalArgs3 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handlePoints(finalSender3, finalArgs3);
@@ -194,6 +211,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender4 = sender;
 				final String[] finalArgs4 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleJournals(finalSender4, finalArgs4);
@@ -207,6 +225,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender5 = sender;
 				final String[] finalArgs5 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleDeleting(finalSender5, finalArgs5);
@@ -219,6 +238,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender6 = sender;
 				final String[] finalArgs6 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						handleRenaming(finalSender6, finalArgs6);
@@ -235,6 +255,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				final CommandSender finalSender7 = sender;
 				final String[] finalArgs7 = args;
 				new BukkitRunnable() {
+
 					@Override
 					public void run() {
 						purgePlayer(finalSender7, finalArgs7);
@@ -275,6 +296,11 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "package":
 				createNewPackage(sender, args);
 				break;
+			case "setnpc":
+			case "npc":
+			case "createnpc":
+				createNPC(sender, args);
+				break;
 			default:
 				// there was an unknown argument, so handle this
 				sendMessage(sender, "unknown_argument");
@@ -305,91 +331,102 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					"delete",
 					"config",
 					"vector",
-					"backup");
+					"backup",
+					"createnpc");
 		}
 		switch (args[0].toLowerCase()) {
-			case "conditions":
-			case "condition":
-			case "c":
-				return completeConditions(sender, args);
-			case "events":
-			case "event":
-			case "e":
-				return completeEvents(sender, args);
-			case "items":
-			case "item":
-			case "i":
-			case "give":
-			case "g":
-				return completeItems(sender, args);
-			case "config":
-				return completeConfig(sender, args);
-			case "objectives":
-			case "objective":
-			case "o":
-				return completeObjectives(sender, args);
-			case "tags":
-			case "tag":
-			case "t":
-				return completeTags(sender, args);
-			case "points":
-			case "point":
-			case "p":
-				return completePoints(sender, args);
-			case "globaltags":
-			case "globaltag":
-			case "gtag":
-			case "gtags":
-			case "gt":
-				return completeGlobalTags(sender, args);
-			case "globalpoints":
-			case "globalpoint":
-			case "gpoints":
-			case "gpoint":
-			case "gp":
-				return completeGlobalPoints(sender, args);
-			case "journals":
-			case "journal":
-			case "j":
-				return completeJournals(sender, args);
-			case "delete":
-			case "del":
-			case "d":
-				return completeDeleting(sender, args);
-			case "rename":
-			case "r":
-				return completeRenaming(sender, args);
-			case "vector":
-			case "vec":
-			case "v":
-				return completeVector(sender, args);
-			case "purge":
-				if (args.length == 2) return null;
-				else return new ArrayList<>();
-			case "update":
-				return completeUpdate(sender, args);
-			case "reload":
-			case "backup":
-			case "create":
-			case "package":
-			default:
+		case "conditions":
+		case "condition":
+		case "c":
+			return completeConditions(sender, args);
+		case "events":
+		case "event":
+		case "e":
+			return completeEvents(sender, args);
+		case "items":
+		case "item":
+		case "i":
+		case "give":
+		case "g":
+			return completeItems(sender, args);
+		case "config":
+			return completeConfig(sender, args);
+		case "objectives":
+		case "objective":
+		case "o":
+			return completeObjectives(sender, args);
+		case "tags":
+		case "tag":
+		case "t":
+			return completeTags(sender, args);
+		case "points":
+		case "point":
+		case "p":
+			return completePoints(sender, args);
+		case "globaltags":
+		case "globaltag":
+		case "gtag":
+		case "gtags":
+		case "gt":
+			return completeGlobalTags(sender, args);
+		case "globalpoints":
+		case "globalpoint":
+		case "gpoints":
+		case "gpoint":
+		case "gp":
+			return completeGlobalPoints(sender, args);
+		case "journals":
+		case "journal":
+		case "j":
+			return completeJournals(sender, args);
+		case "delete":
+		case "del":
+		case "d":
+			return completeDeleting(sender, args);
+		case "rename":
+		case "r":
+			return completeRenaming(sender, args);
+		case "vector":
+		case "vec":
+		case "v":
+			return completeVector(sender, args);
+		case "purge":
+			if (args.length == 2)
+				return null;
+			else
 				return new ArrayList<>();
+		case "update":
+			return completeUpdate(sender, args);
+		case "setnpc":
+		case "npc":
+		case "createnpc":
+			return completeCreateNPC(sender, args);
+		case "reload":
+		case "backup":
+		case "create":
+		case "package":
+		default:
+			return new ArrayList<>();
 		}
 	}
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest update command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeUpdate(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("--dev");
-		else return new ArrayList<>();
+		if (args.length == 2)
+			return Arrays.asList("--dev");
+		else
+			return new ArrayList<>();
 	}
 
 	/**
 	 * Returns a list of all packages for the tab completer
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
@@ -400,9 +437,10 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible tab complete options for ids
+	 *
 	 * @param sender
 	 * @param args
-	 * @param type - the type of the Id (item/event/journal/condition/objective), null for unspecific
+	 * @param type   - the type of the Id (item/event/journal/condition/objective), null for unspecific
 	 * @return
 	 */
 	private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
@@ -410,9 +448,10 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (last == null || !last.contains(".")) {
 			return completePackage(sender, args);
 		} else {
-			String pack = last.substring(0,last.indexOf("."));
+			String pack = last.substring(0, last.indexOf("."));
 			ConfigPackage configPack = Config.getPackages().get(pack);
-			if (configPack == null) return new ArrayList<>();
+			if (configPack == null)
+				return new ArrayList<>();
 			if (type == null) {
 				List<String> completations = new ArrayList<>();
 				completations.add(pack + ".");
@@ -420,23 +459,23 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			}
 			ConfigAccessor accessor;
 			switch (type) {
-				case ITEMS:
-					accessor = configPack.getItems();
-					break;
-				case EVENTS:
-					accessor = configPack.getEvents();
-					break;
-				case JOURNAL:
-					accessor = configPack.getJournal();
-					break;
-				case CONDITIONS:
-					accessor = configPack.getConditions();
-					break;
-				case OBJECTIVES:
-					accessor = configPack.getObjectives();
-					break;
-				default:
-					return new ArrayList<>();
+			case ITEMS:
+				accessor = configPack.getItems();
+				break;
+			case EVENTS:
+				accessor = configPack.getEvents();
+				break;
+			case JOURNAL:
+				accessor = configPack.getJournal();
+				break;
+			case CONDITIONS:
+				accessor = configPack.getConditions();
+				break;
+			case OBJECTIVES:
+				accessor = configPack.getObjectives();
+				break;
+			default:
+				return new ArrayList<>();
 			}
 			FileConfiguration configuration = accessor.getConfig();
 			List<String> completations = new ArrayList<>();
@@ -467,7 +506,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			QuestItem item = new QuestItem(itemID);
 			((Player) sender).getInventory().addItem(item.generate(1));
 		} catch (InstructionParseException | ObjectNotFoundException e) {
-			sendMessage(sender, "error", new String[]{e.getMessage()});
+			sendMessage(sender, "error", new String[] { e.getMessage() });
 			Debug.error("Error while creating an item: " + e.getMessage());
 		}
 	}
@@ -599,12 +638,14 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest config command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeConfig(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("set", "add" , "read");
+		if (args.length == 2)
+			return Arrays.asList("set", "add", "read");
 		return new ArrayList<>();
 	}
 
@@ -691,14 +732,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest journal command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeJournals(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return Arrays.asList("add", "list", "del");
-		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return Arrays.asList("add", "list", "del");
+		if (args.length == 4)
+			return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
 		return new ArrayList<>();
 	}
 
@@ -772,6 +817,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Lists, adds, removes or purges all global points
+	 *
 	 * @param sender
 	 * @param args
 	 */
@@ -834,26 +880,33 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest points command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completePoints(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return Arrays.asList("add", "list", "del");
-		if (args.length == 4) return completeId(sender, args, null);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return Arrays.asList("add", "list", "del");
+		if (args.length == 4)
+			return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest globalpoints command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeGlobalPoints(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("add", "list", "del");
-		if (args.length == 3) return completeId(sender, args, null);
+		if (args.length == 2)
+			return Arrays.asList("add", "list", "del");
+		if (args.length == 3)
+			return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -861,7 +914,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	 * Adds item held in hand to items.yml file
 	 */
 	@SuppressWarnings("deprecation")
-    private void handleItems(CommandSender sender, String[] args) {
+	private void handleItems(CommandSender sender, String[] args) {
 		// sender must be a player
 		if (!(sender instanceof Player)) {
 			Debug.info("Cannot continue, sender must be player");
@@ -887,9 +940,9 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		Player player = (Player) sender;
 		ItemStack item = null;
 		try {
-		    item = player.getInventory().getItemInMainHand();
+			item = player.getInventory().getItemInMainHand();
 		} catch (LinkageError e) {
-		    item = player.getItemInHand();
+			item = player.getItemInHand();
 		}
 		// if item is air then there is nothing to add to items.yml
 		if (item == null || item.getType() == Material.AIR) {
@@ -917,12 +970,14 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest item command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeItems(CommandSender sender, String[] args) {
-		if (args.length == 2) return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
+		if (args.length == 2)
+			return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
 		return new ArrayList<>();
 	}
 
@@ -946,7 +1001,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		try {
 			eventID = new EventID(null, args[2]);
 		} catch (ObjectNotFoundException e) {
-			sendMessage(sender, "error", new String[]{ e.getMessage() });
+			sendMessage(sender, "error", new String[] { e.getMessage() });
 			return;
 		}
 		// fire the event
@@ -956,13 +1011,16 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest event command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeEvents(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return completeId(sender, args, ConfigAccessor.AccessorType.EVENTS);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return completeId(sender, args, ConfigAccessor.AccessorType.EVENTS);
 		return new ArrayList<>();
 	}
 
@@ -987,7 +1045,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		try {
 			conditionID = new ConditionID(null, args[2]);
 		} catch (ObjectNotFoundException e) {
-			sendMessage(sender, "error", new String[]{ e.getMessage() });
+			sendMessage(sender, "error", new String[] { e.getMessage() });
 			return;
 		}
 		// display message about condition
@@ -998,13 +1056,16 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest condition command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeConditions(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
 		return new ArrayList<>();
 	}
 
@@ -1128,26 +1189,33 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest tags command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeTags(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return Arrays.asList("list", "add", "del");
-		if (args.length == 4) return completeId(sender, args, null);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return Arrays.asList("list", "add", "del");
+		if (args.length == 4)
+			return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest globaltags command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeGlobalTags(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("list", "add", "del");
-		if (args.length == 3) return completeId(sender, args, null);
+		if (args.length == 2)
+			return Arrays.asList("list", "add", "del");
+		if (args.length == 3)
+			return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -1208,7 +1276,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		try {
 			objectiveID = new ObjectiveID(null, args[3]);
 		} catch (ObjectNotFoundException e) {
-			sendMessage(sender, "error", new String[]{ e.getMessage() });
+			sendMessage(sender, "error", new String[] { e.getMessage() });
 			return;
 		}
 		Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
@@ -1260,14 +1328,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest objectives command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeObjectives(CommandSender sender, String[] args) {
-		if (args.length == 2) return null;
-		if (args.length == 3) return Arrays.asList("list", "add", "del", "complete");
-		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+		if (args.length == 2)
+			return null;
+		if (args.length == 3)
+			return Arrays.asList("list", "add", "del", "complete");
+		if (args.length == 4)
+			return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
 		return new ArrayList<>();
 	}
 
@@ -1324,6 +1396,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest vector command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
@@ -1333,12 +1406,14 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			if (args[1] == null || !args[1].contains(".")) {
 				return completePackage(sender, args);
 			}
-			String pack = args[1].substring(0,args[1].indexOf("."));
+			String pack = args[1].substring(0, args[1].indexOf("."));
 			ConfigPackage configPack = Config.getPackages().get(pack);
-			if (configPack == null) return new ArrayList<>();
+			if (configPack == null)
+				return new ArrayList<>();
 			ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
 			Collection<String> keys = section.getKeys(false);
-			if (keys.isEmpty()) return new ArrayList<>();
+			if (keys.isEmpty())
+				return new ArrayList<>();
 			return new ArrayList<>(keys);
 		}
 		return new ArrayList<>();
@@ -1397,11 +1472,12 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			try {
 				nameID = new ObjectiveID(null, name);
 			} catch (ObjectNotFoundException e) {
-				sendMessage(sender, "error", new String[]{ e.getMessage() });
+				sendMessage(sender, "error", new String[] { e.getMessage() });
 				return;
 			}
 			// rename objective in the file
-			nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1], nameID.generateInstruction().getInstruction());
+			nameID.getPackage().getObjectives().getConfig()
+					.set(rename.split("\\.")[1], nameID.generateInstruction().getInstruction());
 			nameID.getPackage().getObjectives().saveConfig();
 			// rename objective instance
 			ObjectiveID renameID;
@@ -1471,13 +1547,16 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest rename command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeRenaming(CommandSender sender, String[] args) {
-		if (args.length <= 3) return completeDeleting(sender, args);
-		if (args.length == 4) return completeId(sender, args, null);
+		if (args.length <= 3)
+			return completeDeleting(sender, args);
+		if (args.length == 4)
+			return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -1521,7 +1600,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			try {
 				objectiveID = new ObjectiveID(null, name);
 			} catch (ObjectNotFoundException e) {
-				sendMessage(sender, "error", new String[]{ e.getMessage() });
+				sendMessage(sender, "error", new String[] { e.getMessage() });
 				return;
 			}
 			for (Player player : Bukkit.getOnlinePlayers()) {
@@ -1553,35 +1632,136 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 
 	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest delete command
+	 *
 	 * @param sender
 	 * @param args
 	 * @return
 	 */
 	private List<String> completeDeleting(CommandSender sender, String[] args) {
-		if (args.length == 2) return Arrays.asList("tag", "point", "objective", "entry");
+		if (args.length == 2)
+			return Arrays.asList("tag", "point", "objective", "entry");
 		if (args.length == 3) {
 			switch (args[1].toLowerCase()) {
-				case "tags":
-				case "tag":
-				case "t":
-				case "points":
-				case "point":
-				case "p":
-					return completeId(sender, args, null);
-				case "objectives":
-				case "objective":
-				case "o":
-					return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
-				case "journals":
-				case "journal":
-				case "j":
-				case "entries":
-				case "entry":
-				case "e":
-					return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+			case "tags":
+			case "tag":
+			case "t":
+			case "points":
+			case "point":
+			case "p":
+				return completeId(sender, args, null);
+			case "objectives":
+			case "objective":
+			case "o":
+				return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+			case "journals":
+			case "journal":
+			case "j":
+			case "entries":
+			case "entry":
+			case "e":
+				return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
 			}
 		}
 		return new ArrayList<>();
+	}
+
+	/**
+	 * Creates a npc at the entity/block the player is clicking next
+	 */
+	private void createNPC(CommandSender sender, String[] args) {
+		if (sender instanceof Player) {
+			Player player = (Player) sender;
+			if (args.length < 2) {
+				sendMessage(player, "speify_conversation");
+				return;
+			}
+			String conversationId = args[1];
+			if (!conversationId.contains("."))
+				conversationId = Config.getDefaultPackage().getName() + "." + conversationId;
+			ConfigPackage pack = Config.getPackages().get(conversationId.substring(0, conversationId.indexOf(".")));
+			String shortId = conversationId.substring(conversationId.indexOf(".") + 1);
+			if (pack == null || BetonQuest.getInstance().getConversation(conversationId) == null) {
+				sendMessage(player, "speify_conversation");
+				return;
+			}
+
+			//create listener for identifying the entity/block
+			Bukkit.getPluginManager().registerEvents(new Listener() {
+
+				@EventHandler
+				public void onQuit(PlayerQuitEvent event) {
+					if (!event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+						return;
+					HandlerList.unregisterAll(this);
+				}
+
+				@EventHandler
+				public void onCancel(AsyncPlayerChatEvent event) {
+					if (!event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+						return;
+					//if message is cancel or c cancel npc creation
+					if (!event.getMessage().equalsIgnoreCase("c") && !event.getMessage().equalsIgnoreCase("cancel"))
+						return;
+					sendMessage(player, "createnpc_cancel");
+					event.setCancelled(true);
+					HandlerList.unregisterAll(this);
+				}
+
+				@EventHandler
+				public void onEntityClick(PlayerInteractEntityEvent event) {
+					if (!event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+						return;
+					//creat the npc
+					pack.setString("main.npcs." + event.getRightClicked().getUniqueId(), shortId);
+					sendMessage(player, "npc_created");
+					HandlerList.unregisterAll(this);
+				}
+
+				@EventHandler
+				public void onBlockClick(PlayerInteractEvent event) {
+					if (!event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+						return;
+					if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+						return;
+					//creat the npc
+					Location l = event.getClickedBlock().getLocation();
+					String location =
+							l.getBlockX() + ";" + l.getBlockY() + ";" + l.getBlockZ() + ";" + l.getWorld().getName();
+					pack.setString("main.npcs." + location, shortId);
+					sendMessage(player, "npc_created");
+					HandlerList.unregisterAll(this);
+				}
+
+			}, BetonQuest.getInstance());
+			sendMessage(player, "createnpc");
+		} else {
+			sendMessage(sender, "no_commandline");
+		}
+
+	}
+
+	/**
+	 * Returns a list including all possible options for tab complete of the /betonquest createnpc command
+	 *
+	 * @param sender
+	 * @param args
+	 * @return
+	 */
+	private List<String> completeCreateNPC(CommandSender sender, String[] args) {
+		if (args.length != 2) return new ArrayList<>();
+		if (args[1] == null || !args[1].contains(".")) {
+			return completePackage(sender, args);
+		} else {
+			String pack = args[1].substring(0, args[1].indexOf("."));
+			ConfigPackage configPack = Config.getPackages().get(pack);
+			if (configPack == null)
+				return new ArrayList<>();
+			List<String> completations = new ArrayList<>();
+			for (String key : configPack.getConversationNames()) {
+				completations.add(pack + "." + key);
+			}
+			return completations;
+		}
 	}
 
 	/**
@@ -1609,6 +1789,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		cmds.put("purge", "purge <player>");
 		if (!(sender instanceof Player))
 			cmds.put("backup", "backup");
+		else
+			cmds.put("createnpc", "createnpc <conversation>");
 		// display them
 		sender.sendMessage("§e----- §aBetonQuest §e-----");
 		if (sender instanceof Player) {

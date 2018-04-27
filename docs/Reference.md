@@ -250,6 +250,8 @@ The first string is the name of the NPC, second one is the corresponding convers
 
 Place somewhere a block of stained clay, no matter the color. Then place a head on top of it (type doesn't matter, it must be head). Now place a sign on the side of the clay block (it can be on it's back) and type in the first line `[NPC]`, and on the second line the ID of the NPC (in case of the above code example, the ID would be `Innkeeper`). You need to have permission `betonquest.createnpc` for that. Congratulations, you have created the NPC. Now you can add levers (hands) to it and maybe even a fence gate (legs). Conversation is started by right clicking it's head.
 
+You can also define a single block or a entity by using the [`/bq createnpc`](Commands-and-permissions#commands) command.
+
 ## Items
 
 Items in BetonQuest are defined in _items.yml_ file. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:

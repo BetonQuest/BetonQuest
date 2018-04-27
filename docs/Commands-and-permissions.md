@@ -23,7 +23,7 @@
 * **/q create {package}**: creates new package with given name, filled with default quest
 * **/q vector {packname.variable} {newvariable}**: calculates the vector from first location variable to you position and saves it as second variable
 * **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
-
+* **/q createnpc {conversation}** - create a npc from a single block or a entity. You have to right click the block/entity after running this command. You may cancel the creation by typing `cancel` or `c` in chat.
 ## Aliases
 
 * **/j**: bj, journal, bjournal, betonjournal, betonquestjournal
