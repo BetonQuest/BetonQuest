@@ -108,6 +108,7 @@ import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
 import pl.betoncraft.betonquest.events.DoorEvent;
+import pl.betoncraft.betonquest.events.EXPEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
@@ -374,6 +375,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("title", TitleEvent.class);
 		registerEvents("language", LanguageEvent.class);
 		registerEvents("playsound", PlaysoundEvent.class);
+		registerEvents("xp", EXPEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
