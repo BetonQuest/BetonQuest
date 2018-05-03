@@ -463,6 +463,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Loads events and conditions to the maps
 	 */
+	@SuppressWarnings("deprecation")
 	public void loadData() {
 		// save data of all objectives to the players
 		for (Objective objective : objectives.values()) {
@@ -630,7 +631,7 @@ public final class BetonQuest extends JavaPlugin {
 			Debug.info("Everything in package " + packName + " loaded");
 		}
 		// load global locations
-        new GlobalLocations();
+		new GlobalLocations();
         // done
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
@@ -644,6 +645,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Reloads the plugin.
 	 */
+	@SuppressWarnings("deprecation")
 	public void reload() {
 		// reload the configuration
 		Debug.info("Reloading configuration");
@@ -656,6 +658,7 @@ public final class BetonQuest extends JavaPlugin {
 		// and start new one with reloaded configs
 		Debug.info("Restarting global locations");
 		new GlobalLocations();
+		new GlobalObjectives();
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
@@ -665,6 +668,7 @@ public final class BetonQuest extends JavaPlugin {
 			String playerID = PlayerConverter.getID(player);
 			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
 			PlayerData playerData = instance.getPlayerData(playerID);
+			GlobalObjectives.startAll(playerID);
 			Journal journal = playerData.getJournal();
 			journal.update();
 		}
