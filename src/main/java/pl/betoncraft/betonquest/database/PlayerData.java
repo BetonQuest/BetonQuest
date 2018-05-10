@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,7 +44,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
- * 
+ *
  * @author Jakub Sapalski
  */
 public class PlayerData {
@@ -65,7 +65,7 @@ public class PlayerData {
 
 	/**
 	 * Creates new PlayerData for the player represented by playerID.
-	 * 
+	 *
 	 * @param playerID
 	 *            - ID of the player
 	 */
@@ -157,7 +157,7 @@ public class PlayerData {
 
 	/**
 	 * Returns the List of Tags for this player.
-	 * 
+	 *
 	 * @return the List of Tags
 	 */
 	public List<String> getTags() {
@@ -166,7 +166,7 @@ public class PlayerData {
 
 	/**
 	 * Checks if the player has specified tag.
-	 * 
+	 *
 	 * @param tag
 	 *            tag to check
 	 * @return true if the player has this tag
@@ -177,7 +177,7 @@ public class PlayerData {
 
 	/**
 	 * Adds the specified tag to player's list. It won't double it however.
-	 * 
+	 *
 	 * @param tag
 	 *            tag to add
 	 */
@@ -191,7 +191,7 @@ public class PlayerData {
 	/**
 	 * Removes the specified tag from player's list. If there is no tag, nothing
 	 * happens.
-	 * 
+	 *
 	 * @param tag
 	 *            tag to remove
 	 */
@@ -202,17 +202,17 @@ public class PlayerData {
 
 	/**
 	 * Returns the List of Points for this player.
-	 * 
+	 *
 	 * @return the List of Points
 	 */
 	public List<Point> getPoints() {
 		return points;
 	}
-	
+
 	/**
 	 * Returns the amount of point the player has in specified category. If the
 	 * category does not exist, it will return 0.
-	 * 
+	 *
 	 * @param category
 	 *            name of the category
 	 * @return amount of points
@@ -229,7 +229,7 @@ public class PlayerData {
 	/**
 	 * Adds or subtracts points to/from specified category. If there is no such category it will
 	 * be created.
-	 * 
+	 *
 	 * @param category
 	 *            points will be added to this category
 	 * @param count
@@ -254,7 +254,7 @@ public class PlayerData {
 
 	/**
 	 * Removes the whole category of points.
-	 * 
+	 *
 	 * @param category
 	 *            name of a point category
 	 */
@@ -273,7 +273,7 @@ public class PlayerData {
 
 	/**
 	 * Returns a Journal instance or creates it if it does not exist.
-	 * 
+	 *
 	 * @return new Journal instance
 	 */
 	public Journal getJournal() {
@@ -312,7 +312,7 @@ public class PlayerData {
 	/**
 	 * Adds new objective to a list of not initialized objectives. It's added to the
 	 * database and can be started by running {@link #startObjectives()}.
-	 * 
+	 *
 	 * @param objectiveID
 	 *            ID of the objective
 	 */
@@ -330,7 +330,7 @@ public class PlayerData {
 	 * Adds objective to a list of not initialized objectives. This does not add
 	 * the objective to the database because it's not a new objective, hence
 	 * it's already in the database.
-	 * 
+	 *
 	 * @param objectiveID
 	 *            ID of the objective
 	 * @param data
@@ -348,7 +348,7 @@ public class PlayerData {
 
 	/**
 	 * Removes not initialized objective from the plugin and the database.
-	 * 
+	 *
 	 * @param objectiveID
 	 *            the ID of the objective
 	 */
@@ -359,7 +359,7 @@ public class PlayerData {
 
 	/**
 	 * Directly adds specified objectiveID and data string to the database.
-	 * 
+	 *
 	 * @param objectiveID
 	 *            the ID of the objective
 	 * @param data
@@ -371,7 +371,7 @@ public class PlayerData {
 
 	/**
 	 * Directly removes from the database specified objective.
-	 * 
+	 *
 	 * @param objectiveID
 	 *            the ID of the objective to remove
 	 */
@@ -381,7 +381,7 @@ public class PlayerData {
 
 	/**
 	 * Returns player's backpack as the list of itemstacks.
-	 * 
+	 *
 	 * @return list of itemstacks
 	 */
 	public List<ItemStack> getBackpack() {
@@ -390,7 +390,7 @@ public class PlayerData {
 
 	/**
 	 * Updates the database with a list of backpack items.
-	 * 
+	 *
 	 * @param list
 	 *            list of all items in the backpack
 	 */
@@ -406,10 +406,18 @@ public class PlayerData {
 	}
 
 	/**
+	 * Get the entries.
+	 * @return entries of current 
+	 */
+	public List<Pointer> getEntries() {
+		return entries;
+	}
+
+	/**
 	 * Adds the item to backpack. The amount of the itemstack doesn't matter,
 	 * it's overwritten by amount parameter. Amount can be greater than max
 	 * stack size.
-	 * 
+	 *
 	 * @param item
 	 *            ItemStack to add to backpack
 	 * @param amount
@@ -461,7 +469,7 @@ public class PlayerData {
 
 	/**
 	 * Cancels the quest by removing all defined tags, points, objectives etc.
-	 * 
+	 *
 	 * @param name
 	 *            name of the canceler
 	 */
@@ -480,7 +488,7 @@ public class PlayerData {
 
 	/**
 	 * Sets player's language
-	 * 
+	 *
 	 * @param lang
 	 *            language to set
 	 */
