@@ -108,6 +108,9 @@ public class ConversationData {
 		if (quester == null || quester.isEmpty()) {
 			throw new InstructionParseException("Quester's name is not defined");
 		}
+		for (String value : quester.values()) {
+			if (value == null) throw new InstructionParseException("Quester's name is not defined");
+		}
 		if (rawStartingOptions == null || rawStartingOptions.equals("")) {
 			throw new InstructionParseException("Starting options are not defined");
 		}

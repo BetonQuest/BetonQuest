@@ -3,4 +3,4 @@ jdk:
 - oraclejdk8
 before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" src/main/resources/plugin.yml"
 script: mvn package -Drelease
-after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"branch=$TRAVIS_BRANCH\" -F \"plugin=@target/BetonQuest.jar\" http://betonquest.betoncraft.pl/index.php"
+after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"branch=$TRAVIS_BRANCH\" -F \"plugin=@target/BetonQuest.jar\" https://betonquest.pl"

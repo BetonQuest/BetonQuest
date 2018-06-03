@@ -32,6 +32,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -116,6 +117,14 @@ public class QuestItemHandler implements Listener {
 				item = null;
 			}
 			break;
+		case HOTBAR_MOVE_AND_READD:
+		case HOTBAR_SWAP:
+			if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+				item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+			} else {
+				item = null;
+			}
+			break;
 		default:
 			item = null;
 			break;
@@ -135,6 +144,18 @@ public class QuestItemHandler implements Listener {
 		}
 		String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
 		if (Journal.isJournal(playerID, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+		ItemStack item = event.getPlayerItem();
+		String playerID = PlayerConverter.getID(event.getPlayer());
+		if (item != null && (Journal.isJournal(playerID, item) || Utils.isQuestItem(item))) {
 			event.setCancelled(true);
 		}
 	}

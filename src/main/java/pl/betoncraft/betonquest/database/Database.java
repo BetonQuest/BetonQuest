@@ -90,6 +90,12 @@ public abstract class Database {
 					.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "player (id INTEGER PRIMARY KEY "
 							+ autoIncrement + ", playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "
 							+ "conversation VARCHAR(512));");
+			connection.createStatement()
+					.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_tags (id INTEGER PRIMARY KEY "
+							+ autoIncrement + ", tag TEXT NOT NULL);");
+			connection.createStatement()
+					.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
+							+ autoIncrement + ", category VARCHAR(256) NOT NULL, count INT NOT NULL);");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

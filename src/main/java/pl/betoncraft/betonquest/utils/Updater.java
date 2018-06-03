@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,13 +38,14 @@ import pl.betoncraft.betonquest.BetonQuest;
 /**
  * Updates the plugin to the newest version and displays notifications about new
  * releases.
- * 
+ *
  * @author Jakub Sapalski
  */
 public class Updater {
 
 	private static final String RELEASE_API_URL = "https://api.github.com/repos/Co0sh/BetonQuest/releases";
-	private static final String DEV_API_URL = "http://betonquest.betoncraft.pl/latest.txt";
+	private static final String DEV_API_URL = "https://betonquest.pl/latest.txt";
+	private static final String DEV_DOWNLOAD_LINK = "https://betonquest.pl/{number}/BetonQuest.jar";
 
 	private BetonQuest plugin;
 	private String fileName; // name of the plugin file
@@ -72,7 +73,7 @@ public class Updater {
 	/**
 	 * Initializes the updater. Does not do anything if updater is disabled in
 	 * the config.
-	 * 
+	 *
 	 * @param file
 	 *            the file to which the update will be saved
 	 */
@@ -124,7 +125,7 @@ public class Updater {
 					int remoteDevBuildNumber = Integer.parseInt(readFromURL(DEV_API_URL));
 					remoteDevBuild = "#" + remoteDevBuildNumber;
 					if (devBuildNumber < remoteDevBuildNumber) {
-						devBuildAddress = "http://betonquest.betoncraft.pl/" + remoteDevBuildNumber + "/BetonQuest.jar";
+						devBuildAddress = DEV_DOWNLOAD_LINK.replace("{number}", String.valueOf(remoteDevBuildNumber));
 					}
 				} catch (IOException | NumberFormatException e) {
 					Debug.error("Could not get the latest dev build number");

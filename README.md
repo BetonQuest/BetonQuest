@@ -1,118 +1,99 @@
-![BetonQuest](http://betonquest.betoncraft.pl/logo.png)
+![BetonQuest](https://betonquest.pl/assets/logo.png)
 
-# BetonQuest
+# BetonQuest [![Build Status](https://travis-ci.org/Co0sh/BetonQuest.svg?branch=master)](https://travis-ci.org/Co0sh/BetonQuest)
 
-BetonQuest is advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and
-a very flexible quest system. Instead of being limited to creating "quest" objects with taking
-requirements and rewards upon completion, BetonQuest allows you to freely define what should happen
-(events), if it should happen (conditions) and what needs to be done for it to happen (objectives).
-Your quests don't have to look like "kill, bring, get reward": you can create multi-threaded stories,
-narrated with NPC conversations, with multiple endings affecting the player's gameplay in many ways.
+BetonQuest is a Spigot questing plugin. It lets the users create complex quests, NPC conversations and other server mechanics for their players.
 
-## Features
+This page is contains information important for developers. If you're a user of BetonQuest, head to the [Spigot page](https://www.spigotmc.org/resources/betonquest.2117/) or the [official Wiki](https://github.com/Co0sh/BetonQuest/wiki). Alternatively, you can ask for support on [Issues](https://github.com/Co0sh/BetonQuest/issues).
 
-* Spigot **1.8**, **1.9**, **1.10**, **1.11** and **1.12** support
-* **Multiple choice conversations** with NPCs using an inventory GUI
-* **Powerful event system**: anything you want can happen anywhere in a quest
-* Even more **powerful condition system**: you can limit whenever something should (or shouldn't) happen
-* **Journal** in a book
-* **Backpack** for quest items
-* Advanced item handling which considers even text in books
-* **Party system** allowing for creation of group quests
-* Ability to create various **reputation systems** (points)
-* Firing events for a players when they enter specified area (global locations)
-* **Daily quests** or repeatable reward collection (`delay` objective)
-* Variables in conversations - let the NPC tell how much more wood he needs!
-* Quests can be organized into distributable packages
-* **Citizens2** NPC support
-* Integrated with [Citizens](https://dev.bukkit.org/bukkit-plugins/citizens/),
-[Denizen](https://dev.bukkit.org/bukkit-plugins/denizen/),
-[EffectLib](https://dev.bukkit.org/bukkit-plugins/effectlib/),
-[Heroes](https://dev.bukkit.org/bukkit-plugins/heroes/),
-[HolographicDisplays](https://dev.bukkit.org/bukkit-plugins/holographic-displays/),
-[LegendQuest](https://dev.bukkit.org/bukkit-plugins/legendquest/),
-[Magic](https://dev.bukkit.org/bukkit-plugins/magic/),
-[McMMO](https://dev.bukkit.org/bukkit-plugins/mcmmo/),
-[MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/),
-[PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/),
-[PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/),
-[ProtocolLib](https://dev.bukkit.org/bukkit-plugins/protocollib),
-[Quests](https://dev.bukkit.org/bukkit-plugins/quests/),
-[RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/),
-[Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/),
-[SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/),
-[Skript](https://dev.bukkit.org/bukkit-plugins/skript/),
-[Vault](https://dev.bukkit.org/bukkit-plugins/vault/),
-[WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/),
-[WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/) and
-[Brewery](https://spigotmc.org/resources/brewery.3082/)
-* Multiple languages and easy translating
-* API for creating your own events, conditions and objectives
-* SQLite and **MySQL** support
-* Last but not least, an **active, open source** project with development builds available
+## Getting started
 
-## Overview
+If you're looking for an already compiled binaries visit [Releases](https://github.com/Co0sh/BetonQuest/releases) for standard releases or [dev website](https://betonquest.pl) for development builds. This section will cover setting up the BetonQuest development workflow.
 
-Imagine you have a conversation with an NPC. You can choose from multiple options, and the NPC will
-react differently, for example he will tell you to cut some trees when asked for a job. If you tell
-him that you accept his offer, an event will be fired. It will start an objective for getting wood.
-It will also "tag" you as someone who started the quest. From now on the NPC will check for that tag,
-and use different options in the conversation, for example telling you to hurry up.
+### Prerequisites
 
-When you complete the objective (by breaking wood blocks), the objective will fire another event.
-This one will "tag" you as someone who collected the wood. When you go back to the NPC and tell him
-about it, he will check (using a condition) if you actually have the wood in your inventory. If so,
-he will fire another event, giving you the reward.
+In order to compile BetonQuest you need to have [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed on your system (version 8 or later). This is basically the Java compiler.
 
-There was no single "quest" object. This was only a conversation, which was firing events and checking
-conditions. The objective also wasn't a "quest" - it only added a tag when you collected the wood,
-nothing more. It could not exist on it's own. The same conversation on the other hand could start
-some other quests afterwards (for example mining some ore), so it's also not a "quest".
+In order to easily build the plugin _.jar_ file you'll need [Maven](https://maven.apache.org), the build automation tool. Simply download a binary zip archive and unpack it somewhere on your system. Don't forget to add `bin` directory [to your PATH](https://www.google.com/search?q=add+directory+to+path).
 
-Don't be disappointed by my examples of getting wood and mining ore. These were only simplifications,
-so it's easier to explain the system. BetonQuest is capable of much more. You can add entries to
-player's journal based on the quests he's doing like in Morrowind, the conversations can be as
-multi-threaded as in Baldur's Gate and quests can be started by entering specific location like
-in Skyrim. You can create reputation systems, unique quest items, books that react to reading them
-and so on. Your quests can have multiple ways to different endings depending on players' decisions
-and they can require multiple players to do something.
+Additionally, Maven needs the [`JAVA_HOME` environment variable](www.google.com/searchq=setting+java_home) to point to your JDK installation in order to work.
 
-You don't have to use BetonQuest for quests only. Conversations with NPCs can help your players,
-teleports them around the map, describe server features, buy or sell stuff, give ranks etc. The
-only limit is your imagination!
+### Building
 
-## Compiling, download and installation
+You can either download the [source code](https://github.com/Co0sh/BetonQuest/archive/master.zip) directly and unpack it on your system or clone it with Git (recommended):
 
-To compile the plugin you need to have JDK for version 1.7 or above and Maven installed. Download
-BetonQuest source code to some directory and issue command `mvn install`
-inside it. The .jar package should appear in _target_ directory.
+```
+git clone https://github.com/Co0sh/BetonQuest.git
+```
 
-If you prefer already compiled builds head to the
-[Releases](https://github.com/Co0sh/BetonQuest/releases).
-Development builds can be found [here](http://betonquest.betoncraft.pl).
-Use them with caution and report all bugs on 
-[Issues](https://github.com/Co0sh/BetonQuest/issues)!
+To compile the plugin open the command line and navigate to the `BetonQuest` directory. Then use Maven to package BetonQuest into a _.jar_ file:
 
-To install the plugin simply place the .jar file in _plugins_ directory and restart/reload your server.
-BetonQuest should generate default quest for getting wood. You can start it by
-creating an NPC: place somewhere a block of stained clay. On top of it put a
-head, and attach a sign to the side of the clay block. On the sign write the first line
-`[NPC]`, second line `Innkeeper`. You'll need **betonquest.admin** permission to do that. Now right
-click on NPC's head to start the conversation. Using Citizens NPCs is described on the wiki.
+```
+mvn package
+```
+
+If you want to run an optimised build along with javadocs and source artifacts, run:
+
+```
+mvn package -Drelease
+```
+
+This is much slower and the resulting binary is only slightly faster, so use it only when compiling for production. In development cycle use the regular build command.
+
+In either case, the final _BetonQuest.jar_ file will appear in the `target` directory.
+
+### Installing
+
+BetonQuest is installed like any other Spigot plugin, by dropping the _BetonQuest.jar_ file into the `plugins` directory and restarting/reloading the server. It will automatically deploy example files. Please read the [Quick start tutorial](docs/Quick-start-tutorial.md) page to learn the basics.
 
 ## Documentation
 
-If you want to create your own quests you should read the documentation.
-It contains all required information and a tutorial-like description of features.
-You can find it [on the wiki](https://github.com/Co0sh/BetonQuest/wiki).
+The documentation for the current plugin features is located in [`docs`](docs) directory. You can also find the same docs compiled into a _.pdf_ file on the [dev website](https://betonquest.pl).
 
-The documentation for latest features can be found as a PDF file on the page
-with development builds. Remember to redownload the file every time you update to
-a new dev version. It may take some time to update the documentation, so if the changes
-are not there yet, just wait an hour or two.
+If you're looking for documentation for the latest stable release head to the [Wiki](https://github.com/Co0sh/BetonQuest/wiki). You can also view the wiki's history if you clone it locally with:
 
-## Desktop editor
+```
+git clone https://github.com/Co0sh/BetonQuest.wiki.git
+```
 
-BetonQuest is too complex to add an in-game editor. Minecraft's chat and inventory windows are just too
-limited to allow for editing as many objects as BetonQuest uses. That's why there is a desktop editor.
-It can be either bought on [Sellfy](https://sellfy.com/p/nE5Y/) or compiled from source on [GitHub](https://github.com/Co0sh/BetonQuest-Editor). There is an instruction on how to do it.
+### Contents
+
+* [Home](https://github.com/Co0sh/BetonQuest/wiki/)
+* [Installation and Configuration](https://github.com/Co0sh/BetonQuest/wiki/Installation-and-Configuration)
+* [Commands and Permissions](docs/Commands-and-permissions.md)
+* [**Quick start tutorial**](docs/Quick-start-tutorial.md)
+* [Reference](docs/Reference.md.md)
+  * [Conversations](docs/Reference.md#conversations)
+  * [Conditions](docs/Reference.md#conditions)
+  * [Events](docs/Reference.md#events)
+  * [Objectives](docs/Reference.md#objectives)
+  * [Packages](docs/Reference.md#packages)
+  * [Global variables](docs/Reference.md#global-variables)
+  * [Canceling quests](docs/Reference.md#canceling-quests)
+  * [Global locations](docs/Reference.md#global-locations)
+  * [Static events](docs/Reference.md#static-events)
+  * [Journal](docs/Reference.md#journal)
+  * [Tags](docs/Reference.md#tags)
+  * [Points](docs/Reference.md#points)
+  * [NPCs](docs/Reference.md#npcs)
+  * [Items](docs/Reference.md#items)
+  * [Backpack](docs/Reference.md#backpack)
+  * [Party](docs/Reference.md#party)
+* [_Condition List_](docs/Conditions-List.md)
+* [_Events List_](docs/Events-List.md)
+* [_Objectives List_](docs/Objectives-List.md)
+* [_Variables List_](docs/Variables-List.md)
+* [Compatibility](docs/Compatibility.md)
+* [Tips and tricks](docs/Tips-and-tricks.md)
+* [Frequently Asked Questions](docs/Frequently-Asked-Questions.md)
+* [Info for developers](docs/Info-for-developers.md)
+* [Contributing](docs/Contributing.md)
+* [Images](docs/Images.md)
+
+## Contributing
+
+The contributing guidelines are located in the [CONTRIBUTING.md](CONTRIBUTING.md) file. Please take a brief look at them before opening an issue or pull request, it will make the world a better place.
+
+## License
+
+The project is licensed under GPLv3 license - see the [LICENSE](LICENSE) file for more details.

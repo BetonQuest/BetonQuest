@@ -32,15 +32,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Modified player's points
+ * Modifies player's points
  * 
  * @author Jakub Sapalski
  */
 public class PointEvent extends QuestEvent {
 
-	final VariableNumber count;
-	final boolean multi;
-	final String category;
+	protected final VariableNumber count;
+	protected final boolean multi;
+	protected final String category;
 
 	public PointEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);

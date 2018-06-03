@@ -49,6 +49,7 @@ public class MobKillObjective extends Objective implements Listener {
 	protected String name;
 	protected String marked;
 	protected boolean notify;
+	private final int notifyInterval;
 
 	public MobKillObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -63,7 +64,8 @@ public class MobKillObjective extends Objective implements Listener {
 		if (marked != null) {
 			marked = Utils.addPackage(instruction.getPackage(), marked);
 		}
-		notify = instruction.hasArgument("notify");
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 
 	@EventHandler
@@ -97,7 +99,7 @@ public class MobKillObjective extends Objective implements Listener {
 			playerData.subtract();
 			if (playerData.isZero()) {
 				completeObjective(playerID);
-			} else if (notify) {
+			} else if (notify && playerData.getAmount() % notifyInterval == 0) {
 				// send a notification
 				Config.sendMessage(playerID, "mobs_to_kill", new String[] {String.valueOf(playerData.getAmount())});
 			}

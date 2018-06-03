@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.LoadDataEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.api.Variable;
@@ -55,6 +56,8 @@ import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
+import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
+import pl.betoncraft.betonquest.conditions.GlobalTagCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
@@ -91,6 +94,7 @@ import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -105,11 +109,14 @@ import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
 import pl.betoncraft.betonquest.events.DoorEvent;
+import pl.betoncraft.betonquest.events.EXPEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.GiveJournalEvent;
+import pl.betoncraft.betonquest.events.GlobalPointEvent;
+import pl.betoncraft.betonquest.events.GlobalTagEvent;
 import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
@@ -118,7 +125,10 @@ import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
+import pl.betoncraft.betonquest.events.OpSudoEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
+import pl.betoncraft.betonquest.events.PickRandomEvent;
+import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.ScoreboardEvent;
@@ -132,7 +142,6 @@ import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
-import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
@@ -163,6 +172,8 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.MathVariable;
+import pl.betoncraft.betonquest.variables.GlobalPointVariable;
 import pl.betoncraft.betonquest.variables.ItemAmountVariable;
 import pl.betoncraft.betonquest.variables.LocationVariable;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
@@ -189,6 +200,7 @@ public final class BetonQuest extends JavaPlugin {
 	private Updater updater;
 
 	private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+	private GlobalData globalData;
 
 	private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
@@ -291,7 +303,9 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
+		registerConditions("globaltag", GlobalTagCondition.class);
 		registerConditions("point", PointCondition.class);
+		registerConditions("globalpoint", GlobalPointCondition.class);
 		registerConditions("and", ConjunctionCondition.class);
 		registerConditions("or", AlternativeCondition.class);
 		registerConditions("time", TimeCondition.class);
@@ -327,11 +341,13 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
 		registerEvents("tag", TagEvent.class);
+		registerEvents("globaltag", GlobalTagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
 		registerEvents("explosion", ExplosionEvent.class);
 		registerEvents("lightning", LightningEvent.class);
 		registerEvents("point", PointEvent.class);
+		registerEvents("globalpoint", GlobalPointEvent.class);
 		registerEvents("give", GiveEvent.class);
 		registerEvents("take", TakeEvent.class);
 		registerEvents("conversation", ConversationEvent.class);
@@ -348,6 +364,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("run", RunEvent.class);
 		registerEvents("givejournal", GiveJournalEvent.class);
 		registerEvents("sudo", SudoEvent.class);
+		registerEvents("opsudo", OpSudoEvent.class);
 		registerEvents("chestgive", ChestGiveEvent.class);
 		registerEvents("chesttake", ChestTakeEvent.class);
 		registerEvents("chestclear", ChestClearEvent.class);
@@ -361,6 +378,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("title", TitleEvent.class);
 		registerEvents("language", LanguageEvent.class);
 		registerEvents("playsound", PlaysoundEvent.class);
+		registerEvents("pickrandom", PickRandomEvent.class);
+		registerEvents("xp", EXPEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
@@ -399,9 +418,11 @@ public final class BetonQuest extends JavaPlugin {
 		registerVariable("npc", NpcNameVariable.class);
 		registerVariable("objective", ObjectivePropertyVariable.class);
 		registerVariable("point", PointVariable.class);
+		registerVariable("globalpoint", GlobalPointVariable.class);
 		registerVariable("item", ItemAmountVariable.class);
 		registerVariable("version", VersionVariable.class);
 		registerVariable("location", LocationVariable.class);
+		registerVariable("math", MathVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
@@ -412,6 +433,8 @@ public final class BetonQuest extends JavaPlugin {
 			public void run() {
 				// Load all events and conditions
 				loadData();
+				// Load global tags and points
+				globalData = new GlobalData();
 				// load data for all online players
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String playerID = PlayerConverter.getID(player);
@@ -447,6 +470,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Loads events and conditions to the maps
 	 */
+	@SuppressWarnings("deprecation")
 	public void loadData() {
 		// save data of all objectives to the players
 		for (Objective objective : objectives.values()) {
@@ -614,7 +638,7 @@ public final class BetonQuest extends JavaPlugin {
 			Debug.info("Everything in package " + packName + " loaded");
 		}
 		// load global locations
-        new GlobalLocations();
+		new GlobalLocations();
         // done
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
@@ -623,11 +647,14 @@ public final class BetonQuest extends JavaPlugin {
 		for (PlayerData playerData : playerDataMap.values()) {
 			playerData.startObjectives();
 		}
+		//fire LoadDataEvent
+		Bukkit.getPluginManager().callEvent(new LoadDataEvent());
 	}
 
 	/**
 	 * Reloads the plugin.
 	 */
+	@SuppressWarnings("deprecation")
 	public void reload() {
 		// reload the configuration
 		Debug.info("Reloading configuration");
@@ -640,6 +667,7 @@ public final class BetonQuest extends JavaPlugin {
 		// and start new one with reloaded configs
 		Debug.info("Restarting global locations");
 		new GlobalLocations();
+		new GlobalObjectives();
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
@@ -649,6 +677,7 @@ public final class BetonQuest extends JavaPlugin {
 			String playerID = PlayerConverter.getID(player);
 			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
 			PlayerData playerData = instance.getPlayerData(playerID);
+			GlobalObjectives.startAll(playerID);
 			Journal journal = playerData.getJournal();
 			journal.update();
 		}
@@ -741,6 +770,15 @@ public final class BetonQuest extends JavaPlugin {
 			putPlayerData(playerID, playerData);
 		}
 		return playerData;
+	}
+
+	/**
+	 * Retrieves GlobalData object which handles all global tags and points
+	 *
+	 * @return GlobalData object
+	 */
+	public GlobalData getGlobalData() {
+		return globalData;
 	}
 
 	/**

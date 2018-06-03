@@ -24,25 +24,21 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Requires the player to have specified tag
+ * Requires the specified global tag to be set
  * 
- * @author Jakub Sapalski
+ * @author Jonas Blocher
  */
-public class TagCondition extends Condition {
+public class GlobalTagCondition extends TagCondition {
 
-	protected final String tag;
-
-	public TagCondition(Instruction instruction) throws InstructionParseException {
+	public GlobalTagCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		tag = Utils.addPackage(instruction.getPackage(), instruction.next());
+		staticness = true;
+		persistent = true;
 	}
 
 	@Override
 	public boolean check(String playerID) {
-		if (BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag)) {
-			return true;
-		}
-		return false;
+		return BetonQuest.getInstance().getGlobalData().hasTag(tag);
 	}
 
 }

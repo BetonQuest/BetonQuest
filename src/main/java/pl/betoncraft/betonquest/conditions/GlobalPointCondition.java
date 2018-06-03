@@ -20,29 +20,27 @@ package pl.betoncraft.betonquest.conditions;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.Utils;
 
 /**
- * Requires the player to have specified tag
+ * Requires a specified amount of global points (or more) in specified
+ * category
  * 
- * @author Jakub Sapalski
+ * @author Jonas Blocher
  */
-public class TagCondition extends Condition {
+public class GlobalPointCondition extends PointCondition {
 
-	protected final String tag;
-
-	public TagCondition(Instruction instruction) throws InstructionParseException {
+	public GlobalPointCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
-		tag = Utils.addPackage(instruction.getPackage(), instruction.next());
 	}
 
 	@Override
-	public boolean check(String playerID) {
-		if (BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag)) {
-			return true;
-		}
-		return false;
+	public boolean check(String playerID) throws QuestRuntimeException {
+		return check(playerID, BetonQuest.getInstance().getGlobalData().getPoints());
 	}
 
 }
