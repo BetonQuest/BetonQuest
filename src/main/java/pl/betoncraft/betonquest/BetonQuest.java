@@ -67,6 +67,7 @@ import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
+import pl.betoncraft.betonquest.conditions.PartialDateCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
@@ -336,6 +337,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
 		registerConditions("biome", BiomeCondition.class);
+		registerConditions("partialdate", PartialDateCondition.class);
 		registerConditions("realtime", RealTimeCondition.class);
 
 		// register events

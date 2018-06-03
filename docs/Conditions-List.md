@@ -96,6 +96,14 @@ There must a specific (real) time for this condition to return true. You need to
 
 **Example:** `realtime 8:00-12:30`
 
+## Partial date: `partialdate`
+
+The current date must match the given pattern. You can specify the day of the month, the month or the year it must be that this condition returns true or combine them. You can also specify multiple days/months/years by just separating them by `,` or a interval by using `-`. If you have trouble understanding how this works have a look at the example.
+
+The example is true between the 1st and the 5th or on the 20th of each month, but only in the year 2017.
+
+**Example:** `partialdate day:1-5,20 year:2017`
+
 ## Weather: `weather`
 
 There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.
