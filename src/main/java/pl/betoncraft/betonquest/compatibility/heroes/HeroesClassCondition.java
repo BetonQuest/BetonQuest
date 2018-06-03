@@ -41,7 +41,7 @@ public class HeroesClassCondition extends Condition {
 	private boolean any;
 	private boolean primary;
 	private boolean mastered;
-	private VariableNumber level = new VariableNumber(-1);
+	private VariableNumber level;
 
 	public HeroesClassCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -78,7 +78,7 @@ public class HeroesClassCondition extends Condition {
 		if (heroClasses.isEmpty())
 			return false;
 		boolean matchingClass = true, matchingLevel = true;
-		int l = level.getInt(playerID);
+		int l = (level != null) ? level.getInt(playerID) : -1;
 		if (!any) {
 			matchingClass = heroClasses.contains(heroClass);
 			if (l > 0) {

@@ -31,6 +31,18 @@ This event adds (or removes) a tag to the player. The first argument after event
 
 **Example**: `tag add quest_started,new_entry`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+This works the same way as the normal point event but instead to manipulating the points for a category of a specific player it manipulates points in a global category. These global categories are player independent, so you could for example add a point to such a global category every time a player does a quest and give some special rewards for the 100th player who does the quest.
+
+**Example**: `globalpoint global_knownusers 1`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globaly for all players.
+
+**Example**: `globaltag add global_areNPCsAgressive`
+
 ## Objective: `objective` _persistent_
 
 Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two), _delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.
@@ -70,7 +82,7 @@ Removes items from player’s inventory or backpack (in that order). If the item
 
 ## Potion Effect: `effect`
 
-Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.java). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
+Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
 
 **Example**: `effect ABSORPTION 120 1 --ambient`
 
@@ -246,3 +258,9 @@ This event changes player's language to the specified one. There is only one arg
 ## Play sound: `playsound`
 
 This event will play a specified sound for the player. The only required argument is the sound name (can take custom values if you're using a resource pack). There are also a few optional arguments. `location:` makes the sound play at specified location, `category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`), `volume:` is a decimal responsible for the sound's volume and `pitch:` specifies the pitch.
+
+## Give experience: `xp`
+
+Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
+
+**Example:** `xp 4 level`
