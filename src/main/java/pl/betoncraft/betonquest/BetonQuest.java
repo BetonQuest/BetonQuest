@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.LoadDataEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.api.Variable;
@@ -646,6 +647,8 @@ public final class BetonQuest extends JavaPlugin {
 		for (PlayerData playerData : playerDataMap.values()) {
 			playerData.startObjectives();
 		}
+		//fire LoadDataEvent
+		Bukkit.getPluginManager().callEvent(new LoadDataEvent());
 	}
 
 	/**
