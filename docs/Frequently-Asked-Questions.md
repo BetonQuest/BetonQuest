@@ -48,4 +48,4 @@ If you have any questions please read it first. It's very likely that it has bee
 
 **Q**: _Could you add some feature?_
 
-**A**: Check if it wasn't already added in [development versions](http://betonquest.betoncraft.pl). You can see all changes in [the changelog](https://github.com/Co0sh/BetonQuest/blob/master/src/main/resources/changelog.txt).
+**A**: Check if it wasn't already added in [development versions](https://betonquest.pl). You can see all changes in [the changelog](https://github.com/Co0sh/BetonQuest/blob/master/src/main/resources/changelog.txt).

@@ -24,6 +24,12 @@ This variable displays the amount of points you have in some category or amount 
 
 **Example**: `%point.reputation.left:15%`
 
+## Global point: `globalpoint`
+
+Works the same as normal point variable but instead of displaying points from a players category it displays points in a global, player independent category.
+
+**Example**: `%globalpoint.global_knownusers.left:100%`
+
 ## Item: `item`
 
 With this variable you can display amount of specific items in player's inventory or a number needed to reach specific amount. The first argument is the name of an item (as defined in _items.yml_) and the second one is either `amount` or `left:x`, where `x` is a number.

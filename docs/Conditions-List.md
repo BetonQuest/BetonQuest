@@ -60,6 +60,18 @@ This one requires the player to have a specified tag. Together with `!` negation
 
 **Example**: `tag quest_completed`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+The same as point condition but it checks the amount for a global point category which has the same value for all players.
+
+**Example**: `globalpoint global_knownusers 100`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+This requires a specific global tag to be set and works the same as normal tag condition.
+
+**Example**: `globaltag global_areNPCsAgressive`
+
 ## Armor: `armor`
 
 The armor condition requires the player to wear specified armor, as an item defined in _items.yml_ file.
