@@ -281,6 +281,9 @@ public final class BetonQuest extends JavaPlugin {
 		// initialize static events
 		new StaticEvents();
 
+		//initialize global objectives
+		new GlobalObjectives();
+
 		// initialize combat tagging
 		new CombatTagger();
 
