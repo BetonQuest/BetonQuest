@@ -104,6 +104,12 @@ The example is true between the 1st and the 5th or on the 20th of each month, bu
 
 **Example:** `partialdate day:1-5,20 year:2017`
 
+## Day of week: `dayofweek`
+
+It must be a specific day of the week that this condition returns true. You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,..).
+
+**Example:** `dayofweek sunday`
+
 ## Weather: `weather`
 
 There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.

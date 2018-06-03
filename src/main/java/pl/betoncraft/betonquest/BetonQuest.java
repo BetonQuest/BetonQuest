@@ -52,6 +52,7 @@ import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.conditions.CheckCondition;
 import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
+import pl.betoncraft.betonquest.conditions.DayOfWeekCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
@@ -337,6 +338,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
 		registerConditions("biome", BiomeCondition.class);
+		registerConditions("dayofweek", DayOfWeekCondition.class);
 		registerConditions("partialdate", PartialDateCondition.class);
 		registerConditions("realtime", RealTimeCondition.class);
 
