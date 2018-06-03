@@ -126,6 +126,8 @@ import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.OpSudoEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
+import pl.betoncraft.betonquest.events.PickRandomEvent;
+import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.ScoreboardEvent;
@@ -139,7 +141,6 @@ import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
-import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
@@ -375,6 +376,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("title", TitleEvent.class);
 		registerEvents("language", LanguageEvent.class);
 		registerEvents("playsound", PlaysoundEvent.class);
+		registerEvents("pickrandom", PickRandomEvent.class);
 		registerEvents("xp", EXPEvent.class);
 
 		// register objectives
