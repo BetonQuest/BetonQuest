@@ -57,6 +57,7 @@ public class EntityInteractObjective extends Objective {
     protected String name;
     protected String marked;
     protected boolean notify;
+    private final int notifyInterval;
     protected Interaction interaction;
     protected boolean cancel;
 
@@ -81,7 +82,8 @@ public class EntityInteractObjective extends Objective {
         if (marked != null) {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
-        notify = instruction.hasArgument("notify");
+        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
         cancel = instruction.hasArgument("cancel");
     }
 
@@ -135,7 +137,7 @@ public class EntityInteractObjective extends Objective {
             playerData.addEntity(entity);
             if (playerData.isZero()) {
                 completeObjective(playerID);
-            } else if (notify) {
+            } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // send a notification
                 Config.sendMessage(playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())});
             }

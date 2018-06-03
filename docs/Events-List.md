@@ -31,6 +31,18 @@ This event adds (or removes) a tag to the player. The first argument after event
 
 **Example**: `tag add quest_started,new_entry`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+This works the same way as the normal point event but instead to manipulating the points for a category of a specific player it manipulates points in a global category. These global categories are player independent, so you could for example add a point to such a global category every time a player does a quest and give some special rewards for the 100th player who does the quest.
+
+**Example**: `globalpoint global_knownusers 1`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globaly for all players.
+
+**Example**: `globaltag add global_areNPCsAgressive`
+
 ## Objective: `objective` _persistent_
 
 Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two), _delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.
@@ -70,7 +82,7 @@ Removes items from player’s inventory or backpack (in that order). If the item
 
 ## Potion Effect: `effect`
 
-Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.java). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
+Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
 
 **Example**: `effect ABSORPTION 120 1 --ambient`
 
@@ -114,6 +126,11 @@ It's something like a container for multiple events. You can use it to clarify y
 
 **Example**: `folder event1,event2,event3 delay:5 random:1`
 
+## Pick random: `pickrandom` _persistent_, _static_
+
+Another container for events. It picks one (ore multiple) of the given events and runs it (but only if all conditions are true, if not it will do nothing). You must specify how likely it is that each event is picked by adding the percentage before the events id. By default it picks one event from the list but you can add a `amount:` optional if you want more to be picked. Note that only as many events as specified can be picked and `amount:0` will do nothing.
+
+**Example**: `pickrandom 20.5%event1,0.5%event2,79%event3 amount:2`
 ## Set Block: `setblock` _persistent_, _static_
 
 Sets a block at given location to specified material. Useful for triggering redstone contraptions. There are two required arguments. First is required, and should be  material's name ([List of materials](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)). Second is a location and is also required. Last, optional is `data:` with an integer, which defines block's data value. Default is 0.
@@ -241,3 +258,9 @@ This event changes player's language to the specified one. There is only one arg
 ## Play sound: `playsound`
 
 This event will play a specified sound for the player. The only required argument is the sound name (can take custom values if you're using a resource pack). There are also a few optional arguments. `location:` makes the sound play at specified location, `category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`), `volume:` is a decimal responsible for the sound's volume and `pitch:` specifies the pitch.
+
+## Give experience: `xp`
+
+Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
+
+**Example:** `xp 4 level`

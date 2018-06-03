@@ -51,6 +51,7 @@ public class PotionObjective extends Objective implements Listener {
 	private final QuestItem potion;
 	private final int amount;
 	private final boolean notify;
+	private final int notifyInterval;
 	private final HashMap<Location, String> locations = new HashMap<>();
 
 	public PotionObjective(Instruction instruction) throws InstructionParseException {
@@ -58,7 +59,8 @@ public class PotionObjective extends Objective implements Listener {
 		template = PotionData.class;
 		potion = instruction.getQuestItem();
 		amount = instruction.getInt();
-		notify = instruction.hasArgument("notify");
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 
 	@EventHandler
@@ -106,7 +108,7 @@ public class PotionObjective extends Objective implements Listener {
 				// check if the objective has been completed
 				if (data.getAmount() >= amount) {
 					completeObjective(playerID);
-				} else if (brewed && notify) {
+				} else if (brewed && notify && data.getAmount() % notifyInterval == 0) {
 					Config.sendMessage(playerID, "potions_to_brew",
 							new String[] { String.valueOf(amount - data.getAmount()) });
 				}

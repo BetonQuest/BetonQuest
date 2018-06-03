@@ -23,6 +23,8 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.api.Variable;
 
+import java.util.List;
+
 /**
  * Allows you to display total amount of points or amount of points remaining to
  * some other amount.
@@ -31,9 +33,9 @@ import pl.betoncraft.betonquest.api.Variable;
  */
 public class PointVariable extends Variable {
 
-	private String category;
-	private Type type;
-	private int amount;
+	protected String category;
+	protected Type type;
+	protected int amount;
 
 	public PointVariable(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -60,8 +62,12 @@ public class PointVariable extends Variable {
 
 	@Override
 	public String getValue(String playerID) {
+		return getValue(BetonQuest.getInstance().getPlayerData(playerID).getPoints());
+	}
+
+	protected String getValue(List<Point> points) {
 		Point point = null;
-		for (Point p : BetonQuest.getInstance().getPlayerData(playerID).getPoints()) {
+		for (Point p : points) {
 			if (p.getCategory().equalsIgnoreCase(category)) {
 				point = p;
 				break;
@@ -80,7 +86,7 @@ public class PointVariable extends Variable {
 		}
 	}
 
-	private enum Type {
+	protected enum Type {
 		AMOUNT, LEFT
 	}
 

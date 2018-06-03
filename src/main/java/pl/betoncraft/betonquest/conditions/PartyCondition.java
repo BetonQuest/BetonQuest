@@ -80,7 +80,7 @@ public class PartyCondition extends Condition {
 		}
 		// if the count is more than 0, we need to check if there are more
 		// players in the party than required minimum
-		int c = count.getInt(playerID);
+		int c = (count != null) ? count.getInt(playerID) : 0;
 		if (c > 0 && members.size() < c) {
 			return false;
 		}

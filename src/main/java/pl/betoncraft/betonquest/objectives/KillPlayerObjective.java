@@ -36,7 +36,8 @@ public class KillPlayerObjective extends Objective implements Listener {
 	private int amount = 1;
 	private String name = null;
 	private ConditionID[] required;
-	private boolean notify = false;
+	private boolean notify;
+	private final int notifyInterval;
 	
 	public KillPlayerObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -48,6 +49,8 @@ public class KillPlayerObjective extends Objective implements Listener {
 		name = instruction.getOptional("name");
 		required = instruction.getList(instruction.getOptional("required"), e -> instruction.getCondition(e))
 				.toArray(new ConditionID[0]);
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 	
 	@EventHandler
@@ -73,7 +76,7 @@ public class KillPlayerObjective extends Objective implements Listener {
 			data.kill();
 			if (data.getLeft() <= 0) {
 				completeObjective(killer);
-			} else if (notify) {
+			} else if (notify && data.getLeft() % notifyInterval == 0) {
 				Config.sendMessage(killer, "players_to_kill", new String[] { String.valueOf(data.getLeft()) });
 			}
 		}

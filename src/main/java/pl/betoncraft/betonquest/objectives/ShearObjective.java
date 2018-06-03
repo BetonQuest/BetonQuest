@@ -43,6 +43,7 @@ public class ShearObjective extends Objective implements Listener {
 	private final String name;
 	private final int amount;
 	private final boolean notify;
+	private final int notifyInterval;
 
 	public ShearObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -51,7 +52,8 @@ public class ShearObjective extends Objective implements Listener {
 		String rawName = instruction.getOptional("name");
 		name = rawName == null ? null : rawName.replace('_', ' ');
 		color = instruction.getOptional("color");
-		notify = instruction.hasArgument("notify");
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 
 	@EventHandler
@@ -66,12 +68,15 @@ public class ShearObjective extends Objective implements Listener {
 		if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
 			return;
 		SheepData data = (SheepData) dataMap.get(playerID);
-		if (checkConditions(playerID))
+
+		if (checkConditions(playerID)) {
 			data.shearSheep();
-		if (data.getAmount() <= 0)
-			completeObjective(playerID);
-		else if (notify)
-			Config.sendMessage(playerID, "sheep_to_shear", new String[] { String.valueOf(data.getAmount()) });
+			// complete quest or notify
+			if (data.getAmount() <= 0)
+				completeObjective(playerID);
+			else if (notify && data.getAmount() % notifyInterval == 0)
+        			Config.sendMessage(playerID, "sheep_to_shear", new String[] { String.valueOf(data.getAmount()) });
+		}
 	}
 
 	@Override

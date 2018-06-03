@@ -295,7 +295,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			String[] arr = brokenLine.split(" ");
 			StringBuilder line = new StringBuilder();
 			for (int i = 0; i < arr.length; i++) {
-				if (line.length() + arr[i].length() + 1 > 42) {
+				//don't count color codes for line length
+				int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(arr[i]).length();
+				if (rawLength + 1 > 42) {
 					if (firstLinePrefix) {
 						firstLinePrefix = false;
 						multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));

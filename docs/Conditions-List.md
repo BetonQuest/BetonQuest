@@ -60,6 +60,18 @@ This one requires the player to have a specified tag. Together with `!` negation
 
 **Example**: `tag quest_completed`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+The same as point condition but it checks the amount for a global point category which has the same value for all players.
+
+**Example**: `globalpoint global_knownusers 100`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+This requires a specific global tag to be set and works the same as normal tag condition.
+
+**Example**: `globaltag global_areNPCsAgressive`
+
 ## Armor: `armor`
 
 The armor condition requires the player to wear specified armor, as an item defined in _items.yml_ file.
@@ -77,6 +89,12 @@ To meet this condition the player must have an active potion effect. There is on
 There must be specific (Minecraft) time on the player's world for this condition to return true. You need to specify two hour numbers separated by dash. These number are normal 24-hour format hours. The first must be smaller than the second. If you want to achieve time period between 23 and 2 you need to negate the condition.
 
 **Example**: `time 2-23`
+
+## Real time: `realtime`
+
+There must a specific (real) time for this condition to return true. You need to specify two times (formatted like `hh:mm`) separated by dash. If the first is before the second the time must be between these two, if its after the second the time must be later than the first and earlier than the second to return true.
+
+**Example:** `realtime 8:00-12:30`
 
 ## Partial date: `partialdate`
 
