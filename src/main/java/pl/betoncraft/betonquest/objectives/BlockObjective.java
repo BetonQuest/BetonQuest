@@ -45,6 +45,7 @@ public class BlockObjective extends Objective implements Listener {
 	private final byte data;
 	private final int neededAmount;
 	private final boolean notify;
+	private final int notifyInterval;
 
 	public BlockObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -53,7 +54,8 @@ public class BlockObjective extends Objective implements Listener {
 		material = instruction.getMaterial(string[0]);
 		data = string.length > 1 ? instruction.getByte(string[1], (byte) -1) : -1;
 		neededAmount = instruction.getInt();
-		notify = instruction.hasArgument("notify");
+		notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+		notify = instruction.hasArgument("notify") || notifyInterval > 1;
 	}
 
 	@EventHandler
@@ -69,7 +71,7 @@ public class BlockObjective extends Objective implements Listener {
 			// complete the objective
 			if (playerData.getAmount() == neededAmount) {
 				completeObjective(playerID);
-			} else if (notify) {
+			} else if (notify && playerData.getAmount() % notifyInterval == 0) {
 				// or maybe display a notification
 				if (playerData.getAmount() > neededAmount) {
 					Config.sendMessage(playerID, "blocks_to_break",
@@ -95,7 +97,7 @@ public class BlockObjective extends Objective implements Listener {
 			// complete the objective
 			if (playerData.getAmount() == neededAmount) {
 				completeObjective(playerID);
-			} else if (notify) {
+			} else if (notify && playerData.getAmount() % notifyInterval == 0) {
 				// or maybe display a notification
 				if (playerData.getAmount() > neededAmount) {
 					Config.sendMessage(playerID, "blocks_to_break",
