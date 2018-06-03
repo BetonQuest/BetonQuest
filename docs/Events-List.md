@@ -253,3 +253,9 @@ This event changes player's language to the specified one. There is only one arg
 ## Play sound: `playsound`
 
 This event will play a specified sound for the player. The only required argument is the sound name (can take custom values if you're using a resource pack). There are also a few optional arguments. `location:` makes the sound play at specified location, `category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`), `volume:` is a decimal responsible for the sound's volume and `pitch:` specifies the pitch.
+
+## Give experience: `xp`
+
+Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
+
+**Example:** `xp 4 level`
