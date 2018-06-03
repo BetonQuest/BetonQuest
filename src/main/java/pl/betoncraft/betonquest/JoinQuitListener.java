@@ -78,6 +78,7 @@ public class JoinQuitListener implements Listener {
 			Debug.error("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
 		}
 		playerData.startObjectives();
+		GlobalObjectives.startAll(playerID);
 		// display changelog message to the admins
 		if (event.getPlayer().hasPermission("betonquest.admin")
 				&& new File(BetonQuest.getInstance().getDataFolder(), "changelog.txt").exists()) {

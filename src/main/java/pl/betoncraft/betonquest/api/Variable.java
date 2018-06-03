@@ -64,4 +64,8 @@ abstract public class Variable {
 	 */
 	public abstract String getValue(String playerID);
 
+	@Override
+	public String toString() {
+		return instruction.getInstruction();
+	}
 }

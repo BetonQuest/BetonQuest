@@ -14,7 +14,7 @@ And if you're using Maven simply add this to your _pom.xml_:
     <repositories>
         <repository>
             <id>betonquest-repo</id>
-            <url>http://betonquest.betoncraft.pl/mvn</url>
+            <url>https://betonquest.pl/mvn</url>
         </repository>
     </repositories>
 

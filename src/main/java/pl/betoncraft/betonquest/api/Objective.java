@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.GlobalObjectives;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ObjectNotFoundException;
@@ -51,6 +52,7 @@ public abstract class Objective {
 	protected ConditionID[] conditions;
 	protected EventID[] events;
 	protected boolean persistent;
+	protected boolean global;
 
 	/**
 	 * Contains all data objects of the players with this objective active
@@ -83,6 +85,9 @@ public abstract class Objective {
 				 tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
 				 tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
 		persistent = instruction.hasArgument("persistent");
+		global = instruction.hasArgument("global");
+		if (global)
+			GlobalObjectives.add((ObjectiveID) instruction.getID());
 		// make them final
 		int length = tempEvents1.length + tempEvents2.length;
 		events = new EventID[length];
@@ -310,6 +315,13 @@ public abstract class Objective {
 		for (String playerID : dataMap.keySet()) {
 			BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(), dataMap.get(playerID).toString());
 		}
+	}
+
+	/**
+	 * @return if the objective is a global objective
+	 */
+	public boolean isGlobal() {
+		return global;
 	}
 
 	/**
