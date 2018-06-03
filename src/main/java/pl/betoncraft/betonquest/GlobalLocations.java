@@ -37,7 +37,9 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * Handler for global locations.
  * 
  * @author Jakub Sapalski
+ * @deprecated  The old global locations system got replaced by the new {@link GlobalObjectives global objectives}
  */
+@Deprecated
 public class GlobalLocations extends BukkitRunnable {
 
 	private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
