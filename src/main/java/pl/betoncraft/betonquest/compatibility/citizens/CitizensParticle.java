@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,26 +43,26 @@ import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Displays a particle above NPCs with conversations.
- * 
+ *
  * @author Jakub Sapalski
  */
 public class CitizensParticle extends BukkitRunnable {
 
+    private static CitizensParticle instance;
     private Set<Integer> npcs = new HashSet<>();
     private Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private List<Effect> effects = new ArrayList<>();
-    private static CitizensParticle instance;
     private int interval;
     private int tick = 0;
     private boolean enabled = false;
 
     public CitizensParticle() {
         instance = this;
-
         // loop across all packages
         for (ConfigPackage pack : Config.getPackages().values()) {
 
@@ -70,7 +70,8 @@ public class CitizensParticle extends BukkitRunnable {
             for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
                 try {
                     npcs.add(Integer.parseInt(npcID));
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                }
             }
 
             // npc_effects contains all effects for NPCs
@@ -80,14 +81,18 @@ public class CitizensParticle extends BukkitRunnable {
             if (section == null) {
                 continue;
             }
-
             // there's a setting to disable npc effects altogether
             if ("true".equalsIgnoreCase(section.getString("disabled"))) {
-                continue;
+                return;
             }
 
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
+            if (interval <= 0) {
+                Debug.error("Could not load npc effects of package " + pack.getName() + ": " +
+                                    "Check interval must be bigger than 0.");
+                return;
+            }
 
             // loading all effects
             for (String key : section.getKeys(false)) {
@@ -107,7 +112,12 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // load the interval between animations
-                effect.interval = settings.getInt("interval", 20);
+                effect.interval = settings.getInt("interval", 100);
+                if (effect.interval <= 0) {
+                    Debug.error("Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                                        "Effect interval must be bigger than 0.");
+                    continue;
+                }
 
                 // load all NPCs for which this effect can be displayed
                 effect.npcs = new HashSet<>();
@@ -125,7 +135,8 @@ public class CitizensParticle extends BukkitRunnable {
                 for (String cond : settings.getStringList("conditions")) {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
-                    } catch (ObjectNotFoundException e) {}
+                    } catch (ObjectNotFoundException e) {
+                    }
                 }
 
                 // set the effect settings
@@ -140,14 +151,14 @@ public class CitizensParticle extends BukkitRunnable {
         enabled = true;
     }
 
-    private class Effect {
-
-        private String name;
-        private int interval;
-        private boolean def;
-        private Set<Integer> npcs;
-        private List<ConditionID> conditions;
-        private ConfigurationSection settings;
+    /**
+     * Reloads the particle effect
+     */
+    public static void reload() {
+        if (instance.enabled) {
+            instance.cancel();
+        }
+        new CitizensParticle();
     }
 
     @Override
@@ -197,7 +208,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
             }
-            
+
             // put assignments into the main map
             players.put(player.getUniqueId(), assignments);
         }
@@ -210,7 +221,7 @@ public class CitizensParticle extends BukkitRunnable {
 
             // get NPC-effect assignments for this player
             Map<Integer, Effect> assignments = players.get(player.getUniqueId());
-            
+
             // skip if there are no assignments for this player
             if (assignments == null) {
                 continue;
@@ -228,13 +239,13 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // get the NPC from its ID
                 NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                
+
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() ||
                         (NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc))) {
                     continue;
                 }
-                
+
                 // prepare effect location
                 Location loc = npc.getStoredLocation().clone();
                 loc.setPitch(-90);
@@ -247,19 +258,19 @@ public class CitizensParticle extends BukkitRunnable {
                         new DynamicLocation(null, null),
                         null,
                         player);
-                
+
             }
         }
     }
 
-    /**
-     * Reloads the particle effect
-     */
-    public static void reload() {
-        if (instance.enabled) {
-            instance.cancel();
-        }
-        new CitizensParticle();
+    private class Effect {
+
+        private String name;
+        private int interval;
+        private boolean def;
+        private Set<Integer> npcs;
+        private List<ConditionID> conditions;
+        private ConfigurationSection settings;
     }
 
 }
