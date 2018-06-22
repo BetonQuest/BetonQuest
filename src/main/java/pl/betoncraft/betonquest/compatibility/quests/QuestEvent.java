@@ -43,7 +43,7 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
 	@Override
 	public void run(String playerID) {
 		Quest quest = null;
-		for (Quest q : Quests.getInstance().getQuests()) {
+		for (Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
 			if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
 				quest = q;
 				break;
@@ -53,7 +53,7 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
 			Debug.error("Quest '" + questName + "' is not defined");
 			return;
 		}
-		Quests.getInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
+		QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
 	}
 
 }
