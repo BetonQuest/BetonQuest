@@ -45,6 +45,7 @@ import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.item.typehandler.BookHandler;
 import pl.betoncraft.betonquest.item.typehandler.ColorHandler;
 import pl.betoncraft.betonquest.item.typehandler.DataHandler;
+import pl.betoncraft.betonquest.item.typehandler.DurabilityHandler;
 import pl.betoncraft.betonquest.item.typehandler.EnchantmentsHandler;
 import pl.betoncraft.betonquest.item.typehandler.FireworkHandler;
 import pl.betoncraft.betonquest.item.typehandler.HeadOwnerHandler;
@@ -61,6 +62,7 @@ import pl.betoncraft.betonquest.item.typehandler.UnbreakableHandler;
 public class QuestItem {
 
     private Material material = null;
+    private DurabilityHandler durability = new DurabilityHandler();
     private DataHandler data = new DataHandler();
     private NameHandler name = new NameHandler();
     private LoreHandler lore = new LoreHandler();
@@ -92,7 +94,7 @@ public class QuestItem {
         }
         if (enchants != null && !enchants.isEmpty()) {
             StringBuilder builder = new StringBuilder();
-            for (String key : enchants.keySet()) {
+            for (String key: enchants.keySet()) {
                 builder.append(key + ":" + enchants.get(key));
             }
             try {
@@ -108,7 +110,7 @@ public class QuestItem {
         }
         if (lore != null && !lore.isEmpty()) {
             StringBuilder builder = new StringBuilder();
-            for (String line : lore) {
+            for (String line: lore) {
                 builder.append(line + ";");
             }
             try {
@@ -155,8 +157,10 @@ public class QuestItem {
         if (material == null) {
             throw new InstructionParseException("Unknown item type: " + parts[0]);
         }
-        for (String part : parts) {
-            if (part.startsWith("data:")) {
+        for (String part: parts) {
+            if (part.toLowerCase().startsWith("durability:")) {
+                durability.set(cut(part));
+            } else if (part.startsWith("data:")) {
                 data.set(cut(part));
             } else if (part.toLowerCase().startsWith("enchants:")) {
                 enchants.set(cut(part));
@@ -235,14 +239,14 @@ public class QuestItem {
         }
         if (meta.hasLore()) {
             StringBuilder string = new StringBuilder();
-            for (String line : meta.getLore()) {
+            for (String line: meta.getLore()) {
                 string.append(line + ";");
             }
             lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_");
         }
         if (meta.hasEnchants()) {
             StringBuilder string = new StringBuilder();
-            for (Enchantment enchant : meta.getEnchants().keySet()) {
+            for (Enchantment enchant: meta.getEnchants().keySet()) {
                 string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
@@ -267,7 +271,7 @@ public class QuestItem {
             }
             if (bookMeta.hasPages()) {
                 StringBuilder strBldr = new StringBuilder();
-                for (String page : bookMeta.getPages()) {
+                for (String page: bookMeta.getPages()) {
                     if (page.startsWith("\"") && page.endsWith("\"")) {
                         page = page.substring(1, page.length() - 1);
                     }
@@ -288,7 +292,7 @@ public class QuestItem {
             }
             if (potionMeta.hasCustomEffects()) {
                 StringBuilder string = new StringBuilder();
-                for (PotionEffect effect : potionMeta.getCustomEffects()) {
+                for (PotionEffect effect: potionMeta.getCustomEffects()) {
                     int power = effect.getAmplifier() + 1;
                     int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
                     string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
@@ -307,7 +311,7 @@ public class QuestItem {
             EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
             if (storageMeta.hasStoredEnchants()) {
                 StringBuilder string = new StringBuilder();
-                for (Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                for (Enchantment enchant: storageMeta.getStoredEnchants().keySet()) {
                     string.append(enchant.getName() + ":" + storageMeta.getStoredEnchants().get(enchant) + ",");
                 }
                 enchants = " enchants:" + string.substring(0, string.length() - 1);
@@ -324,16 +328,16 @@ public class QuestItem {
             if (fireworkMeta.hasEffects()) {
                 StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
-                for (FireworkEffect effect : fireworkMeta.getEffects()) {
+                for (FireworkEffect effect: fireworkMeta.getEffects()) {
                     builder.append(effect.getType() + ":");
-                    for (Color c : effect.getColors()) {
+                    for (Color c: effect.getColors()) {
                         DyeColor dye = DyeColor.getByFireworkColor(c);
                         builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                     }
                     // remove last semicolon
                     builder.setLength(Math.max(builder.length() - 1, 0));
                     builder.append(":");
-                    for (Color c : effect.getFadeColors()) {
+                    for (Color c: effect.getFadeColors()) {
                         DyeColor dye = DyeColor.getByFireworkColor(c);
                         builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                     }
@@ -352,14 +356,14 @@ public class QuestItem {
                 StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
                 builder.append(effect.getType() + ":");
-                for (Color c : effect.getColors()) {
+                for (Color c: effect.getColors()) {
                     DyeColor dye = DyeColor.getByFireworkColor(c);
                     builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                 }
                 // remove last semicolon
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(":");
-                for (Color c : effect.getFadeColors()) {
+                for (Color c: effect.getFadeColors()) {
                     DyeColor dye = DyeColor.getByFireworkColor(c);
                     builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                 }
@@ -368,7 +372,7 @@ public class QuestItem {
             }
         }
         // put it all together in a single string
-        return item.getType() + " data:" + item.getData().getData() + name + lore + enchants + title + author + text
+        return item.getType() + " durability:" + item.getDurability() + name + lore + enchants + title + author + text
                 + effects + color + owner + firework + unbreakable;
     }
 
@@ -381,6 +385,9 @@ public class QuestItem {
             return false;
         }
         if (item.material != material) {
+            return false;
+        }
+        if (!item.durability.equals(durability)) {
             return false;
         }
         if (!item.data.equals(data)) {
@@ -433,6 +440,9 @@ public class QuestItem {
         }
         // basic meta checks
         ItemMeta meta = item.getItemMeta();
+        if (!durability.check(item.getDurability())) {
+            return false;
+        }
         if (!data.check(item.getData().getData())) {
             return false;
         }
@@ -525,7 +535,9 @@ public class QuestItem {
      */
     @SuppressWarnings("deprecation")
     public ItemStack generate(int stackSize) {
-        ItemStack item = new ItemStack(material, stackSize, data.get());
+        //if durability isn't given use data instead
+        short damage = durability.whatever() ? data.get() : durability.get();
+        ItemStack item = new ItemStack(material, stackSize, damage);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
@@ -539,12 +551,12 @@ public class QuestItem {
             EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             // why no bulk adding method?!
             Map<Enchantment, Integer> map = enchants.get();
-            for (Entry<Enchantment, Integer> e : map.entrySet()) {
+            for (Entry<Enchantment, Integer> e: map.entrySet()) {
                 enchantMeta.addStoredEnchant(e.getKey(), e.getValue(), true);
             }
         } else {
             Map<Enchantment, Integer> map = enchants.get();
-            for (Entry<Enchantment, Integer> e : map.entrySet()) {
+            for (Entry<Enchantment, Integer> e: map.entrySet()) {
                 meta.addEnchant(e.getKey(), e.getValue(), true);
             }
         }
@@ -554,7 +566,7 @@ public class QuestItem {
                 potionMeta.setBasePotionData(potion.getBase());
             } catch (LinkageError e) {
             }
-            for (PotionEffect effect : potion.getCustom()) {
+            for (PotionEffect effect: potion.getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }
         }
@@ -598,6 +610,13 @@ public class QuestItem {
      */
     public short getData() {
         return data.get();
+    }
+
+    /**
+     * @return the durability value
+     */
+    public short getDurability() {
+        return durability.get();
     }
 
     /**
