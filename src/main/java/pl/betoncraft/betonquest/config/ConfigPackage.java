@@ -20,6 +20,8 @@ package pl.betoncraft.betonquest.config;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
@@ -165,13 +167,11 @@ public class ConfigPackage {
 		// handle "$this$" variables
 		value = value.replace("$this$", name);
 		// handle the rest
+		Pattern global_variable_regex = Pattern.compile("\\$[^ $\\s]\\$");
 		while (true) {
-			int start = value.indexOf('$');
-			int end = value.indexOf('$', start + 1);
-			if (start == -1 || end == -1) {
-				break;
-			}
-			String varName = value.substring(start + 1, end);
+			Matcher matcher = global_variable_regex.matcher(value);
+			if (!matcher.find()) break;
+			String varName = matcher.group();
 			String varVal = main.getConfig().getString("variables." + varName);
 			if (varVal == null) {
 				Debug.error(String.format("Variable %s not defined in package %s", varName, name));

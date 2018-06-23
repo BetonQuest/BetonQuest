@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -1084,32 +1086,10 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public static ArrayList<String> resolveVariables(String text) {
 		ArrayList<String> variables = new ArrayList<>();
-		boolean inside = false;
-		char[] charArr = text.toCharArray();
-		StringBuilder variable = new StringBuilder();
-		for (int i = 0; i < text.length(); i++) {
-			if (inside) {
-				if (charArr[i] == ' ') {
-					// it's not a variable if it contains a space
-					inside = false;
-					variable = new StringBuilder();
-				}
-				variable.append(charArr[i]);
-				if (charArr[i] == '%') {
-					// end of the variable
-					inside = false;
-					String finalVariable = variable.toString();
-					variable = new StringBuilder();
-					if (!variables.contains(finalVariable)) {
-						variables.add(finalVariable);
-					}
-				}
-			} else {
-				if (charArr[i] == '%') {
-					inside = true;
-					variable.append('%');
-				}
-			}
+		Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+		while (matcher.find()) {
+			final String variable = matcher.group();
+			if (!variables.contains(variable)) variables.add(variable);
 		}
 		return variables;
 	}
