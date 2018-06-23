@@ -19,9 +19,17 @@ package pl.betoncraft.betonquest.commands;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -31,6 +39,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -44,6 +53,7 @@ import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -52,6 +62,7 @@ import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.ComponentBuilder;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
@@ -227,9 +238,13 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				break;
 			case "vector":
 			case "vec":
-			case "v":
 				handleVector(sender, args);
 				break;
+				case "version":
+				case "ver":
+				case "v":
+					displayVersionInfo(sender);
+					break;
 			case "purge":
 				Debug.info("Loading data asynchronously");
 				final CommandSender finalSender7 = sender;
@@ -305,6 +320,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					"delete",
 					"config",
 					"vector",
+					"version",
 					"backup");
 		}
 		switch (args[0].toLowerCase()) {
@@ -361,7 +377,6 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				return completeRenaming(sender, args);
 			case "vector":
 			case "vec":
-			case "v":
 				return completeVector(sender, args);
 			case "purge":
 				if (args.length == 2) return null;
@@ -1606,6 +1621,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		cmds.put("delete", "delete <tag/point/objective/journal> <name>");
 		cmds.put("config", "config <read/set/add> <path> [string]");
 		cmds.put("vector", "vector <pack.varname> <vectorname>");
+		cmds.put("version", "version");
 		cmds.put("purge", "purge <player>");
 		if (!(sender instanceof Player))
 			cmds.put("backup", "backup");
@@ -1625,6 +1641,95 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + command));
 			}
 		}
+	}
+
+	private void displayVersionInfo(CommandSender sender) {
+
+		//build clickable tellraw-like message by using bugee api or fall back on unclickable messages
+		ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
+
+		//get versions
+		final String betonquest_version = BetonQuest.getInstance().getDescription().getVersion();
+		final String spigot_version = Bukkit.getServer().getVersion();
+
+		//get internal messages
+		String lang = (sender instanceof Player)
+				? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
+				: Config.getLanguage();
+		String click_to_download = "§b" + Config.getMessage(lang, "click_to_download");
+		String click_to_copy = "§b" + Config.getMessage(lang, "click_to_copy");
+
+		//get available updates
+		Updater updater = BetonQuest.getInstance().getUpdater();
+		String updates_string = "";
+		String updates_command = null;
+		if (updater.isEnabled() && updater.updateAvailable()) {
+			if (updater.isDevBuild() && (updater.getRemoteDevBuild().equals(updater.getUpdateVersion()))) {
+				//if update is a dev build
+				updates_command = "/q update --dev";
+			} else {
+				updates_command = "/q update";
+			}
+			updates_string = " (version " + updater.getUpdateVersion() + " is " + "avialable!)";
+		}
+
+		//get hooked Plugins
+		TreeMap<String, String> hooked = new TreeMap<>();
+		for (String plugin: Compatibility.getHooked()) {
+			Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
+			if (pl != null) hooked.put(plugin, pl.getDescription().getVersion());
+		}
+		StringJoiner hooked_raw = new StringJoiner(", ");
+		for (String key: hooked.navigableKeySet()) {
+			hooked_raw.add(key + " (" + hooked.get(key) + ")");
+		}
+
+		//build version info message
+		builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
+		builder
+				.append("BetonQuest version: ", ChatColor.AQUA)
+				.append(betonquest_version, ChatColor.GRAY)
+				.hover(click_to_copy)
+				.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquest_version);
+		if (updates_command != null) {
+			builder
+					.append("\n        " + updates_string, ChatColor.YELLOW)
+					.hover(click_to_download)
+					.click(ComponentBuilder.ClickEvent.RUN_COMMAND, updates_command);
+		}
+		builder
+				.append("\n", ChatColor.RESET)
+				.append("Server version: ", ChatColor.GOLD)
+				.append(spigot_version, ChatColor.GRAY)
+				.hover(click_to_copy)
+				.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigot_version)
+				.append("\n\n", ChatColor.RESET)
+				.append("Hooked into:\n", ChatColor.GREEN);
+		if (hooked.isEmpty()) {
+			builder.append("  ---", ChatColor.GRAY);
+		} else {
+			boolean first = true;
+			for (String key: hooked.navigableKeySet()) {
+				if (first) first = false;
+				else {
+					builder
+							.append(", ", ChatColor.RESET)
+							.hover(click_to_copy)
+							.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+				}
+				builder
+						.append(key, ChatColor.RESET)
+						.hover(click_to_copy)
+						.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString())
+						.append(" (" + hooked.get(key) + ")", ChatColor.GRAY)
+						.hover(click_to_copy)
+						.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+
+			}
+		}
+
+		//send the message
+		builder.send(sender);
 	}
 
 	private void sendMessage(CommandSender sender, String messageName) {
