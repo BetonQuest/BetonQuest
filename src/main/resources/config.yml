@@ -1,4 +1,4 @@
-version: v56
+version: v57
 mysql:
   host: ''
   port: ''
@@ -13,6 +13,7 @@ update:
   notify_new_release: true
 default_journal_slot: '-1'
 max_npc_distance: '5'
+citizens_npcs_by_name: 'false'
 default_conversation_IO: chest
 display_chat_after_conversation: 'true'
 combat_delay: '10'

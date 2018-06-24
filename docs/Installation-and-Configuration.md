@@ -22,6 +22,7 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
     - If you're using a development version, there will be a third setting here, `notify_dev_build`.
         This is the same as `notify_new_release` but it checks the development builds instead. There are no specific version checking here, so if the found dev number is higher, it will appear. You download development builds on your own responsibility.
 * `default_journal_slot` is a number of slot where the journal will appear after using `/journal` command.
+* `citizens_npcs_by_name` sets if npcs from citizens2 should be identified in main.yml by their name instead of their id.
 * `max_npc_distance` is a distance you need to walk away from the NPC for the conversation to end (in case of using chat-based conversation interface).
 * `default_conversation_IO` is a conversation interface. `simple` is a conversation in chat, `tellraw` is an extension to provide clickable options and `chest` is a conversation in inventory window. Other plugins can add additional IO types.
 * `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.

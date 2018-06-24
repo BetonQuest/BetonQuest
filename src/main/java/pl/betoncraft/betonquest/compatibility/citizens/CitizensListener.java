@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,40 +31,43 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Starts new conversations with NPCs
- * 
+ *
  * @author Jakub Sapalski
  */
 public class CitizensListener implements Listener {
 
-	/**
-	 * Initializes the listener
-	 */
-	public CitizensListener() {
-		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-	}
+    /**
+     * Initializes the listener
+     */
+    public CitizensListener() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onNPCClick(final NPCRightClickEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		if (!event.getClicker().hasPermission("betonquest.conversation")) {
-			return;
-		}
-		if (NPCMoveEvent.isNPCMoving(event.getNPC())) {
-			return;
-		}
-		final String playerID = PlayerConverter.getID(event.getClicker());
-		if (CombatTagger.isTagged(playerID)) {
-			Config.sendMessage(playerID, "busy");
-			return;
-		}
-		String id = String.valueOf(event.getNPC().getId());
-		String assignment = Config.getNpc(id);
-		if (assignment != null) {
-			event.setCancelled(true);
-			new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
-					event.getNPC());
-		}
-	}
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onNPCClick(final NPCRightClickEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+        if (!event.getClicker().hasPermission("betonquest.conversation")) {
+            return;
+        }
+        if (NPCMoveEvent.isNPCMoving(event.getNPC())) {
+            return;
+        }
+        final String playerID = PlayerConverter.getID(event.getClicker());
+        if (CombatTagger.isTagged(playerID)) {
+            Config.sendMessage(playerID, "busy");
+            return;
+        }
+        String id = String.valueOf(event.getNPC().getId());
+        String assignment = Config.getNpc(id);
+        if (Config.getString("citizens_npcs_by_name").equalsIgnoreCase("true")) {
+            if (assignment == null) assignment = Config.getNpc(event.getNPC().getName());
+        }
+        if (assignment != null) {
+            event.setCancelled(true);
+            new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
+                    event.getNPC());
+        }
+    }
 }

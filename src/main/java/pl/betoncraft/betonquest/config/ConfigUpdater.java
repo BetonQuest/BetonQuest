@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v56";
+	private final String destination = "v57";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -112,11 +112,14 @@ public class ConfigUpdater {
 			instance.saveConfig();
 		}
 		// move backup files to backup folder
-		for (File file : instance.getDataFolder().listFiles()) {
-			if (file.getName().matches("^backup-.*\\.zip$")) {
-				file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups"
-						+ File.separator + file.getName()));
-				Debug.broadcast("File " + file.getName() + " moved to backup folder!");
+		File[] backupFiles = instance.getDataFolder().listFiles();
+		if (backupFiles != null) {
+			for (File file: backupFiles) {
+				if (file.getName().matches("^backup-.*\\.zip$")) {
+					file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups"
+												   + File.separator + file.getName()));
+					Debug.broadcast("File " + file.getName() + " moved to backup folder!");
+				}
 			}
 		}
 		if (version != null && version.equals(destination)) {
@@ -200,6 +203,14 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v56() {
+		config.set("citizens_npcs_by_name", "false");
+		Debug.broadcast("Added option to allow identifying citizens npcs by name");
+		config.set("version", "v57");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")
