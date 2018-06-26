@@ -167,11 +167,11 @@ public class ConfigPackage {
 		// handle "$this$" variables
 		value = value.replace("$this$", name);
 		// handle the rest
-		Pattern global_variable_regex = Pattern.compile("\\$[^ $\\s]\\$");
+		Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
 		while (true) {
 			Matcher matcher = global_variable_regex.matcher(value);
 			if (!matcher.find()) break;
-			String varName = matcher.group();
+			String varName = matcher.group(1);
 			String varVal = main.getConfig().getString("variables." + varName);
 			if (varVal == null) {
 				Debug.error(String.format("Variable %s not defined in package %s", varName, name));
