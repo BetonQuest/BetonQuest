@@ -61,7 +61,7 @@ public class CitizensListener implements Listener {
         }
         String id = String.valueOf(event.getNPC().getId());
         String assignment = Config.getNpc(id);
-        if (Config.getString("citizens_npcs_by_name").equalsIgnoreCase("true")) {
+        if (Config.getString("config.citizens_npcs_by_name").equalsIgnoreCase("true")) {
             if (assignment == null) assignment = Config.getNpc(event.getNPC().getName());
         }
         if (assignment != null) {
