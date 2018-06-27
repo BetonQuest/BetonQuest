@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.conversation;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,6 +36,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import org.apache.commons.lang.StringUtils;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -63,6 +63,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	protected boolean allowClose = false;
 	protected boolean switching = false;
 	protected Location loc;
+	protected boolean printMessages = false;
 
 	public InventoryConvIO(Conversation conv, String playerID) {
 		this.conv = conv;
@@ -202,7 +203,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			item.setItemMeta(meta);
 			buttons[j] = item;
 		}
-		player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+		if (printMessages) player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
 		inv.setContents(buttons);
 		new BukkitRunnable() {
 			@Override
@@ -234,7 +235,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			int choosen = (row * 7) + col;
 			String message = options.get(choosen);
 			if (message != null) {
-				player.sendMessage(answerPrefix + message);
+				if (printMessages) player.sendMessage(answerPrefix + message);
 				conv.passPlayerAnswer(choosen);
 			}
 		}
@@ -285,6 +286,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		}
 	}
 
+	@Override
+	public boolean printMessages() {
+		return printMessages;
+	}
+
 	private ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
 		ArrayList<String> multiLine = new ArrayList<>();
 		boolean firstLinePrefix = prefix != null;
@@ -316,5 +322,16 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			}
 		}
 		return multiLine;
+	}
+
+	/**
+	 * Inventory GUI that also outputs the conversation to chat
+	 */
+	public static class Combined extends InventoryConvIO {
+
+		public Combined(Conversation conv, String playerID) {
+			super(conv, playerID);
+			super.printMessages = true;
+		}
 	}
 }

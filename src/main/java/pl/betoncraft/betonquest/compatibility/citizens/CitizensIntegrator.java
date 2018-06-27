@@ -42,6 +42,7 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
         plugin.registerEvents("movenpc", NPCMoveEvent.class);
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
+        plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
     }
 
     @Override

@@ -425,6 +425,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConversationIO("simple", SimpleConvIO.class);
 		registerConversationIO("tellraw", TellrawConvIO.class);
 		registerConversationIO("chest", InventoryConvIO.class);
+		registerConversationIO("combined", InventoryConvIO.Combined.class);
 
 		// register variable types
 		registerVariable("player", PlayerNameVariable.class);

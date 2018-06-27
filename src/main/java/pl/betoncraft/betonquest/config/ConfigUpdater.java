@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -51,6 +50,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
+import org.apache.commons.lang.StringUtils;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v57";
+	private final String destination = "v58";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -203,6 +203,26 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+
+	@SuppressWarnings("unused")
+	private void update_from_v57() {
+		if (config.contains("default_conversation_IO") && config.getString("default_conversation_IO").equalsIgnoreCase("chest")) {
+			Debug.broadcast("Renamed default ConversationIO to 'combined'");
+			config.set("default_conversation_IO", "combined");
+		}
+		for (ConfigPackage pack: Config.getPackages().values()) {
+			for (String convName: pack.getConversationNames()) {
+				String convIO = pack.getRawString("conversations." + convName + ".conversationIO");
+				if (convIO == null) continue;
+				if (!convIO.equalsIgnoreCase("chest")) continue;
+				Debug.broadcast("Renamed conversationIO in conversation " + pack.getName() + "." + convName + " to 'combined'");
+				pack.setString("conversations." + convName + ".conversationIO", "combined");
+			}
+		}
+		config.set("version", "v58");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")
