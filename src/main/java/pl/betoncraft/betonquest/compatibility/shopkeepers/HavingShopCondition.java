@@ -17,16 +17,15 @@
  */
 package pl.betoncraft.betonquest.compatibility.shopkeepers;
 
-import com.nisovin.shopkeepers.Shopkeeper;
-import com.nisovin.shopkeepers.ShopkeepersPlugin;
-import com.nisovin.shopkeepers.shoptypes.PlayerShopkeeper;
+import com.nisovin.shopkeepers.api.ShopkeepersAPI;
+import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
+import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the player owns specified amount of shops.
@@ -43,10 +42,10 @@ public class HavingShopCondition extends Condition {
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
 		int count = amount.getInt(playerID);
-		for (Shopkeeper s : ShopkeepersPlugin.getInstance().getAllShopkeepers()) {
+		for (Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
 			if (s instanceof PlayerShopkeeper) {
 				PlayerShopkeeper ps = (PlayerShopkeeper) s;
-				if (ps.getOwner() != null && PlayerConverter.getID(ps.getOwner()).equals(playerID)) {
+				if (ps.getOwnerUUID() != null && ps.getOwnerUUID().toString().equals(playerID)) {
 					count --;
 					if (count == 0) {
 						return true;
