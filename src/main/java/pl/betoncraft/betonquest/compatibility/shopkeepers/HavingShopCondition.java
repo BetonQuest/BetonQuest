@@ -36,6 +36,7 @@ public class HavingShopCondition extends Condition {
 
 	public HavingShopCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
+		persistent = true;
 		amount = instruction.getVarNum();
 	}
 
