@@ -131,6 +131,9 @@
 		<repository>
 			<id>shopkeepers-releases</id>
 			<url>http://nexus3.cube-nation.de/repository/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<dependencies>
