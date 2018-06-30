@@ -22,6 +22,8 @@ import java.util.Arrays;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEvent;
 
 
 public class CitizensIntegrator implements Integrator {
@@ -38,6 +40,12 @@ public class CitizensIntegrator implements Integrator {
         new CitizensWalkingListener();
         if (Compatibility.getHooked().contains("EffectLib"))
             new CitizensParticle();
+
+        // if ProtocolLib is hooked, start NPCHider
+        if (Compatibility.getHooked().contains("ProtocolLib")) {
+            NPCHider.start();
+            plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+        }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
         plugin.registerEvents("movenpc", NPCMoveEvent.class);
