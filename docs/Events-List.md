@@ -98,7 +98,7 @@ Kills the player. Nothing else.
 
 **Example**: `kill`
 
-## Spawn Mob: `spawn` _static_
+## Spawn Mob: `spawn` _persistent_, _static_
 
 Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. All `_` characters will be replaced with spaces. You can also mark the spawned mob with a keyword using `marked:` argument. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
 
@@ -107,6 +107,15 @@ You can specify armor which the mob will wear and items it will hold with `h:` (
 **Example**: `spawn 100;200;300;world SKELETON 5 marked:targets`
 
 **Example**: `spawn 100;200;300;world ZOMBIE name:Bolec 1 h:blue_hat c:red_vest drops:emerald:10,bread:2`
+
+## Kill Mobs: `killmob` _persistent_, _static_
+
+Kills all mobs of given type at the location. First argument is the [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next argument is the location. Third argument is the radius around the location, in which the mobs must be to get killed.  
+You can also specify `name:` argument, followed by the name of the mob which should get killed. All `_` characters will be replaced with spaces. If you want to kill only mobs that have been marked using the spawn mob event use `marked:` argument followed by the keyword.
+
+Only mobs that are in loaded chunks can be killed by using this event.
+
+**Example**: `killmob ZOMBIE 100;200;300;world 40 name:Bolec`
 
 ## Time: `time`
 

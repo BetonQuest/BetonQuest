@@ -125,6 +125,7 @@ import pl.betoncraft.betonquest.events.GlobalTagEvent;
 import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
+import pl.betoncraft.betonquest.events.KillMobEvent;
 import pl.betoncraft.betonquest.events.LanguageEvent;
 import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
@@ -366,6 +367,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("kill", KillEvent.class);
 		registerEvents("effect", EffectEvent.class);
 		registerEvents("spawn", SpawnMobEvent.class);
+		registerEvents("killmob", KillMobEvent.class);
 		registerEvents("time", TimeEvent.class);
 		registerEvents("weather", WeatherEvent.class);
 		registerEvents("folder", FolderEvent.class);
