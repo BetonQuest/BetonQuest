@@ -128,6 +128,13 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
+		<repository>
+			<id>shopkeepers-releases</id>
+			<url>http://nexus3.cube-nation.de/repository/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -207,8 +214,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.nisovin.shopkeepers</groupId>
-			<artifactId>Shopkeepers</artifactId>
-			<version>1.74</version>
+			<artifactId>ShopkeepersAPI</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>me.clip</groupId>

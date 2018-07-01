@@ -95,7 +95,10 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            } catch (Exception e) {
+            } catch (UnsupportedVersionException e) {
+            	Debug.error("Could not hook into " + name + ":");
+            	Debug.error(e.getMessage());
+			} catch (Exception e) {
                 Debug.error(String.format("There was an error while hooking into %s %s"
                         + " (BetonQuest %s, Spigot %s). Please post it on GitHub <"
                         + "https://github.com/Co0sh/BetonQuest/issues>",
