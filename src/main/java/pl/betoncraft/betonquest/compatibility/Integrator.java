@@ -28,7 +28,7 @@ public interface Integrator {
     /**
      * Integrate with another plugin.
      */
-    public void hook();
+    public void hook() throws Exception;
     
     /**
      * Reload the plugin integration.
