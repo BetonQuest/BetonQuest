@@ -481,13 +481,25 @@ public class Config {
 		}
 		player.sendMessage(message);
 		if (soundName != null) {
-			String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
-			if (!rawSound.equalsIgnoreCase("false")) {
-				try {
-					player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
-				} catch (IllegalArgumentException e) {
-					Debug.error("Unknown sound type: " + rawSound);
-				}
+			playSound(playerID, soundName);
+		}
+	}
+
+	/**
+	 * Plays a sound specified in the plugins config to the player
+	 *
+	 * @param playerID  the uuid of the player
+	 * @param soundName the name of the sound to play to the player
+	 */
+	public static void playSound(String playerID, String soundName) {
+		Player player = PlayerConverter.getPlayer(playerID);
+		if (player == null) return;
+		String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
+		if (!rawSound.equalsIgnoreCase("false")) {
+			try {
+				player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
+			} catch (IllegalArgumentException e) {
+				Debug.error("Unknown sound type: " + rawSound);
 			}
 		}
 	}

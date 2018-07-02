@@ -281,8 +281,10 @@ public class Conversation implements Listener {
 		//only display status messages if conversationIO allows it
 		if (conv.inOut.printMessages()) {
 			// print message
-			Config.sendMessage(playerID, "conversation_end", new String[]{data.getQuester(language)}, "end");
+			Config.sendMessage(playerID, "conversation_end", new String[]{data.getQuester(language)});
 		}
+		//play conversation end sound
+		Config.playSound(playerID, "end");
 		// delete conversation
 		list.remove(playerID);
 		HandlerList.unregisterAll(this);
@@ -512,9 +514,11 @@ public class Conversation implements Listener {
 				if (conv.inOut.printMessages()) {
 					// print message about starting a conversation only if it
 					// is started, not resumed
-					Config.sendMessage(playerID, "conversation_start", new String[]{data.getQuester(language)}, "start",
+					Config.sendMessage(playerID, "conversation_start", new String[]{data.getQuester(language)}, null,
 									   prefixName, prefixVariables);
 				}
+				//play the conversation start sound
+				Config.playSound(playerID,"start");
 			} else {
 				// don't forget to select the option prior to printing its text
 				selectOption(options, true);
