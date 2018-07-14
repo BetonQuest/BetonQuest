@@ -49,7 +49,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCHider extends BukkitRunnable implements Listener {
 
-    private static NPCHider instance;
+    private static NPCHider instance = null;
 
     private EntityHider hider;
     private Map<Integer, Set<ConditionID>> npcs;
@@ -159,7 +159,10 @@ public class NPCHider extends BukkitRunnable implements Listener {
         }
 
         NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
-
+        if (npc == null) {
+            Debug.error("NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
+            return;
+        }
         if (npc.isSpawned()) {
             if (hidden) {
                 hider.hideEntity(player, npc.getEntity());
@@ -186,6 +189,11 @@ public class NPCHider extends BukkitRunnable implements Listener {
      * @param npcID ID of the NPC
      */
     public void applyVisibility(NPC npcID) {
+        //check if the npc is in the default registry
+        if (npcID.getOwningRegistry() != CitizensAPI.getNPCRegistry()) {
+            System.out.println("X");
+            return;
+        }
         for (Player p : Bukkit.getOnlinePlayers()) {
             applyVisibility(p, npcID.getId());
         }
