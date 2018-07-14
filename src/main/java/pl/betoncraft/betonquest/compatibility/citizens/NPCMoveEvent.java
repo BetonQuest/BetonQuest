@@ -77,14 +77,17 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		}
 		NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 		if (npc == null) {
-			BetonQuest.getInstance().getLogger().warning("NPC with ID " + id + " does not exist");
-			return;
+			throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
 		}
 		if (!npc.isSpawned()) {
 			return;
 		}
 		if (currentPlayer == null) {
-			npc.getNavigator().setTarget(loc.getLocation(playerID));
+			if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+				CitizensWalkingListener.getInstance().setNewTargetLocation(npc, loc.getLocation(playerID));
+			} else {
+				npc.getNavigator().setTarget(loc.getLocation(playerID));
+			}
 			currentPlayer = playerID;
 			movingNPCs.add(npc);
 			Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
