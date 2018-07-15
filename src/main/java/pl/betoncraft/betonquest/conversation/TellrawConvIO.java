@@ -97,7 +97,7 @@ public class TellrawConvIO extends ChatConvIO {
 							+ "\"},{\"text\":\"" + options.get(j) + "\",\"color\":\"" + color + "\",\"bold\":\"" + bold
 							+ "\",\"italic\":\"" + italic + "\",\"underlined\":\"" + underline
 							+ "\",\"strikethrough\":\"" + strikethrough + "\",\"obfuscated\":\"" + magic
-							+ "\",\"click\":{\"action\":\"run_command\",\"value\":\"/betonquestanswer "
+							+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/betonquestanswer "
 							+ hashes.get(j) + "\"}}]");
 		}
 	}
