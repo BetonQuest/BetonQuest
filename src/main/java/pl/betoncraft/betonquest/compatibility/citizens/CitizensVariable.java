@@ -43,7 +43,7 @@ public class CitizensVariable extends Variable {
 	public CitizensVariable(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 
-		id = instruction.getPositive();
+		id = instruction.getInt();
 		try {
 			key = TYPE.valueOf(instruction.next().toUpperCase());
 		} catch (IllegalArgumentException e) {
@@ -55,7 +55,7 @@ public class CitizensVariable extends Variable {
 	public String getValue(String playerID) {
 		NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 		if (npc == null) {
-			return null;
+			return "";
 		}
 
 		switch(key) {
@@ -76,7 +76,7 @@ public class CitizensVariable extends Variable {
 				}
 				break;
 		}
-		return null;
+		return "";
 	}
 
 	private enum TYPE {
