@@ -28,48 +28,42 @@ import pl.betoncraft.betonquest.api.Variable;
  * Provides information about a citizen npc.
  *
  * Format:
- *   %citizen.<id>.<key>%
+ *   %citizen.<id>[.<type>]%
  *
- * Keys:
+ * Types:
  *   * name - (default) Return citizen name
+ *   * full_name - Full Citizen name
  *   * location  - Return citizen location. x;y;z;world;yaw;pitch
  */
 public class CitizensVariable extends Variable {
 
 	private int id;
-	private String key;
+	private TYPE key;
 
 	public CitizensVariable(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 
-		String [] parts = instruction.getInstruction().split("\\.");
-		if (parts.length < 2) {
-			throw new InstructionParseException("Invalid variable format");
-		}
-
+		id = instruction.getPositive();
 		try {
-			id = Integer.parseInt(parts[1]);
-		} catch (NumberFormatException ex) {
-			throw new InstructionParseException("Invalid NPC ID: " + parts[1]);
+			key = TYPE.valueOf(instruction.next().toUpperCase());
+		} catch (IllegalArgumentException e) {
+			throw new InstructionParseException("Invalid Type: " + instruction.current());
 		}
-
-		// Accept any key. We return blank if its invalid to support forward compatibility
-		key = parts[2];
 	}
 
 	@Override
 	public String getValue(String playerID) {
 		NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 		if (npc == null) {
-			return "";
+			return null;
 		}
 
 		switch(key) {
-			case "name":
+			case NAME:
 				return npc.getName();
-			case "full_name":
+			case FULL_NAME:
 				return npc.getFullName();
-			case "location":
+			case LOCATION:
 				if (npc.getEntity() != null) {
 					Location loc = npc.getEntity().getLocation();
 					return String.format("%.2f;%.2f;%.2f;%s;%.2f;%.2f",
@@ -82,7 +76,13 @@ public class CitizensVariable extends Variable {
 				}
 				break;
 		}
-		return "";
+		return null;
+	}
+
+	private enum TYPE {
+		NAME,
+		FULL_NAME,
+		LOCATION
 	}
 
 }
