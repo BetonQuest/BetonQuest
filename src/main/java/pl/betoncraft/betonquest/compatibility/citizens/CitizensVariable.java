@@ -28,10 +28,10 @@ import pl.betoncraft.betonquest.api.Variable;
  * Provides information about a citizen npc.
  *
  * Format:
- *   %citizen.<id>[.<type>]%
+ *   {@code %citizen.<id>.<type>%}
  *
  * Types:
- *   * name - (default) Return citizen name
+ *   * name - Return citizen name
  *   * full_name - Full Citizen name
  *   * location  - Return citizen location. x;y;z;world;yaw;pitch
  */
