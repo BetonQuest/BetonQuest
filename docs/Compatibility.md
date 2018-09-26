@@ -316,11 +316,41 @@ In order to create a hologram, you have to add `holograms` section in your _cust
       beton:
         lines:
         - '&bThis is Beton.'
+        - 'item:MAP'
         - '&eBeton is strong.'
         location: 100;200;300;world
         conditions: has_some_quest, !finished_some_quest
 
+A line can also represent a floating item. To do so enter the line as 'item:`MATERIAL`'. It will be replaced with the `MATERIAL` defined. In the above example, a floating map will be seen between two lines of text.
+
 The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
+
+If Citizens is also installed then you can have holograms configured relative to an npc. Add the following to _custom.yml_.
+
+    npc_holograms:
+      # How often to check conditions
+      check_interval: 100
+
+      # Disable npc_holograms
+      disabled: false
+
+      # Hologram Settings
+      default:
+        # Lines in hologram
+        lines:
+          - !
+        # Vector offset to NPC position to place hologram
+        vector: 0;3;0
+
+        # Conditions to display hologram
+        conditions: has_some_quest, !finished_some_quest
+
+        # NPC's to apply these settings to. If blank, applies by default
+        npcs:
+          - 0
+          - 22
+
+Item lines are also supported here.
 
 ## [RacesAndClasses](http://dev.bukkit.org/bukkit-plugins/racesandclasses/)
 
