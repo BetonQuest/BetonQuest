@@ -293,6 +293,7 @@ public class Config {
 		return getMessage(lang, message, null);
 	}
 
+
 	/**
 	 * @return the map of packages and their names
 	 */
@@ -304,7 +305,7 @@ public class Config {
 	 * Retrieves the string from across all configuration. The variables are not
 	 * replaced! To replace variables automatically just call getString() method
 	 * on ConfigPackage.
-	 * 
+	 *
 	 * @param address
 	 *            address of the string
 	 * @return the requested string
@@ -330,7 +331,7 @@ public class Config {
 
 	/**
 	 * Sets the string at specified address
-	 * 
+	 *
 	 * @param address
 	 *            address of the variable
 	 * @param value
@@ -378,7 +379,7 @@ public class Config {
 	 * Returns the ID of a conversation assigned to specified NPC, across all
 	 * packages. If there are multiple assignments for the same value, the first
 	 * one will be returned.
-	 * 
+	 *
 	 * @param value
 	 *            the name of the NPC (as defined in <i>main.yml</i>)
 	 * @return the ID of the conversation assigned to this NPC or null if there
@@ -401,7 +402,7 @@ public class Config {
 	/**
 	 * Sends a message to player in his chosen language or default or English
 	 * (if previous not found).
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param messageName
@@ -415,7 +416,7 @@ public class Config {
 	 * Sends a message to player in his chosen language or default or English
 	 * (if previous not found). It will replace all {x} sequences with the
 	 * variables.
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param messageName
@@ -431,7 +432,7 @@ public class Config {
 	 * Sends a message to player in his chosen language or default or English
 	 * (if previous not found). It will replace all {x} sequences with the
 	 * variables and play the sound.
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param messageName
@@ -449,7 +450,7 @@ public class Config {
 	 * Sends a message to player in his chosen language or default or English
 	 * (if previous not found). It will replace all {x} sequences with the
 	 * variables and play the sound. It will also add a prefix to the message.
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param messageName
@@ -465,25 +466,53 @@ public class Config {
 	 */
 	public static void sendMessage(String playerID, String messageName, String[] variables, String soundName,
 			String prefixName, String[] prefixVariables) {
+		String message = parseMessage(playerID, messageName, variables, prefixName, prefixVariables);
+		if (message == null || message.length() == 0)
+			return;
+
+		Player player = PlayerConverter.getPlayer(playerID);
+		player.sendMessage(message);
+		if (soundName != null) {
+			playSound(playerID, soundName);
+		}
+	}
+
+	public static String parseMessage(String playerID, String messageName, String[] variables) {
+		return parseMessage(playerID, messageName, variables, null, null);
+	}
+
+	/**
+	 * Retrieve's a message in the language of the player, replacing variables
+	 * @param playerID
+	 * 			name of the player
+	 * @param messageName
+	 * 			name of the message to retrieve
+	 * @param variables
+	 * 			Variables to replace in message
+	 * @param prefixName
+	 *            ID of the prefix
+	 * @param prefixVariables
+	 *            array of variables which will be inserted into the prefix
+	 */
+	public static String parseMessage(String playerID, String messageName, String[] variables, String prefixName,
+									String[] prefixVariables) {
 		Player player = PlayerConverter.getPlayer(playerID);
 		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
 		if (player == null || playerData == null)
-			return;
+			return null;
 		String language = playerData.getLanguage();
 		String message = getMessage(language, messageName, variables);
 		if (message == null || message.length() == 0)
-			return;
+			return null;
 		if (prefixName != null) {
 			String prefix = getMessage(language, prefixName, prefixVariables);
 			if (prefix.length() > 0) {
 				message = prefix + message;
 			}
 		}
-		player.sendMessage(message);
-		if (soundName != null) {
-			playSound(playerID, soundName);
-		}
+		return message;
 	}
+
 
 	/**
 	 * Plays a sound specified in the plugins config to the player
