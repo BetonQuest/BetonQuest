@@ -88,16 +88,7 @@ import pl.betoncraft.betonquest.conditions.WorldCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
-import pl.betoncraft.betonquest.conversation.CombatTagger;
-import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.conversation.ConversationColors;
-import pl.betoncraft.betonquest.conversation.ConversationData;
-import pl.betoncraft.betonquest.conversation.ConversationIO;
-import pl.betoncraft.betonquest.conversation.ConversationResumer;
-import pl.betoncraft.betonquest.conversation.CubeNPCListener;
-import pl.betoncraft.betonquest.conversation.InventoryConvIO;
-import pl.betoncraft.betonquest.conversation.SimpleConvIO;
-import pl.betoncraft.betonquest.conversation.TellrawConvIO;
+import pl.betoncraft.betonquest.conversation.*;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -428,6 +419,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConversationIO("tellraw", TellrawConvIO.class);
 		registerConversationIO("chest", InventoryConvIO.class);
 		registerConversationIO("combined", InventoryConvIO.Combined.class);
+		registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
 		// register variable types
 		registerVariable("player", PlayerNameVariable.class);

@@ -68,4 +68,8 @@ public interface ConversationIO {
 		return true;
 	}
 
+	/**
+	 * Send message through ConversationIO
+	 */
+	default void print(String message) { }
 }

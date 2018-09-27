@@ -190,4 +190,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 	public void end() {
 		HandlerList.unregisterAll(this);
 	}
+
+	@Override
+	public void print(String message) {
+		player.sendMessage(message);
+	}
 }

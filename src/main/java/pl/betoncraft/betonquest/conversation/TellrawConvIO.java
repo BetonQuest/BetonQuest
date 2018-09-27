@@ -32,15 +32,15 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
  */
 public class TellrawConvIO extends ChatConvIO {
 
-	private HashMap<Integer, String> hashes;
+	protected HashMap<Integer, String> hashes;
 	private int count = 0;
-	private String color;
-	private boolean italic;
-	private boolean bold;
-	private boolean underline;
-	private boolean strikethrough;
-	private boolean magic;
-	private String number;
+	protected String color;
+	protected boolean italic;
+	protected boolean bold;
+	protected boolean underline;
+	protected boolean strikethrough;
+	protected boolean magic;
+	protected String number;
 
 	public TellrawConvIO(Conversation conv, String playerID) {
 		super(conv, playerID);
