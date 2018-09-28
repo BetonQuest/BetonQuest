@@ -4,7 +4,7 @@ description: Advanced role-playing quests and NPC conversations
 authors: [Co0sh]
 website: https://www.spigotmc.org/resources/betonquest.2117/
 load: STARTUP
-loadbefore: 
+softdepend:
 - Skript
 - Citizens
 - MythicMobs
