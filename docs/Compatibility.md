@@ -139,7 +139,12 @@ You can control the behaviour of particles around the NPCs in _custom.yml_ file,
 
 ### Particle event: `particle`
 
-This event will load an effect defined in `effects` section in _custom.yml_ file and display it on player's location. The only argument is the name of the effect. You can optionally add `loc:` argument followed by a location written like `100;200;300;world;180;-90` to put it on that location.
+This event will load an effect defined in `effects` section in
+_custom.yml_ file and display it on player's location. The only argument
+is the name of the effect. You can optionally add `loc:` argument
+followed by a location written like `100;200;300;world;180;-90` to put
+it on that location. If you add `private` argument the effect will only
+be displayed to the player for which you ran the event.
 
 **Example in _custom.yml_**:
 
@@ -153,7 +158,7 @@ This event will load an effect defined in `effects` section in _custom.yml_ file
         grow: 3
         radius: 30
 
-**Example**: `particle beton loc:100;200;300;world;180;-90`
+**Example**: `particle beton loc:100;200;300;world;180;-90 private`
 
 ## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
 
