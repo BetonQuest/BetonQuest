@@ -35,6 +35,7 @@ import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Base of all chat conversation outputs
@@ -55,6 +56,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
 	protected String answerFormat;
 	protected String textFormat;
+	private String npcTextColor;
 
 	public ChatConvIO(Conversation conv, String playerID) {
 		this.options = new HashMap<>();
@@ -67,9 +69,14 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 			string.append(color);
 		}
 		string.append("%npc%" + ChatColor.RESET + ": ");
+
+		StringBuilder textColorBuilder = new StringBuilder();
 		for (ChatColor color : colors.get("text")) {
-			string.append(color);
+			textColorBuilder.append(color);
 		}
+		npcTextColor = textColorBuilder.toString();
+
+		string.append(npcTextColor);
 		textFormat = string.toString();
 		string = new StringBuilder();
 		for (ChatColor color : colors.get("player")) {
@@ -176,7 +183,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 			end();
 			return;
 		}
-		player.sendMessage(textFormat.replace("%npc%", npcName) + npcText);
+		player.sendMessage(Utils.multiLineColorCodes(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
 	}
 
 	@Override
