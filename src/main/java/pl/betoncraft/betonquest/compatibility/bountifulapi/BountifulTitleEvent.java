@@ -28,6 +28,7 @@ import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 public class BountifulTitleEvent extends TitleEvent {
 
@@ -57,10 +58,10 @@ public class BountifulTitleEvent extends TitleEvent {
 		Player player = PlayerConverter.getPlayer(playerID);
 		switch (type) {
 		case TITLE:
-			BountifulAPI.sendTitle(player, fadeIn, stay, fadeOut, message.replaceAll("&", "§"), null);
+			BountifulAPI.sendTitle(player, fadeIn, stay, fadeOut, Utils.format(message), null);
 			break;
 		case SUBTITLE:
-			BountifulAPI.sendTitle(player, fadeIn, stay, fadeOut, null, message.replaceAll("&", "§"));
+			BountifulAPI.sendTitle(player, fadeIn, stay, fadeOut, null, Utils.format(message));
 			break;
 		}
 	}

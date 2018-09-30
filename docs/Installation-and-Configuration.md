@@ -41,7 +41,9 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
 * `cmd_blacklist` is a list of commands that can't be used while in conversation. Remember that you can type here only single words (command names)!
 * `hook` controls compatibility with other plugins. Here you can turn off each hook.
 * `journal` controls various settings of the journal:
-    - `chars_per_page` is a number of characters before a page break. If you set it too high, the text on a journal page can overflow, becoming invisible.
+    - `chars_per_page` is a number of characters before a page break. If you set it too high, the text on a journal page can overflow, becoming invisible. **This was replaced by `chars_per_line` and `lines_per_page` and is only required if you don't like the new behaviour.**
+    - `chars_per_line` is a number of characters before a line break. If you set it too high, the text on a journal page can overflow, becoming invisible. If this isn't set BQ will fall back on the old page wrapping behaviour configured through `chars_per_page`.
+    - `lines_per_page` is a number of lines before a new page. If you set it too high, the text on a journal page can overflow, becoming invisible. Only required if `chars_per_line` is set.
     - `one_entry_per_page` will make each entry take a single page. Note that it won't expand to other pages even if it overflows, so keep your entries short.
     - `reversed_order` controls the chronological order of entries in the journal. By default the entries are ordered from newest to oldest. You can reverse it, but it will force players to click through a lot of pages to get to the latest entry.
     - `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.

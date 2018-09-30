@@ -26,6 +26,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Sends a message to the player, in his language
@@ -97,7 +98,7 @@ public class MessageEvent extends QuestEvent {
 			message = message.replace(variable,
 					BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
 		}
-		PlayerConverter.getPlayer(playerID).sendMessage(message.replaceAll("&", "§"));
+		PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
 	}
 
 }

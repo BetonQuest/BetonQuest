@@ -168,13 +168,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 	@Override
 	public void setNpcResponse(String npcName, String response) {
 		this.npcName = npcName;
-		this.npcText = response.replace('&', '§');
+		this.npcText = response;
 	}
 
 	@Override
 	public void addPlayerOption(String option) {
 		i++;
-		options.put(i, option.replace('&', '§'));
+		options.put(i, option);
 	}
 
 	@Override

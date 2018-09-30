@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,10 +25,11 @@ import java.util.regex.Pattern;
 
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Holds configuration files of the package
- * 
+ *
  * @author Jakub Sapalski
  */
 public class ConfigPackage {
@@ -49,7 +50,7 @@ public class ConfigPackage {
 	/**
 	 * Loads a package from specified directory. It doesn't have to be valid
 	 * package directory.
-	 * 
+	 *
 	 * @param pack
 	 *            the directory containing this package
 	 * @param name
@@ -89,7 +90,7 @@ public class ConfigPackage {
 
 	/**
 	 * Returns a raw string (without inserted variables)
-	 * 
+	 *
 	 * @param address
 	 *            address of the string
 	 * @return the raw string
@@ -151,7 +152,7 @@ public class ConfigPackage {
 
 	/**
 	 * Returns a string with inserted variables
-	 * 
+	 *
 	 * @param address
 	 *            address of the string
 	 * @return the string
@@ -232,6 +233,16 @@ public class ConfigPackage {
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * Returns a string with inserted variables and color codes and linebreaks replaced
+	 *
+	 * @param address
+	 * @return
+	 */
+	public String getFormattedString(String address) {
+		return Utils.format(getString(address));
 	}
 
 	public boolean setString(String address, String value) {
@@ -332,7 +343,7 @@ public class ConfigPackage {
 	public ConfigAccessor getObjectives() {
 		return objectives;
 	}
-	
+
 	/**
 	 * @return the config with custom settings
 	 */
