@@ -104,6 +104,7 @@ import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
+import pl.betoncraft.betonquest.events.DelEffectEvent;
 import pl.betoncraft.betonquest.events.DoorEvent;
 import pl.betoncraft.betonquest.events.EXPEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
@@ -357,6 +358,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("conversation", ConversationEvent.class);
 		registerEvents("kill", KillEvent.class);
 		registerEvents("effect", EffectEvent.class);
+		registerEvents("deleffect", DelEffectEvent.class);
 		registerEvents("spawn", SpawnMobEvent.class);
 		registerEvents("killmob", KillMobEvent.class);
 		registerEvents("time", TimeEvent.class);

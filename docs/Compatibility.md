@@ -24,7 +24,7 @@ The player has to right-click on the NPC with specified ID. It can also optional
 
 The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
 
-**Example:** `npcrange 3 enter 20`
+**Example:** `npcrange 3 enter 20 events:master_inRange`
 
 ### Move NPC event: `movenpc`
 
