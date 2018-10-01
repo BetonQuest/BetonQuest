@@ -1,4 +1,4 @@
-version: v58
+version: v59
 mysql:
   host: ''
   port: ''
@@ -54,7 +54,8 @@ hook:
   protocollib: 'true'
   brewery: 'true'
 journal:
-  chars_per_page: '245'
+  chars_per_line: '19'
+  lines_per_page: '13'
   one_entry_per_page: 'false'
   reversed_order: 'true'
   hide_date: 'false'

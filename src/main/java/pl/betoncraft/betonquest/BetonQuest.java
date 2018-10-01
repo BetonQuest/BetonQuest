@@ -58,6 +58,7 @@ import pl.betoncraft.betonquest.conditions.DayOfWeekCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.FacingCondition;
 import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
 import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
@@ -68,6 +69,7 @@ import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
+import pl.betoncraft.betonquest.conditions.LookingAtCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
 import pl.betoncraft.betonquest.conditions.PartialDateCondition;
@@ -88,16 +90,7 @@ import pl.betoncraft.betonquest.conditions.WorldCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
-import pl.betoncraft.betonquest.conversation.CombatTagger;
-import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.conversation.ConversationColors;
-import pl.betoncraft.betonquest.conversation.ConversationData;
-import pl.betoncraft.betonquest.conversation.ConversationIO;
-import pl.betoncraft.betonquest.conversation.ConversationResumer;
-import pl.betoncraft.betonquest.conversation.CubeNPCListener;
-import pl.betoncraft.betonquest.conversation.InventoryConvIO;
-import pl.betoncraft.betonquest.conversation.SimpleConvIO;
-import pl.betoncraft.betonquest.conversation.TellrawConvIO;
+import pl.betoncraft.betonquest.conversation.*;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.MySQL;
@@ -113,6 +106,7 @@ import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
+import pl.betoncraft.betonquest.events.DelEffectEvent;
 import pl.betoncraft.betonquest.events.DoorEvent;
 import pl.betoncraft.betonquest.events.EXPEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
@@ -348,6 +342,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("dayofweek", DayOfWeekCondition.class);
 		registerConditions("partialdate", PartialDateCondition.class);
 		registerConditions("realtime", RealTimeCondition.class);
+		registerConditions("looking", LookingAtCondition.class);
+		registerConditions("facing", FacingCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -366,6 +362,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("conversation", ConversationEvent.class);
 		registerEvents("kill", KillEvent.class);
 		registerEvents("effect", EffectEvent.class);
+		registerEvents("deleffect", DelEffectEvent.class);
 		registerEvents("spawn", SpawnMobEvent.class);
 		registerEvents("killmob", KillMobEvent.class);
 		registerEvents("time", TimeEvent.class);
@@ -428,6 +425,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConversationIO("tellraw", TellrawConvIO.class);
 		registerConversationIO("chest", InventoryConvIO.class);
 		registerConversationIO("combined", InventoryConvIO.Combined.class);
+		registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
 		// register variable types
 		registerVariable("player", PlayerNameVariable.class);

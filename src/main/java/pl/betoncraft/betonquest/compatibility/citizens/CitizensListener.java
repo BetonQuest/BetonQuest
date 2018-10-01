@@ -51,7 +51,7 @@ public class CitizensListener implements Listener {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;
         }
-        if (NPCMoveEvent.isNPCMoving(event.getNPC())) {
+        if (NPCMoveEvent.blocksTalking(event.getNPC())) {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getClicker());

@@ -84,7 +84,11 @@ Removes items from player’s inventory or backpack (in that order). If the item
 
 Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
 
-**Example**: `effect ABSORPTION 120 1 --ambient`
+## Remove Potion Effect: `deleffect`
+
+Removes the specified potion effects from the player. Use `any` instead of a list of types to remove all potion effects from the player.
+
+**Example**: `deleffect ABSORPTION,BLINDNESS`
 
 ## Conversation: `conversation`
 

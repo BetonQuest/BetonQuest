@@ -387,15 +387,14 @@ public class ConversationData {
 			}
 			if (conv.isConfigurationSection(type + "." + name + ".text")) {
 				for (String lang : conv.getConfigurationSection(type + "." + name + ".text").getKeys(false)) {
-					text.put(lang, pack.getString("conversations." + convName + "." + type + "." + name + ".text."
-							+ lang).replace("\\n", "\n"));
+					text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
+							+ lang));
 				}
 				if (!text.containsKey(defaultLang)) {
 					throw new InstructionParseException("No default language for " + name + " " + visibleType);
 				}
 			} else if (conv.isSet(type + "." + name + ".text")) {
-				text.put(defaultLang, pack.getString("conversations." + convName + "." + type + "." + name + ".text")
-						.replace("\\n", "\n"));
+				text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
 			} else {
 			    throw new InstructionParseException(String.format("Text is not defined in '%s' %s.", name, visibleType));
 			}

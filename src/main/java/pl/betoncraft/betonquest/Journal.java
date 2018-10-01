@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -34,7 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import com.google.common.collect.Lists;
-
+import org.apache.commons.lang.StringUtils;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -173,10 +172,10 @@ public class Journal {
 			if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
 				text = pack.getString("journal." + pointerName + "." + lang);
 				if (text == null) {
-					text = pack.getString("journal." + pointerName + "." + Config.getLanguage());
+					text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
 				}
 			} else {
-				text = pack.getString("journal." + pointerName);
+				text = pack.getFormattedString("journal." + pointerName);
 			}
 			// handle case when the text isn't defined
 			if (text == null) {
@@ -185,7 +184,7 @@ public class Journal {
 			}
 			// add the entry to the list
 			texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + "\n"
-					+ text.replaceAll("&", "§"));
+							  + text);
 		}
 	}
 
@@ -323,10 +322,10 @@ public class Journal {
 		// create the book with default title/author
 		ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 		BookMeta meta = (BookMeta) item.getItemMeta();
-		meta.setTitle(Config.getMessage(lang, "journal_title").replaceAll("&", "§"));
+		meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
 		meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
 		List<String> lore = new ArrayList<String>();
-		lore.add(Config.getMessage(lang, "journal_lore").replaceAll("&", "§"));
+		lore.add(Utils.format(Config.getMessage(lang, "journal_lore")));
 		meta.setLore(lore);
 		// add main page and generate pages from texts
 		List<String> finalList = new ArrayList<>();
@@ -352,7 +351,7 @@ public class Journal {
 			finalList.addAll(getText());
 		}
 		if (finalList.size() > 0) {
-			meta.setPages(finalList);
+			meta.setPages(Utils.multiLineColorCodes(finalList, "§" + Config.getString("config.journal_colors.line") ));
 		} else {
 			meta.addPage("");
 		}

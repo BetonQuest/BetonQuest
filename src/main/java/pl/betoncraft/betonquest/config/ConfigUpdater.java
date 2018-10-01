@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v58";
+	private final String destination = "v59";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -205,6 +205,14 @@ public class ConfigUpdater {
 		update();
 	}
 
+	@SuppressWarnings("unused")
+	private void update_from_v58() {
+		config.set("config.journal.chars_per_line", 19);
+		config.set("config.journal.lines_per_page", 13);
+		Debug.broadcast("Added config options chars_per_line and lines_per_page for the journal!");
+		config.set("version", "v59");
+		instance.saveConfig();
+	}
 
 	@SuppressWarnings("unused")
 	private void update_from_v57() {

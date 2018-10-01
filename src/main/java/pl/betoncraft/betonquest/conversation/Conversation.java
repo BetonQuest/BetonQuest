@@ -281,7 +281,7 @@ public class Conversation implements Listener {
 		//only display status messages if conversationIO allows it
 		if (conv.inOut.printMessages()) {
 			// print message
-			Config.sendMessage(playerID, "conversation_end", new String[]{data.getQuester(language)});
+			conv.inOut.print(Config.parseMessage(playerID, "conversation_end", new String[]{data.getQuester(language)}));
 		}
 		//play conversation end sound
 		Config.playSound(playerID, "end");
@@ -514,8 +514,8 @@ public class Conversation implements Listener {
 				if (conv.inOut.printMessages()) {
 					// print message about starting a conversation only if it
 					// is started, not resumed
-					Config.sendMessage(playerID, "conversation_start", new String[]{data.getQuester(language)}, null,
-									   prefixName, prefixVariables);
+					conv.inOut.print(Config.parseMessage(playerID, "conversation_start", new String[]{data.getQuester(language)},
+							prefixName, prefixVariables));
 				}
 				//play the conversation start sound
 				Config.playSound(playerID,"start");

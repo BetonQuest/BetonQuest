@@ -229,3 +229,15 @@ This will check if the player is currently flying (Elytra type of flight).
 This condition will check if the player is in specified biome. The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
 
 **Example**: `biome savanna_rock`
+
+## Facing direction: `facing`
+
+Checks if the player is looking in the given direction. Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and down start at a pitch of 60°.
+
+**Example:** `facing EAST`
+
+##  Looking at a block: `looking`
+
+Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional (the material of the block). You can also specify both.
+
+**Example:** `looking loc:12.0;14.0;-15.0;world type:STONE`

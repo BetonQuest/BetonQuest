@@ -123,7 +123,7 @@ public class Connector {
 				statement = connection.prepareStatement("SELECT * FROM " + prefix + "points");
 				break;
 			case LOAD_ALL_GLOBAL_POINTS:
-				statement = connection.prepareStatement("SELECT * FROM " + prefix + "global_tags");
+				statement = connection.prepareStatement("SELECT * FROM " + prefix + "global_points");
 				break;
 			case LOAD_ALL_TAGS:
 				statement = connection.prepareStatement("SELECT * FROM " + prefix + "tags");

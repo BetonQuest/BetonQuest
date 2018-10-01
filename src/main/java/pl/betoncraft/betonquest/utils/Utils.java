@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -161,25 +162,64 @@ public class Utils {
 
 	/**
 	 * Converts string to list of pages for a book.
-	 * 
-	 * @param string
-	 *            text to convert
+	 *
+	 * @param string text to convert
 	 * @return the list of pages for a book
 	 */
 	public static List<String> pagesFromString(String string) {
 		List<String> pages = new ArrayList<>();
 		List<String> bigPages = Arrays.asList(string.split("\\|"));
-		int chars = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
 		for (String bigPage : bigPages) {
-			StringBuilder page = new StringBuilder();
-			for (String word : bigPage.split(" ")) {
-				if (page.length() + word.length() + 1 > chars) {
-					pages.add(page.toString().trim());
-					page = new StringBuilder();
+			if (Config.getString("config.journal.lines_per_page") != null) {
+				final int chars_per_line = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
+				final int lines_per_page = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
+				StringBuilder page = new StringBuilder();
+				int lines = 0;
+				for (String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
+					StringBuilder line_builder = new StringBuilder();
+					int line__length = line.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
+					if (line__length <= chars_per_line) {
+						if (++lines > lines_per_page) {
+							pages.add(page.toString());
+							lines = 1;
+							page = new StringBuilder();
+						}
+						page.append(line).append('\n');
+						continue;
+					}
+					for (String word : line.split(" ")) {
+						int word_length = word.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
+						if (line_builder.length() + word_length > chars_per_line) {
+							if (++lines > lines_per_page) {
+								pages.add(page.toString());
+								lines = 1;
+								page = new StringBuilder();
+							}
+							page.append(line_builder.toString().trim()).append("\n");
+							line_builder = new StringBuilder();
+						}
+						line_builder.append(word).append(' ');
+					}
+					if (++lines > lines_per_page) {
+						pages.add(page.toString());
+						lines = 1;
+						page = new StringBuilder();
+					}
+					page.append(line_builder.toString().trim()).append('\n');
 				}
-				page.append(word + " ");
+				if (page.length() != 0) pages.add(page.toString());
+			} else {
+				final int chars_per_page = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
+				StringBuilder page = new StringBuilder();
+				for (String word : bigPage.split(" ")) {
+					if (page.length() + word.length() + 1 > chars_per_page) {
+						pages.add(page.toString().trim());
+						page = new StringBuilder();
+					}
+					page.append(word + " ");
+				}
+				pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
 			}
-			pages.add(page.toString().trim().replaceAll("\\\\n", "\n"));
 		}
 		return pages;
 	}
@@ -399,17 +439,55 @@ public class Utils {
 	 * @return the colorful string ready to split into multiple lines
 	 */
 	public static String multiLineColorCodes(String string, String def) {
-	    StringBuilder builder = new StringBuilder();
-	    String[] words = string.split(" ");
-	    String lastCodes = "";
-	    for (String word : words) {
-	        word = lastCodes + word;
-	        lastCodes = ChatColor.getLastColors(word);
-	        builder.append(word);
-	        builder.append(' ');
-	    }
-	    String result = builder.toString();
-	    result = result.replace(ChatColor.RESET.toString(), ChatColor.RESET + def);
-	    return result.length() == 0 ? "" : result.substring(0, result.length() - 1);
+		StringBuilder builder = new StringBuilder();
+		String[] words = string.split(" ");
+		String lastCodes = "";
+		for (String word : words) {
+			word = lastCodes + word;
+			lastCodes = ChatColor.getLastColors(word);
+			builder.append(word);
+			builder.append(' ');
+		}
+		String result = builder.toString();
+		result = result.replace(ChatColor.RESET.toString(), ChatColor.RESET + def);
+		return result.length() == 0 ? "" : result.substring(0, result.length() - 1);
+	}
+
+	/**
+	 * Copies all color codes before each word, so they are correctly displayed regardless of line breaks and pages.
+	 *
+	 * @param pages multiple pages to process
+	 * @param def   default color code to use instead of resetting; use null for regular reset code
+	 * @return the colorful pages ready to split into multiple lines
+	 */
+	public static List<String> multiLineColorCodes(List<String> pages, String def) {
+		String lastCodes = "";
+		ListIterator<String> i = pages.listIterator();
+		while (i.hasNext()) {
+			StringBuilder builder = new StringBuilder();
+			String[] words = i.next().split(" ");
+			for (String word : words) {
+				word = lastCodes + word;
+				lastCodes = ChatColor.getLastColors(word);
+				builder.append(word);
+				builder.append(' ');
+			}
+			i.remove();
+			String result = builder.toString();
+			result = result.replace(ChatColor.RESET.toString(), ChatColor.RESET + def);
+			result = result.length() == 0 ? "" : result.substring(0, result.length() - 1);
+			i.add(result);
+		}
+		return pages;
+	}
+
+	/**
+	 * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}
+	 *
+	 * @param string the input string
+	 * @return a formatted version of the input string
+	 */
+	public static String format(String string) {
+		return string.replaceAll("&(?=[A-Ra-r0-9])", "§").replaceAll("(?<!\\\\)\\\\n", "\n");
 	}
 }

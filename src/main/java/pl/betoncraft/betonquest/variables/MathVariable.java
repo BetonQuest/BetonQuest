@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,7 +50,7 @@ public class MathVariable extends Variable {
         try {
             double value = this.calculation.calculate(playerID);
             if (value % 1 == 0)
-                return String.format("%.0f", value);
+                return String.format(Locale.US, "%.0f", value);
             return String.valueOf(value);
         } catch (QuestRuntimeException e) {
             Debug.error("Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
