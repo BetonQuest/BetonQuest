@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.TreeMap;
 
@@ -1333,7 +1334,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		y = loc.getY() - y;
 		z = loc.getZ() - z;
 		Config.setString(pack + ".main.variables.vectors." + args[2],
-				String.format("$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
+				String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
 		player.sendMessage("§2OK");
 	}
 

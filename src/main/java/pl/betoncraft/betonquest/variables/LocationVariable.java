@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.variables;
 
+
+import java.util.Locale;
+
 import org.bukkit.Location;
 
 import pl.betoncraft.betonquest.Instruction;
@@ -33,13 +36,13 @@ public class LocationVariable extends Variable {
 	@Override
 	public String getValue(String playerID) {
 		Location loc = PlayerConverter.getPlayer(playerID).getLocation();
-		String value = String.format("%.2f;%.2f;%.2f;%s;%.2f;%.2f",
-				loc.getX(),
-				loc.getY(),
-				loc.getZ(),
-				loc.getWorld().getName(),
-				loc.getYaw(),
-				loc.getPitch());
+		String value = String.format(Locale.US,"%.2f;%.2f;%.2f;%s;%.2f;%.2f",
+									 loc.getX(),
+									 loc.getY(),
+									 loc.getZ(),
+									 loc.getWorld().getName(),
+									 loc.getYaw(),
+									 loc.getPitch());
 		return value;
 	}
 

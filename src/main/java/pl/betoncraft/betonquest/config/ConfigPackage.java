@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.config;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -227,7 +228,7 @@ public class ConfigPackage {
 					return null;
 				}
 				double x3 = x1 + x2, y3 = y1 + y2, z3 = z1 + z2;
-				value = value.replace("$" + varName + "$", String.format("%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
+				value = value.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
 			} else {
 				value = value.replace("$" + varName + "$", varVal);
 			}
