@@ -6,6 +6,8 @@ BetonQuest is a Spigot questing plugin. It lets the users create complex quests,
 
 This page is contains information important for developers. If you're a user of BetonQuest, head to the [Spigot page](https://www.spigotmc.org/resources/betonquest.2117/) or the [official Wiki](https://github.com/Co0sh/BetonQuest/wiki). Alternatively, you can ask for support on [Issues](https://github.com/Co0sh/BetonQuest/issues).
 
+**This is for spigot 1.8 - 1.12. Some highly experimental dev builds for 1.13 can be found at [bundabrg/BetonQuest](https://github.com/bundabrg/BetonQuest/releases). Use them at your own risk!**
+
 ## Getting started
 
 If you're looking for an already compiled binaries visit [Releases](https://github.com/Co0sh/BetonQuest/releases) for standard releases or [dev website](https://betonquest.pl) for development builds. This section will cover setting up the BetonQuest development workflow.

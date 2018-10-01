@@ -48,6 +48,7 @@ public class EnchantObjective extends Objective implements Listener {
 		template = ObjectiveData.class;
 		item = instruction.getQuestItem();
 		enchantments = instruction.getList(EnchantmentData::convert);
+		if (enchantments.isEmpty()) throw new InstructionParseException("Not enough arguments");
 	}
 
 	@EventHandler

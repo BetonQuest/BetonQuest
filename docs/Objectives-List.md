@@ -120,9 +120,9 @@ Sheep shearing has the same properties as mob kill objective.
 
 ## Enchant item: `enchant`
 
-This objectie is completed when the player enchants specified item with specified enchantment. The first argument is an item name, as defined it _items.yml_. Second one is the [enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated with a colon.
+This objectie is completed when the player enchants specified item with specified enchantment. The first argument is an item name, as defined it _items.yml_. Second one is the [enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated with a colon. If you need to check for multiple enchantments you can add a list of them, separated by colons.
 
-**Example**: `enchant sword damage_all:1 events:reward`
+**Example**: `enchant sword damage_all:1,knockback:1 events:reward`
 
 ## Put items in a chest: `chestput`
 

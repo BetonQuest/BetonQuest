@@ -53,7 +53,7 @@ public class LocationObjective extends Objective implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
-		try {
+		qreHandler.handle(() -> {
 			String playerID = PlayerConverter.getID(event.getPlayer());
 			Location location = loc.getLocation(playerID);
 			if (containsPlayer(playerID) && event.getPlayer().getWorld().equals(location.getWorld())) {
@@ -62,9 +62,7 @@ public class LocationObjective extends Objective implements Listener {
 					completeObjective(playerID);
 				}
 			}
-		} catch (QuestRuntimeException e) {
-			Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-		}
+		});
 	}
 
 	@Override

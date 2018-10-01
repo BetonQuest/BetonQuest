@@ -18,7 +18,9 @@
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.compatibility.citizens.NPCRegionCondition;
 
 
 public class WorldGuardIntegrator implements Integrator {
@@ -33,6 +35,9 @@ public class WorldGuardIntegrator implements Integrator {
     public void hook() {
         plugin.registerConditions("region", RegionCondition.class);
         plugin.registerObjectives("region", RegionObjective.class);
+        if (Compatibility.getHooked().contains("Citizens")) {
+            plugin.registerConditions("npcregion", NPCRegionCondition.class);
+        }
     }
 
     @Override

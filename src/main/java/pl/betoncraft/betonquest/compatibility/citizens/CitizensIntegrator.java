@@ -48,9 +48,15 @@ public class CitizensIntegrator implements Integrator {
         }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
+        plugin.registerObjectives("npcrange", NPCRangeObjective.class);
         plugin.registerEvents("movenpc", NPCMoveEvent.class);
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
+        plugin.registerConditions("npcdistance", NPCDistanceCondition.class);
+        plugin.registerConditions("npclocation", NPCLocationCondition.class);
+        if (Compatibility.getHooked().contains("WorldGuard")) {
+            plugin.registerConditions("npcregion", NPCRegionCondition.class);
+        }
     }
 
     @Override

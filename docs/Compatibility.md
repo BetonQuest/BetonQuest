@@ -20,11 +20,37 @@ The player has to right-click on the NPC with specified ID. It can also optional
 
 **Example**: `npcinteract 3 cancel conditions:sneak events:steal`
 
+### NPC range objective: `npcrange`
+
+The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
+
+**Example:** `npcrange 3 enter 20`
+
 ### Move NPC event: `movenpc`
 
-This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify additional arguments: `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
+This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify multiple locations separated by colons to let the npc follow a path of locations. You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving, `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
 
-**Example**: `movenpc 121 100;200;300;world wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward`
+**Example**: `movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward`
+
+### NPC distance condition: `npcdistance`
+
+This condition will return true if the player is closer to the NPC with the given ID than the given distance. The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
+
+**Example:** `npcdistance 16 22`
+
+### NPC location condition: `npclocation` _persistent_, _static_
+
+This condition will return true if a npc is close to a location. First argument is the id of the NPC, second the location and third the maximum distance to the location that the npc is allowed to have.
+
+**Example:** `npclocation 16 4.0;14.0;-20.0;world 22`
+
+### NPC region condition: `npcregion` _persistent_, _static_
+
+_This condition also requires WorldGuard to work._
+
+This condition will return true if a npc is inside a region. First argument is the id of the npc second is the name of the region.
+
+**Example:** `npcregion 16 spawn`
 
 ## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
