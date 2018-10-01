@@ -15,50 +15,57 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility.citizens;
+package pl.betoncraft.betonquest.conditions;
 
-
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Checks if the player is close to a npc
- * <p>
- * Created on 30.09.2018.
+ * Checks if a player is facing a direction
+ *
+ * Created on 01.10.2018.
  *
  * @author Jonas Blocher
  */
-public class NPCDistanceCondition extends Condition {
+public class FacingCondition extends Condition {
 
-    private final int id;
-    private final VariableNumber distance;
+    private final Direction direction;
 
-    public NPCDistanceCondition(Instruction instruction) throws InstructionParseException {
+    public FacingCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
-        id = instruction.getInt();
-        distance = instruction.getVarNum();
+        direction = instruction.getEnum(Direction.class);
     }
 
     @Override
     public boolean check(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-        double distance = this.distance.getDouble(playerID);
-        if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+        Player p = PlayerConverter.getPlayer(playerID);
+        float rotation = p.getLocation().getYaw();
+        final float pitch = p.getLocation().getPitch();
+        Direction facing;
+        if (pitch > 60) facing = Direction.DOWN;
+        else if (pitch < -60) facing = Direction.UP;
+        else {
+            if (rotation < 0) rotation += 360;
+            if (rotation < 45) facing = Direction.SOUTH;
+            else if (rotation < 135) facing = Direction.WEST;
+            else if (rotation < 225) facing = Direction.NORTH;
+            else if (rotation < 325) facing = Direction.EAST;
+            else facing = Direction.SOUTH;
         }
-        Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
-        if (!npcEntity.getWorld().equals(player.getWorld())) return false;
-        return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;
+        return facing == direction;
+    }
+
+    private enum Direction {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST,
+        UP,
+        DOWN
     }
 }

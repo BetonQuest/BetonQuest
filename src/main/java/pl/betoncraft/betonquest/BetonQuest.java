@@ -58,6 +58,7 @@ import pl.betoncraft.betonquest.conditions.DayOfWeekCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.FacingCondition;
 import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
 import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
@@ -68,6 +69,7 @@ import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
+import pl.betoncraft.betonquest.conditions.LookingAtCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
 import pl.betoncraft.betonquest.conditions.PartialDateCondition;
@@ -340,6 +342,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("dayofweek", DayOfWeekCondition.class);
 		registerConditions("partialdate", PartialDateCondition.class);
 		registerConditions("realtime", RealTimeCondition.class);
+		registerConditions("looking", LookingAtCondition.class);
+		registerConditions("facing", FacingCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
