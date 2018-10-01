@@ -60,6 +60,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	protected Conversation conv;
 	protected Player player;
 	protected Inventory inv;
+	protected boolean processingLastClick = false;
 	protected boolean allowClose = false;
 	protected boolean switching = false;
 	protected Location loc;
@@ -211,6 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 				switching = true;
 				player.openInventory(inv);
 				switching = false;
+				processingLastClick = false;
 			}
 		}.runTask(BetonQuest.getInstance());
 	}
@@ -224,6 +226,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			return;
 		}
 		event.setCancelled(true);
+		if (processingLastClick) return;
 		int slot = event.getRawSlot();
 		// calculate the option number
 		if (slot % 9 > 1) {
@@ -235,6 +238,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			int choosen = (row * 7) + col;
 			String message = options.get(choosen);
 			if (message != null) {
+				processingLastClick = true;
 				if (printMessages) player.sendMessage(answerPrefix + message);
 				conv.passPlayerAnswer(choosen);
 			}
