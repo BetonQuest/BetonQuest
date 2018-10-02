@@ -53,6 +53,7 @@ hook:
   bountifulapi: 'true'
   protocollib: 'true'
   brewery: 'true'
+  jobsreborn: 'true'
 journal:
   chars_per_line: '19'
   lines_per_page: '13'

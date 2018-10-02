@@ -135,6 +135,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<!-- Bundabrg's Repo - JobsReborn -->
+		<repository>
+			<id>bundabrg-repo</id>
+			<url>https://repo.worldguard.com.au/repository/maven-public</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -276,6 +281,13 @@
 			<groupId>com.dre</groupId>
 			<artifactId>Brewery</artifactId>
 			<version>1.5</version>
+		</dependency>
+		<!-- JobsReborn -->
+		<dependency>
+			<groupId>com.gamingmesh.jobs</groupId>
+			<artifactId>Jobs</artifactId>
+			<version>4.8.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

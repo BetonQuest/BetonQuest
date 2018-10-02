@@ -487,3 +487,73 @@ hide_npcs:
   41: killedAlready,questStarted
   127: '!questStarted'
 ```
+
+## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+
+Requires adding the following to _config.yml_:
+```
+hook:
+  jobs: 'true'
+```
+
+### Has Job Condition `nujobs_hasjob {jobname}`
+
+Returns true if the player has this job
+
+**Example**: `nujobs_hasjob Woodcutter`
+
+### Can Level up Condition `nujobs_canlevel {jobname}`
+
+Returns true if the player can level up
+
+### Job Full Condition `nujobs_jobfull {jobname}`
+
+Returns true if the job is at the maximum slots
+
+### Job Level Condition `nujobs_joblevel {jobname} {min} {max}`
+
+Returns true if the player has this job, and at a level equal to or between the min/max
+
+**Example**: `nujobs_joblevel Woodcutter 5 10`
+
+### Add Experience Event: `nujobs_addexp {jobname} {exp}`
+
+Gives the player experience
+
+### Increase Level Event: `nujobs_addlevel {jobname} {amount}`
+
+Increases the player level by amount.
+
+### Decrease Level Event: `nujobs_dellevel {jobname} {amount}`
+
+Decreases the players level by amount.
+
+### Join Job Event: `nujobs_joinjob {jobname}`
+
+Joins the player to job.
+
+### Leave Job Event: `nujobs_leavejob {jobname}`
+
+Removes the player from job.
+
+### Set Level Event: `nujobs_setlevel {jobname} {level}`
+
+Set the player to level.
+
+### Join Job Objective: `nujobs_joinjob {jobname}`
+
+Triggers when player joins job.
+
+### Leave Job Objective: `nujobs_leavejob {jobname}`
+
+Triggers when player leaves job.
+
+**NOTE: This is not triggered by '/jobs leaveall'**
+
+### Job Levelup Objective: `nujobs_levelup {jobname}`
+
+Triggers when player levels up.
+
+### Job Payment Objective: `nujobs_payment {amount}`
+
+Triggers when player makes {amount} of money from jobs.
