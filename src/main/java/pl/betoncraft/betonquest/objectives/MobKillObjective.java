@@ -58,7 +58,7 @@ public class MobKillObjective extends Objective implements Listener {
 		amount = instruction.getPositive();
 		name = instruction.getOptional("name");
 		if (name != null) {
-			name = name.replace('_', ' ');
+			name = Utils.format(name, true, false).replace('_', ' ');
 		}
 		marked = instruction.getOptional("marked");
 		if (marked != null) {

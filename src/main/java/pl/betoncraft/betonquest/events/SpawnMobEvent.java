@@ -71,7 +71,7 @@ public class SpawnMobEvent extends QuestEvent {
 		amount = instruction.getVarNum();
 		name = instruction.getOptional("name");
 		if (name != null) {
-			name = name.replace('_', ' ');
+			name = Utils.format(name, true, false).replace('_', ' ');
 		}
 		marked = instruction.getOptional("marked");
 		if (marked != null) {

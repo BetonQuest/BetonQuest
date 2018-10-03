@@ -483,11 +483,27 @@ public class Utils {
 
 	/**
 	 * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}
+	 * <p>
+	 * {@code format(string, false, false)} will return the string with no formatting done
+	 *
+	 * @param string the input string
+	 * @param colorCodes if alternate color codes should be resolved
+	 * @param lineBreaks if {@code \\n} should be replaced with {@code \n}
+	 * @return a formatted version of the input string
+	 */
+	public static String format(String string, boolean colorCodes, boolean lineBreaks) {
+		if (colorCodes) string = string.replaceAll("&(?=[A-Ra-r0-9])", "§");
+		if (lineBreaks) string = string.replaceAll("(?<!\\\\)\\\\n", "\n");
+		return string;
+	}
+
+	/**
+	 * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}
 	 *
 	 * @param string the input string
 	 * @return a formatted version of the input string
 	 */
 	public static String format(String string) {
-		return string.replaceAll("&(?=[A-Ra-r0-9])", "§").replaceAll("(?<!\\\\)\\\\n", "\n");
+		return format(string, true, true);
 	}
 }
