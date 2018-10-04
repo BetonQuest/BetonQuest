@@ -36,6 +36,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.notify.Notify;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -471,20 +472,74 @@ public class Config {
 			return;
 
 		Player player = PlayerConverter.getPlayer(playerID);
+
 		player.sendMessage(message);
 		if (soundName != null) {
 			playSound(playerID, soundName);
 		}
 	}
 
+	public static void sendNotify(String playerID, String messageName, String category) {
+		sendNotify(playerID, messageName, null, category);
+	}
+
+	public static void sendNotify(Player player, String messageName, String category) {
+		sendNotify(player, messageName, null, category);
+	}
+
+	public static void sendNotify(String playerID, String messageName, String[] variables, String category) {
+		sendNotify(playerID, messageName, variables, category, null);
+	}
+
+	public static void sendNotify(Player player, String messageName, String[] variables, String category) {
+		sendNotify(player, messageName, variables, category, null);
+	}
+
+	public static void sendNotify(String playerID, String messageName, String[] variables, String category, Map<String,String> data) {
+		sendNotify(PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
+	}
+
+    /**
+     * Sends a notification to player in his chosen language or default or English
+     * (if previous not found). It will replace all {x} sequences with the
+     * variables and play the sound. It will also add a prefix to the message.
+     *
+     * @param player
+     *            player
+     * @param messageName
+     *            ID of the message
+     * @param variables
+     *            array of variables which will be inserted into the message
+	 * @param category
+	 *            notification category
+	 * @param data
+	 *            custom notifyIO data
+     */
+    public static void sendNotify(Player player, String messageName, String[] variables, String category, Map<String,String> data) {
+        String message = parseMessage(player, messageName, variables);
+        if (message == null || message.length() == 0)
+            return;
+
+        Notify.get(category, data).sendNotify(message, player);
+    }
+
 	public static String parseMessage(String playerID, String messageName, String[] variables) {
 		return parseMessage(playerID, messageName, variables, null, null);
 	}
 
+	public static String parseMessage(Player player, String messageName, String[] variables) {
+		return parseMessage(player, messageName, variables, null, null);
+	}
+
+	public static String parseMessage(String playerID, String messageName, String[] variables, String prefixName,
+									  String[] prefixVariables) {
+    	return parseMessage(PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
+	}
+
 	/**
 	 * Retrieve's a message in the language of the player, replacing variables
-	 * @param playerID
-	 * 			name of the player
+	 * @param player
+	 * 			player
 	 * @param messageName
 	 * 			name of the message to retrieve
 	 * @param variables
@@ -494,11 +549,10 @@ public class Config {
 	 * @param prefixVariables
 	 *            array of variables which will be inserted into the prefix
 	 */
-	public static String parseMessage(String playerID, String messageName, String[] variables, String prefixName,
+	public static String parseMessage(Player player, String messageName, String[] variables, String prefixName,
 									String[] prefixVariables) {
-		Player player = PlayerConverter.getPlayer(playerID);
-		PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-		if (player == null || playerData == null)
+		PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+		if (playerData == null)
 			return null;
 		String language = playerData.getLanguage();
 		String message = getMessage(language, messageName, variables);

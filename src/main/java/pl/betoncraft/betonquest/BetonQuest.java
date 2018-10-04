@@ -124,6 +124,7 @@ import pl.betoncraft.betonquest.events.LanguageEvent;
 import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
 import pl.betoncraft.betonquest.events.MessageEvent;
+import pl.betoncraft.betonquest.events.NotifyEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.OpSudoEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
@@ -143,6 +144,14 @@ import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
+import pl.betoncraft.betonquest.notify.ActionBarNotifyIO;
+import pl.betoncraft.betonquest.notify.BossBarNotifyIO;
+import pl.betoncraft.betonquest.notify.SubTitleNotifyIO;
+import pl.betoncraft.betonquest.notify.SuppressNotifyIO;
+import pl.betoncraft.betonquest.notify.TitleNotifyIO;
+import pl.betoncraft.betonquest.notify.AdvancementNotifyIO;
+import pl.betoncraft.betonquest.notify.ChatNotifyIO;
+import pl.betoncraft.betonquest.notify.NotifyIO;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
@@ -207,6 +216,7 @@ public final class BetonQuest extends JavaPlugin {
 	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
+	private static HashMap<String, Class<? extends NotifyIO>> notifyIOTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
 
 	private static HashMap<ConditionID, Condition> conditions = new HashMap<>();
@@ -214,7 +224,7 @@ public final class BetonQuest extends JavaPlugin {
 	private static HashMap<ObjectiveID, Objective> objectives = new HashMap<>();
 	private static HashMap<String, ConversationData> conversations = new HashMap<>();
 	private static HashMap<VariableID, Variable> variables = new HashMap<>();
-	
+
 	public BetonQuest() {
 	    instance = this;
 	}
@@ -391,6 +401,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("playsound", PlaysoundEvent.class);
 		registerEvents("pickrandom", PickRandomEvent.class);
 		registerEvents("xp", EXPEvent.class);
+        registerEvents("notify", NotifyEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
@@ -426,6 +437,16 @@ public final class BetonQuest extends JavaPlugin {
 		registerConversationIO("chest", InventoryConvIO.class);
 		registerConversationIO("combined", InventoryConvIO.Combined.class);
 		registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
+
+		// register notify IO types
+		registerNotifyIO("suppress", SuppressNotifyIO.class);
+		registerNotifyIO("chat", ChatNotifyIO.class);
+		registerNotifyIO("advancement", AdvancementNotifyIO.class);
+		registerNotifyIO("actionbar", ActionBarNotifyIO.class);
+		registerNotifyIO("bossbar", BossBarNotifyIO.class);
+		registerNotifyIO("title", TitleNotifyIO.class);
+		registerNotifyIO("subtitle", SubTitleNotifyIO.class);
+
 
 		// register variable types
 		registerVariable("player", PlayerNameVariable.class);
@@ -858,6 +879,19 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	/**
+	 * Registers new notify input/output class.
+	 *
+	 * @param name
+	 *            name of the IO type
+	 * @param IOClass
+	 *            class object to register
+	 */
+	public void registerNotifyIO(String name, Class<? extends NotifyIO> IOClass) {
+		Debug.info("Registering " + name + " notify IO type");
+		notifyIOTypes.put(name, IOClass);
+	}
+
+	/**
 	 * Registers new variable type.
 	 * 
 	 * @param name
@@ -1154,6 +1188,15 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public Class<? extends ConversationIO> getConvIO(String name) {
 		return convIOTypes.get(name);
+	}
+
+	/**
+	 * @param name
+	 *            name of the notify IO type
+	 * @return the class object for this notify IO type
+	 */
+	public static Class<? extends NotifyIO> getNotifyIO(String name) {
+		return notifyIOTypes.get(name);
 	}
 
 	/**

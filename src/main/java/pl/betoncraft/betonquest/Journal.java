@@ -309,7 +309,7 @@ public class Journal {
 			}
 		} else {
 			// if there is no place for the item then print a message about it
-			Config.sendMessage(playerID, "inventory_full", null, "full");
+			Config.sendNotify(playerID, "inventory_full", null, "inventory_full,error");
 		}
 	}
 

@@ -66,11 +66,12 @@ public class TakeEvent extends QuestEvent {
 
 			// notify the player
 			if (notify) {
-				Config.sendMessage(playerID, "items_taken",
+				Config.sendNotify(playerID, "items_taken",
 						new String[] {
 								(questItem.getName() != null) ? questItem.getName()
 										: questItem.getMaterial().toString().toLowerCase().replace("_", " "),
-								String.valueOf(counter) });
+								String.valueOf(counter) },
+						"items_taken,info");
 			}
 
 			// Remove Quest items from player's inventory

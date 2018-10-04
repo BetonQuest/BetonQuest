@@ -324,7 +324,8 @@ public class Conversation implements Listener {
 		String cmdName = event.getMessage().split(" ")[0].substring(1);
 		if (blacklist.contains(cmdName)) {
 			event.setCancelled(true);
-			Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "command_blocked");
+
+			Config.sendNotify(PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
 		}
 	}
 
