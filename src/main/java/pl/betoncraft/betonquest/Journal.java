@@ -170,7 +170,7 @@ public class Journal {
 			// resolve the text in player's language
 			String text;
 			if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
-				text = pack.getString("journal." + pointerName + "." + lang);
+				text = pack.getFormattedString("journal." + pointerName + "." + lang);
 				if (text == null) {
 					text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
 				}
