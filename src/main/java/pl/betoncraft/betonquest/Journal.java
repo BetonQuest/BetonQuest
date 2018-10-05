@@ -157,7 +157,7 @@ public class Journal {
 				if (dateParts.length > 1) {
 					hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
 				}
-				datePrefix = day + " " + hour;
+				datePrefix = day + " " + hour + "\n";
 			}
 			// get package and name of the pointer
 			String[] parts = pointer.getPointer().split("\\.");
@@ -183,8 +183,7 @@ public class Journal {
 				text = "error";
 			}
 			// add the entry to the list
-			texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + "\n"
-							  + text);
+			texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + text);
 		}
 	}
 
@@ -331,15 +330,26 @@ public class Journal {
 		List<String> finalList = new ArrayList<>();
 		if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
 			String color = Config.getString("config.journal_colors.line");
+			String separator = Config.parseMessage(playerID, "journal_separator", null);
+			if (separator == null) {
+				separator = "---------------";
+			}
+			String line = "\n§" + color + separator + "\n";
+
+			if (Config.getString("config.journal.show_separator") != null &&
+					Config.getString("config.journal.show_separator").equalsIgnoreCase("false")) {
+				line = "\n";
+			}
+
 			StringBuilder stringBuilder = new StringBuilder();
 			for (String entry : getText()) {
-				stringBuilder.append(entry + "\n§" + color + "---------------\n");
+				stringBuilder.append(entry + line);
 			}
 			if (mainPage != null && mainPage.length() > 0) {
 				if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
 					finalList.addAll(Utils.pagesFromString(mainPage));
 				} else {
-					stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
+					stringBuilder.insert(0, mainPage + line);
 				}
 			}
 			String wholeString = stringBuilder.toString().trim();
