@@ -24,6 +24,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -66,6 +68,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	protected Location loc;
 	protected boolean printMessages = false;
 
+	// Config
+	protected boolean showNumber = true;
+	protected boolean showNPCText = true;
+
 	public InventoryConvIO(Conversation conv, String playerID) {
 		this.conv = conv;
 		this.player = PlayerConverter.getPlayer(playerID);
@@ -101,6 +107,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		}
 		answerPrefix = string.toString();
 		loc = player.getLocation();
+
+		// Load config
+		if (BetonQuest.getInstance().getConfig().contains("conversation_IO_config.chest")) {
+			ConfigurationSection config = BetonQuest.getInstance().getConfig().getConfigurationSection("conversation_IO_config.chest");
+			showNumber = config.getBoolean("show_number", true);
+			showNPCText = config.getBoolean("show_npc_text", true);
+		}
+
 		Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 
@@ -192,15 +206,33 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			ItemStack item = new ItemStack(material);
 			item.setDurability(data);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
-			ArrayList<String> lines = stringToLines(response, npcTextColor,
-					npcNameColor + npcName + ChatColor.RESET + ": ");
+
 			StringBuilder string = new StringBuilder();
 			for (ChatColor color : ConversationColors.getColors().get("number")) {
 				string.append(color);
 			}
-			lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
-			meta.setLore(lines);
+
+			// If both showNumber and showNPCText is false, we can put the response directly into the display name
+			if (!showNumber && !showNPCText) {
+				meta.setDisplayName(Utils.multiLineColorCodes(string.toString() + "- " + optionColor + option, optionColor));
+			} else {
+				if (showNumber) {
+					meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
+				} else {
+					meta.setDisplayName(" ");
+				}
+
+				ArrayList<String> lines = new ArrayList<>();
+
+				if (showNPCText) {
+					lines.addAll(stringToLines(response, npcTextColor,
+							npcNameColor + npcName + ChatColor.RESET + ": "));
+				}
+
+				lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
+				meta.setLore(lines);
+			}
+
 			item.setItemMeta(meta);
 			buttons[j] = item;
 		}
