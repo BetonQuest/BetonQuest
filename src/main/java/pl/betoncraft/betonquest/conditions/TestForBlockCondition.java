@@ -17,16 +17,13 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Material;
-
 import org.bukkit.block.Block;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
-
-import java.util.Optional;
 
 /**
  * Checks block at specified location against specified Material
@@ -36,32 +33,32 @@ import java.util.Optional;
 public class TestForBlockCondition extends Condition {
 
 	private final LocationData loc;
-	private final Material material;
-	private final Optional<Byte> data;
+	private final BlockSelector selector;
 
 	public TestForBlockCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		staticness = true;
 		persistent = true;
 		loc = instruction.getLocation();
-		material = instruction.getEnum(Material.class);
+		selector = new BlockSelector(instruction.next());
+
+		// To remain backwards compatible pre 1.13 we will support data and add it to the selector if needed but
+		// a separate data tag is deprecated to remain consistent with the other objectives/conditions
 		String dataString = instruction.getOptional("data");
 		if (dataString != null) {
-			data = Optional.of(instruction.getByte(dataString, (byte) 0));
-		} else {
-			data = Optional.empty();
+			selector.setData(instruction.getInt(dataString, 0));
+		}
+
+		if (!selector.isValid()) {
+			throw new InstructionParseException("Invalid selector: " + selector.toString());
 		}
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean check(String playerID) throws QuestRuntimeException {
 		Block block = loc.getLocation(playerID).getBlock();
-		if (data.isPresent()) {
-			return (block.getType() == material && block.getData() == data.get());
-		} else {
-			return (block.getType() == material);
-		}
+
+		return selector.match(block);
 	}
 
 }

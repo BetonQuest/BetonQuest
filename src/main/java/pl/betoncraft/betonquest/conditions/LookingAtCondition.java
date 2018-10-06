@@ -18,7 +18,6 @@
 package pl.betoncraft.betonquest.conditions;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -26,6 +25,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -39,13 +39,17 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class LookingAtCondition extends Condition {
 
     private final LocationData loc;
-    private final Material type;
+    private final BlockSelector selector;
 
     public LookingAtCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        type = instruction.getMaterial(instruction.getOptional("type"));
-        if (loc == null && type == null) throw new InstructionParseException("You must define either 'loc:' or 'type:' optional");
+        selector = instruction.getBlockSelector(instruction.getOptional("type"));
+        if (loc == null && selector == null) throw new InstructionParseException("You must define either 'loc:' or 'type:' optional");
+
+        if (selector != null && !selector.isValid()) {
+            throw new InstructionParseException("Invalid selector: " + selector.toString());
+        }
     }
 
     @Override
@@ -59,8 +63,8 @@ public class LookingAtCondition extends Condition {
                     || location.getBlockY() != to.getBlockY()
                     || location.getBlockZ() != to.getBlockZ()) return false;
         }
-        if (type != null) {
-            if (type != lookingAt.getType()) return false;
+        if (selector != null) {
+            return selector.match(lookingAt);
         }
         return true;
     }

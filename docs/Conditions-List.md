@@ -148,9 +148,9 @@ This condition will return true if the player has specified entry in his journal
 
 ## Test for block: `testforblock` _persistent_, _static_
 
-This condition is met if the block at specified location matches the given material. First argument is a location, and the second one is material of the block to check against, from [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). There's also an optional `data:` argument which takes a data value. The condition will require you to click on a block with that data (i.e. wool color). 
+This condition is met if the block at specified location matches the given material. First argument is a location, and the second one is a `block selector`. The older `data:value` parameter is still supported but now deprecated.
 
-**Example**: `testforblock 100;200;300;world STONE data:1`
+**Example**: `testforblock 100;200;300;world STONE:1`
 
 ## Empty inventory slots: `empty`
 
@@ -238,6 +238,6 @@ Checks if the player is looking in the given direction. Valid directions are `UP
 
 ##  Looking at a block: `looking`
 
-Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional (the material of the block). You can also specify both.
+Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional as a `block selector`. You can also specify both.
 
 **Example:** `looking loc:12.0;14.0;-15.0;world type:STONE`
