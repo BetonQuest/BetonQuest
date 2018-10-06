@@ -23,8 +23,10 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -97,7 +99,12 @@ public class HologramLoop {
 				Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
 				hologram.getVisibilityManager().setVisibleByDefault(false);
 				for (String line : lines) {
-					hologram.appendTextLine(line.replace('&', '§'));
+					// If line begins with 'item:', then we will assume its a floating item
+					if (line.startsWith("item:")) {
+						hologram.appendItemLine(new ItemStack(Material.matchMaterial(line.substring(5))));
+					} else {
+						hologram.appendTextLine(line.replace('&', '§'));
+					}
 				}
 				holograms.put(hologram, conditions);
 			}
