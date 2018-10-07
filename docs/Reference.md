@@ -83,6 +83,27 @@ If you're using the `chest` display method you can change the option's item to s
 
 In case you want to use a different type of conversation display for a specific conversation you can add `conversationIO: <type>` setting to the conversation file at the top of the YAML hierarchy, which is the same level as `quester` or `first` options).
 
+### Advanced: Extends
+Conversation also supports the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options that will have their configuration merged. The extended options may themselves extend other options. Infinite loops are detected.
+
+```YAML
+NPC_options:
+
+  ## Normal Conversation Start
+  start:
+    text: 'What can I do for you'
+    extends: today, main_menu
+    
+  ## Useless addition as example
+  today:
+    text: ' today?'
+
+  ## Main main_menu
+ main_menu:
+   pointers: i_have_questions, bye
+```
+In the above example, the option _start_ is extended by both _today_ and _main_menu_. It will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together. If you structure your conversation correctly you can make use of this to minimize duplication.
+
 ***
 
 Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate files, for example all conditions are in _conditions.yml_ config. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.

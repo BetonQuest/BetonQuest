@@ -152,33 +152,29 @@ public class ConfigPackage {
 	}
 
 	/**
-	 * Returns a string with inserted variables
-	 *
-	 * @param address
-	 *            address of the string
-	 * @return the string
+	 * Perform Variable substitution
 	 */
-	public String getString(String address) {
-		String value = getRawString(address);
-		if (value == null) {
+	public String subst(String input) {
+		if (input == null) {
 			return null;
 		}
-		if (!value.contains("$")) {
-			return value;
-		}
+
 		// handle "$this$" variables
-		value = value.replace("$this$", name);
+		input = input.replace("$this$", name);
+
 		// handle the rest
 		Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
 		while (true) {
-			Matcher matcher = global_variable_regex.matcher(value);
+			Matcher matcher = global_variable_regex.matcher(input);
 			if (!matcher.find()) break;
 			String varName = matcher.group(1);
 			String varVal = main.getConfig().getString("variables." + varName);
 			if (varVal == null) {
 				Debug.error(String.format("Variable %s not defined in package %s", varName, name));
-				return null;
-			} else if (varVal
+				return input;
+			}
+
+			if (varVal
 					.matches("^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*\\)$")) {
 				// handle location variables
 				// parse the inner location
@@ -187,14 +183,16 @@ public class ConfigPackage {
 				if (innerVarVal == null) {
 					Debug.error(String.format("Location variable %s is not defined, in variable %s, package %s.",
 							innerVarName, varName, name));
-					return null;
+					return input;
 				}
+
 				if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
 					Debug.error(
 							String.format("Inner variable %s is not valid location, in variable %s, package %s.",
 									innerVarName, varName, name));
-					return null;
+					return input;
 				}
+
 				double x1, y1, z1;
 				String rest;
 				try {
@@ -205,12 +203,12 @@ public class ConfigPackage {
 					int k = innerVarVal.indexOf(';', j + 1);
 					z1 = Double.parseDouble(innerVarVal.substring(j + 1, k));
 					// rest is world + possible other arguments
-					rest = innerVarVal.substring(k, innerVarVal.length());
+					rest = innerVarVal.substring(k);
 				} catch (NumberFormatException e) {
 					Debug.error(String.format(
 							"Could not parse coordinates in inner variable %s in variable %s in package %s",
 							innerVarName, varName, name));
-					return null;
+					return input;
 				}
 				// parse the vector
 				double x2, y2, z2;
@@ -225,15 +223,47 @@ public class ConfigPackage {
 				} catch (NumberFormatException e) {
 					Debug.error(String.format("Could not parse vector inlocation variable %s in package %s",
 							varName, name));
-					return null;
+					return input;
 				}
 				double x3 = x1 + x2, y3 = y1 + y2, z3 = z1 + z2;
-				value = value.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
+				input = input.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
 			} else {
-				value = value.replace("$" + varName + "$", varVal);
+				input = input.replace("$" + varName + "$", varVal);
 			}
 		}
-		return value;
+
+		return input;
+	}
+
+	/**
+	 * Return a string with inserted variables. Default of null
+	 *
+	 * @param address address of the string
+	 * @return the string
+	 */
+	public String getString(String address) {
+		return getString(address, null);
+	}
+
+	/**
+	 * Returns a string with inserted variables
+	 *
+	 * @param address
+	 *            address of the string
+	 * @param def
+	 *            default value if not found
+	 * @return the string
+	 */
+	public String getString(String address, String def) {
+		String value = getRawString(address);
+		if (value == null) {
+			return def;
+		}
+		if (!value.contains("$")) {
+			return value;
+		}
+
+		return subst(value);
 	}
 
 	/**
