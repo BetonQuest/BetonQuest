@@ -1,6 +1,7 @@
 language: java
 jdk:
 - oraclejdk8
-before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" src/main/resources/plugin.yml"
-script: mvn package -Drelease
+install: true
+before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" BetonQuest-core/src/main/resources/plugin.yml"
+script: mvn package -Drelease -e
 after_success: "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"branch=$TRAVIS_BRANCH\" -F \"plugin=@target/BetonQuest.jar\" https://betonquest.pl"
