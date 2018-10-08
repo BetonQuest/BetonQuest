@@ -901,11 +901,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         Player player = (Player) sender;
         ItemStack item = null;
-        try {
-            item = player.getInventory().getItemInMainHand();
-        } catch (LinkageError e) {
-            item = player.getItemInHand();
-        }
+        item = player.getItemInHand();
+
         // if item is air then there is nothing to add to items.yml
         if (item == null || item.getType() == Material.AIR) {
             Debug.info("Cannot continue, item must not be air");

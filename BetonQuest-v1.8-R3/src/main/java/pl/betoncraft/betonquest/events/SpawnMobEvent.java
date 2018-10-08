@@ -25,6 +25,7 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.metadata.FixedMetadataValue;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -53,7 +54,7 @@ public class SpawnMobEvent extends QuestEvent {
     private QuestItem boots;
     private QuestItem mainHand;
     private QuestItem offHand;
-    private Instruction.Item[] drops;
+    private Item[] drops;
 
     public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -69,7 +70,7 @@ public class SpawnMobEvent extends QuestEvent {
         amount = instruction.getVarNum();
         name = instruction.getOptional("name");
         if (name != null) {
-            name = name.replace('_', ' ');
+            name = Utils.format(name, true, false).replace('_', ' ');
         }
         marked = instruction.getOptional("marked");
         if (marked != null) {
@@ -113,7 +114,7 @@ public class SpawnMobEvent extends QuestEvent {
                 eq.setItemInHandDropChance(0);
             }
             int j = 0;
-            for (Instruction.Item item : drops) {
+            for (Item item : drops) {
                 entity.setMetadata("betonquest-drops-" + j,
                         new FixedMetadataValue(BetonQuest.getPlugin(), item.getID().getFullID() + ":"
                                 + item.getAmount().getInt(playerID)));

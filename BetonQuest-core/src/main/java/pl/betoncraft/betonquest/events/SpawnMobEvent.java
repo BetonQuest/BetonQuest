@@ -110,15 +110,10 @@ public class SpawnMobEvent extends QuestEvent {
                 eq.setLeggingsDropChance(0);
                 eq.setBoots(boots == null ? null : boots.generate(1));
                 eq.setBootsDropChance(0);
-                try {
-                    eq.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
-                    eq.setItemInMainHandDropChance(0);
-                    eq.setItemInOffHand(offHand == null ? null : offHand.generate(1));
-                    eq.setItemInOffHandDropChance(0);
-                } catch (LinkageError e) {
-                    eq.setItemInHand(mainHand.generate(1));
-                    eq.setItemInHandDropChance(0);
-                }
+                eq.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
+                eq.setItemInMainHandDropChance(0);
+                eq.setItemInOffHand(offHand == null ? null : offHand.generate(1));
+                eq.setItemInOffHandDropChance(0);
             }
             int j = 0;
             for (Item item : drops) {

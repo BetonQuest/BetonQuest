@@ -253,15 +253,8 @@ public class QuestItem {
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
-        try {
-            if (meta.isUnbreakable()) {
-                unbreakable = " unbreakable";
-            }
-        } catch (NoSuchMethodError error) {
-            //In 1.8 spigot method meta.isUnbreakable() does not exist so this method (which is not supported in 1.12) must be used
-            if (meta.spigot().isUnbreakable()) {
-                unbreakable = " unbreakable";
-            }
+        if (meta.isUnbreakable()) {
+            unbreakable = " unbreakable";
         }
         if (meta instanceof BookMeta) {
             BookMeta bookMeta = (BookMeta) meta;
@@ -286,12 +279,9 @@ public class QuestItem {
         }
         if (meta instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) meta;
-            try {
-                PotionData pData = potionMeta.getBasePotionData();
-                effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
-                        + (pData.isUpgraded() ? " upgraded" : "");
-            } catch (LinkageError e) {
-            }
+            PotionData pData = potionMeta.getBasePotionData();
+            effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
+                    + (pData.isUpgraded() ? " upgraded" : "");
             if (potionMeta.hasCustomEffects()) {
                 StringBuilder string = new StringBuilder();
                 for (PotionEffect effect : potionMeta.getCustomEffects()) {
@@ -454,15 +444,8 @@ public class QuestItem {
         if (!lore.check(meta.getLore())) {
             return false;
         }
-        try {
-            if (!unbreakable.check(meta.isUnbreakable())) {
-                return false;
-            }
-        } catch (NoSuchMethodError error) {
-            //In 1.8 spigot method meta.isUnbreakable() does not exist so this method (which is not supported in 1.12) must be used
-            if (!unbreakable.check(meta.spigot().isUnbreakable())) {
-                return false;
-            }
+        if (!unbreakable.check(meta.isUnbreakable())) {
+            return false;
         }
         // advanced meta checks
         if (meta instanceof EnchantmentStorageMeta) {
@@ -477,11 +460,8 @@ public class QuestItem {
         }
         if (meta instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) meta;
-            try {
-                if (!potion.checkBase(potionMeta.getBasePotionData())) {
-                    return false;
-                }
-            } catch (LinkageError e) {
+            if (!potion.checkBase(potionMeta.getBasePotionData())) {
+                return false;
             }
             if (!potion.checkCustom(potionMeta.getCustomEffects())) {
                 return false;
@@ -543,12 +523,7 @@ public class QuestItem {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
-        try {
-            meta.setUnbreakable(unbreakable.get());
-        } catch (NoSuchMethodError error) {
-            //In 1.8 spigot method meta.isUnbreakable() does not exist so this method (which is not supported in 1.12) must be used
-            meta.spigot().setUnbreakable(unbreakable.get());
-        }
+        meta.setUnbreakable(unbreakable.get());
         if (meta instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             // why no bulk adding method?!
@@ -564,10 +539,7 @@ public class QuestItem {
         }
         if (meta instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) meta;
-            try {
-                potionMeta.setBasePotionData(potion.getBase());
-            } catch (LinkageError e) {
-            }
+            potionMeta.setBasePotionData(potion.getBase());
             for (PotionEffect effect : potion.getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }

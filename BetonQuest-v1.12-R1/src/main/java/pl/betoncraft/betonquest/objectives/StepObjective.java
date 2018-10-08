@@ -25,6 +25,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
@@ -51,6 +52,10 @@ public class StepObjective extends Objective implements Listener {
 
     @EventHandler
     public void onStep(PlayerInteractEvent event) {
+        // Only fire the event for the main hand to avoid that the event is triggered two times.
+        if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
+            return; // off hand packet, ignore.
+        }
         if (event.getAction() != Action.PHYSICAL) {
             return;
         }

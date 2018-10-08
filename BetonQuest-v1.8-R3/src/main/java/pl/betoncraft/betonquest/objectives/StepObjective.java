@@ -19,14 +19,12 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
@@ -53,10 +51,6 @@ public class StepObjective extends Objective implements Listener {
 
     @EventHandler
     public void onStep(PlayerInteractEvent event) {
-        // Only fire the event for the main hand to avoid that the event is triggered two times.
-        if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
-            return; // off hand packet, ignore.
-        }
         if (event.getAction() != Action.PHYSICAL) {
             return;
         }
@@ -70,7 +64,8 @@ public class StepObjective extends Objective implements Listener {
             if (!event.getClickedBlock().equals(block)) {
                 return;
             }
-            if (Tag.WOODEN_PRESSURE_PLATES.isTagged(type)) {
+            if (type != Material.STONE_PLATE && type != Material.WOOD_PLATE && type != Material.GOLD_PLATE
+                    && type != Material.IRON_PLATE) {
                 return;
             }
             if (!containsPlayer(playerID)) {

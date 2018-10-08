@@ -100,11 +100,7 @@ public class WandCondition extends Condition {
                 return false;
             case IN_HAND:
                 ItemStack wandItem = null;
-                try {
-                    wandItem = player.getInventory().getItemInMainHand();
-                } catch (LinkageError e) {
-                    wandItem = player.getItemInHand();
-                }
+                wandItem = player.getInventory().getItemInMainHand();
                 if (!api.isWand(wandItem)) {
                     return false;
                 }

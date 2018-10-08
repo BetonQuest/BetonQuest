@@ -47,22 +47,23 @@ import java.util.HashMap;
  */
 public class InventoryConvIO implements Listener, ConversationIO {
 
-    private String response = null;
-    private HashMap<Integer, String> options = new HashMap<>();
-    private int i = 0;
-    private String npcName;
-    private String npcNameColor;
-    private String npcTextColor;
-    private String numberFormat;
-    private String optionColor;
-    private String answerPrefix;
-    private Conversation conv;
-    private Player player;
-    private Inventory inv;
-    private boolean allowClose = false;
-    private boolean switching = false;
-    private Location loc;
-    private boolean printMessages = false;
+    protected String response = null;
+    protected HashMap<Integer, String> options = new HashMap<>();
+    protected int i = 0;
+    protected String npcName;
+    protected String npcNameColor;
+    protected String npcTextColor;
+    protected String numberFormat;
+    protected String optionColor;
+    protected String answerPrefix;
+    protected Conversation conv;
+    protected Player player;
+    protected Inventory inv;
+    protected boolean processingLastClick = false;
+    protected boolean allowClose = false;
+    protected boolean switching = false;
+    protected Location loc;
+    protected boolean printMessages = false;
 
     public InventoryConvIO(Conversation conv, String playerID) {
         this.conv = conv;
@@ -105,13 +106,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void setNpcResponse(String npcName, String response) {
         this.npcName = npcName;
-        this.response = Utils.multiLineColorCodes(response.replace('&', '§'), npcTextColor);
+        this.response = Utils.multiLineColorCodes(response, npcTextColor);
     }
 
     @Override
     public void addPlayerOption(String option) {
         i++;
-        options.put(i, Utils.multiLineColorCodes(option.replace('&', '§'), optionColor));
+        options.put(i, Utils.multiLineColorCodes(option, optionColor));
     }
 
     @SuppressWarnings("deprecation")
@@ -211,6 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 switching = true;
                 player.openInventory(inv);
                 switching = false;
+                processingLastClick = false;
             }
         }.runTask(BetonQuest.getPlugin());
     }
@@ -224,6 +226,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         event.setCancelled(true);
+        if (processingLastClick) return;
         int slot = event.getRawSlot();
         // calculate the option number
         if (slot % 9 > 1) {
@@ -235,6 +238,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             int choosen = (row * 7) + col;
             String message = options.get(choosen);
             if (message != null) {
+                processingLastClick = true;
                 if (printMessages) player.sendMessage(answerPrefix + message);
                 conv.passPlayerAnswer(choosen);
             }
@@ -291,7 +295,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
-    private ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
+    protected ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
         ArrayList<String> multiLine = new ArrayList<>();
         boolean firstLinePrefix = prefix != null;
         if (prefix == null)

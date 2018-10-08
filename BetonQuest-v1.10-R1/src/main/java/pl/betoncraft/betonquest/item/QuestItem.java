@@ -59,18 +59,18 @@ import java.util.Map.Entry;
  */
 public class QuestItem {
 
-    protected Material material = null;
-    protected DurabilityHandler durability = new DurabilityHandler();
-    protected DataHandler data = new DataHandler();
-    protected NameHandler name = new NameHandler();
-    protected LoreHandler lore = new LoreHandler();
-    protected EnchantmentsHandler enchants = new EnchantmentsHandler();
-    protected UnbreakableHandler unbreakable = new UnbreakableHandler();
-    protected PotionHandler potion = new PotionHandler();
-    protected BookHandler book = new BookHandler();
-    protected HeadOwnerHandler head = new HeadOwnerHandler();
-    protected ColorHandler color = new ColorHandler();
-    protected FireworkHandler firework = new FireworkHandler();
+    private Material material = null;
+    private DurabilityHandler durability = new DurabilityHandler();
+    private DataHandler data = new DataHandler();
+    private NameHandler name = new NameHandler();
+    private LoreHandler lore = new LoreHandler();
+    private EnchantmentsHandler enchants = new EnchantmentsHandler();
+    private UnbreakableHandler unbreakable = new UnbreakableHandler();
+    private PotionHandler potion = new PotionHandler();
+    private BookHandler book = new BookHandler();
+    private HeadOwnerHandler head = new HeadOwnerHandler();
+    private ColorHandler color = new ColorHandler();
+    private FireworkHandler firework = new FireworkHandler();
 
     /**
      * Legacy method for the updater, don't use for anything else.

@@ -44,11 +44,8 @@ public class EmptySlotsCondition extends Condition {
     public boolean check(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         ItemStack[] items = null;
-        try {
-            items = player.getInventory().getStorageContents();
-        } catch (LinkageError e) {
-            items = player.getInventory().getContents();
-        }
+        items = player.getInventory().getStorageContents();
+
         int empty = 0;
         for (ItemStack item : items) {
             if (item == null)

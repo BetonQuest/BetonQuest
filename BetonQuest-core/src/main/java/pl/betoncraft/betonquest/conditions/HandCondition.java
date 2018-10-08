@@ -46,11 +46,8 @@ public class HandCondition extends Condition {
     public boolean check(String playerID) {
         PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
         ItemStack item = null;
-        try {
-            item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
-        } catch (LinkageError e) {
-            item = inv.getItemInHand();
-        }
+        item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+
         if (questItem.compare(item)) {
             return true;
         }

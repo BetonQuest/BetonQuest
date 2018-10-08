@@ -78,11 +78,7 @@ public class DieObjective extends Objective implements Listener {
             if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
                     && checkConditions(playerID)) {
                 event.setCancelled(true);
-                try {
-                    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                } catch (LinkageError e) {
-                    player.setHealth(player.getMaxHealth());
-                }
+                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                 player.setFoodLevel(20);
                 player.setExhaustion(4);
                 player.setSaturation(20);
