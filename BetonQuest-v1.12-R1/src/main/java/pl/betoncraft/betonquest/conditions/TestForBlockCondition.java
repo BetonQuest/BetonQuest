@@ -42,8 +42,11 @@ public class TestForBlockCondition extends Condition {
         loc = instruction.getLocation();
         selector = new BlockSelector(instruction.next());
 
-        if (!selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
+        // To remain backwards compatible pre 1.13 we will support data and add it to the selector if needed but
+        // a separate data tag is deprecated to remain consistent with the other objectives/conditions
+        String dataString = instruction.getOptional("data");
+        if (dataString != null) {
+            selector.setData(instruction.getInt(dataString, 0));
         }
     }
 

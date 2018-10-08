@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -45,8 +46,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ActionObjective extends Objective implements Listener {
 
     private Click action;
-    private Material type;
-    private byte data;
+    private BlockSelector selector;
     private LocationData loc;
     private VariableNumber range;
     private boolean cancel = false;
@@ -56,17 +56,18 @@ public class ActionObjective extends Objective implements Listener {
         template = ObjectiveData.class;
         action = instruction.getEnum(Click.class);
         if (instruction.next().equalsIgnoreCase("any")) {
-            type = Material.AIR;
-            data = -1;
+            selector = null;
         } else {
-            String[] parts = instruction.current().split(":");
-            type = instruction.getMaterial(parts[0]);
-            data = parts.length > 1 ? instruction.getByte(parts[1], (byte) -1) : -1;
+            selector = instruction.getBlockSelector(instruction.current());
         }
         loc = instruction.getLocation(instruction.getOptional("loc"));
         String r = instruction.getOptional("range");
         range = instruction.getVarNum(r == null ? "1" : r);
         cancel = instruction.hasArgument("cancel");
+
+        if (selector != null && !selector.isValid()) {
+            throw new InstructionParseException("Invalid selector: " + selector.toString());
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -80,7 +81,7 @@ public class ActionObjective extends Objective implements Listener {
         if (!containsPlayer(playerID)) {
             return;
         }
-        if (type == Material.AIR) {
+        if (selector == null) {
             switch (action) {
                 case RIGHT:
                     if ((event.getAction().equals(Action.RIGHT_CLICK_AIR)
@@ -127,10 +128,9 @@ public class ActionObjective extends Objective implements Listener {
             try {
                 if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                         || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
-                        && (event.getClickedBlock() != null && ((type == Material.FIRE
-                        && event.getClickedBlock().getRelative(event.getBlockFace()).getType() == type)
-                        || event.getClickedBlock().getType().equals(type)))
-                        && (data < 0 || event.getClickedBlock().getData() == data)) {
+                        && (event.getClickedBlock() != null && ((selector.match(Material.FIRE)
+                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace())))
+                        || selector.match(event.getClickedBlock())))) {
                     if (loc != null) {
                         Location location = loc.getLocation(playerID);
                         double r = range.getDouble(playerID);

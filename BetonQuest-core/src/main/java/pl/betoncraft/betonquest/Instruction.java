@@ -26,6 +26,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 import java.util.ArrayList;
@@ -279,12 +280,19 @@ public class Instruction {
         if (string == null) {
             return null;
         }
-
         Material material = Material.matchMaterial(string);
         if (material == null) {
             material = Material.matchMaterial(string, true);
         }
         return material;
+    }
+
+    public BlockSelector getBlockSelector() throws InstructionParseException {
+        return getBlockSelector(next());
+    }
+
+    public BlockSelector getBlockSelector(String string) throws InstructionParseException {
+        return new BlockSelector(string);
     }
 
     public EntityType getEntity() throws InstructionParseException {

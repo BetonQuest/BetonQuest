@@ -441,3 +441,37 @@ To understand better how it works I will show you an example of `party` event. L
     party_reward: party 50 quest_started cancel_button,teleport_to_dungeon
 
 Now, it means that all players that: are in radius of 50 blocks around the player who pressed the button AND meet `quest_started` condition will receive `cancel_button` and `teleport_to_dungeon` events. The first one will cancel the quest for pressing the button for the others (it's no longer needed), the second one will teleport them somewhere. Now, imagine there is a player on the other side of the world who also meets `quest_started` condition - he won't be teleported into the dungeon, because he was not with the other players (not in 50 blocks range). Now, there were a bunch of other players running around the button, but they didn't meet the `quest_started` condition. They also won't be teleported (they didn't start this quest).
+
+## Block Selectors
+
+When specifying a way of matching a block, a `block selector` is used. This differs a little depending if your Minecraft version is older than 1.13 or newer.
+
+### Pre 1.13 Minecraft
+
+The format of a block selector is: `material:data`
+
+Where:
+  * `material` - What material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html).
+  * `data` - (optional) A number representing the data of the block. If left out then the selector will match all data types.
+
+Examples:
+  * `LOG` - Matches all LOGS
+  * `LOG:1` - Matches SPRUCE LOGS
+
+
+### 1.13 and above
+The format of a block selector is: `prefix:material[state=value,...]`
+
+Where:
+  * `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'
+  * `material` - The material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Wildcards are supported (both * and ?).
+  * `state` - (optional) The block states can be provided in a comma separated list surrounded by square brackets. You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states). Any states left out will be ignored when matching.
+
+Examples:
+  * `minecraft:stone` - Matches all blocks of type STONE
+  * `redstone_wire` - Matches all blocks of type REDSTONE_WIRE
+  * `redstone_wire[power=5]` - Matches all blocks of type REDSTONE_WIRE and which have a power of 5
+  * `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
+  * `*_LOG` - Matches all LOGS
+  * `*` - Matches everything
+  * `*[waterlogged=true]` - Matches all waterlogged blocks
