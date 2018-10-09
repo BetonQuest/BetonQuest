@@ -174,12 +174,14 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
      * Reloads the particle effect
      */
     public static void reload() {
-        if (instance.enabled) {
-            instance.cleanUp();
+        if (instance != null) {
+            if (instance.enabled) {
+                instance.cleanUp();
 
-            instance.cancel();
+                instance.cancel();
+            }
+            new CitizensHologram();
         }
-        new CitizensHologram();
     }
 
     @Override

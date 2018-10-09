@@ -29,16 +29,16 @@ public class HolographicDisplaysIntegrator implements Integrator {
 
     public HolographicDisplaysIntegrator() {
         instance = this;
-
-        // if HolographicAPI is hooked, start CitizensHologram
-        if (Compatibility.getHooked().contains("Citizens")) {
-            new CitizensHologram();
-        }
     }
 
     @Override
     public void hook() {
         hologramLoop = new HologramLoop();
+
+        // if Citizens is hooked, start CitizensHologram
+        if (Compatibility.getHooked().contains("Citizens")) {
+            new CitizensHologram();
+        }
     }
 
     @Override
