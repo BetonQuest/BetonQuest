@@ -161,12 +161,12 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         List<NPC> affectedNpcs = new ArrayList<>();
                         for (int id : settings.getIntegerList("npcs")) {
                             NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                            if (npc != null) {
+                            if (npc != null && npcs.containsKey(npc)) {
                                 affectedNpcs.add(npc);
                             }
                         }
 
-                        for (NPC npc : affectedNpcs.isEmpty()?npcs.keySet():affectedNpcs) {
+                        for (NPC npc : settings.getIntegerList("npcs").size() == 0?npcs.keySet():affectedNpcs) {
                             NPCHologram npcHologram = new NPCHologram();
                             npcHologram.config = hologramConfig;
                             npcs.get(npc).add(npcHologram);
@@ -176,11 +176,10 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 }
 
                 Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance());
-                runTaskTimer(BetonQuest.getInstance(), 1, interval);
             }
         }, 3);
 
-
+        runTaskTimer(BetonQuest.getInstance(), 4, interval);
         enabled = true;
     }
 
