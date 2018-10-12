@@ -17,6 +17,31 @@
  */
 package pl.betoncraft.betonquest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import ch.njol.skript.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import pl.betoncraft.betonquest.api.*;
+import pl.betoncraft.betonquest.commands.*;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
+import pl.betoncraft.betonquest.conditions.*;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.ConfigUpdater;
+import pl.betoncraft.betonquest.conversation.*;
+import pl.betoncraft.betonquest.database.*;
+import pl.betoncraft.betonquest.events.*;
+import pl.betoncraft.betonquest.item.QuestItemHandler;
+import pl.betoncraft.betonquest.objectives.*;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Updater;
+import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -25,163 +50,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
-import org.bstats.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.api.LoadDataEvent;
-import pl.betoncraft.betonquest.api.Objective;
-import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.commands.BackpackCommand;
-import pl.betoncraft.betonquest.commands.CancelQuestCommand;
-import pl.betoncraft.betonquest.commands.CompassCommand;
-import pl.betoncraft.betonquest.commands.JournalCommand;
-import pl.betoncraft.betonquest.commands.LangCommand;
-import pl.betoncraft.betonquest.commands.QuestCommand;
-import pl.betoncraft.betonquest.compatibility.Compatibility;
-import pl.betoncraft.betonquest.conditions.AchievementCondition;
-import pl.betoncraft.betonquest.conditions.AlternativeCondition;
-import pl.betoncraft.betonquest.conditions.ArmorCondition;
-import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
-import pl.betoncraft.betonquest.conditions.BiomeCondition;
-import pl.betoncraft.betonquest.conditions.CheckCondition;
-import pl.betoncraft.betonquest.conditions.ChestItemCondition;
-import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
-import pl.betoncraft.betonquest.conditions.DayOfWeekCondition;
-import pl.betoncraft.betonquest.conditions.EffectCondition;
-import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
-import pl.betoncraft.betonquest.conditions.ExperienceCondition;
-import pl.betoncraft.betonquest.conditions.FacingCondition;
-import pl.betoncraft.betonquest.conditions.FlyingCondition;
-import pl.betoncraft.betonquest.conditions.GameModeCondition;
-import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
-import pl.betoncraft.betonquest.conditions.GlobalTagCondition;
-import pl.betoncraft.betonquest.conditions.HandCondition;
-import pl.betoncraft.betonquest.conditions.HealthCondition;
-import pl.betoncraft.betonquest.conditions.HeightCondition;
-import pl.betoncraft.betonquest.conditions.ItemCondition;
-import pl.betoncraft.betonquest.conditions.JournalCondition;
-import pl.betoncraft.betonquest.conditions.LocationCondition;
-import pl.betoncraft.betonquest.conditions.LookingAtCondition;
-import pl.betoncraft.betonquest.conditions.MonstersCondition;
-import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
-import pl.betoncraft.betonquest.conditions.PartialDateCondition;
-import pl.betoncraft.betonquest.conditions.PartyCondition;
-import pl.betoncraft.betonquest.conditions.PermissionCondition;
-import pl.betoncraft.betonquest.conditions.PointCondition;
-import pl.betoncraft.betonquest.conditions.RandomCondition;
-import pl.betoncraft.betonquest.conditions.RealTimeCondition;
-import pl.betoncraft.betonquest.conditions.ScoreboardCondition;
-import pl.betoncraft.betonquest.conditions.SneakCondition;
-import pl.betoncraft.betonquest.conditions.TagCondition;
-import pl.betoncraft.betonquest.conditions.TestForBlockCondition;
-import pl.betoncraft.betonquest.conditions.TimeCondition;
-import pl.betoncraft.betonquest.conditions.VariableCondition;
-import pl.betoncraft.betonquest.conditions.VehicleCondition;
-import pl.betoncraft.betonquest.conditions.WeatherCondition;
-import pl.betoncraft.betonquest.conditions.WorldCondition;
-import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.config.ConfigUpdater;
-import pl.betoncraft.betonquest.conversation.*;
-import pl.betoncraft.betonquest.database.Database;
-import pl.betoncraft.betonquest.database.GlobalData;
-import pl.betoncraft.betonquest.database.MySQL;
-import pl.betoncraft.betonquest.database.PlayerData;
-import pl.betoncraft.betonquest.database.SQLite;
-import pl.betoncraft.betonquest.database.Saver;
-import pl.betoncraft.betonquest.events.CancelEvent;
-import pl.betoncraft.betonquest.events.ChestClearEvent;
-import pl.betoncraft.betonquest.events.ChestGiveEvent;
-import pl.betoncraft.betonquest.events.ChestTakeEvent;
-import pl.betoncraft.betonquest.events.ClearEvent;
-import pl.betoncraft.betonquest.events.CommandEvent;
-import pl.betoncraft.betonquest.events.CompassEvent;
-import pl.betoncraft.betonquest.events.ConversationEvent;
-import pl.betoncraft.betonquest.events.DamageEvent;
-import pl.betoncraft.betonquest.events.DelEffectEvent;
-import pl.betoncraft.betonquest.events.DoorEvent;
-import pl.betoncraft.betonquest.events.EXPEvent;
-import pl.betoncraft.betonquest.events.EffectEvent;
-import pl.betoncraft.betonquest.events.ExplosionEvent;
-import pl.betoncraft.betonquest.events.FolderEvent;
-import pl.betoncraft.betonquest.events.GiveEvent;
-import pl.betoncraft.betonquest.events.GiveJournalEvent;
-import pl.betoncraft.betonquest.events.GlobalPointEvent;
-import pl.betoncraft.betonquest.events.GlobalTagEvent;
-import pl.betoncraft.betonquest.events.IfElseEvent;
-import pl.betoncraft.betonquest.events.JournalEvent;
-import pl.betoncraft.betonquest.events.KillEvent;
-import pl.betoncraft.betonquest.events.KillMobEvent;
-import pl.betoncraft.betonquest.events.LanguageEvent;
-import pl.betoncraft.betonquest.events.LeverEvent;
-import pl.betoncraft.betonquest.events.LightningEvent;
-import pl.betoncraft.betonquest.events.MessageEvent;
-import pl.betoncraft.betonquest.events.ObjectiveEvent;
-import pl.betoncraft.betonquest.events.OpSudoEvent;
-import pl.betoncraft.betonquest.events.PartyEvent;
-import pl.betoncraft.betonquest.events.PickRandomEvent;
-import pl.betoncraft.betonquest.events.PlaysoundEvent;
-import pl.betoncraft.betonquest.events.PointEvent;
-import pl.betoncraft.betonquest.events.RunEvent;
-import pl.betoncraft.betonquest.events.ScoreboardEvent;
-import pl.betoncraft.betonquest.events.SetBlockEvent;
-import pl.betoncraft.betonquest.events.SpawnMobEvent;
-import pl.betoncraft.betonquest.events.SudoEvent;
-import pl.betoncraft.betonquest.events.TagEvent;
-import pl.betoncraft.betonquest.events.TakeEvent;
-import pl.betoncraft.betonquest.events.TeleportEvent;
-import pl.betoncraft.betonquest.events.TimeEvent;
-import pl.betoncraft.betonquest.events.TitleEvent;
-import pl.betoncraft.betonquest.events.VariableEvent;
-import pl.betoncraft.betonquest.events.WeatherEvent;
-import pl.betoncraft.betonquest.item.QuestItemHandler;
-import pl.betoncraft.betonquest.objectives.ActionObjective;
-import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
-import pl.betoncraft.betonquest.objectives.BlockObjective;
-import pl.betoncraft.betonquest.objectives.BreedObjective;
-import pl.betoncraft.betonquest.objectives.ChestPutObjective;
-import pl.betoncraft.betonquest.objectives.ConsumeObjective;
-import pl.betoncraft.betonquest.objectives.CraftingObjective;
-import pl.betoncraft.betonquest.objectives.DelayObjective;
-import pl.betoncraft.betonquest.objectives.DieObjective;
-import pl.betoncraft.betonquest.objectives.EnchantObjective;
-import pl.betoncraft.betonquest.objectives.EntityInteractObjective;
-import pl.betoncraft.betonquest.objectives.ExperienceObjective;
-import pl.betoncraft.betonquest.objectives.FishObjective;
-import pl.betoncraft.betonquest.objectives.KillPlayerObjective;
-import pl.betoncraft.betonquest.objectives.LocationObjective;
-import pl.betoncraft.betonquest.objectives.LogoutObjective;
-import pl.betoncraft.betonquest.objectives.MobKillObjective;
-import pl.betoncraft.betonquest.objectives.PasswordObjective;
-import pl.betoncraft.betonquest.objectives.PotionObjective;
-import pl.betoncraft.betonquest.objectives.RespawnObjective;
-import pl.betoncraft.betonquest.objectives.ShearObjective;
-import pl.betoncraft.betonquest.objectives.SmeltingObjective;
-import pl.betoncraft.betonquest.objectives.StepObjective;
-import pl.betoncraft.betonquest.objectives.TameObjective;
-import pl.betoncraft.betonquest.objectives.VariableObjective;
-import pl.betoncraft.betonquest.objectives.VehicleObjective;
-import pl.betoncraft.betonquest.utils.Debug;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Updater;
-import pl.betoncraft.betonquest.utils.Utils;
-import pl.betoncraft.betonquest.variables.MathVariable;
-import pl.betoncraft.betonquest.variables.GlobalPointVariable;
-import pl.betoncraft.betonquest.variables.ItemAmountVariable;
-import pl.betoncraft.betonquest.variables.LocationVariable;
-import pl.betoncraft.betonquest.variables.NpcNameVariable;
-import pl.betoncraft.betonquest.variables.ObjectivePropertyVariable;
-import pl.betoncraft.betonquest.variables.PlayerNameVariable;
-import pl.betoncraft.betonquest.variables.PointVariable;
-import pl.betoncraft.betonquest.variables.VersionVariable;
 
 /**
  * Represents BetonQuest plugin
@@ -344,6 +212,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("realtime", RealTimeCondition.class);
 		registerConditions("looking", LookingAtCondition.class);
 		registerConditions("facing", FacingCondition.class);
+		registerConditions("mooncycle", MooncycleCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
@@ -807,7 +676,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new condition classes by their names
-	 * 
+	 *
 	 * @param name
 	 *            name of the condition type
 	 * @param conditionClass
