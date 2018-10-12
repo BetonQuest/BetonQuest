@@ -3,6 +3,8 @@ package pl.betoncraft.betonquest.conditions;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -14,27 +16,21 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
      */
     public class MooncycleCondition extends Condition {
 
-        private int thisCycle;
+        private VariableNumber thisCycle;
 
         public MooncycleCondition(Instruction instruction) throws InstructionParseException {
             super(instruction);
-            try {
-
-                this.thisCycle = instruction.getInt();
-
-            } catch (Exception e) {
-
-                throw new InstructionParseException("Unable to parse moon cycle");
-            }
+            this.thisCycle = instruction.getVarNum();
         }
 
+
         @Override
-        public boolean check(String playerID){
+        public boolean check(String playerID) throws QuestRuntimeException {
             Player player = PlayerConverter.getPlayer(playerID);
             int days = (int) player.getWorld().getFullTime() / 24000;
             int phaseInt = days % 8;
             phaseInt += 1;
-            return (phaseInt == thisCycle);
+            return (phaseInt == thisCycle.getInt(playerID));
         }
 
     }
