@@ -17,10 +17,11 @@
  */
 package pl.betoncraft.betonquest.compatibility.skillapi;
 
+import java.util.Optional;
+
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
-
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -50,8 +51,13 @@ public class SkillAPILevelCondition extends Condition {
 	@Override
 	public boolean check(String playerID) throws QuestRuntimeException {
 		PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
-		PlayerClass playerClass = data.getClass(className);
-		return playerClass != null && level.getInt(playerID) <= playerClass.getLevel();
+		Optional<PlayerClass> playerClass = data
+				.getClasses()
+				.stream()
+				.filter(c -> c.getData().getName().equalsIgnoreCase(className))
+				.findAny();
+		if (!playerClass.isPresent()) return false;
+		return level.getInt(playerID) <= playerClass.get().getLevel();
 	}
 
 }
