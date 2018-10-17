@@ -51,6 +51,7 @@ Changes:
 	* 'password' objective also accepts commands
 	* Commands can be tab-completed
 Fixes:
+	* Fixed bug where players could take out items from the chest conversationIO
 	* Removed possibilities of dropping/transfering quest items and the journal
 	* Lots of smaller bugfixes
 
