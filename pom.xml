@@ -135,6 +135,10 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>mcmmo</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -173,9 +177,9 @@
 			<version>6.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gmail.nossr50</groupId>
-			<artifactId>mcmmo</artifactId>
-			<version>1.5.04-SNAPSHOT</version>
+			<groupId>com.gmail.nossr50.mcMMO</groupId>
+			<artifactId>mcMMO</artifactId>
+			<version>1.6.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>de.slikey.effectlib</groupId>
