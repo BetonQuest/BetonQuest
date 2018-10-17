@@ -27,6 +27,8 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Optional;
+
 /**
  * Checks the level of the player in SkillAPI.
  *
@@ -49,8 +51,13 @@ public class SkillAPILevelCondition extends Condition {
     @Override
     public boolean check(String playerID) throws QuestRuntimeException {
         PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
-        PlayerClass playerClass = data.getClass(className);
-        return playerClass != null && level.getInt(playerID) <= playerClass.getLevel();
+        Optional<PlayerClass> playerClass = data
+                .getClasses()
+                .stream()
+                .filter(c -> c.getData().getName().equalsIgnoreCase(className))
+                .findAny();
+        if (!playerClass.isPresent()) return false;
+        return level.getInt(playerID) <= playerClass.get().getLevel();
     }
 
 }

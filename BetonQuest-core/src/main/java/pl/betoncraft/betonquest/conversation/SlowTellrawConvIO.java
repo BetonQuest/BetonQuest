@@ -21,8 +21,8 @@ package pl.betoncraft.betonquest.conversation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.ChatPaginator;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.LocalChatPaginator;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
@@ -52,9 +52,9 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         }
 
         // NPC Text
-        List<String> lines = new ArrayList<>(Arrays.asList(ChatPaginator.wordWrap(
-                Utils.multiLineColorCodes(textFormat.replace("%npc%", npcName) + npcText, npcTextColor),
-                ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH - 2)));
+        List<String> lines = new ArrayList<>(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor),
+                60)));
 
         endLines = new ArrayList<>();
 

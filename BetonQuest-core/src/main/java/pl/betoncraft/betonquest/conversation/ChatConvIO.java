@@ -110,8 +110,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      * Moves the player back a few blocks in the conversation's center
      * direction.
      *
-     * @param event
-     *            PlayerMoveEvent event, for extracting the necessary data
+     * @param event PlayerMoveEvent event, for extracting the necessary data
      */
     private void moveBack(PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
@@ -180,7 +179,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        player.sendMessage(Utils.multiLineColorCodes(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
+        player.sendMessage(Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
     }
 
     @Override
@@ -197,6 +196,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @Override
     public void print(String message) {
-        player.sendMessage(message);
+        if (message != null && message.length() > 0) {
+            player.sendMessage(message);
+        }
     }
 }
