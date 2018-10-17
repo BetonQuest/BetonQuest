@@ -216,6 +216,19 @@ public class Journal {
                 Debug.error("No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
+
+            // resolve variables
+            for (String variable : BetonQuest.resolveVariables(text)) {
+                try {
+                    BetonQuest.createVariable(pack, variable);
+                } catch (InstructionParseException e) {
+                    Debug.error("Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
+                            + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+                }
+                text = text.replace(variable,
+                        BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
+            }
+
             // add the entry to the list
             texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + "\n"
                     + text);
