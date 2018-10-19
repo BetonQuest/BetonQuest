@@ -19,7 +19,7 @@ if [ $TRAVIS_PULL_REQUEST == "false" ] && [ "$TRAVIS_BRANCH" == "master" ] ; the
         },
         "title": "Commit '"${TRAVIS_COMMIT:0:7}"'",
         "url": "https://github.com/'"$TRAVIS_REPO_SLUG"'/commit/'"$TRAVIS_COMMIT"'",
-        "description": "'"$TRAVIS_COMMIT_MESSAGE"'",
+        "description": "'"${TRAVIS_COMMIT_MESSAGE//$'\n'/'\\n'}"'",
         "thumbnail": {
           "url": "https://cdn.discordapp.com/app-icons/494162764403572748/d7680ea0dfa2d1da1a95676435f526c1.png?size=64"
         },
