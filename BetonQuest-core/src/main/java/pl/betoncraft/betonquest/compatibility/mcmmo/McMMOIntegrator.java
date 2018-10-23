@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.mcmmo;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.utils.Debug;
 
 
 public class McMMOIntegrator implements Integrator {
@@ -33,6 +34,12 @@ public class McMMOIntegrator implements Integrator {
     public void hook() {
         plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
+        try {
+            new MCMMOQuestItemHandler();
+            Debug.info("Enabled MCMMO QuestItemHandler");
+        } catch (LinkageError e) {
+            Debug.info("MCMMO version is not compatible with the QuestItemHandler.");
+        }
     }
 
     @Override
