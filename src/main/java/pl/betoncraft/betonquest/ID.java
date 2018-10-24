@@ -1,34 +1,36 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest;
 
+import java.util.stream.Stream;
+
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 
 public abstract class ID {
-	
+
 	public static final String upStr = "_"; // string used as "up the hierarchy" package
-	
+
 	protected String id;
 	protected ConfigPackage pack;
 	protected Instruction instruction;
 	protected String rawInstruction;
-	
+
 	public ID(ConfigPackage pack, String id) throws ObjectNotFoundException {
 
 		// id must be specified
@@ -39,8 +41,16 @@ public abstract class ID {
 		// resolve package name
 		if (id.contains(".")) {
 			// id has specified a package, get it!
-			int dotIndex = id.indexOf('.');
-			String packName = id.substring(0, dotIndex);
+			String[] parts = id.split("\\.");
+
+			// ID after splitting must give two non-empty strings
+			if (parts.length != 2 || Stream.of(parts).anyMatch(part -> part.length() == 0)) {
+				throw new ObjectNotFoundException(String.format("ID %s has incorrect format", id));
+			}
+
+			String packName = parts[0];
+			String idName = parts[1];
+
 			if (pack != null && packName.startsWith(upStr + "-")) {
 				// resolve relative name if we have a supplied package
 				String[] root = pack.getName().split("-");
@@ -74,7 +84,7 @@ public abstract class ID {
 				// use package name as absolute path if no relative path is available
 				this.pack = Config.getPackages().get(packName);
 			}
-			this.id = id.substring(dotIndex + 1); // FIXME error if the id is empty, dot is last
+			this.id = idName;
 		} else {
 			// id does not specify package, use supplied package
 			if (pack != null) {
@@ -90,24 +100,24 @@ public abstract class ID {
 			throw new ObjectNotFoundException("Package in ID '" + id + "' does not exist");
 		}
 	}
-	
+
 	public ConfigPackage getPackage() {
 		return pack;
 	}
-	
+
 	public String getBaseID() {
 		return id;
 	}
-	
+
 	public String getFullID() {
 		return pack.getName() + "." + getBaseID();
 	}
-	
+
 	@Override
 	public String toString() {
 		return getFullID();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ID) {
@@ -117,7 +127,7 @@ public abstract class ID {
 		}
 		return false;
 	}
-	
+
 	public Instruction generateInstruction() {
 		if (rawInstruction == null) {
 			return null;

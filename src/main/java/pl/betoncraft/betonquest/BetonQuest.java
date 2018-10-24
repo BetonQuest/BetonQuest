@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -185,7 +185,7 @@ import pl.betoncraft.betonquest.variables.VersionVariable;
 
 /**
  * Represents BetonQuest plugin
- * 
+ *
  * @author Jakub Sapalski
  */
 public final class BetonQuest extends JavaPlugin {
@@ -214,7 +214,7 @@ public final class BetonQuest extends JavaPlugin {
 	private static HashMap<ObjectiveID, Objective> objectives = new HashMap<>();
 	private static HashMap<String, ConversationData> conversations = new HashMap<>();
 	private static HashMap<VariableID, Variable> variables = new HashMap<>();
-	
+
 	public BetonQuest() {
 	    instance = this;
 	}
@@ -290,7 +290,7 @@ public final class BetonQuest extends JavaPlugin {
 
 		// start mob kill listener
 		new MobKillListener();
-		
+
 		// start custom drop listener
 		new CustomDropListener();
 
@@ -408,7 +408,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("logout", LogoutObjective.class);
 		registerObjectives("password", PasswordObjective.class);
 		registerObjectives("fish", FishObjective.class);
-		registerObjectives("enchant", EnchantObjective.class);		
+		registerObjectives("enchant", EnchantObjective.class);
 		registerObjectives("shear", ShearObjective.class);
 		registerObjectives("chestput", ChestPutObjective.class);
 		registerObjectives("potion", PotionObjective.class);
@@ -700,6 +700,7 @@ public final class BetonQuest extends JavaPlugin {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void onDisable() {
 		// suspend all conversations
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -725,7 +726,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Returns the plugin's instance
-	 * 
+	 *
 	 * @return the plugin's instance
 	 */
 	public static BetonQuest getInstance() {
@@ -734,7 +735,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Returns the database instance
-	 * 
+	 *
 	 * @return Database instance
 	 */
 	public Database getDB() {
@@ -747,7 +748,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Checks if MySQL is used or not
-	 * 
+	 *
 	 * @return if MySQL is used (false means that SQLite is being used)
 	 */
 	public boolean isMySQLUsed() {
@@ -757,7 +758,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Stores the PlayerData in a map, so it can be retrieved using
 	 * getPlayerData(String playerID)
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param playerData
@@ -772,7 +773,7 @@ public final class BetonQuest extends JavaPlugin {
 	 * Retrieves PlayerData object for specified player. If the playerData
 	 * does not exist but the player is online, it will create new playerData on
 	 * the main thread and put it into the map.
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @return PlayerData object for the player
@@ -797,7 +798,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Removes the database playerData from the map
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player whose playerData is to be removed
 	 */
@@ -807,7 +808,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new condition classes by their names
-	 * 
+	 *
 	 * @param name
 	 *            name of the condition type
 	 * @param conditionClass
@@ -820,7 +821,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new event classes by their names
-	 * 
+	 *
 	 * @param name
 	 *            name of the event type
 	 * @param eventClass
@@ -833,7 +834,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new objective classes by their names
-	 * 
+	 *
 	 * @param name
 	 *            name of the objective type
 	 * @param objectiveClass
@@ -846,7 +847,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new conversation input/output class.
-	 * 
+	 *
 	 * @param name
 	 *            name of the IO type
 	 * @param convIOClass
@@ -859,7 +860,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Registers new variable type.
-	 * 
+	 *
 	 * @param name
 	 *            name of the variable type
 	 * @param variable
@@ -872,7 +873,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Checks if the condition described by conditionID is met
-	 * 
+	 *
 	 * @param conditionID
 	 *            ID of the condition to check, as defined in conditions.yml
 	 * @param playerID
@@ -923,7 +924,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Fires the event described by eventID
-	 * 
+	 *
 	 * @param eventID
 	 *            ID of the event to fire, as defined in events.yml
 	 * @param playerID
@@ -962,7 +963,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Creates new objective for given player
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param objectiveID
@@ -991,7 +992,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Resumes the existing objective for given player
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @param objectiveID
@@ -1027,7 +1028,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Generates new instance of a Variable. If a similar one was already
 	 * created, it will return it instead of creating a new one.
-	 * 
+	 *
 	 * @param pack
 	 *            package in which the variable is defined
 	 * @param instruction
@@ -1082,7 +1083,7 @@ public final class BetonQuest extends JavaPlugin {
 	 * instruction strings, including % characters. Variables are unique, so if
 	 * the user uses the same variables multiple times, the list will contain
 	 * only one occurence of this variable.
-	 * 
+	 *
 	 * @param text
 	 *            text from which the variables will be resolved
 	 * @return the list of unique variable instructions
@@ -1099,7 +1100,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Returns the list of objectives of this player
-	 * 
+	 *
 	 * @param playerID
 	 *            ID of the player
 	 * @return list of this player's active objectives
@@ -1140,7 +1141,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Returns the instance of Saver
-	 * 
+	 *
 	 * @return the Saver
 	 */
 	public Saver getSaver() {
@@ -1159,7 +1160,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Resoles the variable for specified player. If the variable is not loaded
 	 * yet it will load it on the main thread.
-	 * 
+	 *
 	 * @param packName
 	 *            name of the package
 	 * @param name
@@ -1197,7 +1198,7 @@ public final class BetonQuest extends JavaPlugin {
 
 	/**
 	 * Renames the objective instance.
-	 * 
+	 *
 	 * @param name
 	 *            the current name
 	 * @param rename

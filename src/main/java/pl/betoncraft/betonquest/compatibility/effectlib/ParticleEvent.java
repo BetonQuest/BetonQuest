@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import de.slikey.effectlib.util.DynamicLocation;
@@ -64,7 +63,6 @@ public class ParticleEvent extends QuestEvent {
     public void run(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
-        Entity originEntity = (loc == null) ? p : null;
         Player targetPlayer = pr1vate ? p : null;
         EffectLibIntegrator.getEffectManager().start(effectClass,
                                                      parameters,

@@ -58,7 +58,6 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     private Map<NPC, List<NPCHologram>> npcs = new HashMap<>();
 
     private int interval;
-    private int tick = 0;
     private boolean enabled = false;
 
     // Updater

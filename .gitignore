@@ -9,3 +9,4 @@
 /doc/
 /dependency-reduced-pom.xml
 .vscode/
+.factorypath

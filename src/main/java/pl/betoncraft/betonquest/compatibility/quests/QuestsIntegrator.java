@@ -17,8 +17,6 @@
  */
 package pl.betoncraft.betonquest.compatibility.quests;
 
-import java.util.Collections;
-
 import org.bukkit.Bukkit;
 
 import me.blackvein.quests.Quests;

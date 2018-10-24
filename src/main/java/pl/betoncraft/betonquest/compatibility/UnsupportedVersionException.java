@@ -16,6 +16,8 @@ import org.bukkit.plugin.Plugin;
  */
 public class UnsupportedVersionException extends Exception {
 
+    private static final long serialVersionUID = -1235158967291211169L;
+
     private final String currentVersion;
     private final String requiredVersion;
     private final Plugin plugin;

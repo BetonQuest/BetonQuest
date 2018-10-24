@@ -21,8 +21,6 @@ package pl.betoncraft.betonquest.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -85,9 +83,6 @@ public class LocalChatPaginator extends ChatPaginator {
      * @return An array of word-wrapped lines.
      */
     public static String[] wordWrap(String rawString, int lineLength) {
-        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
-
-
         // A null string is a single line
         if (rawString == null) {
             return new String[]{""};
