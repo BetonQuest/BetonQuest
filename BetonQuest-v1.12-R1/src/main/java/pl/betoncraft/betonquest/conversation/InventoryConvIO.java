@@ -139,7 +139,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         inv.setContents(new ItemStack[9 * rows]);
         ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
-        ItemStack npc = new ItemStack(Material.SKULL);
+        ItemStack npc = new ItemStack(Material.SKULL_ITEM);
         npc.setDurability((short) 3);
         SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
         npcMeta.setOwner(npcName);
