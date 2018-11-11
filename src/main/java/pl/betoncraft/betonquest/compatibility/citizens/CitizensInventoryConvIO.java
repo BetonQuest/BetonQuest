@@ -89,4 +89,12 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         }
     }
 
+    public static class CitizensCombined extends CitizensInventoryConvIO {
+
+        public CitizensCombined(Conversation conv, String playerID) {
+            super(conv, playerID);
+            super.printMessages = true;
+        }
+    }
+
 }

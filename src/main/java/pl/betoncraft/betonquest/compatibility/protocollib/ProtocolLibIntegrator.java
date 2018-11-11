@@ -41,7 +41,10 @@ public class ProtocolLibIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        //if NPCHider is running, reload it
+        if (NPCHider.getInstance() != null) {
+            NPCHider.start();
+        }
     }
 
     @Override

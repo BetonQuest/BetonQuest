@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -51,6 +50,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
+import org.apache.commons.lang.StringUtils;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
@@ -93,7 +93,7 @@ public class ConfigUpdater {
 	 * Destination version. At the end of the updating process this will be the
 	 * current version
 	 */
-	private final String destination = "v56";
+	private final String destination = "v59";
 	/**
 	 * Deprecated ConfigHandler, used for updating older configuration files
 	 */
@@ -112,11 +112,14 @@ public class ConfigUpdater {
 			instance.saveConfig();
 		}
 		// move backup files to backup folder
-		for (File file : instance.getDataFolder().listFiles()) {
-			if (file.getName().matches("^backup-.*\\.zip$")) {
-				file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups"
-						+ File.separator + file.getName()));
-				Debug.broadcast("File " + file.getName() + " moved to backup folder!");
+		File[] backupFiles = instance.getDataFolder().listFiles();
+		if (backupFiles != null) {
+			for (File file: backupFiles) {
+				if (file.getName().matches("^backup-.*\\.zip$")) {
+					file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups"
+												   + File.separator + file.getName()));
+					Debug.broadcast("File " + file.getName() + " moved to backup folder!");
+				}
 			}
 		}
 		if (version != null && version.equals(destination)) {
@@ -200,6 +203,42 @@ public class ConfigUpdater {
 		}
 		// update again until destination is reached
 		update();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v58() {
+		config.set("config.journal.chars_per_line", 19);
+		config.set("config.journal.lines_per_page", 13);
+		Debug.broadcast("Added config options chars_per_line and lines_per_page for the journal!");
+		config.set("version", "v59");
+		instance.saveConfig();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v57() {
+		if (config.contains("default_conversation_IO") && config.getString("default_conversation_IO").equalsIgnoreCase("chest")) {
+			Debug.broadcast("Renamed default ConversationIO to 'combined'");
+			config.set("default_conversation_IO", "combined");
+		}
+		for (ConfigPackage pack: Config.getPackages().values()) {
+			for (String convName: pack.getConversationNames()) {
+				String convIO = pack.getRawString("conversations." + convName + ".conversationIO");
+				if (convIO == null) continue;
+				if (!convIO.equalsIgnoreCase("chest")) continue;
+				Debug.broadcast("Renamed conversationIO in conversation " + pack.getName() + "." + convName + " to 'combined'");
+				pack.setString("conversations." + convName + ".conversationIO", "combined");
+			}
+		}
+		config.set("version", "v58");
+		instance.saveConfig();
+	}
+
+	@SuppressWarnings("unused")
+	private void update_from_v56() {
+		config.set("citizens_npcs_by_name", "false");
+		Debug.broadcast("Added option to allow identifying citizens npcs by name");
+		config.set("version", "v57");
+		instance.saveConfig();
 	}
 
 	@SuppressWarnings("unused")

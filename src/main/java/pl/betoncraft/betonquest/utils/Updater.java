@@ -327,7 +327,26 @@ public class Updater {
 		return false;
 	}
 
-	public boolean isEnabled() {
+	public boolean updateAvailable() {
+		if (!enabled) return false;
+        if (releaseAddress != null) return true;
+		if (bugfixAddress != null) return true;
+		if (isDevBuild && devBuildAddress != null) return true;
+		return false;
+	}
+
+	public String getUpdateVersion() {
+	    if (isDevBuild && devBuildAddress != null) return remoteDevBuild;
+	    if (releaseAddress != null) return remoteRelease;
+	    if (bugfixAddress != null) return remoteBugfix;
+	    return null;
+    }
+
+    public boolean isDevBuild() {
+        return isDevBuild;
+    }
+
+    public boolean isEnabled() {
 		return enabled;
 	}
 

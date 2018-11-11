@@ -22,6 +22,7 @@
 * **/q update** - updates the plugin to the newest release available. If you want to update to a development version instead, add `--dev` argument at the end of the command.
 * **/q create {package}**: creates new package with given name, filled with default quest
 * **/q vector {packname.variable} {newvariable}**: calculates the vector from first location variable to you position and saves it as second variable
+* **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
 * **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
 
 ## Aliases

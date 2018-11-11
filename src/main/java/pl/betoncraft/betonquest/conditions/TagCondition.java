@@ -30,7 +30,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class TagCondition extends Condition {
 
-	private final String tag;
+	protected final String tag;
 
 	public TagCondition(Instruction instruction) throws InstructionParseException {
 		super(instruction);

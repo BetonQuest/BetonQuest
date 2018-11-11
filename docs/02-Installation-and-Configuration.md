@@ -22,8 +22,9 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
     - If you're using a development version, there will be a third setting here, `notify_dev_build`.
         This is the same as `notify_new_release` but it checks the development builds instead. There are no specific version checking here, so if the found dev number is higher, it will appear. You download development builds on your own responsibility.
 * `default_journal_slot` is a number of slot where the journal will appear after using `/journal` command.
+* `citizens_npcs_by_name` sets if npcs from citizens2 should be identified in main.yml by their name instead of their id.
 * `max_npc_distance` is a distance you need to walk away from the NPC for the conversation to end (in case of using chat-based conversation interface).
-* `default_conversation_IO` is a conversation interface. `simple` is a conversation in chat, `tellraw` is an extension to provide clickable options and `chest` is a conversation in inventory window. Other plugins can add additional IO types.
+* `default_conversation_IO` is a conversation interface. `simple` is a conversation in chat, `tellraw` is an extension to provide clickable options and `chest` is a conversation in inventory window. If you want to use chest, but also write the conversation to the players chat use `combined`. Other plugins can add additional IO types.
 * `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
 * `combat_delay` is a delay (in seconds) the player must wait before he can start the conversation after combat.
 * `notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in case of chat-based conversations). It notifies players that they are in a conversation and the pullback is not some kind of a bug.
@@ -40,7 +41,9 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
 * `cmd_blacklist` is a list of commands that can't be used while in conversation. Remember that you can type here only single words (command names)!
 * `hook` controls compatibility with other plugins. Here you can turn off each hook.
 * `journal` controls various settings of the journal:
-    - `chars_per_page` is a number of characters before a page break. If you set it too high, the text on a journal page can overflow, becoming invisible.
+    - `chars_per_page` is a number of characters before a page break. If you set it too high, the text on a journal page can overflow, becoming invisible. **This was replaced by `chars_per_line` and `lines_per_page` and is only required if you don't like the new behaviour.**
+    - `chars_per_line` is a number of characters before a line break. If you set it too high, the text on a journal page can overflow, becoming invisible. If this isn't set BQ will fall back on the old page wrapping behaviour configured through `chars_per_page`.
+    - `lines_per_page` is a number of lines before a new page. If you set it too high, the text on a journal page can overflow, becoming invisible. Only required if `chars_per_line` is set.
     - `one_entry_per_page` will make each entry take a single page. Note that it won't expand to other pages even if it overflows, so keep your entries short.
     - `reversed_order` controls the chronological order of entries in the journal. By default the entries are ordered from newest to oldest. You can reverse it, but it will force players to click through a lot of pages to get to the latest entry.
     - `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.

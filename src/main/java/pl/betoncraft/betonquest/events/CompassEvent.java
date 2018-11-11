@@ -17,9 +17,18 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
  * Adds a compass specific tag to the player.
@@ -28,19 +37,65 @@ import pl.betoncraft.betonquest.api.QuestEvent;
  */
 public class CompassEvent extends QuestEvent {
 
-	private TagEvent tag;
+	private Action action;
+	private String compass;
+	private ConfigurationSection compassSection;
+	private ConfigPackage compassPackage;
+
+	public enum Action {
+		ADD,
+		DEL,
+		SET
+	}
 
 	public CompassEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		persistent = true;
-		String action = (instruction.next().equalsIgnoreCase("add")) ? "add" : "del";
-		String compass = "compass-" + instruction.next();
-		tag = new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action + " " + compass));
+
+		action = instruction.getEnum(Action.class);
+		compass = instruction.next();
+
+		// Check if compass is valid
+		for (ConfigPackage pack : Config.getPackages().values()) {
+			ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
+			if (s != null) {
+				if (s.contains(compass)) {
+					compassSection = s.getConfigurationSection(compass);
+					compassPackage = pack;
+					break;
+				}
+			}
+		}
+		if (compassSection == null) {
+			throw new InstructionParseException("Invalid compass location: " + compass);
+		}
 	}
 
 	@Override
 	public void run(String playerID) {
-		tag.run(playerID);
-	}
+		switch (action) {
+			case ADD:
+			case DEL:
+				// Add Tag to player
+				try {
+					new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).run(playerID);
+				} catch (InstructionParseException e) {
+					Debug.error("Failed to tag player with compass point: " + compass);
+				}
+				return;
+			case SET:
+				Location location;
+				try {
+					location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
+				} catch (QuestRuntimeException | InstructionParseException e) {
+					Debug.error("Failed to set compass: " + compass);
+					return;
+				}
 
+				Player player = PlayerConverter.getPlayer(playerID);
+				if (player != null) {
+					player.setCompassTarget(location);
+				}
+		}
+	}
 }

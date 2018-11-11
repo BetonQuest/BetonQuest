@@ -1,8 +1,32 @@
-﻿v1.10-dev
+v1.10-dev
 Notes:
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
+  - This version is only compatible to Shopkeepers v2.2.0 and above
 Additions:
-    * New 'title' event - display titles without the whole command hassle
+	* npc holograms above the head that follow the npc (requires HolographicDisplays)
+	* New 'facing' condition - check if player is facing a direction 
+	* New 'looking' condition - check if player looks at a block
+	* New 'deleffect' event - delete potion effects of a player
+	* New '%citizen%' variable - display a npcs name or coordinates (requires Citizens)
+	* New 'npcrange' objective - player has to go towards a npc (requires Citizens)
+	* New 'npcdistance' condition - check if a player is close to a npc (requires Citizens)
+	* New 'npclocation' condition - check if a npc is at a location (requires Citizens)
+	* New 'npcregion' condition - check if a npc is inside a region (requires Citizens & WorldGuard)
+	* New 'killmob' event - remove the mobs that you spawned with 'spawn' event
+	* New '/q version' command - get the version used
+	* New 'partialdate' condition - check if the date matches a pattern
+	* New 'dayofweek' condition - check if its weekend or monday
+	* New 'realtime' condition - check if its a specific time
+	* New 'xp' event - give a player xp.
+	* Global objecties (objectives that  are active for all players directly after start)
+	* Global tags and points (tags ad points that are not set for one specific player)
+	* New 'globaltag' event 
+	* New 'globaltag' condition
+	* New 'globalpoint' event 
+	* New 'globalpoint' condition
+	* New 'opsudo' event - Sudo commands with op permissions
+	* Brewery integration ('drunk', 'drunkquality' and 'hasbrew'conditions, 'givebrew' and 'takebrew' events) 
+	* New 'title' event - display titles without the whole command hassle
 	* New 'playsound' event - plays a sound
 	* New 'fly' condition - check if the player is flying with Elytra
 	* New 'biome' condition - check the player's current biome
@@ -10,7 +34,15 @@ Additions:
 	* Conversations can individually override conversation IO type
 	* NPCs can be individually hidden from players if ProtocolLib is installed
 Changes:
-    * Translation system is integrated with BetonLangAPI
+	* 'compass' event can now directly set a players compass
+	* holograms from HolographicDisplays now can display items
+	* 'movenpc' event now allows multiple locations to create a path
+	* 'enchant' objective now allows multiple enchantments
+	* 'particle' event can now create client side only particles
+	* 'chest' converstionIO now dosn't display messages to chat for the old behaviour use 'combined'
+	* 'money' event can now notify you about how much you recieved
+	* 'mmobkill' objective now allows multiple mobs
+	* Translation system is integrated with BetonLangAPI
 	* NPC heads in "chest" conversation IO will display correct Citizens skin
 	* NPC particles (EffectLib integration) can be displayed to individual players
 	* Condition command allows checking static conditions
@@ -18,8 +50,12 @@ Changes:
 	* 'delay' objective and 'folder' event accept more time units
 	* 'password' objective also accepts commands
 	* Commands can be tab-completed
+Fixes:
+	* Fixed bug where players could take out items from the chest conversationIO
+	* Removed possibilities of dropping/transfering quest items and the journal
+	* Lots of smaller bugfixes
 
-﻿v1.9.6
+v1.9.6
 Fixes:
     * Update version to 1.9.6
 

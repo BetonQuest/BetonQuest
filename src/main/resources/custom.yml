@@ -1,4 +1,6 @@
 npc_effects:
+  check_interval: 100
+  disabled: false
   default:
     class: VortexEffect
     iterations: 20

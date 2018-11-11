@@ -75,7 +75,7 @@ You can also translate journal entries, quest cancelers and `message` events, mo
 
 ### Conversation displaying
 
-By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore.
+By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore. Alternatively use `slowtellraw` which provides the npc responses line by line delayed by 0.5 seconds.
 
 You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.
 
@@ -185,12 +185,19 @@ If you want to let your players cancel their quest there is a function for that.
 
 To cancel the quest you need to open your backpack and select a "cancel" button (by default a bone, can be changes by naming an item "cancel_button" inside default package). There will be a list of quests which can be canceled. Just select the one that interests you and it will be canceled.
 
-## Global locations
+## Global objectives
 
-Global locations are locations at which events can fire. They are defined as normal **location** objectives in objectives.yml and will fire when any player is in range of that location. Global locations are active for all players, even if they don't have an active objective. They can be used for starting location specific quest (such as encountering a dungeon and checking it out), teleporting players to arenas, this kind of stuff. They use tags to tell which player has been at certain location and which hasn't. These tags follow syntax `global_<tag>`, where `<tag>` is location objective's tag, defined at the end of instruction string (eg. `global_conversation_start`, where `conversation_start` is a tag of location objective). You can specify which events will be global locations in the _main.yml_ file inside a package, separating them with commas:
+If you want a objective to be active for every player right after joining you can create a global objective. This is done by adding `global` argument to the instruction of the objective. When you then reload BetonQuest it is started for all online players and also will be started for every player who joins.
 
-    global_locations: dungeon_entrance,trap,something_else
+To prevent the objective from being started every time a player joins a tag is set for the player whenever the objective is started and as long as the player has the tag the objective wont be started again if the player joins.  
+These tags follow syntax `<package>.global-<id>`, where `<id>` is the objectives id and `<package>` the package where the objective is located.
 
+Possible use cases would be a quest which starts if a player reaches a specific location or breaks a specific block.
+
+**Example:**
+```YAML
+start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder global'
+```
 ## Static events
 
 Static events are events that will fire at the specified time of the day. They are not tied to a specific player, so not all of event types can be used as static. (Which player should receive a tag or objective? From which one should the items be taken?) Also, static events cannot have conditions defined (`event-conditions:` argument), as the plugin cannot check any condition without the player. Events, that can be used as static are flagges with `static` keyword in this documentation. You can define your static events in _main.yml_ file under `static` section, as such:

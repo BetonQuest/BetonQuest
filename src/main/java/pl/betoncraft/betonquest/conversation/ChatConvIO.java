@@ -35,6 +35,7 @@ import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Base of all chat conversation outputs
@@ -55,6 +56,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
 	protected String answerFormat;
 	protected String textFormat;
+	private String npcTextColor;
 
 	public ChatConvIO(Conversation conv, String playerID) {
 		this.options = new HashMap<>();
@@ -67,9 +69,14 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 			string.append(color);
 		}
 		string.append("%npc%" + ChatColor.RESET + ": ");
+
+		StringBuilder textColorBuilder = new StringBuilder();
 		for (ChatColor color : colors.get("text")) {
-			string.append(color);
+			textColorBuilder.append(color);
 		}
+		npcTextColor = textColorBuilder.toString();
+
+		string.append(npcTextColor);
 		textFormat = string.toString();
 		string = new StringBuilder();
 		for (ChatColor color : colors.get("player")) {
@@ -161,13 +168,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 	@Override
 	public void setNpcResponse(String npcName, String response) {
 		this.npcName = npcName;
-		this.npcText = response.replace('&', '§');
+		this.npcText = response;
 	}
 
 	@Override
 	public void addPlayerOption(String option) {
 		i++;
-		options.put(i, option.replace('&', '§'));
+		options.put(i, option);
 	}
 
 	@Override
@@ -176,7 +183,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 			end();
 			return;
 		}
-		player.sendMessage(textFormat.replace("%npc%", npcName) + npcText);
+        player.sendMessage(Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
 	}
 
 	@Override
@@ -190,4 +197,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 	public void end() {
 		HandlerList.unregisterAll(this);
 	}
+
+	@Override
+	public void print(String message) {
+        if (message != null && message.length() > 0) {
+            player.sendMessage(message);
+        }
+    }
 }

@@ -25,10 +25,12 @@ import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.EventID;
+import pl.betoncraft.betonquest.GlobalObjectives;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.ObjectiveID;
+import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -51,6 +53,8 @@ public abstract class Objective {
 	protected ConditionID[] conditions;
 	protected EventID[] events;
 	protected boolean persistent;
+	protected boolean global;
+	protected QREHandler qreHandler = new QREHandler();
 
 	/**
 	 * Contains all data objects of the players with this objective active
@@ -83,6 +87,9 @@ public abstract class Objective {
 				 tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
 				 tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
 		persistent = instruction.hasArgument("persistent");
+		global = instruction.hasArgument("global");
+		if (global)
+			GlobalObjectives.add((ObjectiveID) instruction.getID());
 		// make them final
 		int length = tempEvents1.length + tempEvents2.length;
 		events = new EventID[length];
@@ -313,6 +320,13 @@ public abstract class Objective {
 	}
 
 	/**
+	 * @return if the objective is a global objective
+	 */
+	public boolean isGlobal() {
+		return global;
+	}
+
+	/**
 	 * Stores player's data for the objective
 	 * 
 	 * @author Jakub Sapalski
@@ -373,4 +387,40 @@ public abstract class Objective {
 
 	}
 
+	/**
+	 * Can handle thrown{@link QuestRuntimeException} and rate limits them so they don't spam console that hard
+	 *
+	 * @author Jonas Blocher
+	 */
+	protected class QREHandler {
+
+		/**
+		 * Interval in which errors are logged
+		 */
+		public static final int ERROR_RATE_LIMIT_MILLIS = 5000;
+
+		public long last = 0;
+
+		/**
+		 * Runs a task and logs occurring quest runtime exceptions with a rate limit
+		 * @param qreThrowing a task that may throw a quest runtime exception
+		 */
+		public void handle(QREThrowing qreThrowing) {
+			try {
+				qreThrowing.run();
+			} catch (QuestRuntimeException e) {
+				if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) return;
+				last = System.currentTimeMillis();
+				Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * A task that may throw a {@link QuestRuntimeException}
+	 */
+	protected interface QREThrowing {
+
+		void run() throws QuestRuntimeException;
+	}
 }

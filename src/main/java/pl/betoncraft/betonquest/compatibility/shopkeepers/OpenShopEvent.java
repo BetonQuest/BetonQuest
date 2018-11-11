@@ -19,8 +19,8 @@ package pl.betoncraft.betonquest.compatibility.shopkeepers;
 
 import java.util.UUID;
 
-import com.nisovin.shopkeepers.Shopkeeper;
-import com.nisovin.shopkeepers.ShopkeepersPlugin;
+import com.nisovin.shopkeepers.api.ShopkeepersAPI;
+import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
@@ -40,7 +40,7 @@ public class OpenShopEvent extends QuestEvent {
 		super(instruction);
 		String string = instruction.next();
 		try {
-			shopkeeper = ShopkeepersPlugin.getInstance().getShopkeeper(UUID.fromString(string));
+			shopkeeper = ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string));
 		} catch (IllegalArgumentException e) {
 			throw new InstructionParseException("Could not parse UUID: '" + string + "'");
 		}

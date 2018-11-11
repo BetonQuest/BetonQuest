@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.objectives;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -39,24 +41,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class EnchantObjective extends Objective implements Listener {
 
 	private QuestItem item;
-	private Enchantment enchant;
-	private int level;
+	private List<EnchantmentData> enchantments;
 
 	public EnchantObjective(Instruction instruction) throws InstructionParseException {
 		super(instruction);
 		template = ObjectiveData.class;
 		item = instruction.getQuestItem();
-		String[] enchantParts = instruction.next().split(":");
-		if (enchantParts.length != 2)
-			throw new InstructionParseException("Could not parse enchantment: " + instruction.current());
-		enchant = Enchantment.getByName(enchantParts[0].toUpperCase());
-		if (enchant == null)
-			throw new InstructionParseException("Enchantment type '" + enchantParts[0] + "' does not exist");
-		try {
-			level = Integer.parseInt(enchantParts[1]);
-		} catch (NumberFormatException e) {
-			throw new InstructionParseException("Could not parse enchantment level");
-		}
+		enchantments = instruction.getList(EnchantmentData::convert);
+		if (enchantments.isEmpty()) throw new InstructionParseException("Not enough arguments");
 	}
 
 	@EventHandler
@@ -66,13 +58,15 @@ public class EnchantObjective extends Objective implements Listener {
 			return;
 		if (!item.compare(event.getItem()))
 			return;
-		for (Enchantment enchant : event.getEnchantsToAdd().keySet())
-			if (enchant == this.enchant)
-				if (event.getEnchantsToAdd().get(enchant) >= level)
-					if (checkConditions(playerID)) {
-						completeObjective(playerID);
-						return;
-					}
+		for (EnchantmentData enchant : enchantments) {
+			if (!event.getEnchantsToAdd().keySet().contains(enchant.getEnchantment())
+					|| event.getEnchantsToAdd().get(enchant.getEnchantment()) < enchant.getLevel()) {
+				return;
+			}
+		}
+		if (checkConditions(playerID)) {
+			completeObjective(playerID);
+		}
 	}
 
 	@Override
@@ -88,6 +82,41 @@ public class EnchantObjective extends Objective implements Listener {
 	@Override
 	public String getDefaultDataInstruction() {
 		return "";
+	}
+
+	public static class EnchantmentData {
+
+		private final Enchantment enchantment;
+		private final int level;
+
+		public EnchantmentData(Enchantment enchantment, int level) {
+			this.enchantment = enchantment;
+			this.level = level;
+		}
+
+		public Enchantment getEnchantment() {
+			return enchantment;
+		}
+
+		public int getLevel() {
+			return level;
+		}
+
+		public static EnchantmentData convert(String string) throws InstructionParseException {
+			String[] parts = string.split(":");
+			if (parts.length != 2)
+				throw new InstructionParseException("Could not parse enchantment: " + string);
+			Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
+			if (enchantment == null)
+				throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
+			int level;
+			try {
+				level = Integer.parseInt(parts[1]);
+			} catch (NumberFormatException e) {
+				throw new InstructionParseException("Could not parse enchantment level: " + string);
+			}
+			return new EnchantmentData(enchantment, level);
+		}
 	}
 
 }

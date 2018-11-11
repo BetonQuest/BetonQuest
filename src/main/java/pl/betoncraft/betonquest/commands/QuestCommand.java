@@ -19,9 +19,18 @@ package pl.betoncraft.betonquest.commands;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -31,6 +40,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.betoncraft.betonquest.BetonQuest;
@@ -44,13 +54,16 @@ import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.ComponentBuilder;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
@@ -130,6 +143,36 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					}
 				}.runTaskAsynchronously(instance);
 				break;
+			case "globaltags":
+			case "globaltag":
+			case "gtag":
+			case "gtags":
+			case "gt":
+				Debug.info("Loading data asynchronously");
+				final CommandSender finalSender8 = sender;
+				final String[] finalArgs8 = args;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						handleGlobalTags(finalSender8, finalArgs8);
+					}
+				}.runTaskAsynchronously(instance);
+				break;
+			case "globalpoints":
+			case "globalpoint":
+			case "gpoints":
+			case "gpoint":
+			case "gp":
+				Debug.info("Loading data asynchronously");
+				final CommandSender finalSender9 = sender;
+				final String[] finalArgs9 = args;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						handleGlobalPoints(finalSender9, finalArgs9);
+					}
+				}.runTaskAsynchronously(instance);
+				break;
 			case "tags":
 			case "tag":
 			case "t":
@@ -196,9 +239,13 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				break;
 			case "vector":
 			case "vec":
-			case "v":
 				handleVector(sender, args);
 				break;
+				case "version":
+				case "ver":
+				case "v":
+					displayVersionInfo(sender);
+					break;
 			case "purge":
 				Debug.info("Loading data asynchronously");
 				final CommandSender finalSender7 = sender;
@@ -263,6 +310,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					"objective",
 					"tag",
 					"point",
+					"globaltag",
+					"globalpoint",
 					"journal",
 					"condition",
 					"event",
@@ -272,6 +321,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 					"delete",
 					"config",
 					"vector",
+					"version",
 					"backup");
 		}
 		switch (args[0].toLowerCase()) {
@@ -303,6 +353,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 			case "point":
 			case "p":
 				return completePoints(sender, args);
+			case "globaltags":
+			case "globaltag":
+			case "gtag":
+			case "gtags":
+			case "gt":
+				return completeGlobalTags(sender, args);
+			case "globalpoints":
+			case "globalpoint":
+			case "gpoints":
+			case "gpoint":
+			case "gp":
+				return completeGlobalPoints(sender, args);
 			case "journals":
 			case "journal":
 			case "j":
@@ -316,7 +378,6 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				return completeRenaming(sender, args);
 			case "vector":
 			case "vec":
-			case "v":
 				return completeVector(sender, args);
 			case "purge":
 				if (args.length == 2) return null;
@@ -653,7 +714,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	private List<String> completeJournals(CommandSender sender, String[] args) {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("add", "list", "del");
-		if (args.length == 4) return completeJournals(sender, args);
+		if (args.length == 4) return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
 		return new ArrayList<>();
 	}
 
@@ -726,6 +787,68 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	}
 
 	/**
+	 * Lists, adds, removes or purges all global points
+	 * @param sender
+	 * @param args
+	 */
+	private void handleGlobalPoints(CommandSender sender, String[] args) {
+		GlobalData data = instance.getGlobalData();
+		// if there are no arguments then list all global points
+		if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+			List<Point> points = data.getPoints();
+			Debug.info("Listing global points");
+			sendMessage(sender, "global_points");
+			for (Point point : points) {
+				sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
+			}
+			return;
+		}
+		//handle purge
+		if (args[1].equalsIgnoreCase("purge")) {
+			Debug.info("Purging all global points");
+			data.purgePoints();
+			sendMessage(sender, "global_points_purged");
+			return;
+		}
+		// if there is not enough arguments, display warning
+		if (args.length < 3) {
+			Debug.info("Missing category");
+			sendMessage(sender, "specify_category");
+			return;
+		}
+		String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+		// if there are arguments, handle them
+		switch (args[1].toLowerCase()) {
+		case "add":
+		case "a":
+			if (args.length < 4 || !args[3].matches("-?\\d+")) {
+				Debug.info("Missing amount");
+				sendMessage(sender, "specify_amount");
+				return;
+			}
+			// add the point
+			Debug.info("Adding global points");
+			data.modifyPoints(category, Integer.parseInt(args[3]));
+			sendMessage(sender, "points_added");
+			break;
+		case "remove":
+		case "delete":
+		case "del":
+		case "r":
+		case "d":
+			Debug.info("Removing global points");
+			data.removePointsCategory(category);
+			sendMessage(sender, "points_removed");
+			break;
+		default:
+			// if there was something else, display error message
+			Debug.info("The argument was unknown");
+			sendMessage(sender, "unknown_argument");
+			break;
+		}
+	}
+
+	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest points command
 	 * @param sender
 	 * @param args
@@ -735,6 +858,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("add", "list", "del");
 		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
+	/**
+	 * Returns a list including all possible options for tab complete of the /betonquest globalpoints command
+	 * @param sender
+	 * @param args
+	 * @return
+	 */
+	private List<String> completeGlobalPoints(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("add", "list", "del");
+		if (args.length == 3) return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -952,6 +1087,62 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 	}
 
 	/**
+	 * Lists, adds or removes global tags
+	 */
+	private void handleGlobalTags(CommandSender sender, String[] args) {
+		GlobalData data = instance.getGlobalData();
+		// if there are no arguments then list all global tags
+		if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+			List<String> tags = data.getTags();
+			Debug.info("Listing global tags");
+			sendMessage(sender, "global_tags");
+			for (String tag : tags) {
+				sender.sendMessage("§b- " + tag);
+			}
+			return;
+		}
+		//handle purge
+		if (args[1].equalsIgnoreCase("purge")) {
+			Debug.info("Purging all global tags");
+			data.purgeTags();
+			sendMessage(sender, "global_tags_purged");
+			return;
+		}
+		// if there is not enough arguments, display warning
+		if (args.length < 3) {
+			Debug.info("Missing tag name");
+			sendMessage(sender, "specify_tag");
+			return;
+		}
+		String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+		// if there are arguments, handle them
+		switch (args[1].toLowerCase()) {
+		case "add":
+		case "a":
+			// add the tag
+			Debug.info("Adding global tag " + tag);
+			data.addTag(tag);
+			sendMessage(sender, "tag_added");
+			break;
+		case "remove":
+		case "delete":
+		case "del":
+		case "r":
+		case "d":
+			// remove the tag
+			Debug.info("Removing global tag " + tag);
+			data.removeTag(tag);
+			sendMessage(sender, "tag_removed");
+			break;
+		default:
+			// if there was something else, display error message
+			Debug.info("The argument was unknown");
+			sendMessage(sender, "unknown_argument");
+			break;
+		}
+	}
+
+	/**
 	 * Returns a list including all possible options for tab complete of the /betonquest tags command
 	 * @param sender
 	 * @param args
@@ -961,6 +1152,18 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		if (args.length == 2) return null;
 		if (args.length == 3) return Arrays.asList("list", "add", "del");
 		if (args.length == 4) return completeId(sender, args, null);
+		return new ArrayList<>();
+	}
+
+	/**
+	 * Returns a list including all possible options for tab complete of the /betonquest globaltags command
+	 * @param sender
+	 * @param args
+	 * @return
+	 */
+	private List<String> completeGlobalTags(CommandSender sender, String[] args) {
+		if (args.length == 2) return Arrays.asList("list", "add", "del");
+		if (args.length == 3) return completeId(sender, args, null);
 		return new ArrayList<>();
 	}
 
@@ -1131,7 +1334,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		y = loc.getY() - y;
 		z = loc.getZ() - z;
 		Config.setString(pack + ".main.variables.vectors." + args[2],
-				String.format("$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
+				String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
 		player.sendMessage("§2OK");
 	}
 
@@ -1406,6 +1609,8 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		HashMap<String, String> cmds = new HashMap<>();
 		cmds.put("reload", "reload");
 		cmds.put("objectives", "objective <player> [list/add/del] [objective]");
+		cmds.put("globaltags", "globaltags [list/add/del/purge]");
+		cmds.put("globalpoints", "globalpoints [list/add/del/purge]");
 		cmds.put("tags", "tag <player> [list/add/del] [tag]");
 		cmds.put("points", "point <player> [list/add/del] [category] [amount]");
 		cmds.put("journal", "journal <player> [list/add/del] [entry] [date]");
@@ -1417,6 +1622,7 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 		cmds.put("delete", "delete <tag/point/objective/journal> <name>");
 		cmds.put("config", "config <read/set/add> <path> [string]");
 		cmds.put("vector", "vector <pack.varname> <vectorname>");
+		cmds.put("version", "version");
 		cmds.put("purge", "purge <player>");
 		if (!(sender instanceof Player))
 			cmds.put("backup", "backup");
@@ -1436,6 +1642,95 @@ public class QuestCommand implements CommandExecutor,SimpleTabCompleter {
 				sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + command));
 			}
 		}
+	}
+
+	private void displayVersionInfo(CommandSender sender) {
+
+		//build clickable tellraw-like message by using bugee api or fall back on unclickable messages
+		ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
+
+		//get versions
+		final String betonquest_version = BetonQuest.getInstance().getDescription().getVersion();
+		final String spigot_version = Bukkit.getServer().getVersion();
+
+		//get internal messages
+		String lang = (sender instanceof Player)
+				? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
+				: Config.getLanguage();
+		String click_to_download = "§b" + Config.getMessage(lang, "click_to_download");
+		String click_to_copy = "§b" + Config.getMessage(lang, "click_to_copy");
+
+		//get available updates
+		Updater updater = BetonQuest.getInstance().getUpdater();
+		String updates_string = "";
+		String updates_command = null;
+		if (updater.isEnabled() && updater.updateAvailable()) {
+			if (updater.isDevBuild() && (updater.getRemoteDevBuild().equals(updater.getUpdateVersion()))) {
+				//if update is a dev build
+				updates_command = "/q update --dev";
+			} else {
+				updates_command = "/q update";
+			}
+			updates_string = " (version " + updater.getUpdateVersion() + " is " + "avialable!)";
+		}
+
+		//get hooked Plugins
+		TreeMap<String, String> hooked = new TreeMap<>();
+		for (String plugin: Compatibility.getHooked()) {
+			Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
+			if (pl != null) hooked.put(plugin, pl.getDescription().getVersion());
+		}
+		StringJoiner hooked_raw = new StringJoiner(", ");
+		for (String key: hooked.navigableKeySet()) {
+			hooked_raw.add(key + " (" + hooked.get(key) + ")");
+		}
+
+		//build version info message
+		builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
+		builder
+				.append("BetonQuest version: ", ChatColor.AQUA)
+				.append(betonquest_version, ChatColor.GRAY)
+				.hover(click_to_copy)
+				.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquest_version);
+		if (updates_command != null) {
+			builder
+					.append("\n        " + updates_string, ChatColor.YELLOW)
+					.hover(click_to_download)
+					.click(ComponentBuilder.ClickEvent.RUN_COMMAND, updates_command);
+		}
+		builder
+				.append("\n", ChatColor.RESET)
+				.append("Server version: ", ChatColor.GOLD)
+				.append(spigot_version, ChatColor.GRAY)
+				.hover(click_to_copy)
+				.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigot_version)
+				.append("\n\n", ChatColor.RESET)
+				.append("Hooked into:\n", ChatColor.GREEN);
+		if (hooked.isEmpty()) {
+			builder.append("  ---", ChatColor.GRAY);
+		} else {
+			boolean first = true;
+			for (String key: hooked.navigableKeySet()) {
+				if (first) first = false;
+				else {
+					builder
+							.append(", ", ChatColor.RESET)
+							.hover(click_to_copy)
+							.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+				}
+				builder
+						.append(key, ChatColor.RESET)
+						.hover(click_to_copy)
+						.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString())
+						.append(" (" + hooked.get(key) + ")", ChatColor.GRAY)
+						.hover(click_to_copy)
+						.click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+
+			}
+		}
+
+		//send the message
+		builder.send(sender);
 	}
 
 	private void sendMessage(CommandSender sender, String messageName) {

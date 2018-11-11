@@ -272,10 +272,13 @@ public class Instruction {
 	}
 
 	public Material getMaterial() throws InstructionParseException {
-		return Material.matchMaterial(next());
+		return getMaterial(next());
 	}
 
 	public Material getMaterial(String string) throws InstructionParseException {
+		if(string == null) {
+			return null;
+		}
 		return Material.matchMaterial(string);
 	}
 	

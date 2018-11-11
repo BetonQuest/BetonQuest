@@ -117,4 +117,8 @@ public class VariableNumber {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return (variable == null ? String.valueOf(number) : variable.toString());
+	}
 }

@@ -20,11 +20,37 @@ The player has to right-click on the NPC with specified ID. It can also optional
 
 **Example**: `npcinteract 3 cancel conditions:sneak events:steal`
 
+### NPC range objective: `npcrange`
+
+The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
+
+**Example:** `npcrange 3 enter 20 events:master_inRange`
+
 ### Move NPC event: `movenpc`
 
-This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify additional arguments: `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
+This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify multiple locations separated by colons to let the npc follow a path of locations. You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving, `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
 
-**Example**: `movenpc 121 100;200;300;world wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward`
+**Example**: `movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward`
+
+### NPC distance condition: `npcdistance`
+
+This condition will return true if the player is closer to the NPC with the given ID than the given distance. The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
+
+**Example:** `npcdistance 16 22`
+
+### NPC location condition: `npclocation` _persistent_, _static_
+
+This condition will return true if a npc is close to a location. First argument is the id of the NPC, second the location and third the maximum distance to the location that the npc is allowed to have.
+
+**Example:** `npclocation 16 4.0;14.0;-20.0;world 22`
+
+### NPC region condition: `npcregion` _persistent_, _static_
+
+_This condition also requires WorldGuard to work._
+
+This condition will return true if a npc is inside a region. First argument is the id of the npc second is the name of the region.
+
+**Example:** `npcregion 16 spawn`
 
 ## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
@@ -139,7 +165,12 @@ You can control the behaviour of particles around the NPCs in _custom.yml_ file,
 
 ### Particle event: `particle`
 
-This event will load an effect defined in `effects` section in _custom.yml_ file and display it on player's location. The only argument is the name of the effect. You can optionally add `loc:` argument followed by a location written like `100;200;300;world;180;-90` to put it on that location.
+This event will load an effect defined in `effects` section in
+_custom.yml_ file and display it on player's location. The only argument
+is the name of the effect. You can optionally add `loc:` argument
+followed by a location written like `100;200;300;world;180;-90` to put
+it on that location. If you add `private` argument the effect will only
+be displayed to the player for which you ran the event.
 
 **Example in _custom.yml_**:
 
@@ -153,7 +184,7 @@ This event will load an effect defined in `effects` section in _custom.yml_ file
         grow: 3
         radius: 30
 
-**Example**: `particle beton loc:100;200;300;world;180;-90`
+**Example**: `particle beton loc:100;200;300;world;180;-90 private`
 
 ## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
 
@@ -285,11 +316,41 @@ In order to create a hologram, you have to add `holograms` section in your _cust
       beton:
         lines:
         - '&bThis is Beton.'
+        - 'item:MAP'
         - '&eBeton is strong.'
         location: 100;200;300;world
         conditions: has_some_quest, !finished_some_quest
 
+A line can also represent a floating item. To do so enter the line as 'item:`MATERIAL`'. It will be replaced with the `MATERIAL` defined. In the above example, a floating map will be seen between two lines of text.
+
 The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
+
+If Citizens is also installed then you can have holograms configured relative to an npc. Add the following to _custom.yml_.
+
+    npc_holograms:
+      # How often to check conditions
+      check_interval: 100
+
+      # Disable npc_holograms
+      disabled: false
+
+      # Hologram Settings
+      default:
+        # Lines in hologram
+        lines:
+          - !
+        # Vector offset to NPC position to place hologram
+        vector: 0;3;0
+
+        # Conditions to display hologram
+        conditions: has_some_quest, !finished_some_quest
+
+        # NPC's to apply these settings to. If blank, applies by default
+        npcs:
+          - 0
+          - 22
+
+Item lines are also supported here.
 
 ## [RacesAndClasses](http://dev.bukkit.org/bukkit-plugins/racesandclasses/)
 

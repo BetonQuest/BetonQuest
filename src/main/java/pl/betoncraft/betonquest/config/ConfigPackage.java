@@ -1,17 +1,17 @@
 /**
  * BetonQuest - advanced quests for Bukkit
  * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,14 +19,18 @@ package pl.betoncraft.betonquest.config;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.Utils;
 
 /**
  * Holds configuration files of the package
- * 
+ *
  * @author Jakub Sapalski
  */
 public class ConfigPackage {
@@ -47,7 +51,7 @@ public class ConfigPackage {
 	/**
 	 * Loads a package from specified directory. It doesn't have to be valid
 	 * package directory.
-	 * 
+	 *
 	 * @param pack
 	 *            the directory containing this package
 	 * @param name
@@ -87,7 +91,7 @@ public class ConfigPackage {
 
 	/**
 	 * Returns a raw string (without inserted variables)
-	 * 
+	 *
 	 * @param address
 	 *            address of the string
 	 * @return the raw string
@@ -149,7 +153,7 @@ public class ConfigPackage {
 
 	/**
 	 * Returns a string with inserted variables
-	 * 
+	 *
 	 * @param address
 	 *            address of the string
 	 * @return the string
@@ -165,13 +169,11 @@ public class ConfigPackage {
 		// handle "$this$" variables
 		value = value.replace("$this$", name);
 		// handle the rest
+		Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
 		while (true) {
-			int start = value.indexOf('$');
-			int end = value.indexOf('$', start + 1);
-			if (start == -1 || end == -1) {
-				break;
-			}
-			String varName = value.substring(start + 1, end);
+			Matcher matcher = global_variable_regex.matcher(value);
+			if (!matcher.find()) break;
+			String varName = matcher.group(1);
 			String varVal = main.getConfig().getString("variables." + varName);
 			if (varVal == null) {
 				Debug.error(String.format("Variable %s not defined in package %s", varName, name));
@@ -226,12 +228,22 @@ public class ConfigPackage {
 					return null;
 				}
 				double x3 = x1 + x2, y3 = y1 + y2, z3 = z1 + z2;
-				value = value.replace("$" + varName + "$", String.format("%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
+				value = value.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
 			} else {
 				value = value.replace("$" + varName + "$", varVal);
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * Returns a string with inserted variables and color codes and linebreaks replaced
+	 *
+	 * @param address
+	 * @return
+	 */
+	public String getFormattedString(String address) {
+		return Utils.format(getString(address));
 	}
 
 	public boolean setString(String address, String value) {
@@ -332,7 +344,7 @@ public class ConfigPackage {
 	public ConfigAccessor getObjectives() {
 		return objectives;
 	}
-	
+
 	/**
 	 * @return the config with custom settings
 	 */

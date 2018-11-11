@@ -278,8 +278,13 @@ public class Conversation implements Listener {
 		for (EventID event : data.getFinalEvents()) {
 			BetonQuest.event(playerID, event);
 		}
-		// print message
-		Config.sendMessage(playerID, "conversation_end", new String[] { data.getQuester(language) }, "end");
+		//only display status messages if conversationIO allows it
+		if (conv.inOut.printMessages()) {
+			// print message
+			conv.inOut.print(Config.parseMessage(playerID, "conversation_end", new String[]{data.getQuester(language)}));
+		}
+		//play conversation end sound
+		Config.playSound(playerID, "end");
 		// delete conversation
 		list.remove(playerID);
 		HandlerList.unregisterAll(this);
@@ -505,10 +510,15 @@ public class Conversation implements Listener {
 					prefixVariables = new String[] { prefix };
 				}
 
-				// print message about starting a conversation only if it
-				// is started, not resumed
-				Config.sendMessage(playerID, "conversation_start", new String[] { data.getQuester(language) }, "start",
-						prefixName, prefixVariables);
+				//only display status messages if conversationIO allows it
+				if (conv.inOut.printMessages()) {
+					// print message about starting a conversation only if it
+					// is started, not resumed
+					conv.inOut.print(Config.parseMessage(playerID, "conversation_start", new String[]{data.getQuester(language)},
+							prefixName, prefixVariables));
+				}
+				//play the conversation start sound
+				Config.playSound(playerID,"start");
 			} else {
 				// don't forget to select the option prior to printing its text
 				selectOption(options, true);

@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.conversation;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,6 +36,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import org.apache.commons.lang.StringUtils;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -60,9 +60,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	protected Conversation conv;
 	protected Player player;
 	protected Inventory inv;
+	protected boolean processingLastClick = false;
 	protected boolean allowClose = false;
 	protected boolean switching = false;
 	protected Location loc;
+	protected boolean printMessages = false;
 
 	public InventoryConvIO(Conversation conv, String playerID) {
 		this.conv = conv;
@@ -105,13 +107,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
 	@Override
 	public void setNpcResponse(String npcName, String response) {
 		this.npcName = npcName;
-		this.response = Utils.multiLineColorCodes(response.replace('&', '§'), npcTextColor);
+        this.response = Utils.replaceReset(response, npcTextColor);
 	}
 
 	@Override
 	public void addPlayerOption(String option) {
 		i++;
-		options.put(i, Utils.multiLineColorCodes(option.replace('&', '§'), optionColor));
+        options.put(i, Utils.replaceReset(option, optionColor));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -202,7 +204,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			item.setItemMeta(meta);
 			buttons[j] = item;
 		}
-		player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+		if (printMessages) player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
 		inv.setContents(buttons);
 		new BukkitRunnable() {
 			@Override
@@ -210,6 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 				switching = true;
 				player.openInventory(inv);
 				switching = false;
+				processingLastClick = false;
 			}
 		}.runTask(BetonQuest.getInstance());
 	}
@@ -223,6 +226,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			return;
 		}
 		event.setCancelled(true);
+		if (processingLastClick) return;
 		int slot = event.getRawSlot();
 		// calculate the option number
 		if (slot % 9 > 1) {
@@ -234,7 +238,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			int choosen = (row * 7) + col;
 			String message = options.get(choosen);
 			if (message != null) {
-				player.sendMessage(answerPrefix + message);
+				processingLastClick = true;
+				if (printMessages) player.sendMessage(answerPrefix + message);
 				conv.passPlayerAnswer(choosen);
 			}
 		}
@@ -285,6 +290,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
 		}
 	}
 
+	@Override
+	public boolean printMessages() {
+		return printMessages;
+	}
+
 	private ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
 		ArrayList<String> multiLine = new ArrayList<>();
 		boolean firstLinePrefix = prefix != null;
@@ -295,7 +305,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			String[] arr = brokenLine.split(" ");
 			StringBuilder line = new StringBuilder();
 			for (int i = 0; i < arr.length; i++) {
-				if (line.length() + arr[i].length() + 1 > 42) {
+				//don't count color codes for line length
+				int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(arr[i]).length();
+				if (rawLength + 1 > 42) {
 					if (firstLinePrefix) {
 						firstLinePrefix = false;
 						multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
@@ -314,5 +326,16 @@ public class InventoryConvIO implements Listener, ConversationIO {
 			}
 		}
 		return multiLine;
+	}
+
+	/**
+	 * Inventory GUI that also outputs the conversation to chat
+	 */
+	public static class Combined extends InventoryConvIO {
+
+		public Combined(Conversation conv, String playerID) {
+			super(conv, playerID);
+			super.printMessages = true;
+		}
 	}
 }

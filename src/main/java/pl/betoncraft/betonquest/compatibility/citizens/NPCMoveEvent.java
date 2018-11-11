@@ -17,9 +17,12 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -44,16 +47,18 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * @author Jakub Sapalski
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
-	
-	private static LinkedList<NPC> movingNPCs = new LinkedList<>();
+
+	private static HashMap<Integer, Boolean> movingNPCs = new HashMap<>();
 	
 	private final Listener ths;
 	private int id;
-	private LocationData loc;
+	private final List<LocationData> locations;
+	private ListIterator<LocationData> locationsIterator;
 	private int waitTicks;
 	private EventID[] doneEvents;
 	private EventID[] failEvents;
 	private String currentPlayer;
+	private boolean blockConversations;
 
 	public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
 		super(instruction);
@@ -62,10 +67,12 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		if (id < 0) {
 			throw new InstructionParseException("NPC ID cannot be less than 0");
 		}
-		loc = instruction.getLocation();
+		locations = instruction.getList(instruction::getLocation);
+		if (locations.isEmpty()) throw new InstructionParseException("Not enough arguments");
 		waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
-		doneEvents = instruction.getList(instruction.getOptional("done"), e -> instruction.getEvent(e)).toArray(new EventID[0]);
-		failEvents = instruction.getList(instruction.getOptional("fail"), e -> instruction.getEvent(e)).toArray(new EventID[0]);
+		doneEvents = instruction.getList(instruction.getOptional("done"), instruction::getEvent).toArray(new EventID[0]);
+		failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
+		blockConversations = instruction.hasArgument("block");
 	}
 
 	@Override
@@ -77,22 +84,27 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		}
 		NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 		if (npc == null) {
-			BetonQuest.getInstance().getLogger().warning("NPC with ID " + id + " does not exist");
-			return;
+			throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
 		}
 		if (!npc.isSpawned()) {
 			return;
 		}
-		if (currentPlayer == null) {
-			npc.getNavigator().setTarget(loc.getLocation(playerID));
-			currentPlayer = playerID;
-			movingNPCs.add(npc);
-			Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
-		} else {
+		if (currentPlayer != null) {
 			for (EventID event : failEvents) {
 				BetonQuest.event(playerID, event);
 			}
+			return;
 		}
+		locationsIterator = locations.listIterator(0);
+		LocationData firstLocation = locationsIterator.next();
+		if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+			CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation.getLocation(playerID));
+		} else {
+			npc.getNavigator().setTarget(firstLocation.getLocation(playerID));
+		}
+		currentPlayer = playerID;
+		movingNPCs.put(npc.getId(), blockConversations);
+		Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance());
 	}
 	
 	@EventHandler
@@ -101,9 +113,22 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 		if (npc.getId() != id) {
 			return;
 		}
+		if (locationsIterator.hasNext()) {
+			try {
+				Location next = locationsIterator.next().getLocation(currentPlayer);
+				if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+					CitizensWalkingListener.getInstance().setNewTargetLocation(npc, next);
+				} else {
+					npc.getNavigator().setTarget(next);
+				}
+			} catch (QuestRuntimeException e) {
+				Debug.error("Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
+			}
+			return;
+		}
 		HandlerList.unregisterAll(ths);
 		try {
-			npc.getNavigator().setTarget(loc.getLocation(currentPlayer));
+			npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
 		} catch (QuestRuntimeException e) {
 			Debug.error("Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
 		}
@@ -113,7 +138,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 			public void run() {
 				npc.getNavigator().setPaused(false);
 				currentPlayer = null;
-				movingNPCs.remove(npc);
+				movingNPCs.remove(npc.getId());
 				for (EventID event : doneEvents) {
 					BetonQuest.event(currentPlayer, event);
 				}
@@ -123,14 +148,24 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 	
 	/**
 	 * Checks whenever this NPC is moving because of a 'move' event or not.
-	 * 
-	 * @param npc
-	 *            NPC to check
+	 *
+	 * @param npc NPC to check
 	 * @return true if the NPC is moving because of 'move' event, false if it's
 	 *         standing or moving because other reasons
 	 */
 	public static boolean isNPCMoving(NPC npc) {
-		return movingNPCs.contains(npc);
+		return movingNPCs.containsKey(npc.getId());
+	}
+
+	/**
+	 * Checks if you can talk to an npc or if it's moving because of a 'move' event and conversations are blocked
+	 *
+	 * @param npc NPC to check
+	 * @return false if you can talk to the npc true if not
+	 */
+	public static boolean blocksTalking(NPC npc) {
+		if (!isNPCMoving(npc)) return false;
+		return movingNPCs.get(npc.getId());
 	}
 
 }

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -33,6 +35,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.LoadDataEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.api.Variable;
@@ -47,26 +50,34 @@ import pl.betoncraft.betonquest.conditions.AchievementCondition;
 import pl.betoncraft.betonquest.conditions.AlternativeCondition;
 import pl.betoncraft.betonquest.conditions.ArmorCondition;
 import pl.betoncraft.betonquest.conditions.ArmorRatingCondition;
+import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.conditions.CheckCondition;
 import pl.betoncraft.betonquest.conditions.ChestItemCondition;
 import pl.betoncraft.betonquest.conditions.ConjunctionCondition;
+import pl.betoncraft.betonquest.conditions.DayOfWeekCondition;
 import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
+import pl.betoncraft.betonquest.conditions.FacingCondition;
 import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
+import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
+import pl.betoncraft.betonquest.conditions.GlobalTagCondition;
 import pl.betoncraft.betonquest.conditions.HandCondition;
 import pl.betoncraft.betonquest.conditions.HealthCondition;
 import pl.betoncraft.betonquest.conditions.HeightCondition;
 import pl.betoncraft.betonquest.conditions.ItemCondition;
 import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
+import pl.betoncraft.betonquest.conditions.LookingAtCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
+import pl.betoncraft.betonquest.conditions.PartialDateCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
 import pl.betoncraft.betonquest.conditions.PermissionCondition;
 import pl.betoncraft.betonquest.conditions.PointCondition;
 import pl.betoncraft.betonquest.conditions.RandomCondition;
+import pl.betoncraft.betonquest.conditions.RealTimeCondition;
 import pl.betoncraft.betonquest.conditions.ScoreboardCondition;
 import pl.betoncraft.betonquest.conditions.SneakCondition;
 import pl.betoncraft.betonquest.conditions.TagCondition;
@@ -76,21 +87,12 @@ import pl.betoncraft.betonquest.conditions.VariableCondition;
 import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.conditions.WorldCondition;
-import pl.betoncraft.betonquest.conditions.BiomeCondition;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
-import pl.betoncraft.betonquest.conversation.CombatTagger;
-import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.conversation.ConversationColors;
-import pl.betoncraft.betonquest.conversation.ConversationData;
-import pl.betoncraft.betonquest.conversation.ConversationIO;
-import pl.betoncraft.betonquest.conversation.ConversationResumer;
-import pl.betoncraft.betonquest.conversation.CubeNPCListener;
-import pl.betoncraft.betonquest.conversation.InventoryConvIO;
-import pl.betoncraft.betonquest.conversation.SimpleConvIO;
-import pl.betoncraft.betonquest.conversation.TellrawConvIO;
+import pl.betoncraft.betonquest.conversation.*;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.MySQL;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.SQLite;
@@ -104,15 +106,20 @@ import pl.betoncraft.betonquest.events.CommandEvent;
 import pl.betoncraft.betonquest.events.CompassEvent;
 import pl.betoncraft.betonquest.events.ConversationEvent;
 import pl.betoncraft.betonquest.events.DamageEvent;
+import pl.betoncraft.betonquest.events.DelEffectEvent;
 import pl.betoncraft.betonquest.events.DoorEvent;
+import pl.betoncraft.betonquest.events.EXPEvent;
 import pl.betoncraft.betonquest.events.EffectEvent;
 import pl.betoncraft.betonquest.events.ExplosionEvent;
 import pl.betoncraft.betonquest.events.FolderEvent;
 import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.events.GiveJournalEvent;
+import pl.betoncraft.betonquest.events.GlobalPointEvent;
+import pl.betoncraft.betonquest.events.GlobalTagEvent;
 import pl.betoncraft.betonquest.events.IfElseEvent;
 import pl.betoncraft.betonquest.events.JournalEvent;
 import pl.betoncraft.betonquest.events.KillEvent;
+import pl.betoncraft.betonquest.events.KillMobEvent;
 import pl.betoncraft.betonquest.events.LanguageEvent;
 import pl.betoncraft.betonquest.events.LeverEvent;
 import pl.betoncraft.betonquest.events.LightningEvent;
@@ -120,6 +127,8 @@ import pl.betoncraft.betonquest.events.MessageEvent;
 import pl.betoncraft.betonquest.events.ObjectiveEvent;
 import pl.betoncraft.betonquest.events.OpSudoEvent;
 import pl.betoncraft.betonquest.events.PartyEvent;
+import pl.betoncraft.betonquest.events.PickRandomEvent;
+import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.events.PointEvent;
 import pl.betoncraft.betonquest.events.RunEvent;
 import pl.betoncraft.betonquest.events.ScoreboardEvent;
@@ -133,7 +142,6 @@ import pl.betoncraft.betonquest.events.TimeEvent;
 import pl.betoncraft.betonquest.events.TitleEvent;
 import pl.betoncraft.betonquest.events.VariableEvent;
 import pl.betoncraft.betonquest.events.WeatherEvent;
-import pl.betoncraft.betonquest.events.PlaysoundEvent;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
@@ -154,6 +162,7 @@ import pl.betoncraft.betonquest.objectives.LogoutObjective;
 import pl.betoncraft.betonquest.objectives.MobKillObjective;
 import pl.betoncraft.betonquest.objectives.PasswordObjective;
 import pl.betoncraft.betonquest.objectives.PotionObjective;
+import pl.betoncraft.betonquest.objectives.RespawnObjective;
 import pl.betoncraft.betonquest.objectives.ShearObjective;
 import pl.betoncraft.betonquest.objectives.SmeltingObjective;
 import pl.betoncraft.betonquest.objectives.StepObjective;
@@ -164,6 +173,8 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.variables.MathVariable;
+import pl.betoncraft.betonquest.variables.GlobalPointVariable;
 import pl.betoncraft.betonquest.variables.ItemAmountVariable;
 import pl.betoncraft.betonquest.variables.LocationVariable;
 import pl.betoncraft.betonquest.variables.NpcNameVariable;
@@ -190,6 +201,7 @@ public final class BetonQuest extends JavaPlugin {
 	private Updater updater;
 
 	private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+	private GlobalData globalData;
 
 	private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
 	private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
@@ -267,6 +279,9 @@ public final class BetonQuest extends JavaPlugin {
 		// initialize static events
 		new StaticEvents();
 
+		//initialize global objectives
+		new GlobalObjectives();
+
 		// initialize combat tagging
 		new CombatTagger();
 
@@ -292,7 +307,9 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("permission", PermissionCondition.class);
 		registerConditions("experience", ExperienceCondition.class);
 		registerConditions("tag", TagCondition.class);
+		registerConditions("globaltag", GlobalTagCondition.class);
 		registerConditions("point", PointCondition.class);
+		registerConditions("globalpoint", GlobalPointCondition.class);
 		registerConditions("and", ConjunctionCondition.class);
 		registerConditions("or", AlternativeCondition.class);
 		registerConditions("time", TimeCondition.class);
@@ -322,23 +339,32 @@ public final class BetonQuest extends JavaPlugin {
 		registerConditions("variable", VariableCondition.class);
 		registerConditions("fly", FlyingCondition.class);
 		registerConditions("biome", BiomeCondition.class);
+		registerConditions("dayofweek", DayOfWeekCondition.class);
+		registerConditions("partialdate", PartialDateCondition.class);
+		registerConditions("realtime", RealTimeCondition.class);
+		registerConditions("looking", LookingAtCondition.class);
+		registerConditions("facing", FacingCondition.class);
 
 		// register events
 		registerEvents("message", MessageEvent.class);
 		registerEvents("objective", ObjectiveEvent.class);
 		registerEvents("command", CommandEvent.class);
 		registerEvents("tag", TagEvent.class);
+		registerEvents("globaltag", GlobalTagEvent.class);
 		registerEvents("journal", JournalEvent.class);
 		registerEvents("teleport", TeleportEvent.class);
 		registerEvents("explosion", ExplosionEvent.class);
 		registerEvents("lightning", LightningEvent.class);
 		registerEvents("point", PointEvent.class);
+		registerEvents("globalpoint", GlobalPointEvent.class);
 		registerEvents("give", GiveEvent.class);
 		registerEvents("take", TakeEvent.class);
 		registerEvents("conversation", ConversationEvent.class);
 		registerEvents("kill", KillEvent.class);
 		registerEvents("effect", EffectEvent.class);
+		registerEvents("deleffect", DelEffectEvent.class);
 		registerEvents("spawn", SpawnMobEvent.class);
+		registerEvents("killmob", KillMobEvent.class);
 		registerEvents("time", TimeEvent.class);
 		registerEvents("weather", WeatherEvent.class);
 		registerEvents("folder", FolderEvent.class);
@@ -363,6 +389,8 @@ public final class BetonQuest extends JavaPlugin {
 		registerEvents("title", TitleEvent.class);
 		registerEvents("language", LanguageEvent.class);
 		registerEvents("playsound", PlaysoundEvent.class);
+		registerEvents("pickrandom", PickRandomEvent.class);
+		registerEvents("xp", EXPEvent.class);
 
 		// register objectives
 		registerObjectives("location", LocationObjective.class);
@@ -380,7 +408,7 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("logout", LogoutObjective.class);
 		registerObjectives("password", PasswordObjective.class);
 		registerObjectives("fish", FishObjective.class);
-		registerObjectives("enchant", EnchantObjective.class);
+		registerObjectives("enchant", EnchantObjective.class);		
 		registerObjectives("shear", ShearObjective.class);
 		registerObjectives("chestput", ChestPutObjective.class);
 		registerObjectives("potion", PotionObjective.class);
@@ -390,20 +418,25 @@ public final class BetonQuest extends JavaPlugin {
 		registerObjectives("kill", KillPlayerObjective.class);
 		registerObjectives("breed", BreedObjective.class);
 		registerObjectives("interact", EntityInteractObjective.class);
+		registerObjectives("respawn", RespawnObjective.class);
 
 		// register conversation IO types
 		registerConversationIO("simple", SimpleConvIO.class);
 		registerConversationIO("tellraw", TellrawConvIO.class);
 		registerConversationIO("chest", InventoryConvIO.class);
+		registerConversationIO("combined", InventoryConvIO.Combined.class);
+		registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
 		// register variable types
 		registerVariable("player", PlayerNameVariable.class);
 		registerVariable("npc", NpcNameVariable.class);
 		registerVariable("objective", ObjectivePropertyVariable.class);
 		registerVariable("point", PointVariable.class);
+		registerVariable("globalpoint", GlobalPointVariable.class);
 		registerVariable("item", ItemAmountVariable.class);
 		registerVariable("version", VersionVariable.class);
 		registerVariable("location", LocationVariable.class);
+		registerVariable("math", MathVariable.class);
 
         // initialize compatibility with other plugins
         new Compatibility();
@@ -414,6 +447,8 @@ public final class BetonQuest extends JavaPlugin {
 			public void run() {
 				// Load all events and conditions
 				loadData();
+				// Load global tags and points
+				globalData = new GlobalData();
 				// load data for all online players
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					String playerID = PlayerConverter.getID(player);
@@ -449,6 +484,7 @@ public final class BetonQuest extends JavaPlugin {
 	/**
 	 * Loads events and conditions to the maps
 	 */
+	@SuppressWarnings("deprecation")
 	public void loadData() {
 		// save data of all objectives to the players
 		for (Objective objective : objectives.values()) {
@@ -616,7 +652,7 @@ public final class BetonQuest extends JavaPlugin {
 			Debug.info("Everything in package " + packName + " loaded");
 		}
 		// load global locations
-        new GlobalLocations();
+		new GlobalLocations();
         // done
 		Debug.broadcast("There are " + conditions.size() + " conditions, " + events.size() + " events, "
 				+ objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
@@ -625,11 +661,14 @@ public final class BetonQuest extends JavaPlugin {
 		for (PlayerData playerData : playerDataMap.values()) {
 			playerData.startObjectives();
 		}
+		//fire LoadDataEvent
+		Bukkit.getPluginManager().callEvent(new LoadDataEvent());
 	}
 
 	/**
 	 * Reloads the plugin.
 	 */
+	@SuppressWarnings("deprecation")
 	public void reload() {
 		// reload the configuration
 		Debug.info("Reloading configuration");
@@ -642,6 +681,7 @@ public final class BetonQuest extends JavaPlugin {
 		// and start new one with reloaded configs
 		Debug.info("Restarting global locations");
 		new GlobalLocations();
+		new GlobalObjectives();
 		new ConversationColors();
 		Compatibility.reload();
 		// load all events, conditions, objectives, conversations etc.
@@ -651,6 +691,7 @@ public final class BetonQuest extends JavaPlugin {
 			String playerID = PlayerConverter.getID(player);
 			Debug.info("Updating journal for player " + PlayerConverter.getName(playerID));
 			PlayerData playerData = instance.getPlayerData(playerID);
+			GlobalObjectives.startAll(playerID);
 			Journal journal = playerData.getJournal();
 			journal.update();
 		}
@@ -743,6 +784,15 @@ public final class BetonQuest extends JavaPlugin {
 			putPlayerData(playerID, playerData);
 		}
 		return playerData;
+	}
+
+	/**
+	 * Retrieves GlobalData object which handles all global tags and points
+	 *
+	 * @return GlobalData object
+	 */
+	public GlobalData getGlobalData() {
+		return globalData;
 	}
 
 	/**
@@ -1039,32 +1089,10 @@ public final class BetonQuest extends JavaPlugin {
 	 */
 	public static ArrayList<String> resolveVariables(String text) {
 		ArrayList<String> variables = new ArrayList<>();
-		boolean inside = false;
-		char[] charArr = text.toCharArray();
-		StringBuilder variable = new StringBuilder();
-		for (int i = 0; i < text.length(); i++) {
-			if (inside) {
-				if (charArr[i] == ' ') {
-					// it's not a variable if it contains a space
-					inside = false;
-					variable = new StringBuilder();
-				}
-				variable.append(charArr[i]);
-				if (charArr[i] == '%') {
-					// end of the variable
-					inside = false;
-					String finalVariable = variable.toString();
-					variable = new StringBuilder();
-					if (!variables.contains(finalVariable)) {
-						variables.add(finalVariable);
-					}
-				}
-			} else {
-				if (charArr[i] == '%') {
-					inside = true;
-					variable.append('%');
-				}
-			}
+		Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+		while (matcher.find()) {
+			final String variable = matcher.group();
+			if (!variables.contains(variable)) variables.add(variable);
 		}
 		return variables;
 	}

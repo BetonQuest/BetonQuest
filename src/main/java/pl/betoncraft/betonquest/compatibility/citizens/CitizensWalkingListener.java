@@ -39,6 +39,8 @@ import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
  */
 public class CitizensWalkingListener implements Listener {
 
+	private static CitizensWalkingListener instance = null;
+
 	private HashMap<NPC, Integer> npcs = new HashMap<>();
 	private HashMap<NPC, Location> locs = new HashMap<>();
 
@@ -47,6 +49,7 @@ public class CitizensWalkingListener implements Listener {
 	 * when in conversation
 	 */
 	public CitizensWalkingListener() {
+		instance = this;
 		Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
 	}
 
@@ -61,7 +64,7 @@ public class CitizensWalkingListener implements Listener {
                     NPC npc = conv.getNPC();
                     if (!npcs.containsKey(npc)) {
                         Navigator nav = npc.getNavigator();
-                        npcs.put(npc, new Integer(1));
+                        npcs.put(npc, 1);
                         locs.put(npc, nav.getTargetAsLocation());
                         nav.setPaused(true);
                         nav.cancelNavigation();
@@ -101,4 +104,31 @@ public class CitizensWalkingListener implements Listener {
 			}.runTask(BetonQuest.getInstance());
 		}
 	}
+
+	/**
+	 * @return the currently active WalkingListener or null if citizens isn't hooked
+	 */
+	public static CitizensWalkingListener getInstance() {
+		return instance;
+	}
+
+	/**
+	 * @param npc a npc to check for
+	 * @return true if the movement of the npc is paused because of a player talking with the npc
+	 */
+	public boolean isMovementPaused(NPC npc) {
+		return npcs.containsKey(npc);
+	}
+
+	/**
+	 * Sets a new target location to which the npc should move when the conversations end
+	 *
+	 * Check {@link #isMovementPaused(NPC)} before to make sure the npcs movement is currently paused
+	 * @param npc a npc
+	 * @param location the location to which the npc should move
+	 */
+	public void setNewTargetLocation(NPC npc, Location location) {
+		locs.put(npc, location);
+	}
+
 }

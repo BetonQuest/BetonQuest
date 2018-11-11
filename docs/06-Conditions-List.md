@@ -60,6 +60,18 @@ This one requires the player to have a specified tag. Together with `!` negation
 
 **Example**: `tag quest_completed`
 
+## Global point: `globalpoint` _persistent_, _static_
+
+The same as point condition but it checks the amount for a global point category which has the same value for all players.
+
+**Example**: `globalpoint global_knownusers 100`
+
+## Global tag: `globaltag` _persistent_, _static_
+
+This requires a specific global tag to be set and works the same as normal tag condition.
+
+**Example**: `globaltag global_areNPCsAgressive`
+
 ## Armor: `armor`
 
 The armor condition requires the player to wear specified armor, as an item defined in _items.yml_ file.
@@ -77,6 +89,26 @@ To meet this condition the player must have an active potion effect. There is on
 There must be specific (Minecraft) time on the player's world for this condition to return true. You need to specify two hour numbers separated by dash. These number are normal 24-hour format hours. The first must be smaller than the second. If you want to achieve time period between 23 and 2 you need to negate the condition.
 
 **Example**: `time 2-23`
+
+## Real time: `realtime`
+
+There must a specific (real) time for this condition to return true. You need to specify two times (formatted like `hh:mm`) separated by dash. If the first is before the second the time must be between these two, if its after the second the time must be later than the first and earlier than the second to return true.
+
+**Example:** `realtime 8:00-12:30`
+
+## Partial date: `partialdate`
+
+The current date must match the given pattern. You can specify the day of the month, the month or the year it must be that this condition returns true or combine them. You can also specify multiple days/months/years by just separating them by `,` or a interval by using `-`. If you have trouble understanding how this works have a look at the example.
+
+The example is true between the 1st and the 5th or on the 20th of each month, but only in the year 2017.
+
+**Example:** `partialdate day:1-5,20 year:2017`
+
+## Day of week: `dayofweek`
+
+It must be a specific day of the week that this condition returns true. You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,..).
+
+**Example:** `dayofweek sunday`
 
 ## Weather: `weather`
 
@@ -197,3 +229,15 @@ This will check if the player is currently flying (Elytra type of flight).
 This condition will check if the player is in specified biome. The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
 
 **Example**: `biome savanna_rock`
+
+## Facing direction: `facing`
+
+Checks if the player is looking in the given direction. Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and down start at a pitch of 60°.
+
+**Example:** `facing EAST`
+
+##  Looking at a block: `looking`
+
+Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional (the material of the block). You can also specify both.
+
+**Example:** `looking loc:12.0;14.0;-15.0;world type:STONE`
