@@ -191,7 +191,7 @@ public class Journal {
                 if (dateParts.length > 1) {
                     hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
                 }
-                datePrefix = day + " " + hour;
+                datePrefix = day + " " + hour + "\n";
             }
             // get package and name of the pointer
             String[] parts = pointer.getPointer().split("\\.");
@@ -230,8 +230,7 @@ public class Journal {
             }
 
             // add the entry to the list
-            texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + "\n"
-                    + text);
+            texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + text);
         }
     }
 
@@ -316,8 +315,7 @@ public class Journal {
         for (int i : sorted) {
             sortedLines.add(lines.get(i));
         }
-        String finalLine = StringUtils.join(sortedLines, '\n').replace('&', '§');
-        return finalLine;
+        return StringUtils.join(sortedLines, '\n').replace('&', '§');
     }
 
     /**
@@ -371,22 +369,33 @@ public class Journal {
         BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
         meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         lore.add(Utils.format(Config.getMessage(lang, "journal_lore")));
         meta.setLore(lore);
         // add main page and generate pages from texts
         List<String> finalList = new ArrayList<>();
         if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
             String color = Config.getString("config.journal_colors.line");
+            String separator = Config.parseMessage(playerID, "journal_separator", null);
+            if (separator == null) {
+                separator = "---------------";
+            }
+            String line = "\n§" + color + separator + "\n";
+
+            if (Config.getString("config.journal.show_separator") != null &&
+                    Config.getString("config.journal.show_separator").equalsIgnoreCase("false")) {
+                line = "\n";
+            }
+
             StringBuilder stringBuilder = new StringBuilder();
             for (String entry : getText()) {
-                stringBuilder.append(entry + "\n§" + color + "---------------\n");
+                stringBuilder.append(entry).append(line);
             }
             if (mainPage != null && mainPage.length() > 0) {
                 if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
                     finalList.addAll(Utils.pagesFromString(mainPage));
                 } else {
-                    stringBuilder.insert(0, mainPage + "\n§" + color + "---------------\n");
+                    stringBuilder.insert(0, mainPage + line);
                 }
             }
             String wholeString = stringBuilder.toString().trim();

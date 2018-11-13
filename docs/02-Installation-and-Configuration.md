@@ -48,6 +48,7 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
     - `reversed_order` controls the chronological order of entries in the journal. By default the entries are ordered from newest to oldest. You can reverse it, but it will force players to click through a lot of pages to get to the latest entry.
     - `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.
     - `full_main_page` makes the main page take always a full page. If you display a lot of information you should probably make this true. If you use main page only for small notifications, set it to false, so the entries can follow immediately.
+    - `show_separator` shows a separator between journal entries (default: true). Customize the separator in `messages.yml` with the key `journal_separator`.
 * `journal_colors` controls the colors used in the journal. It takes color codes without the `&` character.
     - `date.day` is a day number
     - `date.hour` is a hour number
