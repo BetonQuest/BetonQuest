@@ -77,7 +77,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 journal.generateTexts(lang);
                 if (slot > 0)
                     journal.addToInv(slot);
-                Config.sendMessage(playerID, "language_changed", new String[]{lang});
+                Config.sendNotify(playerID, "language_changed", new String[]{lang}, "language_changed,info");
             } else {
                 BetonQuest.getInstance().getConfig().set("language", args[0]);
                 sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));

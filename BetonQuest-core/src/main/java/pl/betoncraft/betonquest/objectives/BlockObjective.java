@@ -73,11 +73,13 @@ public class BlockObjective extends Objective implements Listener {
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // or maybe display a notification
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendMessage(playerID, "blocks_to_break",
-                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)});
+                    Config.sendNotify(playerID, "blocks_to_break",
+                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
+                            "blocks_to_break,info");
                 } else {
-                    Config.sendMessage(playerID, "blocks_to_place",
-                            new String[]{String.valueOf(neededAmount - playerData.getAmount())});
+                    Config.sendNotify(playerID, "blocks_to_place",
+                            new String[]{String.valueOf(neededAmount - playerData.getAmount())},
+                            "blocks_to_place,info");
                 }
             }
         }
@@ -98,11 +100,13 @@ public class BlockObjective extends Objective implements Listener {
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // or maybe display a notification
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendMessage(playerID, "blocks_to_break",
-                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)});
+                    Config.sendNotify(playerID, "blocks_to_break",
+                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
+                            "blocks_to_break,info");
                 } else {
-                    Config.sendMessage(playerID, "blocks_to_place",
-                            new String[]{String.valueOf(neededAmount - playerData.getAmount())});
+                    Config.sendNotify(playerID, "blocks_to_place",
+                            new String[]{String.valueOf(neededAmount - playerData.getAmount())},
+                            "blocks_to_place,info");
                 }
             }
         }

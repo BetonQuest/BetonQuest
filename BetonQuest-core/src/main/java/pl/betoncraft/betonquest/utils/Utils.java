@@ -48,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Various utilities.
@@ -472,5 +474,21 @@ public class Utils {
      */
     public static String format(String string) {
         return format(string, true, true);
+    }
+
+    /**
+     * Split a string by white space, except if between quotes
+     */
+    public static String[] split(String string) {
+        List<String> list = new ArrayList<>();
+        Matcher m = Pattern.compile("(?:(?:(\\S*)(?:\")([^\"]*?)(?:\"))|(\\S+))\\s*").matcher(string);
+        while (m.find()) {
+            if (m.group(3) != null) {
+                list.add(m.group(3));
+            } else {
+                list.add(m.group(1) + m.group(2));
+            }
+        }
+        return list.toArray(new String[0]);
     }
 }

@@ -58,7 +58,8 @@ public class BreedObjective extends Objective implements Listener {
                 if (data.getAmount() == 0) {
                     completeObjective(playerID);
                 } else if (notify) {
-                    Config.sendMessage(playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())});
+                    Config.sendNotify(playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())},
+                            "animals_to_breed,info");
                 }
             }
         }
