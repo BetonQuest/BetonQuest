@@ -8,7 +8,7 @@ env:
 cache:
   directories:
   - "$HOME/.m2/repository"
-before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" src/main/resources/plugin.yml"
+before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" BetonQuest-core/src/main/resources/plugin.yml"
 install: true
 script: mvn package -Drelease
 after_success:
