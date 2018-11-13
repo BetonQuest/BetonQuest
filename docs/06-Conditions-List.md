@@ -247,3 +247,9 @@ Checks if the player is looking at a block with the given location or material. 
 This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found [here](https://minecraft.gamepedia.com/Moon).
 
 **Example:** `mooncycle 1`
+
+## Conversation: `conversation`
+
+This condition will check if a conversation has an available starting option. If no starting option has a condition that returns true then this will return false.
+
+**Example**: `conversation innkeeper`
