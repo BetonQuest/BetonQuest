@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -29,7 +30,11 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.Debug;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Represents the data of the conversation.
@@ -156,13 +161,21 @@ public class ConversationData {
                 playerOptions.put(key, new PlayerOption(key));
             }
         }
-        // check if every pointer points to existing option
+
+        // check if every pointer points to existing option.
         for (Option option : NPCOptions.values()) {
             for (String pointer : option.getPointers()) {
                 if (!playerOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s points to %s player option, but it does not exist",
                                     option.getName(), pointer));
+                }
+            }
+            for (String extend : option.getExtends()) {
+                if (!NPCOptions.containsKey(extend)) {
+                    throw new InstructionParseException(
+                            String.format("NPC option %s extends %s, but it does not exist",
+                                    option.getName(), extend));
                 }
             }
         }
@@ -177,7 +190,15 @@ public class ConversationData {
                                     option.getName(), pointer));
                 }
             }
+            for (String extend : option.getExtends()) {
+                if (!playerOptions.containsKey(extend)) {
+                    throw new InstructionParseException(
+                            String.format("Player option %s extends %s, but it does not exist",
+                                    option.getName(), extend));
+                }
+            }
         }
+
         // done, everything will work
         Debug.info(String.format("Conversation loaded: %d NPC options and %d player options", NPCOptions.size(),
                 playerOptions.size()));
@@ -343,6 +364,10 @@ public class ConversationData {
         return options.get(option).getPointers();
     }
 
+    public Option getOption(String option, OptionType type) {
+        return type == OptionType.NPC ? NPCOptions.get(option) : playerOptions.get(option);
+    }
+
     public enum OptionType {
         NPC, PLAYER
     }
@@ -353,140 +378,114 @@ public class ConversationData {
     private abstract class Option {
 
         private String name;
+        private OptionType type;
         private HashMap<String, String> inlinePrefix = new HashMap<>();
 
         private HashMap<String, String> text = new HashMap<>();
-        private ConditionID[] conditions;
-        private EventID[] events;
-        private String[] pointers;
+        private List<ConditionID> conditions = new ArrayList<>();
+        private List<EventID> events = new ArrayList<>();
+        private List<String> pointers;
+        private List<String> extendLinks;
 
         public Option(String name, String type, String visibleType) throws InstructionParseException {
             this.name = name;
+            this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
             String defaultLang = Config.getLanguage();
-            FileConfiguration conv = pack.getConversation(convName).getConfig();
-            if (conv.isConfigurationSection(type + "." + name + ".prefix")) {
-                for (String lang : conv.getConfigurationSection(type + "." + name + ".prefix").getKeys(false)) {
-                    String pref = pack.getString("conversations." + convName + "." + type + "." + name + ".prefix."
-                            + lang);
+            ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
+
+            // Prefix
+            if (conv.contains("prefix")) {
+                if (conv.isConfigurationSection("prefix")) {
+                    for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
+                        String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                        if (pref != null && !pref.equals("")) {
+                            inlinePrefix.put(lang, pref);
+                        }
+                    }
+                    if (!inlinePrefix.containsKey(defaultLang)) {
+                        throw new InstructionParseException("No default language for " + name + " " + visibleType
+                                + " prefix");
+                    }
+                } else {
+                    String pref = pack.subst(conv.getString("prefix"));
                     if (pref != null && !pref.equals("")) {
-                        inlinePrefix.put(lang, pref);
+                        inlinePrefix.put(defaultLang, pref);
                     }
                 }
-                if (!inlinePrefix.containsKey(defaultLang)) {
-                    throw new InstructionParseException("No default language for " + name + " " + visibleType
-                            + " prefix");
-                }
-            } else {
-                String pref = pack.getString("conversations." + convName + "." + type + "." + name + ".prefix");
-                if (pref != null && !pref.equals("")) {
-                    inlinePrefix.put(defaultLang, pref);
-                }
             }
-            if (conv.isConfigurationSection(type + "." + name + ".text")) {
-                for (String lang : conv.getConfigurationSection(type + "." + name + ".text").getKeys(false)) {
-                    text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
-                            + lang));
+
+            // Text
+            if (conv.contains("text")) {
+                if (conv.isConfigurationSection("text")) {
+                    for (String lang : conv.getConfigurationSection("text").getKeys(false)) {
+                        text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
+                                + lang));
+                    }
+                    if (!text.containsKey(defaultLang)) {
+                        throw new InstructionParseException("No default language for " + name + " " + visibleType);
+                    }
+                } else {
+                    text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
                 }
-                if (!text.containsKey(defaultLang)) {
-                    throw new InstructionParseException("No default language for " + name + " " + visibleType);
+
+                ArrayList<String> variables = new ArrayList<>();
+                for (String theText : text.values()) {
+                    if (theText == null || theText.equals(""))
+                        throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
+                    // variables are possibly duplicated because there probably is
+                    // the same variable in every language
+                    ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
+                    for (String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
+                        if (variables.contains(possiblyDuplicatedVariable))
+                            continue;
+                        variables.add(possiblyDuplicatedVariable);
+                    }
                 }
-            } else if (conv.isSet(type + "." + name + ".text")) {
-                text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
-            } else {
-                throw new InstructionParseException(String.format("Text is not defined in '%s' %s.", name, visibleType));
-            }
-            ArrayList<String> variables = new ArrayList<>();
-            for (String theText : text.values()) {
-                if (theText == null || theText.equals(""))
-                    throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
-                // variables are possibly duplicated because there probably is
-                // the same variable in every language
-                ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
-                for (String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
-                    if (variables.contains(possiblyDuplicatedVariable))
-                        continue;
-                    variables.add(possiblyDuplicatedVariable);
-                }
-            }
-            for (String variable : variables) {
-                try {
-                    BetonQuest.createVariable(pack, variable);
-                } catch (InstructionParseException e) {
-                    throw new InstructionParseException("Error while creating '" + variable + "' variable: "
-                            + e.getMessage());
+                for (String variable : variables) {
+                    try {
+                        BetonQuest.createVariable(pack, variable);
+                    } catch (InstructionParseException e) {
+                        throw new InstructionParseException("Error while creating '" + variable + "' variable: "
+                                + e.getMessage());
+                    }
                 }
             }
-            String rawConditions = pack
-                    .getString("conversations." + convName + "." + type + "." + name + ".conditions");
-            String[] cond1 = new String[]{};
-            if (rawConditions != null && !rawConditions.equals("")) {
-                cond1 = rawConditions.split(",");
-            }
-            String rawCondition = pack.getString("conversations." + convName + "." + type + "." + name + ".condition");
-            String[] cond2 = new String[]{};
-            if (rawCondition != null && !rawCondition.equals("")) {
-                cond2 = rawCondition.split(",");
-            }
-            conditions = new ConditionID[cond1.length + cond2.length];
-            int count = 0;
+
+            // Conditions
             try {
-                for (String cond : cond1) {
-                    conditions[count] = new ConditionID(pack, cond.trim());
-                    count++;
-                }
-                for (String cond : cond2) {
-                    conditions[count] = new ConditionID(pack, cond.trim());
-                    count++;
+                for (String rawCondition : pack.subst(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                    if (!Objects.equals(rawCondition, "")) {
+                        conditions.add(new ConditionID(pack, rawCondition.trim()));
+                    }
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
                         + e.getMessage());
             }
-            String rawEvents = pack.getString("conversations." + convName + "." + type + "." + name + ".events");
-            String[] event1 = new String[]{};
-            if (rawEvents != null && !rawEvents.equals("")) {
-                event1 = rawEvents.split(",");
-            }
-            String rawEvent = pack.getString("conversations." + convName + "." + type + "." + name + ".event");
-            String[] event2 = new String[]{};
-            if (rawEvent != null && !rawEvent.equals("")) {
-                event2 = rawEvent.split(",");
-            }
-            events = new EventID[event1.length + event2.length];
-            count = 0;
+
+            // Events
             try {
-                for (String event : event1) {
-                    events[count] = new EventID(pack, event.trim());
-                    count++;
-                }
-                for (String event : event2) {
-                    events[count] = new EventID(pack, event.trim());
-                    count++;
+                for (String rawEvent : pack.subst(conv.getString("events", conv.getString("event", ""))).split(",")) {
+                    if (!Objects.equals(rawEvent, "")) {
+                        events.add(new EventID(pack, rawEvent.trim()));
+                    }
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
                         + e.getMessage());
             }
-            String rawPointers = pack.getString("conversations." + convName + "." + type + "." + name + ".pointers");
-            String[] pointer1 = new String[]{};
-            if (rawPointers != null && !rawPointers.equals("")) {
-                pointer1 = rawPointers.split(",");
-            }
-            String rawPointer = pack.getString("conversations." + convName + "." + type + "." + name + ".pointer");
-            String[] pointer2 = new String[]{};
-            if (rawPointer != null && !rawPointer.equals("")) {
-                pointer2 = rawPointer.split(",");
-            }
-            pointers = new String[pointer1.length + pointer2.length];
-            count = 0;
-            for (String pointer : pointer1) {
-                pointers[count] = pointer.trim();
-                count++;
-            }
-            for (String pointer : pointer2) {
-                pointers[count] = pointer.trim();
-                count++;
-            }
+
+            // Pointers
+            pointers = Arrays.stream(pack.subst(conv.getString("pointers", conv.getString("pointer", ""))).split(","))
+                    .filter(StringUtils::isNotEmpty)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+
+
+            extendLinks = Arrays.stream(pack.subst(conv.getString("extends", conv.getString("extend", ""))).split(","))
+                    .filter(StringUtils::isNotEmpty)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
         }
 
         public String getName() {
@@ -502,23 +501,85 @@ public class ConversationData {
         }
 
         public String getText(String lang) {
-            String theText = text.get(lang);
-            if (theText == null) {
-                theText = text.get(Config.getLanguage());
+            return getText(lang, new ArrayList<>());
+        }
+
+        public String getText(String lang, List<String> optionPath) {
+            // Prevent infinite loops
+            if (optionPath.contains(getName())) {
+                return "";
             }
-            return theText;
+            optionPath.add(getName());
+
+            StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
+
+            for (String extend : extendLinks) {
+                ret.append(getOption(extend, type).getText(lang, optionPath));
+            }
+            return ret.toString();
         }
 
         public ConditionID[] getConditions() {
-            return conditions;
+            return getConditions(new ArrayList<>());
+        }
+
+        public ConditionID[] getConditions(List<String> optionPath) {
+            // Prevent infinite loops
+            if (optionPath.contains(getName())) {
+                return new ConditionID[0];
+            }
+            optionPath.add(getName());
+
+            List<ConditionID> ret = new ArrayList<>(conditions);
+
+            for (String extend : extendLinks) {
+                ret.addAll(Arrays.asList(getOption(extend, type).getConditions(optionPath)));
+            }
+
+            return ret.toArray(new ConditionID[0]);
         }
 
         public EventID[] getEvents() {
-            return events;
+            return getEvents(new ArrayList<>());
+        }
+
+        public EventID[] getEvents(List<String> optionPath) {
+            // Prevent infinite loops
+            if (optionPath.contains(getName())) {
+                return new EventID[0];
+            }
+            optionPath.add(getName());
+
+            List<EventID> ret = new ArrayList<>(events);
+
+            for (String extend : extendLinks) {
+                ret.addAll(Arrays.asList(getOption(extend, type).getEvents(optionPath)));
+            }
+
+            return ret.toArray(new EventID[0]);
         }
 
         public String[] getPointers() {
-            return pointers;
+            return getPointers(new ArrayList<>());
+        }
+
+        public String[] getPointers(List<String> optionPath) {
+            // Prevent infinite loops
+            if (optionPath.contains(getName())) {
+                return new String[0];
+            }
+            optionPath.add(getName());
+
+            List<String> ret = new ArrayList<>(pointers);
+
+            for (String extend : extendLinks) {
+                ret.addAll(Arrays.asList(getOption(extend, type).getPointers(optionPath)));
+            }
+            return ret.toArray(new String[0]);
+        }
+
+        public String[] getExtends() {
+            return extendLinks.toArray(new String[0]);
         }
     }
 
