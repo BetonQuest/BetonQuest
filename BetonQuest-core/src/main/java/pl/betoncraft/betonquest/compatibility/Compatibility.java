@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.compatibility.denizen.DenizenIntegrator;
 import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesIntegrator;
 import pl.betoncraft.betonquest.compatibility.holographicdisplays.HolographicDisplaysIntegrator;
+import pl.betoncraft.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
 import pl.betoncraft.betonquest.compatibility.legendquest.LegendQuestIntegrator;
 import pl.betoncraft.betonquest.compatibility.magic.MagicIntegrator;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOIntegrator;
@@ -92,6 +93,7 @@ public class Compatibility implements Listener {
         integrators.put("BountifulAPI", new BountifulAPIIntegrator());
         integrators.put("ProtocolLib", new ProtocolLibIntegrator());
         integrators.put("Brewery", new BreweryIntegrator());
+        integrators.put("Jobs", new JobsRebornIntegrator());
 
         // hook into already enabled plugins in case Bukkit messes up the loading order
         for (Plugin hook : Bukkit.getPluginManager().getPlugins()) {
