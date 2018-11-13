@@ -98,7 +98,8 @@ public class FishObjective extends Objective implements Listener {
         if (data.getAmount() <= 0)
             completeObjective(playerID);
         else if (notify && data.getAmount() % notifyInterval == 0)
-            Config.sendMessage(playerID, "fish_to_catch", new String[]{String.valueOf(data.getAmount())});
+            Config.sendNotify(playerID, "fish_to_catch", new String[]{String.valueOf(data.getAmount())},
+                    "fish_to_catch,info");
     }
 
     @Override

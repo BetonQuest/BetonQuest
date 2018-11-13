@@ -6,6 +6,8 @@ Additions:
   * Chest ConversationIO can now be configured to show NPC text per option.
   * New 'extends' keyword in conversation to allow inheritance
   * New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC
+  * New Notification System
+  * New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement
 Changes:
   * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.
@@ -14,7 +16,6 @@ Fixes:
   * WATER and LAVA can be specified in Action Objective
   * Journals without dates now don't leave blank lines
   * Journal separator can be disabled or customized
-
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.

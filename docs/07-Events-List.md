@@ -285,3 +285,13 @@ This event will play a specified sound for the player. The only required argumen
 Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
 
 **Example:** `xp 4 level`
+
+## Notification: `notify`
+
+Trigger a notification using the NotifyIO system. The first arguments are the message to send. A comma seperated list can be provided to an optional `category` tag to use a Notification Category. You can optionally set which NotifyIO to use by providing it with an `io` tag. You can also optionally pass flags in the form of `key`:`value` to provide custom config to the NotifyIO that will override those by the category used.
+
+Please note that if you don't provide a valid category and haven't defined a default category then you must provide an io flag otherwise the default io (Generally chat) will be used.
+
+Please refer to the Notification chapter for more details.
+
+**Example:** `notify This is a test category:MyCategory io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE`

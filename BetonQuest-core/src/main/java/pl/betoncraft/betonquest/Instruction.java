@@ -28,6 +28,7 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,11 @@ public class Instruction {
         } catch (ObjectNotFoundException e) {
         }
         this.instruction = instruction;
-        this.parts = instruction.split(" ");
+
+        // Split by space, except when it's between quotes. This allows stuff like:
+        // instruction Test1 Test2 title:"This is a title"
+//		this.parts = instruction.split(" ");
+        this.parts = Utils.split(instruction);
     }
 
     @Override

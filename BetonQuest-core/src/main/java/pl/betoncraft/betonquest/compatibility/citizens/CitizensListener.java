@@ -54,7 +54,7 @@ public class CitizensListener implements Listener {
         }
         final String playerID = PlayerConverter.getID(event.getClicker());
         if (CombatTagger.isTagged(playerID)) {
-            Config.sendMessage(playerID, "busy");
+            Config.sendNotify(playerID, "busy", "busy,error");
             return;
         }
         String id = String.valueOf(event.getNPC().getId());

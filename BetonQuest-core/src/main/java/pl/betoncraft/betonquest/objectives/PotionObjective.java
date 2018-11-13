@@ -108,8 +108,9 @@ public class PotionObjective extends Objective implements Listener {
                 if (data.getAmount() >= amount) {
                     completeObjective(playerID);
                 } else if (brewed && notify && data.getAmount() % notifyInterval == 0) {
-                    Config.sendMessage(playerID, "potions_to_brew",
-                            new String[]{String.valueOf(amount - data.getAmount())});
+                    Config.sendNotify(playerID, "potions_to_brew",
+                            new String[]{String.valueOf(amount - data.getAmount())},
+                            "potions_to_brew,info");
                 }
             }
         }.runTask(BetonQuest.getInstance().getJavaPlugin());

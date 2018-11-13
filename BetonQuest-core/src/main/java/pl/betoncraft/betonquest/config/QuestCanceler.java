@@ -254,7 +254,7 @@ public class QuestCanceler {
         // done
         Debug.info("Quest removed!");
         String questName = getName(playerID);
-        Config.sendMessage(playerID, "quest_canceled", new String[]{questName});
+        Config.sendNotify(playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
     }
 
     /**

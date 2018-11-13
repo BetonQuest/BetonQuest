@@ -59,7 +59,7 @@ public class CubeNPCListener implements Listener {
             // if the player doesn't have the required permission deny the
             // editing
             event.setCancelled(true);
-            Config.sendMessage(PlayerConverter.getID(event.getPlayer()), "no_permission");
+            Config.sendNotify(PlayerConverter.getID(event.getPlayer()), "no_permission", "no_permission,error");
         }
     }
 

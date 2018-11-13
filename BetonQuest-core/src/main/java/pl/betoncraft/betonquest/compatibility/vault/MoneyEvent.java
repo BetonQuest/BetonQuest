@@ -73,14 +73,14 @@ public class MoneyEvent extends QuestEvent {
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player.getName(), difference);
             if (notify) {
-                Config.sendMessage(playerID, "money_given",
-                        new String[]{df.format(difference), currencyName});
+                Config.sendNotify(playerID, "money_given",
+                        new String[]{df.format(difference), currencyName}, "money_given,info");
             }
         } else if (difference < 0) {
             VaultIntegrator.getEconomy().withdrawPlayer(player.getName(), -difference);
             if (notify) {
-                Config.sendMessage(playerID, "money_taken",
-                        new String[]{df.format(difference), currencyName});
+                Config.sendNotify(playerID, "money_taken",
+                        new String[]{df.format(difference), currencyName}, "money_taken,info");
             }
         }
     }
