@@ -241,3 +241,8 @@ Checks if the player is looking in the given direction. Valid directions are `UP
 Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional as a `block selector`. You can also specify both.
 
 **Example:** `looking loc:12.0;14.0;-15.0;world type:STONE`
+## Conversation: `conversation`
+
+This condition will check if a conversation has an available starting option. If no starting option has a condition that returns true then this will return false.
+
+**Example**: `conversation innkeeper`
