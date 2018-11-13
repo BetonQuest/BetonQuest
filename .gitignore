@@ -1,4 +1,4 @@
-/target/
+**/target/
 /.settings/
 /.classpath
 /.project
@@ -7,5 +7,5 @@
 *.iml
 /resources/
 /doc/
-/dependency-reduced-pom.xml
+**/dependency-reduced-pom.xml
 .vscode/
