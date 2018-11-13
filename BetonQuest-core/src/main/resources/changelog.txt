@@ -6,6 +6,21 @@ Additions:
   * Chest ConversationIO can now be configured to show NPC text per option.
   * New 'extends' keyword in conversation to allow inheritance
   * New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC
+  * New 'nujobs_canlevel' condition - True if player can level in Jobs Reborn
+  * New 'nujobs_hasjob' condition - True if player has job in Jobs Reborn
+  * New 'nujobs_jobfull' condition - True if a job is full in Jobs Reborn
+  * New 'nujobs_joblevel' condition - True if player has level in Jobs Reborn
+  * New 'nujobs_addexp' event - Add experience to player in Jobs Reborn
+  * New 'nujobs_addlevel' event - Add a level to player in Jobs Reborn
+  * New 'nujobs_dellevel' event - Remove a level from player in Jobs Reborn
+  * New 'nujobs_joinjob' event - Joins a player to a job in Jobs Reborn
+  * New 'nujobs_leavejob' event - Leaves a job in Jobs Reborn
+  * New 'nujobs_setlevel' event - Set a players level in Jobs Reborn
+  * New 'nujobs_joinjob' objective - Triggers when player joins job in Jobs Reborn
+  * New 'nujobs_leavejob' objective - Triggers when a player leaves job in Jobs Reborn
+  * New 'nujobs_levelup' objective - Triggers when a player levels up in Jobs Reborn
+  * New 'nujobs_payment' objective - Triggers when a player is paid in Jobs Reborn
+
 Changes:
   * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.

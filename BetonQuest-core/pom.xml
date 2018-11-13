@@ -220,6 +220,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- JobsReborn -->
+        <dependency>
+            <groupId>com.gamingmesh.jobs</groupId>
+            <artifactId>Jobs</artifactId>
+            <version>4.8.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Other Dependencies -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
