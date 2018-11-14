@@ -61,6 +61,7 @@ import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.LookingAtCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
+import pl.betoncraft.betonquest.conditions.MooncycleCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
 import pl.betoncraft.betonquest.conditions.PartialDateCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
@@ -572,6 +573,7 @@ public class BetonQuest extends VersionPlugin {
         registerConditions("realtime", RealTimeCondition.class);
         registerConditions("looking", LookingAtCondition.class);
         registerConditions("facing", FacingCondition.class);
+        registerConditions("mooncycle", MooncycleCondition.class);
 
         // register events
         registerEvents("message", MessageEvent.class);
