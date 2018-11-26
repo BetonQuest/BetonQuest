@@ -38,7 +38,7 @@ public class CitizensListener implements Listener {
      * Initializes the listener
      */
     public CitizensListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

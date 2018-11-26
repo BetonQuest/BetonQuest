@@ -150,7 +150,7 @@ public class StaticEvents {
                     // run the event in sync
                     BetonQuest.event(null, event);
                 }
-            }.runTask(BetonQuest.getPlugin());
+            }.runTask(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 

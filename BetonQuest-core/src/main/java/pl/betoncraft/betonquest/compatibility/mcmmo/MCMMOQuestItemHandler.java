@@ -38,7 +38,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 public class MCMMOQuestItemHandler implements Listener {
 
     public MCMMOQuestItemHandler() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -72,7 +72,7 @@ public class GlobalLocations extends BukkitRunnable {
             }
         }
         finalLocations = locations;
-        runTaskTimer(BetonQuest.getPlugin(), 20, 20);
+        runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 20, 20);
     }
 
     /**

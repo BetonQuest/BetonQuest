@@ -84,7 +84,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             string.append(color);
         }
         answerFormat = string.toString();
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler
@@ -158,7 +158,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             public void run() {
                 display();
             }
-        }.runTask(BetonQuest.getPlugin());
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
     }
 
     @Override
