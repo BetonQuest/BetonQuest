@@ -1,19 +1,19 @@
 /*
- * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ *  BetonQuest - advanced quests for Bukkit
+ *  Copyright (C) 2016  Jakub "Co0sh" Sapalski
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.conversation;
 
@@ -213,27 +213,21 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 string.append(color);
             }
 
-            // If both showNumber and showNPCText is false, we can put the response directly into the display name
-            if (!showNumber && !showNPCText) {
-                meta.setDisplayName(Utils.replaceReset(string.toString() + "- " + optionColor + option, optionColor));
-                meta.setDisplayName(Utils.replaceReset(string.toString() + "- " + optionColor + option, optionColor));
+            if (showNumber) {
+                meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
             } else {
-                if (showNumber) {
-                    meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
-                } else {
-                    meta.setDisplayName(" ");
-                }
-
-                ArrayList<String> lines = new ArrayList<>();
-
-                if (showNPCText) {
-                    lines.addAll(stringToLines(response, npcTextColor,
-                            npcNameColor + npcName + ChatColor.RESET + ": "));
-                }
-
-                lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
-                meta.setLore(lines);
+                meta.setDisplayName(" ");
             }
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            if (showNPCText) {
+                lines.addAll(stringToLines(response, npcTextColor,
+                        npcNameColor + npcName + ChatColor.RESET + ": "));
+            }
+
+            lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
+            meta.setLore(lines);
 
             item.setItemMeta(meta);
             buttons[j] = item;
