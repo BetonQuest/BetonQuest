@@ -510,6 +510,7 @@ BountifulAPI enables you to use `title` event without spamming the console with 
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
+### Hiding NPC's
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
 
 ```
@@ -517,3 +518,56 @@ hide_npcs:
   41: killedAlready,questStarted
   127: '!questStarted'
 ```
+
+
+### Conversation IO: `menu`
+
+A conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](https://www.youtube.com/channel/UCyF806Xfzr4B18dsZ4TEI9w).
+
+Customize how it looks by adding the following lines to custom.yml:
+
+```YAML
+menu_conv_io:
+  line_length: 60
+
+  npc_wrap: '&l &r'
+  npc_text: '&l &r&f{npc_text}'
+  npc_text_reset: '&f'
+  option_wrap: '&r&l &l &l &l &r'
+  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
+  option_text_reset: '&b'
+  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
+  option_selected_reset: '&f'
+  option_selected_wrap: '&r&l &l &l &l &r&f&n'
+
+  control_select: jump,left_click
+  control_cancel: sneak
+  control_move: scroll,move
+
+  npc_name_type: chat_prefix
+  npc_name_align: center
+  npc_name_format: &e{npc_name}&r
+```
+
+Where:
+  * line_length - Maximum size of a line till its wrapped
+  * npc_wrap - What text to prefix each new line in the NPC text that wraps
+  * npc_text - How to write the NPC text. Replaces {1} with the npcs text
+  * npc_text_reset - When a color reset is found, what to replace it with
+  * option_wrap - What text to prefix each new line in an option that wraps
+  * option_text - How to write an option. Replaces {1} with the option text
+  * option_text_reset - When a color reset is found, what to replace it with
+  * option_selected - How to write a selected option. Replaces {1} with the option text
+  * option_selected_reset - When a color reset is found, what to replace it with
+  * option_selected_wrap - What text to prefix each new line in a selected option that wraps
+  * control_select - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_cancel - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_move - Space separated actions to move selection. Can be any of 'move', 'scroll'
+  * npc_name_type - Type of NPC name display. Can be one of: 'none', 'chat'
+  * npc_name_align - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
+  * npc_name_format - How to format the npc name
+
+Variables:
+  * {npc_text} - The text the NPC says
+  * {option_text} - The option text
+  * {npc_name} - The name of the NPC

@@ -6,6 +6,7 @@ Additions:
   * Chest ConversationIO can now be configured to show NPC text per option.
   * New 'extends' keyword in conversation to allow inheritance
   * New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC
+  * New 'menu' conversation IO - Requires ProtocolLib. See: https://www.youtube.com/watch?v=Qtn7Dpdf4jw&lc
 Changes:
   * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.
