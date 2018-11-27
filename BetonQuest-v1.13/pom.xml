@@ -71,6 +71,12 @@
             <version>2.0.24-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib-API</artifactId>
+            <version>4.4.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Other Dependencies -->
         <dependency>
