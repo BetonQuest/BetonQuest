@@ -47,9 +47,40 @@
         <!-- Local Dependencies -->
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
+            <artifactId>BetonQuest-core</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>BetonQuest-v1.12-R1</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>BetonQuest-v1.11-R1</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>BetonQuest-v1.10-R1</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>BetonQuest-v1.9-R2</artifactId>
             <version>${project.parent.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
+        </dependency>
+        <!-- MultiVersion Plugin -->
+        <dependency>
+            <groupId>au.com.grieve.multi_version_plugin</groupId>
+            <artifactId>MultiVersionPlugin</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- 3rd Party Dependencies -->
@@ -123,12 +154,21 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>org.bstats</include>
-                                </includes>
-                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/maven/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <relocations>
+                                <!-- Multiversion Plugin -->
+                                <relocation>
+                                    <pattern>au.com.grieve.multi_version_plugin</pattern>
+                                    <shadedPattern>pl.betoncraft.betonquest.multi_version_plugin</shadedPattern>
+                                </relocation>
+                                <!-- BStats -->
                                 <relocation>
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>

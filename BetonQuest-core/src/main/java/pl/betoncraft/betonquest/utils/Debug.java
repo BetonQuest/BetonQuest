@@ -39,19 +39,19 @@ public class Debug {
 
     private static boolean debugging = false;
     private static Debug instance;
-    private Logger logger = BetonQuest.getInstance().getLogger();
+    private Logger logger = BetonQuest.getInstance().getJavaPlugin().getLogger();
     private File debug;
     private File error;
 
     public Debug() {
         instance = this;
         // if debug option isn't set (yet), then assume it's off
-        String configDebug = BetonQuest.getInstance().getConfig().getString("debug");
+        String configDebug = BetonQuest.getInstance().getJavaPlugin().getConfig().getString("debug");
         if (configDebug == null) {
             configDebug = "true";
         }
         // create logs folder if it doesn't already exist
-        File logFolder = new File(BetonQuest.getInstance().getDataFolder(), "logs");
+        File logFolder = new File(BetonQuest.getInstance().getJavaPlugin().getDataFolder(), "logs");
         if (!logFolder.isDirectory()) {
             logFolder.mkdirs();
         }
@@ -86,7 +86,7 @@ public class Debug {
         }
         // display a message in the console
         if (debugging)
-            BetonQuest.getInstance().getLogger().info("Debugging is turned on!");
+            BetonQuest.getInstance().getJavaPlugin().getLogger().info("Debugging is turned on!");
     }
 
     /**
@@ -156,7 +156,7 @@ public class Debug {
                 public void run() {
                     sync(message, file, type);
                 }
-            }.runTask(BetonQuest.getPlugin());
+            }.runTask(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 

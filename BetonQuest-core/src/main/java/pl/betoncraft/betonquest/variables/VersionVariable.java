@@ -41,7 +41,7 @@ public class VersionVariable extends Variable {
             if (plugin == null)
                 throw new InstructionParseException("Plugin " + parts[1] + "does not exist!");
         } else {
-            plugin = BetonQuest.getPlugin();
+            plugin = BetonQuest.getInstance().getJavaPlugin();
         }
     }
 

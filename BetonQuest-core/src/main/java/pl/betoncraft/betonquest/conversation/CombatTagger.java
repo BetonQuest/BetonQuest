@@ -48,7 +48,7 @@ public class CombatTagger implements Listener {
      * Starts the combat listener
      */
     public CombatTagger() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
         delay = Integer.parseInt(Config.getString("config.combat_delay"));
     }
 
@@ -90,7 +90,7 @@ public class CombatTagger implements Listener {
                     tagged.put(playerID, false);
                 }
             });
-            untaggers.get(playerID).runTaskLater(BetonQuest.getPlugin(), delay * 20);
+            untaggers.get(playerID).runTaskLater(BetonQuest.getInstance().getJavaPlugin(), delay * 20);
         }
     }
 

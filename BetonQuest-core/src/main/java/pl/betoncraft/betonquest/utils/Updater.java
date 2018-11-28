@@ -209,9 +209,9 @@ public class Updater {
                                     + ", use '/q update --dev' to download it.");
                         }
                     }
-                }.runTask(BetonQuest.getPlugin());
+                }.runTask(BetonQuest.getInstance().getJavaPlugin());
             }
-        }.runTaskAsynchronously(BetonQuest.getPlugin());
+        }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
     }
 
     private void load() {
@@ -305,7 +305,7 @@ public class Updater {
                     bugfixAddress = null; // this will prevent bugfixes from
                     // overwriting the release
                 }
-            }.runTaskAsynchronously(BetonQuest.getPlugin());
+            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
             return true;
         }
         return false;
@@ -319,7 +319,7 @@ public class Updater {
                     downloadUpdate(devBuildAddress, sender);
                     bugfixAddress = null;
                 }
-            }.runTaskAsynchronously(BetonQuest.getPlugin());
+            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
             return true;
         }
         return false;

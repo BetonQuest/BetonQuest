@@ -73,7 +73,7 @@ public class PointEvent extends QuestEvent {
                                 + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
                     }
                 }
-            }.runTaskAsynchronously(BetonQuest.getPlugin());
+            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
         } else {
             PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             addPoints(playerID, playerData);

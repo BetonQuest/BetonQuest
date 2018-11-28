@@ -97,7 +97,7 @@ public class DieObjective extends Objective implements Listener {
                         player.setFireTicks(0);
 
                     }
-                }.runTaskLater(BetonQuest.getPlugin(), 1);
+                }.runTaskLater(BetonQuest.getInstance().getJavaPlugin(), 1);
                 completeObjective(playerID);
             }
         }
@@ -105,7 +105,7 @@ public class DieObjective extends Objective implements Listener {
 
     @Override
     public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @Override
