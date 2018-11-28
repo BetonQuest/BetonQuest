@@ -111,13 +111,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sucy.skill</groupId>
-            <artifactId>SkillAPI</artifactId>
-            <version>3.37</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>io.lumine.xikage</groupId>
             <artifactId>MythicMobs</artifactId>
             <version>4.4.0</version>
@@ -161,7 +154,7 @@
         <dependency>
             <groupId>com.gmail.nossr50.mcMMO</groupId>
             <artifactId>mcMMO</artifactId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.0-20181127.043124-41</version>
             <scope>provided</scope>
         </dependency>
 
