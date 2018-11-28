@@ -5,6 +5,7 @@ Additions:
   * New 'mooncycle' condition - Determine what phase the moon is in
 Fixes:
   * Resolve variables in journal pages.
+  * WATER and LAVA can be specified in Action Objective
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
