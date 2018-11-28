@@ -77,7 +77,7 @@ public class PasswordObjective extends Objective implements Listener {
                         public void run() {
                             completeObjective(playerID);
                         }
-                    }.runTask(BetonQuest.getPlugin());
+                    }.runTask(BetonQuest.getInstance().getJavaPlugin());
                 }
                 return !(fromCommand && prefix.isEmpty());
             }
@@ -87,7 +87,7 @@ public class PasswordObjective extends Objective implements Listener {
 
     @Override
     public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @Override
