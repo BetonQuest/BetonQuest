@@ -4,6 +4,7 @@ Additions:
   * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
   * New 'mooncycle' condition - Determine what phase the moon is in
 Fixes:
+  * Resolve variables in journal pages.
   * WATER and LAVA can be specified in Action Objective
 
 v1.10-dev
