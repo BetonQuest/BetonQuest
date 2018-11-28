@@ -59,7 +59,7 @@ public class ConversationResumer implements Listener {
         this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
                 Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));
         this.distance = Double.valueOf(Config.getString("config.max_npc_distance"));
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler

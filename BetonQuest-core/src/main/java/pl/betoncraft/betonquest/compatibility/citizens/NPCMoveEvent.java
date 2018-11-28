@@ -125,7 +125,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         }
         currentPlayer = playerID;
         movingNPCs.put(npc.getId(), blockConversations);
-        Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler
@@ -164,7 +164,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                     BetonQuest.event(currentPlayer, event);
                 }
             }
-        }.runTaskLater(BetonQuest.getPlugin(), waitTicks);
+        }.runTaskLater(BetonQuest.getInstance().getJavaPlugin(), waitTicks);
     }
 
 }

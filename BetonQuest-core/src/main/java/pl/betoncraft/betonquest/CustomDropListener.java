@@ -30,7 +30,7 @@ import java.util.List;
 public class CustomDropListener implements Listener {
 
     public CustomDropListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler

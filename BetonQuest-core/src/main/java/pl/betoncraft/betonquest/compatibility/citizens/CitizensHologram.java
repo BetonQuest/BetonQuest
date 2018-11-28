@@ -67,7 +67,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         instance = this;
 
         // Start this when all plugins loaded
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getPlugin(), new Runnable() {
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
             @Override
             public void run() {
                 // loop across all packages
@@ -161,11 +161,11 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     }
                 }
 
-                Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getPlugin());
+                Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance().getJavaPlugin());
             }
         }, 3);
 
-        runTaskTimer(BetonQuest.getPlugin(), 4, interval);
+        runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 4, interval);
         enabled = true;
     }
 
@@ -228,7 +228,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     if (visible) {
                         hologramEnabled = true;
                         if (npcHologram.hologram == null) {
-                            Hologram hologram = HologramsAPI.createHologram(BetonQuest.getPlugin(), npc.getStoredLocation().add(npcHologram.config.vector));
+                            Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), npc.getStoredLocation().add(npcHologram.config.vector));
                             hologram.getVisibilityManager().setVisibleByDefault(false);
                             for (String line : npcHologram.config.settings.getStringList("lines")) {
                                 if (line.startsWith("item:")) {
@@ -241,7 +241,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         }
 
                         // We do this a tick later to work around a bug where holograms simply don't appear
-                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getPlugin(), new Runnable() {
+                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
                             @Override
                             public void run() {
                                 if (npcHologram.hologram != null) {
@@ -252,7 +252,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
                     } else {
                         if (npcHologram.hologram != null) {
-                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getPlugin(), new Runnable() {
+                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
                                 @Override
                                 public void run() {
                                     if (npcHologram.hologram != null) {
@@ -294,7 +294,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         }
                     }
                 };
-                updater.runTaskTimer(BetonQuest.getPlugin(), 1L, 1L);
+                updater.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 1L, 1L);
             }
         } else {
             if (updater != null) {

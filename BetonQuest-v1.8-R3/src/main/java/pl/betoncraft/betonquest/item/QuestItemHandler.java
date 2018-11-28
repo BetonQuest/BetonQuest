@@ -56,7 +56,7 @@ public class QuestItemHandler implements Listener {
      * Registers the quest item handler as Listener.
      */
     public QuestItemHandler() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

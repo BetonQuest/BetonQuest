@@ -98,7 +98,7 @@ public class Compatibility implements Listener {
             hook(hook);
         }
 
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
 
         // hook into ProtocolLib
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
@@ -118,7 +118,7 @@ public class Compatibility implements Listener {
                     plugin.getLogger().info("Hooked into " + plugins + "!");
                 }
             }
-        }.runTask(BetonQuest.getPlugin());
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
 
     }
 

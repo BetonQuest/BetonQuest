@@ -34,7 +34,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class LangChangeListener implements Listener {
 
     public LangChangeListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler
