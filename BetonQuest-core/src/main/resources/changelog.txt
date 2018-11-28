@@ -3,6 +3,8 @@ Additions:
   * Support Minecraft 1.8 - 1.13.2+
   * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
   * New 'mooncycle' condition - Determine what phase the moon is in
+Fixes:
+  * Resolve variables in journal pages.
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
