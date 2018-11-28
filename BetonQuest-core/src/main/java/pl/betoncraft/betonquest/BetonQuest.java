@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest;
 
+import au.com.grieve.multi_version_plugin.MultiVersionPlugin;
 import au.com.grieve.multi_version_plugin.VersionPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -62,6 +63,7 @@ import pl.betoncraft.betonquest.conditions.JournalCondition;
 import pl.betoncraft.betonquest.conditions.LocationCondition;
 import pl.betoncraft.betonquest.conditions.LookingAtCondition;
 import pl.betoncraft.betonquest.conditions.MonstersCondition;
+import pl.betoncraft.betonquest.conditions.MooncycleCondition;
 import pl.betoncraft.betonquest.conditions.ObjectiveCondition;
 import pl.betoncraft.betonquest.conditions.PartialDateCondition;
 import pl.betoncraft.betonquest.conditions.PartyCondition;
@@ -221,7 +223,8 @@ public class BetonQuest extends VersionPlugin {
     private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
 
-    public BetonQuest() {
+    public BetonQuest(MultiVersionPlugin plugin) {
+        super(plugin);
         instance = this;
     }
 
@@ -459,7 +462,7 @@ public class BetonQuest extends VersionPlugin {
 
         // try to connect to database
         Debug.info("Connecting to MySQL database");
-        this.database = new MySQL(getPlugin(), getConfig().getString("mysql.host"), getConfig().getString("mysql.port"),
+        this.database = new MySQL(getJavaPlugin(), getConfig().getString("mysql.host"), getConfig().getString("mysql.port"),
                 getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
                 getConfig().getString("mysql.pass"));
 
@@ -470,7 +473,7 @@ public class BetonQuest extends VersionPlugin {
             isMySQLUsed = true;
             // if it fails use SQLite
         } else {
-            this.database = new SQLite(getPlugin(), "database.db");
+            this.database = new SQLite(getJavaPlugin(), "database.db");
             Debug.broadcast("Using SQLite for storing data!");
             isMySQLUsed = false;
         }
@@ -573,6 +576,7 @@ public class BetonQuest extends VersionPlugin {
         registerConditions("realtime", RealTimeCondition.class);
         registerConditions("looking", LookingAtCondition.class);
         registerConditions("facing", FacingCondition.class);
+        registerConditions("mooncycle", MooncycleCondition.class);
         registerConditions("conversation", ConversationCondition.class);
 
         // register events
@@ -673,7 +677,7 @@ public class BetonQuest extends VersionPlugin {
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
-        Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(getJavaPlugin(), new Runnable() {
             public void run() {
                 // Load all events and conditions
                 loadData();
@@ -702,7 +706,7 @@ public class BetonQuest extends VersionPlugin {
         }
 
         // metrics
-        new Metrics(getPlugin());
+        new Metrics(getJavaPlugin());
 
         // updater
         updater = new Updater(this.getFile());

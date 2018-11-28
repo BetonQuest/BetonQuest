@@ -65,7 +65,7 @@ public class SkriptEffectBQ extends Effect {
                 }
 
             }
-        }.runTask(BetonQuest.getPlugin());
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
     }
 
 }

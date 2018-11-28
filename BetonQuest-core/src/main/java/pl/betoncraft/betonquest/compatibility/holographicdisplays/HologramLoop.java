@@ -94,7 +94,7 @@ public class HologramLoop {
                     Debug.error("Could not parse location in " + key + " hologram: " + e.getMessage());
                     continue;
                 }
-                Hologram hologram = HologramsAPI.createHologram(BetonQuest.getPlugin(), location);
+                Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), location);
                 hologram.getVisibilityManager().setVisibleByDefault(false);
                 for (String line : lines) {
                     // If line begins with 'item:', then we will assume its a floating item
@@ -126,7 +126,7 @@ public class HologramLoop {
                 }
             }
         };
-        runnable.runTaskTimer(BetonQuest.getPlugin(), 20, BetonQuest.getInstance().getConfig()
+        runnable.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 20, BetonQuest.getInstance().getConfig()
                 .getInt("hologram_update_interval", 20 * 10));
     }
 

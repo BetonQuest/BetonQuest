@@ -43,7 +43,7 @@ public class CubeNPCListener implements Listener {
      * Creates new instance of the default NPC listener
      */
     public CubeNPCListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     /**

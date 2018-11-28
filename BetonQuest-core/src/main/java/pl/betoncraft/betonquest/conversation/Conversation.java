@@ -138,7 +138,7 @@ public class Conversation implements Listener {
             options = new String[]{option};
         }
 
-        new Starter(options).runTaskAsynchronously(BetonQuest.getPlugin());
+        new Starter(options).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
     }
 
     /**
@@ -208,7 +208,7 @@ public class Conversation implements Listener {
 
         // if there are no possible options, end conversation
         if (option == null) {
-            new ConversationEnder().runTask(BetonQuest.getPlugin());
+            new ConversationEnder().runTask(BetonQuest.getInstance().getJavaPlugin());
             return;
         }
         String text = data.getText(language, option, OptionType.NPC);
@@ -219,7 +219,7 @@ public class Conversation implements Listener {
         // print option to the player
         inOut.setNpcResponse(data.getQuester(language), text);
 
-        new NPCEventRunner(option).runTask(BetonQuest.getPlugin());
+        new NPCEventRunner(option).runTask(BetonQuest.getInstance().getJavaPlugin());
     }
 
     /**
@@ -231,7 +231,7 @@ public class Conversation implements Listener {
 
         inOut.clear();
 
-        new PlayerEventRunner(current.get(number)).runTask(BetonQuest.getPlugin());
+        new PlayerEventRunner(current.get(number)).runTask(BetonQuest.getInstance().getJavaPlugin());
 
         // clear hashmap
         current.clear();
@@ -267,10 +267,10 @@ public class Conversation implements Listener {
             public void run() {
                 inOut.display();
             }
-        }.runTask(BetonQuest.getPlugin());
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
         // end conversations if there are no possible options
         if (current.isEmpty()) {
-            new ConversationEnder().runTask(BetonQuest.getPlugin());
+            new ConversationEnder().runTask(BetonQuest.getInstance().getJavaPlugin());
             return;
         }
     }
@@ -480,7 +480,7 @@ public class Conversation implements Listener {
             }
 
             // register listener for immunity, blocking commands and storing chat messages
-            Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getPlugin());
+            Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance().getJavaPlugin());
 
             if (options == null) {
                 options = data.getStartingOptions();
@@ -537,7 +537,7 @@ public class Conversation implements Listener {
             for (EventID event : data.getEventIDs(option, OptionType.NPC)) {
                 BetonQuest.event(playerID, event);
             }
-            new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getPlugin());
+            new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 
@@ -559,7 +559,7 @@ public class Conversation implements Listener {
             for (EventID event : data.getEventIDs(option, OptionType.PLAYER)) {
                 BetonQuest.event(playerID, event);
             }
-            new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getPlugin());
+            new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 

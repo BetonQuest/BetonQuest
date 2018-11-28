@@ -34,7 +34,7 @@ import pl.betoncraft.betonquest.api.MobKillNotifier;
 public class SkillAPIKillListener implements Listener {
 
     public SkillAPIKillListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

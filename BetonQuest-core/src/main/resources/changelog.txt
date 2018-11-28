@@ -1,5 +1,10 @@
+v2.0-dev
+Additions:
+  * Support Minecraft 1.8 - 1.13.2+
+  * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
+  * New 'mooncycle' condition - Determine what phase the moon is in
+
 v1.10-dev
-Notes:
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
   - This version is only compatible to Shopkeepers v2.2.0 and above
 Additions:

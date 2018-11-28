@@ -45,7 +45,7 @@ public class Saver extends Thread implements Listener {
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.run = true;
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     public void run() {
