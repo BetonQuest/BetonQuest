@@ -21,6 +21,7 @@ import static com.comphenix.protocol.PacketType.Play.Server.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.bukkit.entity.Entity;
@@ -199,8 +200,10 @@ public class EntityHider implements Listener {
     protected void removeEntity(Entity entity, boolean destroyed) {
         int entityID = entity.getEntityId();
 
-        for (Map<Integer, Boolean> maps : observerEntityMap.rowMap().values()) {
-            maps.remove(entityID);
+        Iterator<Map.Entry<Integer, Map<Integer, Boolean>>> iterator = observerEntityMap.rowMap().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            iterator.next().getValue().remove(entityID);
         }
     }
 
