@@ -56,7 +56,7 @@
         <dependency>
             <groupId>au.com.grieve.multi_version_plugin</groupId>
             <artifactId>MultiVersionPlugin</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
 
@@ -125,14 +125,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-legacy</artifactId>
             <version>7.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldedit</artifactId>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
             <version>7.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

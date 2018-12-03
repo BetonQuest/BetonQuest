@@ -96,6 +96,18 @@
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>pl.betoncraft.betonquest:BetonQuest-WG-v7.0.0-S1</include>
+            </includes>
+
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <outputDirectory>MVP/WG_7_0_0_S1</outputDirectory>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
     </moduleSets>
 
 

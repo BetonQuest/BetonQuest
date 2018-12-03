@@ -36,6 +36,7 @@
         <module>BetonQuest-core</module>
         <module>BetonQuest-bootstrap</module>
         <module>BetonQuest-build</module>
+        <module>BetonQuest-WG-v7.0.0-S1</module>
     </modules>
 
     <!-- Shared Repositories -->
@@ -54,6 +55,12 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
 
+        <!-- WorldGuard,WorldEdit -->
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+
         <!-- BetonQuest Repo -->
         <repository>
             <id>betonquest-repo</id>
@@ -67,12 +74,6 @@
         <repository>
             <id>bundabrg-repo</id>
             <url>https://repo.worldguard.com.au/repository/maven-public</url>
-        </repository>
-
-        <!-- WorldGuard,WorldEdit -->
-        <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
         </repository>
 
         <!-- CitizenNPC Repo -->

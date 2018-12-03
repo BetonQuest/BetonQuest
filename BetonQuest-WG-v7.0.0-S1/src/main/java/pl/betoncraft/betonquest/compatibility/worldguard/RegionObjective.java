@@ -18,7 +18,6 @@
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
 import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -65,7 +64,7 @@ public class RegionObjective extends Objective implements Listener {
         }
 
         ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(loc.getX(), loc.getY(), loc.getZ()));
+        ApplicableRegionSet set = manager.getApplicableRegions(new Vector(loc.getX(), loc.getY(), loc.getZ()));
         for (ProtectedRegion compare : set) {
             if (compare.equals(region)) {
                 if (checkConditions(playerID)) {
