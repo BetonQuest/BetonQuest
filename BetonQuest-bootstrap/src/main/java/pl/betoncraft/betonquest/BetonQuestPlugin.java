@@ -32,7 +32,6 @@ public class BetonQuestPlugin extends MultiVersionPlugin {
 
         // Add Server Versions
         String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1).replace("_",".");
-        System.err.println(serverVersion + " - " + Bukkit.getVersion());
         switch(serverVersion.substring(0, StringUtils.ordinalIndexOf(serverVersion, ".", 2))) {
             case "1.8":
                 versions.add("1_8_R3");
@@ -47,7 +46,7 @@ public class BetonQuestPlugin extends MultiVersionPlugin {
         }
 
         // Add WorldGuard Versions
-        if (isClass("com.sk89q.worldedit.BlockVector")) {
+        if (!isClass("com.sk89q.worldguard.bukkit.WGBukkit") && isClass("com.sk89q.worldedit.BlockVector")) {
             versions.add("WG_7_0_0_S1");
         }
 

@@ -153,9 +153,9 @@ This condition is met when the player is inside the specified region. The only a
 
 ### Paste schematic event: `paste`
 
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`.
+This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 
-**Example**: `paste 100;200;300;world some_building`
+**Example**: `paste 100;200;300;world some_building noair`
 
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 

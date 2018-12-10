@@ -74,7 +74,7 @@ public class PasteSchematicEvent extends QuestEvent {
             SchematicFormat schematic = SchematicFormat.getFormat(file);
             CuboidClipboard clipboard = schematic.load(file);
             BukkitWorld world = new BukkitWorld(location.getWorld());
-            EditSession editSession = we.getWorldEdit().getEditSessionFactory().getEditSession(world, 64 * 64 * 64);
+            EditSession editSession = we.getWorldEdit().getEditSessionFactory().getEditSession(world, -1);
             Vector newOrigin = BukkitUtil.toVector(location);
             clipboard.paste(editSession, newOrigin, noAir);
         } catch (DataException | IOException | MaxChangedBlocksException e) {

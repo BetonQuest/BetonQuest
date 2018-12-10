@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.compatibility.worldedit;
 
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -29,7 +29,6 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.util.io.Closer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import pl.betoncraft.betonquest.Instruction;
@@ -39,7 +38,6 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,7 +47,6 @@ import java.io.IOException;
  *
  * @author Jakub Sapalski
  */
-@SuppressWarnings("deprecation")
 public class PasteSchematicEvent extends QuestEvent {
 
     private WorldEditPlugin we;
@@ -68,7 +65,7 @@ public class PasteSchematicEvent extends QuestEvent {
         String schemName = instruction.next();
         file = new File(folder, schemName + ".schematic");
         if (!file.exists()) {
-            throw new InstructionParseException("Schematic " + schemName + " does not exist");
+            throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
         }
         noAir = instruction.hasArgument("noair");
     }
@@ -83,22 +80,21 @@ public class PasteSchematicEvent extends QuestEvent {
             }
 
             Clipboard clipboard;
-            try (Closer closer = Closer.create()) {
-                FileInputStream fis = closer.register(new FileInputStream(file));
-                BufferedInputStream bis = closer.register(new BufferedInputStream(fis));
-                ClipboardReader reader = closer.register(format.getReader(bis));
-
+            try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
                 clipboard = reader.read();
             }
 
-            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), 1000);
-            Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(BukkitAdapter.adapt(location).toVector())
-                    .ignoreAirBlocks(noAir)
-                    .build();
-            Operations.completeLegacy(operation);
-        } catch (IOException | MaxChangedBlocksException e) {
+
+            try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), -1)) {
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession)
+                        .to(BukkitAdapter.adapt(location).toVector())
+                        .ignoreAirBlocks(noAir)
+                        .build();
+
+                Operations.complete(operation);
+            }
+        } catch (IOException | WorldEditException e) {
             Debug.error("Error while pasting a schematic: " + e.getMessage());
         }
     }
