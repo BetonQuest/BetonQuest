@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -37,6 +38,8 @@ public class EffectEvent extends QuestEvent {
     private final VariableNumber duration;
     private final VariableNumber amplifier;
     private final boolean ambient;
+    private final boolean hidden;
+    private final boolean icon;
 
     public EffectEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -51,13 +54,22 @@ public class EffectEvent extends QuestEvent {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse number arguments");
         }
-        ambient = instruction.hasArgument("--ambient");
+
+        if (instruction.hasArgument("--ambient")) {
+            Debug.error(instruction.getID().getFullID() + ": Effect event uses \"--ambient\" which is deprecated. Please use \"ambient\"");
+            ambient = true;
+        } else {
+            ambient = instruction.hasArgument("ambient");
+        }
+
+        hidden = instruction.hasArgument("hidden");
+        icon = instruction.hasArgument("icon");
     }
 
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         PlayerConverter.getPlayer(playerID).addPotionEffect(
-                new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient));
+                new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient, !hidden, icon));
     }
 
 }
