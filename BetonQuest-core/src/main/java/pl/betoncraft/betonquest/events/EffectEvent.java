@@ -63,7 +63,7 @@ public class EffectEvent extends QuestEvent {
         }
 
         hidden = instruction.hasArgument("hidden");
-        icon = instruction.hasArgument("icon");
+        icon = !instruction.hasArgument("noicon");
     }
 
     @Override
