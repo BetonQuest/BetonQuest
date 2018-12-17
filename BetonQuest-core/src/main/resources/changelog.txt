@@ -4,7 +4,7 @@ Additions:
   * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
   * New 'mooncycle' condition - Determine what phase the moon is in
 Changes:
-  * Event 'effect' can have 'ambient', 'hidden' and 'icon' parameters
+  * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.
 Fixes:
   * Resolve variables in journal pages.
