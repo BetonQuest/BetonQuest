@@ -59,6 +59,11 @@ public class GlobalObjectives {
         PlayerData data = BetonQuest.getInstance().getPlayerData(playerID);
         for (ObjectiveID id : instance.globalObjectives) {
             Objective objective = BetonQuest.getInstance().getObjective(id);
+
+            if (objective == null) {
+                continue;
+            }
+
             //if player already has the tag skip
             if (data.hasTag(GlobalObjectives.getTag(id)))
                 continue;
