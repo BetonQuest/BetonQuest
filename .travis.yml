@@ -10,7 +10,7 @@ cache:
     - "$HOME/.m2/repository"
 before_script: "sed -i \"s@-dev@-dev#$TRAVIS_BUILD_NUMBER@\" src/main/resources/plugin.yml"
 install: true
-script: mvn package -Drelease
+script: mvn clean package -Drelease
 after_success:
   - "curl -F \"pass=$pass\" -F \"id=$TRAVIS_BUILD_NUMBER\" -F \"hash=$TRAVIS_COMMIT\" -F \"branch=$TRAVIS_BRANCH\" -F \"plugin=@target/BetonQuest.jar\" https://betonquest.pl"
   - "chmod +x discord.sh"
