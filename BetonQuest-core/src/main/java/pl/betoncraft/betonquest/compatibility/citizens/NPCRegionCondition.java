@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
@@ -65,7 +65,7 @@ public class NPCRegionCondition extends Condition {
 
         Player player = PlayerConverter.getPlayer(playerID);
         WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(worldguardPlatform.getWorldByName(player.getWorld().getName()));
+        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
         if (manager == null) {
             return false;
         }

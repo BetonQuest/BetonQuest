@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
@@ -59,7 +59,7 @@ public class RegionObjective extends Objective implements Listener {
         }
         Location loc = event.getTo();
         WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(worldguardPlatform.getWorldByName(loc.getWorld().getName()));
+        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
         if (manager == null) {
             return;
         }
