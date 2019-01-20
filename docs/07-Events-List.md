@@ -186,6 +186,12 @@ This event is similar to `command` event, the only difference is that it will fi
 
 **Example**: `sudo spawn`
 
+## OPSudo: `opsudo`
+
+This event is similar to `command` event, the only difference is that it will fire a command as the player with temporary OP permissions
+
+**Example**: `sudo spawn`
+
 ## Chest Give: `chestgive` _persistent_, _static_
 
 This works the same as `give` event, but it puts the items in a chest at specified location. The first argument is a location, the second argument is a list of items, like in `give` event. If the chest is full, the items will be dropped on the ground. The chest can be any other block with inventory, i.e. a hopper or a dispenser. BetonQuest will log an error to the console when this event is fired but there is no chest at specified location.
