@@ -174,7 +174,7 @@ public class LocalChatPaginator extends ChatPaginator {
             final String subLine = lines.get(i);
 
             //char color = pLine.charAt(pLine.lastIndexOf(ChatColor.COLOR_CHAR) + 1);
-            lines.set(i, getLastColors(pLine) + wrapPrefix + subLine);
+            lines.set(i, wrapPrefix + getLastColors(pLine) + subLine);
         }
 
         return lines.toArray(new String[0]);
