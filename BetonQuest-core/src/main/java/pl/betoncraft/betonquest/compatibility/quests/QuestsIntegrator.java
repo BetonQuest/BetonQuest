@@ -41,8 +41,8 @@ public class QuestsIntegrator implements Integrator {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         plugin.registerConditions("quest", QuestCondition.class);
         plugin.registerEvents("quest", QuestEvent.class);
-        questsInstance.customRewards.add(new EventReward());
-        questsInstance.customRequirements.add(new ConditionRequirement());
+        questsInstance.getCustomRewards().add(new EventReward());
+        questsInstance.getCustomRequirements().add(new ConditionRequirement());
     }
 
     @Override

@@ -108,7 +108,7 @@
         <!-- Quests -->
         <repository>
             <id>quests</id>
-            <url>http://ci.ac3-servers.eu/job/Quests/316/maven-repository/repository/</url>
+            <url>http://ci.ac3-servers.eu/job/Quests/668/maven-repository/repository/</url>
         </repository>
 
         <!-- Aikar's repo -->

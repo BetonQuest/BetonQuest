@@ -78,7 +78,7 @@
         <dependency>
             <groupId>me.blackvein.quests</groupId>
             <artifactId>quests</artifactId>
-            <version>3.3.4</version>
+            <version>3.6.3</version>
             <scope>provided</scope>
         </dependency>
 
