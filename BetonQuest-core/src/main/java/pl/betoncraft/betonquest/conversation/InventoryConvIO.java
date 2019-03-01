@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -34,10 +35,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.LocalChatPaginator;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -64,6 +67,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean switching = false;
     protected Location loc;
     protected boolean printMessages = false;
+
+    // Config
+    protected boolean showNumber = true;
+    protected boolean showNPCText = true;
 
     public InventoryConvIO(Conversation conv, String playerID) {
         this.conv = conv;
@@ -100,6 +107,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         answerPrefix = string.toString();
         loc = player.getLocation();
+
+        // Load config
+        if (BetonQuest.getInstance().getConfig().contains("conversation_IO_config.chest")) {
+            ConfigurationSection config = BetonQuest.getInstance().getConfig().getConfigurationSection("conversation_IO_config.chest");
+            showNumber = config.getBoolean("show_number", true);
+            showNPCText = config.getBoolean("show_npc_text", true);
+        }
+
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
@@ -144,7 +159,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
         npcMeta.setOwner(npcName);
         npcMeta.setDisplayName(npcNameColor + npcName);
-        npcMeta.setLore(stringToLines(response, npcTextColor, null));
+        // NPC Text
+        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(response, npcTextColor),
+                45)));
+
         npc.setItemMeta(npcMeta);
         buttons[0] = npc;
         // this is the number of an option
@@ -194,15 +213,34 @@ public class InventoryConvIO implements Listener, ConversationIO {
             ItemStack item = new ItemStack(material);
             item.setDurability(data);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
-            ArrayList<String> lines = stringToLines(response, npcTextColor,
-                    npcNameColor + npcName + ChatColor.RESET + ": ");
+
             StringBuilder string = new StringBuilder();
             for (ChatColor color : ConversationColors.getColors().get("number")) {
                 string.append(color);
             }
-            lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
+
+            if (showNumber) {
+                meta.setDisplayName(numberFormat.replace("%number%", Integer.toString(next)));
+            } else {
+                meta.setDisplayName(" ");
+            }
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            if (showNPCText) {
+                // NPC Text
+                lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
+                        Utils.replaceReset(npcNameColor + npcName + ChatColor.RESET + ": " +
+                                response, npcTextColor),
+                        45)));
+            }
+
+            // Option Text
+            lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
+                    Utils.replaceReset(string.toString() + "- " + option, optionColor),
+                    45)));
             meta.setLore(lines);
+
             item.setItemMeta(meta);
             buttons[j] = item;
         }

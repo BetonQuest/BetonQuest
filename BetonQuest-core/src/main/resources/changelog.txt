@@ -3,6 +3,7 @@ Additions:
   * Support Minecraft 1.8 - 1.13.2+
   * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
   * New 'mooncycle' condition - Determine what phase the moon is in
+  * Chest ConversationIO can now be configured to show NPC text per option.
   * New 'extends' keyword in conversation to allow inheritance
   * New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC
 Changes:
