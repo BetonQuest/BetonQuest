@@ -240,7 +240,7 @@ public class CitizensParticle extends BukkitRunnable {
                 NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 
                 // skip if there are no such NPC or it's not spawned or not visible
-                if (npc == null || !npc.isSpawned() ||
+                if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||
                         (NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc))) {
                     continue;
                 }
