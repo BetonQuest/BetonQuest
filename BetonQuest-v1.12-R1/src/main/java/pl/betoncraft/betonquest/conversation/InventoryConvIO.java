@@ -1,19 +1,19 @@
 /*
- *  BetonQuest - advanced quests for Bukkit
- *  Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * BetonQuest - advanced quests for Bukkit
+ * Copyright (C) 2016  Jakub "Co0sh" Sapalski
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.conversation;
 
@@ -35,10 +35,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.LocalChatPaginator;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -157,7 +159,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
         npcMeta.setOwner(npcName);
         npcMeta.setDisplayName(npcNameColor + npcName);
-        npcMeta.setLore(stringToLines(response, npcTextColor, null));
+        // NPC Text
+        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(response, npcTextColor),
+                45)));
+
         npc.setItemMeta(npcMeta);
         buttons[0] = npc;
         // this is the number of an option
@@ -219,11 +225,17 @@ public class InventoryConvIO implements Listener, ConversationIO {
             ArrayList<String> lines = new ArrayList<>();
 
             if (showNPCText) {
-                lines.addAll(stringToLines(response, npcTextColor,
-                        npcNameColor + npcName + ChatColor.RESET + ": "));
+                // NPC Text
+                lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
+                        Utils.replaceReset(npcNameColor + npcName + ChatColor.RESET + ": " +
+                                response, npcTextColor),
+                        45)));
             }
 
-            lines.addAll(stringToLines(option, optionColor, string.toString() + "- "));
+            // Option Text
+            lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
+                    Utils.replaceReset(string.toString() + "- " + option, optionColor),
+                    45)));
             meta.setLore(lines);
 
             item.setItemMeta(meta);
