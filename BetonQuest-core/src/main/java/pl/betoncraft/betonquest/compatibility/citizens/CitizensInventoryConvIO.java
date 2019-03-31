@@ -37,6 +37,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     public void display() {
         super.display();
 
+        // Make sure we have an inventory
+        if (inv == null) {
+            return;
+        }
+
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
             CitizensConversation citizensConv = (CitizensConversation) conv;
