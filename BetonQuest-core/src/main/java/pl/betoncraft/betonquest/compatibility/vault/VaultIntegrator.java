@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.vault;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -29,11 +30,19 @@ public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;
     private BetonQuest plugin;
+    private Permission permission = null;
     private Economy economy = null;
 
     public VaultIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();
+    }
+
+    /**
+     * @return the permission
+     */
+    public static Permission getPermission() {
+        return instance.permission;
     }
 
     /**
@@ -45,6 +54,11 @@ public class VaultIntegrator implements Integrator {
 
     @Override
     public void hook() {
+        RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager()
+                .getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            permission = permissionProvider.getProvider();
+        }
         RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager()
                 .getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
@@ -56,6 +70,11 @@ public class VaultIntegrator implements Integrator {
             plugin.registerVariable("money", MoneyVariable.class);
         } else {
             Debug.error("There is no economy plugin on the server!");
+        }
+        if (permission != null) {
+            plugin.registerEvents("permission", PermissionEvent.class);
+        } else {
+            Debug.error("Could not get permission provider!");
         }
     }
 
