@@ -1,6 +1,6 @@
 # Compatibility
 
-BetonQuest can hook into other plugins to extend its functionality. Currently there are 19 plugins: Citizens, Vault, EffectLib, MythicMobs, Magic, Skript, Denizen, WorldEdit, WorldGuard, mcMMO, Heroes, SkillAPI, RacesAndClasses, LegendQuest, Shopkeepers, Quests, PlaceholderAPI, HolographicDisplays and PlayerPoints.
+BetonQuest can hook into other plugins to extend its functionality. Currently there are 20 plugins: BountifulAPI, Citizens, Vault, EffectLib, MythicMobs, Magic, Skript, Denizen, WorldEdit, WorldGuard, mcMMO, Heroes, SkillAPI, RacesAndClasses, LegendQuest, Shopkeepers, Quests, PlaceholderAPI, HolographicDisplays and PlayerPoints.
 
 ## [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 
