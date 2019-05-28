@@ -2,7 +2,8 @@
 
 **Documentation for 2.0 version**
 
-BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. If you want to go completly crazy you can use BetonQuest for much more then quests. For some it´s a backbone of their complete server. This works because it has support for 22 plugins.
+BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. 
+If you want to go completly crazy you can use BetonQuest for much more then quests. For some it is a backbone of their server. This is possible because BetonQuest has support for 22 plugins.
 
 ## Features
 
@@ -37,4 +38,4 @@ There is no single "quest" object. This is only a conversation which consists of
 
 Do not be disappointed by the examples of getting wood and mining ore. These were only simplifications, so it is easier to explain the system. BetonQuest is capable of much more. You can add entries to a player's journal based on the quests he is doing. For example, in Morrowind, the conversations can be as multi-threaded as in Baldur's Gate, and quests can be started by entering specific location similar to within Skyrim. You can create reputation systems, unique quest items, books that react to being read, and so on. Your quests can have multiple paths to reach different endings depending on the players' decisions, and they can also require multiple players to complete an objective.
 
-You do not have to use BetonQuest for quests only. Conversations with NPCs can also help your players, teleports them around the map, describe server features, buy or sell stuff, give ranks etc. The only limit is your imagination!
+As mentioned before, you do not have to use BetonQuest for quests only. Conversations with NPCs can also help your players, teleports them around the map, describe server features, buy or sell stuff, give ranks etc. The only limit is your imagination!
