@@ -9,7 +9,7 @@ If you want to go completly crazy you can use BetonQuest for much more then ques
 
 * Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
-* **Many ways of displaying your NPC´s conversations**: Customisation is possible
+* **Many ways of displaying your NPCs conversations**: Customisation is possible
 * **Powerful event system**: anything can happen anywhere in a quest
 * Even more **powerful condition system**: limit whenever something should (or should not) happen
 * **Journal** in a book
