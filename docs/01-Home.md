@@ -1,13 +1,15 @@
 ![BetonQuest](https://betonquest.pl/assets/logo.png)
 
-**Documentation for 1.10-dev version**
+**Documentation for 2.0 version**
 
-BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently.
+BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. 
+If you want to go completly crazy you can use BetonQuest for much more then quests. For some it is a backbone of their server. This is possible because BetonQuest has support for 22 plugins.
 
 ## Features
 
 * Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
+* **Many ways of displaying your NPCs conversations**: Customisation is possible
 * **Powerful event system**: anything can happen anywhere in a quest
 * Even more **powerful condition system**: limit whenever something should (or should not) happen
 * **Journal** in a book
@@ -20,7 +22,7 @@ BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conver
 * Variables in conversations - let the NPC tell the player how much more wood he needs!
 * Quests can be organized into distributable packages
 * **Citizens2** NPC support
-* Integrated with [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI), [Citizens](https://dev.bukkit.org/bukkit-plugins/citizens/), [Denizen](https://dev.bukkit.org/bukkit-plugins/denizen/), [EffectLib](https://dev.bukkit.org/bukkit-plugins/effectlib/), [Heroes](https://dev.bukkit.org/bukkit-plugins/heroes/), [HolographicDisplays](https://dev.bukkit.org/bukkit-plugins/holographic-displays/), [LegendQuest](https://dev.bukkit.org/bukkit-plugins/legendquest/), [Magic](https://dev.bukkit.org/bukkit-plugins/magic/), [McMMO](https://dev.bukkit.org/bukkit-plugins/mcmmo/), [MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/), [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/), [PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/), [Quests](https://dev.bukkit.org/bukkit-plugins/quests/), [RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/), [Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/), [SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/), [Skript](https://dev.bukkit.org/bukkit-plugins/skript/), [Vault](https://dev.bukkit.org/bukkit-plugins/vault/), [WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/) and [WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/)
+* Integrated with [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/), [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI), [Citizens](https://dev.bukkit.org/bukkit-plugins/citizens/), [Denizen](https://dev.bukkit.org/bukkit-plugins/denizen/), [EffectLib](https://dev.bukkit.org/bukkit-plugins/effectlib/), [Heroes](https://dev.bukkit.org/bukkit-plugins/heroes/), [HolographicDisplays](https://dev.bukkit.org/bukkit-plugins/holographic-displays/), [LegendQuest](https://dev.bukkit.org/bukkit-plugins/legendquest/), [Magic](https://dev.bukkit.org/bukkit-plugins/magic/), [McMMO](https://dev.bukkit.org/bukkit-plugins/mcmmo/), [MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/), [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/), [PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/), [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/), [Quests](https://dev.bukkit.org/bukkit-plugins/quests/), [RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/), [Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/), [SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/), [Skript](https://dev.bukkit.org/bukkit-plugins/skript/), [Vault](https://dev.bukkit.org/bukkit-plugins/vault/), [WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/) and [WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/)
 * Multiple languages with easy translating
 * An API for creating personal events, conditions and objectives
 * SQLite and **MySQL** support
@@ -36,4 +38,4 @@ There is no single "quest" object. This is only a conversation which consists of
 
 Do not be disappointed by the examples of getting wood and mining ore. These were only simplifications, so it is easier to explain the system. BetonQuest is capable of much more. You can add entries to a player's journal based on the quests he is doing. For example, in Morrowind, the conversations can be as multi-threaded as in Baldur's Gate, and quests can be started by entering specific location similar to within Skyrim. You can create reputation systems, unique quest items, books that react to being read, and so on. Your quests can have multiple paths to reach different endings depending on the players' decisions, and they can also require multiple players to complete an objective.
 
-You do not have to use BetonQuest for quests only. Conversations with NPCs can also help your players, teleports them around the map, describe server features, buy or sell stuff, give ranks etc. The only limit is your imagination!
+As mentioned before, you do not have to use BetonQuest for quests only. Conversations with NPCs can also help your players, teleports them around the map, describe server features, buy or sell stuff, give ranks etc. The only limit is your imagination!
