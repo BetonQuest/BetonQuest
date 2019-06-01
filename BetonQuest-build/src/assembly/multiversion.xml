@@ -39,60 +39,72 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>pl.betoncraft.betonquest:BetonQuest-v1.8-R3</include>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.8</include>
             </includes>
 
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>MVP/1_8_R3</outputDirectory>
+                <outputDirectory>MVP/1_8</outputDirectory>
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>pl.betoncraft.betonquest:BetonQuest-v1.9-R2</include>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.9</include>
             </includes>
 
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>MVP/1_9_R2</outputDirectory>
+                <outputDirectory>MVP/1_9</outputDirectory>
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>pl.betoncraft.betonquest:BetonQuest-v1.10-R1</include>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.10</include>
             </includes>
 
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>MVP/1_10_R1</outputDirectory>
+                <outputDirectory>MVP/1_10</outputDirectory>
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>pl.betoncraft.betonquest:BetonQuest-v1.11-R1</include>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.11</include>
             </includes>
 
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>MVP/1_11_R1</outputDirectory>
+                <outputDirectory>MVP/1_11</outputDirectory>
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>pl.betoncraft.betonquest:BetonQuest-v1.12-R1</include>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.12</include>
             </includes>
 
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>MVP/1_12_R1</outputDirectory>
+                <outputDirectory>MVP/1_12</outputDirectory>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>pl.betoncraft.betonquest:BetonQuest-v1.13</include>
+            </includes>
+
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <outputDirectory>MVP/1_13</outputDirectory>
                 <unpack>true</unpack>
             </binaries>
         </moduleSet>

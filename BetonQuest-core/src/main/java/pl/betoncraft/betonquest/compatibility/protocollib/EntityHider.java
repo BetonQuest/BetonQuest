@@ -43,7 +43,6 @@ import java.util.Map;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ANIMATION;
 import static com.comphenix.protocol.PacketType.Play.Server.ATTACH_ENTITY;
-import static com.comphenix.protocol.PacketType.Play.Server.BED;
 import static com.comphenix.protocol.PacketType.Play.Server.BLOCK_BREAK_ANIMATION;
 import static com.comphenix.protocol.PacketType.Play.Server.COLLECT;
 import static com.comphenix.protocol.PacketType.Play.Server.COMBAT_EVENT;
@@ -72,7 +71,7 @@ public class EntityHider implements Listener {
 
     // Packets that update remote player entities
     private static final PacketType[] ENTITY_PACKETS = {
-            ENTITY_EQUIPMENT, BED, ANIMATION, NAMED_ENTITY_SPAWN,
+            ENTITY_EQUIPMENT, ANIMATION, NAMED_ENTITY_SPAWN,
             COLLECT, SPAWN_ENTITY, SPAWN_ENTITY_LIVING, SPAWN_ENTITY_PAINTING, SPAWN_ENTITY_EXPERIENCE_ORB,
             ENTITY_VELOCITY, REL_ENTITY_MOVE, ENTITY_LOOK, ENTITY_TELEPORT, ENTITY_HEAD_ROTATION, ENTITY_STATUS,
             ATTACH_ENTITY, ENTITY_METADATA, ENTITY_EFFECT, REMOVE_ENTITY_EFFECT, BLOCK_BREAK_ANIMATION, COMBAT_EVENT

@@ -28,11 +28,12 @@
     <version>2.0-SNAPSHOT</version>
 
     <modules>
-        <module>BetonQuest-v1.8-R3</module>
-        <module>BetonQuest-v1.9-R2</module>
-        <module>BetonQuest-v1.10-R1</module>
-        <module>BetonQuest-v1.11-R1</module>
-        <module>BetonQuest-v1.12-R1</module>
+        <module>BetonQuest-v1.8</module>
+        <module>BetonQuest-v1.9</module>
+        <module>BetonQuest-v1.10</module>
+        <module>BetonQuest-v1.11</module>
+        <module>BetonQuest-v1.12</module>
+        <module>BetonQuest-v1.13</module>
         <module>BetonQuest-core</module>
         <module>BetonQuest-bootstrap</module>
         <module>BetonQuest-build</module>
@@ -44,27 +45,54 @@
         <repository>
             <id>spigot-api</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <!-- PaperMC -->
         <repository>
             <id>destroystokyo-repo</id>
             <url>https://papermc.io/repo/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- WorldGuard,WorldEdit -->
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- BetonQuest Repo -->
         <repository>
             <id>betonquest-repo</id>
             <url>https://betonquest.pl/mvn</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -74,59 +102,116 @@
         <repository>
             <id>bundabrg-repo</id>
             <url>https://repo.worldguard.com.au/repository/maven-public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- CitizenNPC Repo -->
         <repository>
             <id>everything</id>
             <url>http://repo.citizensnpcs.co/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- Vault Repo -->
         <repository>
             <id>vault</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <!-- Elmakers Repo - MagicAPI, EffectLib -->
         <repository>
             <id>elmakers-repo</id>
             <url>http://maven.elmakers.com/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <repository>
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <!-- ProtocolLib -->
         <repository>
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- Quests -->
         <repository>
             <id>quests</id>
             <url>http://ci.ac3-servers.eu/job/Quests/668/maven-repository/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <!-- Aikar's repo -->
         <repository>
             <id>aikar-repo</id>
             <url>https://repo.aikar.co/nexus/content/repositories/aikar/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- Races and Classes -->
         <repository>
             <id>racesandclasses</id>
             <url>https://mymavenrepo.com/repo/0MUWpMJRPRou7zFXAsU7/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <!-- Mythic Mobs -->
         <repository>
             <id>mythic</id>
             <url>http://dev.lumine.io:8081/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -136,18 +221,33 @@
         <repository>
             <id>denizen</id>
             <url>http://ci.citizensnpcs.co/job/denizen/lastBuild/maven-repository/repository/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- MCMMO -->
         <repository>
             <id>mcmmo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- Shopkeeper -->
         <repository>
             <id>shopkeepers-releases</id>
-            <url>http://nexus3.cube-nation.de/repository/releases</url>
+            <url>https://nexus.lichtspiele.org/repository/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -157,12 +257,21 @@
         <repository>
             <id>filoghost-repo</id>
             <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <!-- PlayerPoints -->
         <repository>
             <id>playerpoints-repo</id>
             <url>https://repo.dakanilabs.com/repository/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -172,11 +281,23 @@
         <repository>
             <id>placeholderapi-repo</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -186,19 +307,6 @@
 
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <!--<pluginManagement>-->
-        <!--<plugins>-->
-        <!--<plugin>-->
-        <!--<artifactId>maven-assembly-plugin</artifactId>-->
-        <!--<version>3.1.0</version>-->
-        <!--<configuration>-->
-        <!--<descriptors>-->
-        <!--<descriptor>src/assembly/bin.xml</descriptor>-->
-        <!--</descriptors>-->
-        <!--</configuration>-->
-        <!--</plugin>-->
-        <!--</plugins>-->
-        <!--</pluginManagement>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

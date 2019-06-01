@@ -17,21 +17,73 @@
  */
 package pl.betoncraft.betonquest.compatibility.placeholderapi;
 
-import me.clip.placeholderapi.external.EZPlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class BetonQuestPlaceholder extends EZPlaceholderHook {
+public class BetonQuestPlaceholder extends PlaceholderExpansion {
 
-    public BetonQuestPlaceholder(Plugin plugin, String identifier) {
-        super(plugin, identifier);
+    /**
+     * Persist through reloads
+     *
+     * @return true to persist through reloads
+     */
+    @Override
+    public boolean persist() {
+        return true;
     }
 
+    /**
+     * We can always register
+     *
+     * @return Always true since it's an internal class.
+     */
+    @Override
+    public boolean canRegister() {
+        return true;
+    }
+
+    /**
+     * Name of person who created the expansion
+     *
+     * @return The name of the author as a String.
+     */
+    @Override
+    public String getAuthor() {
+        return BetonQuest.getInstance().getDescription().getAuthors().toString();
+    }
+
+    /**
+     * The identifier for PlaceHolderAPI to link to this expansion
+     *
+     * @return The identifier in {@code %<identifier>_<value>%} as String.
+     */
+    @Override
+    public String getIdentifier() {
+        return "betonquest";
+    }
+
+    /**
+     * Version of the expansion
+     *
+     * @return The version as a String.
+     */
+    @Override
+    public String getVersion() {
+        return BetonQuest.getInstance().getDescription().getVersion();
+    }
+
+    /**
+     * A placeholder request has occurred and needs a value
+     *
+     * @param player     A {@link org.bukkit.entity.Player Player}.
+     * @param identifier A String containing the identifier/value.
+     * @return possibly-null String of the requested identifier.
+     */
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        String pack = null;
+        String pack;
         if (identifier.contains(":")) {
             pack = identifier.substring(0, identifier.indexOf(':'));
             identifier = identifier.substring(identifier.indexOf(':') + 1);

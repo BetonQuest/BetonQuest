@@ -95,7 +95,7 @@ public class CubeNPCListener implements Listener {
                 Sign theSign = null;
                 byte count = 0;
                 for (Block sign : signs) {
-                    if (sign.getType().equals(Material.WALL_SIGN) && sign.getState() instanceof Sign) {
+                    if (sign.getType().equals(Material.ACACIA_WALL_SIGN) && sign.getState() instanceof Sign) {
                         theSign = (Sign) sign.getState();
                         count++;
                     }

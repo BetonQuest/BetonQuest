@@ -34,15 +34,17 @@ public class BetonQuestPlugin extends MultiVersionPlugin {
         String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1).replace("_",".");
         switch(serverVersion.substring(0, StringUtils.ordinalIndexOf(serverVersion, ".", 2))) {
             case "1.8":
-                versions.add("1_8_R3");
+                versions.add("1_8");
             case "1.9":
-                versions.add("1_9_R2");
+                versions.add("1_9");
             case "1.10":
-                versions.add("1_10_R1");
+                versions.add("1_10");
             case "1.11":
-                versions.add("1_11_R1");
+                versions.add("1_11");
             case "1.12":
-                versions.add("1_12_R1");
+                versions.add("1_12");
+            case "1.13":
+                versions.add("1_13");
         }
 
         // Add WorldGuard Versions

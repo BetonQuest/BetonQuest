@@ -27,7 +27,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BetonQuest-v1.12-R1</artifactId>
+    <artifactId>BetonQuest-v1.12</artifactId>
 
     <dependencies>
         <dependency>
@@ -41,6 +41,12 @@
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>BetonQuest-core</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>BetonQuest-v1.13</artifactId>
             <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
