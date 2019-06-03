@@ -2,6 +2,15 @@
 
 BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, Citizens, Denizen, Vault, EffectLib, MythicMobs, Magic, Skript, WorldEdit, WorldGuard, mcMMO, Heroes, JobsReborn, SkillAPI, RacesAndClasses, LegendQuest, Shopkeepers, Quests, PlaceholderAPI, HolographicDisplays, PlayerPoints and ProtocolLib.
 
+
+## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
+
+### Title event: `title`
+
+BountifulAPI enables you to use `title` event without spamming the console with `/title` command output. The syntax is exactly the same as in regular `title` event described in _Events List_.
+
+**Example**: `title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!`
+
 ## [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it, these NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective.
@@ -52,6 +61,14 @@ This condition will return true if a npc is inside a region. First argument is t
 
 **Example:** `npcregion 16 spawn`
 
+## [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
+
+### Script event: `script`
+
+With this event you can fire Denizen task scripts. Don't confuse it with `skript` event, these are different. The first and only argument is the name of the script.
+
+**Example**: `script beton`
+
 ## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
 By installing Vault you enable Permission event and Money condition/event.
@@ -79,83 +96,6 @@ Checks if the player has specified amount of money. You can specify only one arg
 There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
 
 **Example**: `%money.left:500%`
-
-## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
-
-Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
-
-### MobKill objective: `mmobkill`
-
-To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
-
-**Example**: `mmobkill SkeletalKnight amount:2 events:reward`
-
-### SpawnMob event: `mspawnmob`
-
-Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
-
-**Example**: `mspawnmob 100;200;300;world SkeletalKnight:1 5`
-
-## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
-
-### Level condition: `mcmmolevel`
-
-This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
-
-**Example**: `mcmmolevel woodcutting 50`
-
-### Experience event: `mcmmoexp`
-
-This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
-
-**Example**: `mcmmoexp swords 1500`
-
-## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
-
-BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
-
-### Skript event triggered by BetonQuest `skript` event
-
-This entry will describe two things: Skript event and BetonQuest event.
-
-1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
-2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
-
-**Example**: _in your script:_ `on betonquest event "concrete":` _in events.yml:_ `fire_concrete_script: skript concrete`
-
-### Skript condition
-
-You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
-
-**Example**: _in your script:_ `player meets condition "has_ore"` _in conditions.yml:_ `has_ore: item iron_ore:5`
-
-### Skript event
-
-You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
-
-**Example**: _in your script:_ `fire event "give_emeralds" for player` _in events.yml:_ `give_emeralds: give emerald:5`
-
-## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
-
-### Region objective: `region`
-
-To complete this objective you need to enter WorldGuard region with specified name. The only argument in instruction string is name of the region.
-
-**Example**: `region beton events:kill`
-
-### Region condition: `region`
-
-This condition is met when the player is inside the specified region. The only argument is the name of the region.
-
-**Example**: `region beton`
-
-## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
-
-### Paste schematic event: `paste`
-
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
-
-**Example**: `paste 100;200;300;world some_building noair`
 
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
@@ -186,19 +126,90 @@ be displayed to the player for which you ran the event.
 
 **Example**: `particle beton loc:100;200;300;world;180;-90 private`
 
-## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
+## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 
-### PlayerPoints event: `playerpoints`
+Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
 
-This event simply adds, removes or multiplies points in the PlayerPoints plugin. The only argument is a number, it can be positive, negative or prefixed with an asterisk for multiplication.
+### MobKill objective: `mmobkill`
 
-**Example**: `playerpoints *2`
+To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
 
-### PlayerPoints condition: `playerpoints`
+**Example**: `mmobkill SkeletalKnight amount:2 events:reward`
 
-This condition simply checks if the player has specified amount of points in the PlayerPoints plugin. The only argument is a number.
+### SpawnMob event: `mspawnmob`
 
-**Example**: `playerpoints 100`
+Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
+
+**Example**: `mspawnmob 100;200;300;world SkeletalKnight:1 5`
+
+## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
+
+### Wand condition: `wand`
+
+This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
+
+**Example**: `wand hand name:master spells:flare,missile:2`
+
+## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
+
+BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
+
+### Skript event triggered by BetonQuest `skript` event
+
+This entry will describe two things: Skript event and BetonQuest event.
+
+1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
+2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
+
+**Example**: _in your script:_ `on betonquest event "concrete":` _in events.yml:_ `fire_concrete_script: skript concrete`
+
+### Skript condition
+
+You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
+
+**Example**: _in your script:_ `player meets condition "has_ore"` _in conditions.yml:_ `has_ore: item iron_ore:5`
+
+### Skript event
+
+You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
+
+**Example**: _in your script:_ `fire event "give_emeralds" for player` _in events.yml:_ `give_emeralds: give emerald:5`
+
+## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
+
+### Paste schematic event: `paste`
+
+This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
+
+**Example**: `paste 100;200;300;world some_building noair`
+
+## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
+
+### Region objective: `region`
+
+To complete this objective you need to enter WorldGuard region with specified name. The only argument in instruction string is name of the region.
+
+**Example**: `region beton events:kill`
+
+### Region condition: `region`
+
+This condition is met when the player is inside the specified region. The only argument is the name of the region.
+
+**Example**: `region beton`
+
+## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
+
+### Level condition: `mcmmolevel`
+
+This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
+
+**Example**: `mcmmolevel woodcutting 50`
+
+### Experience event: `mcmmoexp`
+
+This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
+
+**Example**: `mcmmoexp swords 1500`
 
 ## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
 
@@ -221,22 +232,6 @@ This condition checks the classes of the player. The first argument must be `pri
 This condition checks if the player can use specified skill. The first argument is the name of the skill.
 
 **Example**: `heroesskill charge`
-
-## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
-
-### Wand condition: `wand`
-
-This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
-
-**Example**: `wand hand name:master spells:flare,missile:2`
-
-## [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
-
-### Script event: `script`
-
-With this event you can fire Denizen task scripts. Don't confuse it with `skript` event, these are different. The first and only argument is the name of the script.
-
-**Example**: `script beton`
 
 ## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
 
@@ -500,13 +495,6 @@ Resolves to player's karma. The only argument here is either `amount` or `left:`
 
 When BetonLangAPI is installed on the server BetonQuest will integrate its translation system with that plugin. Changing the language with _/lang_ command or `language` event will change the language globally, not only in one of those plugins. The _/questlang_ command will not modify BetonLangAPI language though!
 
-## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
-
-### Title event: `title`
-
-BountifulAPI enables you to use `title` event without spamming the console with `/title` command output. The syntax is exactly the same as in regular `title` event described in _Events List_.
-
-**Example**: `title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!`
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
