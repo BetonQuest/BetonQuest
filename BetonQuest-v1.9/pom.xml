@@ -79,7 +79,7 @@
         <dependency>
             <groupId>au.com.grieve.multi_version_plugin</groupId>
             <artifactId>MultiVersionPlugin</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
             <scope>provided</scope>
         </dependency>
 
