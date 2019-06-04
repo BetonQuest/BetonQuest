@@ -49,7 +49,6 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private static HashMap<Integer, Boolean> movingNPCs = new HashMap<>();
 
-    private final Listener ths;
     private final List<LocationData> locations;
     private int id;
     private ListIterator<LocationData> locationsIterator;
@@ -61,7 +60,6 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
-        ths = this;
         id = instruction.getInt();
         if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
@@ -125,7 +123,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         }
         currentPlayer = playerID;
         movingNPCs.put(npc.getId(), blockConversations);
-        Bukkit.getPluginManager().registerEvents(ths, BetonQuest.getInstance().getJavaPlugin());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
     @EventHandler
@@ -147,7 +145,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             }
             return;
         }
-        HandlerList.unregisterAll(ths);
+        HandlerList.unregisterAll(this);
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (QuestRuntimeException e) {
@@ -158,11 +156,11 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             @Override
             public void run() {
                 npc.getNavigator().setPaused(false);
-                currentPlayer = null;
                 movingNPCs.remove(npc.getId());
                 for (EventID event : doneEvents) {
                     BetonQuest.event(currentPlayer, event);
                 }
+                currentPlayer = null;
             }
         }.runTaskLater(BetonQuest.getInstance().getJavaPlugin(), waitTicks);
     }
