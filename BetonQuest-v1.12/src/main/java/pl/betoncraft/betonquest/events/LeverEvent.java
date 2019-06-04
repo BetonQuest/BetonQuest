@@ -19,7 +19,7 @@ package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.Powerable;
+import org.bukkit.material.Lever;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -55,8 +55,7 @@ public class LeverEvent extends QuestEvent {
         if (!block.getType().equals(Material.LEVER)) {
             return;
         }
-
-        Powerable lever = (Powerable) block.getBlockData();
+        Lever lever = (Lever) block;
 
         switch (type) {
             case ON:

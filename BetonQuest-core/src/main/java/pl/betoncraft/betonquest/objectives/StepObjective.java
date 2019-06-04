@@ -18,8 +18,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -32,6 +30,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -65,12 +64,12 @@ public class StepObjective extends Objective implements Listener {
         }
         try {
             String playerID = PlayerConverter.getID(event.getPlayer());
-            Material type = event.getClickedBlock().getType();
             Block block = loc.getLocation(playerID).getBlock();
             if (!event.getClickedBlock().equals(block)) {
                 return;
             }
-            if (Tag.WOODEN_PRESSURE_PLATES.isTagged(type)) {
+
+            if (!new BlockSelector("*_PRESSURE_PLATE").match(block)) {
                 return;
             }
             if (!containsPlayer(playerID)) {
