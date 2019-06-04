@@ -82,7 +82,8 @@ public class CommandEvent extends QuestEvent {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
                                     instruction.getPackage().getName(), var, playerID));
                         }
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
+                        String finalCom = com;
+                        Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance().getJavaPlugin(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));
                     }
                 }
             }
