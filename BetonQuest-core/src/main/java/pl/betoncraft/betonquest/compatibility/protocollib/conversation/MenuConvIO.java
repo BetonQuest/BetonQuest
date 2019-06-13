@@ -90,6 +90,7 @@ public class MenuConvIO implements Listener, ConversationIO {
 
     // Configuration
     protected Integer configLineLength = 60;
+    protected Integer configRefreshDelay = 180;
     protected String configNpcWrap = "&l &r".replace('&', '§');
     protected String configNpcText = "&l &r&f{npc_text}".replace('&', '§');
     protected String configNpcTextReset = "&f".replace('&', '§');
@@ -103,6 +104,7 @@ public class MenuConvIO implements Listener, ConversationIO {
     protected String configNpcNameType = "chat";
     protected String configNpcNameAlign = "center";
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
+
     public MenuConvIO(Conversation conv, String playerID) {
         this.options = new ArrayList<>();
         this.conv = conv;
@@ -122,6 +124,7 @@ public class MenuConvIO implements Listener, ConversationIO {
             }
 
             configLineLength = section.getInt("line_length", configLineLength);
+            configRefreshDelay = section.getInt("refresh_delay", configRefreshDelay);
             configNpcWrap = section.getString("npc_wrap", configNpcWrap).replace('&', '§');
             configNpcText = section.getString("npc_text", configNpcText).replace('&', '§');
             configNpcTextReset = section.getString("npc_text_reset", configNpcTextReset).replace('&', '§');
@@ -302,20 +305,22 @@ public class MenuConvIO implements Listener, ConversationIO {
 
         updateDisplay();
 
-        // Update the Display
-        displayRunnable = new BukkitRunnable() {
+        // Update the Display automatically if configRefreshDelay is > 0
+        if (configRefreshDelay > 0) {
+            displayRunnable = new BukkitRunnable() {
 
-            @Override
-            public void run() {
-                showDisplay();
+                @Override
+                public void run() {
+                    showDisplay();
 
-                if (ended) {
-                    this.cancel();
+                    if (ended) {
+                        this.cancel();
+                    }
                 }
-            }
-        };
+            };
 
-        displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, 180);
+            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, configRefreshDelay);
+        }
     }
 
     private WrapperPlayServerSpawnEntityLiving stand = null;
