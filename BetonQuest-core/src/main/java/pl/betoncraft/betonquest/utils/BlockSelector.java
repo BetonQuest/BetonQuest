@@ -109,6 +109,20 @@ public class BlockSelector {
     }
 
     /**
+     * Return material
+     * <p>
+     * If we match multiple materials we will return the first match
+     */
+    public Material getMaterial() {
+        for (Material m : Material.values()) {
+            if (match(m)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Return true if material matches our selector. State is ignored
      */
     public boolean match(Material material) {

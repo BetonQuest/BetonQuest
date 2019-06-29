@@ -39,7 +39,6 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.item.typehandler.BookHandler;
 import pl.betoncraft.betonquest.item.typehandler.ColorHandler;
-import pl.betoncraft.betonquest.item.typehandler.DataHandler;
 import pl.betoncraft.betonquest.item.typehandler.DurabilityHandler;
 import pl.betoncraft.betonquest.item.typehandler.EnchantmentsHandler;
 import pl.betoncraft.betonquest.item.typehandler.FireworkHandler;
@@ -48,6 +47,7 @@ import pl.betoncraft.betonquest.item.typehandler.LoreHandler;
 import pl.betoncraft.betonquest.item.typehandler.NameHandler;
 import pl.betoncraft.betonquest.item.typehandler.PotionHandler;
 import pl.betoncraft.betonquest.item.typehandler.UnbreakableHandler;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 
 import java.util.List;
 import java.util.Map;
@@ -60,9 +60,8 @@ import java.util.Map.Entry;
  */
 public class QuestItem {
 
-    private Material material = null;
+    private BlockSelector selector;
     private DurabilityHandler durability = new DurabilityHandler();
-    private DataHandler data = new DataHandler();
     private NameHandler name = new NameHandler();
     private LoreHandler lore = new LoreHandler();
     private EnchantmentsHandler enchants = new EnchantmentsHandler();
@@ -72,52 +71,6 @@ public class QuestItem {
     private HeadOwnerHandler head = new HeadOwnerHandler();
     private ColorHandler color = new ColorHandler();
     private FireworkHandler firework = new FireworkHandler();
-
-    /**
-     * Legacy method for the updater, don't use for anything else.
-     *
-     * @param material material name
-     * @param data     data value
-     * @param enchants map of enchantments and their levels
-     * @param name     name of the item
-     * @param lore     list of lore lines
-     * @deprecated Use a different constructor.
-     */
-    public QuestItem(String material, int data, Map<String, Integer> enchants, String name, List<String> lore) {
-        this.material = Material.matchMaterial(material);
-        if (data >= 0) {
-            try {
-                this.data.set(String.valueOf(data));
-            } catch (InstructionParseException e) {
-            }
-        }
-        if (enchants != null && !enchants.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            for (String key : enchants.keySet()) {
-                builder.append(key + ":" + enchants.get(key));
-            }
-            try {
-                this.enchants.set(builder.substring(0, builder.length() - 1));
-            } catch (InstructionParseException e) {
-            }
-        }
-        if (name != null && !name.isEmpty()) {
-            try {
-                this.name.set(name);
-            } catch (InstructionParseException e) {
-            }
-        }
-        if (lore != null && !lore.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            for (String line : lore) {
-                builder.append(line + ";");
-            }
-            try {
-                this.lore.set(builder.substring(0, builder.length() - 1));
-            } catch (InstructionParseException e) {
-            }
-        }
-    }
 
     /**
      * Creates new instance of the quest item using the ID from items.yml file.
@@ -152,18 +105,15 @@ public class QuestItem {
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");
         }
-        material = Material.matchMaterial(parts[0]);
-        if (material == null) {
-            material = Material.matchMaterial(parts[0], true);
-            if (material == null) {
-                throw new InstructionParseException("Unknown item type: " + parts[0]);
-            }
+
+        selector = new BlockSelector(parts[0]);
+        if (!selector.isValid()) {
+            throw new InstructionParseException("Invalid selector: " + selector.toString());
         }
+
         for (String part : parts) {
             if (part.toLowerCase().startsWith("durability:")) {
                 durability.set(cut(part));
-            } else if (part.startsWith("data:")) {
-                data.set(cut(part));
             } else if (part.toLowerCase().startsWith("enchants:")) {
                 enchants.set(cut(part));
             } else if (part.toLowerCase().equals("enchants-containing")) {
@@ -376,13 +326,10 @@ public class QuestItem {
         } else {
             return false;
         }
-        if (item.material != material) {
+        if (item.selector != selector) {
             return false;
         }
         if (!item.durability.equals(durability)) {
-            return false;
-        }
-        if (!item.data.equals(data)) {
             return false;
         }
         if (!item.unbreakable.equals(unbreakable)) {
@@ -424,15 +371,12 @@ public class QuestItem {
         if (item == null) {
             return false;
         }
-        if (item.getType() != material) {
+        if (!selector.match(item.getType())) {
             return false;
         }
         // basic meta checks
         ItemMeta meta = item.getItemMeta();
         if (!durability.check(item.getDurability())) {
-            return false;
-        }
-        if (!data.check(item.getData().getData())) {
             return false;
         }
         if (!name.check(meta.getDisplayName())) {
@@ -510,11 +454,14 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
-    @SuppressWarnings("deprecation")
     public ItemStack generate(int stackSize) {
-        //if durability isn't given use data instead
-        short damage = durability.whatever() ? data.get() : durability.get();
-        ItemStack item = new ItemStack(material, stackSize, damage);
+        // Try resolve material directly
+        Material material = selector.getMaterial();
+        if (material == null) {
+            material = Material.ARROW;
+        }
+
+        ItemStack item = new ItemStack(material, stackSize);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
@@ -571,14 +518,8 @@ public class QuestItem {
      * @return the material
      */
     public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * @return the data value
-     */
-    public short getData() {
-        return data.get();
+        Material material = selector.getMaterial();
+        return material != null ? material : Material.ARROW;
     }
 
     /**
