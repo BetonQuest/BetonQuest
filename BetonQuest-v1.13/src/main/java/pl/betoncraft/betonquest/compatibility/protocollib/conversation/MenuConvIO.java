@@ -67,13 +67,14 @@ import java.util.stream.Stream;
 
 public class MenuConvIO implements Listener, ConversationIO {
 
+    // Actions
+    protected Map<CONTROL, ACTION> controls = new HashMap<>();
+    protected String configControlCancel = "sneak";
+
     protected final Conversation conv;
     protected final String name;
     protected final Player player;
     protected final HashMap<String, ChatColor[]> colors;
-    // Actions
-    protected Map<CONTROL, ACTION> controls = new HashMap<>();
-    protected String configControlCancel = "sneak";
     protected List<String> options;
     protected int oldSelectedOption = 0;
     protected int selectedOption = 0;
@@ -89,6 +90,7 @@ public class MenuConvIO implements Listener, ConversationIO {
 
     // Configuration
     protected Integer configLineLength = 60;
+    protected Integer configRefreshDelay = 180;
     protected String configNpcWrap = "&l &r".replace('&', '§');
     protected String configNpcText = "&l &r&f{npc_text}".replace('&', '§');
     protected String configNpcTextReset = "&f".replace('&', '§');
@@ -123,6 +125,7 @@ public class MenuConvIO implements Listener, ConversationIO {
             }
 
             configLineLength = section.getInt("line_length", configLineLength);
+            configRefreshDelay = section.getInt("refresh_delay", configRefreshDelay);
             configNpcWrap = section.getString("npc_wrap", configNpcWrap).replace('&', '§');
             configNpcText = section.getString("npc_text", configNpcText).replace('&', '§');
             configNpcTextReset = section.getString("npc_text_reset", configNpcTextReset).replace('&', '§');
@@ -303,20 +306,22 @@ public class MenuConvIO implements Listener, ConversationIO {
 
         updateDisplay();
 
-        // Update the Display
-        displayRunnable = new BukkitRunnable() {
+        // Update the Display automatically if configRefreshDelay is > 0
+        if (configRefreshDelay > 0) {
+            displayRunnable = new BukkitRunnable() {
 
-            @Override
-            public void run() {
-                showDisplay();
+                @Override
+                public void run() {
+                    showDisplay();
 
-                if (ended) {
-                    this.cancel();
+                    if (ended) {
+                        this.cancel();
+                    }
                 }
-            }
-        };
+            };
 
-        displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, 180);
+            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, configRefreshDelay);
+        }
     }
 
     @EventHandler
@@ -494,83 +499,57 @@ public class MenuConvIO implements Listener, ConversationIO {
         // Build the displayOutput
         StringBuilder displayBuilder = new StringBuilder();
 
+        // If NPC name type is chat_top, show it
+        if (configNpcNameType.equals("chat")) {
+            switch (configNpcNameAlign) {
+                case "right":
+                    for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
+                        displayBuilder.append(" ");
+                    }
+                    break;
+                case "center":
+                case "middle":
+                    for (int i = 0; i < Math.max(0, (configLineLength / 2) - npcName.length() / 2); i++) {
+                        displayBuilder.append(" ");
+                    }
+                    break;
+            }
+            displayBuilder.append(formattedNpcName).append("\n");
+        }
+
+        // We aim to try have a blank line at the top. It looks better
+        if (linesAvailable > 0) {
+            displayBuilder.append(" \n");
+            linesAvailable--;
+        }
+
+        displayBuilder.append(String.join("\n", npcLines));
+
+        // Put clear lines between NPC text and Options
+        for (int i = 0; i < linesAvailable; i++) {
+            displayBuilder.append(" \n");
+        }
+
         if (options.size() > 0) {
-
-            // Put clear lines in buffer, but this may cause flicker so consider removing
-            for (int i = 0; i < 10; i++) {
-                displayBuilder.append(" \n");
-            }
-
-            // If NPC name type is chat_top, show it
-            if (configNpcNameType.equals("chat")) {
-                switch (configNpcNameAlign) {
-                    case "right":
-                        for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
-                            displayBuilder.append(" ");
-                        }
-                        break;
-                    case "center":
-                    case "middle":
-                        for (int i = 0; i < Math.max(0, (configLineLength / 2) - npcName.length() / 2); i++) {
-                            displayBuilder.append(" ");
-                        }
-                        break;
-                }
-                displayBuilder.append(formattedNpcName).append("\n");
-            }
-
-            // We aim to try have a blank line at the top. It looks better
-            if (linesAvailable > 0) {
-                displayBuilder.append(" \n");
-                linesAvailable--;
-            }
-
-            displayBuilder.append(String.join("\n", npcLines)).append("\n");
-
-            // Put clear lines between NPC text and Options
-            for (int i = 0; i < linesAvailable; i++) {
-                displayBuilder.append(" \n");
-            }
-
+            // Show up arrow if options exist above our view
             if (topOption > 0) {
-                displayBuilder
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.WHITE).append("↑\n");
+                for (int i = 0; i < 8; i++) {
+                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                }
+                displayBuilder.append(ChatColor.WHITE).append("↑\n");
             } else {
                 displayBuilder.append(" \n");
             }
 
+            // Display Options
             displayBuilder.append(String.join("\n", optionsSelected)).append("\n");
 
+            // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
-                displayBuilder
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.WHITE).append("↓");
-            }
-        } else {
-            // Put clear lines above NPC Text
-            for (int i = 0; i < 90 + linesAvailable - 1; i++) {
-                displayBuilder.append(" \n");
-            }
-
-            displayBuilder.append(String.join("\n", npcLines)).append("\n");
-
-            if (linesAvailable > 0) {
-                displayBuilder.append(" \n");
+                for (int i = 0; i < 8; i++) {
+                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                }
+                displayBuilder.append(ChatColor.WHITE).append("↓");
             }
         }
 
