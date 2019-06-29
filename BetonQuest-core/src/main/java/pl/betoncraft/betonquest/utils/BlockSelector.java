@@ -112,7 +112,12 @@ public class BlockSelector {
      * Return true if material matches our selector. State is ignored
      */
     public boolean match(Material material) {
-        NamespacedKey materialKey = material.getKey();
+        NamespacedKey materialKey;
+        try {
+            materialKey = material.getKey();
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
 
         // Starts with our prefix?
         if (!materialKey.getNamespace().equalsIgnoreCase(prefix)) {
