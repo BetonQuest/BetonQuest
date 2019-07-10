@@ -19,6 +19,7 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.entity.Player;
+import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ChatNotifyIO extends NotifyIO {
     @Override
     public void sendNotify(String message, Collection<? extends Player> players) {
         for (Player player : players) {
-            player.sendMessage(message);
+            player.sendMessage(Utils.format(message));
         }
 
         super.sendNotify(message, players);

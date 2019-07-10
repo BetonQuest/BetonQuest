@@ -22,6 +22,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class ActionBarNotifyIO extends NotifyIO {
 
     @Override
     public void sendNotify(String message, Collection<? extends Player> players) {
-        BaseComponent[] textMessage = TextComponent.fromLegacyText(message);
+        BaseComponent[] textMessage = TextComponent.fromLegacyText(Utils.format(message));
 
         for (Player player : players) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);

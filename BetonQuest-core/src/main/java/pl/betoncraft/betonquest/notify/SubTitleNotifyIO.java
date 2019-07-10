@@ -19,6 +19,7 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.entity.Player;
+import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class SubTitleNotifyIO extends NotifyIO {
     @Override
     public void sendNotify(String message, Collection<? extends Player> players) {
         for (Player player : players) {
-            player.sendTitle("", message, fadeIn, stay, fadeOut);
+            player.sendTitle("", Utils.format(message), fadeIn, stay, fadeOut);
         }
 
         super.sendNotify(message, players);
