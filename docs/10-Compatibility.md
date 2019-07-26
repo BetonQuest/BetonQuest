@@ -1,7 +1,6 @@
 # Compatibility
 
-BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, Citizens, Denizen, Vault, EffectLib, MythicMobs, Magic, Skript, WorldEdit, WorldGuard, mcMMO, Heroes, JobsReborn, SkillAPI, RacesAndClasses, LegendQuest, Shopkeepers, Quests, PlaceholderAPI, HolographicDisplays, PlayerPoints and ProtocolLib.
-
+BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LegendQuest, Magic, mcMMO, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RacesAndClasses, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
 
 ## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
 
@@ -69,34 +68,6 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
 
 **Example**: `script beton`
 
-## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
-
-By installing Vault you enable Permission event and Money condition/event.
-
-### Permission event: `permission`
-
-Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is ommited then permission/group will be global.
-
-**Example**: `permission remove group bandit world_nether`
-
-### Money event: `money`
-
-Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
-
-**Example**: `money -100`
-
-### Money condition: `money`
-
-Checks if the player has specified amount of money. You can specify only one argument, amount integer. It cannot be negative!
-
-**Example**: `money 500`
-
-### Money variable: `money`
-
-There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
-
-**Example**: `%money.left:500%`
-
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
 If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
@@ -126,91 +97,6 @@ be displayed to the player for which you ran the event.
 
 **Example**: `particle beton loc:100;200;300;world;180;-90 private`
 
-## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
-
-Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
-
-### MobKill objective: `mmobkill`
-
-To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
-
-**Example**: `mmobkill SkeletalKnight amount:2 events:reward`
-
-### SpawnMob event: `mspawnmob`
-
-Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
-
-**Example**: `mspawnmob 100;200;300;world SkeletalKnight:1 5`
-
-## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
-
-### Wand condition: `wand`
-
-This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
-
-**Example**: `wand hand name:master spells:flare,missile:2`
-
-## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
-
-BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
-
-### Skript event triggered by BetonQuest `skript` event
-
-This entry will describe two things: Skript event and BetonQuest event.
-
-1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
-2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
-
-**Example**: _in your script:_ `on betonquest event "concrete":` _in events.yml:_ `fire_concrete_script: skript concrete`
-
-### Skript condition
-
-You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
-
-**Example**: _in your script:_ `player meets condition "has_ore"` _in conditions.yml:_ `has_ore: item iron_ore:5`
-
-### Skript event
-
-You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
-
-**Example**: _in your script:_ `fire event "give_emeralds" for player` _in events.yml:_ `give_emeralds: give emerald:5`
-
-## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
-
-### Paste schematic event: `paste`
-
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
-
-**Example**: `paste 100;200;300;world some_building noair`
-
-## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
-
-### Region objective: `region`
-
-To complete this objective you need to enter WorldGuard region with specified name. The only argument in instruction string is name of the region.
-
-**Example**: `region beton events:kill`
-
-### Region condition: `region`
-
-This condition is met when the player is inside the specified region. The only argument is the name of the region.
-
-**Example**: `region beton`
-
-## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
-
-### Level condition: `mcmmolevel`
-
-This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
-
-**Example**: `mcmmolevel woodcutting 50`
-
-### Experience event: `mcmmoexp`
-
-This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
-
-**Example**: `mcmmoexp swords 1500`
-
 ## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
 
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
@@ -232,74 +118,6 @@ This condition checks the classes of the player. The first argument must be `pri
 This condition checks if the player can use specified skill. The first argument is the name of the skill.
 
 **Example**: `heroesskill charge`
-
-## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
-
-### Class condition: `skillapiclass`
-
-This condition checks if the player has specified class or a child class of the specified one. The first argument is simply the name of a class. You can add `exact` argument if you want to check for that exact class, without checking child classes.
-
-**Example**: `skillapiclass warrior`
-
-### Level condition: `skillapilevel`
-
-This condition checks if the player has specified or greater level is the specified class. The first argument is class name, the second one is the required level.
-
-**Example**: `skillapilevel warrior 3`
-
-## [Quests](http://dev.bukkit.org/bukkit-plugins/quests/)
-
-Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
-
-### Event Reward (Quests)
-
-When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
-
-### Condition Requirement (Quests)
-
-When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition". Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
-
-### Quest event: `quest` (BetonQuest)
-
-This event will start the quest for the player. The first argument must be the name of the quest, as defined in `name` option in the quest. If the name contains any spaces replace them with `_`. You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements (otherwise the quest will be forced to be started).
-
-**Example**: `quest stone_miner check-requirements`
-
-### Quest condition: `quest` (BetonQuest)
-
-This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest. It it contains any spaces replace them with `_`.
-
-**Example**: `quest stone_miner`
-
-## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
-
-### Open shop window event: `shopkeeper`
-
-This event opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
-
-**Example**: `shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929`
-
-### Shop amount condition: `shopamount`
-
-This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.
-
-**Example**: `shopamount 2`
-
-## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
-
-If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
-
-### Placeholder: `betonquest`
-
-In any other plugin which uses PlaceholderAPI you can use BetonQuest variables with `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package. If you skip this, the plugin will assume you're using that variable in `default` package. The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
-
-**Example**: `%betonquest_someGreatQuest:objective.killZombies.left%`
-
-### Variable: `ph`
-
-You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.
-
-**Example**: `%ph.player_item_in_hand%`
 
 ## [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
 
@@ -346,6 +164,227 @@ If Citizens is also installed then you can have holograms configured relative to
           - 22
 
 Item lines are also supported here.
+
+## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+
+Requires adding the following to _config.yml_:
+```
+hook:
+  jobs: 'true'
+```
+
+### Has Job Condition `nujobs_hasjob {jobname}`
+
+Returns true if the player has this job
+
+**Example**: `nujobs_hasjob Woodcutter`
+
+### Can Level up Condition `nujobs_canlevel {jobname}`
+
+Returns true if the player can level up
+
+### Job Full Condition `nujobs_jobfull {jobname}`
+
+Returns true if the job is at the maximum slots
+
+### Job Level Condition `nujobs_joblevel {jobname} {min} {max}`
+
+Returns true if the player has this job, and at a level equal to or between the min/max
+
+**Example**: `nujobs_joblevel Woodcutter 5 10`
+
+### Add Experience Event: `nujobs_addexp {jobname} {exp}`
+
+Gives the player experience
+
+### Increase Level Event: `nujobs_addlevel {jobname} {amount}`
+
+Increases the player level by amount.
+
+### Decrease Level Event: `nujobs_dellevel {jobname} {amount}`
+
+Decreases the players level by amount.
+
+### Join Job Event: `nujobs_joinjob {jobname}`
+
+Joins the player to job.
+
+### Leave Job Event: `nujobs_leavejob {jobname}`
+
+Removes the player from job.
+
+### Set Level Event: `nujobs_setlevel {jobname} {level}`
+
+Set the player to level.
+
+### Join Job Objective: `nujobs_joinjob {jobname}`
+
+Triggers when player joins job.
+
+### Leave Job Objective: `nujobs_leavejob {jobname}`
+
+Triggers when player leaves job.
+
+**NOTE: This is not triggered by '/jobs leaveall'**
+
+### Job Levelup Objective: `nujobs_levelup {jobname}`
+
+Triggers when player levels up.
+
+### Job Payment Objective: `nujobs_payment {amount}`
+
+Triggers when player makes {amount} of money from jobs.
+
+## [LegendQuest](http://dev.bukkit.org/bukkit-plugins/legendquest/)
+
+### Class condition: `lqclass`
+
+Checks if the player has specified class. It can also check subclass if you add `--subclass` argument.
+
+**Example**: `lqclass Cleric`
+
+### Race condition: `lqrace`
+
+Checks if the player has specified race.
+
+**Example**: `lqrace Dwarf`
+
+### Attribute condition: `lqattribute`
+
+Checks player's attributes. The first argument is attribute (STR, CON, DEX, INT, WIS, CHR) and the second argument is a number - minimal required level of the attribute.
+
+**Example**: `lqattribute INT 10`
+
+### Karma condition: `lqkarma`
+
+Checks if the player has specified amount of karma. The only argument is a number - minimal amount of karma required.
+
+**Example**: `lqkarma 20`
+
+### Class variable: `lqclass`
+
+Resolves to player's class.
+
+**Example**: `%lqclass%`
+
+### Race variable: `lqrace`
+
+Resolves to player's race.
+
+**Example**: `%lqrace%`
+
+### Attribute variable: `lqattribute`
+
+Resolves to player's attribute. The first argument is name of the attribute (like in `lqattribute` condition), second one is either `amount` or `left:` followed by a number. First of these will simply display attribute level and second will display the difference between attribute level and the number.
+
+**Example**: `%lqattribute.str.left:13`
+
+### Karma variable: `lqkarma`
+
+Resolves to player's karma. The only argument here is either `amount` or `left:` followed by a number. First of these will simply display karma amount and second will display the difference between karma amount and the number.
+
+**Example**: `%lqkarma.amount%`
+
+## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
+
+### Wand condition: `wand`
+
+This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
+
+**Example**: `wand hand name:master spells:flare,missile:2`
+
+## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
+
+### Level condition: `mcmmolevel`
+
+This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
+
+**Example**: `mcmmolevel woodcutting 50`
+
+### Experience event: `mcmmoexp`
+
+This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
+
+**Example**: `mcmmoexp swords 1500`
+
+## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
+
+Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
+
+### MobKill objective: `mmobkill`
+
+To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
+
+**Example**: `mmobkill SkeletalKnight amount:2 events:reward`
+
+### SpawnMob event: `mspawnmob`
+
+Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
+
+**Example**: `mspawnmob 100;200;300;world SkeletalKnight:1 5`
+
+## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
+
+If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
+
+### Placeholder: `betonquest`
+
+In any other plugin which uses PlaceholderAPI you can use BetonQuest variables with `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package. If you skip this, the plugin will assume you're using that variable in `default` package. The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
+
+**Example**: `%betonquest_someGreatQuest:objective.killZombies.left%`
+
+### Variable: `ph`
+
+You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.
+
+**Example**: `%ph.player_item_in_hand%`
+
+## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
+
+### PlayerPoints event: `playerpoints`
+
+This event simply adds, removes or multiplies points in the PlayerPoints plugin. The only argument is a number, it can be positive, negative or prefixed with an asterisk for multiplication.
+
+**Example**: `playerpoints *2`
+
+### PlayerPoints condition: `playerpoints`
+
+This condition simply checks if the player has specified amount of points in the PlayerPoints plugin. The only argument is a number.
+
+**Example**: `playerpoints 100`
+
+## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
+
+### Hiding NPC's
+Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
+
+```
+hide_npcs:
+  41: killedAlready,questStarted
+  127: '!questStarted'
+```
+
+## [Quests](http://dev.bukkit.org/bukkit-plugins/quests/)
+
+Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
+
+### Event Reward (Quests)
+
+When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
+
+### Condition Requirement (Quests)
+
+When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition". Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
+
+### Quest event: `quest` (BetonQuest)
+
+This event will start the quest for the player. The first argument must be the name of the quest, as defined in `name` option in the quest. If the name contains any spaces replace them with `_`. You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements (otherwise the quest will be forced to be started).
+
+**Example**: `quest stone_miner check-requirements`
+
+### Quest condition: `quest` (BetonQuest)
+
+This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest. It it contains any spaces replace them with `_`.
 
 ## [RacesAndClasses](http://dev.bukkit.org/bukkit-plugins/racesandclasses/)
 
@@ -441,67 +480,107 @@ This condition checks if the player has the specified trait.
 
 **Example**: `ractrait SwordDamageIncreaseTrait`
 
-## [LegendQuest](http://dev.bukkit.org/bukkit-plugins/legendquest/)
+**Example**: `quest stone_miner`
 
-### Class condition: `lqclass`
+## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
 
-Checks if the player has specified class. It can also check subclass if you add `--subclass` argument.
+### Open shop window event: `shopkeeper`
 
-**Example**: `lqclass Cleric`
+This event opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
 
-### Race condition: `lqrace`
+**Example**: `shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929`
 
-Checks if the player has specified race.
+### Shop amount condition: `shopamount`
 
-**Example**: `lqrace Dwarf`
+This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.
 
-### Attribute condition: `lqattribute`
+**Example**: `shopamount 2`
 
-Checks player's attributes. The first argument is attribute (STR, CON, DEX, INT, WIS, CHR) and the second argument is a number - minimal required level of the attribute.
+## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
 
-**Example**: `lqattribute INT 10`
+### Class condition: `skillapiclass`
 
-### Karma condition: `lqkarma`
+This condition checks if the player has specified class or a child class of the specified one. The first argument is simply the name of a class. You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
-Checks if the player has specified amount of karma. The only argument is a number - minimal amount of karma required.
+**Example**: `skillapiclass warrior`
 
-**Example**: `lqkarma 20`
+### Level condition: `skillapilevel`
 
-### Class variable: `lqclass`
+This condition checks if the player has specified or greater level is the specified class. The first argument is class name, the second one is the required level.
 
-Resolves to player's class.
+**Example**: `skillapilevel warrior 3`
 
-**Example**: `%lqclass%`
+## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
 
-### Race variable: `lqrace`
+BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
 
-Resolves to player's race.
+### Skript event triggered by BetonQuest `skript` event
 
-**Example**: `%lqrace%`
+This entry will describe two things: Skript event and BetonQuest event.
 
-### Attribute variable: `lqattribute`
+1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
+2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
 
-Resolves to player's attribute. The first argument is name of the attribute (like in `lqattribute` condition), second one is either `amount` or `left:` followed by a number. First of these will simply display attribute level and second will display the difference between attribute level and the number.
+**Example**: _in your script:_ `on betonquest event "concrete":` _in events.yml:_ `fire_concrete_script: skript concrete`
 
-**Example**: `%lqattribute.str.left:13`
+### Skript condition
 
-### Karma variable: `lqkarma`
+You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
 
-Resolves to player's karma. The only argument here is either `amount` or `left:` followed by a number. First of these will simply display karma amount and second will display the difference between karma amount and the number.
+**Example**: _in your script:_ `player meets condition "has_ore"` _in conditions.yml:_ `has_ore: item iron_ore:5`
 
-**Example**: `%lqkarma.amount%`
+### Skript event
 
-## [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI)
+You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
 
-When BetonLangAPI is installed on the server BetonQuest will integrate its translation system with that plugin. Changing the language with _/lang_ command or `language` event will change the language globally, not only in one of those plugins. The _/questlang_ command will not modify BetonLangAPI language though!
+**Example**: _in your script:_ `fire event "give_emeralds" for player` _in events.yml:_ `give_emeralds: give emerald:5`
 
+## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
-## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
+By installing Vault you enable Permission event and Money condition/event.
 
-Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
+### Permission event: `permission`
 
-```
-hide_npcs:
-  41: killedAlready,questStarted
-  127: '!questStarted'
-```
+Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is ommited then permission/group will be global.
+
+**Example**: `permission remove group bandit world_nether`
+
+### Money event: `money`
+
+Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
+
+**Example**: `money -100`
+
+### Money condition: `money`
+
+Checks if the player has specified amount of money. You can specify only one argument, amount integer. It cannot be negative!
+
+**Example**: `money 500`
+
+### Money variable: `money`
+
+There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
+
+**Example**: `%money.left:500%`
+
+## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
+
+### Paste schematic event: `paste`
+
+This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
+
+**Example**: `paste 100;200;300;world some_building noair`
+
+## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
+
+### Region objective: `region`
+
+To complete this objective you need to enter WorldGuard region with specified name. The only argument in instruction string is name of the region.
+
+**Example**: `region beton events:kill`
+
+### Region condition: `region`
+
+This condition is met when the player is inside the specified region. The only argument is the name of the region.
+
+**Example**: `region beton`
