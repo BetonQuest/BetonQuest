@@ -74,6 +74,26 @@ If you install this plugin on your server you will be able to set a particle eff
 
 You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section. Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings. `npcs` is a list of all NPCs on which this effect can be displayed. `conditions` is a list of conditions the player has to meet in order to see the effect. BetonQuest will find the first effect which can be displayed and show it to the player. `interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
 
+```
+npc_effects:
+   check_interval: 50
+   disabled: false
+   farmer:
+      class: VortexEffect
+      iterations: 20
+      particle: crit_magic
+      helixes: 3
+      circles: 1
+      grow: 0.1
+      radius: 0.5
+      interval: 30
+      npcs:
+         - 1
+      conditions:
+         - '!con_tag_started'
+         - '!con_tag_finished'
+```
+
 ### Particle event: `particle`
 
 This event will load an effect defined in `effects` section in
