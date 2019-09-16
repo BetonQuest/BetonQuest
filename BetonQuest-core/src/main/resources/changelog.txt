@@ -26,6 +26,7 @@ Additions:
 Changes:
   * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.
+  * Priority for 'journal_main_page' entries not unique anymore, it only orders the entries. Same priority sort it alphabetic
 Fixes:
   * Resolve variables in journal pages.
   * WATER and LAVA can be specified in Action Objective
