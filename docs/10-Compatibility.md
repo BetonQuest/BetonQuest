@@ -153,9 +153,9 @@ This condition is met when the player is inside the specified region. The only a
 
 ### Paste schematic event: `paste`
 
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`.
+This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 
-**Example**: `paste 100;200;300;world some_building`
+**Example**: `paste 100;200;300;world some_building noair`
 
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
@@ -510,6 +510,7 @@ BountifulAPI enables you to use `title` event without spamming the console with 
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
+### Hiding NPC's
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
 
 ```
@@ -517,3 +518,128 @@ hide_npcs:
   41: killedAlready,questStarted
   127: '!questStarted'
 ```
+
+## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+
+Requires adding the following to _config.yml_:
+```
+hook:
+  jobs: 'true'
+```
+
+### Has Job Condition `nujobs_hasjob {jobname}`
+
+Returns true if the player has this job
+
+**Example**: `nujobs_hasjob Woodcutter`
+
+### Can Level up Condition `nujobs_canlevel {jobname}`
+
+Returns true if the player can level up
+
+### Job Full Condition `nujobs_jobfull {jobname}`
+
+Returns true if the job is at the maximum slots
+
+### Job Level Condition `nujobs_joblevel {jobname} {min} {max}`
+
+Returns true if the player has this job, and at a level equal to or between the min/max
+
+**Example**: `nujobs_joblevel Woodcutter 5 10`
+
+### Add Experience Event: `nujobs_addexp {jobname} {exp}`
+
+Gives the player experience
+
+### Increase Level Event: `nujobs_addlevel {jobname} {amount}`
+
+Increases the player level by amount.
+
+### Decrease Level Event: `nujobs_dellevel {jobname} {amount}`
+
+Decreases the players level by amount.
+
+### Join Job Event: `nujobs_joinjob {jobname}`
+
+Joins the player to job.
+
+### Leave Job Event: `nujobs_leavejob {jobname}`
+
+Removes the player from job.
+
+### Set Level Event: `nujobs_setlevel {jobname} {level}`
+
+Set the player to level.
+
+### Join Job Objective: `nujobs_joinjob {jobname}`
+
+Triggers when player joins job.
+
+### Leave Job Objective: `nujobs_leavejob {jobname}`
+
+Triggers when player leaves job.
+
+**NOTE: This is not triggered by '/jobs leaveall'**
+
+### Job Levelup Objective: `nujobs_levelup {jobname}`
+
+Triggers when player levels up.
+
+### Job Payment Objective: `nujobs_payment {amount}`
+
+Triggers when player makes {amount} of money from jobs.
+
+
+### Conversation IO: `menu`
+
+A conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](https://www.youtube.com/channel/UCyF806Xfzr4B18dsZ4TEI9w).
+
+Customize how it looks by adding the following lines to custom.yml:
+
+```YAML
+menu_conv_io:
+  line_length: 60
+  refresh_delay: 180
+
+  npc_wrap: '&l &r'
+  npc_text: '&l &r&f{npc_text}'
+  npc_text_reset: '&f'
+  option_wrap: '&r&l &l &l &l &r'
+  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
+  option_text_reset: '&b'
+  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
+  option_selected_reset: '&f'
+  option_selected_wrap: '&r&l &l &l &l &r&f&n'
+
+  control_select: jump,left_click
+  control_cancel: sneak
+  control_move: scroll,move
+
+  npc_name_type: chat
+  npc_name_align: center
+  npc_name_format: '&e{npc_name}&r'
+```
+
+Where:
+  * line_length - Maximum size of a line till its wrapped
+  * refresh_delay - Specify how many ticks to auto update display. Default 180
+  * npc_wrap - What text to prefix each new line in the NPC text that wraps
+  * npc_text - How to write the NPC text. Replaces {1} with the npcs text
+  * npc_text_reset - When a color reset is found, what to replace it with
+  * option_wrap - What text to prefix each new line in an option that wraps
+  * option_text - How to write an option. Replaces {1} with the option text
+  * option_text_reset - When a color reset is found, what to replace it with
+  * option_selected - How to write a selected option. Replaces {1} with the option text
+  * option_selected_reset - When a color reset is found, what to replace it with
+  * option_selected_wrap - What text to prefix each new line in a selected option that wraps
+  * control_select - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_cancel - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_move - Space separated actions to move selection. Can be any of 'move', 'scroll'
+  * npc_name_type - Type of NPC name display. Can be one of: 'none', 'chat'
+  * npc_name_align - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
+  * npc_name_format - How to format the npc name
+
+Variables:
+  * {npc_text} - The text the NPC says
+  * {option_text} - The option text
+  * {npc_name} - The name of the NPC

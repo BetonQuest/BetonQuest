@@ -82,7 +82,9 @@ Removes items from player’s inventory or backpack (in that order). If the item
 
 ## Potion Effect: `effect`
 
-Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). You can also add `--ambient` parameter to make potion particles appear more invisible (just like beacon effects).
+Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). Add a parameter `ambient` to make potion particles appear more invisible (just like beacon effects). To hide particles add a parameter `hidden`. To hide the icon for the effect add `noicon`.
+
+**Example**; `effect BLINDNESS ambient icon`
 
 ## Remove Potion Effect: `deleffect`
 
@@ -186,6 +188,12 @@ This event is similar to `command` event, the only difference is that it will fi
 
 **Example**: `sudo spawn`
 
+## OPSudo: `opsudo`
+
+This event is similar to `command` event, the only difference is that it will fire a command as the player with temporary OP permissions
+
+**Example**: `sudo spawn`
+
 ## Chest Give: `chestgive` _persistent_, _static_
 
 This works the same as `give` event, but it puts the items in a chest at specified location. The first argument is a location, the second argument is a list of items, like in `give` event. If the chest is full, the items will be dropped on the ground. The chest can be any other block with inventory, i.e. a hopper or a dispenser. BetonQuest will log an error to the console when this event is fired but there is no chest at specified location.
@@ -277,3 +285,13 @@ This event will play a specified sound for the player. The only required argumen
 Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
 
 **Example:** `xp 4 level`
+
+## Notification: `notify`
+
+Trigger a notification using the NotifyIO system. The first arguments are the message to send. A comma seperated list can be provided to an optional `category` tag to use a Notification Category. You can optionally set which NotifyIO to use by providing it with an `io` tag. You can also optionally pass flags in the form of `key`:`value` to provide custom config to the NotifyIO that will override those by the category used.
+
+Please note that if you don't provide a valid category and haven't defined a default category then you must provide an io flag otherwise the default io (Generally chat) will be used.
+
+Please refer to the Notification chapter for more details.
+
+**Example:** `notify This is a test category:MyCategory io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE`

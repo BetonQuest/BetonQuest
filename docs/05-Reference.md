@@ -83,6 +83,27 @@ If you're using the `chest` display method you can change the option's item to s
 
 In case you want to use a different type of conversation display for a specific conversation you can add `conversationIO: <type>` setting to the conversation file at the top of the YAML hierarchy, which is the same level as `quester` or `first` options).
 
+### Advanced: Extends
+Conversation also supports the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options that will have their configuration merged. The extended options may themselves extend other options. Infinite loops are detected.
+
+```YAML
+NPC_options:
+
+  ## Normal Conversation Start
+  start:
+    text: 'What can I do for you'
+    extends: today, main_menu
+    
+  ## Useless addition as example
+  today:
+    text: ' today?'
+
+  ## Main main_menu
+ main_menu:
+   pointers: i_have_questions, bye
+```
+In the above example, the option _start_ is extended by both _today_ and _main_menu_. It will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together. If you structure your conversation correctly you can make use of this to minimize duplication.
+
 ***
 
 Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate files, for example all conditions are in _conditions.yml_ config. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
@@ -261,11 +282,11 @@ Place somewhere a block of stained clay, no matter the color. Then place a head 
 
 Items in BetonQuest are defined in _items.yml_ file. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:
 
-    item: MATERIAL other arguments...
+    item: BLOCK_SELECTOR other arguments...
 
-The `MATERIAL` is a type of the item, as taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).
+[BLOCK_SELECTOR](#block-selectors) is a type of the item. It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).
 
-Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction. The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that. Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether. You can also accept an item only if some value (like enchantment level) is greater/less than _x_.
+Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction. The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that. Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether. You can also accept an item only if some value (like enchantment level) is greater/less than _x_. You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.
 
 These are arguments that can be applied to every item:
 
@@ -441,3 +462,37 @@ To understand better how it works I will show you an example of `party` event. L
     party_reward: party 50 quest_started cancel_button,teleport_to_dungeon
 
 Now, it means that all players that: are in radius of 50 blocks around the player who pressed the button AND meet `quest_started` condition will receive `cancel_button` and `teleport_to_dungeon` events. The first one will cancel the quest for pressing the button for the others (it's no longer needed), the second one will teleport them somewhere. Now, imagine there is a player on the other side of the world who also meets `quest_started` condition - he won't be teleported into the dungeon, because he was not with the other players (not in 50 blocks range). Now, there were a bunch of other players running around the button, but they didn't meet the `quest_started` condition. They also won't be teleported (they didn't start this quest).
+
+## Block Selectors
+
+When specifying a way of matching a block, a `block selector` is used. This differs a little depending if your Minecraft version is older than 1.13 or newer.
+
+### Pre 1.13 Minecraft
+
+The format of a block selector is: `material:data`
+
+Where:
+  * `material` - What material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html).
+  * `data` - (optional) A number representing the data of the block. If left out then the selector will match all data types.
+
+Examples:
+  * `LOG` - Matches all LOGS
+  * `LOG:1` - Matches SPRUCE LOGS
+
+
+### 1.13 and above
+The format of a block selector is: `prefix:material[state=value,...]`
+
+Where:
+  * `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'
+  * `material` - The material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Wildcards are supported (both * and ?).
+  * `state` - (optional) The block states can be provided in a comma separated list surrounded by square brackets. You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states). Any states left out will be ignored when matching.
+
+Examples:
+  * `minecraft:stone` - Matches all blocks of type STONE
+  * `redstone_wire` - Matches all blocks of type REDSTONE_WIRE
+  * `redstone_wire[power=5]` - Matches all blocks of type REDSTONE_WIRE and which have a power of 5
+  * `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
+  * `*_LOG` - Matches all LOGS
+  * `*` - Matches everything
+  * `*[waterlogged=true]` - Matches all waterlogged blocks
