@@ -56,6 +56,7 @@ public class Config {
     private static String lang;
     private static ArrayList<String> languages = new ArrayList<>();
     private File root;
+    private static String defauptPackage;
 
     public Config() {
         this(true);
@@ -94,9 +95,11 @@ public class Config {
                 languages.add(key);
             }
         }
+        
+        defauptPackage = plugin.getConfig().getString("default_package", "default");
 
         // save example package
-        createPackage("default");
+        createPackage(defauptPackage);
 
         // load packages
         for (File file : plugin.getDataFolder().listFiles()) {
@@ -525,12 +528,7 @@ public class Config {
      * @return the default package, as specified in the config
      */
     public static ConfigPackage getDefaultPackage() {
-        String name = plugin.getConfig().getString("default_package");
-        ConfigPackage pack = getPackages().get(name);
-        if (pack == null) {
-            pack = getPackages().get("default");
-        }
-        return pack;
+        return getPackages().get(defauptPackage);
     }
 
     private void searchForPackages(File file) {

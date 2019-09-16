@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.placeholderapi;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
@@ -88,7 +89,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
             pack = identifier.substring(0, identifier.indexOf(':'));
             identifier = identifier.substring(identifier.indexOf(':') + 1);
         } else {
-            pack = BetonQuest.getInstance().getConfig().getString("default_package", "default");
+            pack = Config.getDefaultPackage().getName();
         }
         return BetonQuest.getInstance().getVariableValue(pack, '%' + identifier + '%', PlayerConverter.getID(player));
     }
