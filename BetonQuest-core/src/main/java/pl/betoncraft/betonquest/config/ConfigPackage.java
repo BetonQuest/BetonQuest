@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.config;
 
+import pl.betoncraft.betonquest.GlobalVariableID;
+import pl.betoncraft.betonquest.ObjectNotFoundException;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -163,9 +165,17 @@ public class ConfigPackage {
         Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
             Matcher matcher = global_variable_regex.matcher(input);
-            if (!matcher.find()) break;
+            if (!matcher.find())
+                break;
             String varName = matcher.group(1);
-            String varVal = main.getConfig().getString("variables." + varName);
+            String varVal;
+            try {
+                GlobalVariableID variableID = new GlobalVariableID(this, varName);
+                varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
+            } catch (ObjectNotFoundException e1) {
+                Debug.error(e1.getMessage());
+                return input;
+            }
             if (varVal == null) {
                 Debug.error(String.format("Variable %s not defined in package %s", varName, name));
                 return input;

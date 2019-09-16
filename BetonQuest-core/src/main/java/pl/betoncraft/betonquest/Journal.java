@@ -294,6 +294,7 @@ public class Journal {
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
                     }
+                    text = pack.subst(text);
                     // add the text to HashMap
                     numbers.add(i);
                     lines.put(i, text + "§r"); // reset the formatting
