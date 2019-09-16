@@ -1,4 +1,4 @@
-v2.0-dev
+v1.11-dev
 Additions:
   * Support Minecraft 1.8 - 1.13.2+
   * New Block Selector to select blocks by material and attributes. Can use wildcards as well.
