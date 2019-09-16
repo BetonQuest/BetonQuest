@@ -29,7 +29,7 @@ softdepend:
 - BountifulAPI
 - ProtocolLib
 - Brewery
-version: 1.10-dev
+version: 1.10
 commands:
   betonquest:
     description: General quest command
