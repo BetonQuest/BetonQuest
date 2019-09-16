@@ -65,7 +65,11 @@ public class PasteSchematicEvent extends QuestEvent {
         String schemName = instruction.next();
         file = new File(folder, schemName + ".schematic");
         if (!file.exists()) {
-            throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
+            file = new File(folder, schemName);
+
+            if (!file.exists()) {
+                throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
+            }
         }
         noAir = instruction.hasArgument("noair");
     }
