@@ -124,3 +124,12 @@ modules.xml
 /resources/
 /doc/
 **/dependency-reduced-pom.xml
+
+### Eclipse ###
+**/bin/
+**/.settings/
+**/build/
+**/target/
+.classpath
+.project
+

@@ -58,7 +58,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
     private int interval;
     private int tick = 0;
-    private boolean enabled = false;
+    private boolean enabled;
 
     // Updater
     private BukkitRunnable updater;
@@ -67,105 +67,103 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         instance = this;
 
         // Start this when all plugins loaded
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                // loop across all packages
-                for (ConfigPackage pack : Config.getPackages().values()) {
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance().getJavaPlugin(), () -> {
+            // loop across all packages
+            for (ConfigPackage pack : Config.getPackages().values()) {
 
-                    // load all NPC's
-                    for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
-                        try {
-                            NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
-                            if (npc != null) {
-                                npcs.put(npc, new ArrayList<>());
-                            }
-                        } catch (NumberFormatException ignored) {
+                // load all NPC's
+                for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
+                    try {
+                        NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
+                        if (npc != null) {
+                            npcs.put(npc, new ArrayList<>());
                         }
-                    }
-
-                    // npc_holograms contains all holograms for NPCs
-                    ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
-
-                    // if it's not defined then we're not displaying holograms
-                    if (section == null) {
-                        continue;
-                    }
-                    // there's a setting to disable npc holograms altogether
-                    if ("true".equalsIgnoreCase(section.getString("disabled"))) {
-                        return;
-                    }
-
-                    // load the condition check interval
-                    interval = section.getInt("check_interval", 100);
-                    if (interval <= 0) {
-                        Debug.error("Could not load npc holograms of package " + pack.getName() + ": " +
-                                "Check interval must be bigger than 0.");
-                        return;
-                    }
-
-                    // loading hologram config
-                    for (String key : section.getKeys(false)) {
-                        ConfigurationSection settings = section.getConfigurationSection(key);
-
-                        // if the key is not a configuration section then it's not a hologram
-                        if (settings == null) {
-                            continue;
-                        }
-
-                        HologramConfig hologramConfig = new HologramConfig();
-
-                        try {
-                            String vectorParts[] = settings.getString("vector", "0;3;0").split(";");
-                            hologramConfig.vector = new Vector(
-                                    Double.parseDouble(vectorParts[0]),
-                                    Double.parseDouble(vectorParts[1]),
-                                    Double.parseDouble(vectorParts[2])
-                            );
-                        } catch (NumberFormatException e) {
-                            Debug.error(pack.getName() + ": Invalid vector: " + settings.getString("vector"));
-                            continue;
-                        }
-
-                        // load all conditions
-                        hologramConfig.conditions = new ArrayList<>();
-                        String rawConditions = settings.getString("conditions");
-                        if (rawConditions != null) {
-                            for (String part : rawConditions.split(",")) {
-                                try {
-                                    hologramConfig.conditions.add(new ConditionID(pack, part));
-                                } catch (ObjectNotFoundException e) {
-                                    Debug.error("Error while loading " + part + " condition for hologram " + pack.getName() + "."
-                                            + key + ": " + e.getMessage());
-                                }
-                            }
-                        }
-
-                        hologramConfig.settings = settings;
-
-                        // load all NPCs for which this effect can be displayed
-                        List<NPC> affectedNpcs = new ArrayList<>();
-                        for (int id : settings.getIntegerList("npcs")) {
-                            NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                            if (npc != null && npcs.containsKey(npc)) {
-                                affectedNpcs.add(npc);
-                            }
-                        }
-
-                        for (NPC npc : settings.getIntegerList("npcs").size() == 0 ? npcs.keySet() : affectedNpcs) {
-                            NPCHologram npcHologram = new NPCHologram();
-                            npcHologram.config = hologramConfig;
-                            npcs.get(npc).add(npcHologram);
-                        }
-
+                    } catch (NumberFormatException ignored) {
                     }
                 }
 
-                Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance().getJavaPlugin());
+                // npc_holograms contains all holograms for NPCs
+                ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
+
+                // if it's not defined then we're not displaying holograms
+                if (section == null) {
+                    continue;
+                }
+                // there's a setting to disable npc holograms altogether
+                if ("true".equalsIgnoreCase(section.getString("disabled"))) {
+                    return;
+                }
+
+                // load the condition check interval
+                interval = section.getInt("check_interval", 100);
+                if (interval <= 0) {
+                    Debug.error("Could not load npc holograms of package " + pack.getName() + ": " +
+                            "Check interval must be bigger than 0.");
+                    return;
+                }
+
+                // loading hologram config
+                for (String key : section.getKeys(false)) {
+                    ConfigurationSection settings = section.getConfigurationSection(key);
+
+                    // if the key is not a configuration section then it's not a hologram
+                    if (settings == null) {
+                        continue;
+                    }
+
+                    HologramConfig hologramConfig = new HologramConfig();
+
+                    try {
+                        String[] vectorParts = settings.getString("vector", "0;3;0").split(";");
+                        hologramConfig.vector = new Vector(
+                                Double.parseDouble(vectorParts[0]),
+                                Double.parseDouble(vectorParts[1]),
+                                Double.parseDouble(vectorParts[2])
+                        );
+                    } catch (NumberFormatException e) {
+                        Debug.error(pack.getName() + ": Invalid vector: " + settings.getString("vector"));
+                        continue;
+                    }
+
+                    // load all conditions
+                    hologramConfig.conditions = new ArrayList<>();
+                    String rawConditions = settings.getString("conditions");
+                    if (rawConditions != null) {
+                        for (String part : rawConditions.split(",")) {
+                            try {
+                                hologramConfig.conditions.add(new ConditionID(pack, part));
+                            } catch (ObjectNotFoundException e) {
+                                Debug.error("Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                                        + key + ": " + e.getMessage());
+                            }
+                        }
+                    }
+
+                    hologramConfig.settings = settings;
+
+                    // load all NPCs for which this effect can be displayed
+                    List<NPC> affectedNpcs = new ArrayList<>();
+                    for (int id : settings.getIntegerList("npcs")) {
+                        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+                        if (npc != null && npcs.containsKey(npc)) {
+                            affectedNpcs.add(npc);
+                        }
+                    }
+
+                    for (NPC npc : settings.getIntegerList("npcs").size() == 0 ? npcs.keySet() : affectedNpcs) {
+                        NPCHologram npcHologram = new NPCHologram();
+                        npcHologram.config = hologramConfig;
+                        npcs.get(npc).add(npcHologram);
+                    }
+
+                }
             }
+
+            Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance().getJavaPlugin());
+
+            runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 4, interval);
         }, 3);
 
-        runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 4, interval);
         enabled = true;
     }
 
@@ -241,25 +239,19 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         }
 
                         // We do this a tick later to work around a bug where holograms simply don't appear
-                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
-                            @Override
-                            public void run() {
-                                if (npcHologram.hologram != null) {
-                                    npcHologram.hologram.getVisibilityManager().showTo(player);
-                                }
+                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), () -> {
+                            if (npcHologram.hologram != null) {
+                                npcHologram.hologram.getVisibilityManager().showTo(player);
                             }
-                        }, 2);
+                        }, 5);
 
                     } else {
                         if (npcHologram.hologram != null) {
-                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (npcHologram.hologram != null) {
-                                        npcHologram.hologram.getVisibilityManager().hideTo(player);
-                                    }
+                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), () -> {
+                                if (npcHologram.hologram != null) {
+                                    npcHologram.hologram.getVisibilityManager().hideTo(player);
                                 }
-                            }, 2);
+                            }, 5);
                         }
                     }
                 }

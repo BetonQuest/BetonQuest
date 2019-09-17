@@ -11,7 +11,7 @@ pl:
   previous: '&2Poprzednia strona'
   next: '&2Nastepna strona'
   inventory_full: '&e*&bTwoj ekwipunek jest pelny!&e*'
-  changelog: '&e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
+  changelog: '&f[BetonQuest]: &e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
   pullback: '&cMusisz dokonczyc swoja rozmowe!'
   items_given: '&2Otrzymano {1} x{2}'
   items_taken: '&2Utracono {1} x{2}'
@@ -52,7 +52,7 @@ en:
   previous: '&2Previous'
   next: '&2Next'
   inventory_full: '&e*&bYour inventory is full!&e*'
-  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
+  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
   pullback: '&cYou must finish your conversation!'
   items_given: '&2Received {1} x{2}'
   items_taken: '&2Lost {1} x{2}'
@@ -96,7 +96,7 @@ de:
   previous: '&2Zurueck'
   next: '&2Vor'
   inventory_full: '&e*&bDein Inventar ist voll!&e*'
-  changelog: '&e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Aenderungen an und/oder loesche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
+  changelog: '&f[BetonQuest]: &e*&bNeuer Changelog ist im Ordner des Plugins. Schaue dir die Aenderungen an und/oder loesche/benenne die Datei um, um diese Meldung zu schliessen!&e*'
   pullback: '&cDu musst das Gespraech erst beenden!'
   items_given: '&2{1} x{2} erhalten.'
   items_taken: '&2{1} x{2} weggenommen.'
@@ -140,7 +140,7 @@ fr:
   previous: '&2Precedent'
   next: '&2Suivant'
   inventory_full: '&e*&bVotre inventaire est plein!&e*'
-  changelog: '&e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
+  changelog: '&f[BetonQuest]: &e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1} x{2}'
   items_taken: '&2Vous redonnez {1} x{2}'
@@ -182,7 +182,7 @@ cn:
   previous: "&2\u524d\u4e00\u4e2a"
   next: "&2\u4e0b\u4e00\u4e2a"
   inventory_full: "&e*&b\u4f60\u7684\u80cc\u5305\u5df2\u6ee1!&e*"
-  changelog: "&e*&b\u65b0\u7248\u672c\u7684\u66f4\u65b0\u5185\u5bb9\u5df2\u7ecf\u751f\u6210\u5728\u63d2\u4ef6\u6587\u4ef6\u5939\u4e0b!\u5c06\u5b83\u5220\u9664\u5c31\u4e0d\u4f1a\u518d\u770b\u5230\u8fd9\u4e2a\u4fe1\u606f\u4e86&e*"
+  changelog: "&f[BetonQuest]: &e*&b\u65b0\u7248\u672c\u7684\u66f4\u65b0\u5185\u5bb9\u5df2\u7ecf\u751f\u6210\u5728\u63d2\u4ef6\u6587\u4ef6\u5939\u4e0b!\u5c06\u5b83\u5220\u9664\u5c31\u4e0d\u4f1a\u518d\u770b\u5230\u8fd9\u4e2a\u4fe1\u606f\u4e86&e*"
   pullback: "&c\u4f60\u8fd8\u5728\u5bf9\u8bdd\u4e2d!&a(\u8f93\u51651\u770b\u770b\u804a\u5929\u680f\u6709\u6ca1\u6709\u53cd\u5e94\u5427)"
   items_given: "&2\u4f60\u83b7\u5f97\u4e86 {2}\u4e2a{1}"
   items_taken: "&2\u4f60\u5931\u53bb\u4e86 {2}\u4e2a{1}"
@@ -223,7 +223,7 @@ es:
   previous: '&2Anterior'
   next: '&2Siguiente'
   inventory_full: '&e*&bTu inventario esta lleno.&e*'
-  changelog: '&e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
+  changelog: '&f[BetonQuest]: &e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1} x{2}'
   items_taken: '&2Perdido {1} x{2}'
@@ -264,7 +264,7 @@ nl:
   previous: '&2Vorige'
   next: '&2Volgende'
   inventory_full: '&e*&bJe inventaris is vol!&e*'
-  changelog: '&e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
+  changelog: '&f[BetonQuest]: &e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
   pullback: '&cRondt eerst je gesprek af!'
   items_given: '&2Ontvangen {1} x{2}'
   items_taken: '&2Afgegeven {1} x{2}'
@@ -305,7 +305,7 @@ it:
   previous: '&2Precedente'
   next: '&2Successivo'
   inventory_full: '&e*&bIl tuo inventario è pieno!&e*'
-  changelog: '&e*&bNew changelog is available in the plugin''s directory. Read the
+  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the
     changes and delete or rename the file to dismiss this message!&e*'
   pullback: '&cDevi finire la conversazione!'
   items_given: '&2Hai ricevuto {1} x{2}'
@@ -347,7 +347,7 @@ hu:
   previous: '&2Előző'
   next: '&2Következő'
   inventory_full: '&e*&bAz eszköztárad tele van!&e*'
-  changelog: '&e*&bAz új changelog elérhető a plugin könyvtárában. Olvassa el a változtatásokat, és törölje vagy nevezze át a fájlt, hogy elutasítsa ezt az üzenetet!&e*'
+  changelog: '&f[BetonQuest]: &e*&bAz új changelog elérhető a plugin könyvtárában. Olvassa el a változtatásokat, és törölje vagy nevezze át a fájlt, hogy elutasítsa ezt az üzenetet!&e*'
   pullback: '&cBe kell fejeznie a beszélgetést!'
   items_given: '&2Kapott {1} x{2}'
   items_taken: '&2Veszített {1} x{2}'
