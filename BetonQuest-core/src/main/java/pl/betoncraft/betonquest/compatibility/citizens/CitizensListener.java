@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
+import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -67,5 +68,10 @@ public class CitizensListener implements Listener {
             new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
         }
+    }
+    
+    @EventHandler
+    public void CitizensReload(final CitizensReloadEvent event) {
+        CitizensHologram.reload();
     }
 }
