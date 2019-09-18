@@ -31,6 +31,7 @@ Fixes:
   * WATER and LAVA can be specified in Action Objective
   * Journals without dates now don't leave blank lines
   * Journal separator can be disabled or customized
+  * NPCs now spawn correct, if they have a npc_hologram
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
