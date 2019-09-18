@@ -57,7 +57,6 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     private Map<NPC, List<NPCHologram>> npcs = new HashMap<>();
 
     private int interval;
-    private int tick = 0;
     private boolean enabled;
 
     // Updater
@@ -226,7 +225,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     if (visible) {
                         hologramEnabled = true;
                         if (npcHologram.hologram == null) {
-                            Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), npc.getStoredLocation().add(npcHologram.config.vector));
+                            Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), npc.getStoredLocation().clone().add(npcHologram.config.vector));
                             hologram.getVisibilityManager().setVisibleByDefault(false);
                             for (String line : npcHologram.config.settings.getStringList("lines")) {
                                 if (line.startsWith("item:")) {
@@ -279,7 +278,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         for (NPC npc : npcs.keySet()) {
                             for (NPCHologram npcHologram : npcs.get(npc)) {
                                 if (npcHologram.hologram != null) {
-                                    npcHologram.hologram.teleport(npc.getStoredLocation().add(npcHologram.config.vector));
+                                    npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.config.vector));
                                 }
                             }
 
