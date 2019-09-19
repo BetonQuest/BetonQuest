@@ -523,7 +523,7 @@ public class MenuConvIO implements Listener, ConversationIO {
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines));
+        displayBuilder.append(String.join("\n", npcLines)).append("\n");
 
         // Put clear lines between NPC text and Options
         for (int i = 0; i < linesAvailable; i++) {
