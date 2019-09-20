@@ -26,6 +26,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -415,7 +416,7 @@ public class MenuConvIO implements Listener, ConversationIO {
                 .replace("{npc_name}", npcName);
 
         List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(msgNpcText, configNpcTextReset), configLineLength, configNpcWrap))
+                Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
                 .collect(Collectors.toList());
 
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary down to a minimum of 1.
@@ -463,7 +464,7 @@ public class MenuConvIO implements Listener, ConversationIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(optionText, i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
                         configLineLength, configOptionSelectedWrap))
                         .collect(Collectors.toList());
 
@@ -474,7 +475,7 @@ public class MenuConvIO implements Listener, ConversationIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(optionText, i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
                         configLineLength, configOptionWrap))
                         .collect(Collectors.toList());
 
@@ -549,11 +550,13 @@ public class MenuConvIO implements Listener, ConversationIO {
                 for (int i = 0; i < 8; i++) {
                     displayBuilder.append(ChatColor.BOLD).append(" ");
                 }
-                displayBuilder.append(ChatColor.WHITE).append("↓");
+                displayBuilder.append(ChatColor.WHITE).append("↓\n");
+            } else {
+                displayBuilder.append(" \n");
             }
         }
 
-        displayOutput = displayBuilder.toString();
+        displayOutput = StringUtils.stripEnd(displayBuilder.toString(), "\n");
 
         showDisplay();
     }
