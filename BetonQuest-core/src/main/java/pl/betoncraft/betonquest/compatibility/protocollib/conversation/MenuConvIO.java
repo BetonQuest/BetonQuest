@@ -81,6 +81,7 @@ public class MenuConvIO implements Listener, ConversationIO {
     protected int selectedOption = 0;
     protected String npcText;
     protected String npcName;
+    protected boolean started = false;
     protected boolean ended = false;
     protected PacketAdapter packetAdapter;
     protected BukkitRunnable displayRunnable;
@@ -182,7 +183,9 @@ public class MenuConvIO implements Listener, ConversationIO {
         } catch (IllegalArgumentException e) {
             Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
         }
+    }
 
+    private void start() {
         // Create something painful looking for the player to sit on and make it invisible.
         stand = new WrapperPlayServerSpawnEntityLiving();
         stand.setType(EntityType.ARMOR_STAND);
@@ -292,6 +295,7 @@ public class MenuConvIO implements Listener, ConversationIO {
         ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
+        started = true;
     }
 
     /**
@@ -305,24 +309,29 @@ public class MenuConvIO implements Listener, ConversationIO {
             return;
         }
 
-        updateDisplay();
+        // Only want to hook the player when there are player options
+        if (!started && options.size() > 0) {
+            start();
 
-        // Update the Display automatically if configRefreshDelay is > 0
-        if (configRefreshDelay > 0) {
-            displayRunnable = new BukkitRunnable() {
+            // Update the Display automatically if configRefreshDelay is > 0
+            if (configRefreshDelay > 0) {
+                displayRunnable = new BukkitRunnable() {
 
-                @Override
-                public void run() {
-                    showDisplay();
+                    @Override
+                    public void run() {
+                        showDisplay();
 
-                    if (ended) {
-                        this.cancel();
+                        if (ended) {
+                            this.cancel();
+                        }
                     }
-                }
-            };
+                };
 
-            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, configRefreshDelay);
+                displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
+            }
         }
+
+        updateDisplay();
     }
 
     @EventHandler
@@ -578,10 +587,6 @@ public class MenuConvIO implements Listener, ConversationIO {
         options.clear();
         npcText = null;
 
-//        // Clear conversation
-//        for (int i = 0; i < 100; i++) {
-//            player.sendMessage(" \n");
-//        }
     }
 
     /**
@@ -592,21 +597,23 @@ public class MenuConvIO implements Listener, ConversationIO {
     public void end() {
         ended = true;
 
-        // Stop Listening for Packets
-        ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
+        if (started) {
+            // Stop Listening for Packets
+            ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
-        // Destroy Stand
-        WrapperPlayServerEntityDestroy destroyPacket = new WrapperPlayServerEntityDestroy();
-        destroyPacket.setEntities(new int[]{stand.getEntityID()});
-        destroyPacket.sendPacket(player);
+            // Destroy Stand
+            WrapperPlayServerEntityDestroy destroyPacket = new WrapperPlayServerEntityDestroy();
+            destroyPacket.setEntities(new int[]{stand.getEntityID()});
+            destroyPacket.sendPacket(player);
+
+            HandlerList.unregisterAll(this);
+        }
 
         // Stop updating display
         if (displayRunnable != null) {
             displayRunnable.cancel();
             displayRunnable = null;
         }
-
-        HandlerList.unregisterAll(this);
     }
 
     /**
