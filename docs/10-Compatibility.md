@@ -384,6 +384,60 @@ hide_npcs:
   127: '!questStarted'
 ```
 
+### Conversation IO: `menu`
+
+A conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](https://www.youtube.com/channel/UCyF806Xfzr4B18dsZ4TEI9w).
+
+Customize how it looks by adding the following lines to custom.yml:
+
+```YAML
+menu_conv_io:
+  line_length: 60
+  refresh_delay: 180
+
+  npc_wrap: '&l &r'
+  npc_text: '&l &r&f{npc_text}'
+  npc_text_reset: '&f'
+  option_wrap: '&r&l &l &l &l &r'
+  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
+  option_text_reset: '&b'
+  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
+  option_selected_reset: '&f'
+  option_selected_wrap: '&r&l &l &l &l &r&f&n'
+
+  control_select: jump,left_click
+  control_cancel: sneak
+  control_move: scroll,move
+
+  npc_name_type: chat
+  npc_name_align: center
+  npc_name_format: '&e{npc_name}&r'
+```
+
+Where:
+  * line_length - Maximum size of a line till its wrapped
+  * refresh_delay - Specify how many ticks to auto update display. Default 180
+  * npc_wrap - What text to prefix each new line in the NPC text that wraps
+  * npc_text - How to write the NPC text. Replaces {1} with the npcs text
+  * npc_text_reset - When a color reset is found, what to replace it with
+  * option_wrap - What text to prefix each new line in an option that wraps
+  * option_text - How to write an option. Replaces {1} with the option text
+  * option_text_reset - When a color reset is found, what to replace it with
+  * option_selected - How to write a selected option. Replaces {1} with the option text
+  * option_selected_reset - When a color reset is found, what to replace it with
+  * option_selected_wrap - What text to prefix each new line in a selected option that wraps
+  * control_select - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_cancel - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * control_move - Space separated actions to move selection. Can be any of 'move', 'scroll'
+  * npc_name_type - Type of NPC name display. Can be one of: 'none', 'chat'
+  * npc_name_align - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
+  * npc_name_format - How to format the npc name
+
+Variables:
+  * {npc_text} - The text the NPC says
+  * {option_text} - The option text
+  * {npc_name} - The name of the NPC
+
 ## [Quests](http://dev.bukkit.org/bukkit-plugins/quests/)
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
@@ -674,58 +728,3 @@ Triggers when player levels up.
 ### Job Payment Objective: `nujobs_payment {amount}`
 
 Triggers when player makes {amount} of money from jobs.
-
-
-### Conversation IO: `menu`
-
-A conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](https://www.youtube.com/channel/UCyF806Xfzr4B18dsZ4TEI9w).
-
-Customize how it looks by adding the following lines to custom.yml:
-
-```YAML
-menu_conv_io:
-  line_length: 60
-  refresh_delay: 180
-
-  npc_wrap: '&l &r'
-  npc_text: '&l &r&f{npc_text}'
-  npc_text_reset: '&f'
-  option_wrap: '&r&l &l &l &l &r'
-  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
-  option_text_reset: '&b'
-  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
-  option_selected_reset: '&f'
-  option_selected_wrap: '&r&l &l &l &l &r&f&n'
-
-  control_select: jump,left_click
-  control_cancel: sneak
-  control_move: scroll,move
-
-  npc_name_type: chat
-  npc_name_align: center
-  npc_name_format: '&e{npc_name}&r'
-```
-
-Where:
-  * line_length - Maximum size of a line till its wrapped
-  * refresh_delay - Specify how many ticks to auto update display. Default 180
-  * npc_wrap - What text to prefix each new line in the NPC text that wraps
-  * npc_text - How to write the NPC text. Replaces {1} with the npcs text
-  * npc_text_reset - When a color reset is found, what to replace it with
-  * option_wrap - What text to prefix each new line in an option that wraps
-  * option_text - How to write an option. Replaces {1} with the option text
-  * option_text_reset - When a color reset is found, what to replace it with
-  * option_selected - How to write a selected option. Replaces {1} with the option text
-  * option_selected_reset - When a color reset is found, what to replace it with
-  * option_selected_wrap - What text to prefix each new line in a selected option that wraps
-  * control_select - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * control_cancel - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * control_move - Space separated actions to move selection. Can be any of 'move', 'scroll'
-  * npc_name_type - Type of NPC name display. Can be one of: 'none', 'chat'
-  * npc_name_align - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
-  * npc_name_format - How to format the npc name
-
-Variables:
-  * {npc_text} - The text the NPC says
-  * {option_text} - The option text
-  * {npc_name} - The name of the NPC

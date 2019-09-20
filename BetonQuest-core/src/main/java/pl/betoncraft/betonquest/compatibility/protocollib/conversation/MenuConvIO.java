@@ -313,22 +313,23 @@ public class MenuConvIO implements Listener, ConversationIO {
         if (!started && options.size() > 0) {
             start();
 
-            // Update the Display automatically if configRefreshDelay is > 0
-            if (configRefreshDelay > 0) {
-                displayRunnable = new BukkitRunnable() {
+        }
 
-                    @Override
-                    public void run() {
-                        showDisplay();
+        // Update the Display automatically if configRefreshDelay is > 0
+        if (configRefreshDelay > 0) {
+            displayRunnable = new BukkitRunnable() {
 
-                        if (ended) {
-                            this.cancel();
-                        }
+                @Override
+                public void run() {
+                    showDisplay();
+
+                    if (ended) {
+                        this.cancel();
                     }
-                };
+                }
+            };
 
-                displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
-            }
+            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
         }
 
         updateDisplay();
