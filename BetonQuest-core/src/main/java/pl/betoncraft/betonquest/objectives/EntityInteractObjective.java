@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -30,8 +31,12 @@ import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.QuestRuntimeException;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -59,6 +64,8 @@ public class EntityInteractObjective extends Objective {
     protected boolean notify;
     protected Interaction interaction;
     protected boolean cancel;
+    private LocationData loc;
+    private VariableNumber range;
 
     private RightClickListener rightClickListener;
     private LeftClickListener leftClickListener;
@@ -80,6 +87,9 @@ public class EntityInteractObjective extends Objective {
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
         cancel = instruction.hasArgument("cancel");
+        loc = instruction.getLocation(instruction.getOptional("loc"));
+        String r = instruction.getOptional("range");
+        range = instruction.getVarNum(r == null ? "1" : r);
     }
 
     @Override
@@ -122,6 +132,21 @@ public class EntityInteractObjective extends Objective {
         // check if the player has this objective
         String playerID = PlayerConverter.getID(player);
         if (containsPlayer(playerID) && checkConditions(playerID)) {
+            // Check location matches
+            if (loc != null) {
+                try {
+                    Location location = loc.getLocation(playerID);
+                    double r = range.getDouble(playerID);
+                    if (!entity.getWorld().equals(location.getWorld())
+                            || entity.getLocation().distance(location) > r) {
+                        return false;
+                    }
+                } catch (QuestRuntimeException e) {
+                    Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                }
+            }
+
+
             // get data off the player
             EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
             // check if player already interacted with entity
