@@ -295,3 +295,4 @@ Please note that if you don't provide a valid category and haven't defined a def
 Please refer to the Notification chapter for more details.
 
 **Example:** `notify This is a test category:MyCategory io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE`
+
