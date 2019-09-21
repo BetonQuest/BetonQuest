@@ -296,3 +296,8 @@ Please refer to the Notification chapter for more details.
 
 **Example:** `notify This is a test category:MyCategory io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE`
 
+## Set player walk speed: `speed`
+
+Set a players walk speed (default 0.2).
+
+**Example:** `speed 0.8`
