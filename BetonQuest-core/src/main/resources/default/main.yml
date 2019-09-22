@@ -1,5 +1,5 @@
 variables:
-  block: LOG
+  block: '*_LOG'
 npcs:
   'Innkeeper': innkeeper
   '0': innkeeper

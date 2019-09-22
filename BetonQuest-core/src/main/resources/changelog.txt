@@ -34,6 +34,7 @@ Fixes:
   * Journal separator can be disabled or customized
   * NPCs now spawn correct, if they have a npc_hologram
   * fixed NPE when no journal entry exists
+  * The default package is now compatible with all versions
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.

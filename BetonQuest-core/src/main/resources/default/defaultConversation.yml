@@ -12,7 +12,7 @@ stop: 'false'
 NPC_options:
   'start':
     text:
-      en: 'Welcome to my inn %player%! What can I do for you?'
+      en: 'Welcome to my inn, %player%! What can I do for you?'
       es: 'Bienvenido a mi taberna, %player%! Que puedo hacer por ti?'
       pl: 'Witaj w mojej karczmie %player%! Co moge dla Ciebie zrobic?'
       fr: 'Bienvenue dans mon auberge %player%! Que puis-je faire pour votre service?'
@@ -59,7 +59,7 @@ NPC_options:
     pointer: 'questions,more_quests,bye'
   'quest_wood':
     text:
-      en: 'I was making new mugs for beer but I run out of wood. Can you bring me some from nearby forest?'
+      en: 'I was making new mugs for beer but I ran out of wood. Can you bring me some from the nearby forest?'
       es: 'Estaba haciendo nuevas jarras de cerveza, pero me quede sin madera. Puedes traerme alguna del bosque mas cercano?'
       pl: 'Robilem nowe kufle do piwa, ale skonczylo mi sie drewno. Moglbys przyniesc mi troche z pobliskiego lasu?'
       fr: 'Je fabriquais de nouvelles chopes de biere mais je manque de bois. Il y a une foret a cote vous pourriez m''en rapporter?'
@@ -70,7 +70,7 @@ NPC_options:
     pointer: 'wood_yes,wood_no'
   'questions':
     text:
-      en: 'I''ll answer the best I can.'
+      en: 'I''ll answer as best I can.'
       es: 'Te respondere lo mejor que pueda.'
       pl: 'Odpowiem najlepiej jak potrafie.'
       fr: 'Je vais essayer de vous repondre au mieux.'
@@ -81,7 +81,7 @@ NPC_options:
     pointer: 'wood_where,wood_how,wood_with_what,no_questions'
   'wood_reward':
     text:
-      en: 'Excelent! Here are 5 emeralds for you!'
+      en: 'Excellent! Here are 5 emeralds for you!'
       es: 'Excelente! Aqui tienes 5 esmeraldas!'
       pl: 'Swietnie! Oto 5 szmaragdow dla Ciebie!'
       fr: 'Excelent! Voici 5 emeraudes pour voous!'
@@ -106,7 +106,7 @@ NPC_options:
     pointer: 'now,wood_go,questions'
   'no_quests':
     text:
-      en: 'Unfortunatelly I don''t have anything else. Come back later.'
+      en: 'Unfortunately I don''t have anything else for you. Come back later.'
       es: 'Desafortunadamente no tengo nada mas por hacer. Vuelve mas tarde.'
       pl: 'Niestety, na razie nic nie mam. Wroc kiedy indziej.'
       fr: 'Malheureusement je n''ai plus rien en ce moment. Revenez un peu plus tard'
@@ -138,7 +138,7 @@ NPC_options:
       hu: 'Ez szégyen.'
   'wood_where':
     text:
-      en: 'Go out of the village through south gate and turn left. There is a forest.'
+      en: 'Go out of the village through the south gate and turn left. You''ll find a forest.'
       es: 'Sal fuera de la aldea por la puerta sur y gira a la izquierda. Ahi hay un bosque.'
       pl: 'Wyjdz z wioski poludniowa brama i skrec w lewo, tam bedzie las.'
       fr: 'En sortant du village et en prenant a gauche vous verrez. Il y a une foret.'
@@ -160,7 +160,7 @@ NPC_options:
     pointer: 'wood_where,wood_with_what,no_questions'
   'wood_with_what':
     text:
-      en: 'You can search in luberjack''s hut. I''m sure you''ll find some axes in there.'
+      en: 'You can search the lumberjack''s hut. I''m sure you''ll find some axes in there.'
       es: 'Puedes buscar en la choza de Luberjack. Estoy seguro que alli encontraras algunas hachas.'
       pl: 'Mozesz poszukac w chacie drwala. Jestem pewien, ze znajdziesz tam jakies siekiery.'
       fr: 'Vous pouvez aller dans la cabane de luberjack. Je pense que vous trouverez des haches la bas cela sera plus facile.'
@@ -226,7 +226,7 @@ player_options:
     pointer: 'quest_wood'
   'wood_questions':
     text:
-      en: 'I have some question about this woodcutting.'
+      en: 'I have some questions about this woodcutting.'
       es: 'Tengo algunas preguntas sobre la tala de arboles.'
       pl: 'Mam kilka pytan odnosnie tego scinania drzew.'
       fr: 'Je me pose des questions pour couper les arbres.'
@@ -262,7 +262,7 @@ player_options:
     pointer: 'no_quests'
   'wood_yes':
     text:
-      en: 'Sounds ok.'
+      en: 'Sounds okay.'
       es: 'Suena bien.'
       pl: 'Brzmi uczciwie.'
       fr: 'Cela me semble bien.'
@@ -318,7 +318,7 @@ player_options:
     pointer: 'wood_with_what'
   'no_questions':
     text:
-      en: 'I don''t have questions'
+      en: 'I don''t have questions.'
       es: 'No tengo preguntas.'
       pl: 'Nie mam wiecej pytan.'
       fr: 'Je n''ai plus de question'
