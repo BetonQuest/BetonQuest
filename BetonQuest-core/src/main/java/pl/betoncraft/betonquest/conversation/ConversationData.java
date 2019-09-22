@@ -54,6 +54,7 @@ public class ConversationData {
     private String[] startingOptions;
     private boolean blockMovement;
     private String convIO;
+    private String interceptor;
 
     private HashMap<String, Option> NPCOptions;
     private HashMap<String, Option> playerOptions;
@@ -98,20 +99,30 @@ public class ConversationData {
         String rawStartingOptions = pack.getString("conversations." + name + ".first");
         String stop = pack.getString("conversations." + name + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
-        String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO"));
+        String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
+        String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "packet,simple"));
 
         // check if all data is valid (or at least exist)
-        if (rawConvIO != null) {
-            for (String s : rawConvIO.split(",")) {
-                if (BetonQuest.getInstance().getConvIO(s.trim()) != null) {
-                    convIO = s.trim();
-                    break;
-                }
+        for (String s : rawConvIO.split(",")) {
+            if (BetonQuest.getInstance().getConvIO(s.trim()) != null) {
+                convIO = s.trim();
+                break;
             }
         }
         if (convIO == null) {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
         }
+
+        for (String s : rawInterceptor.split(",")) {
+            if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
+                interceptor = s.trim();
+                break;
+            }
+        }
+        if (interceptor == null) {
+            throw new InstructionParseException("No registered interceptor found: " + rawInterceptor);
+        }
+
         if (quester == null || quester.isEmpty()) {
             throw new InstructionParseException("Quester's name is not defined");
         }
@@ -319,6 +330,13 @@ public class ConversationData {
      */
     public String getConversationIO() {
         return convIO;
+    }
+
+    /**
+     * @return the Interceptor
+     */
+    public String getInterceptor() {
+        return interceptor;
     }
 
     public String getText(String lang, String option, OptionType type) {

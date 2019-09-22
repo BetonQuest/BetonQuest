@@ -245,7 +245,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             buttons[j] = item;
         }
         if (printMessages)
-            player.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+            conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
         inv.setContents(buttons);
         new BukkitRunnable() {
             @Override
@@ -280,7 +280,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             String message = options.get(choosen);
             if (message != null) {
                 processingLastClick = true;
-                if (printMessages) player.sendMessage(answerPrefix + message);
+                if (printMessages) conv.sendMessage(answerPrefix + message);
                 conv.passPlayerAnswer(choosen);
             }
         }

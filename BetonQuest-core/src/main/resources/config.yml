@@ -15,6 +15,7 @@ default_journal_slot: '-1'
 max_npc_distance: '5'
 citizens_npcs_by_name: 'false'
 default_conversation_IO: menu,chest
+default_interceptor: packet,simple
 display_chat_after_conversation: 'true'
 combat_delay: '10'
 notify_pullback: 'true'

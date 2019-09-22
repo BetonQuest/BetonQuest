@@ -26,20 +26,17 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicle;
@@ -51,12 +48,10 @@ import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlaySe
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerSpawnEntityLiving;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.conversation.ChatConvIO;
 import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.conversation.ConversationColors;
-import pl.betoncraft.betonquest.conversation.ConversationIO;
 import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
@@ -68,20 +63,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MenuConvIO implements Listener, ConversationIO {
+public class MenuConvIO extends ChatConvIO {
 
-    protected final Conversation conv;
-    protected final String name;
-    protected final Player player;
-    protected final HashMap<String, ChatColor[]> colors;
     // Actions
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
     protected String configControlCancel = "sneak";
-    protected List<String> options;
+
     protected int oldSelectedOption = 0;
     protected int selectedOption = 0;
-    protected String npcText;
-    protected String npcName;
+    protected boolean started = false;
     protected boolean ended = false;
     protected PacketAdapter packetAdapter;
     protected BukkitRunnable displayRunnable;
@@ -92,6 +82,7 @@ public class MenuConvIO implements Listener, ConversationIO {
 
     // Configuration
     protected Integer configLineLength = 60;
+    protected Integer configRefreshDelay = 180;
     protected String configNpcWrap = "&l &r".replace('&', '§');
     protected String configNpcText = "&l &r&f{npc_text}".replace('&', '§');
     protected String configNpcTextReset = "&f".replace('&', '§');
@@ -108,11 +99,7 @@ public class MenuConvIO implements Listener, ConversationIO {
     private WrapperPlayServerSpawnEntityLiving stand = null;
 
     public MenuConvIO(Conversation conv, String playerID) {
-        this.options = new ArrayList<>();
-        this.conv = conv;
-        this.player = PlayerConverter.getPlayer(playerID);
-        this.name = player.getName();
-        this.colors = ConversationColors.getColors();
+        super(conv, playerID);
 
         // Load Configuration from custom.yml with some sane defaults, loading our current package last
         for (ConfigPackage pack : Stream.concat(
@@ -126,6 +113,7 @@ public class MenuConvIO implements Listener, ConversationIO {
             }
 
             configLineLength = section.getInt("line_length", configLineLength);
+            configRefreshDelay = section.getInt("refresh_delay", configRefreshDelay);
             configNpcWrap = section.getString("npc_wrap", configNpcWrap).replace('&', '§');
             configNpcText = section.getString("npc_text", configNpcText).replace('&', '§');
             configNpcTextReset = section.getString("npc_text_reset", configNpcTextReset).replace('&', '§');
@@ -181,7 +169,9 @@ public class MenuConvIO implements Listener, ConversationIO {
         } catch (IllegalArgumentException e) {
             Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
         }
+    }
 
+    private void start() {
         // Create something painful looking for the player to sit on and make it invisible.
         stand = new WrapperPlayServerSpawnEntityLiving();
         stand.setType(EntityType.ARMOR_STAND);
@@ -234,6 +224,7 @@ public class MenuConvIO implements Listener, ConversationIO {
                     return;
                 }
 
+
                 if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
                     WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
 
@@ -256,14 +247,25 @@ public class MenuConvIO implements Listener, ConversationIO {
                         oldSelectedOption = selectedOption;
                         selectedOption++;
                         debounce = true;
-                        updateDisplay();
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                updateDisplay();
+                            }
+                        }.runTaskAsynchronously(getPlugin());
+
                     } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
                         // Player moved Forwards
 
                         oldSelectedOption = selectedOption;
                         selectedOption--;
                         debounce = true;
-                        updateDisplay();
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                updateDisplay();
+                            }
+                        }.runTaskAsynchronously(getPlugin());
 
                     } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
                         // Player Dismounted
@@ -293,6 +295,7 @@ public class MenuConvIO implements Listener, ConversationIO {
         ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
+        started = true;
     }
 
     /**
@@ -306,34 +309,35 @@ public class MenuConvIO implements Listener, ConversationIO {
             return;
         }
 
-        updateDisplay();
+        // Only want to hook the player when there are player options
+        if (!started && options.size() > 0) {
+            start();
+        }
 
-        // Update the Display
-        displayRunnable = new BukkitRunnable() {
+        // Update the Display automatically if configRefreshDelay is > 0
+        if (configRefreshDelay > 0) {
+            displayRunnable = new BukkitRunnable() {
 
-            @Override
-            public void run() {
-                showDisplay();
+                @Override
+                public void run() {
+                    showDisplay();
 
-                if (ended) {
-                    this.cancel();
+                    if (ended) {
+                        this.cancel();
+                    }
                 }
-            }
-        };
+            };
 
-        displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), 0, 180);
+            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
+        }
+
+        updateDisplay();
     }
 
+    // Override this event from our parent
+    @Override
     @EventHandler
-    public void playerMoveEvent(PlayerMoveEvent event) {
-        if (event.getPlayer() != player) {
-            return;
-        }
-
-        // If the player has moved away somehow we cancel everything
-        if (Math.abs(event.getFrom().getX() - event.getTo().getX()) + Math.abs(event.getFrom().getY() - event.getTo().getY()) + Math.abs(event.getFrom().getZ() - event.getTo().getZ()) > 3) {
-            conv.endConversation();
-        }
+    public void onReply(AsyncPlayerChatEvent event) {
     }
 
     /**
@@ -345,21 +349,9 @@ public class MenuConvIO implements Listener, ConversationIO {
      */
     @Override
     public void setNpcResponse(String npcName, String response) {
-        this.npcName = npcName;
-        this.npcText = response;
+        super.setNpcResponse(npcName, response);
         formattedNpcName = configNpcNameFormat
                 .replace("{npc_name}", npcName);
-    }
-
-    /**
-     * Adds the text of the player option. Should be called for each option in a
-     * conversation cycle.
-     *
-     * @param option the text of an option
-     */
-    @Override
-    public void addPlayerOption(String option) {
-        options.add(option);
     }
 
     @EventHandler
@@ -399,7 +391,7 @@ public class MenuConvIO implements Listener, ConversationIO {
 
     protected void showDisplay() {
         if (displayOutput != null) {
-            player.spigot().sendMessage(TextComponent.fromLegacyText(displayOutput));
+            conv.sendMessage(displayOutput);
         }
     }
 
@@ -415,7 +407,7 @@ public class MenuConvIO implements Listener, ConversationIO {
                 .replace("{npc_name}", npcName);
 
         List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(msgNpcText, configNpcTextReset), configLineLength, configNpcWrap))
+                Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
                 .collect(Collectors.toList());
 
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary down to a minimum of 1.
@@ -459,22 +451,22 @@ public class MenuConvIO implements Listener, ConversationIO {
 
             if (i == 0) {
                 String optionText = configOptionSelected
-                        .replace("{option_text}", options.get(optionIndex))
+                        .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(optionText, i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
                         configLineLength, configOptionSelectedWrap))
                         .collect(Collectors.toList());
 
 
             } else {
                 String optionText = configOptionText
-                        .replace("{option_text}", options.get(optionIndex))
+                        .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(optionText, i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
                         configLineLength, configOptionWrap))
                         .collect(Collectors.toList());
 
@@ -499,87 +491,63 @@ public class MenuConvIO implements Listener, ConversationIO {
         // Build the displayOutput
         StringBuilder displayBuilder = new StringBuilder();
 
+        // If NPC name type is chat_top, show it
+        if (configNpcNameType.equals("chat")) {
+            switch (configNpcNameAlign) {
+                case "right":
+                    for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
+                        displayBuilder.append(" ");
+                    }
+                    break;
+                case "center":
+                case "middle":
+                    for (int i = 0; i < Math.max(0, (configLineLength / 2) - npcName.length() / 2); i++) {
+                        displayBuilder.append(" ");
+                    }
+                    break;
+            }
+            displayBuilder.append(formattedNpcName).append("\n");
+        }
+
+        // We aim to try have a blank line at the top. It looks better
+        if (linesAvailable > 0) {
+            displayBuilder.append(" \n");
+            linesAvailable--;
+        }
+
+        displayBuilder.append(String.join("\n", npcLines)).append("\n");
+
+        // Put clear lines between NPC text and Options
+        for (int i = 0; i < linesAvailable; i++) {
+            displayBuilder.append(" \n");
+        }
+
         if (options.size() > 0) {
-
-            // Put clear lines in buffer, but this may cause flicker so consider removing
-            for (int i = 0; i < 10; i++) {
-                displayBuilder.append(" \n");
-            }
-
-            // If NPC name type is chat_top, show it
-            if (configNpcNameType.equals("chat")) {
-                switch (configNpcNameAlign) {
-                    case "right":
-                        for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
-                            displayBuilder.append(" ");
-                        }
-                        break;
-                    case "center":
-                    case "middle":
-                        for (int i = 0; i < Math.max(0, (configLineLength / 2) - npcName.length() / 2); i++) {
-                            displayBuilder.append(" ");
-                        }
-                        break;
-                }
-                displayBuilder.append(formattedNpcName).append("\n");
-            }
-
-            // We aim to try have a blank line at the top. It looks better
-            if (linesAvailable > 0) {
-                displayBuilder.append(" \n");
-                linesAvailable--;
-            }
-
-            displayBuilder.append(String.join("\n", npcLines)).append("\n");
-
-            // Put clear lines between NPC text and Options
-            for (int i = 0; i < linesAvailable; i++) {
-                displayBuilder.append(" \n");
-            }
-
+            // Show up arrow if options exist above our view
             if (topOption > 0) {
-                displayBuilder
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.WHITE).append("↑\n");
+                for (int i = 0; i < 8; i++) {
+                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                }
+                displayBuilder.append(ChatColor.WHITE).append("↑\n");
             } else {
                 displayBuilder.append(" \n");
             }
 
+            // Display Options
             displayBuilder.append(String.join("\n", optionsSelected)).append("\n");
 
+            // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
-                displayBuilder
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.BOLD).append(" ")
-                        .append(ChatColor.WHITE).append("↓");
-            }
-        } else {
-            // Put clear lines above NPC Text
-            for (int i = 0; i < 90 + linesAvailable - 1; i++) {
-                displayBuilder.append(" \n");
-            }
-
-            displayBuilder.append(String.join("\n", npcLines)).append("\n");
-
-            if (linesAvailable > 0) {
+                for (int i = 0; i < 8; i++) {
+                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                }
+                displayBuilder.append(ChatColor.WHITE).append("↓\n");
+            } else {
                 displayBuilder.append(" \n");
             }
         }
 
-        displayOutput = displayBuilder.toString();
+        displayOutput = StringUtils.stripEnd(displayBuilder.toString(), "\n");
 
         showDisplay();
     }
@@ -598,13 +566,7 @@ public class MenuConvIO implements Listener, ConversationIO {
         selectedOption = 0;
         oldSelectedOption = 0;
 
-        options.clear();
-        npcText = null;
-
-//        // Clear conversation
-//        for (int i = 0; i < 100; i++) {
-//            player.sendMessage(" \n");
-//        }
+        super.clear();
     }
 
     /**
@@ -615,13 +577,15 @@ public class MenuConvIO implements Listener, ConversationIO {
     public void end() {
         ended = true;
 
-        // Stop Listening for Packets
-        ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
+        if (started) {
+            // Stop Listening for Packets
+            ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
-        // Destroy Stand
-        WrapperPlayServerEntityDestroy destroyPacket = new WrapperPlayServerEntityDestroy();
-        destroyPacket.setEntities(new int[]{stand.getEntityID()});
-        destroyPacket.sendPacket(player);
+            // Destroy Stand
+            WrapperPlayServerEntityDestroy destroyPacket = new WrapperPlayServerEntityDestroy();
+            destroyPacket.setEntities(new int[]{stand.getEntityID()});
+            destroyPacket.sendPacket(player);
+        }
 
         // Stop updating display
         if (displayRunnable != null) {
@@ -629,7 +593,7 @@ public class MenuConvIO implements Listener, ConversationIO {
             displayRunnable = null;
         }
 
-        HandlerList.unregisterAll(this);
+        super.end();
     }
 
     /**
@@ -638,18 +602,6 @@ public class MenuConvIO implements Listener, ConversationIO {
     @Override
     public boolean printMessages() {
         return false;
-    }
-
-    /**
-     * Send message through ConversationIO
-     *
-     * @param message
-     */
-    @Override
-    public void print(String message) {
-        if (message != null && message.length() > 0) {
-            player.sendMessage(message);
-        }
     }
 
     @EventHandler

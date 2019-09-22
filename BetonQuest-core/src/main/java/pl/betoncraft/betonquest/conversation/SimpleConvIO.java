@@ -45,7 +45,7 @@ public class SimpleConvIO extends ChatConvIO {
     public void display() {
         super.display();
         for (int i = 1; i <= options.size(); i++) {
-            player.sendMessage(optionFormat.replace("%number%", Integer.toString(i)) + options.get(i));
+            conv.sendMessage(optionFormat.replace("%number%", Integer.toString(i)) + options.get(i));
         }
     }
 }

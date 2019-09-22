@@ -90,8 +90,10 @@ import pl.betoncraft.betonquest.conversation.ConversationData;
 import pl.betoncraft.betonquest.conversation.ConversationIO;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
 import pl.betoncraft.betonquest.conversation.CubeNPCListener;
+import pl.betoncraft.betonquest.conversation.Interceptor;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.conversation.SimpleConvIO;
+import pl.betoncraft.betonquest.conversation.SimpleInterceptor;
 import pl.betoncraft.betonquest.conversation.SlowTellrawConvIO;
 import pl.betoncraft.betonquest.conversation.TellrawConvIO;
 import pl.betoncraft.betonquest.database.Database;
@@ -219,6 +221,7 @@ public class BetonQuest extends VersionPlugin {
     private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
     private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
     private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
+    private static HashMap<String, Class<? extends Interceptor>> interceptorTypes = new HashMap<>();
     private static HashMap<String, Class<? extends NotifyIO>> notifyIOTypes = new HashMap<>();
     private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
     private static HashMap<ConditionID, Condition> conditions = new HashMap<>();
@@ -680,6 +683,9 @@ public class BetonQuest extends VersionPlugin {
         registerConversationIO("combined", InventoryConvIO.Combined.class);
         registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
+        // register interceptor types
+        registerInterceptor("simple", SimpleInterceptor.class);
+
         // register notify IO types
         registerNotifyIO("suppress", SuppressNotifyIO.class);
         registerNotifyIO("chat", ChatNotifyIO.class);
@@ -1100,6 +1106,17 @@ public class BetonQuest extends VersionPlugin {
     }
 
     /**
+     * Registers new interceptor class.
+     *
+     * @param name             name of the interceptor type
+     * @param interceptorClass class object to register
+     */
+    public void registerInterceptor(String name, Class<? extends Interceptor> interceptorClass) {
+        Debug.info("Registering " + name + " interceptor type");
+        interceptorTypes.put(name, interceptorClass);
+    }
+
+    /**
      * Registers new notify input/output class.
      *
      * @param name    name of the IO type
@@ -1174,6 +1191,14 @@ public class BetonQuest extends VersionPlugin {
      */
     public Class<? extends ConversationIO> getConvIO(String name) {
         return convIOTypes.get(name);
+    }
+
+    /**
+     * @param name name of the interceptor type
+     * @return the class object for this interceptor type
+     */
+    public Class<? extends Interceptor> getInterceptor(String name) {
+        return interceptorTypes.get(name);
     }
 
     /**

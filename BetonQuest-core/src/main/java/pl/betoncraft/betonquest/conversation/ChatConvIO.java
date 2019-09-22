@@ -146,7 +146,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         String message = event.getMessage().trim();
         for (int i : options.keySet()) {
             if (message.equals(Integer.toString(i))) {
-                player.sendMessage(answerFormat + options.get(i));
+                conv.sendMessage(answerFormat + options.get(i));
                 conv.passPlayerAnswer(i);
                 event.setCancelled(true);
                 return;
@@ -179,7 +179,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        player.sendMessage(Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
+        conv.sendMessage(Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
     }
 
     @Override
@@ -197,7 +197,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     @Override
     public void print(String message) {
         if (message != null && message.length() > 0) {
-            player.sendMessage(message);
+            conv.sendMessage(message);
         }
     }
 }
