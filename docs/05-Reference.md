@@ -10,6 +10,7 @@ Each conversation must define name of the NPC (some conversations can be not bou
     first: option1, option2
     stop: 'true'
     final_events: event1, event2
+    interceptor: simple
     NPC_options:
       option1:
         text: Some text in default language
@@ -35,6 +36,7 @@ Note 1: _Configuration files use YAML syntax. Google it if you don't know anythi
 * `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You define these options in `npc_options` branch.
 * `final_events` are events that will fire on conversation end, no matter how it ends (so you can create e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final events.
 * `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he joins back in. This way he will have to finish his conversation no matter what. _It needs to be in `''`!_ You can modify the distance at which the conversation is ended / player is moved back with `max_npc_distance` option in the _config.yml_.
+* `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used.
 * `NPC_options` is a branch with texts said by the NPC.
 * `player_options` is a branch with options the player can choose.
 * `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only `text` is always required.
@@ -114,6 +116,11 @@ In the above example, the option _start_ is extended by both _tonight_ and _toda
 ***
 
 Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate files, for example all conditions are in _conditions.yml_ config. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
+
+## Chat Interceptors
+During chat it can be distracting when messages from other players or system message interfere with the dialogue. A chat interceptor provides a method of intercepting these message and then playing them back later.
+
+A default chat interceptor is specified in `config.yml` by setting `default_interceptor`. This defaults to `simple` for the simple interceptor. The chat interceptor can also be set per conversation though the use of `interceptor` key in the conversation. 
 
 ## Conditions
 

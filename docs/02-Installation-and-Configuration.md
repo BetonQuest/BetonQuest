@@ -27,6 +27,7 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
 * `citizens_npcs_by_name` sets whether NPCs from citizens2 should be identified in main.yml by their name instead of their id.
 * `max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).
 * `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used. `simple` is a conversation in chat. `tellraw` is an extension to provide clickable options, and `chest` is a conversation in inventory window. If you want to use chest and also write the conversation to the players chat, use `combined`. Others, like `menu` are available if you have the required plugins and other plugins can add additional IO types.
+* `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used. `simple` attempts to catch chat events. `packet` uses protocollib to intercept packets before they reach the player. 
 * `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
 * `combat_delay` is a delay (in seconds) the player must wait before starting a conversation after combat.
 * `notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in the case of chat-based conversations). It notifies players that they are in a conversation, and the pullback is not a bug.

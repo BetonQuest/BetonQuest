@@ -438,6 +438,10 @@ Variables:
   * {option_text} - The option text
   * {npc_name} - The name of the NPC
 
+### Chat Interceptor: `packet`
+
+Intercept pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.
+
 ## [Quests](http://dev.bukkit.org/bukkit-plugins/quests/)
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.

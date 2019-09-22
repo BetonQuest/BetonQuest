@@ -84,7 +84,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                     return;
                 }
 
-                player.sendMessage(lines.remove(0));
+                conv.sendMessage(lines.remove(0));
             }
         }.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 0, 2);
     }

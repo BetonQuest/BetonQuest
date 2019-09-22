@@ -21,6 +21,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.MenuConvIO;
+import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
 
 
 public class ProtocolLibIntegrator implements Integrator {
@@ -39,6 +40,7 @@ public class ProtocolLibIntegrator implements Integrator {
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         plugin.registerConversationIO("menu", MenuConvIO.class);
+        plugin.registerInterceptor("packet", PacketInterceptor.class);
     }
 
     @Override

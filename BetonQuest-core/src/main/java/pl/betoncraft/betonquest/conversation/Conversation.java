@@ -17,17 +17,17 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
@@ -44,7 +44,6 @@ import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -72,7 +71,7 @@ public class Conversation implements Listener {
     private String option;
     private boolean ended = false;
     private boolean messagesDelaying = false;
-    private ArrayList<String> messages = new ArrayList<>();
+    private Interceptor interceptor;
 
     private HashMap<Integer, String> current = new HashMap<>();
 
@@ -295,10 +294,15 @@ public class Conversation implements Listener {
         }
         //play conversation end sound
         Config.playSound(playerID, "end");
+
+        // End interceptor
+        if (interceptor != null) {
+            interceptor.end();
+        }
+
         // delete conversation
         list.remove(playerID);
         HandlerList.unregisterAll(this);
-        displayStoredMessages();
 
         new BukkitRunnable() {
 
@@ -316,9 +320,14 @@ public class Conversation implements Listener {
         return ended;
     }
 
-    private void displayStoredMessages() {
-        for (String message : messages) {
-            player.sendMessage(message);
+    /**
+     * Send message to player, bypassing any message delaying if needed
+     */
+    public void sendMessage(String message) {
+        if (interceptor != null) {
+            interceptor.sendMessage(message);
+        } else {
+            player.spigot().sendMessage(TextComponent.fromLegacyText(message));
         }
     }
 
@@ -368,29 +377,6 @@ public class Conversation implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChat(AsyncPlayerChatEvent event) {
-        // store all messages so they can be displayed to the player
-        // once the conversation is finished
-        if (!messagesDelaying) {
-            return;
-        }
-        if (event.isCancelled()) {
-            return;
-        }
-        if (event.getPlayer() != player && event.getRecipients().contains(player)) {
-            event.getRecipients().remove(player);
-            addMessage(String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage()));
-        }
-    }
-
-    /**
-     * This method prevents concurrent list modification
-     */
-    private synchronized void addMessage(String message) {
-        messages.add(message);
-    }
-
     /**
      * Instead of ending the conversation it saves it to the database, from
      * where it will be resumed after the player logs in again.
@@ -404,22 +390,32 @@ public class Conversation implements Listener {
             return;
         }
         inOut.end();
+
         // save the conversation to the database
         String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
                 + location.getWorld().getName();
         plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
                 new String[]{convID + " " + option + " " + loc, playerID}));
+
+        // End interceptor
+        if (interceptor != null) {
+            interceptor.end();
+        }
+
         // delete conversation
         list.remove(playerID);
         HandlerList.unregisterAll(this);
 
-        new BukkitRunnable() {
+        try {
+            new BukkitRunnable() {
 
-            @Override
-            public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
-            }
-        }.runTask(BetonQuest.getInstance().getJavaPlugin());
+                @Override
+                public void run() {
+                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
+                }
+            }.runTask(BetonQuest.getInstance().getJavaPlugin());
+        } catch (IllegalPluginAccessException ignored) {
+        }
 
     }
 
@@ -501,8 +497,22 @@ public class Conversation implements Listener {
                 return;
             }
 
-            // register listener for immunity, blocking commands and storing chat messages
+            // register listener for immunity and blocking commands
             Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance().getJavaPlugin());
+
+            // start interceptor if needed
+            if (messagesDelaying) {
+                try {
+                    String name = data.getInterceptor();
+                    Class<? extends Interceptor> c = plugin.getInterceptor(name);
+                    conv.interceptor = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                    e.printStackTrace();
+                    Debug.error("Error when loading interceptor");
+                    return;
+                }
+            }
 
             if (options == null) {
                 options = data.getStartingOptions();
