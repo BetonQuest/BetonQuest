@@ -211,7 +211,7 @@ public class Conversation implements Listener {
             new ConversationEnder().runTask(BetonQuest.getInstance().getJavaPlugin());
             return;
         }
-        String text = data.getText(language, option, OptionType.NPC);
+        String text = data.getText(playerID, language, option, OptionType.NPC);
         // resolve variables
         for (String variable : BetonQuest.resolveVariables(text)) {
             text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, playerID));
@@ -256,7 +256,7 @@ public class Conversation implements Listener {
             // print reply and put it to the hashmap
             current.put(Integer.valueOf(i), option);
             // replace variables with their values
-            String text = data.getText(language, option, OptionType.PLAYER);
+            String text = data.getText(playerID, language, option, OptionType.PLAYER);
             for (String variable : BetonQuest.resolveVariables(text)) {
                 text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, playerID));
             }
@@ -563,10 +563,6 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            // fire events
-            for (EventID event : data.getEventIDs(option, OptionType.NPC)) {
-                BetonQuest.event(playerID, event);
-            }
             new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
         }
     }
@@ -585,10 +581,6 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            // fire events
-            for (EventID event : data.getEventIDs(option, OptionType.PLAYER)) {
-                BetonQuest.event(playerID, event);
-            }
             new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
         }
     }
@@ -608,7 +600,7 @@ public class Conversation implements Listener {
 
         public void run() {
             // don't forget to select the option prior to printing its text
-            selectOption(data.getPointers(option, OptionType.PLAYER), false);
+            selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
             // print to player npc's answer
             printNPCText();
             ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
@@ -618,6 +610,10 @@ public class Conversation implements Listener {
                 @Override
                 public void run() {
                     Bukkit.getServer().getPluginManager().callEvent(event);
+                    // fire events
+                    for (EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
+                        BetonQuest.event(playerID, event);
+                    }
                 }
             }.runTask(BetonQuest.getInstance().getJavaPlugin());
         }
@@ -638,7 +634,12 @@ public class Conversation implements Listener {
 
         public void run() {
             // print options
-            printOptions(data.getPointers(option, OptionType.NPC));
+            printOptions(data.getPointers(playerID, option, OptionType.NPC));
+
+            // fire events
+            for (EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
+                BetonQuest.event(playerID, event);
+            }
         }
     }
 
