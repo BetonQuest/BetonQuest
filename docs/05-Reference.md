@@ -84,7 +84,7 @@ If you're using the `chest` display method you can change the option's item to s
 In case you want to use a different type of conversation display for a specific conversation you can add `conversationIO: <type>` setting to the conversation file at the top of the YAML hierarchy, which is the same level as `quester` or `first` options).
 
 ### Advanced: Extends
-Conversation also supports the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options that will have their configuration merged. The extended options may themselves extend other options. Infinite loops are detected.
+Conversation also supports the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have it's text, pointers and events merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
 
 ```YAML
 NPC_options:
@@ -92,17 +92,24 @@ NPC_options:
   ## Normal Conversation Start
   start:
     text: 'What can I do for you'
-    extends: today, main_menu
+    extends: tonight, today
     
   ## Useless addition as example
+  tonight:
+    # Always false
+    condition: random 0-1
+    text: ' tonight?'
+    extends: main_menu
+
   today:
     text: ' today?'
+    extends: main_menu
 
   ## Main main_menu
  main_menu:
    pointers: i_have_questions, bye
 ```
-In the above example, the option _start_ is extended by both _today_ and _main_menu_. It will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together. If you structure your conversation correctly you can make use of this to minimize duplication.
+In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.
 
 ***
 

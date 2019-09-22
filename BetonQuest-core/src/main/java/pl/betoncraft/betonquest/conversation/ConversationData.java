@@ -316,6 +316,10 @@ public class ConversationData {
     }
 
     public String getText(String lang, String option, OptionType type) {
+        return getText(null, lang, option, type);
+    }
+
+    public String getText(String playerID, String lang, String option, OptionType type) {
         Option o = null;
         if (type == OptionType.NPC) {
             o = NPCOptions.get(option);
@@ -324,7 +328,7 @@ public class ConversationData {
         }
         if (o == null)
             return null;
-        return o.getText(lang);
+        return o.getText(playerID, lang);
     }
 
     /**
@@ -344,24 +348,24 @@ public class ConversationData {
         return options.get(option).getConditions();
     }
 
-    public EventID[] getEventIDs(String option, OptionType type) {
+    public EventID[] getEventIDs(String playerID, String option, OptionType type) {
         HashMap<String, Option> options;
         if (type == OptionType.NPC) {
             options = NPCOptions;
         } else {
             options = playerOptions;
         }
-        return options.get(option).getEvents();
+        return options.get(option).getEvents(playerID);
     }
 
-    public String[] getPointers(String option, OptionType type) {
+    public String[] getPointers(String playerID, String option, OptionType type) {
         HashMap<String, Option> options;
         if (type == OptionType.NPC) {
             options = NPCOptions;
         } else {
             options = playerOptions;
         }
-        return options.get(option).getPointers();
+        return options.get(option).getPointers(playerID);
     }
 
     public Option getOption(String option, OptionType type) {
@@ -527,11 +531,11 @@ public class ConversationData {
             return thePrefix;
         }
 
-        public String getText(String lang) {
-            return getText(lang, new ArrayList<>());
+        public String getText(String playerID, String lang) {
+            return getText(playerID, lang, new ArrayList<>());
         }
 
-        public String getText(String lang, List<String> optionPath) {
+        public String getText(String playerID, String lang, List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return "";
@@ -540,9 +544,19 @@ public class ConversationData {
 
             StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
 
-            for (String extend : extendLinks) {
-                ret.append(getOption(extend, type).getText(lang, optionPath));
+            if (playerID != null) {
+                extend:
+                for (String extend : extendLinks) {
+                    for (ConditionID condition : getOption(extend, type).getConditions()) {
+                        if (!BetonQuest.condition(playerID, condition)) {
+                            continue extend;
+                        }
+                    }
+                    ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
+                    break;
+                }
             }
+
             return ret.toString();
         }
 
@@ -559,18 +573,14 @@ public class ConversationData {
 
             List<ConditionID> ret = new ArrayList<>(conditions);
 
-            for (String extend : extendLinks) {
-                ret.addAll(Arrays.asList(getOption(extend, type).getConditions(optionPath)));
-            }
-
             return ret.toArray(new ConditionID[0]);
         }
 
-        public EventID[] getEvents() {
-            return getEvents(new ArrayList<>());
+        public EventID[] getEvents(String playerID) {
+            return getEvents(playerID, new ArrayList<>());
         }
 
-        public EventID[] getEvents(List<String> optionPath) {
+        public EventID[] getEvents(String playerID, List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new EventID[0];
@@ -579,18 +589,29 @@ public class ConversationData {
 
             List<EventID> ret = new ArrayList<>(events);
 
+            extend:
             for (String extend : extendLinks) {
-                ret.addAll(Arrays.asList(getOption(extend, type).getEvents(optionPath)));
+                for (ConditionID condition : getOption(extend, type).getConditions()) {
+                    if (!BetonQuest.condition(playerID, condition)) {
+                        continue extend;
+                    }
+                }
+                ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
+                break;
             }
 
             return ret.toArray(new EventID[0]);
         }
 
         public String[] getPointers() {
-            return getPointers(new ArrayList<>());
+            return getPointers(null);
         }
 
-        public String[] getPointers(List<String> optionPath) {
+        public String[] getPointers(String playerID) {
+            return getPointers(playerID, new ArrayList<>());
+        }
+
+        public String[] getPointers(String playerID, List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new String[0];
@@ -599,9 +620,19 @@ public class ConversationData {
 
             List<String> ret = new ArrayList<>(pointers);
 
-            for (String extend : extendLinks) {
-                ret.addAll(Arrays.asList(getOption(extend, type).getPointers(optionPath)));
+            if (playerID != null) {
+                extend:
+                for (String extend : extendLinks) {
+                    for (ConditionID condition : getOption(extend, type).getConditions()) {
+                        if (!BetonQuest.condition(playerID, condition)) {
+                            continue extend;
+                        }
+                    }
+                    ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
+                    break;
+                }
             }
+
             return ret.toArray(new String[0]);
         }
 
