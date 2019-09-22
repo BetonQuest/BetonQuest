@@ -133,16 +133,16 @@ public class Config {
         if (!def.exists()) {
             Debug.broadcast("Deploying " + packName + " package!");
             def.mkdirs();
-            saveResource(def, "main.yml");
-            saveResource(def, "events.yml");
-            saveResource(def, "conditions.yml");
-            saveResource(def, "journal.yml");
-            saveResource(def, "items.yml");
-            saveResource(def, "objectives.yml");
-            saveResource(def, "custom.yml");
+            saveResource(def, "default/main.yml", "main.yml");
+            saveResource(def, "default/events.yml", "events.yml");
+            saveResource(def, "default/conditions.yml","conditions.yml");
+            saveResource(def, "default/journal.yml", "journal.yml");
+            saveResource(def, "default/items.yml", "items.yml");
+            saveResource(def, "default/objectives.yml", "objectives.yml");
+            saveResource(def, "default/custom.yml", "custom.yml");
             File conversations = new File(def, "conversations");
             conversations.mkdir();
-            saveResource(conversations, "defaultConversation.yml", "innkeeper.yml");
+            saveResource(conversations, "default/defaultConversation.yml", "innkeeper.yml");
             List<String> list = plugin.getConfig().getStringList("packages");
             if (list == null)
                 list = new ArrayList<>();
@@ -152,16 +152,6 @@ public class Config {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Saves resource in a root directory
-     *
-     * @param root     directory where the resource will be saved
-     * @param resource resource name, also name of the file
-     */
-    private static void saveResource(File root, String resource) {
-        saveResource(root, resource, resource);
     }
 
     /**

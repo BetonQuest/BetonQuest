@@ -1,5 +1,5 @@
 wood_started:
-  en: 'The Innkeeper asked me to bring him 16 blocks of wood from nearby forest.'
+  en: 'The Innkeeper asked me to bring him 16 blocks of wood from the nearby forest.'
   es: 'El Tabernero me ha pedido que le traiga 16 bloques de madera de un bosque cercano.'
   pl: 'Karczmarz poprosil mnie abym przyniosl mu 16 blokow drewna z pobliskiego lasu.'
   fr: 'L''aubergiste me demande de rapporter 16 blocs de bois de la foret voisine.'
@@ -8,7 +8,7 @@ wood_started:
   nl: 'De herbergier vroeg me 16 blokken hout te verzamelen van een dichtbij gelegen bos.'
   hu: 'Az Innkeeper megkért, hogy hozzam 16 blokkot a közeli erdőből.'
 wood_done:
-  en: 'I colected 16 block of wood. I should return to the Innkeeper.'
+  en: 'I collected 16 blocks of wood. I should return to the Innkeeper.'
   es: 'He recolectado los 16 bloques de madera. Deberia volver con el Tabernero.'
   pl: 'Zebralem 16 blokow drewna. Powinienem wrocic do Karczmarza.'
   fr: 'J''ai obtenu les 16 blocs de bois, je dois retourner voir l''aubergiste.'
@@ -17,7 +17,7 @@ wood_done:
   nl: 'Ik heb 16 blokken hout verzameld. Ik moet terug naar de herbergier.'
   hu: '16 blokk fa volt. Vissza kell térnem az Innkeeperhez.'
 wood_paid:
-  en: 'I brought wood to the Innkeeper and he gave me 5 emeralds.'
+  en: 'I brought wood to the Innkeeper, and he gave me 5 emeralds in return.'
   es: 'He traido la madera al Tabernero y me ha dado 5 esmeraldas.'
   pl: 'Zanioslem drewno Karczmarzowi, a on dal mi 5 szmaragdow.'
   fr: 'J''ai ramene les blocs de bois et l''aubergiste m''a donne 5 emeraudes.'
