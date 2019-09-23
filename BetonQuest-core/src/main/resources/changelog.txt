@@ -33,6 +33,7 @@ Fixes:
   * Journals without dates now don't leave blank lines
   * Journal separator can be disabled or customized
   * NPCs now spawn correct, if they have a npc_hologram
+  * fixed NPE when no journal entry exists
 
 v1.10-dev
   - Development versions can be full of bugs. If you find any, please report them on GitHub Issues.
