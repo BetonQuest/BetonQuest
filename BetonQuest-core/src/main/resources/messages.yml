@@ -110,7 +110,7 @@ de:
   fish_to_catch: '&2Noch {1} Fische zu fangen.'
   sheep_to_shear: '&2Noch {1} Schafe zu scheren.'
   potions_to_brew: '&2Noch {1} Traenke zu brauen.'
-  animals_to_breed: '&2{1} animals left to breed'
+  animals_to_breed: '&2Noch {1} Tiere zu zuechten.'
   busy: '&cDu kannst dich nicht waehrend eines Kampfes unterhalten.'
   quest_canceled: '&2Quest {1} abgebrochen!'
   cancel: '&cQuest abbrechen'
