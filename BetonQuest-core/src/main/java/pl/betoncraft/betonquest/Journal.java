@@ -204,7 +204,10 @@ public class Journal {
             String pointerName = parts[1];
             // resolve the text in player's language
             String text;
-            if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
+            if(!pack.getJournal().getConfig().contains(pointerName)) {
+                Debug.error("No defined journal entry " + pointerName + " in package " + pack.getName());
+                text = "error";
+            } else if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
                 text = pack.getFormattedString("journal." + pointerName + "." + lang);
                 if (text == null) {
                     text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
