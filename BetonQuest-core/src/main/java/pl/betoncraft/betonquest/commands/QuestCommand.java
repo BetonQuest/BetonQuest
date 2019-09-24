@@ -51,8 +51,8 @@ import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigAccessor;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.PlayerData;
@@ -439,7 +439,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return completePackage(sender, args);
         } else {
             String pack = last.substring(0, last.indexOf("."));
-            ConfigPackage configPack = Config.getPackages().get(pack);
+            ConfigContainer configPack = Config.getPackages().get(pack);
             if (configPack == null)
                 return new ArrayList<>();
             if (type == null) {
@@ -950,7 +950,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // define parts of the final string
-        ConfigPackage configPack = Config.getPackages().get(pack);
+        ConfigContainer configPack = Config.getPackages().get(pack);
         if (configPack == null) {
             LogUtils.getLogger().log(Level.FINE, "Cannot continue, package does not exist");
             sendMessage(sender, "specify_package");
@@ -1426,7 +1426,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return completePackage(sender, args);
             }
             String pack = args[1].substring(0, args[1].indexOf("."));
-            ConfigPackage configPack = Config.getPackages().get(pack);
+            ConfigContainer configPack = Config.getPackages().get(pack);
             if (configPack == null)
                 return new ArrayList<>();
             ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");

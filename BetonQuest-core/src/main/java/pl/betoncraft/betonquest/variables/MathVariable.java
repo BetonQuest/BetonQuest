@@ -20,7 +20,7 @@ package pl.betoncraft.betonquest.variables;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Variable;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -171,7 +171,7 @@ public class MathVariable extends Variable {
             this(new VariableNumber(d));
         }
 
-        public ClaculableVariable(ConfigPackage pack, String variable) throws NumberFormatException {
+        public ClaculableVariable(ConfigContainer pack, String variable) throws NumberFormatException {
             this(new VariableNumber(pack.getName(), variable));
         }
 

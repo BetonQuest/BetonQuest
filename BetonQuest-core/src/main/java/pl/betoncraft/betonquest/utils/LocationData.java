@@ -17,18 +17,19 @@
  */
 package pl.betoncraft.betonquest.utils;
 
+import java.util.Locale;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-
-import java.util.Locale;
-import java.util.logging.Level;
 
 /**
  * This class parses various location strings.

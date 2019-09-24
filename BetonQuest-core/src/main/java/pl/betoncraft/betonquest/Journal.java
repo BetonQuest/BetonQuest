@@ -26,7 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -201,7 +201,7 @@ public class Journal {
             // get package and name of the pointer
             String[] parts = pointer.getPointer().split("\\.");
             String packName = parts[0];
-            ConfigPackage pack = Config.getPackages().get(packName);
+            ConfigContainer pack = Config.getPackages().get(packName);
             if (pack == null) {
                 continue;
             }
@@ -251,7 +251,7 @@ public class Journal {
     private String generateMainPage() {
         HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String packName = pack.getName();
             ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
             if (s == null)
@@ -305,7 +305,7 @@ public class Journal {
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
                     }
-                    text = pack.subst(text);
+                    text = pack.substitution(text);
                     // add the text to HashMap
                     numbers.add(i);
                     ArrayList<String> linesOrder;

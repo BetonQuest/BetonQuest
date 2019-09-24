@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
@@ -42,7 +42,7 @@ public class CompassEvent extends QuestEvent {
     private Action action;
     private String compass;
     private ConfigurationSection compassSection;
-    private ConfigPackage compassPackage;
+    private ConfigContainer compassPackage;
 
     public CompassEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -52,7 +52,7 @@ public class CompassEvent extends QuestEvent {
         compass = instruction.next();
 
         // Check if compass is valid
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
             if (s != null) {
                 if (s.contains(compass)) {

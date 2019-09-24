@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.config;
+package pl.betoncraft.betonquest.config.pack;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,33 +30,56 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.logging.Level;
 
+/**
+ * Manages configs, like create, load and reload
+ */
 public class ConfigAccessor {
-
-    private final String fileName;
+    
+    /**
+     * The plugin instance
+     */
     private final BetonQuest plugin;
+    
+    /**
+     * The {@link AccessorType} of the config
+     */
     private final AccessorType type;
-
-    private File configFile;
+    /**
+     * Name of the file, that represent this config
+     */
+    private final String fileName;
+    
+    /**
+     * The file, that represent this config
+     */
+    private final File configFile;
+    /**
+     * The {@link FileConfiguration} of the config
+     */
     private FileConfiguration fileConfiguration;
 
     /**
-     * Creates a new configuration accessor. If the file is null, it won't
-     * create it unless some data is added and {@link #saveConfig()} is called.
+     * Creates a new configuration accessor. If the file is null, it won't create it
+     * unless some data is added and {@link #saveConfig()} is called.
      *
-     * @param file     the file in which the configuration is stored; if it's null
-     *                 the config will be loaded from resource and it won't be possible to save it
-     * @param fileName the name of the resource in plugin jar for pulling default values;
-     *                 it does not have to match the file, so you can load from "x" and save to "y"
-     * @param type     type of this accessor, useful for determining type of data stored inside
+     * @param configFile the file in which the configuration is stored; if it's null
+     *                   the config will be loaded from resource and it won't be
+     *                   possible to save it
+     * @param fileName   the name of the resource in plugin jar for pulling default
+     *                   values; it does not have to match the file, so you can load
+     *                   from "x" and save to "y"
+     * @param type       type of this accessor, useful for determining type of data
+     *                   stored inside
+     * @throws IllegalStateException if the plugins DataFolder does not exists
      */
-    public ConfigAccessor(File file, String fileName, AccessorType type) {
-        plugin = BetonQuest.getInstance();
-        this.fileName = fileName;
-        File dataFolder = plugin.getDataFolder();
-        if (dataFolder == null)
+    public ConfigAccessor(final File configFile, final String fileName, final AccessorType type) throws IllegalStateException{
+        this.plugin = BetonQuest.getInstance();
+        if (plugin.getDataFolder() == null) {
             throw new IllegalStateException();
-        this.configFile = file;
+        }
         this.type = type;
+        this.fileName = fileName;
+        this.configFile = configFile;
     }
 
     /**
@@ -64,23 +87,22 @@ public class ConfigAccessor {
      * try to load defaults, and if that fails it will create an empty yaml configuration.
      */
     public void reloadConfig() {
-        if (configFile == null) {
-            InputStream str = plugin.getResource(fileName);
-            if (str == null) {
-                fileConfiguration = new YamlConfiguration();
+        try(final InputStream str = plugin.getResource(fileName);) {
+            if (configFile == null) {
+                if (str == null) {
+                    fileConfiguration = new YamlConfiguration();
+                } else {
+                    fileConfiguration = YamlConfiguration.loadConfiguration(new InputStreamReader(str));
+                }
             } else {
-                fileConfiguration = YamlConfiguration
-                        .loadConfiguration(new InputStreamReader(str));
+                fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+                if (str != null) {
+                    final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(str));
+                    fileConfiguration.setDefaults(defConfig);
+                }
             }
-        } else {
-            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-            // Look for defaults in the jar
-            InputStream defConfigStream = plugin.getResource(fileName);
-            if (defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration
-                        .loadConfiguration(new InputStreamReader(defConfigStream));
-                fileConfiguration.setDefaults(defConfig);
-            }
+        } catch (IOException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not reload config " + configFile, e);
         }
     }
 
@@ -122,25 +144,26 @@ public class ConfigAccessor {
      * Saves the default configuration to a file. It won't do anything if the file is null.
      */
     public void saveDefaultConfig() {
-        if (configFile == null)
+        if (configFile == null) {
             return;
+        }
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                InputStream in = plugin.getResource(fileName);
-                if (in == null) {
-                    return;
+                try (final InputStream in = plugin.getResource(fileName);
+                        final OutputStream out = new FileOutputStream(configFile);) {
+                    if (in == null) {
+                        return;
+                    }
+                    final byte[] buffer = new byte[1024];
+                    int len = in.read(buffer);
+                    while (len != -1) {
+                        out.write(buffer, 0, len);
+                        len = in.read(buffer);
+                    }
                 }
-                OutputStream out = new FileOutputStream(configFile);
-                byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
-                }
-                out.close();
             } catch (IOException e) {
-                LogUtils.logThrowableReport(e);
+                LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, e);
             }
         }
     }
@@ -152,6 +175,9 @@ public class ConfigAccessor {
         return type;
     }
 
+    /**
+     * The type of the configuration
+     */
     public enum AccessorType {
         MAIN, EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL, CONVERSATION, CUSTOM, OTHER
     }

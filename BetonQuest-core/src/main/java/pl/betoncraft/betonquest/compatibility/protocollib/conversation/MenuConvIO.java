@@ -45,7 +45,7 @@ import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayCl
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerAnimation;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerMount;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.conversation.ChatConvIO;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
@@ -100,7 +100,7 @@ public class MenuConvIO extends ChatConvIO {
         super(conv, playerID);
 
         // Load Configuration from custom.yml with some sane defaults, loading our current package last
-        for (ConfigPackage pack : Stream.concat(
+        for (ConfigContainer pack : Stream.concat(
                 Config.getPackages().values().stream()
                         .filter(p -> p != conv.getPackage()),
                 Stream.of(conv.getPackage()))

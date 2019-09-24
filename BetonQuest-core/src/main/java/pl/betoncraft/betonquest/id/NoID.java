@@ -17,12 +17,12 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class NoID extends ID {
 
-    public NoID(ConfigPackage pack) throws ObjectNotFoundException {
+    public NoID(ConfigContainer pack) throws ObjectNotFoundException {
         super(pack, "no-id");
     }
 

@@ -31,7 +31,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -83,7 +83,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
 
     private void loadFromConfig() {
 
-        for (ConfigPackage cfgPackage : Config.getPackages().values()) {
+        for (ConfigContainer cfgPackage : Config.getPackages().values()) {
             FileConfiguration custom = cfgPackage.getCustom().getConfig();
             if (custom == null) {
                 continue;

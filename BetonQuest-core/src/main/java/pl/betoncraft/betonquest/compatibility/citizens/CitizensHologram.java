@@ -31,7 +31,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
@@ -74,7 +74,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         // Start this when all plugins loaded
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance().getJavaPlugin(), () -> {
             // loop across all packages
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
 
                 // load all NPC's
                 if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
@@ -361,6 +361,6 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private List<ConditionID> conditions;
         private Vector vector;
         private ConfigurationSection settings;
-        private ConfigPackage pack;
+        private ConfigContainer pack;
     }
 }

@@ -18,7 +18,7 @@
 package pl.betoncraft.betonquest.api;
 
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -36,7 +36,7 @@ abstract public class Variable {
     /**
      * ConfigPackage in which this condition is defined
      */
-    protected ConfigPackage pack;
+    protected ConfigContainer pack;
 
     /**
      * Creates new instance of the variable. The variable should parse the

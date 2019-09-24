@@ -17,12 +17,12 @@
  */
 package pl.betoncraft.betonquest;
 
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.id.ID;
 
 public class VariableInstruction extends Instruction {
 
-    public VariableInstruction(ConfigPackage pack, ID id, String instruction) {
+    public VariableInstruction(ConfigContainer pack, ID id, String instruction) {
         super(pack, id, instruction);
         if (!instruction.startsWith("%") && !instruction.endsWith("%")) {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");

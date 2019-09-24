@@ -17,14 +17,14 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ConditionID extends ID {
 
     private boolean inverted;
 
-    public ConditionID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ConditionID(ConfigContainer pack, String id) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(id));
         this.inverted = id.startsWith("!");
         rawInstruction = super.pack.getString("conditions." + super.id);

@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.QuestCanceler;
+import pl.betoncraft.betonquest.config.pack.QuestCanceler;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;

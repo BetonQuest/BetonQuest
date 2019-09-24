@@ -30,7 +30,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -214,7 +216,7 @@ public class ConfigUpdater {
             LogUtils.getLogger().log(Level.INFO, "Renamed default ConversationIO to 'combined'");
             config.set("default_conversation_IO", "combined");
         }
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             for (String convName : pack.getConversationNames()) {
                 String convIO = pack.getRawString("conversations." + convName + ".conversationIO");
                 if (convIO == null) continue;
@@ -289,7 +291,7 @@ public class ConfigUpdater {
         LogUtils.getLogger().log(Level.FINE, "Moving custom settings from main.yml to custom.yml");
         List<String> coreSettings = Arrays.asList("npcs", "variables", "static", "global_locations",
                 "cancel", "journal_main_page", "compass", "enabled");
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             LogUtils.getLogger().log(Level.FINE, "  Moving custom settings in package " + pack.getName());
             ConfigAccessor main = pack.getMain();
             ConfigAccessor custom = pack.getCustom();
@@ -317,8 +319,8 @@ public class ConfigUpdater {
     private void update_from_v49() {
         Set<String> enabledPackages = new HashSet<>(config.getStringList("packages"));
         LogUtils.getLogger().log(Level.FINE, "Disabling packages not listed in the config");
-        for (Iterator<ConfigPackage> iterator = Config.getPackages().values().iterator(); iterator.hasNext(); ) {
-            ConfigPackage pack = iterator.next();
+        for (Iterator<ConfigContainer> iterator = Config.getPackages().values().iterator(); iterator.hasNext(); ) {
+            ConfigContainer pack = iterator.next();
             LogUtils.getLogger().log(Level.FINE, "  Looking at package " + pack.getName());
             if (!enabledPackages.contains(pack.getName())) {
                 LogUtils.getLogger().log(Level.FINE, "    Package is not enabled, removing it from the list.");
@@ -339,7 +341,7 @@ public class ConfigUpdater {
 
     @SuppressWarnings("unused")
     private void update_from_v48() {
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String packName = pack.getName();
             List<ConfigAccessor> sections = new ArrayList<>();
             // the idea is to get index of location argument for every type
@@ -472,7 +474,7 @@ public class ConfigUpdater {
     private void update_from_v44() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Translating items in 'potion' objectives");
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "  Handling " + packName + " package");
                 FileConfiguration objectives = pack.getObjectives().getConfig();
@@ -547,7 +549,7 @@ public class ConfigUpdater {
         try {
             LogUtils.getLogger().log(Level.FINE, "Translating potion instructions");
 
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "  Handling " + packName + " package");
                 FileConfiguration items = pack.getItems().getConfig();
@@ -602,7 +604,7 @@ public class ConfigUpdater {
     private void update_from_v41() {
         try {
             // change raw material names in craft objectives to items from items.yml
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 ConfigAccessor objectives = pack.getObjectives();
                 ConfigAccessor items = pack.getItems();
@@ -714,7 +716,7 @@ public class ConfigUpdater {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating global location tags in the database");
             LogUtils.getLogger().log(Level.FINE, "    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 String locList = pack.getMain().getConfig().getString("global_locations");
                 LogUtils.getLogger().log(Level.FINE, "  Handling package '" + packName + "': " + locList);
@@ -798,7 +800,7 @@ public class ConfigUpdater {
     private void update_from_v30() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Converting cancelers to a new format");
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "Searching " + packName + " package");
                 ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
@@ -873,7 +875,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v29() {
         try {
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("variables");
                 for (String key : section.getKeys(true)) {
@@ -916,8 +918,8 @@ public class ConfigUpdater {
             ArrayList<String> globalPointList = new ArrayList<>();
             tags.put(globalName, globalTagList);
             points.put(globalName, globalPointList);
-            ArrayList<ConfigPackage> packages = new ArrayList<>();
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            ArrayList<ConfigContainer> packages = new ArrayList<>();
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "  Checking '" + packName + "' package");
                 // skip packages that already use prefixes
@@ -1108,7 +1110,7 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.FINE, "List of global points is filled, now adding \"global\" prefix in configuration files");
             // done, global lists are filled
-            for (ConfigPackage pack : packages) {
+            for (ConfigContainer pack : packages) {
                 LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
                 // update tags/points in events
                 for (String key : pack.getEvents().getConfig().getKeys(false)) {
@@ -1296,7 +1298,7 @@ public class ConfigUpdater {
                 }
             }
             // remove "tag_point_prefix" option from main.yml files
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 ConfigAccessor main = pack.getMain();
                 main.getConfig().set("tag_point_prefix", null);
@@ -1332,7 +1334,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v26() {
         try {
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 for (String convName : pack.getConversationNames()) {
                     FileConfiguration conv = pack.getConversation(convName).getConfig();
@@ -1385,7 +1387,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v25() {
         try {
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 FileConfiguration events = pack.getEvents().getConfig();
                 for (String key : events.getKeys(false)) {
@@ -1638,7 +1640,7 @@ public class ConfigUpdater {
             messages.set("global", null);
             LogUtils.getLogger().log(Level.INFO, "Moved 'global' messages to main config.");
             Config.getMessages().saveConfig();
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "Processing " + packName + " package");
                 ConfigurationSection cancelers = pack.getMain().getConfig().getConfigurationSection("cancel");
@@ -1723,7 +1725,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v17() {
         try {
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 ConfigAccessor main = pack.getMain();
                 main.getConfig().set("tag_point_prefix", "false");
@@ -1743,7 +1745,7 @@ public class ConfigUpdater {
         try {
             // move objectives from events.yml to objectives.yml
             LogUtils.getLogger().log(Level.FINE, "Moving objectives to objectives.yml");
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "  Package " + packName);
                 ConfigAccessor events = pack.getEvents();
@@ -1863,7 +1865,7 @@ public class ConfigUpdater {
                     continue;
                 }
                 // attack correct package in front of the label
-                for (ConfigPackage pack : Config.getPackages().values()) {
+                for (ConfigContainer pack : Config.getPackages().values()) {
                     String packName = pack.getName();
                     if (pack.getObjectives().getConfig().contains(label)) {
                         label = packName + "." + label;
@@ -1956,7 +1958,7 @@ public class ConfigUpdater {
     private void update_from_v13() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Removing empty lines in conversation files");
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "  Package " + packName);
                 for (String convName : pack.getConversationNames()) {
@@ -1985,7 +1987,7 @@ public class ConfigUpdater {
         try {
             LogUtils.getLogger().log(Level.FINE, "Moving all configuration to \"default\" package");
             // clear the default package, which contains only default quest
-            File defPkg = Config.getPackages().get("default").getFolder();
+            File defPkg = Config.getPackages().get("default").getPack();
             LogUtils.getLogger().log(Level.FINE, "  Deleting default files");
             for (File file : defPkg.listFiles()) {
                 file.delete();
@@ -3386,95 +3388,6 @@ public class ConfigUpdater {
                     conversationsMap.put(file.getName().substring(0, file.getName().indexOf(".")),
                             new ConfigAccessor(file, file.getName(), AccessorType.CONVERSATION));
                 }
-            }
-        }
-
-        /**
-         * Retireves from configuration the string at supplied path. The path
-         * should follow this syntax:
-         * "filename.branch.(moreBranches).branch.variable". For example getting
-         * color for day in journal date would be
-         * "config.journal_colors.date.day". Everything should be handled as a
-         * string for simplicity's sake.
-         *
-         * @param rawPath path for the variable
-         * @return the String object representing requested variable
-         */
-        @SuppressWarnings("unused")
-        public String getString(String rawPath) {
-
-            // get parts of path
-            String[] parts = rawPath.split("\\.");
-            String first = parts[0];
-            String path = rawPath.substring(first.length() + 1);
-            String object;
-            // for every possible file try to access the path and return String
-            // object
-            switch (first) {
-                case "config":
-                    object = BetonQuest.getInstance().getConfig().getString(path);
-                    if (object == null) {
-                        // if object is null then there is no such variable at
-                        // specified path
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "conversations":
-                    object = null;
-                    // conversations should be handled with one more level, as they
-                    // are in
-                    // multiple files
-                    String conversationID = path.split("\\.")[0];
-                    String rest = path.substring(path.indexOf(".") + 1);
-                    if (conversationsMap.get(conversationID) != null) {
-                        object = conversationsMap.get(conversationID).getConfig().getString(rest);
-                    }
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "objectives":
-                    object = objectives.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "conditions":
-                    object = conditions.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "events":
-                    object = events.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "messages":
-                    object = messages.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "npcs":
-                    object = npcs.getConfig().getString(path);
-                    return object;
-                case "journal":
-                    object = journal.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                case "items":
-                    object = items.getConfig().getString(path);
-                    if (object == null) {
-                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
-                    }
-                    return object;
-                default:
-                    LogUtils.getLogger().log(Level.FINE, "Fatal error while accessing path: " + rawPath + " (there is no such file)");
-                    return null;
             }
         }
 

@@ -34,8 +34,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
+import pl.betoncraft.betonquest.config.pack.QuestCanceler;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.notify.Notify;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -55,7 +58,7 @@ public class Config
 	private static Config							instance;
 	private static ConfigAccessor					messages;
 	private static ConfigAccessor					internal;
-	private static HashMap<String, ConfigPackage>	packages		= new HashMap<>();
+	private static HashMap<String, ConfigContainer>	packages		= new HashMap<>();
 	private static HashMap<String, QuestCanceler>	cancelers		= new HashMap<>();
 	private static String							lang;
 	private static ArrayList<String>				languages		= new ArrayList<>();
@@ -117,7 +120,7 @@ public class Config
 		}
 
 		// load quest cancelers
-		for(ConfigPackage pack : packages.values())
+		for(ConfigContainer pack : packages.values())
 		{
 			ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
 			if(s == null)
@@ -292,7 +295,7 @@ public class Config
 	/**
 	 * @return the map of packages and their names
 	 */
-	public static Map<String, ConfigPackage> getPackages()
+	public static Map<String, ConfigContainer> getPackages()
 	{
 		return packages;
 	}
@@ -324,7 +327,7 @@ public class Config
 		}
 		else
 		{
-			ConfigPackage pack = packages.get(main);
+			ConfigContainer pack = packages.get(main);
 			if(pack == null)
 				return null;
 			return pack.getRawString(address.substring(main.length() + 1));
@@ -362,7 +365,7 @@ public class Config
 		}
 		else
 		{
-			ConfigPackage pack = packages.get(main);
+			ConfigContainer pack = packages.get(main);
 			if(pack == null)
 				return false;
 			return pack.setString(address.substring(main.length() + 1), value);
@@ -400,7 +403,7 @@ public class Config
 		// load npc assignments from all packages
 		for(String packName : packages.keySet())
 		{
-			ConfigPackage pack = packages.get(packName);
+			ConfigContainer pack = packages.get(packName);
 			ConfigurationSection assignemnts = pack.getMain().getConfig().getConfigurationSection("npcs");
 			for(String assignment : assignemnts.getKeys(false))
 			{
@@ -634,7 +637,7 @@ public class Config
 	/**
 	 * @return the default package, as specified in the config
 	 */
-	public static ConfigPackage getDefaultPackage()
+	public static ConfigContainer getDefaultPackage()
 	{
 		return getPackages().get(defaultPackage);
 	}
@@ -650,7 +653,7 @@ public class Config
 				{
 					// this is a package, add it and stop searching
 					String packPath = BetonQuest.getInstance().getDataFolder().toURI().relativize(file.toURI()).toString().replace('/', ' ').trim().replace(' ', '-');
-					ConfigPackage pack = new ConfigPackage(file, packPath);
+					ConfigContainer pack = new ConfigContainer(file, packPath);
 					if(pack.isEnabled())
 					{
 						packages.put(packPath, pack);

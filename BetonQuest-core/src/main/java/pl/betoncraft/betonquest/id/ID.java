@@ -19,7 +19,7 @@ package pl.betoncraft.betonquest.id;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public abstract class ID {
@@ -27,11 +27,11 @@ public abstract class ID {
     public static final String upStr = "_"; // string used as "up the hierarchy" package
 
     protected String id;
-    protected ConfigPackage pack;
+    protected ConfigContainer pack;
     protected Instruction instruction;
     protected String rawInstruction;
 
-    public ID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ID(ConfigContainer pack, String id) throws ObjectNotFoundException {
 
         // id must be specified
         if (id == null || id.length() == 0) {
@@ -96,7 +96,7 @@ public abstract class ID {
         }
     }
 
-    public ConfigPackage getPackage() {
+    public ConfigContainer getPackage() {
         return pack;
     }
 

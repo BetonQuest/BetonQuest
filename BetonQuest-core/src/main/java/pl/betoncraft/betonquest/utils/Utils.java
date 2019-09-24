@@ -27,10 +27,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigAccessor;
-import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
-import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.Zipper;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
+import pl.betoncraft.betonquest.config.pack.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
@@ -385,7 +385,7 @@ public class Utils {
      * @param string ID of event/condition/objective/item etc.
      * @return full ID with package prefix
      */
-    public static String addPackage(ConfigPackage pack, String string) {
+    public static String addPackage(ConfigContainer pack, String string) {
         if (string.contains(".")) {
             return string;
         } else {

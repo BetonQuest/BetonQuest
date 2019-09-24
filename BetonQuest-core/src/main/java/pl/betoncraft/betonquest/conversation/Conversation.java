@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.api.ConversationOptionEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
@@ -61,7 +61,7 @@ public class Conversation implements Listener {
 
     private final String playerID;
     private final Player player;
-    private final ConfigPackage pack;
+    private final ConfigContainer pack;
     private final String language;
     private final Location location;
     private final String convID;
@@ -459,7 +459,7 @@ public class Conversation implements Listener {
     /**
      * @return the package containing this conversation
      */
-    public ConfigPackage getPackage() {
+    public ConfigContainer getPackage() {
         return pack;
     }
 

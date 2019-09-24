@@ -79,8 +79,8 @@ import pl.betoncraft.betonquest.conditions.VehicleCondition;
 import pl.betoncraft.betonquest.conditions.WeatherCondition;
 import pl.betoncraft.betonquest.conditions.WorldCondition;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.ConfigUpdater;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.conversation.CombatTagger;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.ConversationColors;
@@ -412,7 +412,7 @@ public class BetonQuest extends VersionPlugin {
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    public static Variable createVariable(ConfigPackage pack, String instruction) throws InstructionParseException {
+    public static Variable createVariable(ConfigContainer pack, String instruction) throws InstructionParseException {
         VariableID ID;
         try {
             ID = new VariableID(pack, instruction);
@@ -770,7 +770,7 @@ public class BetonQuest extends VersionPlugin {
         objectives.clear();
         variables.clear();
         // load new data
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String packName = pack.getName();
             LogUtils.getLogger().log(Level.FINE, "Loading stuff in package " + packName);
             FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();

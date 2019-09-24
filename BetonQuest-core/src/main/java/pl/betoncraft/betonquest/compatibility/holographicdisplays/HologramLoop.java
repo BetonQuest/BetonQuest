@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
@@ -59,7 +59,7 @@ public class HologramLoop {
      */
     public HologramLoop() {
         // get all holograms and their condition
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String packName = pack.getName();
             ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("holograms");
             if (section == null)

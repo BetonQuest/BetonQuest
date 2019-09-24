@@ -20,7 +20,7 @@ package pl.betoncraft.betonquest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -60,7 +60,7 @@ public class StaticEvents {
         if (deleted) {
             LogUtils.getLogger().log(Level.FINE, "Previous timers has been canceled");
         }
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String packName = pack.getName();
             LogUtils.getLogger().log(Level.FINE, "Searching package " + packName);
             // get those hours and events

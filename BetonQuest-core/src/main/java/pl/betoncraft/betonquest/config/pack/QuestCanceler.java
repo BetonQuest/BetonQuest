@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.config;
+package pl.betoncraft.betonquest.config.pack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
@@ -72,7 +73,7 @@ public class QuestCanceler {
             throw new InstructionParseException("ID is incorrect");
         packName = parts[0];
         cancelerName = parts[1];
-        ConfigPackage pack = Config.getPackages().get(packName);
+        ConfigContainer pack = Config.getPackages().get(packName);
         if (pack == null)
             throw new InstructionParseException("Package does not exist");
         String rawEvents = pack.getString("main.cancel." + cancelerName + ".events"),

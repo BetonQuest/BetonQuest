@@ -24,7 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
@@ -47,13 +48,13 @@ public class Instruction {
 
     protected String instruction;
     protected String[] parts;
-    private ConfigPackage pack;
+    private ConfigContainer pack;
     private ID id;
     private int next = 1;
     private int current = 1;
     private String lastOptional = null;
 
-    public Instruction(ConfigPackage pack, ID id, String instruction) {
+    public Instruction(ConfigContainer pack, ID id, String instruction) {
         this.pack = pack;
         try {
             this.id = id == null ? new NoID(pack) : id;
@@ -78,7 +79,7 @@ public class Instruction {
         return parts.length;
     }
 
-    public ConfigPackage getPackage() {
+    public ConfigContainer getPackage() {
         return pack;
     }
 

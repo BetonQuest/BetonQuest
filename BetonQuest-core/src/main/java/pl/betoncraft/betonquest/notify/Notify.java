@@ -22,7 +22,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -69,7 +69,7 @@ public class Notify {
         // Load from all packages
         ConfigurationSection selectedConfig = null;
         for (String packName : Config.getPackages().keySet()) {
-            ConfigPackage pack = Config.getPackages().get(packName);
+            ConfigContainer pack = Config.getPackages().get(packName);
 
             if (pack.getCustom().getConfig().contains("notifications")) {
                 ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("notifications");

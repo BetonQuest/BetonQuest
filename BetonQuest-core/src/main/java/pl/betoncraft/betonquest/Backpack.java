@@ -33,8 +33,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.config.QuestCanceler;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
+import pl.betoncraft.betonquest.config.pack.QuestCanceler;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
@@ -446,7 +446,7 @@ public class Backpack implements Listener {
         public Compass() {
             Integer counter = 0;
             // for every package
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (ConfigContainer pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 // loop all compass locations
                 ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");

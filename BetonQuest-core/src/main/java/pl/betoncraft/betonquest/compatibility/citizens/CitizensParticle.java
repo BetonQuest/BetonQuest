@@ -29,7 +29,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -64,7 +64,7 @@ public class CitizensParticle extends BukkitRunnable {
     public CitizensParticle() {
         instance = this;
         // loop across all packages
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
 
             // load all NPC ids
             if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {

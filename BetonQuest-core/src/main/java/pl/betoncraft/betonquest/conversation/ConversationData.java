@@ -22,7 +22,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
@@ -46,7 +46,7 @@ public class ConversationData {
 
     private static ArrayList<String> externalPointers = new ArrayList<>();
 
-    private ConfigPackage pack;
+    private ConfigContainer pack;
     private String convName;
 
     private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
@@ -67,7 +67,7 @@ public class ConversationData {
      * @param name the name of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
-    public ConversationData(ConfigPackage pack, String name) throws InstructionParseException {
+    public ConversationData(ConfigContainer pack, String name) throws InstructionParseException {
         this.pack = pack;
         String pkg = pack.getName();
         LogUtils.getLogger().log(Level.FINE, String.format("Loading %s conversation from %s package", name, pkg));
@@ -418,7 +418,7 @@ public class ConversationData {
                 convName = getName();
                 optionName = option;
             }
-            ConfigPackage pack = Config.getPackages().get(getPackName());
+            ConfigContainer pack = Config.getPackages().get(getPackName());
             ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
             for (ConditionID condition : currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC)) {
                 if (!BetonQuest.condition(playerID, condition)) {
@@ -464,7 +464,7 @@ public class ConversationData {
                 if (conv.isConfigurationSection("prefix")) {
                     //noinspection ConstantConditions
                     for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                        String pref = pack.substitution(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -474,7 +474,7 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    String pref = pack.subst(conv.getString("prefix"));
+                    String pref = pack.substitution(conv.getString("prefix"));
                     if (pref != null && !pref.equals("")) {
                         inlinePrefix.put(defaultLang, pref);
                     }
@@ -521,7 +521,7 @@ public class ConversationData {
 
             // Conditions
             try {
-                for (String rawCondition : pack.subst(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                for (String rawCondition : pack.substitution(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
                     if (!Objects.equals(rawCondition, "")) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
@@ -533,7 +533,7 @@ public class ConversationData {
 
             // Events
             try {
-                for (String rawEvent : pack.subst(conv.getString("events", conv.getString("event", ""))).split(",")) {
+                for (String rawEvent : pack.substitution(conv.getString("events", conv.getString("event", ""))).split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
@@ -544,13 +544,13 @@ public class ConversationData {
             }
 
             // Pointers
-            pointers = Arrays.stream(pack.subst(conv.getString("pointers", conv.getString("pointer", ""))).split(","))
+            pointers = Arrays.stream(pack.substitution(conv.getString("pointers", conv.getString("pointer", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim)
                     .collect(Collectors.toList());
 
 
-            extendLinks = Arrays.stream(pack.subst(conv.getString("extends", conv.getString("extend", ""))).split(","))
+            extendLinks = Arrays.stream(pack.substitution(conv.getString("extends", conv.getString("extend", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim)
                     .collect(Collectors.toList());

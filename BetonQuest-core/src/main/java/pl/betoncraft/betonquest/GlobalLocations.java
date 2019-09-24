@@ -22,7 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
@@ -62,7 +62,7 @@ public class GlobalLocations extends BukkitRunnable {
         }
         instance = this;
         // get list of global locations and make it final
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (ConfigContainer pack : Config.getPackages().values()) {
             String rawGlobalLocations = pack.getString("main.global_locations");
             if (rawGlobalLocations == null || rawGlobalLocations.equals("")) {
                 continue;

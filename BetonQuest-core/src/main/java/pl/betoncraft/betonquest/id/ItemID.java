@@ -17,12 +17,12 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.config.pack.ConfigContainer;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ItemID extends ID {
 
-    public ItemID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ItemID(ConfigContainer pack, String id) throws ObjectNotFoundException {
         super(pack, id);
         rawInstruction = super.pack.getString("items." + super.id);
         if (rawInstruction == null) {
