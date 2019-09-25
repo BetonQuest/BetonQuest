@@ -71,13 +71,15 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
             for (ConfigPackage pack : Config.getPackages().values()) {
 
                 // load all NPC's
-                for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
-                    try {
-                        NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
-                        if (npc != null) {
-                            npcs.put(npc, new ArrayList<>());
+                if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
+                    for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
+                        try {
+                            NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
+                            if (npc != null) {
+                                npcs.put(npc, new ArrayList<>());
+                            }
+                        } catch (NumberFormatException ignored) {
                         }
-                    } catch (NumberFormatException ignored) {
                     }
                 }
 

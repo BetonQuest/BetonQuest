@@ -66,10 +66,12 @@ public class CitizensParticle extends BukkitRunnable {
         for (ConfigPackage pack : Config.getPackages().values()) {
 
             // load all NPC ids
-            for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
-                try {
-                    npcs.add(Integer.parseInt(npcID));
-                } catch (NumberFormatException e) {
+            if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
+                for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
+                    try {
+                        npcs.add(Integer.parseInt(npcID));
+                    } catch (NumberFormatException e) {
+                    }
                 }
             }
 
