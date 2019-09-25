@@ -56,7 +56,7 @@ public class CitizensParticle extends BukkitRunnable {
     private Set<Integer> npcs = new HashSet<>();
     private Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private List<Effect> effects = new ArrayList<>();
-    private int interval;
+    private int interval = 100;
     private int tick = 0;
     private boolean enabled = false;
 
@@ -148,6 +148,7 @@ public class CitizensParticle extends BukkitRunnable {
 
             }
         }
+
         runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 1, 1);
         enabled = true;
     }
