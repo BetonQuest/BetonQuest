@@ -114,7 +114,7 @@ public class TitleEvent extends QuestEvent {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
     }
 
-    protected enum TitleType {
+    public enum TitleType {
         TITLE, SUBTITLE
     }
 
