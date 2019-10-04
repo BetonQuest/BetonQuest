@@ -336,10 +336,12 @@ public class Config {
         // load npc assignments from all packages
         for (String packName : packages.keySet()) {
             ConfigPackage pack = packages.get(packName);
-            ConfigurationSection assignemnts = pack.getMain().getConfig().getConfigurationSection("npcs");
-            for (String assignment : assignemnts.getKeys(false)) {
-                if (assignment.equalsIgnoreCase(value)) {
-                    return packName + "." + assignemnts.getString(assignment);
+            ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
+            if (assignments != null) {
+                for (String assignment : assignments.getKeys(false)) {
+                    if (assignment.equalsIgnoreCase(value)) {
+                        return packName + "." + assignments.getString(assignment);
+                    }
                 }
             }
         }
