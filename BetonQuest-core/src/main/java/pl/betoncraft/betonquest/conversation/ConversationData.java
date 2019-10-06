@@ -100,7 +100,7 @@ public class ConversationData {
         String stop = pack.getString("conversations." + name + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
         String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
-        String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "packet,simple"));
+        String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
 
         // check if all data is valid (or at least exist)
         for (String s : rawConvIO.split(",")) {

@@ -69,7 +69,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event) {
         Debug.error(event.getMessage());
         // store all messages so they can be displayed to the player
