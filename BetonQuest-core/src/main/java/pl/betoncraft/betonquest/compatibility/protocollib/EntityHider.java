@@ -39,7 +39,9 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ANIMATION;
 import static com.comphenix.protocol.PacketType.Play.Server.ATTACH_ENTITY;
@@ -184,7 +186,8 @@ public class EntityHider implements Listener {
     protected void removeEntity(Entity entity, boolean destroyed) {
         int entityID = entity.getEntityId();
 
-        Iterator<Map.Entry<Integer, Map<Integer, Boolean>>> iterator = observerEntityMap.rowMap().entrySet().iterator();
+        List<Map.Entry<Integer, Map<Integer, Boolean>>> list = new CopyOnWriteArrayList<>(observerEntityMap.rowMap().entrySet());
+        Iterator<Map.Entry<Integer, Map<Integer, Boolean>>> iterator = list.iterator();
 
         while (iterator.hasNext()) {
             iterator.next().getValue().remove(entityID);
