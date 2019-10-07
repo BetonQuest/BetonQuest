@@ -80,6 +80,16 @@ public class BreedObjective extends Objective implements Listener {
         return Integer.toString(amount);
     }
 
+    @Override
+    public String getProperty(String name, String playerID) {
+        if (name.equalsIgnoreCase("left")) {
+            return Integer.toString(amount - ((BreedData) dataMap.get(playerID)).getAmount());
+        } else if (name.equalsIgnoreCase("amount")) {
+            return Integer.toString(((BreedData) dataMap.get(playerID)).getAmount());
+        }
+        return "";
+    }
+
     public static class BreedData extends ObjectiveData {
 
         private int amount;
