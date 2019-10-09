@@ -8,7 +8,7 @@ This event simply displays a message to the player. The instruction string is th
 
 ## Command: `command` _persistent_, _static_
 
-Runs specified command from the console. The instruction string is the command, without leading slash. You can use variables here, but variables other than `%player%` won't resolve if the event is fired from delayed `folder` and the player is offline now. You can define additional commands by separating them with `|` character.
+Runs specified command from the console. The instruction string is the command, without leading slash. You can use variables here, but variables other than `%player%` won't resolve if the event is fired from delayed `folder` and the player is offline now. You can define additional commands by separating them with `|` character. If you want a `|` character then use `\|`.
 
 **Example**: `command kill %player%|ban %player%`
 

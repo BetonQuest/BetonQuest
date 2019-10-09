@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,7 +43,10 @@ public class CommandEvent extends QuestEvent {
         persistent = true;
         try {
             String string = instruction.getInstruction();
-            String[] rawCommands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
+            // Split commands by | but allow one to use \| to represent a pipe character
+            String[] rawCommands = Arrays.stream(string.trim().substring(string.indexOf(" ") + 1).split("(?<!\\\\)\\|"))
+                    .map(s -> s.replace("\\|", "|"))
+                    .toArray(String[]::new);
             commands = new Command[rawCommands.length];
             for (int i = 0; i < rawCommands.length; i++) {
                 commands[i] = new Command(rawCommands[i]);
