@@ -18,6 +18,7 @@
 package pl.betoncraft.betonquest.database;
 
 import org.bukkit.plugin.Plugin;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class SQLite extends Database {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "Unable to create database!");
+                LogUtils.getLogger().log(Level.SEVERE, "Unable to create database!");
             }
         }
         Connection connection = null;

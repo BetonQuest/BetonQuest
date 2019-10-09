@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -112,7 +113,7 @@ public class ConfigAccessor {
                 getConfig().save(configFile);
             }
         } catch (IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+            LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
         }
     }
 

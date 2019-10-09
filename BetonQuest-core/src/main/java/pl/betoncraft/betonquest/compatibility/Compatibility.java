@@ -50,11 +50,13 @@ import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Compatibility with other plugins
@@ -118,7 +120,7 @@ public class Compatibility implements Listener {
                         string.append(plugin + ", ");
                     }
                     String plugins = string.substring(0, string.length() - 2);
-                    plugin.getLogger().info("Hooked into " + plugins + "!");
+                    LogUtils.getLogger().log(Level.INFO, "Hooked into " + plugins + "!");
                 }
             }
         }.runTask(BetonQuest.getInstance().getJavaPlugin());
