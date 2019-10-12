@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.QuestRuntimeException;
@@ -43,6 +46,11 @@ public class TeleportEvent extends QuestEvent {
         Conversation conv = Conversation.getConversation(playerID);
         if (conv != null)
             conv.endConversation();
-        PlayerConverter.getPlayer(playerID).teleport(loc.getLocation(playerID));
+
+        Location playerLocation = loc.getLocation(playerID);
+
+        // Execute in main thread
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance().getJavaPlugin(),
+                () -> PlayerConverter.getPlayer(playerID).teleport(playerLocation));
     }
 }
