@@ -25,10 +25,11 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * Starts an objective for the player
@@ -72,7 +73,7 @@ public class ObjectiveEvent extends QuestEvent {
                             break;
                         case "complete":
                         case "finish":
-                            Debug.error("Cannot complete objective for offline player!");
+                            LogUtils.getLogger().log(Level.WARNING, "Cannot complete objective for offline player!");
                             break;
                     }
                 }

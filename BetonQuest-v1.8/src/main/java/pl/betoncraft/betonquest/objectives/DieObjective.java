@@ -65,7 +65,6 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGH)
     public void onLastDamage(EntityDamageEvent event) {
         if (event.isCancelled() || !cancel) {

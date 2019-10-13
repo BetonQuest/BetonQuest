@@ -22,10 +22,11 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Fires a BetonQuest event as a quest reward.
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 public class EventReward extends CustomReward {
 
+    @SuppressWarnings("deprecation")
     public EventReward() {
         setName("BetonQuest event");
         setAuthor("Co0sh");
@@ -50,7 +52,7 @@ public class EventReward extends CustomReward {
             EventID event = new EventID(null, string);
             BetonQuest.event(playerID, event);
         } catch (ObjectNotFoundException e) {
-            Debug.error("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage());
         }
     }
 

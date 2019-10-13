@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.objectives;
 
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,13 +28,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -80,7 +83,7 @@ public class StepObjective extends Objective implements Listener {
             if (checkConditions(playerID))
                 completeObjective(playerID);
         } catch (QuestRuntimeException e) {
-            Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
         }
     }
 
@@ -106,7 +109,7 @@ public class StepObjective extends Objective implements Listener {
             try {
                 block = loc.getLocation(playerID).getBlock();
             } catch (QuestRuntimeException e) {
-                Debug.error("Error while getting location property in '" + instruction.getID() + "' objective: "
+                LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage());
                 return "";
             }

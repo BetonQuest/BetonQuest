@@ -49,7 +49,6 @@ import pl.betoncraft.betonquest.compatibility.vault.VaultIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -168,23 +167,23 @@ public class Compatibility implements Listener {
 
         // hook into the plugin if it's enabled in the config
         if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase()))) {
-            Debug.broadcast("Hooking into " + name);
+            LogUtils.getLogger().log(Level.INFO, "Hooking into " + name);
 
             // log important information in case of an error
             try {
                 integrator.hook();
                 hooked.add(name);
             } catch (UnsupportedVersionException e) {
-                Debug.error("Could not hook into " + name + ":");
-                Debug.error(e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ":");
+                LogUtils.getLogger().log(Level.WARNING, e.getMessage());
             } catch (Exception e) {
-                Debug.error(String.format("There was an error while hooking into %s %s"
+                LogUtils.getLogger().log(Level.WARNING, String.format("There was an error while hooking into %s %s"
                                 + " (BetonQuest %s, Spigot %s). Please post it on GitHub <"
                                 + "https://github.com/Co0sh/BetonQuest/issues>",
                         name, hook.getDescription().getVersion(),
                         plugin.getDescription().getVersion(), Bukkit.getVersion()));
                 e.printStackTrace();
-                Debug.error("BetonQuest will work correctly save for that single integration. "
+                LogUtils.getLogger().log(Level.WARNING, "BetonQuest will work correctly save for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase()
                         + "' to false in config.yml file.");
             }

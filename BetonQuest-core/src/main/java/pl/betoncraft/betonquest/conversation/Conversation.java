@@ -41,13 +41,14 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 /**
  * Represents a conversation between player and NPC
@@ -116,13 +117,13 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            Debug.error("Conversation doesn't exist: " + conversationID);
+            LogUtils.getLogger().log(Level.WARNING, "Conversation doesn't exist: " + conversationID);
             return;
         }
 
         // if the player has active conversation, terminate this one
         if (list.containsKey(playerID)) {
-            Debug.info("Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
+            LogUtils.getLogger().log(Level.FINE, "Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
             return;
         }
 
@@ -392,7 +393,7 @@ public class Conversation implements Listener {
      */
     public void suspend() {
         if (inOut == null) {
-            Debug.error("Conversation IO is not loaded, conversation will end for player "
+            LogUtils.getLogger().log(Level.WARNING, "Conversation IO is not loaded, conversation will end for player "
                     + PlayerConverter.getName(playerID));
             list.remove(playerID);
             HandlerList.unregisterAll(this);
@@ -502,7 +503,7 @@ public class Conversation implements Listener {
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 e.printStackTrace();
-                Debug.error("Error when loading conversation IO");
+                LogUtils.getLogger().log(Level.WARNING, "Error when loading conversation IO");
                 return;
             }
 

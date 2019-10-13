@@ -39,7 +39,7 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.io.File;
@@ -61,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Updates configuration files to the newest version.
@@ -99,7 +100,7 @@ public class ConfigUpdater {
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
-        Debug.info("Initializing updater with version " + version + ", destination is " + destination);
+        LogUtils.getLogger().log(Level.FINE, "Initializing updater with version " + version + ", destination is " + destination);
         // when the config is up to date then check for pending names
         // conversion;
         // conversion will occur only if UUID is manually set to true
@@ -116,12 +117,12 @@ public class ConfigUpdater {
                 if (file.getName().matches("^backup-.*\\.zip$")) {
                     file.renameTo(new File(file.getParentFile().getAbsolutePath() + File.separator + "backups"
                             + File.separator + file.getName()));
-                    Debug.broadcast("File " + file.getName() + " moved to backup folder!");
+                    LogUtils.getLogger().log(Level.INFO, "File " + file.getName() + " moved to backup folder!");
                 }
             }
         }
         if (version != null && version.equals(destination)) {
-            Debug.broadcast("Configuration up to date!");
+            LogUtils.getLogger().log(Level.INFO, "Configuration up to date!");
             return;
         } else {
             Utils.backup();
@@ -153,7 +154,7 @@ public class ConfigUpdater {
         } else if (version.matches("^v\\d+$")) {
             performUpdate();
         } else {
-            Debug.broadcast("Something is not right with configuration version. Consider fixing this.");
+            LogUtils.getLogger().log(Level.INFO, "Something is not right with configuration version. Consider fixing this.");
         }
     }
 
@@ -163,13 +164,13 @@ public class ConfigUpdater {
     private void performUpdate() {
         // this is new, post-1.5.3 updating system, where config versions
         // are numbered separately from plugin's releases
-        Debug.broadcast("Updating configuration to version " + destination);
+        LogUtils.getLogger().log(Level.INFO, "Updating configuration to version " + destination);
         update();
         updateLanguages();
         instance.saveConfig();
         // reload configuration file to apply all possible changes
         new Config(false);
-        Debug.broadcast("Updating done!");
+        LogUtils.getLogger().log(Level.INFO, "Updating done!");
         addChangelog();
     }
 
@@ -190,12 +191,12 @@ public class ConfigUpdater {
             // call the right updating method
             Method method = this.getClass().getDeclaredMethod("update_from_" + version);
             method.setAccessible(true);
-            Debug.info("Starting update from " + version + "!");
+            LogUtils.getLogger().log(Level.FINE, "Starting update from " + version + "!");
             method.invoke(this);
-            Debug.info("Update to " + config.getString("version") + " done!");
+            LogUtils.getLogger().log(Level.FINE, "Update to " + config.getString("version") + " done!");
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
-            Debug.error("Cannot update configuration. Maybe it comes from an even newer version and you did a downgrade?");
+            LogUtils.getLogger().log(Level.WARNING, "Cannot update configuration. Maybe it comes from an even newer version and you did a downgrade?");
             // return, so it does not fall into an infinite loop
             return;
         }
@@ -207,7 +208,7 @@ public class ConfigUpdater {
     private void update_from_v58() {
         config.set("config.journal.chars_per_line", 19);
         config.set("config.journal.lines_per_page", 13);
-        Debug.broadcast("Added config options chars_per_line and lines_per_page for the journal!");
+        LogUtils.getLogger().log(Level.INFO, "Added config options chars_per_line and lines_per_page for the journal!");
         config.set("version", "v59");
         instance.saveConfig();
     }
@@ -215,7 +216,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v57() {
         if (config.contains("default_conversation_IO") && config.getString("default_conversation_IO").equalsIgnoreCase("chest")) {
-            Debug.broadcast("Renamed default ConversationIO to 'combined'");
+            LogUtils.getLogger().log(Level.INFO, "Renamed default ConversationIO to 'combined'");
             config.set("default_conversation_IO", "combined");
         }
         for (ConfigPackage pack : Config.getPackages().values()) {
@@ -223,7 +224,7 @@ public class ConfigUpdater {
                 String convIO = pack.getRawString("conversations." + convName + ".conversationIO");
                 if (convIO == null) continue;
                 if (!convIO.equalsIgnoreCase("chest")) continue;
-                Debug.broadcast("Renamed conversationIO in conversation " + pack.getName() + "." + convName + " to 'combined'");
+                LogUtils.getLogger().log(Level.INFO, "Renamed conversationIO in conversation " + pack.getName() + "." + convName + " to 'combined'");
                 pack.setString("conversations." + convName + ".conversationIO", "combined");
             }
         }
@@ -234,7 +235,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v56() {
         config.set("citizens_npcs_by_name", "false");
-        Debug.broadcast("Added option to allow identifying citizens npcs by name");
+        LogUtils.getLogger().log(Level.INFO, "Added option to allow identifying citizens npcs by name");
         config.set("version", "v57");
         instance.saveConfig();
     }
@@ -242,7 +243,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v55() {
         config.set("hook.brewery", "true");
-        Debug.broadcast("Added compatibility with Brewery");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Brewery");
         config.set("version", "v56");
         instance.saveConfig();
     }
@@ -250,7 +251,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v54() {
         config.set("hook.protocollib", "true");
-        Debug.broadcast("Added compatibility with ProtocolLib");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with ProtocolLib");
         config.set("version", "v55");
         instance.saveConfig();
     }
@@ -267,7 +268,7 @@ public class ConfigUpdater {
             custom.saveConfig();
         }
         config.set("effectlib_npc_effect", null);
-        Debug.broadcast("Moved NPC effects to custom.yml");
+        LogUtils.getLogger().log(Level.INFO, "Moved NPC effects to custom.yml");
         config.set("version", "v54");
         instance.saveConfig();
     }
@@ -275,7 +276,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v52() {
         config.set("hook.bountifulapi", "true");
-        Debug.broadcast("Added compatibility with BountifulAPI");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with BountifulAPI");
         config.set("version", "v53");
         instance.saveConfig();
     }
@@ -283,36 +284,36 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v51() {
         config.set("hook.betonlangapi", "true");
-        Debug.broadcast("Added compatibility with BetonLangAPI");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with BetonLangAPI");
         config.set("version", "v52");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
     private void update_from_v50() {
-        Debug.info("Moving custom settings from main.yml to custom.yml");
+        LogUtils.getLogger().log(Level.FINE, "Moving custom settings from main.yml to custom.yml");
         List<String> coreSettings = Arrays.asList("npcs", "variables", "static", "global_locations",
                 "cancel", "journal_main_page", "compass", "enabled");
         for (ConfigPackage pack : Config.getPackages().values()) {
-            Debug.info("  Moving custom settings in package " + pack.getName());
+            LogUtils.getLogger().log(Level.FINE, "  Moving custom settings in package " + pack.getName());
             ConfigAccessor main = pack.getMain();
             ConfigAccessor custom = pack.getCustom();
             main:
             for (String key : main.getConfig().getKeys(false)) {
                 for (String coreSetting : coreSettings) {
                     if (key.equals(coreSetting)) {
-                        Debug.info("    Key " + key + " is core setting, skipping");
+                        LogUtils.getLogger().log(Level.FINE, "    Key " + key + " is core setting, skipping");
                         continue main;
                     }
                 }
-                Debug.info("    Key " + key + " is custom, moving it");
+                LogUtils.getLogger().log(Level.FINE, "    Key " + key + " is custom, moving it");
                 custom.getConfig().set(key, main.getConfig().get(key));
                 main.getConfig().set(key, null);
             }
             main.saveConfig();
             custom.saveConfig();
         }
-        Debug.broadcast("Moved custom settings from main.yml to custom.yml file");
+        LogUtils.getLogger().log(Level.INFO, "Moved custom settings from main.yml to custom.yml file");
         config.set("version", "v51");
         instance.saveConfig();
     }
@@ -320,12 +321,12 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v49() {
         Set<String> enabledPackages = new HashSet<>(config.getStringList("packages"));
-        Debug.info("Disabling packages not listed in the config");
+        LogUtils.getLogger().log(Level.FINE, "Disabling packages not listed in the config");
         for (Iterator<ConfigPackage> iterator = Config.getPackages().values().iterator(); iterator.hasNext(); ) {
             ConfigPackage pack = iterator.next();
-            Debug.info("  Looking at package " + pack.getName());
+            LogUtils.getLogger().log(Level.FINE, "  Looking at package " + pack.getName());
             if (!enabledPackages.contains(pack.getName())) {
-                Debug.info("    Package is not enabled, removing it from the list.");
+                LogUtils.getLogger().log(Level.FINE, "    Package is not enabled, removing it from the list.");
                 pack.getMain().getConfig().set("enabled", false);
                 pack.getMain().saveConfig();
                 iterator.remove();
@@ -334,9 +335,9 @@ public class ConfigUpdater {
                 pack.getMain().saveConfig();
             }
         }
-        Debug.info("All packages enabled/disabled, removing 'packages' section from config");
+        LogUtils.getLogger().log(Level.FINE, "All packages enabled/disabled, removing 'packages' section from config");
         config.set("packages", null);
-        Debug.broadcast("Moved package enabling from config to main files");
+        LogUtils.getLogger().log(Level.INFO, "Moved package enabling from config to main files");
         config.set("version", "v50");
         instance.saveConfig();
     }
@@ -422,7 +423,7 @@ public class ConfigUpdater {
                 acc.saveConfig();
             }
         }
-        Debug.broadcast("Converted additional location arguments to the new format");
+        LogUtils.getLogger().log(Level.INFO, "Converted additional location arguments to the new format");
         config.set("version", "v49");
         instance.saveConfig();
     }
@@ -449,7 +450,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v47() {
         config.set("quest_items_unbreakable", "true");
-        Debug.broadcast("Added option to disable quest item unbreakability");
+        LogUtils.getLogger().log(Level.INFO, "Added option to disable quest item unbreakability");
         config.set("version", "v48");
         instance.saveConfig();
     }
@@ -457,7 +458,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v46() {
         config.set("journal.full_main_page", "false");
-        Debug.broadcast("Added 'full_main_page' option to config");
+        LogUtils.getLogger().log(Level.INFO, "Added 'full_main_page' option to config");
         config.set("version", "v47");
         instance.saveConfig();
     }
@@ -465,9 +466,9 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v45() {
         config.set("hook.legendquest", "true");
-        Debug.broadcast("Added compatibility with LegendQuest");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with LegendQuest");
         config.set("hook.worldedit", "true");
-        Debug.broadcast("Added compatibility with WorldEdit");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with WorldEdit");
         config.set("version", "v46");
         instance.saveConfig();
     }
@@ -475,10 +476,10 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v44() {
         try {
-            Debug.info("Translating items in 'potion' objectives");
+            LogUtils.getLogger().log(Level.FINE, "Translating items in 'potion' objectives");
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("  Handling " + packName + " package");
+                LogUtils.getLogger().log(Level.FINE, "  Handling " + packName + " package");
                 FileConfiguration objectives = pack.getObjectives().getConfig();
                 FileConfiguration items = pack.getItems().getConfig();
                 for (String key : objectives.getKeys(false)) {
@@ -486,17 +487,17 @@ public class ConfigUpdater {
                     if (!instruction.startsWith("potion ")) {
                         continue;
                     }
-                    Debug.info("    Found potion objective: '" + instruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Found potion objective: '" + instruction + "'");
                     String[] parts = instruction.split(" ");
                     if (parts.length < 2) {
-                        Debug.info("    It's incorrect.");
+                        LogUtils.getLogger().log(Level.FINE, "    It's incorrect.");
                         continue;
                     }
                     int data;
                     try {
                         data = Integer.parseInt(parts[1]);
                     } catch (NumberFormatException e) {
-                        Debug.info("    It's incorrect");
+                        LogUtils.getLogger().log(Level.WARNING, "    It's incorrect");
                         continue;
                     }
                     ItemStack itemStack = new QuestItem("potion data:" + data).generate(1);
@@ -509,7 +510,7 @@ public class ConfigUpdater {
                         item.remove();
                     }
                     String updatedInstruction = QuestItem.itemToString(itemStack);
-                    Debug.info("    Potion instruction: '" + updatedInstruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Potion instruction: '" + updatedInstruction + "'");
                     String item = null;
                     for (String itemKey : items.getKeys(false)) {
                         if (items.getString(itemKey).equals(updatedInstruction)) {
@@ -527,7 +528,7 @@ public class ConfigUpdater {
                             item = "potion";
                         }
                     }
-                    Debug.info("    The item with this instruction has key " + item);
+                    LogUtils.getLogger().log(Level.FINE, "    The item with this instruction has key " + item);
                     items.set(item, updatedInstruction);
                     objectives.set(key, instruction.replace(String.valueOf(data), item));
                 }
@@ -536,11 +537,11 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Translated items in 'potion' objective");
+        LogUtils.getLogger().log(Level.INFO, "Translated items in 'potion' objective");
         config.set("display_chat_after_conversation", "false");
-        Debug.broadcast("Added an option to display chat messages after the conversation");
+        LogUtils.getLogger().log(Level.INFO, "Added an option to display chat messages after the conversation");
         config.set("version", "v45");
         instance.saveConfig();
     }
@@ -548,18 +549,18 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v43() {
         try {
-            Debug.info("Translating potion instructions");
+            LogUtils.getLogger().log(Level.FINE, "Translating potion instructions");
 
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("  Handling " + packName + " package");
+                LogUtils.getLogger().log(Level.FINE, "  Handling " + packName + " package");
                 FileConfiguration items = pack.getItems().getConfig();
                 for (String key : items.getKeys(false)) {
                     String instruction = items.getString(key);
                     if (!instruction.toLowerCase().startsWith("potion ") && !instruction.startsWith("splash_potion ")) {
                         continue;
                     }
-                    Debug.info("    Found " + key + " potion with instruction '" + instruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Found " + key + " potion with instruction '" + instruction + "'");
                     try {
                         QuestItem questItem = new QuestItem(instruction);
                         ItemStack itemStack = questItem.generate(1);
@@ -573,21 +574,21 @@ public class ConfigUpdater {
                             // lol
                         }
                         String updatedInstruction = QuestItem.itemToString(itemStack);
-                        Debug.info("    New instruction: '" + updatedInstruction + "'");
+                        LogUtils.getLogger().log(Level.FINE, "    New instruction: '" + updatedInstruction + "'");
                         items.set(key, updatedInstruction);
                     } catch (InstructionParseException e) {
-                        Debug.info("Item " + packName + "." + key + " was incorrect, skipping.");
+                        LogUtils.getLogger().log(Level.WARNING, "Item " + packName + "." + key + " was incorrect, skipping.");
                     }
                 }
                 pack.getItems().saveConfig();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Translated potions to a new format");
+        LogUtils.getLogger().log(Level.INFO, "Translated potions to a new format");
         config.set("hook.racesandclasses", "true");
-        Debug.broadcast("Added compatibility with RacesAndClasses");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with RacesAndClasses");
         config.set("version", "v44");
         instance.saveConfig();
     }
@@ -595,7 +596,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v42() {
         config.set("hook.holographicdisplays", "true");
-        Debug.broadcast("Added compatibility with HolographicDisplays");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with HolographicDisplays");
         config.set("version", "v43");
         instance.saveConfig();
     }
@@ -676,9 +677,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Changed 'craft' objective to use items.yml");
+        LogUtils.getLogger().log(Level.INFO, "Changed 'craft' objective to use items.yml");
         config.set("version", "v42");
         instance.saveConfig();
     }
@@ -686,7 +687,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v40() {
         config.set("hook.placeholderapi", "true");
-        Debug.broadcast("Added compatibility with PlaceholderAPI");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with PlaceholderAPI");
         config.set("version", "v41");
         instance.saveConfig();
     }
@@ -694,7 +695,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v39() {
         config.set("hook.shopkeepers", "true");
-        Debug.broadcast("Added compatibility with Shopkeepers");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Shopkeepers");
         config.set("version", "v40");
         instance.saveConfig();
     }
@@ -706,7 +707,7 @@ public class ConfigUpdater {
         config.set("update.enabled", enabled);
         config.set("update.download_bugfixes", true);
         config.set("update.notify_new_release", true);
-        Debug.broadcast("Modified autoupdater");
+        LogUtils.getLogger().log(Level.INFO, "Modified autoupdater");
         config.set("version", "v39");
         instance.saveConfig();
     }
@@ -714,26 +715,26 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v37() {
         try {
-            Debug.info("Updating global location tags in the database");
-            Debug.info("    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
+            LogUtils.getLogger().log(Level.FINE, "Updating global location tags in the database");
+            LogUtils.getLogger().log(Level.FINE, "    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
                 String locList = pack.getMain().getConfig().getString("global_locations");
-                Debug.info("  Handling package '" + packName + "': " + locList);
+                LogUtils.getLogger().log(Level.FINE, "  Handling package '" + packName + "': " + locList);
                 if (locList == null) {
                     continue;
                 }
                 for (String locName : locList.split(",")) {
-                    Debug.info("Adding '" + packName + "' prefix to '" + locName + "' global location tags.");
+                    LogUtils.getLogger().log(Level.FINE, "Adding '" + packName + "' prefix to '" + locName + "' global location tags.");
                     instance.getSaver().add(new Record(UpdateType.RENAME_ALL_TAGS,
                             new String[]{packName + ".global_" + locName, "global_" + locName}));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Updated tags of global locations with package names");
+        LogUtils.getLogger().log(Level.INFO, "Updated tags of global locations with package names");
         config.set("version", "v38");
         instance.saveConfig();
     }
@@ -741,7 +742,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v36() {
         config.set("hook.quests", "true");
-        Debug.broadcast("Added compatibility with Quests");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Quests");
         config.set("version", "v37");
         instance.saveConfig();
     }
@@ -749,9 +750,9 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v35() {
         config.set("hook.denizen", "true");
-        Debug.broadcast("Added compatibility with Denizen");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Denizen");
         config.set("hook.skillapi", "true");
-        Debug.broadcast("Added compatibility with SkillAPI");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with SkillAPI");
         config.set("version", "v36");
         instance.saveConfig();
     }
@@ -759,7 +760,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v34() {
         config.set("hook.magic", "true");
-        Debug.broadcast("Added compatibility with Magic");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Magic");
         config.set("version", "v35");
         instance.saveConfig();
     }
@@ -767,7 +768,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v33() {
         config.set("hook.heroes", "true");
-        Debug.broadcast("Added compatibility with Heroes");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with Heroes");
         config.set("version", "v34");
         instance.saveConfig();
     }
@@ -775,7 +776,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v32() {
         config.set("hook.playerpoints", "true");
-        Debug.broadcast("Added compatibility with PlayerPoints");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with PlayerPoints");
         config.set("version", "v33");
         instance.saveConfig();
     }
@@ -791,7 +792,7 @@ public class ConfigUpdater {
         config.set("effectlib_npc_effect.grow", 0.1);
         config.set("effectlib_npc_effect.radius", 0.5);
         config.set("effectlib_npc_effect.delay", 5);
-        Debug.broadcast("Added compatibility with EffectLib");
+        LogUtils.getLogger().log(Level.INFO, "Added compatibility with EffectLib");
         config.set("version", "v32");
         instance.saveConfig();
     }
@@ -799,56 +800,56 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v30() {
         try {
-            Debug.info("Converting cancelers to a new format");
+            LogUtils.getLogger().log(Level.FINE, "Converting cancelers to a new format");
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("Searching " + packName + " package");
+                LogUtils.getLogger().log(Level.FINE, "Searching " + packName + " package");
                 ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
                 if (s == null)
                     continue;
                 for (String key : s.getKeys(false)) {
                     String instruction = s.getString(key);
-                    Debug.info("  Converting " + key + " canceler: " + instruction);
+                    LogUtils.getLogger().log(Level.FINE, "  Converting " + key + " canceler: " + instruction);
                     String[] parts = instruction.split(" ");
                     HashMap<String, String> names = new HashMap<>();
                     String events = null, conditions = null, tags = null, points = null, objectives = null,
                             journal = null, loc = null;
                     for (String part : parts) {
-                        Debug.info("    Checking part " + part);
+                        LogUtils.getLogger().log(Level.FINE, "    Checking part " + part);
                         if (part.startsWith("name:")) {
-                            Debug.info("    Found general name: " + part.substring(5));
+                            LogUtils.getLogger().log(Level.FINE, "    Found general name: " + part.substring(5));
                             names.put(Config.getLanguage(), part.substring(5));
                         } else if (part.startsWith("name_")) {
                             int colonIndex = part.indexOf(':');
                             if (colonIndex < 0)
                                 continue;
                             String lang = part.substring(5, colonIndex);
-                            Debug.info("    Found " + lang + " name: " + part.substring(colonIndex));
+                            LogUtils.getLogger().log(Level.FINE, "    Found " + lang + " name: " + part.substring(colonIndex));
                             names.put(lang, part.substring(colonIndex));
                         } else if (part.startsWith("events:")) {
-                            Debug.info("    Found events: " + part.substring(7));
+                            LogUtils.getLogger().log(Level.FINE, "    Found events: " + part.substring(7));
                             events = part.substring(7);
                         } else if (part.startsWith("conditions:")) {
-                            Debug.info("    Found conditions: " + part.substring(11));
+                            LogUtils.getLogger().log(Level.FINE, "    Found conditions: " + part.substring(11));
                             conditions = part.substring(11);
                         } else if (part.startsWith("tags:")) {
-                            Debug.info("    Found tags: " + part.substring(5));
+                            LogUtils.getLogger().log(Level.FINE, "    Found tags: " + part.substring(5));
                             tags = part.substring(5);
                         } else if (part.startsWith("points:")) {
-                            Debug.info("    Found points: " + part.substring(7));
+                            LogUtils.getLogger().log(Level.FINE, "    Found points: " + part.substring(7));
                             points = part.substring(7);
                         } else if (part.startsWith("objectives:")) {
-                            Debug.info("    Found objectives: " + part.substring(11));
+                            LogUtils.getLogger().log(Level.FINE, "    Found objectives: " + part.substring(11));
                             objectives = part.substring(11);
                         } else if (part.startsWith("journal:")) {
-                            Debug.info("    Found journal entries: " + part.substring(8));
+                            LogUtils.getLogger().log(Level.FINE, "    Found journal entries: " + part.substring(8));
                             journal = part.substring(8);
                         } else if (part.startsWith("loc:")) {
-                            Debug.info("    Found location: " + part.substring(4));
+                            LogUtils.getLogger().log(Level.FINE, "    Found location: " + part.substring(4));
                             loc = part.substring(4);
                         }
                     }
-                    Debug.info("  - Setting the values");
+                    LogUtils.getLogger().log(Level.FINE, "  - Setting the values");
                     s.set(key, null);
                     for (String lang : names.keySet()) {
                         s.set(key + ".name." + lang, names.get(lang));
@@ -865,9 +866,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Made quest cancelers more convenient to define");
+        LogUtils.getLogger().log(Level.INFO, "Made quest cancelers more convenient to define");
         config.set("version", "v31");
         instance.saveConfig();
     }
@@ -889,9 +890,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Changed commas to semicolons in vector variables");
+        LogUtils.getLogger().log(Level.INFO, "Changed commas to semicolons in vector variables");
         config.set("version", "v30");
         instance.saveConfig();
     }
@@ -909,7 +910,7 @@ public class ConfigUpdater {
                 i++;
                 globalName = "global-" + i;
             }
-            Debug.info("Global package will be called '" + globalName + "'");
+            LogUtils.getLogger().log(Level.FINE, "Global package will be called '" + globalName + "'");
             // create lists for tags/points that are duplicated across multiple
             // packages
             // these will be "global", the rest will be converted to their local
@@ -921,12 +922,12 @@ public class ConfigUpdater {
             ArrayList<ConfigPackage> packages = new ArrayList<>();
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("  Checking '" + packName + "' package");
+                LogUtils.getLogger().log(Level.FINE, "  Checking '" + packName + "' package");
                 // skip packages that already use prefixes
                 String prefixOption = pack.getString("main.tag_point_prefix");
                 if (prefixOption != null && prefixOption.equalsIgnoreCase("true"))
                     continue;
-                Debug.info("  - It's outdated, extracting tags and points from events");
+                LogUtils.getLogger().log(Level.FINE, "  - It's outdated, extracting tags and points from events");
                 packages.add(pack);
                 // create array lists
                 ArrayList<String> tagList = new ArrayList<>();
@@ -935,13 +936,13 @@ public class ConfigUpdater {
                 points.put(packName, pointList);
                 // handle all tags/points in events
                 for (String key : pack.getEvents().getConfig().getKeys(false)) {
-                    Debug.info("    Checking '" + key + "' event");
+                    LogUtils.getLogger().log(Level.FINE, "    Checking '" + key + "' event");
                     String rawInstruction = pack.getEvents().getConfig().getString(key);
                     ArrayList<String> instructions = new ArrayList<>();
                     // run event also needs to be checked in case it contained
                     // any tags
                     if (rawInstruction.startsWith("run ")) {
-                        Debug.info("    - It's \"run\" event, extracting additional instructions");
+                        LogUtils.getLogger().log(Level.FINE, "    - It's \"run\" event, extracting additional instructions");
                         // this part is copied from run event
                         String[] parts = rawInstruction.substring(3).trim().split(" ");
                         StringBuilder builder = new StringBuilder();
@@ -964,11 +965,11 @@ public class ConfigUpdater {
                     // check every instruction that was specified
                     for (String instruction : instructions) {
                         if (instruction.startsWith("tag ")) {
-                            Debug.info("      Found tag event, extracting tag");
+                            LogUtils.getLogger().log(Level.FINE, "      Found tag event, extracting tag");
                             String[] parts = instruction.split(" ");
                             // check if it contains the tag, if not - continue
                             if (parts.length < 3) {
-                                Debug.info("      - Could not find tags");
+                                LogUtils.getLogger().log(Level.FINE, "      - Could not find tags");
                                 continue;
                             }
                             // add tag to the list if it does not contain a
@@ -978,11 +979,11 @@ public class ConfigUpdater {
                                     tagList.add(tag);
                             }
                         } else if (instruction.startsWith("point ")) {
-                            Debug.info("      Found point event, extracting points");
+                            LogUtils.getLogger().log(Level.FINE, "      Found point event, extracting points");
                             String[] parts = instruction.split(" ");
                             // check if the point has defined a category
                             if (parts.length < 2) {
-                                Debug.info("      - Could not find the category");
+                                LogUtils.getLogger().log(Level.FINE, "      - Could not find the category");
                                 continue;
                             }
                             // add point to the list if it does not contain a
@@ -993,16 +994,16 @@ public class ConfigUpdater {
                     }
                     // done, all tags in events are extracted
                 }
-                Debug.info("  All tags and points extracted from events, moving to conditions");
+                LogUtils.getLogger().log(Level.FINE, "  All tags and points extracted from events, moving to conditions");
                 // handle all tags/points in conditions
                 for (String key : pack.getConditions().getConfig().getKeys(false)) {
-                    Debug.info("    Checking '" + key + "' condition");
+                    LogUtils.getLogger().log(Level.FINE, "    Checking '" + key + "' condition");
                     String rawInstruction = pack.getConditions().getConfig().getString(key);
                     ArrayList<String> instructions = new ArrayList<>();
                     // check condition also needs to be checked in case it
                     // contained any tags
                     if (rawInstruction.startsWith("check ")) {
-                        Debug.info("    - It's \"check\" condition, extracting additional instructions");
+                        LogUtils.getLogger().log(Level.FINE, "    - It's \"check\" condition, extracting additional instructions");
                         // this part is copied from run event
                         String[] parts = rawInstruction.substring(5).trim().split(" ");
                         StringBuilder builder = new StringBuilder();
@@ -1026,11 +1027,11 @@ public class ConfigUpdater {
                     // check every instruction that was specified
                     for (String instruction : instructions) {
                         if (instruction.startsWith("tag ")) {
-                            Debug.info("      Found tag condition, extracting tag");
+                            LogUtils.getLogger().log(Level.FINE, "      Found tag condition, extracting tag");
                             String[] parts = instruction.split(" ");
                             // check if it contains the tag, if not - continue
                             if (parts.length < 2) {
-                                Debug.info("      - Could not find the tag");
+                                LogUtils.getLogger().log(Level.FINE, "      - Could not find the tag");
                                 continue;
                             }
                             // add tag to the list if it does not contain a
@@ -1038,11 +1039,11 @@ public class ConfigUpdater {
                             if (!parts[1].contains("."))
                                 tagList.add(parts[1]);
                         } else if (instruction.startsWith("point ")) {
-                            Debug.info("      Found point condition, extracting points");
+                            LogUtils.getLogger().log(Level.FINE, "      Found point condition, extracting points");
                             String[] parts = instruction.split(" ");
                             // check if the point has defined a category
                             if (parts.length < 2) {
-                                Debug.info("      - Could not find the category");
+                                LogUtils.getLogger().log(Level.FINE, "      - Could not find the category");
                                 continue;
                             }
                             // add point to the list if it does not contain a
@@ -1053,75 +1054,75 @@ public class ConfigUpdater {
                     }
                     // done, all tags in conditions are extracted
                 }
-                Debug.info("  All tags and points extracted from conditions");
+                LogUtils.getLogger().log(Level.FINE, "  All tags and points extracted from conditions");
                 // done, events and conditions in package extracted
             }
-            Debug.info("All tags and points in all packages extracted, checking tags for duplicates");
+            LogUtils.getLogger().log(Level.FINE, "All tags and points in all packages extracted, checking tags for duplicates");
             // find tags/points that are duplicated in package hashMaps,
             // put them to global package and remove from those packages
             // first tags in each package
             for (int j = 0; j < packages.size(); j++) {
-                Debug.info("  Checking list '" + packages.get(j).getName() + "'");
+                LogUtils.getLogger().log(Level.FINE, "  Checking list '" + packages.get(j).getName() + "'");
                 // get a list
                 ArrayList<String> list = tags.get(packages.get(j).getName());
                 // and for each element
                 for (int k = 0; k < list.size(); k++) {
                     String checked = list.get(k);
-                    Debug.info("    Checking tag '" + checked + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Checking tag '" + checked + "'");
                     // go to each next package
                     for (int l = j + 1; l < packages.size(); l++) {
                         ArrayList<String> nextList = tags.get(packages.get(l).getName());
                         // and check if it contains that element
                         if (nextList.contains(checked)) {
-                            Debug.info("    - list '" + packages.get(l).getName() + "' contains this tag, removing");
+                            LogUtils.getLogger().log(Level.FINE, "    - list '" + packages.get(l).getName() + "' contains this tag, removing");
                             nextList.remove(checked);
                             if (!globalTagList.contains(checked)) {
                                 globalTagList.add(checked);
-                                Debug.info("      Tag was added to the global list");
+                                LogUtils.getLogger().log(Level.FINE, "      Tag was added to the global list");
                             }
                         }
                     }
                 }
             }
-            Debug.info("List of global tags is filled, checking points");
+            LogUtils.getLogger().log(Level.FINE, "List of global tags is filled, checking points");
             // now points in each package
             for (int j = 0; j < packages.size(); j++) {
-                Debug.info("  Checking list '" + packages.get(j).getName() + "'");
+                LogUtils.getLogger().log(Level.FINE, "  Checking list '" + packages.get(j).getName() + "'");
                 // get a list
                 ArrayList<String> list = points.get(packages.get(j).getName());
                 // and for each element
                 for (int k = 0; k < list.size(); k++) {
                     String checked = list.get(k);
-                    Debug.info("    Checking point '" + checked + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Checking point '" + checked + "'");
                     // go to each next package
                     for (int l = j + 1; l < packages.size(); l++) {
                         ArrayList<String> nextList = points.get(packages.get(l).getName());
                         // and check if it contains that element
                         if (nextList.contains(checked)) {
-                            Debug.info("    - list '" + packages.get(l).getName() + "' contains this point, removing");
+                            LogUtils.getLogger().log(Level.FINE, "    - list '" + packages.get(l).getName() + "' contains this point, removing");
                             nextList.remove(checked);
                             if (!globalPointList.contains(checked)) {
                                 globalPointList.add(checked);
-                                Debug.info("      Point was added to the global list");
+                                LogUtils.getLogger().log(Level.FINE, "      Point was added to the global list");
                             }
                         }
                     }
                 }
             }
-            Debug.info("List of global points is filled, now adding \"global\" prefix in configuration files");
+            LogUtils.getLogger().log(Level.FINE, "List of global points is filled, now adding \"global\" prefix in configuration files");
             // done, global lists are filled
             for (ConfigPackage pack : packages) {
-                Debug.info("  Replacing in '" + pack.getName() + "' package");
+                LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
                 // update tags/points in events
                 for (String key : pack.getEvents().getConfig().getKeys(false)) {
-                    Debug.info("    Replacing tags/points in '" + key + "' event");
+                    LogUtils.getLogger().log(Level.FINE, "    Replacing tags/points in '" + key + "' event");
                     String instruction = pack.getEvents().getConfig().getString(key);
                     if (instruction.startsWith("tag ")) {
-                        Debug.info("      Found tag event, replacing tags");
+                        LogUtils.getLogger().log(Level.FINE, "      Found tag event, replacing tags");
                         String[] parts = instruction.split(" ");
                         // check if it contains the tag, if not - continue
                         if (parts.length < 3) {
-                            Debug.info("      - Could not find tags");
+                            LogUtils.getLogger().log(Level.FINE, "      - Could not find tags");
                             continue;
                         }
                         // replace tags
@@ -1129,47 +1130,47 @@ public class ConfigUpdater {
                         for (int j = 0; j < localTags.length; j++)
                             if (globalTagList.contains(localTags[j])) {
                                 String replaced = globalName + "." + localTags[j];
-                                Debug.info("        Replacing '" + localTags[j] + "' with '" + replaced + "'");
+                                LogUtils.getLogger().log(Level.FINE, "        Replacing '" + localTags[j] + "' with '" + replaced + "'");
                                 localTags[j] = replaced;
                             }
                         pack.getEvents().getConfig().set(key,
                                 instruction.replace(parts[2], StringUtils.join(Arrays.asList(localTags), ',')));
                     } else if (instruction.startsWith("point ")) {
-                        Debug.info("      Found point event, replacing points");
+                        LogUtils.getLogger().log(Level.FINE, "      Found point event, replacing points");
                         String[] parts = instruction.split(" ");
                         // check if the point has defined a category
                         if (parts.length < 2) {
-                            Debug.info("      - Could not find the category");
+                            LogUtils.getLogger().log(Level.FINE, "      - Could not find the category");
                             continue;
                         }
                         // replace points category
                         if (globalPointList.contains(parts[1])) {
                             String replaced = globalName + "." + parts[1];
-                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[1] + "' with '" + replaced + "'");
                             pack.getEvents().getConfig().set(key,
                                     StringUtils.replaceOnce(instruction, parts[1], replaced));
                         }
                     } else if (instruction.startsWith("run ")) {
-                        Debug.info("      Found run event, looking for tags and points");
+                        LogUtils.getLogger().log(Level.FINE, "      Found run event, looking for tags and points");
                         String[] parts = instruction.split(" ");
                         for (int j = 0; j < parts.length; j++) {
                             // if the part is beginning of the "tag" instruction
                             // and it contains a tag
                             if (parts[j].equals("^tag") && j + 2 < parts.length) {
-                                Debug.info("        There is a tag event, replacing tags");
+                                LogUtils.getLogger().log(Level.FINE, "        There is a tag event, replacing tags");
                                 String[] localTags = parts[j + 2].split(",");
                                 for (int k = 0; k < localTags.length; k++)
                                     if (globalTagList.contains(localTags[k])) {
                                         String replaced = globalName + "." + localTags[k];
-                                        Debug.info("        Replacing '" + localTags[k] + "' with '" + replaced + "'");
+                                        LogUtils.getLogger().log(Level.FINE, "        Replacing '" + localTags[k] + "' with '" + replaced + "'");
                                         localTags[k] = replaced;
                                     }
                                 parts[j + 2] = StringUtils.join(Arrays.asList(localTags), ',');
                             } else if (parts[j].equals("^point") && j + 1 < parts.length) {
-                                Debug.info("        There is a point event, replacing points");
+                                LogUtils.getLogger().log(Level.FINE, "        There is a point event, replacing points");
                                 if (globalTagList.contains(parts[j + 1])) {
                                     String replaced = globalName + "." + parts[j + 1];
-                                    Debug.info("        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
+                                    LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
                                     parts[j + 1] = replaced;
                                 }
                             }
@@ -1178,61 +1179,61 @@ public class ConfigUpdater {
                     }
                 }
                 pack.getEvents().saveConfig();
-                Debug.info("  All tags/points replaced in all events");
+                LogUtils.getLogger().log(Level.FINE, "  All tags/points replaced in all events");
                 // done, everything replaced in events
                 // replacing tags/points in conditions
                 for (String key : pack.getConditions().getConfig().getKeys(false)) {
-                    Debug.info("    Replacing tags/points in '" + key + "' condition");
+                    LogUtils.getLogger().log(Level.FINE, "    Replacing tags/points in '" + key + "' condition");
                     String instruction = pack.getConditions().getConfig().getString(key);
                     if (instruction.startsWith("tag ")) {
-                        Debug.info("      Found tag condition, replacing the tag");
+                        LogUtils.getLogger().log(Level.FINE, "      Found tag condition, replacing the tag");
                         String[] parts = instruction.split(" ");
                         // check if it contains the tag, if not - continue
                         if (parts.length < 2) {
-                            Debug.info("      - Could not find tags");
+                            LogUtils.getLogger().log(Level.FINE, "      - Could not find tags");
                             continue;
                         }
                         // replace tag
                         if (globalTagList.contains(parts[1])) {
                             String replaced = globalName + "." + parts[1];
-                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[1] + "' with '" + replaced + "'");
                             pack.getConditions().getConfig().set(key,
                                     StringUtils.replaceOnce(instruction, parts[1], replaced));
                         }
 
                     } else if (instruction.startsWith("point ")) {
-                        Debug.info("      Found point condition, replacing points");
+                        LogUtils.getLogger().log(Level.FINE, "      Found point condition, replacing points");
                         String[] parts = instruction.split(" ");
                         // check if the point has defined a category
                         if (parts.length < 2) {
-                            Debug.info("      - Could not find the category");
+                            LogUtils.getLogger().log(Level.FINE, "      - Could not find the category");
                             continue;
                         }
                         // replace points category
                         if (globalPointList.contains(parts[1])) {
                             String replaced = globalName + "." + parts[1];
-                            Debug.info("        Replacing '" + parts[1] + "' with '" + replaced + "'");
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[1] + "' with '" + replaced + "'");
                             pack.getConditions().getConfig().set(key,
                                     StringUtils.replaceOnce(instruction, parts[1], replaced));
                         }
                     } else if (instruction.startsWith("check ")) {
-                        Debug.info("      Found check condition, looking for tags and points");
+                        LogUtils.getLogger().log(Level.FINE, "      Found check condition, looking for tags and points");
                         String[] parts = instruction.split(" ");
                         for (int j = 0; j < parts.length; j++) {
                             // if the part is beginning of the "tag" instruction
                             // and it contains a tag
                             if (parts[j].equals("^tag") && j + 1 < parts.length) {
-                                Debug.info("        There is a tag condition, replacing tags");
+                                LogUtils.getLogger().log(Level.FINE, "        There is a tag condition, replacing tags");
                                 if (globalTagList.contains(parts[j + 1])) {
                                     String replaced = globalName + "." + parts[j + 1];
-                                    Debug.info("        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
+                                    LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
                                     parts[j + 1] = replaced;
                                 }
                             } else if (parts[j].equals("^point") && j + 1 < parts.length) {
-                                Debug.info("        There is a point condition, replacing points");
+                                LogUtils.getLogger().log(Level.FINE, "        There is a point condition, replacing points");
                                 if (globalTagList.contains(parts[j + 1])) {
                                     String replaced = globalName + "." + parts[j + 1];
-                                    Debug.info("        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
+                                    LogUtils.getLogger().log(Level.FINE, "        Replacing '" + parts[j + 1] + "' with '" + replaced + "'");
                                     parts[j + 1] = replaced;
                                 }
                             }
@@ -1241,11 +1242,11 @@ public class ConfigUpdater {
                     }
                 }
                 pack.getConditions().saveConfig();
-                Debug.info("  All tags/points replaced in all conditions, time for quest cancelers");
+                LogUtils.getLogger().log(Level.FINE, "  All tags/points replaced in all conditions, time for quest cancelers");
                 // done, everything replaced in conditions
                 // time for quest cancelers
                 for (String key : pack.getMain().getConfig().getConfigurationSection("cancel").getKeys(false)) {
-                    Debug.info("    Replacing tags/points in '" + key + "' canceler");
+                    LogUtils.getLogger().log(Level.FINE, "    Replacing tags/points in '" + key + "' canceler");
                     String instruction = pack.getMain().getConfig().getString("cancel." + key);
                     String[] parts = instruction.split(" ");
                     for (int j = 0; j < parts.length; j++) {
@@ -1254,7 +1255,7 @@ public class ConfigUpdater {
                             for (int k = 0; k < localTags.length; k++) {
                                 if (globalTagList.contains(localTags[k])) {
                                     String replaced = globalName + "." + localTags[k];
-                                    Debug.info("      Replaced  tag '" + localTags[k] + "' to '" + replaced + "'");
+                                    LogUtils.getLogger().log(Level.FINE, "      Replaced  tag '" + localTags[k] + "' to '" + replaced + "'");
                                     localTags[k] = replaced;
                                 }
                             }
@@ -1264,7 +1265,7 @@ public class ConfigUpdater {
                             for (int k = 0; k < localPoints.length; k++) {
                                 if (globalPointList.contains(localPoints[k])) {
                                     String replaced = globalName + "." + localPoints[k];
-                                    Debug.info("      Replaced  point '" + localPoints[k] + "' to '" + replaced + "'");
+                                    LogUtils.getLogger().log(Level.FINE, "      Replaced  point '" + localPoints[k] + "' to '" + replaced + "'");
                                     localPoints[k] = replaced;
                                 }
                             }
@@ -1273,11 +1274,11 @@ public class ConfigUpdater {
                     }
                     pack.getMain().getConfig().set("cancel." + key, StringUtils.join(Arrays.asList(parts), " "));
                 }
-                Debug.info("  All tags/points replaced in quest cancelers");
+                LogUtils.getLogger().log(Level.FINE, "  All tags/points replaced in quest cancelers");
                 pack.getMain().saveConfig();
             }
             // done, all packages have replaced tags and points
-            Debug.info(
+            LogUtils.getLogger().log(Level.FINE, 
                     "Done, all global tags and points are prefixed as global everywhere in every package. Updating the database.");
             for (String packName : tags.keySet()) {
                 for (String tag : tags.get(packName)) {
@@ -1298,12 +1299,12 @@ public class ConfigUpdater {
                 main.getConfig().set("tag_point_prefix", null);
                 main.saveConfig();
             }
-            Debug.info("Done, all cross-package tags and points are now global, the rest is local.");
+            LogUtils.getLogger().log(Level.FINE, "Done, all cross-package tags and points are now global, the rest is local.");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Moved all package-less cross-package tags and points to \"" + globalName
+        LogUtils.getLogger().log(Level.INFO, "Moved all package-less cross-package tags and points to \"" + globalName
                 + "\" package (you probably won't notice this change)");
         config.set("version", "v29");
         instance.saveConfig();
@@ -1318,9 +1319,9 @@ public class ConfigUpdater {
             config.set("journal.hide_date", "false");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Added journal options");
+        LogUtils.getLogger().log(Level.INFO, "Added journal options");
         config.set("version", "v28");
         instance.saveConfig();
     }
@@ -1371,9 +1372,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Changed %quester% variables to %npc%");
+        LogUtils.getLogger().log(Level.INFO, "Changed %quester% variables to %npc%");
         config.set("version", "v27");
         instance.saveConfig();
     }
@@ -1394,16 +1395,16 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Added \"add\" keyword to journal events");
+        LogUtils.getLogger().log(Level.INFO, "Added \"add\" keyword to journal events");
         config.set("version", "v26");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
     private void update_from_v24() {
-        Debug.broadcast("Added prefix to language files");
+        LogUtils.getLogger().log(Level.INFO, "Added prefix to language files");
         config.set("version", "v25");
         instance.saveConfig();
     }
@@ -1411,20 +1412,20 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v23() {
         try {
-            Debug.info("Adding option to disable mcMMO hooking to the config");
+            LogUtils.getLogger().log(Level.FINE, "Adding option to disable mcMMO hooking to the config");
             config.set("hook.mcmmo", "true");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Added mcMMO compatibility");
+        LogUtils.getLogger().log(Level.INFO, "Added mcMMO compatibility");
         config.set("version", "v24");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
     private void update_from_v22() {
-        Debug.broadcast("Added Dutch translation");
+        LogUtils.getLogger().log(Level.INFO, "Added Dutch translation");
         config.set("version", "v23");
         instance.saveConfig();
     }
@@ -1432,11 +1433,11 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v21() {
         try {
-            Debug.info("Updating the database");
+            LogUtils.getLogger().log(Level.FINE, "Updating the database");
             Connection con = instance.getDB().getConnection();
             String prefix = Config.getString("config.mysql.prefix");
             // update database format
-            Debug.info("Adding conversation column to player table");
+            LogUtils.getLogger().log(Level.FINE, "Adding conversation column to player table");
             if (instance.isMySQLUsed()) {
                 con.prepareStatement(
                         "ALTER TABLE " + prefix + "player ADD conversation VARCHAR(512) AFTER language;")
@@ -1455,9 +1456,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Added conversations to database format");
+        LogUtils.getLogger().log(Level.INFO, "Added conversations to database format");
         config.set("version", "v22");
         instance.saveConfig();
     }
@@ -1475,7 +1476,7 @@ public class ConfigUpdater {
             String npcFormat = config.getString("conversation.quester_line_format");
             String[] npcParts = npcFormat.split("%quester%");
             if (npcParts.length != 2) {
-                Debug.info("Could not parse NPC text format, saving defaults");
+                LogUtils.getLogger().log(Level.FINE, "Could not parse NPC text format, saving defaults");
                 npcColors.add(ChatColor.DARK_RED);
                 textColors.add(ChatColor.GREEN);
                 textColors.add(ChatColor.ITALIC);
@@ -1493,7 +1494,7 @@ public class ConfigUpdater {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.info("Could not parse NPC text format, saving defaults");
+                    LogUtils.getLogger().log(Level.FINE, "Could not parse NPC text format, saving defaults");
                     npcColors.add(ChatColor.DARK_RED);
                     textColors.add(ChatColor.GREEN);
                     textColors.add(ChatColor.ITALIC);
@@ -1503,7 +1504,7 @@ public class ConfigUpdater {
             String optionFormat = config.getString("conversation.quester_reply_format");
             String[] optionParts = optionFormat.split("%number%");
             if (optionParts.length != 2) {
-                Debug.info("Could not parse player option format, saving defaults");
+                LogUtils.getLogger().log(Level.FINE, "Could not parse player option format, saving defaults");
                 numberColors.add(ChatColor.YELLOW);
                 optionColors.add(ChatColor.AQUA);
             } else {
@@ -1520,7 +1521,7 @@ public class ConfigUpdater {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.info("Could not parse player option format, saving defaults");
+                    LogUtils.getLogger().log(Level.FINE, "Could not parse player option format, saving defaults");
                     numberColors.add(ChatColor.YELLOW);
                     optionColors.add(ChatColor.AQUA);
                 }
@@ -1529,7 +1530,7 @@ public class ConfigUpdater {
             String answerFormat = config.getString("conversation.player_reply_format");
             String[] answerParts = answerFormat.split("%player%");
             if (answerParts.length != 2) {
-                Debug.info("Could not parse player answer format, saving defaults");
+                LogUtils.getLogger().log(Level.FINE, "Could not parse player answer format, saving defaults");
                 playerColors.add(ChatColor.DARK_GREEN);
                 answerColors.add(ChatColor.GRAY);
             } else {
@@ -1546,7 +1547,7 @@ public class ConfigUpdater {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Debug.info("Could not parse player answer format, saving defaults");
+                    LogUtils.getLogger().log(Level.FINE, "Could not parse player answer format, saving defaults");
                     playerColors.add(ChatColor.DARK_GREEN);
                     answerColors.add(ChatColor.GRAY);
                 }
@@ -1596,9 +1597,9 @@ public class ConfigUpdater {
             config.set("conversation", null);
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Converted conversation format strings to colors");
+        LogUtils.getLogger().log(Level.INFO, "Converted conversation format strings to colors");
         config.set("version", "v21");
         instance.saveConfig();
     }
@@ -1632,11 +1633,11 @@ public class ConfigUpdater {
             config.set("date_format", message);
             String cancel_color = messages.getString("global.cancel_color", "&2");
             messages.set("global", null);
-            Debug.broadcast("Moved 'global' messages to main config.");
+            LogUtils.getLogger().log(Level.INFO, "Moved 'global' messages to main config.");
             Config.getMessages().saveConfig();
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("Processing " + packName + " package");
+                LogUtils.getLogger().log(Level.FINE, "Processing " + packName + " package");
                 ConfigurationSection cancelers = pack.getMain().getConfig().getConfigurationSection("cancel");
                 for (String key : cancelers.getKeys(false)) {
                     String canceler = cancelers.getString(key);
@@ -1649,20 +1650,20 @@ public class ConfigUpdater {
                         }
                     }
                     cancelers.set(key, string.toString().trim());
-                    Debug.info("  Updated " + key + " canceler name color");
+                    LogUtils.getLogger().log(Level.FINE, "  Updated " + key + " canceler name color");
                 }
                 pack.getMain().saveConfig();
                 for (String convName : pack.getConversationNames()) {
                     ConfigAccessor conv = pack.getConversation(convName);
                     conv.getConfig().set("unknown", null);
                     conv.saveConfig();
-                    Debug.info("  Removed 'unknown' messages from " + convName + " conversation");
+                    LogUtils.getLogger().log(Level.FINE, "  Removed 'unknown' messages from " + convName + " conversation");
                 }
             }
-            Debug.broadcast("Removed no longer used 'unknown' message from conversations.");
+            LogUtils.getLogger().log(Level.INFO, "Removed no longer used 'unknown' message from conversations.");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v20");
         instance.saveConfig();
@@ -1676,7 +1677,7 @@ public class ConfigUpdater {
             for (String lang : messages.getKeys(false)) {
                 if (lang.equalsIgnoreCase("global"))
                     continue;
-                Debug.info("Updating " + lang + " language");
+                LogUtils.getLogger().log(Level.FINE, "Updating " + lang + " language");
                 try {
                     messages.set(lang + ".purged", messages.getString(lang + ".purged").replace("%player%", "{1}"));
                     messages.set(lang + ".item_created",
@@ -1702,14 +1703,14 @@ public class ConfigUpdater {
                     messages.set(lang + ".conversation_end",
                             messages.getString(lang + ".conversation_end").replace("%quester%", "{1}"));
                 } catch (NullPointerException e) {
-                    Debug.error("The language " + lang + " is not present in the defaults, please update it manually.");
+                    LogUtils.getLogger().log(Level.WARNING, "The language " + lang + " is not present in the defaults, please update it manually.");
                 }
             }
             confMessages.saveConfig();
-            Debug.broadcast("Updated messages to new replace format");
+            LogUtils.getLogger().log(Level.INFO, "Updated messages to new replace format");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v19");
         instance.saveConfig();
@@ -1724,10 +1725,10 @@ public class ConfigUpdater {
                 main.getConfig().set("tag_point_prefix", "false");
                 main.saveConfig();
             }
-            Debug.broadcast("Added prefix option to all packages.");
+            LogUtils.getLogger().log(Level.INFO, "Added prefix option to all packages.");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v18");
         instance.saveConfig();
@@ -1737,10 +1738,10 @@ public class ConfigUpdater {
     private void update_from_v16() {
         try {
             // move objectives from events.yml to objectives.yml
-            Debug.info("Moving objectives to objectives.yml");
+            LogUtils.getLogger().log(Level.FINE, "Moving objectives to objectives.yml");
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("  Package " + packName);
+                LogUtils.getLogger().log(Level.FINE, "  Package " + packName);
                 ConfigAccessor events = pack.getEvents();
                 ConfigAccessor objectives = pack.getObjectives();
                 ConfigAccessor main = pack.getMain();
@@ -1749,7 +1750,7 @@ public class ConfigUpdater {
                     int i = 0; // counts unnamed objectives
                     String instruction = events.getConfig().getString(event);
                     if (instruction.startsWith("objective ")) {
-                        Debug.info("    Starting event " + event);
+                        LogUtils.getLogger().log(Level.FINE, "    Starting event " + event);
                         String[] parts = instruction.substring(10).split(" ");
                         StringBuilder string = new StringBuilder();
                         String label = null;
@@ -1770,17 +1771,17 @@ public class ConfigUpdater {
                         String newInstruction = string.toString().trim();
                         // if label is not present, skip this one
                         if (label == null) {
-                            Debug.info("      There is no label, generating one");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no label, generating one");
                             label = "objective" + i;
                             i++;
                         }
-                        Debug.info("      Saving the objective as " + label + ", instruction: " + newInstruction);
+                        LogUtils.getLogger().log(Level.FINE, "      Saving the objective as " + label + ", instruction: " + newInstruction);
                         // save objective and generate label
                         objectives.getConfig().set(label, newInstruction);
                         events.getConfig().set(event, ("objective start " + label + " " + conditions).trim());
                     } else if (instruction.startsWith("delete ")) {
                         // update delete events
-                        Debug.info("    Delete event " + event);
+                        LogUtils.getLogger().log(Level.FINE, "    Delete event " + event);
                         events.getConfig().set(event, "objective " + instruction);
                     }
                 }
@@ -1810,13 +1811,13 @@ public class ConfigUpdater {
                 objectives.saveConfig();
                 main.saveConfig();
             }
-            Debug.broadcast("Moved objectives to a separate file and renamed"
+            LogUtils.getLogger().log(Level.INFO, "Moved objectives to a separate file and renamed"
                     + " 'event_conditions:' argument to 'conditions:'");
-            Debug.info("Updating the database");
+            LogUtils.getLogger().log(Level.FINE, "Updating the database");
             Connection con = instance.getDB().getConnection();
             String prefix = Config.getString("config.mysql.prefix");
             // update database format
-            Debug.info("Updating the database format");
+            LogUtils.getLogger().log(Level.FINE, "Updating the database format");
             if (instance.isMySQLUsed()) {
                 con.prepareStatement(
                         "ALTER TABLE " + prefix + "objectives ADD objective VARCHAR(512) NOT NULL AFTER playerID;")
@@ -1836,11 +1837,11 @@ public class ConfigUpdater {
                 con.prepareStatement("COMMIT").executeUpdate();
             }
             // update each entry
-            Debug.info("Updating entries");
+            LogUtils.getLogger().log(Level.FINE, "Updating entries");
             ResultSet res = con.prepareStatement("SELECT * FROM " + prefix + "objectives").executeQuery();
             while (res.next()) {
                 String oldInst = res.getString("instructions");
-                Debug.info("  Loaded instruction: " + oldInst);
+                LogUtils.getLogger().log(Level.FINE, "  Loaded instruction: " + oldInst);
                 String label = null;
                 String[] parts = oldInst.split(" ");
                 String newInst;
@@ -1851,7 +1852,7 @@ public class ConfigUpdater {
                     }
                 }
                 if (label == null) {
-                    Debug.info("    The objective without label, removing");
+                    LogUtils.getLogger().log(Level.FINE, "    The objective without label, removing");
                     PreparedStatement stmt = con.prepareStatement("DELETE FROM " + prefix + "objectives WHERE id = ?");
                     stmt.setInt(1, res.getInt("id"));
                     stmt.executeUpdate();
@@ -1885,14 +1886,14 @@ public class ConfigUpdater {
                             newInst = "";
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    Debug.info("    Could not read data from objective " + label + ", removing");
+                    LogUtils.getLogger().log(Level.WARNING, "    Could not read data from objective " + label + ", removing");
                     PreparedStatement stmt = con
                             .prepareStatement("DELETE FROM " + prefix + "objectives WHERE id = ?");
                     stmt.setInt(1, res.getInt("id"));
                     stmt.executeUpdate();
                     continue;
                 }
-                Debug.info("    Updating the " + label + " objective: '" + newInst + "'");
+                LogUtils.getLogger().log(Level.FINE, "    Updating the " + label + " objective: '" + newInst + "'");
                 PreparedStatement stmt = con.prepareStatement(
                         "UPDATE " + prefix + "objectives SET objective=?, instructions=? WHERE id = ?");
                 stmt.setString(1, label);
@@ -1900,10 +1901,10 @@ public class ConfigUpdater {
                 stmt.setInt(3, res.getInt("id"));
                 stmt.executeUpdate();
             }
-            Debug.broadcast("Updated objective instruction strings in the database");
+            LogUtils.getLogger().log(Level.INFO, "Updated objective instruction strings in the database");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v17");
         instance.saveConfig();
@@ -1915,7 +1916,7 @@ public class ConfigUpdater {
             config.set("remove_items_after_respawn", "true");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v16");
         instance.saveConfig();
@@ -1936,11 +1937,11 @@ public class ConfigUpdater {
             config.set("hook.vault", "true");
             config.set("hook.worldguard", "true");
             config.set("hook.skript", "true");
-            Debug.broadcast("Added default_package, hook and cmd_blacklist"
+            LogUtils.getLogger().log(Level.INFO, "Added default_package, hook and cmd_blacklist"
                     + " options to main config, removed metrics and uuid!");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v15");
         instance.saveConfig();
@@ -1949,16 +1950,16 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v13() {
         try {
-            Debug.info("Removing empty lines in conversation files");
+            LogUtils.getLogger().log(Level.FINE, "Removing empty lines in conversation files");
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();
-                Debug.info("  Package " + packName);
+                LogUtils.getLogger().log(Level.FINE, "  Package " + packName);
                 for (String convName : pack.getConversationNames()) {
-                    Debug.info("    Conversation " + convName);
+                    LogUtils.getLogger().log(Level.FINE, "    Conversation " + convName);
                     ConfigAccessor conv = pack.getConversation(convName);
                     for (String key : conv.getConfig().getKeys(true)) {
                         if (conv.getConfig().getString(key).equals("")) {
-                            Debug.info("      Key removed: " + key);
+                            LogUtils.getLogger().log(Level.FINE, "      Key removed: " + key);
                             conv.getConfig().set(key, null);
                         }
                     }
@@ -1967,9 +1968,9 @@ public class ConfigUpdater {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Removed unnecessary empty lines in conversation config files.");
+        LogUtils.getLogger().log(Level.INFO, "Removed unnecessary empty lines in conversation config files.");
         config.set("version", "v14");
         instance.saveConfig();
     }
@@ -1977,10 +1978,10 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v12() {
         try {
-            Debug.info("Moving all configuration to \"default\" package");
+            LogUtils.getLogger().log(Level.FINE, "Moving all configuration to \"default\" package");
             // clear the default package, which contains only default quest
             File defPkg = Config.getPackages().get("default").getFolder();
-            Debug.info("  Deleting default files");
+            LogUtils.getLogger().log(Level.FINE, "  Deleting default files");
             for (File file : defPkg.listFiles()) {
                 file.delete();
             }
@@ -1988,7 +1989,7 @@ public class ConfigUpdater {
             File root = instance.getDataFolder();
             String[] filesToMove = new String[]{"events", "conditions", "items", "journal"};
             for (String fileToMove : filesToMove) {
-                Debug.info("  Moving " + fileToMove + ".yml file");
+                LogUtils.getLogger().log(Level.FINE, "  Moving " + fileToMove + ".yml file");
                 new File(root, fileToMove + ".yml").renameTo(new File(defPkg, fileToMove + ".yml"));
             }
             // move all conversations
@@ -1996,11 +1997,11 @@ public class ConfigUpdater {
             File oldConversationFolder = new File(root, "conversations");
             newConversationFolder.mkdir();
             for (File conversation : oldConversationFolder.listFiles()) {
-                Debug.info("  Moving " + conversation.getName() + " conversation file");
+                LogUtils.getLogger().log(Level.FINE, "  Moving " + conversation.getName() + " conversation file");
                 conversation.renameTo(new File(newConversationFolder, conversation.getName()));
             }
             // generate main.yml file
-            Debug.info("  Generating main.yml file");
+            LogUtils.getLogger().log(Level.FINE, "  Generating main.yml file");
             File mainFile = new File(defPkg, "main.yml");
             mainFile.createNewFile();
             FileConfiguration main = YamlConfiguration.loadConfiguration(mainFile);
@@ -2024,13 +2025,13 @@ public class ConfigUpdater {
             }
             main.save(mainFile);
             // remove old values from configuration
-            Debug.info("  Removing old files and config values");
+            LogUtils.getLogger().log(Level.FINE, "  Removing old files and config values");
             oldConversationFolder.delete();
             config.set("global_locations", null);
             config.set("static", null);
             new File(root, "npcs.yml").delete();
-            Debug.info("Configuration updated!");
-            Debug.broadcast("Updating the database, it may take a long time!");
+            LogUtils.getLogger().log(Level.FINE, "Configuration updated!");
+            LogUtils.getLogger().log(Level.INFO, "Updating the database, it may take a long time!");
             Connection con = instance.getDB().getConnection();
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix + "objectives");
@@ -2085,12 +2086,12 @@ public class ConfigUpdater {
                 stmt.setString(3, pointer[2]);
                 stmt.executeUpdate();
             }
-            Debug.info("Done! Everything converted.");
+            LogUtils.getLogger().log(Level.FINE, "Done! Everything converted.");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Introduced new packaging system and moved configuration to \"default\" package!");
+        LogUtils.getLogger().log(Level.INFO, "Introduced new packaging system and moved configuration to \"default\" package!");
         config.set("version", "v13");
         instance.saveConfig();
     }
@@ -2098,7 +2099,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v11() {
         try {
-            Debug.info("Updating objectives in configuration");
+            LogUtils.getLogger().log(Level.FINE, "Updating objectives in configuration");
             ConfigAccessor events = ch.getConfigs().get("events");
             ArrayList<String> labels = new ArrayList<>();
             boolean notified = false;
@@ -2106,7 +2107,7 @@ public class ConfigUpdater {
             for (String key : events.getConfig().getKeys(false)) {
                 String value = events.getConfig().getString(key);
                 if (value.startsWith("objective ")) {
-                    Debug.info("  Found " + key + " objective event");
+                    LogUtils.getLogger().log(Level.FINE, "  Found " + key + " objective event");
                     // replace "tag:" with "label:" in all found objectives
                     String[] parts = value.split(" ");
                     StringBuilder builder = new StringBuilder();
@@ -2115,7 +2116,7 @@ public class ConfigUpdater {
                             String label = parts[i].substring(4);
                             if (!notified && labels.contains(label)) {
                                 notified = true;
-                                Debug.error("You have multiple objectives with the same label!"
+                                LogUtils.getLogger().log(Level.WARNING, "You have multiple objectives with the same label!"
                                         + " That is an error, because the player cannot have"
                                         + " active more than one objective with the same label");
                             }
@@ -2126,14 +2127,14 @@ public class ConfigUpdater {
                         builder.append(" ");
                     }
                     String newValue = builder.toString().trim();
-                    Debug.info("    After processing: " + newValue);
+                    LogUtils.getLogger().log(Level.FINE, "    After processing: " + newValue);
                     events.getConfig().set(key, newValue);
                 }
             }
             events.saveConfig();
-            Debug.info("Converted all objectives in configuration");
+            LogUtils.getLogger().log(Level.FINE, "Converted all objectives in configuration");
             // update all objectives in the database
-            Debug.broadcast("Converting objectives in the database, it may take a long time");
+            LogUtils.getLogger().log(Level.INFO, "Converting objectives in the database, it may take a long time");
             Connection con = instance.getDB().getConnection();
             String prefix = instance.getConfig().getString("mysql.prefix", "");
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM " + prefix + "objectives");
@@ -2150,11 +2151,11 @@ public class ConfigUpdater {
                     }
                 }
                 if (label == null) {
-                    Debug.info("  Found objective without a label, that's strange... Anyway, skipping. Player: "
+                    LogUtils.getLogger().log(Level.FINE, "  Found objective without a label, that's strange... Anyway, skipping. Player: "
                             + playerID);
                     continue;
                 }
-                Debug.info("  Found objective for player " + playerID + " with label " + label);
+                LogUtils.getLogger().log(Level.FINE, "  Found objective for player " + playerID + " with label " + label);
                 ArrayList<String> oList = objectives.get(playerID);
                 ArrayList<String> lList = labels2.get(playerID);
                 if (oList == null) {
@@ -2163,11 +2164,11 @@ public class ConfigUpdater {
                 }
                 // cannot have two objectives with the same tag
                 if (lList.contains(label)) {
-                    Debug.info("    Label already exists, skipping this one!");
+                    LogUtils.getLogger().log(Level.FINE, "    Label already exists, skipping this one!");
                     continue;
                 }
                 String converted = convertObjective(objective);
-                Debug.info("    Objective converted: " + converted);
+                LogUtils.getLogger().log(Level.FINE, "    Objective converted: " + converted);
                 oList.add(converted);
                 lList.add(label);
                 objectives.put(playerID, oList);
@@ -2175,7 +2176,7 @@ public class ConfigUpdater {
             }
             // everything is extracted from the database and converted
             // time to put it back
-            Debug.info("Inserting everything into the database...");
+            LogUtils.getLogger().log(Level.FINE, "Inserting everything into the database...");
             con.createStatement().executeUpdate("DELETE FROM " + prefix + "objectives");
             for (String playerID : objectives.keySet()) {
                 for (String objective : objectives.get(playerID)) {
@@ -2186,12 +2187,12 @@ public class ConfigUpdater {
                     stmt.executeUpdate();
                 }
             }
-            Debug.info("Done! Everything converted");
+            LogUtils.getLogger().log(Level.FINE, "Done! Everything converted");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Changed keyword \"tag:\" to \"label:\" in all objectives!");
+        LogUtils.getLogger().log(Level.INFO, "Changed keyword \"tag:\" to \"label:\" in all objectives!");
         config.set("version", "v12");
         instance.saveConfig();
     }
@@ -2199,12 +2200,12 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v10() {
         try {
-            Debug.info("Updating instruction strings");
-            Debug.info("  Updating conditions");
+            LogUtils.getLogger().log(Level.FINE, "Updating instruction strings");
+            LogUtils.getLogger().log(Level.FINE, "  Updating conditions");
             ConfigAccessor conditions = ch.getConfigs().get("conditions");
             conditions:
             for (String key : conditions.getConfig().getKeys(false)) {
-                Debug.info("    Processing " + key + " condition");
+                LogUtils.getLogger().log(Level.FINE, "    Processing " + key + " condition");
                 String instruction = conditions.getConfig().getString(key).trim();
                 String[] parts = instruction.split(" ");
                 String type = parts[0].toLowerCase();
@@ -2212,7 +2213,7 @@ public class ConfigUpdater {
                 newParts.add(type);
                 switch (type) {
                     case "hand":
-                        Debug.info("      Found hand type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found hand type");
                         String item = null;
                         for (String part : parts) {
                             if (part.startsWith("item:")) {
@@ -2222,13 +2223,13 @@ public class ConfigUpdater {
                         if (item != null) {
                             newParts.add(item);
                         } else {
-                            Debug.info("      There is no item defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no item defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "or":
                     case "and":
-                        Debug.info("      Found or/and type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found or/and type");
                         String orAndConditions = null;
                         for (String part : parts) {
                             if (part.startsWith("conditions:")) {
@@ -2238,12 +2239,12 @@ public class ConfigUpdater {
                         if (orAndConditions != null) {
                             newParts.add(orAndConditions);
                         } else {
-                            Debug.info("      There are no conditions defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There are no conditions defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "location":
-                        Debug.info("      Found location type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found location type");
                         String location = null;
                         for (String part : parts) {
                             if (part.startsWith("loc:")) {
@@ -2253,12 +2254,12 @@ public class ConfigUpdater {
                         if (location != null) {
                             newParts.add(location);
                         } else {
-                            Debug.info("      There is no location defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no location defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "health":
-                        Debug.info("      Found health type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found health type");
                         String health = null;
                         for (String part : parts) {
                             if (part.startsWith("health:")) {
@@ -2268,12 +2269,12 @@ public class ConfigUpdater {
                         if (health != null) {
                             newParts.add(health);
                         } else {
-                            Debug.info("      There is no health amount defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no health amount defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "experience":
-                        Debug.info("      Found experience type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found experience type");
                         String exp = null;
                         for (String part : parts) {
                             if (part.startsWith("exp:")) {
@@ -2283,12 +2284,12 @@ public class ConfigUpdater {
                         if (exp != null) {
                             newParts.add(exp);
                         } else {
-                            Debug.info("      There is no experience level defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no experience level defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "permission":
-                        Debug.info("      Found permission type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found permission type");
                         String perm = null;
                         for (String part : parts) {
                             if (part.contains("perm:")) {
@@ -2298,12 +2299,12 @@ public class ConfigUpdater {
                         if (perm != null) {
                             newParts.add(perm);
                         } else {
-                            Debug.info("      There is no permission defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no permission defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "point":
-                        Debug.info("      Found point type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found point type");
                         String category = null;
                         String amount = null;
                         for (String part : parts) {
@@ -2317,12 +2318,12 @@ public class ConfigUpdater {
                             newParts.add(category);
                             newParts.add(amount);
                         } else {
-                            Debug.info("      There is no category/amount defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no category/amount defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "tag":
-                        Debug.info("      Found tag type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found tag type");
                         String tag = null;
                         for (String part : parts) {
                             if (part.startsWith("tag:")) {
@@ -2332,12 +2333,12 @@ public class ConfigUpdater {
                         if (tag != null) {
                             newParts.add(tag);
                         } else {
-                            Debug.info("      There is no tag defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no tag defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "armor":
-                        Debug.info("      Found armor type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found armor type");
                         String material = null;
                         String armorType = null;
                         String enchants = null;
@@ -2357,7 +2358,7 @@ public class ConfigUpdater {
                             try {
                                 armor = Material.matchMaterial(material + "_" + armorType);
                             } catch (Exception e) {
-                                Debug.info("      Could not read armor type, skipping");
+                                LogUtils.getLogger().log(Level.FINE, "      Could not read armor type, skipping");
                                 continue conditions;
                             }
                             String itemInstruction = armor.toString();
@@ -2373,12 +2374,12 @@ public class ConfigUpdater {
                             itemsConfig.saveConfig();
                             newParts.add("armor" + i);
                         } else {
-                            Debug.info("      There is no armor defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no armor defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "effect":
-                        Debug.info("      Found effect type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found effect type");
                         String effect = null;
                         for (String part : parts) {
                             if (part.startsWith("type:")) {
@@ -2388,12 +2389,12 @@ public class ConfigUpdater {
                         if (effect != null) {
                             newParts.add(effect);
                         } else {
-                            Debug.info("      There is no effect defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no effect defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "time":
-                        Debug.info("      Found time type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found time type");
                         String time = null;
                         for (String part : parts) {
                             if (part.startsWith("time:")) {
@@ -2403,12 +2404,12 @@ public class ConfigUpdater {
                         if (time != null) {
                             newParts.add(time);
                         } else {
-                            Debug.info("      There is no time defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no time defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "weather":
-                        Debug.info("      Found weather type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found weather type");
                         String weather = null;
                         for (String part : parts) {
                             if (part.startsWith("type:")) {
@@ -2418,12 +2419,12 @@ public class ConfigUpdater {
                         if (weather != null) {
                             newParts.add(weather);
                         } else {
-                            Debug.info("      There is no weather defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no weather defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "height":
-                        Debug.info("      Found height type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found height type");
                         String height = null;
                         for (String part : parts) {
                             if (part.startsWith("height:")) {
@@ -2433,12 +2434,12 @@ public class ConfigUpdater {
                         if (height != null) {
                             newParts.add(height);
                         } else {
-                            Debug.info("      There is no height defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no height defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "rating":
-                        Debug.info("      Found rating type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found rating type");
                         String rating = null;
                         for (String part : parts) {
                             if (part.startsWith("rating:")) {
@@ -2448,12 +2449,12 @@ public class ConfigUpdater {
                         if (rating != null) {
                             newParts.add(rating);
                         } else {
-                            Debug.info("      There is no rating defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no rating defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "random":
-                        Debug.info("      Found random type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found random type");
                         String random = null;
                         for (String part : parts) {
                             if (part.startsWith("random:")) {
@@ -2463,12 +2464,12 @@ public class ConfigUpdater {
                         if (random != null) {
                             newParts.add(random);
                         } else {
-                            Debug.info("      There is no random defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no random defined, skipping");
                             continue conditions;
                         }
                         break;
                     case "money":
-                        Debug.info("      Found money type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found money type");
                         String money = null;
                         for (String part : parts) {
                             if (part.startsWith("money:")) {
@@ -2478,12 +2479,12 @@ public class ConfigUpdater {
                         if (money != null) {
                             newParts.add(money);
                         } else {
-                            Debug.info("      There is no amount defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no amount defined, skipping");
                             continue conditions;
                         }
                         break;
                     default:
-                        Debug.info("      This one does not need updating");
+                        LogUtils.getLogger().log(Level.FINE, "      This one does not need updating");
                         continue conditions;
                 }
                 StringBuilder builder = new StringBuilder();
@@ -2492,17 +2493,17 @@ public class ConfigUpdater {
                     builder.append(' ');
                 }
                 String newInstruction = builder.toString().trim();
-                Debug.info("      Processing done, instruction: '" + newInstruction + "'");
+                LogUtils.getLogger().log(Level.FINE, "      Processing done, instruction: '" + newInstruction + "'");
                 conditions.getConfig().set(key, newInstruction);
             }
-            Debug.info("  All conditions updated successfully, saving to the file");
+            LogUtils.getLogger().log(Level.FINE, "  All conditions updated successfully, saving to the file");
             conditions.saveConfig();
 
-            Debug.info("  Updating events");
+            LogUtils.getLogger().log(Level.FINE, "  Updating events");
             ConfigAccessor events = ch.getConfigs().get("events");
             events:
             for (String key : events.getConfig().getKeys(false)) {
-                Debug.info("    Processing " + key + " event");
+                LogUtils.getLogger().log(Level.FINE, "    Processing " + key + " event");
                 String instruction = events.getConfig().getString(key).trim();
                 String[] parts = instruction.split(" ");
                 String type = parts[0].toLowerCase();
@@ -2510,7 +2511,7 @@ public class ConfigUpdater {
                 newParts.add(type);
                 switch (type) {
                     case "folder":
-                        Debug.info("      Found folder type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found folder type");
                         String folderEvents = null;
                         String delay = null;
                         String random = null;
@@ -2534,12 +2535,12 @@ public class ConfigUpdater {
                                 newParts.add(random);
                             }
                         } else {
-                            Debug.info("      There are no events defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There are no events defined, skipping");
                             continue events;
                         }
                         break;
                     case "setblock":
-                        Debug.info("      Found setblock type");
+                        LogUtils.getLogger().log(Level.FINE, "      Found setblock type");
                         String block = null;
                         String loc = null;
                         String data = null;
@@ -2561,12 +2562,12 @@ public class ConfigUpdater {
                                 newParts.add(data);
                             }
                         } else {
-                            Debug.info("      There is no block/location defined, skipping");
+                            LogUtils.getLogger().log(Level.FINE, "      There is no block/location defined, skipping");
                             continue events;
                         }
                         break;
                     default:
-                        Debug.info("      This one does not need updating");
+                        LogUtils.getLogger().log(Level.FINE, "      This one does not need updating");
                         continue events;
                 }
                 StringBuilder builder = new StringBuilder();
@@ -2575,17 +2576,17 @@ public class ConfigUpdater {
                     builder.append(' ');
                 }
                 String newInstruction = builder.toString().trim();
-                Debug.info("      Processing done, instruction: '" + newInstruction + "'");
+                LogUtils.getLogger().log(Level.FINE, "      Processing done, instruction: '" + newInstruction + "'");
                 events.getConfig().set(key, newInstruction);
             }
-            Debug.info("  All events updated successfully, saving to the file");
+            LogUtils.getLogger().log(Level.FINE, "  All events updated successfully, saving to the file");
             events.saveConfig();
 
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
-        Debug.broadcast("Made instruction strings more beautiful! Please read the documentation again.");
+        LogUtils.getLogger().log(Level.INFO, "Made instruction strings more beautiful! Please read the documentation again.");
         config.set("version", "v11");
         instance.saveConfig();
     }
@@ -2594,7 +2595,7 @@ public class ConfigUpdater {
     private void update_from_v9() {
         config.set("combat_delay", "10");
         config.set("notify_pullback", "false");
-        Debug.broadcast("Added combat delay and pullback notify options!");
+        LogUtils.getLogger().log(Level.INFO, "Added combat delay and pullback notify options!");
         config.set("version", "v10");
         instance.saveConfig();
     }
@@ -2610,14 +2611,14 @@ public class ConfigUpdater {
         ConfigAccessor messages = ch.getConfigs().get("messages");
         messages.getConfig().set("global.date_format", "dd.MM.yyyy HH:mm");
         messages.saveConfig();
-        Debug.broadcast("Added date format line to messages.yml");
+        LogUtils.getLogger().log(Level.INFO, "Added date format line to messages.yml");
         config.set("version", "v8");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
     private void update_from_v6() {
-        Debug.broadcast("Added backpacks to the database!");
+        LogUtils.getLogger().log(Level.INFO, "Added backpacks to the database!");
         config.set("version", "v7");
         instance.saveConfig();
     }
@@ -2659,10 +2660,10 @@ public class ConfigUpdater {
                 connection.prepareStatement("DROP TABLE " + prefix + "tags_old").executeUpdate();
                 connection.prepareStatement("COMMIT").executeUpdate();
             }
-            Debug.broadcast("Updated database format to better one.");
+            LogUtils.getLogger().log(Level.INFO, "Updated database format to better one.");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v6");
         instance.saveConfig();
@@ -2675,26 +2676,26 @@ public class ConfigUpdater {
             // parser
             ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
             FileConfiguration eventsConfig = eventsAccessor.getConfig();
-            Debug.info("Updating events!");
+            LogUtils.getLogger().log(Level.FINE, "Updating events!");
             // check every event in configuration
             for (String key : eventsConfig.getKeys(false)) {
-                Debug.info("  Processing " + key);
+                LogUtils.getLogger().log(Level.FINE, "  Processing " + key);
                 String instruction = eventsConfig.getString(key);
                 // if the event is of type "give" or "take" then proceed
                 if (instruction.startsWith("give ") || instruction.startsWith("take ")) {
                     String[] parts = instruction.split(" ");
-                    Debug.info("    Found " + parts[0] + " event");
+                    LogUtils.getLogger().log(Level.FINE, "    Found " + parts[0] + " event");
                     // get item's amount
                     int amount = 1;
                     for (String part : parts) {
                         if (part.startsWith("amount:")) {
                             amount = Integer.parseInt(part.substring(7));
-                            Debug.info("    Amount is set to " + amount);
+                            LogUtils.getLogger().log(Level.FINE, "    Amount is set to " + amount);
                         }
                     }
                     // generate new instruction
                     String newInstruction = parts[0] + " " + parts[1] + ((amount != 1) ? ":" + amount : "");
-                    Debug.info("    Saving instruction '" + newInstruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Saving instruction '" + newInstruction + "'");
                     // save it
                     eventsConfig.set(key, newInstruction);
                 }
@@ -2704,40 +2705,40 @@ public class ConfigUpdater {
             // update all item conditions
             ConfigAccessor conditionsAccessor = ch.getConfigs().get("conditions");
             FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
-            Debug.info("Updatng conditions!");
+            LogUtils.getLogger().log(Level.FINE, "Updatng conditions!");
             // check every condition in configuration
             for (String key : conditionsConfig.getKeys(false)) {
-                Debug.info("  Processing " + key);
+                LogUtils.getLogger().log(Level.FINE, "  Processing " + key);
                 String instruction = conditionsConfig.getString(key);
                 // if the condition is of type "item" then proceed
                 if (instruction.startsWith("item ")) {
                     String[] parts = instruction.split(" ");
-                    Debug.info("    Found item condition");
+                    LogUtils.getLogger().log(Level.FINE, "    Found item condition");
                     // get item name and amount
                     String name = null;
                     int amount = 1;
                     for (String part : parts) {
                         if (part.startsWith("item:")) {
                             name = part.substring(5);
-                            Debug.info("    Name is " + name);
+                            LogUtils.getLogger().log(Level.FINE, "    Name is " + name);
                         } else if (part.startsWith("amount:")) {
                             amount = Integer.parseInt(part.substring(7));
-                            Debug.info("    Amount is " + amount);
+                            LogUtils.getLogger().log(Level.FINE, "    Amount is " + amount);
                         }
                     }
                     // generate new instruction
                     String newInstruction = "item " + name + ((amount != 1) ? ":" + amount : "");
-                    Debug.info("    Saving instruction '" + newInstruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Saving instruction '" + newInstruction + "'");
                     // save it
                     conditionsConfig.set(key, newInstruction);
                 }
             }
             // when all conditions are converted, save the file
             conditionsAccessor.saveConfig();
-            Debug.broadcast("Converted give/take events and item conditions to new format!");
+            LogUtils.getLogger().log(Level.INFO, "Converted give/take events and item conditions to new format!");
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         config.set("version", "v5");
         instance.saveConfig();
@@ -2746,7 +2747,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v3() {
         config.set("mysql.prefix", "");
-        Debug.broadcast("Added prefix option to MySQL settings!");
+        LogUtils.getLogger().log(Level.INFO, "Added prefix option to MySQL settings!");
         config.set("version", "v4");
         instance.saveConfig();
     }
@@ -2767,35 +2768,35 @@ public class ConfigUpdater {
                 conditionsConfig.set(path, conditionsConfig.getString(path).trim());
             }
             HashMap<String, String> conditionsInverted = new HashMap<>();
-            Debug.info("Extracting conditions to a map");
+            LogUtils.getLogger().log(Level.FINE, "Extracting conditions to a map");
             // for each condition
             for (String name : conditionsConfig.getKeys(false)) {
                 // get instruction
                 String condition = conditionsConfig.getString(name);
                 boolean wasInverted = false;
                 int i = 1;
-                Debug.info("  Checking condition " + name);
+                LogUtils.getLogger().log(Level.FINE, "  Checking condition " + name);
                 // if it is --inverted
                 while (condition.contains("--inverted")) {
-                    Debug.info("    Loop " + i);
+                    LogUtils.getLogger().log(Level.FINE, "    Loop " + i);
                     i++;
-                    Debug.info("      Instruction: '" + condition + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Instruction: '" + condition + "'");
                     // get starting index of --inverted
                     int startingIndex = condition.indexOf(" --inverted");
-                    Debug.info("      First occurence of --inverted tag: " + startingIndex);
+                    LogUtils.getLogger().log(Level.FINE, "      First occurence of --inverted tag: " + startingIndex);
                     // get first half (to cut --inverted)
                     String firstHalf = condition.substring(0, startingIndex);
-                    Debug.info("      First half is '" + firstHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      First half is '" + firstHalf + "'");
                     // get last half (from the end of --inverted string)
                     String lastHalf = condition.substring(startingIndex + 11);
-                    Debug.info("      Last half is '" + lastHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Last half is '" + lastHalf + "'");
                     // get new condition string without --inverted tag
                     condition = firstHalf + lastHalf;
                     wasInverted = true;
-                    Debug.info("      And the whole new condition is '" + condition + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      And the whole new condition is '" + condition + "'");
                 }
                 if (wasInverted) {
-                    Debug.info("  Removing from config and putting into a map!");
+                    LogUtils.getLogger().log(Level.FINE, "  Removing from config and putting into a map!");
                     // remove it from config
                     conditionsConfig.set(name, null);
                     // put it into the map
@@ -2803,59 +2804,59 @@ public class ConfigUpdater {
                 }
             }
             // for each, check for duplicates
-            Debug.info("Checking for duplicates in config");
+            LogUtils.getLogger().log(Level.FINE, "Checking for duplicates in config");
             HashMap<String, String> nameChanging = new HashMap<>();
             for (String invertedName : conditionsInverted.keySet()) {
                 // check every condition from the map
-                Debug.info("  Checking condition " + invertedName);
+                LogUtils.getLogger().log(Level.FINE, "  Checking condition " + invertedName);
                 String duplicateName = null;
                 for (String normalName : conditionsConfig.getKeys(false)) {
                     // against every condition that is still in the config
                     if (conditionsConfig.getString(normalName).equals(conditionsInverted.get(invertedName))) {
                         // if it is the same, then we have a match; we need to
                         // mark it as a duplicate
-                        Debug.info("    Found a duplicate: " + normalName);
+                        LogUtils.getLogger().log(Level.FINE, "    Found a duplicate: " + normalName);
                         duplicateName = normalName;
                     }
                 }
                 if (duplicateName != null) {
                     // if it still exists in config, put it into map <old
                     // name, new name> as duplicate and !original
-                    Debug.info("    Inserting into name changing map, from " + invertedName + " to !" + duplicateName);
+                    LogUtils.getLogger().log(Level.FINE, "    Inserting into name changing map, from " + invertedName + " to !" + duplicateName);
                     nameChanging.put(invertedName, "!" + duplicateName);
                 } else {
                     // if it doesn't, put into a map as original and !original,
                     // and reinsert into config
-                    Debug.info("    Inserting into name changing map, from " + invertedName + " to !" + invertedName);
-                    Debug.info("    Readding to configuration!");
+                    LogUtils.getLogger().log(Level.FINE, "    Inserting into name changing map, from " + invertedName + " to !" + invertedName);
+                    LogUtils.getLogger().log(Level.FINE, "    Readding to configuration!");
                     nameChanging.put(invertedName, "!" + invertedName);
                     conditionsConfig.set(invertedName, conditionsInverted.get(invertedName));
                 }
             }
-            Debug.info("Starting conditions updating!");
+            LogUtils.getLogger().log(Level.FINE, "Starting conditions updating!");
             for (String key : conditionsConfig.getKeys(false)) {
                 String instruction = conditionsConfig.getString(key).trim();
-                Debug.info("  Processing condition " + key);
+                LogUtils.getLogger().log(Level.FINE, "  Processing condition " + key);
                 if (instruction.startsWith("or ") || instruction.startsWith("and ")) {
                     String type = instruction.substring(0, instruction.indexOf(" "));
-                    Debug.info("    Found " + type + " condition!");
+                    LogUtils.getLogger().log(Level.FINE, "    Found " + type + " condition!");
                     int index = instruction.indexOf(" conditions:") + 12;
                     String firstPart = instruction.substring(0, index);
-                    Debug.info("    First part is '" + firstPart + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    First part is '" + firstPart + "'");
                     int secondIndex = index + instruction.substring(index).indexOf(" ");
                     if (secondIndex <= index) {
                         secondIndex = instruction.length();
                     }
                     String conditionList = instruction.substring(index, secondIndex);
-                    Debug.info("    List of conditions is '" + conditionList + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    List of conditions is '" + conditionList + "'");
                     String lastPart = instruction.substring(secondIndex);
-                    Debug.info("    Last part is '" + lastPart + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    Last part is '" + lastPart + "'");
                     String[] parts = conditionList.split(",");
                     for (int i = 0; i < parts.length; i++) {
                         // check each of them if it should be replaced
                         String replacement = nameChanging.get(parts[i]);
                         if (replacement != null) {
-                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing " + parts[i] + " with " + replacement);
                             parts[i] = replacement;
                         }
                     }
@@ -2865,7 +2866,7 @@ public class ConfigUpdater {
                     }
                     String newInstruction = firstPart
                             + newConditionsList.toString().substring(0, newConditionsList.length() - 1) + lastPart;
-                    Debug.info("    New instruction is '" + newInstruction + "'");
+                    LogUtils.getLogger().log(Level.FINE, "    New instruction is '" + newInstruction + "'");
                     conditionsConfig.set(key, newInstruction);
                 }
             }
@@ -2874,47 +2875,47 @@ public class ConfigUpdater {
             // now we have a map with names which need to be changed across all
             // configuration; for each conversation, for each NPC option and
             // player option, replace old names from the map with new names
-            Debug.info("Starting conversation updating");
+            LogUtils.getLogger().log(Level.FINE, "Starting conversation updating");
             // get every conversation accessor
             HashMap<String, ConfigAccessor> conversations = ch.getConversations();
             for (String conversationName : conversations.keySet()) {
-                Debug.info("  Processing conversation " + conversationName);
+                LogUtils.getLogger().log(Level.FINE, "  Processing conversation " + conversationName);
                 ConfigAccessor conversation = conversations.get(conversationName);
                 // this list will store every path to condition list in this
                 // conversation
                 List<String> paths = new ArrayList<>();
                 // for every npc option, check if it contains conditions
                 // variable and add it to the list
-                Debug.info("    Extracting conditions from NPC options");
+                LogUtils.getLogger().log(Level.FINE, "    Extracting conditions from NPC options");
                 ConfigurationSection npcOptions = conversation.getConfig().getConfigurationSection("NPC_options");
                 for (String npcPath : npcOptions.getKeys(false)) {
                     String conditionPath = "NPC_options." + npcPath + ".conditions";
                     if (conversation.getConfig().isSet(conditionPath)
                             && !conversation.getConfig().getString(conditionPath).equals("")) {
-                        Debug.info("      Adding " + conditionPath + " to the list");
+                        LogUtils.getLogger().log(Level.FINE, "      Adding " + conditionPath + " to the list");
                         paths.add(conditionPath);
                     }
                 }
                 // for every player option, check if it contains conditions
                 // variable and add it to the list
-                Debug.info("    Extracting conditions from player options");
+                LogUtils.getLogger().log(Level.FINE, "    Extracting conditions from player options");
                 ConfigurationSection playerOptions = conversation.getConfig().getConfigurationSection("player_options");
                 for (String playerPath : playerOptions.getKeys(false)) {
                     String conditionPath = "player_options." + playerPath + ".conditions";
                     if (conversation.getConfig().isSet(conditionPath)
                             && !conversation.getConfig().getString(conditionPath).equals("")) {
-                        Debug.info("      Adding " + conditionPath + " to the list");
+                        LogUtils.getLogger().log(Level.FINE, "      Adding " + conditionPath + " to the list");
                         paths.add(conditionPath);
                     }
                 }
                 // now we have a list of valid paths to condition variables
                 // in this conversation
                 for (String path : paths) {
-                    Debug.info("    Processing path " + path);
+                    LogUtils.getLogger().log(Level.FINE, "    Processing path " + path);
                     // get the list of conditions (as a single string, separated
                     // by commas)
                     String list = conversation.getConfig().getString(path);
-                    Debug.info("      Original conditions list is: " + list);
+                    LogUtils.getLogger().log(Level.FINE, "      Original conditions list is: " + list);
                     // split it into an array
                     String[] conditionArr = list.split(",");
                     for (int i = 0; i < conditionArr.length; i++) {
@@ -2923,7 +2924,7 @@ public class ConfigUpdater {
                         String replacement = nameChanging.get(conditionArr[i]);
                         if (replacement != null) {
                             // and replace it
-                            Debug.info("      Replacing " + conditionArr[i] + " with " + replacement);
+                            LogUtils.getLogger().log(Level.FINE, "      Replacing " + conditionArr[i] + " with " + replacement);
                             conditionArr[i] = replacement;
                         }
                     }
@@ -2934,7 +2935,7 @@ public class ConfigUpdater {
                         newListBuilder.append(condition + ",");
                     }
                     String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
-                    Debug.info("      Saving new list: " + newList);
+                    LogUtils.getLogger().log(Level.FINE, "      Saving new list: " + newList);
                     // and set it
                     conversation.getConfig().set(path, newList);
                 }
@@ -2944,36 +2945,36 @@ public class ConfigUpdater {
             // now every conversation is processed, time for events
             // for each event_conditions: and conditions: in events.yml, replace
             // old names from the map with new names
-            Debug.info("Starting events updating");
+            LogUtils.getLogger().log(Level.FINE, "Starting events updating");
             ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
             for (String eventName : eventsAccessor.getConfig().getKeys(false)) {
-                Debug.info("  Processing event " + eventName);
+                LogUtils.getLogger().log(Level.FINE, "  Processing event " + eventName);
                 // extract event's instruction
                 String instruction = eventsAccessor.getConfig().getString(eventName);
                 // check if it contains event conditions
                 if (instruction.contains(" event_conditions:")) {
-                    Debug.info("    Found event conditions!");
+                    LogUtils.getLogger().log(Level.FINE, "    Found event conditions!");
                     // extract first half (to the start of condition list
                     int index = instruction.indexOf(" event_conditions:") + 18;
                     String firstHalf = instruction.substring(0, index);
-                    Debug.info("      First half is '" + firstHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      First half is '" + firstHalf + "'");
                     // extract condition list
                     int secondIndex = index + instruction.substring(index).indexOf(" ");
                     if (secondIndex <= index) {
                         secondIndex = instruction.length();
                     }
                     String conditionList = instruction.substring(index, secondIndex);
-                    Debug.info("      Condition list is '" + conditionList + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Condition list is '" + conditionList + "'");
                     // extract last half (from the end of condition list)
                     String lastHalf = instruction.substring(secondIndex);
-                    Debug.info("      Last half is '" + lastHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Last half is '" + lastHalf + "'");
                     // split conditions into an array
                     String[] parts = conditionList.split(",");
                     for (int i = 0; i < parts.length; i++) {
                         // check each of them if it should be replaced
                         String replacement = nameChanging.get(parts[i]);
                         if (replacement != null) {
-                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing " + parts[i] + " with " + replacement);
                             parts[i] = replacement;
                         }
                     }
@@ -2983,35 +2984,35 @@ public class ConfigUpdater {
                         newListBuilder.append(part + ",");
                     }
                     String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
-                    Debug.info("      New condition list is '" + newList + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      New condition list is '" + newList + "'");
                     // put the event together and save it
                     String newEvent = firstHalf + newList + lastHalf;
-                    Debug.info("      Saving instruction '" + newEvent + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Saving instruction '" + newEvent + "'");
                     eventsAccessor.getConfig().set(eventName, newEvent);
                 }
                 // read the instruction again, it could've changed
                 instruction = eventsAccessor.getConfig().getString(eventName);
                 // check if it containt objective conditions
                 if (instruction.contains(" conditions:")) {
-                    Debug.info("    Found objective conditions!");
+                    LogUtils.getLogger().log(Level.FINE, "    Found objective conditions!");
                     // extract first half (to the start of condition list
                     int index = instruction.indexOf(" conditions:") + 12;
                     String firstHalf = instruction.substring(0, index);
-                    Debug.info("      First half is '" + firstHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      First half is '" + firstHalf + "'");
                     // extract condition list
                     int secondIndex = index + instruction.substring(index).indexOf(" ");
                     String conditionList = instruction.substring(index, secondIndex);
-                    Debug.info("      Condition list is '" + conditionList + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Condition list is '" + conditionList + "'");
                     // extract last half (from the end of condition list)
                     String lastHalf = instruction.substring(secondIndex);
-                    Debug.info("      Last half is '" + lastHalf + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Last half is '" + lastHalf + "'");
                     // split conditions into an array
                     String[] parts = conditionList.split(",");
                     for (int i = 0; i < parts.length; i++) {
                         // check each of them if it should be replaced
                         String replacement = nameChanging.get(parts[i]);
                         if (replacement != null) {
-                            Debug.info("        Replacing " + parts[i] + " with " + replacement);
+                            LogUtils.getLogger().log(Level.FINE, "        Replacing " + parts[i] + " with " + replacement);
                             parts[i] = replacement;
                         }
                     }
@@ -3021,10 +3022,10 @@ public class ConfigUpdater {
                         newListBuilder.append(part + ",");
                     }
                     String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
-                    Debug.info("      New condition list is '" + newList + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      New condition list is '" + newList + "'");
                     // put the event together and save it
                     String newEvent = firstHalf + newList + lastHalf;
-                    Debug.info("      Saving instruction '" + newEvent + "'");
+                    LogUtils.getLogger().log(Level.FINE, "      Saving instruction '" + newEvent + "'");
                     eventsAccessor.getConfig().set(eventName, newEvent);
                 }
                 // at this point we finished modifying this one event
@@ -3033,14 +3034,14 @@ public class ConfigUpdater {
             // events
             eventsAccessor.saveConfig();
             // every place where conditions are is now updated, finished!
-            Debug.broadcast("Converted inverted conditions to a new format using exclamation marks!");
-            Debug.info("Converting took " + (new Date().getTime() - time) + "ms");
+            LogUtils.getLogger().log(Level.INFO, "Converted inverted conditions to a new format using exclamation marks!");
+            LogUtils.getLogger().log(Level.FINE, "Converting took " + (new Date().getTime() - time) + "ms");
         } catch (Exception e) {
             // try-catch block is required - if there is some exception,
             // the version wouldn't get changed and updater would fall into
             // an infinite loop of endless exceptiorns
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         // set v3 version
         config.set("version", "v3");
@@ -3051,7 +3052,7 @@ public class ConfigUpdater {
     @SuppressWarnings("unused")
     private void update_from_v1() {
         config.set("debug", "false");
-        Debug.broadcast("Added debug option to configuration!");
+        LogUtils.getLogger().log(Level.INFO, "Added debug option to configuration!");
         config.set("version", "v2");
         instance.saveConfig();
     }
@@ -3081,24 +3082,24 @@ public class ConfigUpdater {
     }
 
     private void updateTo1_5() {
-        Debug.broadcast("Started converting configuration files from v1.4 to v1.5!");
+        LogUtils.getLogger().log(Level.INFO, "Started converting configuration files from v1.4 to v1.5!");
         // add sound settings
         String[] array1 = new String[]{"start", "end", "journal", "update", "full"};
         for (String string : array1) {
             config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
         }
-        Debug.broadcast("Added new sound options!");
+        LogUtils.getLogger().log(Level.INFO, "Added new sound options!");
         // add colors for journal
         String[] array2 = new String[]{"date.day", "date.hour", "line", "text"};
         for (String string : array2) {
             config.set("journal_colors." + string, config.getDefaults().getString("journal_colors." + string));
         }
-        Debug.broadcast("Added new journal color options!");
+        LogUtils.getLogger().log(Level.INFO, "Added new journal color options!");
         // convert conditions in events to event_condition: format
-        Debug.info("Starting updating 'conditions:' argument to 'event_conditions:' in events.yml");
+        LogUtils.getLogger().log(Level.FINE, "Starting updating 'conditions:' argument to 'event_conditions:' in events.yml");
         ConfigAccessor events = ch.getConfigs().get("events");
         for (String key : events.getConfig().getKeys(false)) {
-            Debug.info("  Processing event " + key);
+            LogUtils.getLogger().log(Level.FINE, "  Processing event " + key);
             if (events.getConfig().getString(key).contains("conditions:")) {
                 StringBuilder parts = new StringBuilder();
                 for (String part : events.getConfig().getString(key).split(" ")) {
@@ -3108,44 +3109,44 @@ public class ConfigUpdater {
                         parts.append(part + " ");
                     }
                 }
-                Debug.info("    Found 'conditions:' option, replacing!");
+                LogUtils.getLogger().log(Level.FINE, "    Found 'conditions:' option, replacing!");
                 events.getConfig().set(key, parts.substring(0, parts.length() - 1));
             }
         }
-        Debug.broadcast("Events now use 'event_conditions:' for conditioning.");
+        LogUtils.getLogger().log(Level.INFO, "Events now use 'event_conditions:' for conditioning.");
         // convert objectives to new format
-        Debug.info("Converting objectives to new format...");
+        LogUtils.getLogger().log(Level.FINE, "Converting objectives to new format...");
         ConfigAccessor objectives = ch.getConfigs().get("objectives");
         for (String key : events.getConfig().getKeys(false)) {
-            Debug.info("  Processing objective " + key);
+            LogUtils.getLogger().log(Level.FINE, "  Processing objective " + key);
             if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
                 events.getConfig().set(key, "objective "
                         + objectives.getConfig().getString(events.getConfig().getString(key).split(" ")[1]));
-                Debug.info("      Event " + key + " converted!");
+                LogUtils.getLogger().log(Level.FINE, "      Event " + key + " converted!");
             }
         }
-        Debug.broadcast("Objectives converted to new, event-powered format!");
+        LogUtils.getLogger().log(Level.INFO, "Objectives converted to new, event-powered format!");
         // convert global locations
         String globalLocations = config.getString("global_locations");
         if (globalLocations != null && !globalLocations.equals("")) {
             StringBuilder configGlobalLocs = new StringBuilder();
-            Debug.broadcast("Converting global locations to use events...");
+            LogUtils.getLogger().log(Level.INFO, "Converting global locations to use events...");
             int i = 0;
             for (String globalLoc : config.getString("global_locations").split(",")) {
                 i++;
                 events.getConfig().set("global_location_" + i,
                         "objective " + objectives.getConfig().getString(globalLoc));
                 configGlobalLocs.append("global_location_" + i + ",");
-                Debug.broadcast("Converted " + globalLoc + " objective.");
+                LogUtils.getLogger().log(Level.INFO, "Converted " + globalLoc + " objective.");
             }
             config.set("global_locations", configGlobalLocs.substring(0, configGlobalLocs.length() - 1));
-            Debug.broadcast("All " + i + " global locations have been converted.");
+            LogUtils.getLogger().log(Level.INFO, "All " + i + " global locations have been converted.");
         }
         events.saveConfig();
-        Debug.broadcast("Removing old file.");
+        LogUtils.getLogger().log(Level.INFO, "Removing old file.");
         new File(instance.getDataFolder(), "objectives.yml").delete();
         // convert books to new format
-        Debug.broadcast("Converting books to new format!");
+        LogUtils.getLogger().log(Level.INFO, "Converting books to new format!");
         ConfigAccessor items = ch.getConfigs().get("items");
         for (String key : items.getConfig().getKeys(false)) {
             String string = items.getConfig().getString(key);
@@ -3171,21 +3172,21 @@ public class ConfigUpdater {
                         instruction.append(part + " ");
                     }
                     items.getConfig().set(key, instruction.toString().trim().replaceAll("\\n", "\\\\n"));
-                    Debug.broadcast("Converted book " + key + ".");
+                    LogUtils.getLogger().log(Level.INFO, "Converted book " + key + ".");
                 }
             }
         }
         items.saveConfig();
-        Debug.broadcast("All books converted!");
+        LogUtils.getLogger().log(Level.INFO, "All books converted!");
         // JournalBook.pagesFromString(questItem.getText(), false);
         config.set("tellraw", "false");
-        Debug.broadcast("Tellraw option added to config.yml!");
+        LogUtils.getLogger().log(Level.INFO, "Tellraw option added to config.yml!");
         config.set("autoupdate", "true");
-        Debug.broadcast("AutoUpdater is now enabled by default! You can change this if you"
+        LogUtils.getLogger().log(Level.INFO, "AutoUpdater is now enabled by default! You can change this if you"
                 + " want and reload the plugin, nothing will be downloaded in that case.");
         // end of update
         config.set("version", "1.5");
-        Debug.broadcast("Conversion to v1.5 finished.");
+        LogUtils.getLogger().log(Level.INFO, "Conversion to v1.5 finished.");
         updateTo1_5_1();
     }
 
@@ -3208,10 +3209,10 @@ public class ConfigUpdater {
     }
 
     private void updateTo1_4() {
-        Debug.broadcast("Started converting configuration files from v1.3 to v1.4!");
+        LogUtils.getLogger().log(Level.INFO, "Started converting configuration files from v1.3 to v1.4!");
         instance.getConfig().set("autoupdate", "false");
-        Debug.broadcast("Added AutoUpdate option to config. It's DISABLED by default!");
-        Debug.broadcast("Moving conversation to separate files...");
+        LogUtils.getLogger().log(Level.INFO, "Added AutoUpdate option to config. It's DISABLED by default!");
+        LogUtils.getLogger().log(Level.INFO, "Moving conversation to separate files...");
         ConfigAccessor convOld = ch.getConfigs().get("conversations");
         Set<String> keys = convOld.getConfig().getKeys(false);
         File folder = new File(instance.getDataFolder(), "conversations");
@@ -3228,16 +3229,16 @@ public class ConfigUpdater {
             }
             try {
                 convNew.save(convFile);
-                Debug.broadcast("Conversation " + convID + " moved to it's own file!");
+                LogUtils.getLogger().log(Level.INFO, "Conversation " + convID + " moved to it's own file!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        Debug.broadcast("All conversations moved, deleting old file.");
+        LogUtils.getLogger().log(Level.INFO, "All conversations moved, deleting old file.");
         new File(instance.getDataFolder(), "conversations.yml").delete();
 
         // updating items
-        Debug.broadcast("Starting conversion of items...");
+        LogUtils.getLogger().log(Level.INFO, "Starting conversion of items...");
         // this map will contain all QuestItem objects extracted from
         // configs
         HashMap<String, QuestItem> items = new HashMap<>();
@@ -3310,7 +3311,7 @@ public class ConfigUpdater {
                         (type + " " + newItemID + " " + amount + " " + conditions).trim());
 
                 // replace event with updated version
-                Debug.broadcast("Extracted " + newItemID + " from " + key + " event!");
+                LogUtils.getLogger().log(Level.INFO, "Extracted " + newItemID + " from " + key + " event!");
             }
         }
         // check every condition (it's almost the same code, I didn't know how
@@ -3378,7 +3379,7 @@ public class ConfigUpdater {
                 }
                 ch.getConfigs().get("conditions").getConfig().set(key,
                         (type + " item:" + newItemID + " " + amount + " " + inverted).trim());
-                Debug.broadcast("Extracted " + newItemID + " from " + key + " condition!");
+                LogUtils.getLogger().log(Level.INFO, "Extracted " + newItemID + " from " + key + " condition!");
             }
         }
         // generated all items, now place them in items.yml
@@ -3407,17 +3408,17 @@ public class ConfigUpdater {
         ch.getConfigs().get("items").saveConfig();
         ch.getConfigs().get("events").saveConfig();
         ch.getConfigs().get("conditions").saveConfig();
-        Debug.broadcast("All extracted items has been successfully saved to items.yml!");
+        LogUtils.getLogger().log(Level.INFO, "All extracted items has been successfully saved to items.yml!");
         // end of updating to 1.4
         instance.getConfig().set("version", "1.4");
-        Debug.broadcast("Conversion to v1.4 finished.");
+        LogUtils.getLogger().log(Level.INFO, "Conversion to v1.4 finished.");
         updateTo1_4_1();
     }
 
     private void updateTo1_3() {
-        Debug.broadcast("Started converting configuration files from unknown version to v1.3!");
+        LogUtils.getLogger().log(Level.INFO, "Started converting configuration files from unknown version to v1.3!");
         // add conversion options
-        Debug.broadcast("Using Names by for safety. If you run UUID compatible server and "
+        LogUtils.getLogger().log(Level.INFO, "Using Names by for safety. If you run UUID compatible server and "
                 + "want to use UUID, change it manually in the config file and reload the plugin.");
         config.set("uuid", "false");
         // this will alert the plugin that the conversion should be done if UUID
@@ -3426,11 +3427,11 @@ public class ConfigUpdater {
         config.set("convert", "true");
         // add metrics if they are not set yet
         if (!config.isSet("metrics")) {
-            Debug.broadcast("Added metrics option.");
+            LogUtils.getLogger().log(Level.INFO, "Added metrics option.");
             config.set("metrics", "true");
         }
         // add stop to conversation if not done already
-        Debug.broadcast("Adding stop nodes to conversations...");
+        LogUtils.getLogger().log(Level.INFO, "Adding stop nodes to conversations...");
         int count = 0;
         ConfigAccessor conversations = ch.getConfigs().get("conversations");
         Set<String> convNodes = conversations.getConfig().getKeys(false);
@@ -3441,13 +3442,13 @@ public class ConfigUpdater {
             }
         }
         conversations.saveConfig();
-        Debug.broadcast("Done, modified " + count + " conversations!");
+        LogUtils.getLogger().log(Level.INFO, "Done, modified " + count + " conversations!");
         // end of updating to 1.3
         config.set("version", "1.3");
-        Debug.broadcast("Conversion to v1.3 finished.");
+        LogUtils.getLogger().log(Level.INFO, "Conversion to v1.3 finished.");
         updateTo1_4();
     }
-
+    
     /**
      * Updates language file, so it contains all required messages.
      */
@@ -3481,7 +3482,7 @@ public class ConfigUpdater {
         // if we updated config filse then print the message
         if (isUpdated) {
             messages.saveConfig();
-            Debug.broadcast("Updated language files!");
+            LogUtils.getLogger().log(Level.INFO, "Updated language files!");
         }
     }
 
@@ -3490,7 +3491,7 @@ public class ConfigUpdater {
      */
     @SuppressWarnings("deprecation")
     private void convertNamesToUUID() {
-        Debug.broadcast("Converting names to UUID...");
+        LogUtils.getLogger().log(Level.INFO, "Converting names to UUID...");
         // loop all tables
         HashMap<String, String> list = new HashMap<>();
         String[] tables = new String[]{"OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK"};
@@ -3516,7 +3517,7 @@ public class ConfigUpdater {
                         new String[]{list.get(playerID), playerID});
             }
         }
-        Debug.broadcast("Names conversion finished!");
+        LogUtils.getLogger().log(Level.INFO, "Names conversion finished!");
     }
 
     /**
@@ -3529,7 +3530,7 @@ public class ConfigUpdater {
                 changelog.delete();
             }
             Files.copy(BetonQuest.getInstance().getResource("changelog.txt"), changelog.toPath());
-            Debug.broadcast("Changelog added!");
+            LogUtils.getLogger().log(Level.INFO, "Changelog added!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -3644,7 +3645,7 @@ public class ConfigUpdater {
                     if (object == null) {
                         // if object is null then there is no such variable at
                         // specified path
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "conversations":
@@ -3658,31 +3659,31 @@ public class ConfigUpdater {
                         object = conversationsMap.get(conversationID).getConfig().getString(rest);
                     }
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "objectives":
                     object = objectives.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "conditions":
                     object = conditions.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "events":
                     object = events.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "messages":
                     object = messages.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "npcs":
@@ -3691,17 +3692,17 @@ public class ConfigUpdater {
                 case "journal":
                     object = journal.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 case "items":
                     object = items.getConfig().getString(path);
                     if (object == null) {
-                        Debug.info("Error while accessing path: " + rawPath);
+                        LogUtils.getLogger().log(Level.FINE, "Error while accessing path: " + rawPath);
                     }
                     return object;
                 default:
-                    Debug.info("Fatal error while accessing path: " + rawPath + " (there is no such file)");
+                    LogUtils.getLogger().log(Level.FINE, "Fatal error while accessing path: " + rawPath + " (there is no such file)");
                     return null;
             }
         }

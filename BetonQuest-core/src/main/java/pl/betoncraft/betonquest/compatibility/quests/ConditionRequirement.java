@@ -22,10 +22,11 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Requires the player to meet specified condition.
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 public class ConditionRequirement extends CustomRequirement {
 
+    @SuppressWarnings("deprecation")
     public ConditionRequirement() {
         setName("BetonQuest condition");
         setAuthor("Co0sh");
@@ -49,7 +51,7 @@ public class ConditionRequirement extends CustomRequirement {
             ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(playerID, condition);
         } catch (ObjectNotFoundException e) {
-            Debug.error("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage());
             return false;
         }
     }

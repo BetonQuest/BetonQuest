@@ -17,6 +17,13 @@
  */
 package pl.betoncraft.betonquest.compatibility.worldedit;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -26,17 +33,13 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import com.sk89q.worldedit.world.DataException;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
-
-import java.io.File;
-import java.io.IOException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 /**
  * Pastes a schematic at a given location.
@@ -78,7 +81,7 @@ public class PasteSchematicEvent extends QuestEvent {
             Vector newOrigin = BukkitUtil.toVector(location);
             clipboard.paste(editSession, newOrigin, noAir);
         } catch (DataException | IOException | MaxChangedBlocksException e) {
-            Debug.error("Error while pasting a schematic: " + e.getMessage());
+        	LogUtils.getLogger().log(Level.WARNING, "Error while pasting a schematic: " + e.getMessage());
         }
     }
 

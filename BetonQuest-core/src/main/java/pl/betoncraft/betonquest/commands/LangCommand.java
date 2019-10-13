@@ -25,11 +25,12 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.PlayerData;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Changes the default language for the player
@@ -57,7 +58,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                     builder.append(lang + ", ");
                 }
                 if (builder.length() < 3) {
-                    Debug.error("No translations loaded, somethings wrong!");
+                    LogUtils.getLogger().log(Level.WARNING, "No translations loaded, somethings wrong!");
                     return false;
                 }
                 String finalMessage = builder.substring(0, builder.length() - 2) + ".";

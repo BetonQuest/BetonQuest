@@ -35,12 +35,13 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Pastes a schematic at a given location.
@@ -99,7 +100,7 @@ public class PasteSchematicEvent extends QuestEvent {
                 Operations.complete(operation);
             }
         } catch (IOException | WorldEditException e) {
-            Debug.error("Error while pasting a schematic: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while pasting a schematic: " + e.getMessage());
         }
     }
 

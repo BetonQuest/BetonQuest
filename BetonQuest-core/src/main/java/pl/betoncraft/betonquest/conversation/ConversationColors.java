@@ -19,9 +19,10 @@ package pl.betoncraft.betonquest.conversation;
 
 import org.bukkit.ChatColor;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Holds the colors of the conversations
@@ -76,7 +77,7 @@ public class ConversationColors {
             optionColors = new ChatColor[]{};
             answerColors = new ChatColor[]{};
             numberColors = new ChatColor[]{};
-            Debug.error("Could not parse conversation colors, everything will be white!");
+            LogUtils.getLogger().log(Level.WARNING, "Could not parse conversation colors, everything will be white!");
             return;
         }
     }

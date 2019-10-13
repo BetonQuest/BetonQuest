@@ -23,9 +23,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class CustomDropListener implements Listener {
 
@@ -46,7 +47,7 @@ public class CustomDropListener implements Listener {
                             .generate(Integer.valueOf(item.substring(index + 1))));
                 }
             } catch (Exception e) {
-                Debug.error("Error when dropping custom item from entity: " + e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Error when dropping custom item from entity: " + e.getMessage());
             }
             i++;
         }

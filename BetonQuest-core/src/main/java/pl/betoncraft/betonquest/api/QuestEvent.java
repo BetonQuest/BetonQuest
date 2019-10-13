@@ -25,8 +25,10 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * <p>
@@ -108,16 +110,16 @@ public abstract class QuestEvent {
         if (playerID == null) {
             // handle static event
             if (!staticness) {
-                Debug.info("Static event will be fired once for every player:");
+                LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String ID = PlayerConverter.getID(player);
                     for (ConditionID condition : conditions) {
                         if (!BetonQuest.condition(ID, condition)) {
-                            Debug.info("  Event conditions were not met for player " + player.getName());
+                            LogUtils.getLogger().log(Level.FINE, "  Event conditions were not met for player " + player.getName());
                             continue;
                         }
                     }
-                    Debug.info("  Firing this static event for player " + player.getName());
+                    LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
                     run(ID);
                 }
             } else {
@@ -126,7 +128,7 @@ public abstract class QuestEvent {
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             // handle persistent event
             if (!persistent) {
-                Debug.info("Player " + playerID + " is offline, cannot fire event because it's not persistent.");
+                LogUtils.getLogger().log(Level.FINE, "Player " + playerID + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
             run(playerID);
@@ -134,7 +136,7 @@ public abstract class QuestEvent {
             // handle standard event
             for (ConditionID condition : conditions) {
                 if (!BetonQuest.condition(playerID, condition)) {
-                    Debug.info("Event conditions were not met.");
+                    LogUtils.getLogger().log(Level.FINE, "Event conditions were not met.");
                     return;
                 }
             }

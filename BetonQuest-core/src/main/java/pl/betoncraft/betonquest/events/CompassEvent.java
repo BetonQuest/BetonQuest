@@ -26,9 +26,11 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Adds a compass specific tag to the player.
@@ -74,7 +76,7 @@ public class CompassEvent extends QuestEvent {
                 try {
                     new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).run(playerID);
                 } catch (InstructionParseException e) {
-                    Debug.error("Failed to tag player with compass point: " + compass);
+                    LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
                 }
                 return;
             case SET:
@@ -82,7 +84,7 @@ public class CompassEvent extends QuestEvent {
                 try {
                     location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
                 } catch (QuestRuntimeException | InstructionParseException e) {
-                    Debug.error("Failed to set compass: " + compass);
+                    LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
                     return;
                 }
 

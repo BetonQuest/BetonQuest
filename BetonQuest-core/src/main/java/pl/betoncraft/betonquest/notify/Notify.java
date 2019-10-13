@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
 
 /**
  * Create a short message
@@ -134,7 +135,7 @@ public class Notify {
                     tio = c.getConstructor(Map.class).newInstance(ioData);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     e.printStackTrace();
-                    Debug.error("Error when loading notify IO");
+                    LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
                     return new DummyIO(ioData);
                 }
                 break;
@@ -142,7 +143,7 @@ public class Notify {
         }
 
         if (tio == null) {
-            Debug.error("Error when loading notify IO");
+            LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
             return new DummyIO(ioData);
         }
 

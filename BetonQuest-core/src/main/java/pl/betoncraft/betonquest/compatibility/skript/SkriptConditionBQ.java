@@ -26,8 +26,10 @@ import org.bukkit.event.Event;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Skript condition, which checks specified BetonQuest's condition
@@ -58,7 +60,7 @@ public class SkriptConditionBQ extends Condition {
         try {
             return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), new ConditionID(null, conditionID));
         } catch (ObjectNotFoundException e1) {
-            Debug.error("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e1.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e1.getMessage());
             return false;
         }
     }

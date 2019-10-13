@@ -27,11 +27,12 @@ import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * <p>
@@ -162,13 +163,13 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
             addPlayer(playerID, getDefaultDataInstruction());
         }
-        Debug.info("Objective \"" + instruction.getID().getFullID() + "\" has been completed for player " + PlayerConverter.getName(playerID)
+        LogUtils.getLogger().log(Level.FINE, "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player " + PlayerConverter.getName(playerID)
                 + ", firing events.");
         // fire all events
         for (EventID event : events) {
             BetonQuest.event(playerID, event);
         }
-        Debug.info("Firing events in objective \"" + instruction.getID().getFullID() + "\" for player " + PlayerConverter.getName(playerID)
+        LogUtils.getLogger().log(Level.FINE, "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player " + PlayerConverter.getName(playerID)
                 + " finished");
     }
 
@@ -181,7 +182,7 @@ public abstract class Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final String playerID) {
-        Debug.info("Condition check in \"" + instruction.getID().getFullID() + "\" objective for player " + PlayerConverter.getName(playerID));
+        LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID() + "\" objective for player " + PlayerConverter.getName(playerID));
         for (ConditionID condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;
@@ -217,15 +218,15 @@ public abstract class Objective {
                     this.instruction.getID().getFullID());
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
-                Debug.error("Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
+                LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
                         + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
             } else {
                 e.printStackTrace();
-                Debug.error(ERROR);
+                LogUtils.getLogger().log(Level.WARNING, ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.error(ERROR);
+            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         if (dataMap.isEmpty()) {
             start();
@@ -402,7 +403,7 @@ public abstract class Objective {
             } catch (QuestRuntimeException e) {
                 if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) return;
                 last = System.currentTimeMillis();
-                Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
             }
         }
     }

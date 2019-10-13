@@ -21,7 +21,9 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
+
+import java.util.logging.Level;
 
 /**
  * Represents a number which might also be a variable.
@@ -106,7 +108,7 @@ public class VariableNumber {
             try {
                 parsed = Double.parseDouble(resolved);
             } catch (NumberFormatException e) {
-                Debug.error("Could not parse the as a number, it's value is: '" + resolved + "'; returning 0.");
+                LogUtils.getLogger().log(Level.WARNING, "Could not parse the as a number, it's value is: '" + resolved + "'; returning 0.");
             }
             return parsed;
         }

@@ -23,9 +23,10 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,7 @@ public class MathVariable extends Variable {
                 return String.format(Locale.US, "%.0f", value);
             return String.valueOf(value);
         } catch (QuestRuntimeException e) {
-            Debug.error("Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
+            LogUtils.getLogger().log(Level.WARNING, "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
             return "0";
         }
     }

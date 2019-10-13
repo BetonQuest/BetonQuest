@@ -33,9 +33,11 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Requires the player to shoot a target with a bow
@@ -88,12 +90,14 @@ public class ArrowShootObjective extends Objective implements Listener {
                             completeObjective(playerID);
                         }
                     } catch (QuestRuntimeException e) {
-                        Debug.error("Could not resolve range variable: " + e.getMessage());
+                        LogUtils.getLogger().log(Level.WARNING, "Could not resolve range variable: " + e.getMessage());
+                        LogUtils.logThrowable(e);
                     }
                 }
             }.runTask(BetonQuest.getInstance().getJavaPlugin());
         } catch (QuestRuntimeException e) {
-            Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

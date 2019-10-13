@@ -57,6 +57,7 @@ public class SQLite extends Database {
                 file.createNewFile();
             } catch (IOException e) {
                 LogUtils.getLogger().log(Level.SEVERE, "Unable to create database!");
+                LogUtils.logThrowable(e);
             }
         }
         Connection connection = null;

@@ -18,14 +18,16 @@
 
 package pl.betoncraft.betonquest.compatibility.protocollib.conversation;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,6 +40,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicle;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerAnimation;
@@ -48,18 +60,9 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ChatConvIO;
 import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MenuConvIO extends ChatConvIO {
 
@@ -140,7 +143,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel);
         }
         try {
             for (CONTROL control : Arrays.stream(configControlSelect.split(","))
@@ -153,7 +156,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect);
         }
         try {
             for (CONTROL control : Arrays.stream(configControlMove.split(","))
@@ -165,7 +168,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
         }
     }
 

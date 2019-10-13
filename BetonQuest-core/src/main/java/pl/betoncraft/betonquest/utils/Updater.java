@@ -33,6 +33,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Updates the plugin to the newest version and displays notifications about new
@@ -103,17 +104,17 @@ public class Updater {
                 devBuildNumber = Integer.parseInt(raw);
             }
         } catch (Exception e) {
-            Debug.broadcast("Could not parse version string: '" + version + "'. Autoupdater disabled.");
+            LogUtils.getLogger().log(Level.WARNING, "Could not parse version string: '" + version + "'. Autoupdater disabled.");
             return;
         }
         if (isDevBuild && !isOfficial) {
             // this is unofficial dev build, compiled by the developer
-            Debug.broadcast("Detected unofficial development version. Autoupdater disabled.");
+            LogUtils.getLogger().log(Level.WARNING, "Detected unofficial development version. Autoupdater disabled.");
             return;
         }
         // read updater settings from configuration
         load();
-        Debug.broadcast("Autoupdater enabled!");
+        LogUtils.getLogger().log(Level.INFO, "Autoupdater enabled!");
         // check for updates
         new BukkitRunnable() {
             @Override
@@ -126,7 +127,7 @@ public class Updater {
                         devBuildAddress = DEV_DOWNLOAD_LINK.replace("{number}", String.valueOf(remoteDevBuildNumber));
                     }
                 } catch (IOException | NumberFormatException e) {
-                    Debug.error("Could not get the latest dev build number");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not get the latest dev build number");
                     return;
                 }
                 // handle checking github releases
@@ -190,22 +191,22 @@ public class Updater {
                         remoteRelease = highestRelease.toString();
                     }
                 } catch (Exception e) {
-                    Debug.error("Could not get the latest release");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not get the latest release");
                 }
                 // display notifications
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (updateBugFixes && bugfixAddress != null) {
-                            Debug.broadcast("Found bugfix version: " + remoteBugfix
+                            LogUtils.getLogger().log(Level.INFO, "Found bugfix version: " + remoteBugfix
                                     + ", it will be downloaded on next restart/reload.");
                         }
                         if (notifyNewRelease && releaseAddress != null && !remoteRelease.equals(remoteBugfix)) {
-                            Debug.broadcast(
+                            LogUtils.getLogger().log(Level.INFO, 
                                     "Found new release: " + remoteRelease + ", use '/q update' to download it.");
                         }
                         if (notifyDevBuild && devBuildAddress != null) {
-                            Debug.broadcast("Found new development build: " + remoteDevBuild
+                            LogUtils.getLogger().log(Level.INFO, "Found new development build: " + remoteDevBuild
                                     + ", use '/q update --dev' to download it.");
                         }
                     }
@@ -276,20 +277,20 @@ public class Updater {
             if (sender != null) {
                 sender.sendMessage("§2Download finished. Restart/reload the server to update the plugin.");
             } else {
-                Debug.broadcast("Download finished.");
+                LogUtils.getLogger().log(Level.INFO, "Download finished.");
             }
         } catch (IOException e) {
             if (sender != null) {
                 sender.sendMessage("§cCould not download the file. Try again or update manually.");
             } else {
-                Debug.broadcast("Could not download the file.");
+                LogUtils.getLogger().log(Level.INFO, "Could not download the file.");
             }
         }
     }
 
     public boolean updateBugfixes() {
         if (enabled && updateBugFixes && bugfixAddress != null) {
-            Debug.broadcast("Downloading bugfix version " + remoteBugfix);
+            LogUtils.getLogger().log(Level.INFO, "Downloading bugfix version " + remoteBugfix);
             downloadUpdate(bugfixAddress, null);
             return true;
         }

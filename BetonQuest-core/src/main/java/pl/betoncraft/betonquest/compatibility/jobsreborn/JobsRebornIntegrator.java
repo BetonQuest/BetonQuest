@@ -18,7 +18,6 @@
 
 package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
-import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.utils.LogUtils;

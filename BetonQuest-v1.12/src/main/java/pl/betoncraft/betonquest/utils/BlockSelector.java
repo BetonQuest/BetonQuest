@@ -18,6 +18,8 @@
 
 package pl.betoncraft.betonquest.utils;
 
+import java.util.logging.Level;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -51,7 +53,7 @@ public class BlockSelector {
             try {
                 data = Integer.valueOf(parts[1]);
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid data type: " + parts[1]);
+                LogUtils.getLogger().log(Level.WARNING, "Invalid data type: " + parts[1]);
             }
         } else {
             materialName = string;
