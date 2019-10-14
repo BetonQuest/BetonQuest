@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -328,6 +329,14 @@ public class Conversation implements Listener {
             interceptor.sendMessage(message);
         } else {
             player.spigot().sendMessage(TextComponent.fromLegacyText(message));
+        }
+    }
+
+    public void sendMessage(BaseComponent[] message) {
+        if (interceptor != null) {
+            interceptor.sendMessage(message);
+        } else {
+            player.spigot().sendMessage(message);
         }
     }
 

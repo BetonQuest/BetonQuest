@@ -26,6 +26,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -92,6 +93,15 @@ public class PacketInterceptor implements Interceptor, Listener {
         // Tag the message. Is there a better way?
         player.spigot().sendMessage(TextComponent.fromLegacyText("_bq_" + message));
     }
+
+    @Override
+    public void sendMessage(BaseComponent... message) {
+        // Tag the message. Is there a better way?
+        BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent("_bq_")}, message);
+
+        player.spigot().sendMessage(components);
+    }
+
 
     @Override
     public void end() {

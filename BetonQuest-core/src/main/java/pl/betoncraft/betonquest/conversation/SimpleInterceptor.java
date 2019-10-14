@@ -18,6 +18,7 @@
 
 package pl.betoncraft.betonquest.conversation;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,7 +28,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
@@ -52,6 +52,11 @@ public class SimpleInterceptor implements Interceptor, Listener {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
     }
 
+    @Override
+    public void sendMessage(BaseComponent... message) {
+        player.spigot().sendMessage(message);
+    }
+
     /**
      * This method prevents concurrent list modification
      */
@@ -71,7 +76,6 @@ public class SimpleInterceptor implements Interceptor, Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event) {
-        Debug.error(event.getMessage());
         // store all messages so they can be displayed to the player
         // once the conversation is finished
         if (event.isCancelled()) {

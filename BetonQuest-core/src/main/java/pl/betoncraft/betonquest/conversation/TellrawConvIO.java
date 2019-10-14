@@ -17,12 +17,17 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
-import org.bukkit.Bukkit;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,7 +38,7 @@ import java.util.UUID;
 public class TellrawConvIO extends ChatConvIO {
 
     protected HashMap<Integer, String> hashes;
-    protected String color;
+    protected ChatColor color;
     protected boolean italic;
     protected boolean bold;
     protected boolean underline;
@@ -57,7 +62,7 @@ public class TellrawConvIO extends ChatConvIO {
             } else if (color == ChatColor.UNDERLINE) {
                 underline = true;
             } else {
-                this.color = color.name().toLowerCase();
+                this.color = color;
             }
         }
         StringBuilder string = new StringBuilder();
@@ -92,13 +97,17 @@ public class TellrawConvIO extends ChatConvIO {
     public void display() {
         super.display();
         for (int j = 1; j <= options.size(); j++) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-                    "tellraw " + name + " [{\"text\":\"" + number.replace("%number%", Integer.toString(j))
-                            + "\"},{\"text\":\"" + options.get(j) + "\",\"color\":\"" + color + "\",\"bold\":\"" + bold
-                            + "\",\"italic\":\"" + italic + "\",\"underlined\":\"" + underline
-                            + "\",\"strikethrough\":\"" + strikethrough + "\",\"obfuscated\":\"" + magic
-                            + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/betonquestanswer "
-                            + hashes.get(j) + "\"}}]");
+            // We avoid ComponentBuilder as it's not available pre 1.9
+            List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
+            parts.addAll(Arrays.asList(TextComponent.fromLegacyText(options.get(j))));
+            BaseComponent component = parts.get(parts.size() - 1);
+            component.setColor(color.asBungee());
+            component.setBold(bold);
+            component.setStrikethrough(strikethrough);
+            component.setObfuscated(magic);
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
+
+            conv.sendMessage(parts.toArray(new BaseComponent[0]));
         }
     }
 
