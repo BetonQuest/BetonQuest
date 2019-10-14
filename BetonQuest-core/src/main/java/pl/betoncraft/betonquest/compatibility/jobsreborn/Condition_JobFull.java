@@ -21,8 +21,8 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 public class Condition_JobFull extends Condition {
     private String sJobName;

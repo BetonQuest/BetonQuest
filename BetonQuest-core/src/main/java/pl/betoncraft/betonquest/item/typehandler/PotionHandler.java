@@ -21,7 +21,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import pl.betoncraft.betonquest.item.QuestItem.Number;
 

@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.api;
 
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Represents a variable in conversations.

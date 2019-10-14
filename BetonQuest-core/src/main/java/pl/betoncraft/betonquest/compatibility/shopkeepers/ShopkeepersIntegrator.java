@@ -21,7 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
-import pl.betoncraft.betonquest.compatibility.UnsupportedVersionException;
+import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 
 
 public class ShopkeepersIntegrator implements Integrator {

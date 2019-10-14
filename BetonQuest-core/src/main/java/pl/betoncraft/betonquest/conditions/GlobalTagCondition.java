@@ -19,7 +19,7 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Requires the specified global tag to be set

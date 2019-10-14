@@ -19,9 +19,9 @@ package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Checks if the player has specified objective active.

@@ -26,37 +26,23 @@ package pl.betoncraft.betonquest.compatibility;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Thrown if BetonQuest tries to hook a version of a plugin that is not supported
- * <p>
- * Created on 01.07.2018.
- *
- * @author Jonas Blocher
+ * Thrown if BetonQuest tries to hook a version of a plugin that is not
+ * supported
+ * @deprecated Use the {@link pl.betoncraft.betonquest.exceptions.ObjectNotFoundException} instead, this will be removed in the near future
  */
-public class UnsupportedVersionException extends Exception {
+public class UnsupportedVersionException extends pl.betoncraft.betonquest.exceptions.UnsupportedVersionException {
 
-    private final String currentVersion;
-    private final String requiredVersion;
-    private final Plugin plugin;
+    private static final long serialVersionUID = 7965553395053833302L;
 
-    public UnsupportedVersionException(Plugin plugin, String required) {
-        super(String.format("%s version %s is not supported. Please install version %s!",
-                plugin.getName(),
-                plugin.getDescription().getVersion(),
-                required));
-        this.plugin = plugin;
-        this.currentVersion = plugin.getDescription().getVersion();
-        this.requiredVersion = required;
-    }
-
-    public String getCurrentVersion() {
-        return currentVersion;
-    }
-
-    public String getRequiredVersion() {
-        return requiredVersion;
-    }
-
-    public Plugin getPlugin() {
-        return plugin;
+    /**
+     * Constructs a new exception
+     * 
+     * @param plugin
+     *            The plugin, in the wrong version
+     * @param requiredVersion
+     *            The expected version
+     */
+    public UnsupportedVersionException(final Plugin plugin, final String requiredVersion) {
+        super(plugin, requiredVersion);
     }
 }

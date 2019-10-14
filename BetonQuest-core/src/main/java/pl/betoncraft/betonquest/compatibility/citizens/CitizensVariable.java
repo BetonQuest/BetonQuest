@@ -21,8 +21,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Provides information about a citizen npc.

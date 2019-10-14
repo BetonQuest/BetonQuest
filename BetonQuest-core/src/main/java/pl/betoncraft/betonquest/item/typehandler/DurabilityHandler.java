@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.item.typehandler;
 
-import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Number;
 
 public class DurabilityHandler {

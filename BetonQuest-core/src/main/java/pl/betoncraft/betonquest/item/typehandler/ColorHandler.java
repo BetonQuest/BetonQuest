@@ -19,7 +19,7 @@ package pl.betoncraft.betonquest.item.typehandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import pl.betoncraft.betonquest.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import pl.betoncraft.betonquest.utils.Utils;
 

@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.conditions;
 
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.QuestRuntimeException;
 import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

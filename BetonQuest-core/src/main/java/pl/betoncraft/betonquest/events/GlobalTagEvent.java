@@ -19,8 +19,8 @@ package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.database.GlobalData;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Adds or removes global tags

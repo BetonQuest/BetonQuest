@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest;
 
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public abstract class ID {
 

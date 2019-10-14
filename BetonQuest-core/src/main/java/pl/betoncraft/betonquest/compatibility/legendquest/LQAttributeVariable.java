@@ -21,8 +21,8 @@ import me.sablednah.legendquest.Main;
 import me.sablednah.legendquest.mechanics.Attribute;
 import me.sablednah.legendquest.playercharacters.PC;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**

@@ -19,10 +19,10 @@ package pl.betoncraft.betonquest.variables;
 
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.Variable;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 /**
  * Resolves to a specified property of an objective.

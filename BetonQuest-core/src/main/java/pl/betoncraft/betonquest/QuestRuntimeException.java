@@ -17,18 +17,32 @@
  */
 package pl.betoncraft.betonquest;
 
-public class QuestRuntimeException extends Exception {
+/**
+ * Exception thrown when there was an unexpected error.
+ * @deprecated Use the {@link pl.betoncraft.betonquest.exceptions.QuestRuntimeException} instead, this will be removed in the near future
+ */
+public class QuestRuntimeException extends pl.betoncraft.betonquest.exceptions.QuestRuntimeException {
 
     private static final long serialVersionUID = 2375018439469626832L;
-    private final String message;
 
+    /**
+     * {@link Exception#Exception(String)}
+     */
     public QuestRuntimeException(final String message) {
-        this.message = message;
+        super(message);
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    /**
+     * {@link Exception#Exception(String, Throwable)}
+     */
+    public QuestRuntimeException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 
+    /**
+     * {@link Exception#Exception(Throwable)}
+     */
+    public QuestRuntimeException(final Throwable cause) {
+        super(cause);
+    }
 }

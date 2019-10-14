@@ -48,6 +48,7 @@ import pl.betoncraft.betonquest.compatibility.skript.SkriptIntegrator;
 import pl.betoncraft.betonquest.compatibility.vault.VaultIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
+import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 import pl.betoncraft.betonquest.utils.Debug;
 
 import java.util.ArrayList;

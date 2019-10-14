@@ -19,6 +19,8 @@ package pl.betoncraft.betonquest;
 
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.Debug;
 
 /**

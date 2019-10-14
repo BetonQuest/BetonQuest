@@ -17,18 +17,32 @@
  */
 package pl.betoncraft.betonquest;
 
-public class ObjectNotFoundException extends Exception {
+/**
+ * Exception thrown when the object couldn't be found.
+ * @deprecated Use the {@link pl.betoncraft.betonquest.exceptions.ObjectNotFoundException} instead, this will be removed in the near future
+ */
+public class ObjectNotFoundException extends pl.betoncraft.betonquest.exceptions.ObjectNotFoundException {
 
     private static final long serialVersionUID = -6335789753445719198L;
-    private final String message;
-
+    
+    /**
+     * {@link Exception#Exception(String)}
+     */
     public ObjectNotFoundException(final String message) {
-        this.message = message;
+        super(message);
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    /**
+     * {@link Exception#Exception(String, Throwable)}
+     */
+    public ObjectNotFoundException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 
+    /**
+     * {@link Exception#Exception(Throwable)}
+     */
+    public ObjectNotFoundException(final Throwable cause) {
+        super(cause);
+    }
 }
