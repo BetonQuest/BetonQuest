@@ -64,7 +64,7 @@ public class ChestPutObjective extends Objective implements Listener {
         try {
             chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
         } catch (InstructionParseException | ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage());
+            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage(), e);
         }
         if (instruction.hasArgument("items-stay")) {
             chestTakeEvent = null;
@@ -72,7 +72,7 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage());
+                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(), e);
             }
         }
 

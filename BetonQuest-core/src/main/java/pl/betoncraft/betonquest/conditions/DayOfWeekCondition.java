@@ -42,12 +42,12 @@ public class DayOfWeekCondition extends Condition {
         try {
             d = DayOfWeek.of(Integer.parseInt(dayString));
         } catch (DateTimeException e) {
-            throw new InstructionParseException(dayString + " is not a valid day of a week");
+            throw new InstructionParseException(dayString + " is not a valid day of a week", e);
         } catch (NumberFormatException NFE) {
             try {
                 d = DayOfWeek.valueOf(dayString.toUpperCase());
             } catch (IllegalArgumentException IAE) {
-                throw new InstructionParseException(dayString + " is not a valid day of a week");
+                throw new InstructionParseException(dayString + " is not a valid day of a week", IAE);
             }
         }
         this.day = d;

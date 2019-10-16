@@ -83,7 +83,7 @@ public abstract class QuestEvent {
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage());
+                throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage(), e);
             }
         }
     }

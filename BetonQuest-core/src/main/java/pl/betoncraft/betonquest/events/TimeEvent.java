@@ -43,7 +43,7 @@ public class TimeEvent extends QuestEvent {
                 amount = Long.valueOf(time) * 1000 + 18000;
             }
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse time amount");
+            throw new InstructionParseException("Could not parse time amount", e);
         }
     }
 

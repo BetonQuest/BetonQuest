@@ -146,7 +146,7 @@ public class PartialDateCondition extends Condition {
                 } catch (IllegalArgumentException e) {
                     //if some value exceeded minimum or maximum throw IPE
                     throw new InstructionParseException("could not parse " + type + " from '" + string + "'"
-                            + " (" + e.getMessage() + ")");
+                            + " (" + e.getMessage() + ")", e);
                 }
             }
             return intervals;

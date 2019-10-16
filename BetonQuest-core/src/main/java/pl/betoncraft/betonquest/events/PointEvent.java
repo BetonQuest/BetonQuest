@@ -57,7 +57,7 @@ public class PointEvent extends QuestEvent {
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point count");
+            throw new InstructionParseException("Could not parse point count", e);
         }
     }
 

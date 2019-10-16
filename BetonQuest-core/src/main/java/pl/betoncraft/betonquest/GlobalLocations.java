@@ -179,7 +179,7 @@ public class GlobalLocations extends BukkitRunnable {
                 try {
                     conditions[i] = new ConditionID(instruction.getPackage(), condition);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage(), e);
                 }
             }
             String[] tempEvents1 = instruction.getArray(instruction.getOptional("event")),
@@ -191,7 +191,7 @@ public class GlobalLocations extends BukkitRunnable {
                 try {
                     events[i] = new EventID(instruction.getPackage(), event);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing objective events: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing objective events: " + e.getMessage(), e);
                 }
             }
             tag = objectiveID.getPackage().getName() + ".global_" + objectiveID;

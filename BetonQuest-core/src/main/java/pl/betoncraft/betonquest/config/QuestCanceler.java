@@ -104,7 +104,7 @@ public class QuestCanceler {
                 try {
                     events[i] = new EventID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -117,7 +117,7 @@ public class QuestCanceler {
                 try {
                     conditions[i] = new ConditionID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -130,7 +130,7 @@ public class QuestCanceler {
                 try {
                     objectives[i] = new ObjectiveID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
                 }
             }
         } else {

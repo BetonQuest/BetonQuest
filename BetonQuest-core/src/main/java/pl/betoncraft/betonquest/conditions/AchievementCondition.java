@@ -39,7 +39,7 @@ public class AchievementCondition extends Condition {
         try {
             achievement = Achievement.valueOf(a.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("No such achievement: " + a);
+            throw new InstructionParseException("No such achievement: " + a, e);
         }
     }
 

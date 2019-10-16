@@ -49,7 +49,7 @@ public class MoneyEvent extends QuestEvent {
         try {
             amount = new VariableNumber(instruction.getPackage().getName(), string);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse money amount");
+            throw new InstructionParseException("Could not parse money amount", e);
         }
         notify = instruction.hasArgument("notify");
     }

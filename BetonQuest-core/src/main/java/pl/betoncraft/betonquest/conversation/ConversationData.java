@@ -140,7 +140,7 @@ public class ConversationData {
                 try {
                     finalEvents[i] = new EventID(pack, array[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while loading final events: " + e.getMessage());
+                    throw new InstructionParseException("Error while loading final events: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -502,7 +502,7 @@ public class ConversationData {
                         BetonQuest.createVariable(pack, variable);
                     } catch (InstructionParseException e) {
                         throw new InstructionParseException("Error while creating '" + variable + "' variable: "
-                                + e.getMessage());
+                                + e.getMessage(), e);
                     }
                 }
             }
@@ -516,7 +516,7 @@ public class ConversationData {
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
-                        + e.getMessage());
+                        + e.getMessage(), e);
             }
 
             // Events
@@ -528,7 +528,7 @@ public class ConversationData {
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
-                        + e.getMessage());
+                        + e.getMessage(), e);
             }
 
             // Pointers

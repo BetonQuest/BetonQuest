@@ -53,7 +53,7 @@ public class FireworkEffectHandler {
             try {
                 type = Type.valueOf(parts[0].toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown firework effect type: " + parts[0]);
+                throw new InstructionParseException("Unknown firework effect type: " + parts[0], e);
             }
             if (typeE == Existence.FORBIDDEN) {
                 return;

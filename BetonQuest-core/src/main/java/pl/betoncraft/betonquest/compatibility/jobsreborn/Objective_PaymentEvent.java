@@ -41,7 +41,7 @@ public class Objective_PaymentEvent extends Objective implements Listener {
         try {
             nAmount = Double.parseDouble(instructions.getPart(1));
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse amount");
+            throw new InstructionParseException("Could not parse amount", e);
         }
         if (nAmount < 1) {
             throw new InstructionParseException("Amount needs to be one or more");

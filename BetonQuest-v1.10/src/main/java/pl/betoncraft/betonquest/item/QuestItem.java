@@ -218,7 +218,6 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
-    @SuppressWarnings("deprecation")
     public static String itemToString(ItemStack item) {
         String name = "";
         String lore = "";
@@ -500,7 +499,6 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
-    @SuppressWarnings("deprecation")
     public ItemStack generate(int stackSize) {
         //if durability isn't given use data instead
         short damage = durability.whatever() ? data.get() : durability.get();

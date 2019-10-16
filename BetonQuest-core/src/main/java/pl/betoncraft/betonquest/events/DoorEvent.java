@@ -46,7 +46,7 @@ public class DoorEvent extends QuestEvent {
         try {
             type = ToggleType.valueOf(action.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle");
+            throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle", e);
         }
     }
 

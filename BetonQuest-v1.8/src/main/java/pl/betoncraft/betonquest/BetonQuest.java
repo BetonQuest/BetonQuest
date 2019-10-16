@@ -414,7 +414,7 @@ public class BetonQuest extends VersionPlugin {
         try {
             ID = new VariableID(pack, instruction);
         } catch (ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not load variable: " + e.getMessage());
+            throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
         for (Entry<VariableID, Variable> e : variables.entrySet()) {

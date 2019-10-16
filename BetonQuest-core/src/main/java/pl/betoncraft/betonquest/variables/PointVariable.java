@@ -52,7 +52,7 @@ public class PointVariable extends Variable {
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse point amount");
+                throw new InstructionParseException("Could not parse point amount", e);
             }
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",

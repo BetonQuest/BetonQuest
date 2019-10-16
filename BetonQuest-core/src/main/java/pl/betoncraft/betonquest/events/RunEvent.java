@@ -77,7 +77,7 @@ public class RunEvent extends QuestEvent {
                     new Instruction(this.instruction.getPackage(), null, instruction));
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage());
+                throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage(), e);
             } else {
                 e.printStackTrace();
             }

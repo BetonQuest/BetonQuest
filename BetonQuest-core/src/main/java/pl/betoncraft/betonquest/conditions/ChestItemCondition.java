@@ -54,7 +54,7 @@ public class ChestItemCondition extends Condition {
             chest = (InventoryHolder) block.getState();
         } catch (ClassCastException e) {
             throw new QuestRuntimeException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
-                    + block.getY() + " Z" + block.getZ());
+                    + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
         for (Item questItem : questItems) {

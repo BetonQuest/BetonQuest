@@ -404,7 +404,7 @@ public class Utils {
         }
         try {
             return Color.fromRGB(Integer.parseInt(string));
-        } catch (NumberFormatException e1) {
+        } catch (NumberFormatException e) {
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
@@ -414,12 +414,12 @@ public class Utils {
                     return DyeColor.valueOf(string.trim().toUpperCase().replace(' ', '_')).getColor();
                 } catch (IllegalArgumentException e3) {
                     // this was not a dye color name
-                    throw new InstructionParseException("Dye color does not exist: " + string);
+                    throw new InstructionParseException("Dye color does not exist: " + string, e);
                 }
             }
-        } catch (IllegalArgumentException e1) {
+        } catch (IllegalArgumentException e) {
             // string was a number, but incorrect
-            throw new InstructionParseException("Incorrect RGB code: " + string);
+            throw new InstructionParseException("Incorrect RGB code: " + string, e);
         }
     }
 

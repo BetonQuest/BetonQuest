@@ -96,7 +96,7 @@ public abstract class Objective {
             try {
                 events[i] = new EventID(instruction.getPackage(), event);
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while parsing objective events: " + e.getMessage());
+                throw new InstructionParseException("Error while parsing objective events: " + e.getMessage(), e);
             }
         }
         length = tempConditions1.length + tempConditions2.length;
@@ -106,7 +106,7 @@ public abstract class Objective {
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage());
+                throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }
     }

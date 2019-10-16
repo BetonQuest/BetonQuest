@@ -37,7 +37,7 @@ public class VehicleCondition extends Condition {
         } else try {
             vehicle = EntityType.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Entity type " + name + " does not exist.");
+            throw new InstructionParseException("Entity type " + name + " does not exist.", e);
         }
     }
 

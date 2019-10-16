@@ -71,7 +71,7 @@ public class WandCondition extends Condition {
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
                     } catch (NumberFormatException e) {
-                        throw new InstructionParseException("Could not parse spell level");
+                        throw new InstructionParseException("Could not parse spell level", e);
                     }
                     this.spells.put(spell, level);
                 } else {
@@ -83,7 +83,6 @@ public class WandCondition extends Condition {
         api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean check(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);

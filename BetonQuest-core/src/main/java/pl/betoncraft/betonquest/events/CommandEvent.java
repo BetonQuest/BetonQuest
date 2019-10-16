@@ -53,7 +53,7 @@ public class CommandEvent extends QuestEvent {
                 commands[i] = new Command(rawCommands[i]);
             }
         } catch (Exception e) {
-            throw new InstructionParseException("Could not parse commands");
+            throw new InstructionParseException("Could not parse commands", e);
         }
     }
 

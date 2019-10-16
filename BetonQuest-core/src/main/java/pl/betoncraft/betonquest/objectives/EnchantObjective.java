@@ -104,7 +104,7 @@ public class EnchantObjective extends Objective implements Listener {
             try {
                 level = Integer.parseInt(parts[1]);
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse enchantment level: " + string);
+                throw new InstructionParseException("Could not parse enchantment level: " + string, e);
             }
             return new EnchantmentData(enchantment, level);
         }

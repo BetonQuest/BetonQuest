@@ -56,7 +56,7 @@ public class RealTimeCondition extends Condition {
             hoursMax = Integer.parseInt(timeMax[0]);
             minutesMax = Integer.parseInt(timeMax[1]);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse time");
+            throw new InstructionParseException("Could not parse time", e);
         }
         if (hoursMax < 0 || hoursMax > 23) throw new InstructionParseException("Could not parse time");
         if (hoursMin < 0 || hoursMin > 23) throw new InstructionParseException("Could not parse time");

@@ -135,7 +135,7 @@ public class MathVariable extends Variable {
         try {
             return new ClaculableVariable(super.instruction.getPackage(), "%" + string + "%");
         } catch (NumberFormatException e) {
-            throw new InstructionParseException(e.getMessage());
+            throw new InstructionParseException(e.getMessage(), e);
         }
     }
 
@@ -251,7 +251,7 @@ public class MathVariable extends Variable {
                         throw new QuestRuntimeException("unsupported operation: " + operation);
                 }
             } catch (ArithmeticException e) {
-                throw new QuestRuntimeException(e.getMessage());
+                throw new QuestRuntimeException(e.getMessage(), e);
             }
         }
 

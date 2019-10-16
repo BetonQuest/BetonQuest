@@ -48,7 +48,7 @@ public class TameObjective extends Objective implements Listener {
         try {
             type = TamableMobs.valueOf(string.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Unknown type: " + string);
+            throw new InstructionParseException("Unknown type: " + string, e);
         }
         amount = instruction.getInt();
         if (amount < 1) {

@@ -60,7 +60,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
             try {
                 new BukkitAPIHelper().spawnMythicMob(mob, location, l);
             } catch (InvalidMobTypeException e) {
-                throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.");
+                throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
             }
         }
     }

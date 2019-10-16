@@ -52,7 +52,7 @@ public class PlayerPointsEvent extends QuestEvent {
         try {
             count = new VariableNumber(instruction.getPackage().getName(), string);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point amount");
+            throw new InstructionParseException("Could not parse point amount", e);
         }
         api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
     }

@@ -66,7 +66,7 @@ public class LocationData {
                 y = Double.parseDouble(numbers[1]);
                 z = Double.parseDouble(numbers[2]);
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse vector numbers");
+                throw new InstructionParseException("Could not parse vector numbers", e);
             }
             vector = new Vector(x, y, z);
             base = main[0];
@@ -109,7 +109,7 @@ public class LocationData {
                 pitch = Float.parseFloat(parts[5]);
             }
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse location coordinates");
+            throw new InstructionParseException("Could not parse location coordinates", e);
         }
         loc = new Location(world, x, y, z, yaw, pitch);
         return loc;
@@ -128,7 +128,7 @@ public class LocationData {
                 try {
                     return loc = parseAbsoluteFormat(value);
                 } catch (InstructionParseException e) {
-                    throw new QuestRuntimeException("Could not resolve a variable to location format: " + e.getMessage());
+                    throw new QuestRuntimeException("Could not resolve a variable to location format: " + e.getMessage(), e);
                 }
             default:
                 return null;

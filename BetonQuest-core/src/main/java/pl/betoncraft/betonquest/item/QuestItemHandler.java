@@ -203,7 +203,6 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onItemFrameClick(PlayerInteractEntityEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {

@@ -75,7 +75,7 @@ public class CheckCondition extends Condition {
                     new Instruction(this.instruction.getPackage(), null, instruction));
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage());
+                throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
                 e.printStackTrace();
             }

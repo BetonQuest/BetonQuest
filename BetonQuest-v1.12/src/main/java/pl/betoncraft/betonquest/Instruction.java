@@ -136,7 +136,7 @@ public class Instruction {
         try {
             return new LocationData(pack.getName(), string);
         } catch (InstructionParseException e) {
-            throw new PartParseException("Error while parsing location: " + e.getMessage());
+            throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }
     }
 
@@ -151,7 +151,7 @@ public class Instruction {
         try {
             return new VariableNumber(pack.getName(), string);
         } catch (NumberFormatException e) {
-            throw new PartParseException("Could not parse a number: " + e.getMessage());
+            throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
     }
 
@@ -166,7 +166,7 @@ public class Instruction {
         try {
             return new QuestItem(new ItemID(pack, string));
         } catch (ObjectNotFoundException | InstructionParseException e) {
-            throw new PartParseException("Could not load '" + string + "' item: " + e.getMessage());
+            throw new PartParseException("Could not load '" + string + "' item: " + e.getMessage(), e);
         }
     }
 
@@ -191,7 +191,7 @@ public class Instruction {
                 }
                 items[i] = new Item(item, number);
             } catch (InstructionParseException | NumberFormatException e) {
-                throw new PartParseException("Error while parsing '" + array[i] + "' item: " + e.getMessage());
+                throw new PartParseException("Error while parsing '" + array[i] + "' item: " + e.getMessage(), e);
             }
         }
         return items;
@@ -220,7 +220,7 @@ public class Instruction {
             try {
                 level = new Integer(enchParts[1]);
             } catch (NumberFormatException e) {
-                throw new PartParseException("Could not parse level in enchant: " + enchant);
+                throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }
             enchants.put(ID, level);
         }
@@ -248,7 +248,7 @@ public class Instruction {
                 power = Integer.parseInt(effect.split(":")[1]) - 1;
                 duration = Integer.parseInt(effect.split(":")[2]) * 20;
             } catch (NumberFormatException e) {
-                throw new PartParseException("Could not parse potion power/duration: " + effect);
+                throw new PartParseException("Could not parse potion power/duration: " + effect, e);
             }
             effects.add(new PotionEffect(ID, duration, power));
         }
@@ -270,7 +270,7 @@ public class Instruction {
         try {
             return Enum.valueOf(clazz, string.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new PartParseException("There is no such " + clazz.getSimpleName() + ": " + string);
+            throw new PartParseException("There is no such " + clazz.getSimpleName() + ": " + string, e);
         }
     }
 
@@ -328,7 +328,7 @@ public class Instruction {
         try {
             return new EventID(pack, string);
         } catch (ObjectNotFoundException e) {
-            throw new PartParseException("Error while loading event: " + e.getMessage());
+            throw new PartParseException("Error while loading event: " + e.getMessage(), e);
         }
     }
 
@@ -343,7 +343,7 @@ public class Instruction {
         try {
             return new ConditionID(pack, string);
         } catch (ObjectNotFoundException e) {
-            throw new PartParseException("Error while loading condition: " + e.getMessage());
+            throw new PartParseException("Error while loading condition: " + e.getMessage(), e);
         }
     }
 
@@ -358,7 +358,7 @@ public class Instruction {
         try {
             return new ObjectiveID(pack, string);
         } catch (ObjectNotFoundException e) {
-            throw new PartParseException("Error while loading objective: " + e.getMessage());
+            throw new PartParseException("Error while loading objective: " + e.getMessage(), e);
         }
     }
 
@@ -373,7 +373,7 @@ public class Instruction {
         try {
             return new ItemID(pack, string);
         } catch (ObjectNotFoundException e) {
-            throw new PartParseException("Error while loading item: " + e.getMessage());
+            throw new PartParseException("Error while loading item: " + e.getMessage(), e);
         }
     }
 
@@ -392,7 +392,7 @@ public class Instruction {
         try {
             return Byte.parseByte(string);
         } catch (NumberFormatException e) {
-            throw new PartParseException("Could not parse byte value: " + string);
+            throw new PartParseException("Could not parse byte value: " + string, e);
         }
     }
 
@@ -419,7 +419,7 @@ public class Instruction {
         try {
             return Integer.parseInt(string);
         } catch (NumberFormatException e) {
-            throw new PartParseException("Could not parse a number: " + string);
+            throw new PartParseException("Could not parse a number: " + string, e);
         }
     }
 
@@ -434,7 +434,7 @@ public class Instruction {
         try {
             return Long.parseLong(string);
         } catch (NumberFormatException e) {
-            throw new PartParseException("Could not parse a number: " + string);
+            throw new PartParseException("Could not parse a number: " + string, e);
         }
     }
 
@@ -449,7 +449,7 @@ public class Instruction {
         try {
             return Double.parseDouble(string);
         } catch (NumberFormatException e) {
-            throw new PartParseException("Could not parse decimal value: " + string);
+            throw new PartParseException("Could not parse decimal value: " + string, e);
         }
     }
 
@@ -525,10 +525,19 @@ public class Instruction {
 
         private static final long serialVersionUID = 2007556828888605511L;
 
-        public PartParseException(String message) {
+        /**
+         * {@link Exception#Exception(String)}
+         */
+        public PartParseException(final String message) {
             super("Error while parsing " + (lastOptional == null ? current : lastOptional + " optional") + " argument: " + message);
         }
-
+        
+        /**
+         * {@link PartParseException#Exception(String, Throwable)}
+         */
+        public PartParseException(final String message, final Throwable cause) {
+            super("Error while parsing " + (lastOptional == null ? current : lastOptional + " optional") + " argument: " + message, cause);
+        }
     }
 
 }

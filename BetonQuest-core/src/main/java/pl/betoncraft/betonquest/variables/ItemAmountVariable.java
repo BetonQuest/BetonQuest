@@ -48,7 +48,7 @@ public class ItemAmountVariable extends Variable {
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse item amount");
+                throw new InstructionParseException("Could not parse item amount", e);
             }
         } else if (instruction.current().equalsIgnoreCase("amount")) {
             type = Type.AMOUNT;

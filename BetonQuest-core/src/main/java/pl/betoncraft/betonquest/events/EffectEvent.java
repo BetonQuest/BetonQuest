@@ -54,7 +54,7 @@ public class EffectEvent extends QuestEvent {
             duration = instruction.getVarNum();
             amplifier = instruction.getVarNum();
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse number arguments");
+            throw new InstructionParseException("Could not parse number arguments", e);
         }
 
         if (instruction.hasArgument("--ambient")) {

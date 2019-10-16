@@ -41,7 +41,7 @@ public class OpenShopEvent extends QuestEvent {
         try {
             shopkeeper = ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string));
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Could not parse UUID: '" + string + "'");
+            throw new InstructionParseException("Could not parse UUID: '" + string + "'", e);
         }
         if (shopkeeper == null) {
             throw new InstructionParseException("Shopkeeper with this UUID does not exist: '" + string + "'");

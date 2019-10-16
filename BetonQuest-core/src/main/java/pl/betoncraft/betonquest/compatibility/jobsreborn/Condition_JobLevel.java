@@ -45,8 +45,8 @@ public class Condition_JobLevel extends Condition {
                 try {
                     this.nMinLevel = Integer.parseInt(instruction.getPart(2));
                     this.nMaxLevel = Integer.parseInt(instruction.getPart(3));
-                } catch (Exception err) {
-                    throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level");
+                } catch (Exception e) {
+                    throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level", e);
                 }
                 return;
             }
