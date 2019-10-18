@@ -653,7 +653,7 @@ This event will paste a schematic at the given location. The first argument is a
 
 ### Region objective: `region`
 
-To complete this objective you need to enter WorldGuard region with specified name. The only argument in instruction string is name of the region.
+To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional `entry` and/or `exit` to only trigger when entering or exiting a region instead of anytime inside a region.
 
 **Example**: `region beton events:kill`
 

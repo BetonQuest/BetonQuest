@@ -18,10 +18,8 @@
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
@@ -44,11 +42,40 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class RegionObjective extends Objective implements Listener {
 
     private final String name;
+    private boolean entry;
+    private boolean exit;
 
     public RegionObjective(Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         name = instruction.next();
+        entry = instruction.hasArgument("entry");
+        exit = instruction.hasArgument("exit");
+    }
+
+    /**
+     * Return true if location is inside region
+     *
+     * @param loc Location to Check
+     * @return boolean True if in region
+     */
+    private boolean isInsideRegion(Location loc) {
+        if (loc == null || loc.getWorld() == null) {
+            return false;
+        }
+
+        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
+        if (manager == null) {
+            return false;
+        }
+
+        ProtectedRegion region = manager.getRegion(name);
+        if (region == null) {
+            return false;
+        }
+
+        return region.contains(BukkitAdapter.asBlockVector(loc));
     }
 
     @EventHandler
@@ -57,25 +84,18 @@ public class RegionObjective extends Objective implements Listener {
         if (!containsPlayer(playerID)) {
             return;
         }
-        Location loc = event.getTo();
-        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
-        if (manager == null) {
-            return;
+
+        if (entry && isInsideRegion(event.getTo()) && !isInsideRegion(event.getFrom()) && checkConditions(playerID)) {
+            completeObjective(playerID);
         }
 
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(loc.getX(), loc.getY(), loc.getZ()));
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region)) {
-                if (checkConditions(playerID)) {
-                    completeObjective(playerID);
-                } else {
-                    return;
-                }
-            }
+        if (exit && isInsideRegion(event.getFrom()) && !isInsideRegion(event.getTo()) && checkConditions(playerID)) {
+            completeObjective(playerID);
         }
 
+        if (!entry && !exit && isInsideRegion(event.getTo()) && checkConditions(playerID)) {
+            completeObjective(playerID);
+        }
     }
 
     @Override
