@@ -1,13 +1,13 @@
 ![BetonQuest](https://betonquest.pl/assets/logo.png)
 
-**Documentation for 2.0 version**
+**Documentation for 1.11 version**
 
 BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. 
 If you want to go completly crazy you can use BetonQuest for much more then quests. For some it is a backbone of their server. This is possible because BetonQuest has support for 22 plugins.
 
 ## Features
 
-* Minecraft **1.9**, **1.10**, **1.11** and **1.12** support
+* Minecraft **1.8**, **1.9**, **1.10**, **1.11**, **1.12**, **1.13**, **1.14** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
 * **Many ways of displaying your NPCs conversations**: Customisation is possible
 * **Powerful event system**: anything can happen anywhere in a quest
