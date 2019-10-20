@@ -105,6 +105,7 @@ public class Updater {
             }
         } catch (Exception e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not parse version string: '" + version + "'. Autoupdater disabled.");
+            LogUtils.logThrowable(e);
             return;
         }
         if (isDevBuild && !isOfficial) {
@@ -128,6 +129,7 @@ public class Updater {
                     }
                 } catch (IOException | NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not get the latest dev build number");
+                    LogUtils.logThrowable(e);
                     return;
                 }
                 // handle checking github releases
@@ -192,6 +194,7 @@ public class Updater {
                     }
                 } catch (Exception e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not get the latest release");
+                    LogUtils.logThrowable(e);
                 }
                 // display notifications
                 new BukkitRunnable() {
@@ -282,9 +285,9 @@ public class Updater {
         } catch (IOException e) {
             if (sender != null) {
                 sender.sendMessage("§cCould not download the file. Try again or update manually.");
-            } else {
-                LogUtils.getLogger().log(Level.INFO, "Could not download the file.");
             }
+            LogUtils.getLogger().log(Level.INFO, "Could not download the updated file.");
+            LogUtils.logThrowable(e);
         }
     }
 

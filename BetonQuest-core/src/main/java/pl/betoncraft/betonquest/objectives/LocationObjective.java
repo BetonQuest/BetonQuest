@@ -90,6 +90,7 @@ public class LocationObjective extends Objective implements Listener {
             } catch (QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage());
+                LogUtils.logThrowable(e);
                 return "";
             }
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();

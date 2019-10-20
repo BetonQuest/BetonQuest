@@ -121,6 +121,7 @@ public class PlayerData {
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
                             + ", with instruction '" + instruction + "', because: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 backpack.add(item);
@@ -149,7 +150,8 @@ public class PlayerData {
                     + " items loaded for player " + PlayerConverter.getName(playerID));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -287,6 +289,7 @@ public class PlayerData {
             } catch (ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.");
+                LogUtils.logThrowable(e);
             }
         }
         objectives.clear();

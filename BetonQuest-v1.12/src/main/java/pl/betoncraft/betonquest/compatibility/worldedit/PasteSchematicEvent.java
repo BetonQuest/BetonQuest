@@ -82,6 +82,7 @@ public class PasteSchematicEvent extends QuestEvent {
             clipboard.paste(editSession, newOrigin, noAir);
         } catch (DataException | IOException | MaxChangedBlocksException e) {
         	LogUtils.getLogger().log(Level.WARNING, "Error while pasting a schematic: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

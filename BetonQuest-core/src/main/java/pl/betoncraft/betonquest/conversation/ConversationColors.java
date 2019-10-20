@@ -78,6 +78,7 @@ public class ConversationColors {
             answerColors = new ChatColor[]{};
             numberColors = new ChatColor[]{};
             LogUtils.getLogger().log(Level.WARNING, "Could not parse conversation colors, everything will be white!");
+            LogUtils.logThrowable(e);
             return;
         }
     }

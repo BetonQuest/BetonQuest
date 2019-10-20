@@ -72,6 +72,7 @@ public class GlobalLocations extends BukkitRunnable {
                     locations.add(gL);
                 } catch (ObjectNotFoundException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error while parsing global location objective '" + objective + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -113,6 +114,7 @@ public class GlobalLocations extends BukkitRunnable {
                 } catch (QuestRuntimeException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error while parsing location in global location '" + location.getObjectiveID()
                             + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 if (player.getLocation().getWorld().equals(loc.getWorld())

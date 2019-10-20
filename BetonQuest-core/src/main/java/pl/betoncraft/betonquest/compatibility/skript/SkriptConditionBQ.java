@@ -55,12 +55,13 @@ public class SkriptConditionBQ extends Condition {
     }
 
     @Override
-    public boolean check(Event e) {
-        String conditionID = condition.getSingle(e);
+    public boolean check(Event event) {
+        String conditionID = condition.getSingle(event);
         try {
-            return BetonQuest.condition(PlayerConverter.getID(player.getSingle(e)), new ConditionID(null, conditionID));
-        } catch (ObjectNotFoundException e1) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e1.getMessage());
+            return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
+        } catch (ObjectNotFoundException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage());
+            LogUtils.logThrowable(e);
             return false;
         }
     }

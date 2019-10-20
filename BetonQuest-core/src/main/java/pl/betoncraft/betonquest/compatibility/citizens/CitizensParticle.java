@@ -72,6 +72,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         npcs.add(Integer.parseInt(npcID));
                     } catch (NumberFormatException e) {
+                        LogUtils.logThrowableIgnore(e);
                     }
                 }
             }
@@ -138,6 +139,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
                     } catch (ObjectNotFoundException e) {
+                        LogUtils.logThrowableIgnore(e);
                     }
                 }
 
@@ -217,6 +219,7 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void activateEffects() {
 
         // display effects for all players

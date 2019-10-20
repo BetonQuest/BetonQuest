@@ -21,7 +21,10 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 public class OpSudoEvent extends QuestEvent {
 
@@ -46,7 +49,8 @@ public class OpSudoEvent extends QuestEvent {
             for (String command : commands)
                 player.performCommand(command.replace("%player%", player.getName()));
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
+            LogUtils.logThrowable(e);
         } finally {
             player.setOp(previousOp);
         }

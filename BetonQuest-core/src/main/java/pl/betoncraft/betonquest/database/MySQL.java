@@ -65,6 +65,7 @@ public class MySQL extends Database {
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
         } catch (Exception e) {
             LogUtils.getLogger().log(Level.WARNING, "MySQL says: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
         return connection;
     }

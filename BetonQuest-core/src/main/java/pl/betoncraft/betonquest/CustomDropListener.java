@@ -48,6 +48,7 @@ public class CustomDropListener implements Listener {
                 }
             } catch (Exception e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error when dropping custom item from entity: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
             i++;
         }

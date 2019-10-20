@@ -214,9 +214,6 @@ import java.util.regex.Pattern;
  */
 public class BetonQuest extends VersionPlugin {
 
-    private final static String ERROR = "There was some error. Please send it to the"
-            + " developer: <coosheck@gmail.com>";
-
     private static BetonQuest instance;
     private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
     private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
@@ -293,6 +290,7 @@ public class BetonQuest extends VersionPlugin {
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING,
                     "Error while checking '" + conditionID + "' condition: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return false;
         }
         boolean isMet = (outcome && !conditionID.inverted()) || (!outcome && conditionID.inverted());
@@ -338,6 +336,7 @@ public class BetonQuest extends VersionPlugin {
             event.fire(playerID);
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while firing '" + eventID + "' event: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -441,12 +440,10 @@ public class BetonQuest extends VersionPlugin {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in " + ID + " variable: " + e.getCause().getMessage());
             } else {
-                e.printStackTrace();
-                LogUtils.getLogger().log(Level.WARNING, ERROR);
+                LogUtils.logThrowableReport(e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowableReport(e);
         }
         return null;
     }
@@ -741,6 +738,7 @@ public class BetonQuest extends VersionPlugin {
             coreLogger.addFilter(new AnswerFilter());
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not disable /betonquestanswer logging");
+            LogUtils.logThrowable(e);
         }
 
         // metrics
@@ -785,6 +783,7 @@ public class BetonQuest extends VersionPlugin {
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading event '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
@@ -793,6 +792,7 @@ public class BetonQuest extends VersionPlugin {
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Objective type not defined in '" + packName + "." + key + "'");
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 Class<? extends QuestEvent> eventClass = eventTypes.get(type);
@@ -812,13 +812,12 @@ public class BetonQuest extends VersionPlugin {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
                                 "Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.logThrowable(e);
                     } else {
-                        e.printStackTrace();
-                        LogUtils.getLogger().log(Level.WARNING, ERROR);
+                        LogUtils.logThrowableReport(e);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.WARNING, ERROR);
+                    LogUtils.logThrowableReport(e);
                 }
             }
             FileConfiguration cConfig = pack.getConditions().getConfig();
@@ -834,14 +833,16 @@ public class BetonQuest extends VersionPlugin {
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading condition '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
-                } catch (InstructionParseException e1) {
+                } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Condition type not defined in '" + packName + "." + key + "'");
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 Class<? extends Condition> conditionClass = conditionTypes.get(type);
@@ -863,13 +864,12 @@ public class BetonQuest extends VersionPlugin {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
                                 "Error in '" + ID + "' condition (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.logThrowable(e);
                     } else {
-                        e.printStackTrace();
-                        LogUtils.getLogger().log(Level.WARNING, ERROR);
+                        LogUtils.logThrowableReport(e);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.WARNING, ERROR);
+                    LogUtils.logThrowableReport(e);
                 }
             }
             FileConfiguration oConfig = pack.getObjectives().getConfig();
@@ -885,6 +885,7 @@ public class BetonQuest extends VersionPlugin {
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading objective '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
@@ -893,6 +894,7 @@ public class BetonQuest extends VersionPlugin {
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Objective type not defined in '" + packName + "." + key + "'");
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
@@ -914,13 +916,12 @@ public class BetonQuest extends VersionPlugin {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
                                 "Error in '" + ID + "' objective (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.logThrowable(e);
                     } else {
-                        e.printStackTrace();
-                        LogUtils.getLogger().log(Level.WARNING, ERROR);
+                        LogUtils.logThrowableReport(e);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.WARNING, ERROR);
+                    LogUtils.logThrowableReport(e);
                 }
             }
             for (String convName : pack.getConversationNames()) {
@@ -934,9 +935,9 @@ public class BetonQuest extends VersionPlugin {
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.WARNING, ERROR);
+                    LogUtils.logThrowableReport(e);
                 }
             }
             // check external pointers
@@ -1239,6 +1240,8 @@ public class BetonQuest extends VersionPlugin {
                 return "could not resolve variable";
             return var.getValue(playerID);
         } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Could not create variable: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return "could not resolve variable";
         }
     }

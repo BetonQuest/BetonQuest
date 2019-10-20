@@ -30,11 +30,13 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 public class Instruction {
 
@@ -51,6 +53,8 @@ public class Instruction {
         try {
             this.id = id == null ? new NoID(pack) : id;
         } catch (ObjectNotFoundException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Could not find instruction: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
         this.instruction = instruction;
 

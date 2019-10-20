@@ -53,6 +53,7 @@ public class EventReward extends CustomReward {
             BetonQuest.event(playerID, event);
         } catch (ObjectNotFoundException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

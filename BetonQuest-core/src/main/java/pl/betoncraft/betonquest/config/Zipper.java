@@ -17,12 +17,15 @@
  */
 package pl.betoncraft.betonquest.config;
 
+import pl.betoncraft.betonquest.utils.LogUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -77,8 +80,9 @@ public class Zipper {
             // remember close it
             zos.close();
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Couldn't zip the files");
+            LogUtils.logThrowable(e);
         }
     }
 

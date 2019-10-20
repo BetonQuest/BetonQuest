@@ -231,6 +231,7 @@ public class Journal {
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
                             + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
                 text = text.replace(variable,
                         BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
@@ -272,6 +273,7 @@ public class Journal {
                             } catch (ObjectNotFoundException e) {
                                 LogUtils.getLogger().log(Level.WARNING, "Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
                                         + "'s journal - condition '" + condition + "' not found: " + e.getMessage());
+                                LogUtils.logThrowable(e);
                                 continue keys;
                             }
                         }
@@ -297,6 +299,7 @@ public class Journal {
                         } catch (InstructionParseException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on main page in "
                                     + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+                            LogUtils.logThrowable(e);
                         }
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, playerID));

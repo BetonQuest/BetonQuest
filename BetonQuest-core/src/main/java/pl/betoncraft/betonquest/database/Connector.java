@@ -57,6 +57,7 @@ public class Connector {
             connection.prepareStatement("SELECT 1").executeQuery();
         } catch (SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "Reconnecting to the database");
+            LogUtils.logThrowable(e);
             db.closeConnection();
             connection = db.getConnection();
         }
@@ -147,7 +148,8 @@ public class Connector {
             }
             return statement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
             return null;
         }
     }
@@ -348,7 +350,8 @@ public class Connector {
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 

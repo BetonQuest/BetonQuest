@@ -191,6 +191,7 @@ public class ConfigUpdater {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             LogUtils.getLogger().log(Level.WARNING, "Cannot update configuration. Maybe it comes from an even newer version and you did a downgrade?");
+            LogUtils.logThrowable(e);
             // return, so it does not fall into an infinite loop
             return;
         }
@@ -492,6 +493,7 @@ public class ConfigUpdater {
                         data = Integer.parseInt(parts[1]);
                     } catch (NumberFormatException e) {
                         LogUtils.getLogger().log(Level.WARNING, "    It's incorrect");
+                        LogUtils.logThrowable(e);
                         continue;
                     }
                     ItemStack itemStack = new QuestItem("potion data:" + data).generate(1);
@@ -530,8 +532,8 @@ public class ConfigUpdater {
                 pack.getObjectives().saveConfig();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Translated items in 'potion' objective");
         config.set("display_chat_after_conversation", "false");
@@ -572,13 +574,14 @@ public class ConfigUpdater {
                         items.set(key, updatedInstruction);
                     } catch (InstructionParseException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Item " + packName + "." + key + " was incorrect, skipping.");
+                        LogUtils.logThrowable(e);
                     }
                 }
                 pack.getItems().saveConfig();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Translated potions to a new format");
         config.set("hook.racesandclasses", "true");
@@ -670,8 +673,8 @@ public class ConfigUpdater {
                 objectives.saveConfig();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Changed 'craft' objective to use items.yml");
         config.set("version", "v42");
@@ -725,8 +728,8 @@ public class ConfigUpdater {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Updated tags of global locations with package names");
         config.set("version", "v38");
@@ -859,8 +862,8 @@ public class ConfigUpdater {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Made quest cancelers more convenient to define");
         config.set("version", "v31");
@@ -883,8 +886,8 @@ public class ConfigUpdater {
                 pack.getMain().saveConfig();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Changed commas to semicolons in vector variables");
         config.set("version", "v30");
@@ -1295,8 +1298,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.FINE, "Done, all cross-package tags and points are now global, the rest is local.");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Moved all package-less cross-package tags and points to \"" + globalName
                 + "\" package (you probably won't notice this change)");
@@ -1312,8 +1315,8 @@ public class ConfigUpdater {
             config.set("journal.reversed_order", "false");
             config.set("journal.hide_date", "false");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Added journal options");
         config.set("version", "v28");
@@ -1365,8 +1368,8 @@ public class ConfigUpdater {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Changed %quester% variables to %npc%");
         config.set("version", "v27");
@@ -1388,8 +1391,8 @@ public class ConfigUpdater {
                 pack.getEvents().saveConfig();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Added \"add\" keyword to journal events");
         config.set("version", "v26");
@@ -1409,8 +1412,8 @@ public class ConfigUpdater {
             LogUtils.getLogger().log(Level.FINE, "Adding option to disable mcMMO hooking to the config");
             config.set("hook.mcmmo", "true");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Added mcMMO compatibility");
         config.set("version", "v24");
@@ -1449,8 +1452,8 @@ public class ConfigUpdater {
                 con.prepareStatement("COMMIT").executeUpdate();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Added conversations to database format");
         config.set("version", "v22");
@@ -1487,8 +1490,8 @@ public class ConfigUpdater {
                         textColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.FINE, "Could not parse NPC text format, saving defaults");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse NPC text format, saving defaults");
+                    LogUtils.logThrowable(e);
                     npcColors.add(ChatColor.DARK_RED);
                     textColors.add(ChatColor.GREEN);
                     textColors.add(ChatColor.ITALIC);
@@ -1514,8 +1517,8 @@ public class ConfigUpdater {
                         optionColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.FINE, "Could not parse player option format, saving defaults");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse player option format, saving defaults");
+                    LogUtils.logThrowable(e);
                     numberColors.add(ChatColor.YELLOW);
                     optionColors.add(ChatColor.AQUA);
                 }
@@ -1540,8 +1543,8 @@ public class ConfigUpdater {
                         answerColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.getLogger().log(Level.FINE, "Could not parse player answer format, saving defaults");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse player answer format, saving defaults");
+                    LogUtils.logThrowable(e);
                     playerColors.add(ChatColor.DARK_GREEN);
                     answerColors.add(ChatColor.GRAY);
                 }
@@ -1590,8 +1593,8 @@ public class ConfigUpdater {
             config.set("conversation_colors.answer", answer.substring(0, answer.length() - 1));
             config.set("conversation", null);
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Converted conversation format strings to colors");
         config.set("version", "v21");
@@ -1656,8 +1659,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.INFO, "Removed no longer used 'unknown' message from conversations.");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v20");
         instance.saveConfig();
@@ -1698,13 +1701,14 @@ public class ConfigUpdater {
                             messages.getString(lang + ".conversation_end").replace("%quester%", "{1}"));
                 } catch (NullPointerException e) {
                     LogUtils.getLogger().log(Level.WARNING, "The language " + lang + " is not present in the defaults, please update it manually.");
+                    LogUtils.logThrowable(e);
                 }
             }
             confMessages.saveConfig();
             LogUtils.getLogger().log(Level.INFO, "Updated messages to new replace format");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v19");
         instance.saveConfig();
@@ -1721,8 +1725,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.INFO, "Added prefix option to all packages.");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v18");
         instance.saveConfig();
@@ -1881,6 +1885,7 @@ public class ConfigUpdater {
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     LogUtils.getLogger().log(Level.WARNING, "    Could not read data from objective " + label + ", removing");
+                    LogUtils.logThrowable(e);
                     PreparedStatement stmt = con
                             .prepareStatement("DELETE FROM " + prefix + "objectives WHERE id = ?");
                     stmt.setInt(1, res.getInt("id"));
@@ -1897,8 +1902,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.INFO, "Updated objective instruction strings in the database");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v17");
         instance.saveConfig();
@@ -1909,8 +1914,8 @@ public class ConfigUpdater {
         try {
             config.set("remove_items_after_respawn", "true");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v16");
         instance.saveConfig();
@@ -1934,8 +1939,8 @@ public class ConfigUpdater {
             LogUtils.getLogger().log(Level.INFO, "Added default_package, hook and cmd_blacklist"
                     + " options to main config, removed metrics and uuid!");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v15");
         instance.saveConfig();
@@ -1961,8 +1966,8 @@ public class ConfigUpdater {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Removed unnecessary empty lines in conversation config files.");
         config.set("version", "v14");
@@ -2082,8 +2087,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.FINE, "Done! Everything converted.");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Introduced new packaging system and moved configuration to \"default\" package!");
         config.set("version", "v13");
@@ -2183,8 +2188,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.FINE, "Done! Everything converted");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Changed keyword \"tag:\" to \"label:\" in all objectives!");
         config.set("version", "v12");
@@ -2355,7 +2360,8 @@ public class ConfigUpdater {
                                     armor = Material.matchMaterial(material + "_" + armorType, true);
                                 }
                             } catch (Exception e) {
-                                LogUtils.getLogger().log(Level.FINE, "      Could not read armor type, skipping");
+                                LogUtils.getLogger().log(Level.WARNING, "      Could not read armor type, skipping");
+                                LogUtils.logThrowable(e);
                                 continue conditions;
                             }
                             String itemInstruction = armor.toString();
@@ -2580,8 +2586,8 @@ public class ConfigUpdater {
             events.saveConfig();
 
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         LogUtils.getLogger().log(Level.INFO, "Made instruction strings more beautiful! Please read the documentation again.");
         config.set("version", "v11");
@@ -2659,8 +2665,8 @@ public class ConfigUpdater {
             }
             LogUtils.getLogger().log(Level.INFO, "Updated database format to better one.");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v6");
         instance.saveConfig();
@@ -2734,8 +2740,8 @@ public class ConfigUpdater {
             conditionsAccessor.saveConfig();
             LogUtils.getLogger().log(Level.INFO, "Converted give/take events and item conditions to new format!");
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         config.set("version", "v5");
         instance.saveConfig();
@@ -3037,8 +3043,8 @@ public class ConfigUpdater {
             // try-catch block is required - if there is some exception,
             // the version wouldn't get changed and updater would fall into
             // an infinite loop of endless exceptiorns
-            e.printStackTrace();
             LogUtils.getLogger().log(Level.WARNING, ERROR);
+            LogUtils.logThrowable(e);
         }
         // set v3 version
         config.set("version", "v3");
@@ -3263,7 +3269,8 @@ public class ConfigUpdater {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LogUtils.getLogger().log(Level.WARNING, "Could not convert name to UUID");
+                LogUtils.logThrowable(e);
             }
         }
         // convert all player names in all tables
@@ -3288,7 +3295,8 @@ public class ConfigUpdater {
             Files.copy(BetonQuest.getInstance().getResource("changelog.txt"), changelog.toPath());
             LogUtils.getLogger().log(Level.INFO, "Changelog added!");
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.WARNING, "Couldn't add a Changelog file:" + e.getMessage());
+            LogUtils.logThrowable(e);
         }
 
     }

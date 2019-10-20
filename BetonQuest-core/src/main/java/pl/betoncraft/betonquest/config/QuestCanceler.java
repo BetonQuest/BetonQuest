@@ -153,6 +153,7 @@ public class QuestCanceler {
                 z = Double.parseDouble(locParts[2]);
             } catch (NumberFormatException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not parse location in quest canceler " + name);
+                LogUtils.logThrowable(e);
                 return;
             }
             World world = Bukkit.getWorld(locParts[3]);
@@ -167,6 +168,7 @@ public class QuestCanceler {
                     pitch = Float.parseFloat(locParts[5]);
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0");
+                    LogUtils.logThrowable(e);
                     yaw = 0;
                     pitch = 0;
                 }
@@ -287,6 +289,7 @@ public class QuestCanceler {
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
         }
         ItemMeta meta = stack.getItemMeta();

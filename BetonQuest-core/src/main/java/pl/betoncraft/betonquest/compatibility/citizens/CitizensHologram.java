@@ -80,7 +80,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             if (npc != null) {
                                 npcs.put(npc, new ArrayList<>());
                             }
-                        } catch (NumberFormatException ignored) {
+                        } catch (NumberFormatException e) {
+                            LogUtils.logThrowableIgnore(e);
                         }
                     }
                 }
@@ -128,6 +129,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         );
                     } catch (NumberFormatException e) {
                         LogUtils.getLogger().log(Level.WARNING, pack.getName() + ": Invalid vector: " + settings.getString("vector"));
+                        LogUtils.logThrowable(e);
                         continue;
                     }
 
@@ -141,6 +143,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             } catch (ObjectNotFoundException e) {
                                 LogUtils.getLogger().log(Level.WARNING, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
                                         + key + ": " + e.getMessage());
+                                LogUtils.logThrowable(e);
                             }
                         }
                     }

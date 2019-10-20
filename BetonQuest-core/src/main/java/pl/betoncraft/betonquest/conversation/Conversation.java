@@ -424,7 +424,8 @@ public class Conversation implements Listener {
                     Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
                 }
             }.runTask(BetonQuest.getInstance().getJavaPlugin());
-        } catch (IllegalPluginAccessException ignored) {
+        } catch (IllegalPluginAccessException e) {
+            LogUtils.logThrowableIgnore(e);
         }
 
     }
@@ -502,8 +503,8 @@ public class Conversation implements Listener {
                 conv.inOut = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                e.printStackTrace();
                 LogUtils.getLogger().log(Level.WARNING, "Error when loading conversation IO");
+                LogUtils.logThrowable(e);
                 return;
             }
 
@@ -518,8 +519,8 @@ public class Conversation implements Listener {
                     conv.interceptor = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    e.printStackTrace();
-                    Debug.error("Error when loading interceptor");
+                    LogUtils.getLogger().log(Level.WARNING, "Error when loading interceptor");
+                    LogUtils.logThrowable(e);
                     return;
                 }
             }

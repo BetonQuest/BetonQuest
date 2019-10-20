@@ -174,15 +174,14 @@ public class Compatibility implements Listener {
                 integrator.hook();
                 hooked.add(name);
             } catch (UnsupportedVersionException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ":");
-                LogUtils.getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ": " +  e.getMessage());
+                LogUtils.logThrowable(e);
             } catch (Exception e) {
                 LogUtils.getLogger().log(Level.WARNING, String.format("There was an error while hooking into %s %s"
-                                + " (BetonQuest %s, Spigot %s). Please post it on GitHub <"
-                                + "https://github.com/Co0sh/BetonQuest/issues>",
+                                + " (BetonQuest %s, Spigot %s).",
                         name, hook.getDescription().getVersion(),
                         plugin.getDescription().getVersion(), Bukkit.getVersion()));
-                e.printStackTrace();
+                LogUtils.logThrowableReport(e);
                 LogUtils.getLogger().log(Level.WARNING, "BetonQuest will work correctly save for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase()
                         + "' to false in config.yml file.");

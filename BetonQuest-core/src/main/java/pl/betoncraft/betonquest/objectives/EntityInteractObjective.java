@@ -30,13 +30,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -44,6 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Player has to interact with specified amount of specified mobs. It can also
@@ -142,7 +143,8 @@ public class EntityInteractObjective extends Objective {
                         return false;
                     }
                 } catch (QuestRuntimeException e) {
-                    Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
 

@@ -143,6 +143,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                 }
             } catch (QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
             return;
         }
@@ -151,6 +152,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
         npc.getNavigator().setPaused(true);
         new BukkitRunnable() {

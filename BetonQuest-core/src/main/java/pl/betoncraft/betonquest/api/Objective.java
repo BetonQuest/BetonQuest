@@ -30,7 +30,6 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -73,9 +72,11 @@ public abstract class Objective {
      * <b>Do not register listeners here!</b> There is a {@link #start()} method
      * for it.
      *
-     * @param instruction Instruction object representing the objective; you need to extract
-     *                    all required information from it
-     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
+     * @param instruction
+     *            Instruction object representing the objective; you need to
+     *            extract all required information from it
+     * @throws InstructionParseException
+     *             if the syntax is wrong or any error happens while parsing
      */
     public Objective(Instruction instruction) throws InstructionParseException {
         this.instruction = instruction;
@@ -102,7 +103,8 @@ public abstract class Objective {
         length = tempConditions1.length + tempConditions2.length;
         conditions = new ConditionID[length];
         for (int i = 0; i < length; i++) {
-            String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+            String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length]
+                    : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (ObjectNotFoundException e) {
@@ -139,9 +141,11 @@ public abstract class Objective {
      * need to have properties, i.e. "die" objective. By default it returns an
      * empty string.
      *
-     * @param name     the name of the property you need to return; you can parse it
-     *                 to extract additional information
-     * @param playerID ID of the player for whom the property is to be returned
+     * @param name
+     *            the name of the property you need to return; you can parse it
+     *            to extract additional information
+     * @param playerID
+     *            ID of the player for whom the property is to be returned
      * @return the property with given name
      */
     public String getProperty(String name, String playerID) {
@@ -153,7 +157,8 @@ public abstract class Objective {
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      *
-     * @param playerID the ID of the player for whom the objective is to be completed
+     * @param playerID
+     *            the ID of the player for whom the objective is to be completed
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
@@ -163,14 +168,18 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
             addPlayer(playerID, getDefaultDataInstruction());
         }
-        LogUtils.getLogger().log(Level.FINE, "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player " + PlayerConverter.getName(playerID)
-                + ", firing events.");
+        LogUtils.getLogger().log(Level.FINE,
+                "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
+                        + PlayerConverter.getName(playerID)
+                        + ", firing events.");
         // fire all events
         for (EventID event : events) {
             BetonQuest.event(playerID, event);
         }
-        LogUtils.getLogger().log(Level.FINE, "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player " + PlayerConverter.getName(playerID)
-                + " finished");
+        LogUtils.getLogger().log(Level.FINE,
+                "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
+                        + PlayerConverter.getName(playerID)
+                        + " finished");
     }
 
     /**
@@ -178,11 +187,13 @@ public abstract class Objective {
      * something that modifies data (e.g. killing zombies). If conditions are
      * met, you can safely modify the data.
      *
-     * @param playerID ID of the player for whom the conditions are to be checked
+     * @param playerID
+     *            ID of the player for whom the conditions are to be checked
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final String playerID) {
-        LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID() + "\" objective for player " + PlayerConverter.getName(playerID));
+        LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID()
+                + "\" objective for player " + PlayerConverter.getName(playerID));
         for (ConditionID condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;
@@ -196,7 +207,8 @@ public abstract class Objective {
      * Adds this new objective to the player. Also updates the database with the
      * objective.
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      */
     public final void newPlayer(String playerID) {
         String def = getDefaultDataInstruction();
@@ -211,22 +223,18 @@ public abstract class Objective {
      * @param instruction instruction string for player's data
      */
     public final synchronized void addPlayer(String playerID, String instruction) {
-        final String ERROR = "There was some error. Please send it to the developer: <coosheck@gmail.com>";
         ObjectiveData data = null;
         try {
             data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
                     this.instruction.getID().getFullID());
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             if (e.getCause() instanceof InstructionParseException) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
                         + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
+                LogUtils.logThrowable(e);
             } else {
-                e.printStackTrace();
-                LogUtils.getLogger().log(Level.WARNING, ERROR);
+                LogUtils.logThrowableReport(e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.getLogger().log(Level.WARNING, ERROR);
         }
         if (dataMap.isEmpty()) {
             start();
@@ -240,7 +248,8 @@ public abstract class Objective {
      * In order to remove it from database use PlayerData.deleteObjective()
      * instead.
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      */
     public final synchronized void removePlayer(String playerID) {
         dataMap.remove(playerID);
@@ -252,7 +261,8 @@ public abstract class Objective {
     /**
      * Checks if the player has this objective
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      * @return true if the player has this objective
      */
     public final boolean containsPlayer(String playerID) {
@@ -262,7 +272,8 @@ public abstract class Objective {
     /**
      * Returns the data of the specified player
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      * @return the data string for this objective
      */
     public final String getData(String playerID) {
@@ -287,7 +298,8 @@ public abstract class Objective {
      * Sets the label of this objective. Don't worry about it, it's only used by
      * the rest of BetonQuest's logic.
      *
-     * @param rename new ID of the objective
+     * @param rename
+     *            new ID of the objective
      */
     public void setLabel(ObjectiveID rename) {
         instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
@@ -301,7 +313,8 @@ public abstract class Objective {
     public void close() {
         stop();
         for (String playerID : dataMap.keySet()) {
-            BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(), dataMap.get(playerID).toString());
+            BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(),
+                    dataMap.get(playerID).toString());
         }
     }
 
@@ -336,11 +349,14 @@ public abstract class Objective {
          * constructor needs to parse the data in the instruction, so it can be
          * later retrieved and modified by your objective code.
          *
-         * @param instruction the instruction of the data object; parse it to get all
-         *                    required information
-         * @param playerID    ID of the player
-         * @param objID       ID of the objective, used by BetonQuest to store this
-         *                    ObjectiveData in the database
+         * @param instruction
+         *            the instruction of the data object; parse it to get all
+         *            required information
+         * @param playerID
+         *            ID of the player
+         * @param objID
+         *            ID of the objective, used by BetonQuest to store this
+         *            ObjectiveData in the database
          */
         public ObjectiveData(String instruction, String playerID, String objID) {
             this.instruction = instruction;
@@ -350,9 +366,10 @@ public abstract class Objective {
 
         /**
          * This method should return the whole instruction string, which can be
-         * successfully parsed by the constructor. This method is used by BetonQuest
-         * to save the ObjectiveData to the database. That's why the output syntax here
-         * must be compatible with input syntax in the constructor.
+         * successfully parsed by the constructor. This method is used by
+         * BetonQuest to save the ObjectiveData to the database. That's why the
+         * output syntax here must be compatible with input syntax in the
+         * constructor.
          *
          * @return the instruction string
          */
@@ -361,25 +378,30 @@ public abstract class Objective {
         }
 
         /**
-         * <p>Should be called when the data inside ObjectiveData changes. It will
-         * update the database with the changes.</p>
+         * <p>
+         * Should be called when the data inside ObjectiveData changes. It will
+         * update the database with the changes.
+         * </p>
          *
-         * <p>If you forget it, the objective
-         * will still work for players who don't leave the server. However, if someone
-         * leaves before completing, they will have to start this objective from
-         * scratch.</p>
+         * <p>
+         * If you forget it, the objective will still work for players who don't
+         * leave the server. However, if someone leaves before completing, they
+         * will have to start this objective from scratch.
+         * </p>
          */
         protected void update() {
             QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
             Bukkit.getPluginManager().callEvent(event);
-            // update the journal so all possible variables display correct information
+            // update the journal so all possible variables display correct
+            // information
             BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();
         }
 
     }
 
     /**
-     * Can handle thrown{@link QuestRuntimeException} and rate limits them so they don't spam console that hard
+     * Can handle thrown{@link QuestRuntimeException} and rate limits them so
+     * they don't spam console that hard
      *
      * @author Jonas Blocher
      */
@@ -393,17 +415,22 @@ public abstract class Objective {
         public long last = 0;
 
         /**
-         * Runs a task and logs occurring quest runtime exceptions with a rate limit
+         * Runs a task and logs occurring quest runtime exceptions with a rate
+         * limit
          *
-         * @param qreThrowing a task that may throw a quest runtime exception
+         * @param qreThrowing
+         *            a task that may throw a quest runtime exception
          */
         public void handle(QREThrowing qreThrowing) {
             try {
                 qreThrowing.run();
             } catch (QuestRuntimeException e) {
-                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) return;
+                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS)
+                    return;
                 last = System.currentTimeMillis();
-                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING,
+                        "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
         }
     }

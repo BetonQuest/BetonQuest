@@ -66,6 +66,7 @@ public class BossBarNotifyIO extends NotifyIO {
                     barFlags.add(BarFlag.valueOf(flag.toUpperCase()));
                 } catch (IllegalArgumentException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar barFlag: " + flag);
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -75,6 +76,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 barColor = BarColor.valueOf(getData().get("barcolor").toUpperCase());
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar color: " + getData().get("barcolor"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -83,6 +85,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 progress = Math.max(0.0, Math.min(1.0, Double.valueOf(getData().get("progress"))));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar progress: " + getData().get("progress"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -91,6 +94,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 style = BarStyle.valueOf(getData().get("style").toUpperCase());
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar style: " + getData().get("style"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -99,6 +103,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 stay = Math.max(0, Integer.valueOf(getData().get("stay")));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar stay: " + getData().get("stay"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -107,6 +112,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 countdown = Integer.valueOf(getData().get("countdown"));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar countdown: " + getData().get("countdown"));
+                LogUtils.logThrowable(e);
             }
         }
 

@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,7 +38,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.notify.Notify;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 
@@ -99,7 +100,7 @@ public class Config
 			if(!key.equals("global"))
 			{
 				if(verboose)
-					Debug.info("Loaded " + key + " language");
+				    LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
 				languages.add(key);
 			}
 		}
@@ -130,7 +131,8 @@ public class Config
 				}
 				catch(InstructionParseException e)
 				{
-					Debug.error("Could not load '" + name + "' quest canceler: " + e.getMessage());
+				    LogUtils.getLogger().log(Level.WARNING, "Could not load '" + name + "' quest canceler: " + e.getMessage());
+				    LogUtils.logThrowable(e);
 				}
 			}
 		}
@@ -148,7 +150,7 @@ public class Config
 		File def = new File(instance.root, packName.replace("-", File.separator));
 		if(!def.exists())
 		{
-			Debug.broadcast("Deploying " + packName + " package!");
+		    LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");
 			def.mkdirs();
 			saveResource(def, "default/pre-1.13/main.yml", "main.yml");
 			saveResource(def, "default/events.yml", "events.yml");
@@ -204,7 +206,8 @@ public class Config
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+			    LogUtils.getLogger().log(Level.WARNING, "Failed to create or write file: " + e.getMessage());
+                LogUtils.logThrowable(e);
 			}
 		}
 	}
@@ -614,7 +617,8 @@ public class Config
 			}
 			catch(IllegalArgumentException e)
 			{
-				Debug.error("Unknown sound type: " + rawSound);
+			    LogUtils.getLogger().log(Level.WARNING, "Unknown sound type: " + rawSound);
+			    LogUtils.logThrowable(e);
 			}
 		}
 	}

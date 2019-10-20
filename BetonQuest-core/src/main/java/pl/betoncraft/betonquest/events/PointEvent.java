@@ -73,6 +73,7 @@ public class PointEvent extends QuestEvent {
                     } catch (QuestRuntimeException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Error while asynchronously adding " + count + " points of '" + category
                                 + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
+                        LogUtils.logThrowable(e);
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());

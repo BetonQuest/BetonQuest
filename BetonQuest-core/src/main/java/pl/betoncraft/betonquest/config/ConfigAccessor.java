@@ -112,8 +112,9 @@ public class ConfigAccessor {
             } else {
                 getConfig().save(configFile);
             }
-        } catch (IOException ex) {
-            LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+        } catch (IOException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile);
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -139,7 +140,7 @@ public class ConfigAccessor {
                 }
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtils.logThrowableReport(e);
             }
         }
     }

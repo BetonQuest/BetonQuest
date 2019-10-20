@@ -488,6 +488,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } catch (InstructionParseException | ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[]{e.getMessage()});
             LogUtils.getLogger().log(Level.WARNING, "Error while creating an item: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -680,8 +681,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"))
                                 .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (ParseException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Date was in the wrong format");
                         sendMessage(sender, "specify_date");
+                        LogUtils.getLogger().log(Level.WARNING, "Could not parse date: " + e.getMessage());
+                        LogUtils.logThrowable(e);
                         return;
                     }
                 }
@@ -969,6 +971,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             eventID = new EventID(null, args[2]);
         } catch (ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[]{e.getMessage()});
+            LogUtils.getLogger().log(Level.WARNING, "Could not fine event: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return;
         }
         // fire the event
@@ -1011,6 +1015,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             conditionID = new ConditionID(null, args[2]);
         } catch (ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[]{e.getMessage()});
+            LogUtils.getLogger().log(Level.WARNING, "Could not find condition: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return;
         }
         // display message about condition
@@ -1235,6 +1241,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             objectiveID = new ObjectiveID(null, args[3]);
         } catch (ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[]{e.getMessage()});
+            LogUtils.getLogger().log(Level.WARNING, "Could not find objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return;
         }
         Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
@@ -1338,6 +1346,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             z = Double.parseDouble(parts[2]);
         } catch (NumberFormatException e) {
             player.sendMessage("§4ERROR");
+            LogUtils.getLogger().log(Level.WARNING, "Could not parde number: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return;
         }
         Location loc = player.getLocation();
@@ -1426,6 +1436,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     nameID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
                     sendMessage(sender, "error", new String[]{e.getMessage()});
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find Objective: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     return;
                 }
                 // rename objective in the file
@@ -1436,8 +1448,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     renameID = new ObjectiveID(null, rename);
                 } catch (ObjectNotFoundException e) {
-                    // this should not happen
-                    e.printStackTrace();
+                    sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
+                    LogUtils.logThrowableReport(e);
                     return;
                 }
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
@@ -1551,6 +1563,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
                     sendMessage(sender, "error", new String[]{e.getMessage()});
+                    LogUtils.getLogger().log(Level.WARNING, "Could not fine objective: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     return;
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {

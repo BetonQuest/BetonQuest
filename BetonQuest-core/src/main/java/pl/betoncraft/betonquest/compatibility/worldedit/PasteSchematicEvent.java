@@ -101,6 +101,7 @@ public class PasteSchematicEvent extends QuestEvent {
             }
         } catch (IOException | WorldEditException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while pasting a schematic: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

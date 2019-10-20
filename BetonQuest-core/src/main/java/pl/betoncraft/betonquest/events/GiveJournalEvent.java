@@ -22,6 +22,9 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.LogUtils;
+
+import java.util.logging.Level;
 
 /**
  * Gives journal to the player.
@@ -37,6 +40,8 @@ public class GiveJournalEvent extends QuestEvent {
         try {
             journalSlot = Integer.parseInt(Config.getString("config.default_journal_slot"));
         } catch (Exception e) {
+            LogUtils.getLogger().log(Level.WARNING, "Could not read default_journal_slot: " + e.getMessage());
+            LogUtils.logThrowable(e);
             journalSlot = -1;
         }
     }

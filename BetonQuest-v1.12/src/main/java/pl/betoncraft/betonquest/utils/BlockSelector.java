@@ -54,6 +54,7 @@ public class BlockSelector {
                 data = Integer.valueOf(parts[1]);
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid data type: " + parts[1]);
+                LogUtils.logThrowable(e);
             }
         } else {
             materialName = string;

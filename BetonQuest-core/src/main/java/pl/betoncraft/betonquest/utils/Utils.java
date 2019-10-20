@@ -137,6 +137,8 @@ public class Utils {
                             String value = res.getString(columnName);
                             config.set(key + "." + counter + "." + columnName, value);
                         } catch (SQLException e) {
+                            LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
+                            LogUtils.logThrowable(e);
                             done = false;
                             // do nothing, as there can be nothing done
                             // error while loading the string means the
@@ -151,7 +153,8 @@ public class Utils {
             accessor.saveConfig();
             return done;
         } catch (IOException | SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.WARNING, "There was an error during database backup: " + e.getMessage());
+            LogUtils.logThrowable(e);
             File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
                 brokenFile.delete();
@@ -322,19 +325,18 @@ public class Utils {
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {
-            e.printStackTrace();
             if (isOldDatabaseBackedUP) {
                 LogUtils.getLogger().log(Level.WARNING, "Your database probably got corrupted, sorry for that :( The good news"
                         + " is that you have a backup of your old database, you can find it in backups"
                         + " folder, named as " + filename + ". You can try to use it to load the "
-                        + "backup, but it will probably have the same effect. Please contact the "
-                        + "developer at <coosheck@gmail.com> in order to fix this manually.");
+                        + "backup, but it will probably have the same effect.");
             } else {
                 LogUtils.getLogger().log(Level.WARNING, "There was an error during database loading, but fortunatelly the "
                         + "original database wasn't even touched yet. You can try to load the backup "
                         + "again, and if the problem persists you should contact the developer to find"
                         + " a solution.");
             }
+            LogUtils.logThrowableReport(e);
         }
     }
 
@@ -404,17 +406,19 @@ public class Utils {
         }
         try {
             return Color.fromRGB(Integer.parseInt(string));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e1) {
+            LogUtils.logThrowableIgnore(e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
             } catch (NumberFormatException e2) {
+                LogUtils.logThrowableIgnore(e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase().replace(' ', '_')).getColor();
                 } catch (IllegalArgumentException e3) {
                     // this was not a dye color name
-                    throw new InstructionParseException("Dye color does not exist: " + string, e);
+                    throw new InstructionParseException("Dye color does not exist: " + string, e3);
                 }
             }
         } catch (IllegalArgumentException e) {

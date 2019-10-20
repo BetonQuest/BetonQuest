@@ -57,7 +57,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         if (getData().containsKey("frame")) {
             try {
                 frame = FrameType.valueOf(getData().get("frame").toUpperCase()).str;
-            } catch (IllegalArgumentException ignored) {
+            } catch (IllegalArgumentException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
 

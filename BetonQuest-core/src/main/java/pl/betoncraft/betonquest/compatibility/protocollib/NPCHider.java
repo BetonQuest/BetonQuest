@@ -99,6 +99,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
                     id = Integer.parseInt(npcID);
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
+                    LogUtils.logThrowable(e);
                     continue npcs;
                 }
                 Set<ConditionID> conditions = new HashSet<>();
@@ -110,6 +111,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
                     } catch (ObjectNotFoundException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
                                 "' does not exist, in custom.yml hide_npcs with ID " + npcID);
+                        LogUtils.logThrowable(e);
                         continue npcs;
                     }
                 }

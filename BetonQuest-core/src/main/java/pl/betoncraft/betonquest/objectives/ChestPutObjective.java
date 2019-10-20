@@ -72,7 +72,7 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(), e);
+                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(),e );
             }
         }
 
@@ -91,6 +91,8 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chest = (InventoryHolder) block.getState();
             } catch (ClassCastException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not cast the chest inventory: " + e.getMessage());
+                LogUtils.logThrowable(e);
                 return;
             }
             if (event.getInventory() == null || event.getInventory().getHolder() == null)
@@ -104,6 +106,7 @@ public class ChestPutObjective extends Objective implements Listener {
             }
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

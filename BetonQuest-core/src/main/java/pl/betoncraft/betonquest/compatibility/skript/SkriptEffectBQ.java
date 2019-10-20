@@ -63,7 +63,8 @@ public class SkriptEffectBQ extends Effect {
                 try {
                     BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), new EventID(null, eventID));
                 } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error when running Skripe event - could not load '" + eventID + "' event: " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
 
             }

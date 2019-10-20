@@ -83,6 +83,7 @@ public class StaticEvents {
                     timers.add(new EventTimer(timeStamp, new EventID(pack, value)));
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -115,6 +116,7 @@ public class StaticEvents {
             timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm").parse(timeString).getTime();
         } catch (ParseException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error in time setting in static event declaration: " + hour);
+            LogUtils.logThrowable(e);
         }
         // if the timestamp is too old, add one day to it
         if (timeStamp < new Date().getTime()) {

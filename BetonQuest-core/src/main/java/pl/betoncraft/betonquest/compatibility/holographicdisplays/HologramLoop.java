@@ -85,6 +85,7 @@ public class HologramLoop {
                         } catch (ObjectNotFoundException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
                                     + key + ": " + e.getMessage());
+                            LogUtils.logThrowable(e);
                         }
                     }
                 }
@@ -93,6 +94,7 @@ public class HologramLoop {
                     location = new LocationData(packName, rawLocation).getLocation(null);
                 } catch (QuestRuntimeException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse location in " + key + " hologram: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), location);

@@ -134,8 +134,8 @@ public class Notify {
                 try {
                     tio = c.getConstructor(Map.class).newInstance(ioData);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
                     LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
+                    LogUtils.logThrowable(e);
                     return new DummyIO(ioData);
                 }
                 break;

@@ -173,8 +173,9 @@ public class ConfigPackage {
             try {
                 GlobalVariableID variableID = new GlobalVariableID(this, varName);
                 varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
-            } catch (ObjectNotFoundException e1) {
-                LogUtils.getLogger().log(Level.WARNING, e1.getMessage());
+            } catch (ObjectNotFoundException e) {
+                LogUtils.getLogger().log(Level.WARNING, e.getMessage());
+                LogUtils.logThrowable(e);
                 return input;
             }
             if (varVal == null) {
@@ -216,6 +217,7 @@ public class ConfigPackage {
                     LogUtils.getLogger().log(Level.WARNING, String.format(
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
                             innerVarName, varName, name));
+                    LogUtils.logThrowable(e);
                     return input;
                 }
                 // parse the vector
@@ -231,6 +233,7 @@ public class ConfigPackage {
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Could not parse vector inlocation variable %s in package %s",
                             varName, name));
+                    LogUtils.logThrowable(e);
                     return input;
                 }
                 double x3 = x1 + x2, y3 = y1 + y2, z3 = z1 + z2;

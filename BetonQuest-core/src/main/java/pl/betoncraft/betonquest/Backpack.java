@@ -206,6 +206,8 @@ public class Backpack implements Listener {
                 try {
                     previous = new QuestItem(new ItemID(Config.getDefaultPackage(), "previous_button")).generate(1);
                 } catch (ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     previous = new ItemStack(Material.GLOWSTONE_DUST);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load previous button: " + e.getMessage());
@@ -223,6 +225,8 @@ public class Backpack implements Listener {
                 try {
                     next = new QuestItem(new ItemID(Config.getDefaultPackage(), "next_button")).generate(1);
                 } catch (ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     next = new ItemStack(Material.REDSTONE);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load next button: " + e.getMessage());
@@ -240,6 +244,8 @@ public class Backpack implements Listener {
             try {
                 cancel = new QuestItem(new ItemID(Config.getDefaultPackage(), "cancel_button")).generate(1);
             } catch (ObjectNotFoundException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not find object: " + e.getMessage());
+                LogUtils.logThrowable(e);
                 cancel = new ItemStack(Material.BONE);
             } catch (InstructionParseException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
@@ -256,6 +262,8 @@ public class Backpack implements Listener {
             try {
                 compassItem = new QuestItem(new ItemID(Config.getDefaultPackage(), "compass_button")).generate(1);
             } catch (ObjectNotFoundException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
+                LogUtils.logThrowable(e);
                 compassItem = new ItemStack(Material.COMPASS);
             } catch (InstructionParseException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not load compass button: " + e.getMessage());
@@ -488,6 +496,7 @@ public class Backpack implements Listener {
                         } catch (NumberFormatException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not parse location coordinates in a compass pointer in " + packName
                                     + " package: " + key);
+                            LogUtils.logThrowable(e);
                             player.closeInventory();
                             return;
                         }
@@ -522,17 +531,22 @@ public class Backpack implements Listener {
                     compass = new QuestItem(new ItemID(Config.getDefaultPackage(), item)).generate(1);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load compass button: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     player.closeInventory();
                     return;
                 } catch (NullPointerException e) {
                     if (e.getMessage().equals("Item instruction is null")) {
+                        LogUtils.getLogger().log(Level.WARNING, "Item instruction is null.");
+                        LogUtils.logThrowable(e);
                         player.closeInventory();
                         return;
                     } else {
-                        e.printStackTrace();
+                        LogUtils.logThrowableReport(e);
                         return;
                     }
                 } catch (ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     compass = new ItemStack(Material.COMPASS);
                 }
                 ItemMeta meta = compass.getItemMeta();

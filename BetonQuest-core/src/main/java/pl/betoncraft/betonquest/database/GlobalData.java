@@ -68,7 +68,8 @@ public class GlobalData {
                     + " global_points loaded");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 

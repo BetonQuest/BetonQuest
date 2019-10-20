@@ -41,6 +41,7 @@ public class McMMOIntegrator implements Integrator {
             LogUtils.getLogger().log(Level.FINE, "Enabled MCMMO QuestItemHandler");
         } catch (LinkageError e) {
             LogUtils.getLogger().log(Level.WARNING, "MCMMO version is not compatible with the QuestItemHandler.");
+            LogUtils.logThrowable(e);
         }
     }
 

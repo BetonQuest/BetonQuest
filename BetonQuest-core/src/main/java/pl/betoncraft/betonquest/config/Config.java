@@ -118,6 +118,7 @@ public class Config {
                     cancelers.put(name, new QuestCanceler(name));
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load '" + name + "' quest canceler: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -179,7 +180,8 @@ public class Config {
                 }
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtils.getLogger().log(Level.WARNING, "Could not save resource: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
         }
     }
@@ -506,6 +508,7 @@ public class Config {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Unknown sound type: " + rawSound);
+                LogUtils.logThrowable(e);
             }
         }
     }

@@ -130,6 +130,7 @@ public class BlockSelector {
         try {
             materialKey = material.getKey();
         } catch (IllegalArgumentException e) {
+            LogUtils.logThrowableIgnore(e);
             return false;
         }
 

@@ -77,6 +77,7 @@ public class CompassEvent extends QuestEvent {
                     new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).run(playerID);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
+                    LogUtils.logThrowable(e);
                 }
                 return;
             case SET:
@@ -85,6 +86,7 @@ public class CompassEvent extends QuestEvent {
                     location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
                 } catch (QuestRuntimeException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
+                    LogUtils.logThrowable(e);
                     return;
                 }
 

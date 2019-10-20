@@ -52,6 +52,7 @@ public class ConditionRequirement extends CustomRequirement {
             return BetonQuest.condition(playerID, condition);
         } catch (ObjectNotFoundException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return false;
         }
     }

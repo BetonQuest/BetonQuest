@@ -18,9 +18,11 @@
 package pl.betoncraft.betonquest.database;
 
 import org.bukkit.plugin.Plugin;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL,
@@ -52,7 +54,8 @@ public abstract class Database {
         try {
             con.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
         con = null;
     }
@@ -97,7 +100,8 @@ public abstract class Database {
                     .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
                             + autoIncrement + ", category VARCHAR(256) NOT NULL, count INT NOT NULL);");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 }

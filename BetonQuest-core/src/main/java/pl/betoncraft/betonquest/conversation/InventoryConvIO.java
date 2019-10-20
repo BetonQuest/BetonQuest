@@ -36,12 +36,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Inventory GUI for conversations
@@ -192,6 +194,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     try {
                         data = Short.valueOf(materialName.substring(colonIndex + 1));
                     } catch (NumberFormatException e) {
+                        LogUtils.getLogger().log(Level.WARNING, "Could not read material data: " + e.getMessage());
+                        LogUtils.logThrowable(e);
                         data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);

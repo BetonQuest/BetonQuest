@@ -22,8 +22,8 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -75,14 +75,12 @@ public class RunEvent extends QuestEvent {
         try {
             return eventClass.getConstructor(Instruction.class).newInstance(
                     new Instruction(this.instruction.getPackage(), null, instruction));
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage(), e);
             } else {
-                e.printStackTrace();
+                LogUtils.logThrowableReport(e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
 

@@ -55,6 +55,7 @@ public class MathVariable extends Variable {
             return String.valueOf(value);
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
+            LogUtils.logThrowable(e);
             return "0";
         }
     }

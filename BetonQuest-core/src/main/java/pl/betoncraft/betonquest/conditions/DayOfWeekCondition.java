@@ -21,6 +21,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -43,7 +44,8 @@ public class DayOfWeekCondition extends Condition {
             d = DayOfWeek.of(Integer.parseInt(dayString));
         } catch (DateTimeException e) {
             throw new InstructionParseException(dayString + " is not a valid day of a week", e);
-        } catch (NumberFormatException NFE) {
+        } catch (NumberFormatException e) {
+            LogUtils.logThrowableIgnore(e);
             try {
                 d = DayOfWeek.valueOf(dayString.toUpperCase());
             } catch (IllegalArgumentException IAE) {

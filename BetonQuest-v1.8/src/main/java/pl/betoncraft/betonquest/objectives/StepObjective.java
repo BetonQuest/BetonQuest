@@ -78,6 +78,7 @@ public class StepObjective extends Objective implements Listener {
                 completeObjective(playerID);
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -105,6 +106,7 @@ public class StepObjective extends Objective implements Listener {
             } catch (QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage());
+                LogUtils.logThrowable(e);
                 return "";
             }
             return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
