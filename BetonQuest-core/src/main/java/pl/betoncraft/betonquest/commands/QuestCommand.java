@@ -291,6 +291,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "package":
                     createNewPackage(sender, args);
                     break;
+                case "debug":
+                    handleDebug(sender, args);
+                    break;
                 default:
                     // there was an unknown argument, so handle this
                     sendMessage(sender, "unknown_argument");
@@ -322,7 +325,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     "config",
                     "vector",
                     "version",
-                    "backup");
+                    "backup",
+                    "debug");
         }
         switch (args[0].toLowerCase()) {
             case "conditions":
@@ -384,6 +388,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 else return new ArrayList<>();
             case "update":
                 return completeUpdate(sender, args);
+            case "debug":
+                return completeDebug(sender, args);
             case "reload":
             case "backup":
             case "create":
@@ -971,7 +977,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             eventID = new EventID(null, args[2]);
         } catch (ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[]{e.getMessage()});
-            LogUtils.getLogger().log(Level.WARNING, "Could not fine event: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Could not find event: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
         }
@@ -1346,7 +1352,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             z = Double.parseDouble(parts[2]);
         } catch (NumberFormatException e) {
             player.sendMessage("§4ERROR");
-            LogUtils.getLogger().log(Level.WARNING, "Could not parde number: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Could not parse number: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
         }
@@ -1652,6 +1658,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("vector", "vector <pack.varname> <vectorname>");
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
+        cmds.put("debug", "[true/false]");
         if (!(sender instanceof Player))
             cmds.put("backup", "backup");
         // display them
@@ -1759,6 +1766,39 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         //send the message
         builder.send(sender);
+    }
+
+    private void handleDebug(CommandSender sender, String[] args) {
+        if(args.length == 1) {
+            sender.sendMessage("§2Debugging mode is currently " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+            return;
+        }
+        Boolean input = args[1].equalsIgnoreCase("true") ? Boolean.TRUE : args[1].equalsIgnoreCase("false") ? Boolean.FALSE : null;
+        if(input != null && args.length == 2) {
+            
+            if(LogUtils.isDebugging() && input || !LogUtils.isDebugging() && !input) {
+                sender.sendMessage("§2Debugging mode is already " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+                return;
+            }
+            if(input) {
+                LogUtils.startDebug();
+            } else {
+                LogUtils.endDebug();
+            }
+            sender.sendMessage("§2Debugging mode was " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+            LogUtils.getLogger().log(Level.INFO, "Debuging mode was " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+            return;
+        }
+        sendMessage(sender, "unknown_argument");
+    }
+
+    private List<String> completeDebug(CommandSender sender, String[] args) {
+        if (args.length == 2) {
+            return Arrays.asList(
+                    "true",
+                    "false");
+        }
+        return null;
     }
 
     private void sendMessage(CommandSender sender, String messageName) {
