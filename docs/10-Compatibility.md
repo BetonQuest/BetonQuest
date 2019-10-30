@@ -163,6 +163,9 @@ If Citizens is also installed then you can have holograms configured relative to
     npc_holograms:
       # How often to check conditions
       check_interval: 100
+      
+      # Holograms follow npcs when they move (higher cpu when true)
+      follow: false
 
       # Disable npc_holograms
       disabled: false

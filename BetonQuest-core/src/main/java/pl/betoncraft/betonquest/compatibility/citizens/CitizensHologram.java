@@ -57,6 +57,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     private Map<NPC, List<NPCHologram>> npcs = new HashMap<>();
 
     private int interval = 100;
+    private boolean follow = false;
     private boolean enabled;
 
     // Updater
@@ -102,6 +103,9 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             "Check interval must be bigger than 0.");
                     return;
                 }
+
+                // load follow flag
+                follow = section.getBoolean("follow", false);
 
                 // loading hologram config
                 for (String key : section.getKeys(false)) {
@@ -287,7 +291,11 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         }
                     }
                 };
-                updater.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 1L, 1L);
+                if (follow) {
+                    updater.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), 1L, 1L);
+                } else {
+                    updater.runTaskLater(BetonQuest.getInstance().getJavaPlugin(), 1L);
+                }
             }
         } else {
             if (updater != null) {
