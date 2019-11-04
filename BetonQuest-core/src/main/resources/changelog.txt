@@ -24,12 +24,14 @@ Additions:
   * New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement
   * New 'menu' conversation IO - Requires ProtocolLib. See: https://www.youtube.com/watch?v=Qtn7Dpdf4jw&lc
   * New 'packet' chat interceptor - Requires ProtocolLib.
+  * new '/q debug' command - Enable or disable the debug mode
 Changes:
   * Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters
   * Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.
   * Priority for 'journal_main_page' entries not unique anymore, it only orders the entries. Same priority sort it alphabetic
   * Objective 'interact' can have 'loc', 'range' parameters
   * Objective 'region' can optionally have 'entry' and/or 'exit' to only trigger when entering or exiting named region
+  * The old 'Debug' class was replaced by a more useful and powerful 'LogUtils' class
 Fixes:
   * Resolve variables in journal pages.
   * WATER and LAVA can be specified in Action Objective
