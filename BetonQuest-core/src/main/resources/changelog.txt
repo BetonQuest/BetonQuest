@@ -1,3 +1,8 @@
+v1.12-dev
+Additions:
+Changes:
+Fixes:
+
 v1.11-dev
 Additions:
   * Support Minecraft 1.8 - 1.13.2+
