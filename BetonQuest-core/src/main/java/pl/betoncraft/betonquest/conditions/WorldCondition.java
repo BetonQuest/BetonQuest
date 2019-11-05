@@ -43,7 +43,7 @@ public class WorldCondition extends Condition {
             try {
                 world = new LocationData(instruction.getPackage().getName(), name).getLocation(null).getWorld();
             } catch (InstructionParseException | QuestRuntimeException e) {
-                throw new InstructionParseException("There is no such world: " + name);
+                throw new InstructionParseException("There is no such world: " + name, e);
             }
         }
     }

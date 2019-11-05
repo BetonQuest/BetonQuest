@@ -35,14 +35,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Inventory GUI for conversations
@@ -193,6 +194,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     try {
                         data = Short.valueOf(materialName.substring(colonIndex + 1));
                     } catch (NumberFormatException e) {
+                        LogUtils.getLogger().log(Level.WARNING, "Could not read material data: " + e.getMessage());
+                        LogUtils.logThrowable(e);
                         data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);
@@ -297,7 +300,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         // Work around a bug where inventory is null. We'll log it but move on by closing the conversation
         if (inv == null) {
-            Debug.error("Player closed inventory whilst in conversation but has null inventory. Implementing work-around.");
+            LogUtils.getLogger().log(Level.WARNING, "Player closed inventory whilst in conversation but has null inventory. Implementing work-around.");
             conv.endConversation();
             HandlerList.unregisterAll(this);
             return;

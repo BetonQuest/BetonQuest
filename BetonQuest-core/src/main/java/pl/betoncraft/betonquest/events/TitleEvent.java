@@ -51,7 +51,7 @@ public class TitleEvent extends QuestEvent {
             stay = Integer.parseInt(timeParts[1]);
             fadeOut = Integer.parseInt(timeParts[2]);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse title time.");
+            throw new InstructionParseException("Could not parse title time.", e);
         }
         String[] parts = instruction.getInstruction().split(" ");
         String currentLang = Config.getLanguage();
@@ -82,7 +82,7 @@ public class TitleEvent extends QuestEvent {
                     BetonQuest.createVariable(instruction.getPackage(), variable);
                 } catch (InstructionParseException e) {
                     throw new InstructionParseException("Could not create '" + variable + "' variable: "
-                            + e.getMessage());
+                            + e.getMessage(), e);
                 }
                 if (!variables.contains(variable))
                     variables.add(variable);

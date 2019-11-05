@@ -23,6 +23,7 @@
 * **/q create {package}**: creates new package with given name, filled with default quest
 * **/q vector {packname.variable} {newvariable}**: calculates the vector from first location variable to you position and saves it as second variable
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
+* **/q debug [true/false]**: enable debug mode and write all down in a log file or disable the debug mode
 * **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
 
 ## Aliases
@@ -91,3 +92,5 @@ Update command ('`/q update`') will try to download the newest version of the pl
 Using '`/q create beton`' command you will create new package named '`beton`'. It will contain the default quest.
 
 The `/q vector` command allows you to create vector variables from the specified in first argument location variable to your position. The result will be saved to the "vectors.{second argument}" variable.
+
+The debug command ('`/q debug`') allow you to enable or disable the debug mode. If the debug mode is enabled, the last 1000 log entries are written down to the latest.log file as history and write everything down until the debug mode os disabled. The file `/plugins/BetonQuest/logs/latest.log` is renamed to the current date and time on server start, if the debug mode is not longer active. The debug mode is useful, if you want to report an issue but it is not clear why the issue occurs.

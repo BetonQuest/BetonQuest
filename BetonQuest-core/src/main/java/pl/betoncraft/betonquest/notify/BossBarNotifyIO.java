@@ -26,13 +26,14 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Use a BossBar for Notification
@@ -64,7 +65,8 @@ public class BossBarNotifyIO extends NotifyIO {
                 try {
                     barFlags.add(BarFlag.valueOf(flag.toUpperCase()));
                 } catch (IllegalArgumentException e) {
-                    Debug.error("Invalid BossBar barFlag: " + flag);
+                    LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar barFlag: " + flag);
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -73,7 +75,8 @@ public class BossBarNotifyIO extends NotifyIO {
             try {
                 barColor = BarColor.valueOf(getData().get("barcolor").toUpperCase());
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid BossBar color: " + getData().get("barcolor"));
+                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar color: " + getData().get("barcolor"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -81,7 +84,8 @@ public class BossBarNotifyIO extends NotifyIO {
             try {
                 progress = Math.max(0.0, Math.min(1.0, Double.valueOf(getData().get("progress"))));
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid BossBar progress: " + getData().get("progress"));
+                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar progress: " + getData().get("progress"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -89,7 +93,8 @@ public class BossBarNotifyIO extends NotifyIO {
             try {
                 style = BarStyle.valueOf(getData().get("style").toUpperCase());
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid BossBar style: " + getData().get("style"));
+                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar style: " + getData().get("style"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -97,7 +102,8 @@ public class BossBarNotifyIO extends NotifyIO {
             try {
                 stay = Math.max(0, Integer.valueOf(getData().get("stay")));
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid BossBar stay: " + getData().get("stay"));
+                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar stay: " + getData().get("stay"));
+                LogUtils.logThrowable(e);
             }
         }
 
@@ -105,7 +111,8 @@ public class BossBarNotifyIO extends NotifyIO {
             try {
                 countdown = Integer.valueOf(getData().get("countdown"));
             } catch (IllegalArgumentException e) {
-                Debug.error("Invalid BossBar countdown: " + getData().get("countdown"));
+                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar countdown: " + getData().get("countdown"));
+                LogUtils.logThrowable(e);
             }
         }
 

@@ -34,13 +34,14 @@ import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * @author Namnodorel
@@ -97,7 +98,8 @@ public class NPCHider extends BukkitRunnable implements Listener {
                 try {
                     id = Integer.parseInt(npcID);
                 } catch (NumberFormatException e) {
-                    Debug.error("NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
+                    LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
+                    LogUtils.logThrowable(e);
                     continue npcs;
                 }
                 Set<ConditionID> conditions = new HashSet<>();
@@ -107,8 +109,9 @@ public class NPCHider extends BukkitRunnable implements Listener {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
                     } catch (ObjectNotFoundException e) {
-                        Debug.error("Condition '" + condition +
+                        LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
                                 "' does not exist, in custom.yml hide_npcs with ID " + npcID);
+                        LogUtils.logThrowable(e);
                         continue npcs;
                     }
                 }
@@ -159,7 +162,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
 
         NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
-            Debug.error("NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
+            LogUtils.getLogger().log(Level.WARNING, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
         }
         if (npc.isSpawned()) {

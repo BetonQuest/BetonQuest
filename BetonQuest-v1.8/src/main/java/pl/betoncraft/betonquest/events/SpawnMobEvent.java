@@ -65,7 +65,7 @@ public class SpawnMobEvent extends QuestEvent {
         try {
             type = EntityType.valueOf(entity.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Entity type '" + entity + "' does not exist");
+            throw new InstructionParseException("Entity type '" + entity + "' does not exist", e);
         }
         amount = instruction.getVarNum();
         name = instruction.getOptional("name");
@@ -92,7 +92,6 @@ public class SpawnMobEvent extends QuestEvent {
         drops = instruction.getItemList(instruction.getOptional("drops"));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);

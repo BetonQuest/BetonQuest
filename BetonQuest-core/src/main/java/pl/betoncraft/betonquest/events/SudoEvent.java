@@ -38,7 +38,7 @@ public class SudoEvent extends QuestEvent {
             String string = instruction.getInstruction();
             commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
         } catch (Exception e) {
-            throw new InstructionParseException("Could not parse commands");
+            throw new InstructionParseException("Could not parse commands", e);
         }
     }
 

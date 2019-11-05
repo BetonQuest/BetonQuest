@@ -18,10 +18,11 @@
 package pl.betoncraft.betonquest.database;
 
 import org.bukkit.plugin.Plugin;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.logging.Level;
 
 /**
  * Connects to and uses a MySQL database
@@ -63,7 +64,8 @@ public class MySQL extends Database {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
         } catch (Exception e) {
-            Debug.info("MySQL says: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "MySQL says: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
         return connection;
     }

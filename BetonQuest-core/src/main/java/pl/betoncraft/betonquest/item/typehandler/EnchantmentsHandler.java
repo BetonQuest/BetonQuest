@@ -130,7 +130,7 @@ public class EnchantmentsHandler {
             try {
                 level = Integer.parseInt(parts[1]);
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse enchantment level: " + parts[1]);
+                throw new InstructionParseException("Could not parse enchantment level: " + parts[1], e);
             }
             if (level < 1) {
                 throw new InstructionParseException("Enchantment level must be a positive integer");

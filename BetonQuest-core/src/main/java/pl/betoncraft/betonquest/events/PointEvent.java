@@ -26,9 +26,11 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
+
+import java.util.logging.Level;
 
 /**
  * Modifies player's points
@@ -55,7 +57,7 @@ public class PointEvent extends QuestEvent {
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point count");
+            throw new InstructionParseException("Could not parse point count", e);
         }
     }
 
@@ -69,8 +71,9 @@ public class PointEvent extends QuestEvent {
                     try {
                         addPoints(playerID, playerData);
                     } catch (QuestRuntimeException e) {
-                        Debug.error("Error while asynchronously adding " + count + " points of '" + category
+                        LogUtils.getLogger().log(Level.WARNING, "Error while asynchronously adding " + count + " points of '" + category
                                 + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
+                        LogUtils.logThrowable(e);
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());

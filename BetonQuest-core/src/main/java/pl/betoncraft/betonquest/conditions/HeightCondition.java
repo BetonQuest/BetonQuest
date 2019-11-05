@@ -42,13 +42,13 @@ public class HeightCondition extends Condition {
             try {
                 height = new VariableNumber(packName, string);
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse height");
+                throw new InstructionParseException("Could not parse height", e);
             }
         } else {
             try {
                 height = new VariableNumber(new LocationData(packName, string).getLocation(null).getY());
             } catch (QuestRuntimeException e) {
-                throw new InstructionParseException("Could not parse height");
+                throw new InstructionParseException("Could not parse height", e);
             }
         }
     }

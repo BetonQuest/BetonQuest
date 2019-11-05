@@ -48,8 +48,8 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ChatConvIO;
 import pl.betoncraft.betonquest.conversation.Conversation;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocalChatPaginator;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -140,7 +141,8 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel);
+            LogUtils.logThrowable(e);
         }
         try {
             for (CONTROL control : Arrays.stream(configControlSelect.split(","))
@@ -153,7 +155,8 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect);
+            LogUtils.logThrowable(e);
         }
         try {
             for (CONTROL control : Arrays.stream(configControlMove.split(","))
@@ -165,7 +168,8 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Debug.error(conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
+            LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
+            LogUtils.logThrowable(e);
         }
     }
 

@@ -47,7 +47,7 @@ public class CitizensVariable extends Variable {
         try {
             key = TYPE.valueOf(instruction.next().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Invalid Type: " + instruction.current());
+            throw new InstructionParseException("Invalid Type: " + instruction.current(), e);
         }
     }
 

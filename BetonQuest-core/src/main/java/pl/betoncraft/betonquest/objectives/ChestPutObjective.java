@@ -36,9 +36,11 @@ import pl.betoncraft.betonquest.events.ChestTakeEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Requires the player to put items in the chest. Items can optionally NOT
@@ -62,7 +64,7 @@ public class ChestPutObjective extends Objective implements Listener {
         try {
             chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
         } catch (InstructionParseException | ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage());
+            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage(), e);
         }
         if (instruction.hasArgument("items-stay")) {
             chestTakeEvent = null;
@@ -70,7 +72,7 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage());
+                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(),e );
             }
         }
 
@@ -89,6 +91,8 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chest = (InventoryHolder) block.getState();
             } catch (ClassCastException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not cast the chest inventory: " + e.getMessage());
+                LogUtils.logThrowable(e);
                 return;
             }
             if (event.getInventory() == null || event.getInventory().getHolder() == null)
@@ -101,7 +105,8 @@ public class ChestPutObjective extends Objective implements Listener {
                     chestTakeEvent.run(playerID);
             }
         } catch (QuestRuntimeException e) {
-            Debug.error("Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
     }
 

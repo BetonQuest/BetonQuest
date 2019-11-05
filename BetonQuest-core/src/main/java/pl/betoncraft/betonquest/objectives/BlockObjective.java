@@ -37,7 +37,6 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  *
  * @author Jakub Sapalski
  */
-@SuppressWarnings("deprecation")
 public class BlockObjective extends Objective implements Listener {
 
     private final int neededAmount;

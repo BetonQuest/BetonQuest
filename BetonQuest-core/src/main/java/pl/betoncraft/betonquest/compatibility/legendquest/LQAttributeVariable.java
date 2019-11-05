@@ -47,7 +47,7 @@ public class LQAttributeVariable extends Variable {
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse attribute amount");
+                throw new InstructionParseException("Could not parse attribute amount", e);
             }
         }
     }

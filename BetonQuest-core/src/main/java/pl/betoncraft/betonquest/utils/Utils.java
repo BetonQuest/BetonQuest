@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,11 +63,11 @@ public class Utils {
      * Does a full configuration backup.
      */
     public static void backup() {
-        Debug.broadcast("Backing up!");
+        LogUtils.getLogger().log(Level.INFO, "Backing up!");
         long time = new Date().getTime();
         BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
-            Debug.error("There was an error during backing up the database! This does not affect"
+            LogUtils.getLogger().log(Level.WARNING, "There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database maually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
@@ -83,8 +84,8 @@ public class Utils {
         // delete database backup so it doesn't make a mess later on
         new File(instance.getDataFolder(), "database-backup.yml").delete();
         // done
-        Debug.info("Done in " + (new Date().getTime() - time) + "ms");
-        Debug.broadcast("Done, you can find the backup in \"backups\" directory.");
+        LogUtils.getLogger().log(Level.FINE, "Done in " + (new Date().getTime() - time) + "ms");
+        LogUtils.getLogger().log(Level.INFO, "Done, you can find the backup in \"backups\" directory.");
     }
 
     /**
@@ -108,23 +109,23 @@ public class Utils {
             Connector database = new Connector();
             // load resultsets into the map
             for (String table : tables) {
-                Debug.info("Loading " + table);
+                LogUtils.getLogger().log(Level.FINE, "Loading " + table);
                 String enumName = ("LOAD_ALL_" + table).toUpperCase();
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
             for (String key : map.keySet()) {
-                Debug.info("Saving " + key + " to the backup file");
+                LogUtils.getLogger().log(Level.FINE, "Saving " + key + " to the backup file");
                 // prepare resultset and meta
                 ResultSet res = map.get(key);
                 ResultSetMetaData rsmd = res.getMetaData();
                 // get the list of column names
                 List<String> columns = new ArrayList<>();
                 int columnCount = rsmd.getColumnCount();
-                Debug.info("  There are " + columnCount + " columns in this ResultSet");
+                LogUtils.getLogger().log(Level.FINE, "  There are " + columnCount + " columns in this ResultSet");
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                     String columnName = rsmd.getColumnName(i);
-                    Debug.info("    Adding column " + columnName);
+                    LogUtils.getLogger().log(Level.FINE, "    Adding column " + columnName);
                     columns.add(columnName);
                 }
                 // counter for counting rows
@@ -136,6 +137,8 @@ public class Utils {
                             String value = res.getString(columnName);
                             config.set(key + "." + counter + "." + columnName, value);
                         } catch (SQLException e) {
+                            LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
+                            LogUtils.logThrowable(e);
                             done = false;
                             // do nothing, as there can be nothing done
                             // error while loading the string means the
@@ -144,13 +147,14 @@ public class Utils {
                     }
                     counter++;
                 }
-                Debug.info("  Saved " + (counter + 1) + " rows");
+                LogUtils.getLogger().log(Level.FINE, "  Saved " + (counter + 1) + " rows");
             }
             // save the config at the end
             accessor.saveConfig();
             return done;
         } catch (IOException | SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.WARNING, "There was an error during database backup: " + e.getMessage());
+            LogUtils.logThrowable(e);
             File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
                 brokenFile.delete();
@@ -236,7 +240,7 @@ public class Utils {
             if (!file.exists()) {
                 return;
             }
-            Debug.broadcast("Loading database backup!");
+            LogUtils.getLogger().log(Level.INFO, "Loading database backup!");
             // backup the database
             File backupFolder = new File(instance.getDataFolder(), "backups");
             if (!backupFolder.isDirectory()) {
@@ -247,9 +251,9 @@ public class Utils {
                 i++;
             }
             filename = "old-database-" + i + ".yml";
-            Debug.broadcast("Backing up old database!");
+            LogUtils.getLogger().log(Level.INFO, "Backing up old database!");
             if (!(isOldDatabaseBackedUP = backupDatabase(new File(backupFolder, filename)))) {
-                Debug.error("There was an error during old database backup process. This means that"
+                LogUtils.getLogger().log(Level.WARNING, "There was an error during old database backup process. This means that"
                         + " if the plugin loaded new database (from backup), the old one would be lost "
                         + "forever. Because of that the loading of backup was aborted!");
                 return;
@@ -321,19 +325,18 @@ public class Utils {
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {
-            e.printStackTrace();
             if (isOldDatabaseBackedUP) {
-                Debug.error("Your database probably got corrupted, sorry for that :( The good news"
+                LogUtils.getLogger().log(Level.WARNING, "Your database probably got corrupted, sorry for that :( The good news"
                         + " is that you have a backup of your old database, you can find it in backups"
                         + " folder, named as " + filename + ". You can try to use it to load the "
-                        + "backup, but it will probably have the same effect. Please contact the "
-                        + "developer at <coosheck@gmail.com> in order to fix this manually.");
+                        + "backup, but it will probably have the same effect.");
             } else {
-                Debug.error("There was an error during database loading, but fortunatelly the "
+                LogUtils.getLogger().log(Level.WARNING, "There was an error during database loading, but fortunatelly the "
                         + "original database wasn't even touched yet. You can try to load the backup "
                         + "again, and if the problem persists you should contact the developer to find"
                         + " a solution.");
             }
+            LogUtils.logThrowableReport(e);
         }
     }
 
@@ -404,21 +407,23 @@ public class Utils {
         try {
             return Color.fromRGB(Integer.parseInt(string));
         } catch (NumberFormatException e1) {
+            LogUtils.logThrowableIgnore(e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
             } catch (NumberFormatException e2) {
+                LogUtils.logThrowableIgnore(e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase().replace(' ', '_')).getColor();
                 } catch (IllegalArgumentException e3) {
                     // this was not a dye color name
-                    throw new InstructionParseException("Dye color does not exist: " + string);
+                    throw new InstructionParseException("Dye color does not exist: " + string, e3);
                 }
             }
-        } catch (IllegalArgumentException e1) {
+        } catch (IllegalArgumentException e) {
             // string was a number, but incorrect
-            throw new InstructionParseException("Incorrect RGB code: " + string);
+            throw new InstructionParseException("Incorrect RGB code: " + string, e);
         }
     }
 

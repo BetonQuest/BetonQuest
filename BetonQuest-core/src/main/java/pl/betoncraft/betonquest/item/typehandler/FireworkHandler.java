@@ -83,7 +83,7 @@ public class FireworkHandler {
         try {
             power = Integer.parseInt(string);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse power: " + string);
+            throw new InstructionParseException("Could not parse power: " + string, e);
         }
         if (power < 0) {
             throw new InstructionParseException("Firework power must be a positive number");

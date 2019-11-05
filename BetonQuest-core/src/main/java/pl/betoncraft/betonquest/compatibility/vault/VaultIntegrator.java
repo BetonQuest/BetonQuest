@@ -23,7 +23,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
+
+import java.util.logging.Level;
 
 
 public class VaultIntegrator implements Integrator {
@@ -69,12 +71,12 @@ public class VaultIntegrator implements Integrator {
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
         } else {
-            Debug.error("There is no economy plugin on the server!");
+            LogUtils.getLogger().log(Level.WARNING, "There is no economy plugin on the server!");
         }
         if (permission != null) {
             plugin.registerEvents("permission", PermissionEvent.class);
         } else {
-            Debug.error("Could not get permission provider!");
+            LogUtils.getLogger().log(Level.WARNING, "Could not get permission provider!");
         }
     }
 

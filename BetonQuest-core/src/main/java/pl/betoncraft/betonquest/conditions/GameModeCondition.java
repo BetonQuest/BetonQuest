@@ -33,7 +33,7 @@ public class GameModeCondition extends Condition {
         try {
             gameMode = GameMode.valueOf(string);
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("No such gamemode: " + string);
+            throw new InstructionParseException("No such gamemode: " + string, e);
         }
     }
 

@@ -33,13 +33,14 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 /**
  * Hides and shows holograms to players, based on conditions.
@@ -63,7 +64,7 @@ public class HologramLoop {
                 continue;
             for (String key : section.getKeys(false)) {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                    Debug.error("Holograms won't be able to hide from players without ProtocolLib plugin! "
+                    LogUtils.getLogger().log(Level.WARNING, "Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
                     return;
                 }
@@ -71,7 +72,7 @@ public class HologramLoop {
                 String rawConditions = section.getString(key + ".conditions");
                 String rawLocation = section.getString(key + ".location");
                 if (rawLocation == null) {
-                    Debug.error("Location is not specified in " + key + " hologram");
+                    LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
                     continue;
                 }
                 ConditionID[] conditions = new ConditionID[]{};
@@ -82,8 +83,9 @@ public class HologramLoop {
                         try {
                             conditions[i] = new ConditionID(pack, parts[i]);
                         } catch (ObjectNotFoundException e) {
-                            Debug.error("Error while loading " + parts[i] + " condition for hologram " + packName + "."
+                            LogUtils.getLogger().log(Level.WARNING, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
                                     + key + ": " + e.getMessage());
+                            LogUtils.logThrowable(e);
                         }
                     }
                 }
@@ -91,7 +93,8 @@ public class HologramLoop {
                 try {
                     location = new LocationData(packName, rawLocation).getLocation(null);
                 } catch (QuestRuntimeException | InstructionParseException e) {
-                    Debug.error("Could not parse location in " + key + " hologram: " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse location in " + key + " hologram: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), location);

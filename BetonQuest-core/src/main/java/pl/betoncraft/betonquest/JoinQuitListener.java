@@ -29,10 +29,11 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
 import pl.betoncraft.betonquest.database.PlayerData;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.io.File;
+import java.util.logging.Level;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -74,7 +75,7 @@ public class JoinQuitListener implements Listener {
         if (playerData == null) {
             playerData = new PlayerData(playerID);
             BetonQuest.getInstance().putPlayerData(playerID, playerData);
-            Debug.error("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
+            LogUtils.getLogger().log(Level.WARNING, "Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(playerID);

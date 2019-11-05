@@ -30,8 +30,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Listener which starts conversation on clicking on NPCs made from blocks.
@@ -69,6 +71,7 @@ public class CubeNPCListener implements Listener {
      *
      * @param event PlayerInteractEvent
      */
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onNPCClick(final PlayerInteractEvent event) {
 
@@ -119,7 +122,7 @@ public class CubeNPCListener implements Listener {
                 new Conversation(PlayerConverter.getID(event.getPlayer()), assignment,
                         event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
             } else {
-                Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
+                LogUtils.getLogger().log(Level.WARNING, "Cannot start conversation: nothing assigned to " + conversationID);
                 return;
             }
         }

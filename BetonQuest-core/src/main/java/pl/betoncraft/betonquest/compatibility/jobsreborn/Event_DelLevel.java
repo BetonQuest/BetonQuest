@@ -44,8 +44,8 @@ public class Event_DelLevel extends QuestEvent {
                 sJobName = job.getName();
                 try {
                     this.nAddLevel = Integer.parseInt(instructions.getPart(2));
-                } catch (Exception err) {
-                    throw new InstructionParseException("NUJobs_DelLevel: Unable to parse the level amount");
+                } catch (Exception e) {
+                    throw new InstructionParseException("NUJobs_DelLevel: Unable to parse the level amount", e);
                 }
                 return;
             }

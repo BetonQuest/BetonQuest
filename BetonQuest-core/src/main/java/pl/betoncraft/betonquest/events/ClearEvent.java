@@ -57,7 +57,7 @@ public class ClearEvent extends QuestEvent {
             try {
                 types[i] = EntityType.valueOf(entities[i].toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new InstructionParseException("Entity type '" + entities[i] + "' does not exist");
+                throw new InstructionParseException("Entity type '" + entities[i] + "' does not exist", e);
             }
         }
         loc = instruction.getLocation();

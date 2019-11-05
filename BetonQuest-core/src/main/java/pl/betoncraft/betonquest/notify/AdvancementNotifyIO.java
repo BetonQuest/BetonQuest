@@ -28,12 +28,13 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Use Advancement Popup for Notification
@@ -56,7 +57,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         if (getData().containsKey("frame")) {
             try {
                 frame = FrameType.valueOf(getData().get("frame").toUpperCase()).str;
-            } catch (IllegalArgumentException ignored) {
+            } catch (IllegalArgumentException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
 
@@ -76,7 +78,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         try {
             add(id, Utils.format(message));
         } catch (JsonSyntaxException e) {
-            Debug.error("Failed to create notification. Check your syntax and make sure your icon is lowercase with its vanilla name (IE: minecraft:map)");
+            LogUtils.getLogger().log(Level.WARNING, "Failed to create notification. Check your syntax and make sure your icon is lowercase with its vanilla name (IE: minecraft:map)");
+            LogUtils.logThrowable(e);
             return;
         }
 
@@ -100,10 +103,12 @@ public class AdvancementNotifyIO extends NotifyIO {
         super.sendNotify(message, players);
     }
 
+    @SuppressWarnings("deprecation")
     private void add(NamespacedKey id, String message) {
         Bukkit.getUnsafe().loadAdvancement(id, generateJson(message));
     }
 
+    @SuppressWarnings("deprecation")
     private void remove(NamespacedKey id) {
         Bukkit.getUnsafe().removeAdvancement(id);
     }

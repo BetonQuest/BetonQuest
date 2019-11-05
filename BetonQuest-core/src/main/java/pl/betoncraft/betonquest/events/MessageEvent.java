@@ -44,7 +44,7 @@ public class MessageEvent extends QuestEvent {
         try {
             parts = instruction.getInstruction().substring(8).split(" ");
         } catch (IndexOutOfBoundsException e) {
-            throw new InstructionParseException("Message missing");
+            throw new InstructionParseException("Message missing", e);
         }
         if (parts.length < 1) {
             throw new InstructionParseException("Message missing");
@@ -76,7 +76,7 @@ public class MessageEvent extends QuestEvent {
                     BetonQuest.createVariable(instruction.getPackage(), variable);
                 } catch (InstructionParseException e) {
                     throw new InstructionParseException("Could not create '" + variable + "' variable: "
-                            + e.getMessage());
+                            + e.getMessage(), e);
                 }
                 if (!variables.contains(variable))
                     variables.add(variable);

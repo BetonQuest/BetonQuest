@@ -58,7 +58,7 @@ public class FishObjective extends Objective implements Listener {
             try {
                 data = Byte.parseByte(fishParts[1]);
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse fish data value");
+                throw new InstructionParseException("Could not parse fish data value", e);
             }
         } else {
             data = -1;

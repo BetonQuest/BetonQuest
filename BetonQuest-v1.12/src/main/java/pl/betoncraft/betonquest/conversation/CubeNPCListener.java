@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,9 +29,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -112,7 +115,7 @@ public class CubeNPCListener implements Listener {
                 new Conversation(PlayerConverter.getID(event.getPlayer()), assignment,
                         event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
             } else {
-                Debug.error("Cannot start conversation: nothing assigned to " + conversationID);
+                LogUtils.getLogger().log(Level.WARNING, "Cannot start conversation: nothing assigned to " + conversationID);
                 return;
             }
         }

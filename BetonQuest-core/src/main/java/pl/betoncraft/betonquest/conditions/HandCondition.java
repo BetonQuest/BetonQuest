@@ -41,7 +41,6 @@ public class HandCondition extends Condition {
         offhand = instruction.hasArgument("offhand");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean check(String playerID) {
         PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();

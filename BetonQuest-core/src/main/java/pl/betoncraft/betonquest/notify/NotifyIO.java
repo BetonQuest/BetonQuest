@@ -20,11 +20,13 @@ package pl.betoncraft.betonquest.notify;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Used to display messages to a player
@@ -84,6 +86,8 @@ public abstract class NotifyIO {
                     player.playSound(player.getLocation(), Sound.valueOf(getData().get("sound")), 1F, 1F);
                 } catch (IllegalArgumentException e) {
                     player.playSound(player.getLocation(), getData().get("sound"), 1F, 1F);
+                    LogUtils.getLogger().log(Level.WARNING, "Could not play the right sound: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }

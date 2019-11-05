@@ -27,6 +27,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.logging.Level;
+
 
 /**
  * Helper class which uses the bungee API to send tellraw like messages to players and allows falling back on legacy messages if API
@@ -116,6 +118,8 @@ public interface ComponentBuilder {
             try {
                 return new BugeeCordAPIBuilder();
             } catch (LinkageError e) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not link BungeeCordAPIBuilder: " + e.getMessage());
+                LogUtils.logThrowable(e);
                 return new LegacyBuilder();
             }
         }

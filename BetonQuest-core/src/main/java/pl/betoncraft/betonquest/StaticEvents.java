@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 /**
  * StaticEvents contains logic for running events that aren't tied to any player
@@ -48,7 +49,7 @@ public class StaticEvents {
      * to run at specified times
      */
     public StaticEvents() {
-        Debug.info("Initializing static events");
+        LogUtils.getLogger().log(Level.FINE, "Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
         for (EventTimer eventTimer : timers) {
@@ -56,15 +57,15 @@ public class StaticEvents {
             deleted = true;
         }
         if (deleted) {
-            Debug.info("Previous timers has been canceled");
+            LogUtils.getLogger().log(Level.FINE, "Previous timers has been canceled");
         }
         for (ConfigPackage pack : Config.getPackages().values()) {
             String packName = pack.getName();
-            Debug.info("Searching package " + packName);
+            LogUtils.getLogger().log(Level.FINE, "Searching package " + packName);
             // get those hours and events
             ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
             if (config == null) {
-                Debug.info("There are no static events defined, skipping");
+                LogUtils.getLogger().log(Level.FINE, "There are no static events defined, skipping");
                 continue;
             }
             // for each hour, create an event timer
@@ -72,27 +73,28 @@ public class StaticEvents {
                 String value = config.getString(key);
                 long timeStamp = getTimestamp(key);
                 if (timeStamp < 0) {
-                    Debug.error("Incorrect time value in static event declaration (" + key + "), skipping this one");
+                    LogUtils.getLogger().log(Level.WARNING, "Incorrect time value in static event declaration (" + key + "), skipping this one");
                     continue;
                 }
-                Debug.info("Scheduling static event " + value + " at hour " + key + ". Current timestamp: "
+                LogUtils.getLogger().log(Level.FINE, "Scheduling static event " + value + " at hour " + key + ". Current timestamp: "
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
                 // add the timer to static list, so it can be canceled if needed
                 try {
                     timers.add(new EventTimer(timeStamp, new EventID(pack, value)));
                 } catch (ObjectNotFoundException e) {
-                    Debug.error("Could not load static event '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }
-        Debug.info("Static events initialization done");
+        LogUtils.getLogger().log(Level.FINE, "Static events initialization done");
     }
 
     /**
      * Cancels all scheduled timers
      */
     public static void stop() {
-        Debug.info("Killing all timers on disable");
+        LogUtils.getLogger().log(Level.FINE, "Killing all timers on disable");
         for (EventTimer timer : timers) {
             timer.cancel();
         }
@@ -113,7 +115,8 @@ public class StaticEvents {
         try {
             timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm").parse(timeString).getTime();
         } catch (ParseException e) {
-            Debug.error("Error in time setting in static event declaration: " + hour);
+            LogUtils.getLogger().log(Level.WARNING, "Error in time setting in static event declaration: " + hour);
+            LogUtils.logThrowable(e);
         }
         // if the timestamp is too old, add one day to it
         if (timeStamp < new Date().getTime()) {

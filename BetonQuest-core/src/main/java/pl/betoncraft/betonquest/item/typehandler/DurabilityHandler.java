@@ -38,7 +38,7 @@ public class DurabilityHandler {
         try {
             this.durability = Short.valueOf(durability);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse item durability value");
+            throw new InstructionParseException("Could not parse item durability value", e);
         }
     }
 

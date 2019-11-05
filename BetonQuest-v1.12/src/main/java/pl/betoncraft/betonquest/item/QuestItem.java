@@ -48,6 +48,7 @@ import pl.betoncraft.betonquest.item.typehandler.LoreHandler;
 import pl.betoncraft.betonquest.item.typehandler.NameHandler;
 import pl.betoncraft.betonquest.item.typehandler.PotionHandler;
 import pl.betoncraft.betonquest.item.typehandler.UnbreakableHandler;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,7 @@ public class QuestItem {
             try {
                 this.data.set(String.valueOf(data));
             } catch (InstructionParseException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
         if (enchants != null && !enchants.isEmpty()) {
@@ -99,12 +101,14 @@ public class QuestItem {
             try {
                 this.enchants.set(builder.substring(0, builder.length() - 1));
             } catch (InstructionParseException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
         if (name != null && !name.isEmpty()) {
             try {
                 this.name.set(name);
             } catch (InstructionParseException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
         if (lore != null && !lore.isEmpty()) {
@@ -115,6 +119,7 @@ public class QuestItem {
             try {
                 this.lore.set(builder.substring(0, builder.length() - 1));
             } catch (InstructionParseException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
     }

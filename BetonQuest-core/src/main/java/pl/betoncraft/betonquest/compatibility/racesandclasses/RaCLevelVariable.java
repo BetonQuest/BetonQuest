@@ -42,7 +42,7 @@ public class RaCLevelVariable extends Variable {
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
             } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse level amount");
+                throw new InstructionParseException("Could not parse level amount", e);
             }
         }
     }

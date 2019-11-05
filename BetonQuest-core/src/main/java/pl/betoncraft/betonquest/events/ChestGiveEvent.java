@@ -56,7 +56,7 @@ public class ChestGiveEvent extends QuestEvent {
             chest = (InventoryHolder) block.getState();
         } catch (ClassCastException e) {
             throw new QuestRuntimeException("Trying to put items in chest, but there's no chest! Location: X"
-                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ());
+                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         for (Item theItem : questItems) {
             QuestItem questItem = theItem.getItem();

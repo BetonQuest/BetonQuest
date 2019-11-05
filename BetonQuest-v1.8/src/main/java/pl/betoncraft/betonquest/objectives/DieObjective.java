@@ -33,7 +33,10 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
@@ -65,7 +68,6 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGH)
     public void onLastDamage(EntityDamageEvent event) {
         if (event.isCancelled() || !cancel) {
@@ -88,7 +90,8 @@ public class DieObjective extends Objective implements Listener {
                     try {
                         player.teleport(location.getLocation(playerID));
                     } catch (QuestRuntimeException e) {
-                        e.printStackTrace();
+                        LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective", e);
+                        LogUtils.logThrowable(e);
                     }
                 }
                 new BukkitRunnable() {

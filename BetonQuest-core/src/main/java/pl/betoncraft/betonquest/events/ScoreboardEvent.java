@@ -53,7 +53,7 @@ public class ScoreboardEvent extends QuestEvent {
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse score count");
+            throw new InstructionParseException("Could not parse score count", e);
         }
     }
 

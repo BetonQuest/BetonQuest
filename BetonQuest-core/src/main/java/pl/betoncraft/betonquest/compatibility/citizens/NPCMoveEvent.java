@@ -32,13 +32,14 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
@@ -141,7 +142,8 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                     npc.getNavigator().setTarget(next);
                 }
             } catch (QuestRuntimeException e) {
-                Debug.error("Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
             return;
         }
@@ -149,7 +151,8 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (QuestRuntimeException e) {
-            Debug.error("Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
+            LogUtils.logThrowable(e);
         }
         npc.getNavigator().setPaused(true);
         new BukkitRunnable() {

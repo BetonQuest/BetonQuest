@@ -20,8 +20,10 @@ package pl.betoncraft.betonquest.compatibility.quests;
 import me.blackvein.quests.Quest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Starts a quests in Quests plugin.
@@ -49,7 +51,7 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
             }
         }
         if (quest == null) {
-            Debug.error("Quest '" + questName + "' is not defined");
+            LogUtils.getLogger().log(Level.WARNING, "Quest '" + questName + "' is not defined");
             return;
         }
         QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);

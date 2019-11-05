@@ -68,7 +68,7 @@ public class MonstersCondition extends Condition {
                         try {
                             amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
                         } catch (NumberFormatException e) {
-                            throw new InstructionParseException("Could not parse amount");
+                            throw new InstructionParseException("Could not parse amount", e);
                         }
                     }
                 } else {
@@ -76,7 +76,7 @@ public class MonstersCondition extends Condition {
                     amounts[i] = new VariableNumber(1);
                 }
             } catch (IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown mob type: " + rawTypes[i]);
+                throw new InstructionParseException("Unknown mob type: " + rawTypes[i], e);
             }
         }
         loc = instruction.getLocation();

@@ -32,7 +32,7 @@ import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.sql.ResultSet;
@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -118,8 +119,9 @@ public class PlayerData {
                 try {
                     item = new QuestItem(instruction).generate(amount);
                 } catch (InstructionParseException e) {
-                    Debug.error("Could not load backpack item for player " + PlayerConverter.getName(playerID)
+                    LogUtils.getLogger().log(Level.WARNING, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
                             + ", with instruction '" + instruction + "', because: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 backpack.add(item);
@@ -143,14 +145,13 @@ public class PlayerData {
             }
 
             // log data to debugger
-            if (Debug.debugging()) {
-                Debug.info("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
-                        + " points, " + entries.size() + " journal entries and " + backpack.size()
-                        + " items loaded for player " + PlayerConverter.getName(playerID));
-            }
+            LogUtils.getLogger().log(Level.FINE, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                    + " points, " + entries.size() + " journal entries and " + backpack.size()
+                    + " items loaded for player " + PlayerConverter.getName(playerID));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 
@@ -286,8 +287,9 @@ public class PlayerData {
                 ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(playerID, objectiveID, objectives.get(objective));
             } catch (ObjectNotFoundException e) {
-                Debug.error("Loaded '" + objective
+                LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.");
+                LogUtils.logThrowable(e);
             }
         }
         objectives.clear();

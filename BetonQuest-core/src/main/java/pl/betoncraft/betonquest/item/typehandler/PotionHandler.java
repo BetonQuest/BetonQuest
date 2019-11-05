@@ -46,7 +46,7 @@ public class PotionHandler {
         try {
             this.type = PotionType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("No such potion type: " + type);
+            throw new InstructionParseException("No such potion type: " + type, e);
         }
     }
 
@@ -190,7 +190,7 @@ public class PotionHandler {
                 try {
                     power = Integer.parseInt(parts[1]) - 1;
                 } catch (NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse effect power: " + parts[1]);
+                    throw new InstructionParseException("Could not parse effect power: " + parts[1], e);
                 }
                 if (power < 0) {
                     throw new InstructionParseException("Effect power must be a positive integer");
@@ -210,7 +210,7 @@ public class PotionHandler {
                 try {
                     duration = Integer.parseInt(parts[2]) * 20;
                 } catch (NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse effect duration: " + parts[2]);
+                    throw new InstructionParseException("Could not parse effect duration: " + parts[2], e);
                 }
             } else {
                 throw new InstructionParseException("Wrong effect format");

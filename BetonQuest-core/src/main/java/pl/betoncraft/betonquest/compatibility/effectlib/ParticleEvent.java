@@ -59,6 +59,7 @@ public class ParticleEvent extends QuestEvent {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);

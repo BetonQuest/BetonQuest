@@ -23,8 +23,10 @@ import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.QuestDataUpdateEvent;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 
 /**
  * Saves the data to the database asynchronously
@@ -59,7 +61,8 @@ public class Saver extends Thread implements Listener {
                         active = false;
                         wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+                        LogUtils.logThrowable(e);
                     }
                 }
             }

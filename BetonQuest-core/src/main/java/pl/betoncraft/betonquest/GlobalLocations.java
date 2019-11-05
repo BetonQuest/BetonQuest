@@ -27,13 +27,14 @@ import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.Debug;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Handler for global locations.
@@ -70,7 +71,8 @@ public class GlobalLocations extends BukkitRunnable {
                     GlobalLocation gL = new GlobalLocation(objectiveID);
                     locations.add(gL);
                 } catch (ObjectNotFoundException | InstructionParseException e) {
-                    Debug.error("Error while parsing global location objective '" + objective + "': " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Error while parsing global location objective '" + objective + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
             }
         }
@@ -110,8 +112,9 @@ public class GlobalLocations extends BukkitRunnable {
                     loc = location.getLocation().getLocation(playerID);
                     distance = location.getRange().getDouble(playerID);
                 } catch (QuestRuntimeException e) {
-                    Debug.error("Error while parsing location in global location '" + location.getObjectiveID()
+                    LogUtils.getLogger().log(Level.WARNING, "Error while parsing location in global location '" + location.getObjectiveID()
                             + "': " + e.getMessage());
+                    LogUtils.logThrowable(e);
                     continue;
                 }
                 if (player.getLocation().getWorld().equals(loc.getWorld())
@@ -163,7 +166,7 @@ public class GlobalLocations extends BukkitRunnable {
          */
         public GlobalLocation(ObjectiveID objectiveID) throws InstructionParseException {
             this.objectiveID = objectiveID;
-            Debug.info("Creating new GlobalLocation from " + objectiveID + " event.");
+            LogUtils.getLogger().log(Level.FINE, "Creating new GlobalLocation from " + objectiveID + " event.");
             Instruction instruction = objectiveID.generateInstruction();
             // check amount of arguments in event's instruction
             location = instruction.getLocation();
@@ -178,7 +181,7 @@ public class GlobalLocations extends BukkitRunnable {
                 try {
                     conditions[i] = new ConditionID(instruction.getPackage(), condition);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage(), e);
                 }
             }
             String[] tempEvents1 = instruction.getArray(instruction.getOptional("event")),
@@ -190,7 +193,7 @@ public class GlobalLocations extends BukkitRunnable {
                 try {
                     events[i] = new EventID(instruction.getPackage(), event);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing objective events: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing objective events: " + e.getMessage(), e);
                 }
             }
             tag = objectiveID.getPackage().getName() + ".global_" + objectiveID;

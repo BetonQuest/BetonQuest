@@ -18,12 +18,13 @@
 package pl.betoncraft.betonquest.database;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * Connects to the database and queries it
@@ -55,7 +56,8 @@ public class Connector {
         try {
             connection.prepareStatement("SELECT 1").executeQuery();
         } catch (SQLException e) {
-            Debug.info("Reconnecting to the database");
+            LogUtils.getLogger().log(Level.WARNING, "Reconnecting to the database");
+            LogUtils.logThrowable(e);
             db.closeConnection();
             connection = db.getConnection();
         }
@@ -146,7 +148,8 @@ public class Connector {
             }
             return statement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
             return null;
         }
     }
@@ -347,7 +350,8 @@ public class Connector {
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 

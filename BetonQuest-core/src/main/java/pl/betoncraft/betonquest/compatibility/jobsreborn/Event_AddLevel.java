@@ -43,8 +43,8 @@ public class Event_AddLevel extends QuestEvent {
                 sJobName = job.getName();
                 try {
                     this.nAddLevel = Integer.parseInt(instruction.getPart(2));
-                } catch (Exception err) {
-                    throw new InstructionParseException("NUJobs_AddLevel: Unable to parse the level amount");
+                } catch (Exception e) {
+                    throw new InstructionParseException("NUJobs_AddLevel: Unable to parse the level amount", e);
                 }
                 return;
             }

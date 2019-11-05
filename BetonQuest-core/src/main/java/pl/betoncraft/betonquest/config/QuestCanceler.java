@@ -33,10 +33,11 @@ import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Represents a quest canceler, which cancels quests for players.
@@ -103,7 +104,7 @@ public class QuestCanceler {
                 try {
                     events[i] = new EventID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -116,7 +117,7 @@ public class QuestCanceler {
                 try {
                     conditions[i] = new ConditionID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -129,7 +130,7 @@ public class QuestCanceler {
                 try {
                     objectives[i] = new ObjectiveID(Config.getPackages().get(packName), arr[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage());
+                    throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -142,7 +143,7 @@ public class QuestCanceler {
         // get location
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
-                Debug.error("Wrong location format in quest canceler " + name);
+                LogUtils.getLogger().log(Level.WARNING, "Wrong location format in quest canceler " + name);
                 return;
             }
             double x, y, z;
@@ -151,12 +152,13 @@ public class QuestCanceler {
                 y = Double.parseDouble(locParts[1]);
                 z = Double.parseDouble(locParts[2]);
             } catch (NumberFormatException e) {
-                Debug.error("Could not parse location in quest canceler " + name);
+                LogUtils.getLogger().log(Level.WARNING, "Could not parse location in quest canceler " + name);
+                LogUtils.logThrowable(e);
                 return;
             }
             World world = Bukkit.getWorld(locParts[3]);
             if (world == null) {
-                Debug.error("The world doesn't exist in quest canceler " + name);
+                LogUtils.getLogger().log(Level.WARNING, "The world doesn't exist in quest canceler " + name);
                 return;
             }
             float yaw = 0, pitch = 0;
@@ -165,7 +167,8 @@ public class QuestCanceler {
                     yaw = Float.parseFloat(locParts[4]);
                     pitch = Float.parseFloat(locParts[5]);
                 } catch (NumberFormatException e) {
-                    Debug.error("Could not parse yaw/pitch in quest canceler " + name + ", setting to 0");
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0");
+                    LogUtils.logThrowable(e);
                     yaw = 0;
                     pitch = 0;
                 }
@@ -198,12 +201,12 @@ public class QuestCanceler {
      * @param playerID ID of the player
      */
     public void cancel(String playerID) {
-        Debug.info("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
+        LogUtils.getLogger().log(Level.FINE, "Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
         PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
         // remove tags, points, objectives and journals
         if (tags != null) {
             for (String tag : tags) {
-                Debug.info("  Removing tag " + tag);
+                LogUtils.getLogger().log(Level.FINE, "  Removing tag " + tag);
                 if (!tag.contains(".")) {
                     playerData.removeTag(packName + "." + tag);
                 } else {
@@ -213,7 +216,7 @@ public class QuestCanceler {
         }
         if (points != null) {
             for (String point : points) {
-                Debug.info("  Removing points " + point);
+                LogUtils.getLogger().log(Level.FINE, "  Removing points " + point);
                 if (!point.contains(".")) {
                     playerData.removePointsCategory(packName + "." + point);
                 } else {
@@ -223,7 +226,7 @@ public class QuestCanceler {
         }
         if (objectives != null) {
             for (ObjectiveID objectiveID : objectives) {
-                Debug.info("  Removing objective " + objectiveID);
+                LogUtils.getLogger().log(Level.FINE, "  Removing objective " + objectiveID);
                 BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
                 playerData.removeRawObjective(objectiveID);
             }
@@ -231,7 +234,7 @@ public class QuestCanceler {
         if (journal != null) {
             Journal j = playerData.getJournal();
             for (String entry : journal) {
-                Debug.info("  Removing entry " + entry);
+                LogUtils.getLogger().log(Level.FINE, "  Removing entry " + entry);
                 if (entry.contains(".")) {
                     j.removePointer(entry);
                 } else {
@@ -242,7 +245,7 @@ public class QuestCanceler {
         }
         // teleport player to the location
         if (loc != null) {
-            Debug.info("  Teleporting to new location");
+            LogUtils.getLogger().log(Level.FINE, "  Teleporting to new location");
             PlayerConverter.getPlayer(playerID).teleport(loc);
         }
         // fire all events
@@ -252,7 +255,7 @@ public class QuestCanceler {
             }
         }
         // done
-        Debug.info("Quest removed!");
+        LogUtils.getLogger().log(Level.FINE, "Quest removed!");
         String questName = getName(playerID);
         Config.sendNotify(playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
     }
@@ -272,7 +275,7 @@ public class QuestCanceler {
         if (questName == null)
             questName = name.get("en");
         if (questName == null) {
-            Debug.error("Default quest name not defined in canceler " + packName + "." + cancelerName);
+            LogUtils.getLogger().log(Level.WARNING, "Default quest name not defined in canceler " + packName + "." + cancelerName);
             questName = "Quest";
         }
         return questName.replace("_", " ").replace("&", "§");
@@ -285,7 +288,8 @@ public class QuestCanceler {
                 ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
-                Debug.error("Could not load cancel button: " + e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
+                LogUtils.logThrowable(e);
             }
         }
         ItemMeta meta = stack.getItemMeta();

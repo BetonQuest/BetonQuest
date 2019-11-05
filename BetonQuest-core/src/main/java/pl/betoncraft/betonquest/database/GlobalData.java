@@ -22,12 +22,13 @@ import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -63,13 +64,12 @@ public class GlobalData {
             while (res4.next())
                 global_points.add(new Point(res4.getString("category"), res4.getInt("count")));
             // log data to debugger
-            if (Debug.debugging()) {
-                Debug.info("There are " + global_tags.size() + " global_tags and " + global_points.size()
-                        + " global_points loaded");
-            }
+            LogUtils.getLogger().log(Level.FINE, "There are " + global_tags.size() + " global_tags and " + global_points.size()
+                    + " global_points loaded");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.logThrowable(e);
         }
     }
 

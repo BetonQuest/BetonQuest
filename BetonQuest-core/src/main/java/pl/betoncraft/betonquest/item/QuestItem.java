@@ -454,6 +454,7 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
+    @SuppressWarnings("deprecation")
     public ItemStack generate(int stackSize) {
         // Try resolve material directly
         Material material = selector.getMaterial();

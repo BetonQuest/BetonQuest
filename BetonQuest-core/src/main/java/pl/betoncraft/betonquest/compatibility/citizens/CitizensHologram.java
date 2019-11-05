@@ -34,13 +34,14 @@ import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Displays a hologram relative to an npc
@@ -79,7 +80,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             if (npc != null) {
                                 npcs.put(npc, new ArrayList<>());
                             }
-                        } catch (NumberFormatException ignored) {
+                        } catch (NumberFormatException e) {
+                            LogUtils.logThrowableIgnore(e);
                         }
                     }
                 }
@@ -99,7 +101,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 // load the condition check interval
                 interval = section.getInt("check_interval", 100);
                 if (interval <= 0) {
-                    Debug.error("Could not load npc holograms of package " + pack.getName() + ": " +
+                    LogUtils.getLogger().log(Level.WARNING, "Could not load npc holograms of package " + pack.getName() + ": " +
                             "Check interval must be bigger than 0.");
                     return;
                 }
@@ -126,7 +128,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                                 Double.parseDouble(vectorParts[2])
                         );
                     } catch (NumberFormatException e) {
-                        Debug.error(pack.getName() + ": Invalid vector: " + settings.getString("vector"));
+                        LogUtils.getLogger().log(Level.WARNING, pack.getName() + ": Invalid vector: " + settings.getString("vector"));
+                        LogUtils.logThrowable(e);
                         continue;
                     }
 
@@ -138,8 +141,9 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             try {
                                 hologramConfig.conditions.add(new ConditionID(pack, part));
                             } catch (ObjectNotFoundException e) {
-                                Debug.error("Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                                LogUtils.getLogger().log(Level.WARNING, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
                                         + key + ": " + e.getMessage());
+                                LogUtils.logThrowable(e);
                             }
                         }
                     }

@@ -31,7 +31,7 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Represents player's journal.
@@ -207,7 +208,7 @@ public class Journal {
             // resolve the text in player's language
             String text;
             if(!pack.getJournal().getConfig().contains(pointerName)) {
-                Debug.error("No defined journal entry " + pointerName + " in package " + pack.getName());
+                LogUtils.getLogger().log(Level.WARNING, "No defined journal entry " + pointerName + " in package " + pack.getName());
                 text = "error";
             } else if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
                 text = pack.getFormattedString("journal." + pointerName + "." + lang);
@@ -219,7 +220,7 @@ public class Journal {
             }
             // handle case when the text isn't defined
             if (text == null) {
-                Debug.error("No text defined for journal entry " + pointerName + " in language " + lang);
+                LogUtils.getLogger().log(Level.WARNING, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
@@ -228,8 +229,9 @@ public class Journal {
                 try {
                     BetonQuest.createVariable(pack, variable);
                 } catch (InstructionParseException e) {
-                    Debug.error("Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
+                    LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
                             + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+                    LogUtils.logThrowable(e);
                 }
                 text = text.replace(variable,
                         BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
@@ -269,8 +271,9 @@ public class Journal {
                                     continue keys;
                                 }
                             } catch (ObjectNotFoundException e) {
-                                Debug.error("Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
+                                LogUtils.getLogger().log(Level.WARNING, "Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
                                         + "'s journal - condition '" + condition + "' not found: " + e.getMessage());
+                                LogUtils.logThrowable(e);
                                 continue keys;
                             }
                         }
@@ -294,8 +297,9 @@ public class Journal {
                         try {
                             BetonQuest.createVariable(pack, variable);
                         } catch (InstructionParseException e) {
-                            Debug.error("Error while creating variable '" + variable + "' on main page in "
+                            LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on main page in "
                                     + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
+                            LogUtils.logThrowable(e);
                         }
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
@@ -313,7 +317,7 @@ public class Journal {
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
-                    Debug.error("Priority of " + packName + "." + key
+                    LogUtils.getLogger().log(Level.WARNING, "Priority of " + packName + "." + key
                             + " journal main page line is not defined");
                     continue;
                 }

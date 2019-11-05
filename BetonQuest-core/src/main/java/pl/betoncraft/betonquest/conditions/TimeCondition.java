@@ -42,7 +42,7 @@ public class TimeCondition extends Condition {
             timeMin = Double.parseDouble(theTime[0]);
             timeMax = Double.parseDouble(theTime[1]);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse time");
+            throw new InstructionParseException("Could not parse time", e);
         }
     }
 

@@ -38,7 +38,7 @@ public class DataHandler {
         try {
             this.data = Short.valueOf(data);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse item data value");
+            throw new InstructionParseException("Could not parse item data value", e);
         }
 //		if (this.data < 0) {
 //			throw new InstructionParseException("Item data value cannot be negative");

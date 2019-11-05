@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -86,8 +87,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                         | InstantiationException | InvocationTargetException | NoSuchMethodException
                         | ClassNotFoundException e) {
-                    // cannot update the NPC's head for some reason, doesn't matter for the user
-                    // fallback to default texture is automatic
+                    LogUtils.logThrowableIgnore(e);
                 }
             }
         }

@@ -35,6 +35,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -42,6 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ANIMATION;
 import static com.comphenix.protocol.PacketType.Play.Server.ATTACH_ENTITY;
@@ -158,6 +160,8 @@ public class EntityHider implements Listener {
         try {
             return observerEntityMap.contains(observer.getEntityId(), entityID);
         } catch (UnsupportedOperationException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Could not execute an operation: " + e.getMessage());
+            LogUtils.logThrowable(e);
             return policy == Policy.WHITELIST;
         }
     }

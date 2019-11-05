@@ -102,4 +102,15 @@ BetonQuest calls Bukkit events on a few occasions: when a conversation is starte
 
 ## Debugging
 
-You can debug your code using Debug class.
+You can debug your code using `LogUtils` class by simply call `LogUtils.getlogger().log(..)` to log something.
+
+We use the following levels for this aspects:
+- `SEVER` - Anything happen, that breaks the plugin, or a main function of the plugin
+- `WARNING` - The most things, where something not normal or unexpected happens, but the plugin still work correctly for the rest(all catch blocks, when not SEVER)
+- `INFO` - Anything you want to log, that also should appear in the normal console
+- `CONFIG` - Not in use at the moment
+- `FINE` - All messages, that you want to only appear in the debug log file, not in the console
+- `FINER` - Do not use this, this is reserved, for exception logging, like you call LogUtils.logThrowable or LogUtils.logThrowableIgnore
+- `FINEST` - Not in use at the moment
+
+If you have a `catch` block, please log this with a message, that calls `exception.getMessage()` and log the complete exception by using the `Logutils.logThrowable(e)`. The methods `logThrowableReport()` and `logThrowableIgnore()` may only be executed by BetonQuest.

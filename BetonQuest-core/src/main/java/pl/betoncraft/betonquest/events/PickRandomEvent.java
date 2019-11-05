@@ -53,7 +53,7 @@ public class PickRandomEvent extends QuestEvent {
             try {
                 id = new EventID(instruction.getPackage(), parts[1]);
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while loading event: " + e.getMessage());
+                throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
             }
             return new RandomEvent(id, chance);
         });

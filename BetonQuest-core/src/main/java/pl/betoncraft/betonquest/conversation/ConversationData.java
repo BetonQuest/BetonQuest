@@ -27,13 +27,14 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -69,7 +70,7 @@ public class ConversationData {
     public ConversationData(ConfigPackage pack, String name) throws InstructionParseException {
         this.pack = pack;
         String pkg = pack.getName();
-        Debug.info(String.format("Loading %s conversation from %s package", name, pkg));
+        LogUtils.getLogger().log(Level.FINE, String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
         convName = name;
@@ -139,7 +140,7 @@ public class ConversationData {
                 try {
                     finalEvents[i] = new EventID(pack, array[i]);
                 } catch (ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while loading final events: " + e.getMessage());
+                    throw new InstructionParseException("Error while loading final events: " + e.getMessage(), e);
                 }
             }
         } else {
@@ -217,7 +218,7 @@ public class ConversationData {
         }
 
         // done, everything will work
-        Debug.info(String.format("Conversation loaded: %d NPC options and %d player options", NPCOptions.size(),
+        LogUtils.getLogger().log(Level.FINE, String.format("Conversation loaded: %d NPC options and %d player options", NPCOptions.size(),
                 playerOptions.size()));
     }
 
@@ -239,7 +240,7 @@ public class ConversationData {
             String targetOption = parts[4];
             ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
-                Debug.error("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ((sourceOption.equals("<starting_option>")) ? "starting option"
                         : ("'" + sourceOption + "' player option"))
                         + " points to '" + targetConv
@@ -247,7 +248,7 @@ public class ConversationData {
                 continue;
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
-                Debug.error("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ((sourceOption.equals("<starting_option>")) ? "starting option"
                         : ("'" + sourceOption + "' player option"))
                         + " points to '" + targetOption + "' NPC option in '" + targetConv
@@ -501,7 +502,7 @@ public class ConversationData {
                         BetonQuest.createVariable(pack, variable);
                     } catch (InstructionParseException e) {
                         throw new InstructionParseException("Error while creating '" + variable + "' variable: "
-                                + e.getMessage());
+                                + e.getMessage(), e);
                     }
                 }
             }
@@ -515,7 +516,7 @@ public class ConversationData {
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
-                        + e.getMessage());
+                        + e.getMessage(), e);
             }
 
             // Events
@@ -527,7 +528,7 @@ public class ConversationData {
                 }
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
-                        + e.getMessage());
+                        + e.getMessage(), e);
             }
 
             // Pointers

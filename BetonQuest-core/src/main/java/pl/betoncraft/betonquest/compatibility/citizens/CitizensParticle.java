@@ -32,7 +32,7 @@ import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.utils.Debug;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.Set;
 import java.util.UUID;
 
@@ -71,6 +72,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         npcs.add(Integer.parseInt(npcID));
                     } catch (NumberFormatException e) {
+                        LogUtils.logThrowableIgnore(e);
                     }
                 }
             }
@@ -90,7 +92,7 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                Debug.error("Could not load npc effects of package " + pack.getName() + ": " +
+                LogUtils.getLogger().log(Level.WARNING, "Could not load npc effects of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 return;
             }
@@ -115,7 +117,7 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    Debug.error("Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                    LogUtils.getLogger().log(Level.WARNING, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
                             "Effect interval must be bigger than 0.");
                     continue;
                 }
@@ -137,6 +139,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
                     } catch (ObjectNotFoundException e) {
+                        LogUtils.logThrowableIgnore(e);
                     }
                 }
 
@@ -216,6 +219,7 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void activateEffects() {
 
         // display effects for all players

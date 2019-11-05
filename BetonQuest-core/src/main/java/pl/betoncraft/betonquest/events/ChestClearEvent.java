@@ -49,7 +49,7 @@ public class ChestClearEvent extends QuestEvent {
             chest = (InventoryHolder) block.getState();
         } catch (ClassCastException e) {
             throw new QuestRuntimeException("Trying to clears items in a chest, but there's no chest! Location: X"
-                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ());
+                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         chest.getInventory().clear();
     }
