@@ -2,6 +2,7 @@ v1.12-dev
 Additions:
   * Condition 'wand' can now have an option 'amount'
 Changes:
+  * Items for HolographicDisplays are now defines in items.yml
 Fixes:
 
 v1.11-dev

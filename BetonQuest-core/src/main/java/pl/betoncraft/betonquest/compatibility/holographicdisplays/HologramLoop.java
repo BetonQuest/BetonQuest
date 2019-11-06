@@ -21,18 +21,19 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -100,9 +101,26 @@ public class HologramLoop {
                 Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance().getJavaPlugin(), location);
                 hologram.getVisibilityManager().setVisibleByDefault(false);
                 for (String line : lines) {
-                    // If line begins with 'item:', then we will assume its a floating item
+                    // If line begins with 'item:', then we will assume its a
+                    // floating item
                     if (line.startsWith("item:")) {
-                        hologram.appendItemLine(new ItemStack(Material.matchMaterial(line.substring(5))));
+                        try {
+                            String args[] = line.substring(5).split(":");
+                            ItemID itemID = new ItemID(pack, args[0]);
+                            int stackSize = 1;
+                            try {
+                                stackSize = Integer.valueOf(args[1]);
+                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                            }
+                            ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                            hologram.appendItemLine(stack);
+                        } catch (InstructionParseException e) {
+                            LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + key + " hologram: " + e.getMessage());
+                            LogUtils.logThrowable(e);
+                        } catch (ObjectNotFoundException e) {
+                            LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + key + " hologram: " + e.getMessage());
+                            LogUtils.logThrowable(e);
+                        }
                     } else {
                         hologram.appendTextLine(line.replace('&', '§'));
                     }
