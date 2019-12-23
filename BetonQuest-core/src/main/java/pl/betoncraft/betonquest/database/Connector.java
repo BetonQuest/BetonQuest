@@ -333,6 +333,10 @@ public class Connector {
                     statement = connection
                             .prepareStatement("UPDATE " + prefix + "points SET category = ? WHERE category = ?;");
                     break;
+                case RENAME_ALL_GLOBAL_POINTS:
+                    statement = connection
+                            .prepareStatement("UPDATE " + prefix + "global_points SET category = ? WHERE category = ?;");
+                    break;
                 case RENAME_ALL_OBJECTIVES:
                     statement = connection
                             .prepareStatement("UPDATE " + prefix + "objectives SET objective = ? WHERE objective = ?;");
@@ -451,7 +455,7 @@ public class Connector {
 
         UPDATE_CONVERSATION, UPDATE_LANGUAGE,
 
-        REMOVE_ALL_TAGS, REMOVE_ALL_OBJECTIVES, REMOVE_ALL_POINTS, REMOVE_ALL_ENTRIES, RENAME_ALL_TAGS, RENAME_ALL_OBJECTIVES, RENAME_ALL_POINTS, RENAME_ALL_ENTRIES,
+        REMOVE_ALL_TAGS, REMOVE_ALL_OBJECTIVES, REMOVE_ALL_POINTS, REMOVE_ALL_ENTRIES, RENAME_ALL_TAGS, RENAME_ALL_OBJECTIVES, RENAME_ALL_POINTS,RENAME_ALL_GLOBAL_POINTS, RENAME_ALL_ENTRIES,
     }
 
 }

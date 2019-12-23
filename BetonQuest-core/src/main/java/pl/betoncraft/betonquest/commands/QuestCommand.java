@@ -1432,6 +1432,22 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     playerData.modifyPoints(rename, points);
                 }
                 break;
+            case "globalpoints":
+            case "globalpoint":
+            case "gpoints":
+            case "gpoint":
+            case "gp":
+                updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
+                int globalpoints = 0;
+                for (Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
+                     if (globalpoint.getCategory().equals(name)) {
+                         globalpoints = globalpoint.getCount();
+                         break;
+                     }
+                }
+                BetonQuest.getInstance().getGlobalData().removePointsCategory(name);
+                BetonQuest.getInstance().getGlobalData().modifyPoints(rename, globalpoints);
+                break;
             case "objectives":
             case "objective":
             case "o":
@@ -1652,7 +1668,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("give", "give <name>");
-        cmds.put("rename", "rename <tag/point/objective/journal> <old> <new>");
+        cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
         cmds.put("vector", "vector <pack.varname> <vectorname>");
