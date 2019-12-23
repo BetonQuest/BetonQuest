@@ -18,11 +18,11 @@
 package pl.betoncraft.betonquest.events;
 
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConditionID;
-import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.id.ConditionID;
+import pl.betoncraft.betonquest.id.EventID;
 
 /**
  * Runs one or another event, depending of the condition outcome.

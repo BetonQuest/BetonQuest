@@ -20,11 +20,11 @@ package pl.betoncraft.betonquest.events;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

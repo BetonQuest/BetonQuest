@@ -15,20 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest;
+package pl.betoncraft.betonquest.id;
 
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.id.ID;
+import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
-public class VariableInstruction extends Instruction {
+public class ConditionID extends ID {
 
-    public VariableInstruction(ConfigPackage pack, ID id, String instruction) {
-        super(pack, id, instruction);
-        if (!instruction.startsWith("%") && !instruction.endsWith("%")) {
-            throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
+    private boolean inverted;
+
+    public ConditionID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+        super(pack, removeExclamationMark(id));
+        this.inverted = id.startsWith("!");
+        rawInstruction = super.pack.getString("conditions." + super.id);
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined");
         }
-        super.instruction = instruction.substring(1, instruction.length() - 1);
-        super.parts = super.instruction.split("\\.");
+    }
+
+    private static String removeExclamationMark(String id) {
+        if (id.startsWith("!")) {
+            id = id.substring(1);
+        }
+        return id;
+    }
+
+    public boolean inverted() {
+        return inverted;
     }
 
 }

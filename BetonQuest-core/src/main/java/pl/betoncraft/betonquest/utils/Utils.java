@@ -26,7 +26,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigAccessor;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
@@ -36,6 +35,7 @@ import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.database.Database;
 
 import java.io.File;
