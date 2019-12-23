@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.text.ParseException;
