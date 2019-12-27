@@ -23,14 +23,13 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -41,9 +40,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicle;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerAnimation;
-import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerEntityDestroy;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerMount;
-import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerSpawnEntityLiving;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ChatConvIO;
@@ -57,7 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -95,7 +91,7 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameType = "chat";
     protected String configNpcNameAlign = "center";
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
-    private WrapperPlayServerSpawnEntityLiving stand = null;
+    private ArmorStand stand = null;
 
     public MenuConvIO(Conversation conv, String playerID) {
         super(conv, playerID);
@@ -175,26 +171,16 @@ public class MenuConvIO extends ChatConvIO {
 
     private void start() {
         // Create something painful looking for the player to sit on and make it invisible.
-        stand = new WrapperPlayServerSpawnEntityLiving();
-        stand.setType(EntityType.ARMOR_STAND);
-        stand.setUniqueId(UUID.randomUUID());
-        stand.setX(player.getLocation().getX());
-        stand.setY(player.getLocation().getY() - 0.3);
-        stand.setZ(player.getLocation().getZ());
+        stand = player.getWorld().spawn(player.getLocation().clone().add(0, -player.getEyeHeight(true) / 2, 0), ArmorStand.class);
 
-        WrappedDataWatcher.Serializer byteSerializer = WrappedDataWatcher.Registry.get(Byte.class);
-        WrappedDataWatcher wdw = new WrappedDataWatcher();
-        WrappedDataWatcher.WrappedDataWatcherObject invisible = new WrappedDataWatcher.WrappedDataWatcherObject(0, byteSerializer);
-        wdw.setObject(invisible, (byte) 0x20);
+        stand.setVisible(false);
 
-        stand.setMetadata(wdw);
-
-        stand.sendPacket(player);
-
-        // Mount the player to it
+        // Mount the player to it using packets
         WrapperPlayServerMount mount = new WrapperPlayServerMount();
-        mount.setEntityID(stand.getEntityID());
+        mount.setEntityID(stand.getEntityId());
         mount.setPassengerIds(new int[]{player.getEntityId()});
+
+        // Send Packets
         mount.sendPacket(player);
 
         // Display Actionbar to hide the dismount message
@@ -222,7 +208,6 @@ public class MenuConvIO extends ChatConvIO {
                 if (event.getPlayer() != player || options.size() == 0) {
                     return;
                 }
-
 
                 if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
                     WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
@@ -581,9 +566,8 @@ public class MenuConvIO extends ChatConvIO {
             ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
             // Destroy Stand
-            WrapperPlayServerEntityDestroy destroyPacket = new WrapperPlayServerEntityDestroy();
-            destroyPacket.setEntities(new int[]{stand.getEntityID()});
-            destroyPacket.sendPacket(player);
+            stand.remove();
+            stand = null;
         }
 
         // Stop updating display
@@ -643,7 +627,15 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (!controls.containsKey(CONTROL.SCROLL)) {
+            return;
+        }
+
+        if (debounce) {
             return;
         }
 
@@ -656,6 +648,7 @@ public class MenuConvIO extends ChatConvIO {
                 oldSelectedOption = selectedOption;
                 selectedOption++;
                 updateDisplay();
+                debounce = true;
             }
         } else if (slotDistance != 0) {
             // Scrolled up
@@ -663,8 +656,11 @@ public class MenuConvIO extends ChatConvIO {
                 oldSelectedOption = selectedOption;
                 selectedOption--;
                 updateDisplay();
+                debounce = true;
             }
         }
+
+        event.setCancelled(true);
     }
 
     public enum ACTION {
