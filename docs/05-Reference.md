@@ -5,32 +5,34 @@ This chapter describes all aspects of BetonQuest in one place. You should read i
 ## Conversations
 
 Each conversation must define name of the NPC (some conversations can be not bound to any NPC, so it’s important to specify it even though an NPC will have a name) and his initial options.
+```YAML
+quester: Name
+first: option1, option2
+stop: 'true'
+final_events: event1, event2
+interceptor: simple
+NPC_options:
+  option1:
+    text: Some text in default language
+    events: event3, event4
+    conditions: condition1, !condition2
+    pointers: reply1, reply2
+  option2:
+    text: '&3This ends the conversation'
+player_options:
+  reply1:
+    text:
+      en: Text in English
+      pl: Tekst po polsku
+    event: event5
+    condition: '!condition3'
+    pointer: option2
+  reply2:
+    text: 'Text containing '' character'
+```
 
-    quester: Name
-    first: option1, option2
-    stop: 'true'
-    final_events: event1, event2
-    interceptor: simple
-    NPC_options:
-      option1:
-        text: Some text in default language
-        events: event3, event4
-        conditions: condition1, !condition2
-        pointers: reply1, reply2
-      option2:
-        text: '&3This ends the conversation'
-    player_options:
-      reply1:
-        text:
-          en: Text in English
-          pl: Tekst po polsku
-        event: event5
-        condition: '!condition3'
-        pointer: option2
-      reply2:
-        text: 'Text containing '' character'
-
-Note 1: _Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using [this tool](http://www.yamllint.com)._
+!!! note
+    Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using [this tool](http://www.yamllint.com).
 
 * `quester` is name of NPC. It should be the same as name of NPC this conversation is assigned to for greater immersion, but it's your call.
 * `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You define these options in `npc_options` branch.
@@ -44,7 +46,7 @@ Note 1: _Configuration files use YAML syntax. Google it if you don't know anythi
 * `events` is a list of events that will fire when an option is chosen (either by NPC or a player), defined similarly to conditions.
 * `pointer` is list of pointers to the opposite branch (from NPC branch it will point to options player can choose from when answering, and from player branch it will point to different NPC reactions).
 
-When an NPC wants to say something he will check conditions for the first option (in this case `option1`). If they are met, he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose). After choosing an option NPC will say it, the events will fire and then the player will see options defined in `player_options` branch to which `pointers` setting points, in this case `reply1` and `reply2`. If the conditions for the player option are not met, the option is simply not displayed, similar to texts from NPC. Player will choose option he wants, and it will point back to other NPC text, which points to next player options and so on.
+When an NPC wants to say something he will check conditions for the first option (in this case `option1`). If they are met, he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose). After choosing an option NPC will execute any events defined in it, say it, and then the player will see options defined in `player_options` branch to which `pointers` setting points, in this case `reply1` and `reply2`. If the conditions for the player option are not met, the option is simply not displayed, similar to texts from NPC. Player will choose option he wants, and it will point back to other NPC text, which points to next player options and so on.
 
 If there are no possible options for player or NPC (either from not meeting any conditions or being not defined) the conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
 
@@ -60,16 +62,19 @@ Keep in mind that you can only cross-point to NPC options. It means that you can
 
 You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation. A variable generally looks like that: `%type.optional.arguments%`. Type is a mandatory argument, it defines what kind of variable it is. Optional arguments depend on the type of the variable, i.e. `%npc%` does not have any additional arguments, but `%player%` can also have `display` (it will look like that: `%player.display%`). You can find a list of all available variable types in the "Variables List" chapter.
 
-If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %npc% in `message` event), the variable will be replaced with empty string ("").
+!!! note
+    If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %npc% in `message` event), the variable will be replaced with empty string ("").
 
 ### Translations
 
 As you can see in default conversation, there are additional messages in other languages. That's because you can translate your conversations into multiple languages. The players will be albe to choose their preferred one with **/questlang** command. You can translate every NPC/player option and quester's name. You do this like this:
 
-    quester:
-      en: Innkeeper
-      pl: Karczmarz
-      de: Gastwirt
+```YAML
+quester:
+  en: Innkeeper
+  pl: Karczmarz
+  de: Gastwirt
+```
 
 As said before, the same rule applies to all options and quester's name. The player can choose only from languages present in _messages.yml_, and if there will be no translation to this language in the conversation, the plugin will fall back to the default language, as defined in _config.yml_. If that one is not defined, there will be an error.
 
@@ -77,7 +82,7 @@ You can also translate journal entries, quest cancelers and `message` events, mo
 
 ### Conversation displaying
 
-By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore. Alternatively use `slowtellraw` which provides the npc responses line by line delayed by 0.5 seconds.
+By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore. Alternatively use `slowtellraw` which provides the npc responses line by line delayed by 0.5 seconds. If you have `protocollib` then you can use `menu`.
 
 You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.
 
@@ -113,16 +118,16 @@ NPC_options:
 ```
 In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.
 
-***
+### Chat Interceptors
+During chat it can be distracting when messages from other players or system message interfere with the dialogue. A chat interceptor provides a method of intercepting these message and then playing them back later.
+
+A default chat interceptor is specified in `config.yml` by setting `default_interceptor`. This defaults to `simple` for the simple interceptor. The chat interceptor can also be set per conversation though the use of `interceptor` key in the conversation. If you have `protocollib` installed then you can use the `packet` interceptor that should intercept anything. 
+
+## Conditions, Events and Objectives
 
 Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate files, for example all conditions are in _conditions.yml_ config. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
 
-## Chat Interceptors
-During chat it can be distracting when messages from other players or system message interfere with the dialogue. A chat interceptor provides a method of intercepting these message and then playing them back later.
-
-A default chat interceptor is specified in `config.yml` by setting `default_interceptor`. This defaults to `simple` for the simple interceptor. The chat interceptor can also be set per conversation though the use of `interceptor` key in the conversation. 
-
-## Conditions
+### Conditions
 
 Conditions are the most versatile and useful tools in creating advanced quests. They allow you to control what options are available to player in conversations, how the NPC responds or if the objective will be completed. The reference of all possible conditions is down below.
 
@@ -130,21 +135,19 @@ You can negate the condition (revert its output) by adding an exclamation mark (
 
 You can use conversation variables instead of numeric arguments in conditions. If the variable fails to resolve (i.e. it will return an empty string) BetonQuest will use 0 instead.
 
-## Events
+### Events
 
 In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are done using events. You define them just like conditions, by specifying a name and instruction string. You can find instruction strings to all events in the event reference. At the end of the instruction string you can add `conditions:` or `condition:` (with or without `s` at the end) attribute followed by a list of condition names separated by commas, like `conditions:angry,!quest_started`. This will make an event fire only when these conditions are met.
 
 You can use conversation variables instead of numeric arguments in events. If the variable fails to resolve (i.e. it will return an empty string) BetonQuest will use 0 instead.
 
-## Objectives
+### Objectives
 
 Objectives are the main things you will use when creating complex quests. You start them with a special event, `objective`. You define them in the _objectives.yml_ file, just as you would conditions or events. At the end of the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
 
 If you want to start an objective right after it was completed (for example `die` objective: when you die, teleport you to a special spawnpoint and start `die` objective again), you can add `persistent` argument at the end of an instruction string. It will prevent the objective from being completed, although it will run all its events. To cancel such objective you will need to use `objective delete` event.
 
 Objectives are loaded at start-up, but they do not consume resources without player actually having them active. This means that if you have 100 objectives defined, and 20 players doing one objective, 20 another players doing second objective, and the rest objectives are inactive (no one does them), then only 2 objectives will be consuming your server resources, not 100, not 40.
-
-***
 
 ## Packages
 
@@ -201,9 +204,11 @@ You can insert a global variable in any instruction string. It looks like this: 
 
 Note that these variables are something entirely different than conversation variables. Global ones use `$` characters and conversation ones use `%` characters. The former is resolved before the instruction string is parsed while the latter is resolved when the quests are running, usually on a per-player basis.
 
-    variables:
-      village_location: 100;200;300;world
-      village_name: Concrete
+```YAML
+variables:
+  village_location: 100;200;300;world
+  village_name: Concrete
+```
 
 ## Canceling quests
 
@@ -237,10 +242,12 @@ start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder g
 
 Static events are events that will fire at the specified time of the day. They are not tied to a specific player, so not all of event types can be used as static. (Which player should receive a tag or objective? From which one should the items be taken?) Also, static events cannot have conditions defined (`event-conditions:` argument), as the plugin cannot check any condition without the player. Events, that can be used as static are flagges with `static` keyword in this documentation. You can define your static events in _main.yml_ file under `static` section, as such:
 
-    static:
-      '09:00': beton
-      '23:59': lightning_strike
-      '11:23': some_command
+```YAML
+static:
+  '09:00': beton
+  '23:59': lightning_strike
+  '11:23': some_command
+```
 
 The hour must be in `''` to avoid problems, it needs leading zero if less than 10. `beton`, `lightnint_strike` etc. are IDs of events. There can only be one event specified, but it can be of type "folder".
 
@@ -258,7 +265,7 @@ You can control colors in the journal in `journal_colors` section in _config.yml
 
 You can also add a main page to the journal. It's a list of texts, which will show only if specified conditions are met. You can define them in the _main.yml_ file, in the `journal_main_page` section:
 
-```
+```YAML
 journal_main_page:
   title:
     priority: 1
@@ -284,19 +291,26 @@ Points are like tags, but with amount. You can earn them for doing quest, talkin
 
 Conversations can be assigned to NPCs. You do it in the _main.yml_ file inside a package, in "npcs" section:
 
-    npcs:
-      '0': innkeeper
-      'Innkeeper': innkeeper
+```YAML
+npcs:
+  '0': innkeeper
+  'Innkeeper': innkeeper
+```
 
 The first string is the name of the NPC, second one is the corresponding conversation name. In case you use Citizens, name is the ID of an NPC (_don't try to put Citizens NPC's name here, it must be the ID_). To acquire it just select the NPC and type `/npc`. If you don't want to use Citizens, you can also build NPCs as any other building in Minecraft:
 
 Place somewhere a block of stained clay, no matter the color. Then place a head on top of it (type doesn't matter, it must be head). Now place a sign on the side of the clay block (it can be on it's back) and type in the first line `[NPC]`, and on the second line the ID of the NPC (in case of the above code example, the ID would be `Innkeeper`). You need to have permission `betonquest.createnpc` for that. Congratulations, you have created the NPC. Now you can add levers (hands) to it and maybe even a fence gate (legs). Conversation is started by right clicking it's head.
 
+!!! note
+    When using Citizens ID's they must be enclosed in quotes.
+
 ## Items
 
 Items in BetonQuest are defined in _items.yml_ file. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:
 
-    item: BLOCK_SELECTOR other arguments...
+```YAML
+item: BLOCK_SELECTOR other arguments...
+```
 
 [BLOCK_SELECTOR](#block-selectors) is a type of the item. It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).
 
@@ -324,7 +338,7 @@ These are arguments that can be applied to every item:
 
 **Examples**:
 
-```
+```YAML
 name:&4Sword_made_of_Holy_Concrete
 name:none
 lore:&cOnly_this_sword_can_kill_the_Lord_Ruler
@@ -353,7 +367,7 @@ _This applies to a written book and a book and quill._
 
 **Examples**:
 
-```
+```YAML
 title:Malleus_Maleficarum
 author:&eGallus_Anonymus
 text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)
@@ -383,7 +397,7 @@ _This applies to potions, splash potions and lingering potions._
 
 **Examples**:
 
-```
+```YAML
 type:instant_heal
 extended
 upgraded:false
@@ -399,7 +413,7 @@ _This applies to human heads._
 
 **Examples**:
 
-```
+```YAML
 owner:Co0sh
 owner:none
 ```
@@ -412,7 +426,7 @@ _This applies to all parts of leather armor._
 
 **Examples**:
 
-```
+```YAML
 color:light_blue
 color:#ff00ff
 color:none
@@ -440,7 +454,7 @@ _This applies to fireworks._
 
 **Examples**:
 
-```
+```YAML
 firework:ball:red;white:green;blue:true:true,ball_large:green;yellow:pink;black:false:false
 firework:burst:?:none:?:? firework-containing
 firework:none-creeper firework-containing
@@ -457,7 +471,7 @@ _This applies to firework charges._
 
 ## Backpack
 
-Sometimes you'll want some items to be persistent over death. If the player has lost them the quest would be broken. You can add a apecific line to item's lore to make it persistent (`&2Quest_Item` by default, `_` is a space in item's definition). Note that this must be a whole new line in the lore! Such item wouldn't be dropped on death, instead it would be placed in player's backpack. **Example**: `important_sword: 'DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item'`
+Sometimes you'll want some items to be persistent over death. If the player has lost them the quest would be broken. You can add a apecific line to item's lore to make it persistent (`&2Quest_Item` by default, `_` is a space in item's definition). Note that this must be a whole new line in the lore! Such item wouldn't be dropped on death, instead it would be placed in player's backpack. **Example**: `:::YAML important_sword: 'DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item'`
 
 To open your backpack just type **/j** command. The inventory window will open, displaying your stored items. The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them. Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.
 
@@ -473,7 +487,9 @@ Parties are very simple. So simple, that they are hard to understand if you alre
 
 To understand better how it works I will show you an example of `party` event. Let's say that every player has an objective of pressing a button. When one of them presses it, this event is fired:
 
-    party_reward: party 50 quest_started cancel_button,teleport_to_dungeon
+```YAML
+party_reward: party 50 quest_started cancel_button,teleport_to_dungeon
+```
 
 Now, it means that all players that: are in radius of 50 blocks around the player who pressed the button AND meet `quest_started` condition will receive `cancel_button` and `teleport_to_dungeon` events. The first one will cancel the quest for pressing the button for the others (it's no longer needed), the second one will teleport them somewhere. Now, imagine there is a player on the other side of the world who also meets `quest_started` condition - he won't be teleported into the dungeon, because he was not with the other players (not in 50 blocks range). Now, there were a bunch of other players running around the button, but they didn't meet the `quest_started` condition. They also won't be teleported (they didn't start this quest).
 
@@ -486,27 +502,41 @@ When specifying a way of matching a block, a `block selector` is used. This diff
 The format of a block selector is: `material:data`
 
 Where:
-  * `material` - What material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html).
-  * `data` - (optional) A number representing the data of the block. If left out then the selector will match all data types.
+
+  - `material` - What material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html).
+
+  - `data` - (optional) A number representing the data of the block. If left out then the selector will match all data types.
 
 Examples:
-  * `LOG` - Matches all LOGS
-  * `LOG:1` - Matches SPRUCE LOGS
+
+  - `LOG` - Matches all LOGS
+  
+  - `LOG:1` - Matches SPRUCE LOGS
 
 
 ### 1.13 and above
 The format of a block selector is: `prefix:material[state=value,...]`
 
 Where:
-  * `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'
-  * `material` - The material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Wildcards are supported (both * and ?).
-  * `state` - (optional) The block states can be provided in a comma separated list surrounded by square brackets. You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states). Any states left out will be ignored when matching.
+
+  - `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'
+  
+  - `material` - The material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Wildcards are supported (both * and ?).
+  
+  - `state` - (optional) The block states can be provided in a comma separated list surrounded by square brackets. You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states). Any states left out will be ignored when matching.
 
 Examples:
-  * `minecraft:stone` - Matches all blocks of type STONE
-  * `redstone_wire` - Matches all blocks of type REDSTONE_WIRE
-  * `redstone_wire[power=5]` - Matches all blocks of type REDSTONE_WIRE and which have a power of 5
-  * `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
-  * `*_LOG` - Matches all LOGS
-  * `*` - Matches everything
-  * `*[waterlogged=true]` - Matches all waterlogged blocks
+
+  - `minecraft:stone` - Matches all blocks of type STONE
+  
+  - `redstone_wire` - Matches all blocks of type REDSTONE_WIRE
+  
+  - `redstone_wire[power=5]` - Matches all blocks of type REDSTONE_WIRE and which have a power of 5
+  
+  - `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
+  
+  - `*_LOG` - Matches all LOGS
+  
+  - `*` - Matches everything
+  
+  - `*[waterlogged=true]` - Matches all waterlogged blocks

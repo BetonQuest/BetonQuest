@@ -19,7 +19,7 @@ Now that you know how a (very) simple quest looks like time to start learning ho
 
 Let's just open _events.yml_ file inside the _default_ package. At the end add a new line:
 
-```
+```YAML
 foo: message Hello world!
 ```
 
@@ -27,7 +27,7 @@ This is an event instruction. BetonQuest will use it to determine what type of e
 
 Let's create another event, more complicated one. `teleport` seems complicated enough. As you can read in the _Events list_, it needs a single argument, the location. Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`). Now add in _events.yml_ another line:
 
-```
+```YAML
 bar: teleport 100;200;300;world
 ```
 
@@ -39,7 +39,7 @@ Congratulations, you have just created your first events. Go ahead and do some e
 
 Open the _conditions.yml_ file and add there a new line:
 
-```
+```YAML
 foo: location 100;200;300;world;5
 ```
 
@@ -49,7 +49,7 @@ Now walk to the location you have defined in the condition. Try to stand on the 
 
 Now I'll show you the simplest use of those conditions. Open the _events.yml_ file again, and at the end of `foo` instruction add `conditions:foo` argument. By the way, rename `foo` event to `baz`, so the names won't get confusing. Now you should have something like
 
-```
+```YAML
 baz: message Hello world! conditions:foo
 ```
 
@@ -57,7 +57,7 @@ Now `baz` event will run only if it meets `foo` condition. Reload the plugin, wa
 
 It's very nice that we can add such conditions, but the problem is: what if you wanted to display the message only if the player is _outside_ the radius? Don't worry, you don't have to specify `inverted_location` condition or anything like that. You can simply negate the condition. Negation makes the condition behave in the exact opposite way, in this case it `foo` will be met only if the player is outside of the 5 block radius, and it won't be met if he's inside. Open the _events.yml_ and add an exclamation mark before the `foo` condition, so it looks like
 
-```
+```YAML
 baz: message Hello world! conditions:!foo
 ```
 
@@ -67,7 +67,7 @@ This means "display message `Hello world!` if the `foo` condition is _not met_".
 
 Now that you know how to use events and conditions I'll show you what tags are. Create new events:
 
-```
+```YAML
 add_beton_tag: tag add beton
 del_beton_tag: tag del beton
 ```
@@ -76,7 +76,7 @@ It's a good practice to give your events names that describe what they are doing
 
 Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag` condition. Open _conditions.yml_ and add
 
-```
+```YAML
 has_beton_tag: tag beton
 ```
 
@@ -88,7 +88,7 @@ Now you probably understand how powerful this system is. You could for example s
 
 Time to write some objectives! Open the _objectives.yml_ file and add a new line:
 
-```
+```YAML
 kill_creepers: mobkill creeper 3 events:bar conditions:has_beton_tag
 ```
 
@@ -102,7 +102,7 @@ Congratulations, now you know how to use objectives. You should experiment with 
 
 Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your first conversation. There's a _conversations_ directory inside the default package. It contains a single file, _innkeeper.yml_. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use that for reference. Now create a new file, let's say _miner.yml_. Now type (don't copy-paste it, you'll learn better while typing) that into the file:
 
-```
+```YAML
 quester: Miner
 first: greeting
 NPC_options:
@@ -116,7 +116,7 @@ Now you need to link the conversation with an NPC. You do that in the _main.yml_
 
 Guess what, the conversation finished right after it started. The Miner just said `Hi there, traveler!`, as expected. Now go to the conversation file and edit it (again, manually, no copy-paste!) so the options look like this:
 
-```
+```YAML
 NPC_options:
   greeting:
     text: Hi there, traveler!
@@ -132,7 +132,7 @@ When you save the file, reload the plugin and start the conversation again you w
 
 Now add a new NPC option, for example `weather` with text `Nice weather.` and make `hello` player option point to it. When you save&reload, the Miner should say `Nice weather.` when you tell him `Hello!`. I think you get how it works.
 
-```
+```YAML
 NPC_options:
   greeting:
     text: Hi there, traveler!
@@ -151,7 +151,7 @@ Now, every time you talk to the Miner, he will say the same thing. It would be n
 
 Now, rename `greeting` NPC option to `first_greeting`. Add `meet_miner` event and negated `has_met_miner` condition (negated because this option should only show if the player has not met the Miner yet). You will need to surround the condition with `''`, because strings cannot start with exclamation marks in YAML. It should look like this:
 
-```
+```YAML
 first: first_greeting
 NPC_options:
   first_greeting:
@@ -163,7 +163,7 @@ NPC_options:
 
 This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire `meet_miner` event and display `hello` and `bye` options. Alright, but what happens if the player met the Miner and now negated `has_met_miner` condition doesn't work? NPC will try to use next option defined in `first` setting. There is none yet, so let's add it.
 
-```
+```YAML
 first: first_greeting, regular_greeting
 NPC_options:
   regular_greeting:
@@ -175,7 +175,7 @@ This option does not have any conditions, so if the `first_greeting` fails, the 
 
 Here's the whole conversation you created, so you can check if you understood everything correctly:
 
-```
+```YAML
     first: first_greeting, regular_greeting
     NPC_options:
       first_greeting:
@@ -196,6 +196,6 @@ Here's the whole conversation you created, so you can check if you understood ev
         text: I need to go, sorry.
 ```
 
-Now you should experiment some more with this conversation, you can help yourself by looking at the _innkeeper.yml_ file. Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
+Now you should experiment some more with this conversation, you can help yourself by looking at the [innkeeper.yml](https://github.com/Co0sh/BetonQuest/blob/master/BetonQuest-core/src/main/resources/default/defaultConversation.yml) file. Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
-You might want to check out the _Reference_ chapter to see how to handle items in your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables, take a look at the appropriate lists (after the _Reference_ chapter).
+You might want to check out the [Reference](05-Reference.md) chapter to see how to handle items in your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables, take a look at the appropriate lists (after the _Reference_ chapter).

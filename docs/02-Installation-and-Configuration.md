@@ -11,9 +11,10 @@ Now download the BetonQuest plugin, place the `.jar` file in your _plugins_ fold
 
 The configuration of BetonQuest is done mainly in _config.yml_ file. All options are described here. If you don't know about some aspects of BetonQuest, you can skip the explanation here. It will be repeated in the description of a specific feature.
 
-**Do not touch "version" option! _It may corrupt your files!_**
+!!! warning
+    Do not touch "version" option! It may corrupt your files!
 
-* First is connection data for MySQL database. Fill it to use MySQL or leave it blank (or incorrect) to use SQLite.
+* Configure MySQL or SQLite database. Fill it to use MySQL or leave it blank (or incorrect) to use SQLite.
 * Language is just the currently used translation of the plugin. Currently there are 7 languages available: English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl) and Italian (it).
 * `update` section controls the updater. It has the following settings:
     - `enable` option is set to true by default, and it controls whether the plugin should do anything update-related.

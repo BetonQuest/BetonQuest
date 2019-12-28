@@ -53,7 +53,8 @@
 * **betonquest.conversation** - allows talking with NPCs (default for players)
 * **betonquest.language** - allows changing the language (default for players)
 
-Don't give **betonquest.admin** permission to people you don't fully trust. They can use **/q config** command to add a `command` event, and this way execute any command as the console. This might be dangerous.
+!!! warning
+    Don't give **betonquest.admin** permission to people you don't fully trust. They can use **/q config** command to add a `command` event, and this way execute any command as the console. This might be dangerous.
 
 ## Main command details
 

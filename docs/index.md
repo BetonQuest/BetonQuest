@@ -1,13 +1,11 @@
-![BetonQuest](https://betonquest.pl/assets/logo.png)
-
-**Documentation for 1.11 version**
+![BetonQuest](img/logo.png)
 
 BetonQuest is an advanced and powerful quests plugin. It offers RPG-style conversations with NPCs and a very flexible quest system. Instead of being limited to creating "quest" objects with taking requirements and rewards upon completion, BetonQuest allows you to freely define what should happen (events), if it should happen (conditions) and what needs to be done for it to happen (objectives). The quests do not have to be like "kill, bring, get reward". Multi-threaded stories can be created, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. 
-If you want to go completly crazy you can use BetonQuest for much more then quests. For some it is a backbone of their server. This is possible because BetonQuest has support for 22 plugins.
+If you want to go completly crazy you can use BetonQuest for much more then quests. For some it is a backbone of their server. This is possible because BetonQuest has support for many plugins.
 
 ## Features
 
-* Minecraft **1.8**, **1.9**, **1.10**, **1.11**, **1.12**, **1.13**, **1.14** support
+* Minecraft **1.8**, **1.9**, **1.10**, **1.11**, **1.12**, **1.13**, **1.14**, **1.15** support
 * **Multiple choice conversations** with NPCs using an inventory GUI
 * **Many ways of displaying your NPCs conversations**: Customisation is possible
 * **Powerful event system**: anything can happen anywhere in a quest
@@ -22,7 +20,29 @@ If you want to go completly crazy you can use BetonQuest for much more then ques
 * Variables in conversations - let the NPC tell the player how much more wood he needs!
 * Quests can be organized into distributable packages
 * **Citizens2** NPC support
-* Integrated with [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/), [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI), [Citizens](https://dev.bukkit.org/bukkit-plugins/citizens/), [Denizen](https://dev.bukkit.org/bukkit-plugins/denizen/), [EffectLib](https://dev.bukkit.org/bukkit-plugins/effectlib/), [Heroes](https://dev.bukkit.org/bukkit-plugins/heroes/), [HolographicDisplays](https://dev.bukkit.org/bukkit-plugins/holographic-displays/), [LegendQuest](https://dev.bukkit.org/bukkit-plugins/legendquest/), [Magic](https://dev.bukkit.org/bukkit-plugins/magic/), [McMMO](https://dev.bukkit.org/bukkit-plugins/mcmmo/), [MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/), [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/), [PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/), [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/), [Quests](https://dev.bukkit.org/bukkit-plugins/quests/), [RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/), [Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/), [SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/), [Skript](https://dev.bukkit.org/bukkit-plugins/skript/), [Vault](https://dev.bukkit.org/bukkit-plugins/vault/), [WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/) and [WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/)
+* Integrated with:
+    * [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/)
+    * [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI)
+    * [Citizens](https://dev.bukkit.org/bukkit-plugins/citizens/)
+    * [Denizen](https://dev.bukkit.org/bukkit-plugins/denizen/)
+    * [EffectLib](https://dev.bukkit.org/bukkit-plugins/effectlib/)
+    * [Heroes](https://dev.bukkit.org/bukkit-plugins/heroes/)
+    * [HolographicDisplays](https://dev.bukkit.org/bukkit-plugins/holographic-displays/)
+    * [LegendQuest](https://dev.bukkit.org/bukkit-plugins/legendquest/)
+    * [Magic](https://dev.bukkit.org/bukkit-plugins/magic/)
+    * [McMMO](https://dev.bukkit.org/bukkit-plugins/mcmmo/)
+    * [MythicMobs](https://dev.bukkit.org/bukkit-plugins/mythicmobs/)
+    * [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
+    * [PlayerPoints](https://dev.bukkit.org/bukkit-plugins/playerpoints/)
+    * [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
+    * [Quests](https://dev.bukkit.org/bukkit-plugins/quests/)
+    * [RacesAndClasses](https://dev.bukkit.org/bukkit-plugins/racesandclasses/)
+    * [Shopkeepers](https://dev.bukkit.org/bukkit-plugins/shopkeepers/)
+    * [SkillAPI](https://dev.bukkit.org/bukkit-plugins/skillapi/)
+    * [Skript](https://dev.bukkit.org/bukkit-plugins/skript/)
+    * [Vault](https://dev.bukkit.org/bukkit-plugins/vault/)
+    * [WorldEdit](https://dev.bukkit.org/bukkit-plugins/worldedit/)
+    * [WorldGuard](https://dev.bukkit.org/bukkit-plugins/worldguard/)
 * Multiple languages with easy translating
 * An API for creating personal events, conditions and objectives
 * SQLite and **MySQL** support

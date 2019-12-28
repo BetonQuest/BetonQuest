@@ -11,20 +11,22 @@ You can either add BetonQuest.jar directly to your build path or use Maven. Firs
 
 And if you're using Maven simply add this to your _pom.xml_:
 
-    <repositories>
-        <repository>
-            <id>betonquest-repo</id>
-            <url>https://betonquest.pl/mvn</url>
-        </repository>
-    </repositories>
+```XML
+<repositories>
+    <repository>
+        <id>betonquest-repo</id>
+        <url>https://betonquest.pl/mvn</url>
+    </repository>
+</repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>pl.betoncraft.betonquest</groupId>
-            <artifactId>BetonQuest</artifactId>
-            <version>1.8.5</version>
-        </dependency>
-    </dependencies>
+<dependencies>
+    <dependency>
+        <groupId>pl.betoncraft.betonquest</groupId>
+        <artifactId>BetonQuest</artifactId>
+        <version>1.8.5</version>
+    </dependency>
+</dependencies>
+```
 
 ## Writing events
 

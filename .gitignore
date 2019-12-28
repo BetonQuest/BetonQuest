@@ -125,6 +125,9 @@ modules.xml
 /doc/
 **/dependency-reduced-pom.xml
 
+# Ignore deploy-key just in case
+deploy-key
+
 ### Eclipse ###
 **/bin/
 **/.settings/
@@ -133,3 +136,5 @@ modules.xml
 .classpath
 .project
 
+# Ignore mkdocs
+site/
