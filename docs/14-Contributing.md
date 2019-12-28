@@ -24,6 +24,44 @@ If you know Java and Bukkit you can take some issue and create pull request. Jus
 * Comment everything so the code is easy to understand for everyone.
 * Use block comments to document classes, methods and fields.
 
+## Contributing documentation
+
+If you can help improve the documentation it would be highly appreciated. Have a look under the `docs` folder for the existing documentation.
+
+Documentation is built using `mkdocs`. You can set up an hot-build dev environment that will auto-refresh changes as they are made.
+
+### Requirements
+
+* python3
+* pip3
+* npm (only if changing themes)
+
+Install dependencies by running:
+
+```
+pip3 install -r requirements.txt
+```
+
+### Dev Environment
+
+To start an http document server on `http://127.0.0.1:8000` execute:
+
+```
+mkdocs serve
+```
+
+### Change PDF Theme
+
+Edit the PDF theme under `design/pdf`. Rebuild by doing the following:
+
+```
+cd design/pdf
+npm install
+npm run build-compressed
+```
+
+This will update `pdf.css` under `docs/css/pdf.css`. Rebuilding the docs will now use the new theme.
+
 ## Positive feedback
 
 I really like to hear that people are using my plugin. If you've got a server and have made a few quests just let me know so I can check it out ^^

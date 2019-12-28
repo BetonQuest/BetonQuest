@@ -23,7 +23,7 @@ The following are provided by default:
 ## Default NotifyIO
 If not set, the default NotifyIO is `chat`. You can change the default to `actionbar` by setting the following in `config.yml':
 
-```
+```YAML
 default_notify_IO: actionbar
 ```
 
@@ -46,12 +46,14 @@ notifications:
 ```
 
 When a new journal entry is added, it will send a notification with the following categories:
+
   * new_journal_entry
   * info
 
 In the above file, it will find `new_journal_entry` first so will ignore `info`. This defines the settings for the notification by using the `advancement` notifyIO with a challenge frame and a map for the icon.
 
 When a new changelog occurs it will send a notification using the following categories:
+
   * changelog
   * info
 

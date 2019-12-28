@@ -1,0 +1,83 @@
+site_name: BetonQuest
+site_author: Co0sh
+site_url: https://betonquest.pl
+repo_name: Co0sh/BetonQuest
+repo_url: https://github.com/Co0sh/BetonQuest
+edit_uri: ""
+copyright: '© 2019  Jakub "Co0sh" Sapalski. CC-BY'
+
+extra_css:
+  - 'css/extra.css'
+
+# More info on this theme: https://squidfunk.github.io/mkdocs-material
+theme:
+  name: 'material'
+  logo: 'img/header_logo.png'
+  favicon: 'img/favicon.ico'
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+#  feature:
+#    tabs: false
+
+
+
+# See the following for docs on these extensions: https://squidfunk.github.io/mkdocs-material/extensions
+markdown_extensions:
+  - codehilite:
+      linenums: true
+  - admonition
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: false
+#  - footnotes
+#  - metadata
+
+# Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: timeago
+  - mkpdfs:
+      author: BetonQuest Developers
+      toc_title: Table of contents
+      output_path: pdf/documentation.pdf
+      design: docs/css/pdf.css
+
+# Discord not yet supported but it will be soon
+extra:
+  social:
+    - type: discord
+      link: https://discord.gg/MvmkHEu
+
+nav:
+  - Introduction: index.md
+  - Installation and Configuration: 02-Installation-and-Configuration.md
+  - Commands and Permissions: 03-Commands-and-permissions.md
+  - Quick Start Tutorial: 04-Quick-start-tutorial.md
+  - Reference: 05-Reference.md
+  - Notifications: Notifications.md
+  - Conditions: 06-Conditions-List.md
+  - Events: 07-Events-List.md
+  - Objectives: 08-Objectives-List.md
+  - Variables: 09-Variables-List.md
+  - Compatibility: 10-Compatibility.md
+  - Tips and Tricks: 11-Tips-and-tricks.md
+  - FAQ: 12-Frequently-Asked-Questions.md
+  - Developers: 13-Info-for-developers.md
+  - Contributing: 14-Contributing.md

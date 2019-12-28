@@ -1,72 +1,117 @@
 # Compatibility
 
-BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LegendQuest, Magic, mcMMO, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RacesAndClasses, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
+BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, 
+Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LegendQuest, Magic, mcMMO, MythicMobs, 
+PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RacesAndClasses, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit 
+and WorldGuard.
 
 ## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
 
-### Title event: `title`
+### Events
+#### Title: `title`
 
 BountifulAPI enables you to use `title` event without spamming the console with `/title` command output. The syntax is exactly the same as in regular `title` event described in _Events List_.
 
-**Example**: `title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!`
+!!! example
+    ```YAML
+    title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
+    ```
 
 ## [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it, these NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective.
 
-_Notice: When you use Citizens, in main.yml you need to specify the ID of the NPC instead of the name!_
+!!! notice
+    When you use Citizens, in main.yml you need to specify the ID of the NPC instead of the name!
 
-### NPC kill objective: `npckill`
+### Conditions
 
-NPC Kill objective requires the player to kill an NPC with the given ID. You can also define how many times an NPC has to be killed. Right after objective's name there must be na ID of the NPC. You can also add an amount by `amount:`.
-
-**Example**: `npckill 16 amount:3 events:reward`
-
-### NPC interact objective: `npcinteract`
-
-The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start. The first argument is number (ID of the NPC), and the second is optional `cancel`.
-
-**Example**: `npcinteract 3 cancel conditions:sneak events:steal`
-
-### NPC range objective: `npcrange`
-
-The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
-
-**Example:** `npcrange 3 enter 20 events:master_inRange`
-
-### Move NPC event: `movenpc`
-
-This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify multiple locations separated by colons to let the npc follow a path of locations. You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving, `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
-
-**Example**: `movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward`
-
-### NPC distance condition: `npcdistance`
+#### NPC distance: `npcdistance`
 
 This condition will return true if the player is closer to the NPC with the given ID than the given distance. The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
 
-**Example:** `npcdistance 16 22`
+!!! example
+    ```YAML
+    npcdistance 16 22
+    ```
 
-### NPC location condition: `npclocation` _persistent_, _static_
+#### NPC location: `npclocation`
+
+**persistent**, **static**
 
 This condition will return true if a npc is close to a location. First argument is the id of the NPC, second the location and third the maximum distance to the location that the npc is allowed to have.
 
-**Example:** `npclocation 16 4.0;14.0;-20.0;world 22`
+!!! example
+    ```YAML
+    npclocation 16 4.0;14.0;-20.0;world 22
+    ```
 
-### NPC region condition: `npcregion` _persistent_, _static_
+#### NPC region: `npcregion`
 
-_This condition also requires WorldGuard to work._
+**persistent**, **static**
+
+!!! notice
+    This condition also requires WorldGuard to work.
 
 This condition will return true if a npc is inside a region. First argument is the id of the npc second is the name of the region.
 
-**Example:** `npcregion 16 spawn`
+!!! example
+    ```YAML
+    npcregion 16 spawn`
+    ```
+
+### Events
+
+#### Move NPC: `movenpc`
+
+This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify multiple locations separated by colons to let the npc follow a path of locations. You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving, `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
+
+!!! example
+    ```YAML
+    movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
+    ```
+
+### Objectives
+
+#### NPC Interact: `npcinteract`
+
+The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start. The first argument is number (ID of the NPC), and the second is optional `cancel`.
+
+!!! example
+    ```YAML
+    npcinteract 3 cancel conditions:sneak events:steal`
+    ```
+
+#### NPC Kill: `npckill`
+
+NPC Kill objective requires the player to kill an NPC with the given ID. You can also define how many times an NPC has to be killed. Right after objective's name there must be na ID of the NPC. You can also add an amount by `amount:`.
+
+!!! example
+    ```YAML
+    npckill 16 amount:3 events:reward`
+    ```
+
+#### NPC Range: `npcrange`
+
+The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
+
+!!! example
+    ```YAML
+    npcrange 3 enter 20 events:master_inRange
+    ```
 
 ## [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
-### Script event: `script`
+### Events
+
+#### Script: `script`
 
 With this event you can fire Denizen task scripts. Don't confuse it with `skript` event, these are different. The first and only argument is the name of the script.
 
-**Example**: `script beton`
+!!! example
+    ```YAML
+    script beton
+    ```
 
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
@@ -74,7 +119,7 @@ If you install this plugin on your server you will be able to set a particle eff
 
 You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section. Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings. `npcs` is a list of all NPCs on which this effect can be displayed. `conditions` is a list of conditions the player has to meet in order to see the effect. BetonQuest will find the first effect which can be displayed and show it to the player. `interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
 
-```
+```YAML
 npc_effects:
    check_interval: 50
    disabled: false
@@ -94,7 +139,9 @@ npc_effects:
          - '!con_tag_finished'
 ```
 
-### Particle event: `particle`
+### Events
+
+#### Particle: `particle`
 
 This event will load an effect defined in `effects` section in
 _custom.yml_ file and display it on player's location. The only argument
@@ -103,8 +150,9 @@ followed by a location written like `100;200;300;world;180;-90` to put
 it on that location. If you add `private` argument the effect will only
 be displayed to the player for which you ran the event.
 
-**Example in _custom.yml_**:
-
+!!! example
+    **In custom.yml**
+    ```YAML
     effects:
       beton:
         class: HelixEffect
@@ -114,30 +162,47 @@ be displayed to the player for which you ran the event.
         circles: 20
         grow: 3
         radius: 30
-
-**Example**: `particle beton loc:100;200;300;world;180;-90 private`
+    ```
+    
+    **In events.yml**
+    ```YAML
+    particle beton loc:100;200;300;world;180;-90 private`
+    ```
 
 ## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
 
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
 
-### Experience event: `heroesexp`
+### Conditions
 
-This event simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
-
-**Example**: `heroesexp primary 1000`
-
-### Class condition: `heroesclass`
+#### Class: `heroesclass`
 
 This condition checks the classes of the player. The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`. You can optionally specify `level:` argument followed by the required level of the player.
 
-**Example**: `heroesclass mastered warrior`
+!!! example
+    ```YAML
+    heroesclass mastered warrior
+    ```
 
-### Skill condition: `heroesskill`
+#### Skill: `heroesskill`
 
 This condition checks if the player can use specified skill. The first argument is the name of the skill.
 
-**Example**: `heroesskill charge`
+!!! example
+    ```YAML
+    heroesskill charge`
+    ```
+
+### Events
+
+#### Experience: `heroesexp`
+
+This event simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
+
+!!! example
+    ```YAML
+    heroesexp primary 1000
+    ```
 
 ## [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
 
@@ -145,14 +210,16 @@ Installing this plugin will enable you to create hidden holograms, which will be
 
 In order to create a hologram, you have to add `holograms` section in your _custom.yml_ file. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
 
-    holograms:
-      beton:
-        lines:
-        - '&bThis is Beton.'
-        - 'item:MAP'
-        - '&eBeton is strong.'
-        location: 100;200;300;world
-        conditions: has_some_quest, !finished_some_quest
+```YAML
+holograms:
+  beton:
+    lines:
+    - '&bThis is Beton.'
+    - 'item:MAP'
+    - '&eBeton is strong.'
+    location: 100;200;300;world
+    conditions: has_some_quest, !finished_some_quest
+```
 
 A line can also represent a floating item. To do so enter the line as 'item:`MATERIAL`'. It will be replaced with the `MATERIAL` defined. In the above example, a floating map will be seen between two lines of text.
 
@@ -160,191 +227,257 @@ The holograms are updated every 10 seconds. If you want to make it faster, add `
 
 If Citizens is also installed then you can have holograms configured relative to an npc. Add the following to _custom.yml_.
 
-    npc_holograms:
-      # How often to check conditions
-      check_interval: 100
-      
-      # Holograms follow npcs when they move (higher cpu when true)
-      follow: false
+```YAML
+npc_holograms:
+  # How often to check conditions
+  check_interval: 100
+  
+  # Holograms follow npcs when they move (higher cpu when true)
+  follow: false
 
-      # Disable npc_holograms
-      disabled: false
+  # Disable npc_holograms
+  disabled: false
 
-      # Hologram Settings
-      default:
-        # Lines in hologram
-        lines:
-          - !
-        # Vector offset to NPC position to place hologram
-        vector: 0;3;0
+  # Hologram Settings
+  default:
+    # Lines in hologram
+    lines:
+      - !
+    # Vector offset to NPC position to place hologram
+    vector: 0;3;0
 
-        # Conditions to display hologram
-        conditions: has_some_quest, !finished_some_quest
+    # Conditions to display hologram
+    conditions: has_some_quest, !finished_some_quest
 
-        # NPC's to apply these settings to. If blank, applies by default
-        npcs:
-          - 0
-          - 22
+    # NPC's to apply these settings to. If blank, applies by default
+    npcs:
+      - 0
+      - 22
+```
 
 Item lines are also supported here.
 
 ## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
 
 Requires adding the following to _config.yml_:
-```
+```YAML
 hook:
   jobs: 'true'
 ```
 
-### Has Job Condition `nujobs_hasjob {jobname}`
+### Conditions
 
-Returns true if the player has this job
-
-**Example**: `nujobs_hasjob Woodcutter`
-
-### Can Level up Condition `nujobs_canlevel {jobname}`
+#### Can Level up: `nujobs_canlevel {jobname}`
 
 Returns true if the player can level up
 
-### Job Full Condition `nujobs_jobfull {jobname}`
+#### Has Job: `nujobs_hasjob {jobname}`
+
+Returns true if the player has this job
+
+!!! example
+    ```YAML
+    nujobs_hasjob Woodcutter
+    ```
+
+#### Job Full: `nujobs_jobfull {jobname}`
 
 Returns true if the job is at the maximum slots
 
-### Job Level Condition `nujobs_joblevel {jobname} {min} {max}`
+#### Job Level: `nujobs_joblevel {jobname} {min} {max}`
 
 Returns true if the player has this job, and at a level equal to or between the min/max
 
-**Example**: `nujobs_joblevel Woodcutter 5 10`
+!!! example
+    ```YAML
+    nujobs_joblevel Woodcutter 5 10
+    ```
 
-### Add Experience Event: `nujobs_addexp {jobname} {exp}`
+### Events
+
+#### Add Experience: `nujobs_addexp {jobname} {exp}`
 
 Gives the player experience
 
-### Increase Level Event: `nujobs_addlevel {jobname} {amount}`
+#### Increase Level: `nujobs_addlevel {jobname} {amount}`
 
 Increases the player level by amount.
 
-### Decrease Level Event: `nujobs_dellevel {jobname} {amount}`
+#### Decrease Level: `nujobs_dellevel {jobname} {amount}`
 
 Decreases the players level by amount.
 
-### Join Job Event: `nujobs_joinjob {jobname}`
+#### Join Job: `nujobs_joinjob {jobname}`
 
 Joins the player to job.
 
-### Leave Job Event: `nujobs_leavejob {jobname}`
+#### Leave Job: `nujobs_leavejob {jobname}`
 
 Removes the player from job.
 
-### Set Level Event: `nujobs_setlevel {jobname} {level}`
+#### Set Level: `nujobs_setlevel {jobname} {level}`
 
 Set the player to level.
 
-### Join Job Objective: `nujobs_joinjob {jobname}`
+### Objectives
+
+#### Join Job: `nujobs_joinjob {jobname}`
 
 Triggers when player joins job.
 
-### Leave Job Objective: `nujobs_leavejob {jobname}`
+#### Leave Job: `nujobs_leavejob {jobname}`
 
 Triggers when player leaves job.
 
-**NOTE: This is not triggered by '/jobs leaveall'**
+!!! notice
+    This is not triggered by '/jobs leaveall'
 
-### Job Levelup Objective: `nujobs_levelup {jobname}`
+#### Job Levelup: `nujobs_levelup {jobname}`
 
 Triggers when player levels up.
 
-### Job Payment Objective: `nujobs_payment {amount}`
+#### Job Payment: `nujobs_payment {amount}`
 
 Triggers when player makes {amount} of money from jobs.
 
 ## [LegendQuest](http://dev.bukkit.org/bukkit-plugins/legendquest/)
 
-### Class condition: `lqclass`
+### Conditions
 
-Checks if the player has specified class. It can also check subclass if you add `--subclass` argument.
-
-**Example**: `lqclass Cleric`
-
-### Race condition: `lqrace`
-
-Checks if the player has specified race.
-
-**Example**: `lqrace Dwarf`
-
-### Attribute condition: `lqattribute`
+#### Attribute: `lqattribute`
 
 Checks player's attributes. The first argument is attribute (STR, CON, DEX, INT, WIS, CHR) and the second argument is a number - minimal required level of the attribute.
 
-**Example**: `lqattribute INT 10`
+!!! example
+    ```YAML
+    lqattribute INT 10
+    ```
 
-### Karma condition: `lqkarma`
+#### Class: `lqclass`
+
+Checks if the player has specified class. It can also check subclass if you add `--subclass` argument.
+
+!!! example
+    ```YAML
+    lqclass Cleric`
+    ```
+
+#### Karma: `lqkarma`
 
 Checks if the player has specified amount of karma. The only argument is a number - minimal amount of karma required.
 
-**Example**: `lqkarma 20`
+!!! example
+    ```YAML
+    lqkarma 20
+    ```
 
-### Class variable: `lqclass`
+#### Race: `lqrace`
 
-Resolves to player's class.
+Checks if the player has specified race.
 
-**Example**: `%lqclass%`
+!!! example
+    ```YAML
+    lqrace Dwarf`
+    ```
 
-### Race variable: `lqrace`
+### Variables
 
-Resolves to player's race.
-
-**Example**: `%lqrace%`
-
-### Attribute variable: `lqattribute`
+#### Attribute: `lqattribute`
 
 Resolves to player's attribute. The first argument is name of the attribute (like in `lqattribute` condition), second one is either `amount` or `left:` followed by a number. First of these will simply display attribute level and second will display the difference between attribute level and the number.
 
-**Example**: `%lqattribute.str.left:13`
+!!! example
+    ```YAML
+    %lqattribute.str.left:13
+    ```
 
-### Karma variable: `lqkarma`
+#### Class: `lqclass`
+
+Resolves to player's class.
+
+!!! example
+    ```YAML
+    %lqclass%
+    ```
+
+#### Karma: `lqkarma`
 
 Resolves to player's karma. The only argument here is either `amount` or `left:` followed by a number. First of these will simply display karma amount and second will display the difference between karma amount and the number.
 
-**Example**: `%lqkarma.amount%`
+!!! example
+    ```YAML
+    %lqkarma.amount%
+    ```
+
+#### Race: `lqrace`
+
+Resolves to player's race.
+
+!!! example
+    ```YAML
+    %lqrace%
+    ```
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
-### Wand condition: `wand`
+### Conditions
+
+#### Wand: `wand`
 
 This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
 
-**Example**: `wand hand name:master spells:flare,missile:2`
+!!! example
+    ```YAML
+    wand hand name:master spells:flare,missile:2
+    ```
 
 ## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
 
-### Level condition: `mcmmolevel`
+### Conditions
+
+#### Level: `mcmmolevel`
 
 This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
 
-**Example**: `mcmmolevel woodcutting 50`
+!!! example
+    ```YAML
+    mcmmolevel woodcutting 50
+    ```
 
-### Experience event: `mcmmoexp`
+### Events
+
+#### Experience: `mcmmoexp`
 
 This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
 
-**Example**: `mcmmoexp swords 1500`
+!!! example
+    ```YAML
+    mcmmoexp swords 1500
+    ```
 
 ## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 
 Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
 
-### MobKill objective: `mmobkill`
+### Objectives
+
+#### MobKill: `mmobkill`
 
 To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
 
-**Example**: `mmobkill SkeletalKnight amount:2 events:reward`
+!!! example
+    ```YAML
+    mmobkill SkeletalKnight amount:2 events:reward
+    ```
 
-### SpawnMob event: `mspawnmob`
+#### SpawnMob: `mspawnmob`
 
 Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
 
-**Example**: `mspawnmob 100;200;300;world SkeletalKnight:1 5`
+!!! example
+    ```YAML
+    mspawnmob 100;200;300;world SkeletalKnight:1 5
+    ```
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
 
@@ -354,34 +487,50 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it an
 
 In any other plugin which uses PlaceholderAPI you can use BetonQuest variables with `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package. If you skip this, the plugin will assume you're using that variable in `default` package. The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
 
-**Example**: `%betonquest_someGreatQuest:objective.killZombies.left%`
+!!! example
+    ```YAML
+    %betonquest_someGreatQuest:objective.killZombies.left%
+    ```
 
 ### Variable: `ph`
 
 You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.
 
-**Example**: `%ph.player_item_in_hand%`
+!!! example
+    ```YAML
+    %ph.player_item_in_hand%
+    ```
 
 ## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
 
-### PlayerPoints event: `playerpoints`
+### Conditions
 
-This event simply adds, removes or multiplies points in the PlayerPoints plugin. The only argument is a number, it can be positive, negative or prefixed with an asterisk for multiplication.
-
-**Example**: `playerpoints *2`
-
-### PlayerPoints condition: `playerpoints`
+#### PlayerPoints: `playerpoints`
 
 This condition simply checks if the player has specified amount of points in the PlayerPoints plugin. The only argument is a number.
 
-**Example**: `playerpoints 100`
+!!! example
+    ```YAML
+    playerpoints 100
+    ```
+    
+### Events
+
+#### PlayerPoints: `playerpoints`
+
+This event simply adds, removes or multiplies points in the PlayerPoints plugin. The only argument is a number, it can be positive, negative or prefixed with an asterisk for multiplication.
+
+!!! example
+    ```YAML
+    playerpoints *2
+    ```
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
 ### Hiding NPC's
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
 
-```
+```YAML
 hide_npcs:
   41: killedAlready,questStarted
   127: '!questStarted'
@@ -395,7 +544,7 @@ Customize how it looks by adding the following lines to custom.yml:
 
 ```YAML
 menu_conv_io:
-  line_length: 60
+  line_length: 50
   refresh_delay: 180
 
   npc_wrap: '&l &r'
@@ -418,28 +567,30 @@ menu_conv_io:
 ```
 
 Where:
-  * line_length - Maximum size of a line till its wrapped
-  * refresh_delay - Specify how many ticks to auto update display. Default 180
-  * npc_wrap - What text to prefix each new line in the NPC text that wraps
-  * npc_text - How to write the NPC text. Replaces {1} with the npcs text
-  * npc_text_reset - When a color reset is found, what to replace it with
-  * option_wrap - What text to prefix each new line in an option that wraps
-  * option_text - How to write an option. Replaces {1} with the option text
-  * option_text_reset - When a color reset is found, what to replace it with
-  * option_selected - How to write a selected option. Replaces {1} with the option text
-  * option_selected_reset - When a color reset is found, what to replace it with
-  * option_selected_wrap - What text to prefix each new line in a selected option that wraps
-  * control_select - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * control_cancel - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * control_move - Space separated actions to move selection. Can be any of 'move', 'scroll'
-  * npc_name_type - Type of NPC name display. Can be one of: 'none', 'chat'
-  * npc_name_align - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
-  * npc_name_format - How to format the npc name
+
+  * `line_length` - Maximum size of a line till its wrapped
+  * `refresh_delay` - Specify how many ticks to auto update display. Default 180
+  * `npc_wrap` - What text to prefix each new line in the NPC text that wraps
+  * `npc_text` - How to write the NPC text. Replaces {1} with the npcs text
+  * `npc_text_reset` - When a color reset is found, what to replace it with
+  * `option_wrap` - What text to prefix each new line in an option that wraps
+  * `option_text` - How to write an option. Replaces {1} with the option text
+  * `option_text_reset` - When a color reset is found, what to replace it with
+  * `option_selected` - How to write a selected option. Replaces {1} with the option text
+  * `option_selected_reset` - When a color reset is found, what to replace it with
+  * `option_selected_wrap` - What text to prefix each new line in a selected option that wraps
+  * `control_select` - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * `control_cancel` - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
+  * `control_move` - Space separated actions to move selection. Can be any of 'move', 'scroll'
+  * `npc_name_type` - Type of NPC name display. Can be one of: 'none', 'chat'
+  * `npc_name_align` - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
+  * `npc_name_format` - How to format the npc name
 
 Variables:
-  * {npc_text} - The text the NPC says
-  * {option_text} - The option text
-  * {npc_name} - The name of the NPC
+
+  * `{npc_text}` - The text the NPC says
+  * `{option_text}` - The option text
+  * `{npc_name}` - The name of the NPC
 
 ### Chat Interceptor: `packet`
 
@@ -449,147 +600,226 @@ Intercept pretty much anything sent to the player by intercepting packets sent t
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
 
-### Event Reward (Quests)
-
-When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
-
 ### Condition Requirement (Quests)
 
 When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition". Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
 
-### Quest event: `quest` (BetonQuest)
+### Event Reward (Quests)
+
+When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
+
+### Conditions
+
+#### Quest condition: `quest`
+
+This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest. It it contains any spaces replace them with `_`.
+
+!!! example
+    ```YAML
+    quest stone_miner
+    ```
+
+### Events
+
+#### Quest: `quest`
 
 This event will start the quest for the player. The first argument must be the name of the quest, as defined in `name` option in the quest. If the name contains any spaces replace them with `_`. You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements (otherwise the quest will be forced to be started).
 
-**Example**: `quest stone_miner check-requirements`
-
-### Quest condition: `quest` (BetonQuest)
-
-This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest. It it contains any spaces replace them with `_`.
+!!! example
+    ```YAML
+    quest stone_miner check-requirements
+    ```
 
 ## [RacesAndClasses](http://dev.bukkit.org/bukkit-plugins/racesandclasses/)
 
 Another race/class/skill plugin. By installing RacesAndClasses you gain access to these events, conditions and variables:
 
-### Class condition: `racclass`
+### Conditions
+
+#### Class: `racclass`
 
 This conditions checks if the player has specified class. You can use `none` to check if he does not have any class.
 
-**Example**: `racclass warrior`
-
-### Class event: `racclass`
-
-This event sets player's class to the specified one.
-
-**Example**: `racclass magician`
-
-### Class variable: `racclass`
-
-This variable resolves to class name.
-
-**Example**: `%racclass%`
-
-### Race condition: `racrace`
-
-This condition checks if the player has specified race. You can use `none` to check if he does not have any race.
-
-**Example**: `racrace Elv`
-
-### Race event: `racrace`
-
-This event sets player's race to the specified one.
-
-**Example**: `racrace Orc`
-
-### Race variable: `racrace`
-
-This variable resolves to race name.
-
-**Example**: `%racrace%`
-
-### Level condition: `raclevel`
-
-This condition is met if the player has a level equal or greater than specified.
-
-**Example**: `raclevel 5`
-
-### Level event: `raclevel`
-
-This event adds (or removes if negative) levels.
-
-**Example**: `raclevel -2`
-
-### Level variable: `raclevel`
-
-This variable has 2 possible arguments: `amount` will resolve to player's level and `left:` will display how many levels the player lacks to the specified number.
-
-**Example**: `%raclevel.left:5%`
-
-### Experience condition: `racexo`
+!!! example
+    ```YAML
+    racclass warrior
+    ```
+    
+#### Experience: `racexo`
 
 This condition is met if the player has experience equal or greater than specified.
 
-**Example**: `racexo 600`
+!!! example
+    ```YAML
+    racexo 600
+    ```
+    
+#### Level: `raclevel`
 
-### Experience event: `racexo`
+This condition is met if the player has a level equal or greater than specified.
 
-This event adds (or removes if negative) experience.
-
-**Example**: `racexo 100`
-
-### Experience variable: `racexo`
-
-This variable has 2 possible arguments: `amount` will resolve to player's experience and `left:` will display how much experience the player lacks to the specified number.
-
-**Example**: `%racexo:amount%`
-
-### Mana condition: `racmana`
+!!! example
+    ```YAML
+    raclevel 5
+    ```
+    
+#### Mana: `racmana`
 
 This condition is met if the player has mana equal or greater than specified.
 
-**Example**: `racmana 1`
+!!! example
+    ```YAML
+    racmana 1
+    ```
+    
+#### Race: `racrace`
 
-### Mana event: `racmana`
+This condition checks if the player has specified race. You can use `none` to check if he does not have any race.
 
-This event adds (or removes if negative) mana. You can use `refill` instead of a number to simply set mana to player's maximum.
-
-**Example**: `racmana refill`
-
-### Trait condition: `ractrait`
+!!! example
+    ```YAML
+    racrace Elv
+    ```
+    
+#### Trait: `ractrait`
 
 This condition checks if the player has the specified trait.
 
-**Example**: `ractrait SwordDamageIncreaseTrait`
+!!! example
+    ```YAML
+    ractrait SwordDamageIncreaseTrait
+    ```
 
-**Example**: `quest stone_miner`
+### Events
+
+#### Class: `racclass`
+
+This event sets player's class to the specified one.
+
+!!! example
+    ```YAML
+    racclass magician
+    ```
+
+#### Experience: `racexo`
+
+This event adds (or removes if negative) experience.
+
+!!! example
+    ```YAML
+    racexo 100
+    ```
+    
+#### Level: `raclevel`
+
+This event adds (or removes if negative) levels.
+
+!!! example
+    ```YAML
+    raclevel -2
+    ```
+
+#### Mana: `racmana`
+
+This event adds (or removes if negative) mana. You can use `refill` instead of a number to simply set mana to player's maximum.
+
+!!! example
+    ```YAML
+    racmana refill
+    ```
+    
+#### Race: `racrace`
+
+This event sets player's race to the specified one.
+
+!!! example
+    ```YAML
+    racrace Orc
+    ```
+
+### Variables
+
+#### Class: `racclass`
+
+This variable resolves to class name.
+
+!!! example
+    ```YAML
+    %racclass%
+    ```
+
+#### Experience: `racexo`
+
+This variable has 2 possible arguments: `amount` will resolve to player's experience and `left:` will display how much experience the player lacks to the specified number.
+
+!!! example
+    ```YAML
+    %racexo:amount%
+    ```
+
+#### Level: `raclevel`
+
+This variable has 2 possible arguments: `amount` will resolve to player's level and `left:` will display how many levels the player lacks to the specified number.
+
+!!! example
+    ```YAML
+    %raclevel.left:5%
+    ```
+    
+#### Race: `racrace`
+
+This variable resolves to race name.
+
+!!! example
+    ```YAML
+    %racrace%
+    ```
 
 ## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
 
-### Open shop window event: `shopkeeper`
+### Conditions
 
-This event opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
-
-**Example**: `shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929`
-
-### Shop amount condition: `shopamount`
+#### Shop amount: `shopamount`
 
 This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.
 
-**Example**: `shopamount 2`
+!!! example
+    ```YAML
+    shopamount 2
+    ```
+
+### Events
+
+#### Open shop window: `shopkeeper`
+
+This event opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
+
+!!! example
+    ```YAML
+    shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
+    ```
 
 ## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
 
-### Class condition: `skillapiclass`
+### Conditions
+
+#### Class: `skillapiclass`
 
 This condition checks if the player has specified class or a child class of the specified one. The first argument is simply the name of a class. You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
-**Example**: `skillapiclass warrior`
+!!! example
+    ```YAML
+    skillapiclass warrior
+    ```
 
-### Level condition: `skillapilevel`
+#### Level: `skillapilevel`
 
 This condition checks if the player has specified or greater level is the specified class. The first argument is class name, the second one is the required level.
 
-**Example**: `skillapilevel warrior 3`
+!!! example
+    ```YAML
+    skillapilevel warrior 3
+    ```
 
 ## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
 
@@ -602,136 +832,126 @@ This entry will describe two things: Skript event and BetonQuest event.
 1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
 2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
 
-**Example**: _in your script:_ `on betonquest event "concrete":` _in events.yml:_ `fire_concrete_script: skript concrete`
+!!! example
+    **In your script**
+    ```YAML
+    on betonquest event "concrete":
+    ```
+    
+    **In events.yml**
+    ```YAML
+    fire_concrete_script: skript concrete
+    ```
 
 ### Skript condition
 
 You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
 
-**Example**: _in your script:_ `player meets condition "has_ore"` _in conditions.yml:_ `has_ore: item iron_ore:5`
+!!! example
+    **In your script**
+    ```YAML
+    player meets condition "has_ore"
+    ```
+     
+     **In conditions.yml**
+     ```YAML
+     has_ore: item iron_ore:5
+     ```
 
 ### Skript event
 
 You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
 
-**Example**: _in your script:_ `fire event "give_emeralds" for player` _in events.yml:_ `give_emeralds: give emerald:5`
+!!! example
+    **In your script**
+    ```YAML
+    fire event "give_emeralds" for player
+    ```
+     
+    **In events.yml**
+    ```YAML
+    give_emeralds: give emerald:5
+    ```
 
 ## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
 By installing Vault you enable Permission event and Money condition/event.
 
-### Permission event: `permission`
+### Conditions
 
-Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is ommited then permission/group will be global.
-
-**Example**: `permission remove group bandit world_nether`
-
-### Money event: `money`
-
-Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
-
-**Example**: `money -100`
-
-### Money condition: `money`
+#### Money: `money`
 
 Checks if the player has specified amount of money. You can specify only one argument, amount integer. It cannot be negative!
 
-**Example**: `money 500`
+!!! example
+    ```YAML
+    money 500
+    ```
 
-### Money variable: `money`
+### Events
+
+#### Money: `money`
+
+Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
+
+!!! example
+    ```YAML
+    money -100
+    ```
+
+#### Permission: `permission`
+
+Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is ommited then permission/group will be global.
+
+!!! example
+    ```YAML
+    permission remove group bandit world_nether
+    ```
+
+### Variables
+
+#### Money: `money`
 
 There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
 
-**Example**: `%money.left:500%`
+!!! example
+    ```YAML
+    %money.left:500%
+    ```
 
 ## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
 
-### Paste schematic event: `paste`
+### Events
+
+#### Paste schematic: `paste`
 
 This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 
-**Example**: `paste 100;200;300;world some_building noair`
+!!! example
+    ```YAML
+    paste 100;200;300;world some_building noair
+    ```
 
 ## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
 
-### Region objective: `region`
+### Conditions
 
-To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional `entry` and/or `exit` to only trigger when entering or exiting a region instead of anytime inside a region.
-
-**Example**: `region beton events:kill`
-
-### Region condition: `region`
+#### Inside Region: `region`
 
 This condition is met when the player is inside the specified region. The only argument is the name of the region.
 
-**Example**: `region beton`
+!!! example
+    ```YAML
+    region beton
+    ```
 
-## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+### Objectives
 
-Requires adding the following to _config.yml_:
-```
-hook:
-  jobs: 'true'
-```
+#### Enter Region: `region`
 
-### Has Job Condition `nujobs_hasjob {jobname}`
+To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional `entry` and/or `exit` to only trigger when entering or exiting a region instead of anytime inside a region.
 
-Returns true if the player has this job
-
-**Example**: `nujobs_hasjob Woodcutter`
-
-### Can Level up Condition `nujobs_canlevel {jobname}`
-
-Returns true if the player can level up
-
-### Job Full Condition `nujobs_jobfull {jobname}`
-
-Returns true if the job is at the maximum slots
-
-### Job Level Condition `nujobs_joblevel {jobname} {min} {max}`
-
-Returns true if the player has this job, and at a level equal to or between the min/max
-
-**Example**: `nujobs_joblevel Woodcutter 5 10`
-
-### Add Experience Event: `nujobs_addexp {jobname} {exp}`
-
-Gives the player experience
-
-### Increase Level Event: `nujobs_addlevel {jobname} {amount}`
-
-Increases the player level by amount.
-
-### Decrease Level Event: `nujobs_dellevel {jobname} {amount}`
-
-Decreases the players level by amount.
-
-### Join Job Event: `nujobs_joinjob {jobname}`
-
-Joins the player to job.
-
-### Leave Job Event: `nujobs_leavejob {jobname}`
-
-Removes the player from job.
-
-### Set Level Event: `nujobs_setlevel {jobname} {level}`
-
-Set the player to level.
-
-### Join Job Objective: `nujobs_joinjob {jobname}`
-
-Triggers when player joins job.
-
-### Leave Job Objective: `nujobs_leavejob {jobname}`
-
-Triggers when player leaves job.
-
-**NOTE: This is not triggered by '/jobs leaveall'**
-
-### Job Levelup Objective: `nujobs_levelup {jobname}`
-
-Triggers when player levels up.
-
-### Job Payment Objective: `nujobs_payment {amount}`
-
-Triggers when player makes {amount} of money from jobs.
+!!! example
+    ```YAML
+    region beton events:kill
+    ```
