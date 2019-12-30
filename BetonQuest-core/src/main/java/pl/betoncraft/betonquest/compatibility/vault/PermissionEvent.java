@@ -18,6 +18,8 @@
 package pl.betoncraft.betonquest.compatibility.vault;
 
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -48,25 +50,27 @@ public class PermissionEvent extends QuestEvent {
     @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) {
-        Permission vault = VaultIntegrator.getPermission();
-        String player = PlayerConverter.getPlayer(playerID).getName();
-        if (add) {
-            if (perm) {
-                // world add perm
-                vault.playerAdd(world, player, permission);
+        // Run in Main Thread
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance().getJavaPlugin(), () -> {
+            Permission vault = VaultIntegrator.getPermission();
+            String player = PlayerConverter.getPlayer(playerID).getName();
+            if (add) {
+                if (perm) {
+                    // world add perm
+                    vault.playerAdd(world, player, permission);
+                } else {
+                    // world add group
+                    vault.playerAddGroup(world, player, permission);
+                }
             } else {
-                // world add group
-                vault.playerAddGroup(world, player, permission);
+                if (perm) {
+                    // world remove perm
+                    vault.playerRemove(world, player, permission);
+                } else {
+                    // world remove group
+                    vault.playerRemoveGroup(world, player, permission);
+                }
             }
-        } else {
-            if (perm) {
-                // world remove perm
-                vault.playerRemove(world, player, permission);
-            } else {
-                // world remove group
-                vault.playerRemoveGroup(world, player, permission);
-            }
-        }
+        });
     }
-
 }
