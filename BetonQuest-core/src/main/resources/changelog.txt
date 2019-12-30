@@ -1,5 +1,6 @@
 v1.12-dev
 Additions:
+  * Condition 'wand' can now have an option 'amount'
 Changes:
 Fixes:
 

@@ -44,6 +44,7 @@ public class WandCondition extends Condition {
     private CheckType type;
     private HashMap<String, VariableNumber> spells = new HashMap<>();
     private String name;
+    private VariableNumber amount;
 
     public WandCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -81,11 +82,14 @@ public class WandCondition extends Condition {
         }
         name = instruction.getOptional("name");
         api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
+        amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
 
     @Override
     public boolean check(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
+        int heldAmount;
+
         switch (type) {
             case IS_LOST:
                 for (LostWand lost : api.getLostWands()) {
@@ -106,13 +110,17 @@ public class WandCondition extends Condition {
                 Wand wand1 = api.getWand(wandItem);
                 return checkWand(wand1, playerID);
             case IN_INVENTORY:
+                heldAmount = 0;
                 for (ItemStack item : player.getInventory().getContents()) {
                     if (item == null)
                         continue;
                     if (api.isWand(item)) {
                         Wand wand2 = api.getWand(item);
                         if (checkWand(wand2, playerID)) {
-                            return true;
+                            heldAmount += item.getAmount();
+                            if (amount == null || heldAmount >= amount.getInt(playerID)) {
+                                return true;
+                            }
                         }
                     }
                 }
