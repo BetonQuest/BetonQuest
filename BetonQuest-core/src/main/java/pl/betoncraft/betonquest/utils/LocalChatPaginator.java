@@ -22,15 +22,37 @@ import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Provide a slightly more intelligent wordwrap that will return the last last space if required
+ * <p>
+ * We also try to handle variable width characters.
  */
 public class LocalChatPaginator extends ChatPaginator {
+    public static Map<Character, Integer> fontSizes;
+    public static int defaultCharWidth = 5;
+
+    static {
+        fontSizes = Stream.of(new Object[][]{
+                {' ', 4}, {'!', 2}, {'"', 5}, {'#', 6}, {'$', 6}, {'%', 6}, {'&', 6}, {'\'', 3},
+                {'(', 6}, {')', 6}, {'*', 5}, {'+', 6}, {',', 2}, {'-', 6}, {'.', 2}, {'/', 6},
+                {'0', 6}, {'1', 6}, {'2', 6}, {'3', 6}, {'4', 6}, {'5', 6}, {'6', 6}, {'7', 6},
+                {'8', 6}, {'9', 6}, {':', 2}, {';', 2}, {'<', 5}, {'=', 6}, {'>', 5}, {'?', 6},
+                {'@', 7}, {'A', 6}, {'B', 6}, {'C', 6}, {'D', 6}, {'E', 6}, {'F', 6}, {'G', 6},
+                {'H', 6}, {'I', 4}, {'J', 6}, {'K', 6}, {'L', 6}, {'M', 6}, {'N', 6}, {'O', 6},
+                {'P', 6}, {'Q', 6}, {'R', 6}, {'S', 6}, {'T', 6}, {'U', 6}, {'V', 6}, {'W', 6},
+                {'X', 6}, {'Y', 6}, {'Z', 6}, {'[', 4}, {'\\', 6}, {']', 4}, {'^', 6}, {'_', 6},
+                {'`', 3}, {'a', 6}, {'b', 6}, {'c', 6}, {'d', 6}, {'e', 6}, {'f', 5}, {'g', 6},
+                {'h', 6}, {'i', 2}, {'j', 6}, {'k', 5}, {'l', 3}, {'m', 6}, {'n', 6}, {'o', 6},
+                {'p', 6}, {'q', 6}, {'r', 6}, {'s', 6}, {'t', 4}, {'u', 6}, {'v', 6}, {'w', 6},
+                {'x', 6}, {'y', 6}, {'z', 6}, {'{', 5}, {'|', 2}, {'}', 5}, {'~', 7}
+        }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
+    }
 
     /**
      * Takes a string and returns the last colors that can be copied to a new line
@@ -88,25 +110,27 @@ public class LocalChatPaginator extends ChatPaginator {
      * @return An array of word-wrapped lines.
      */
     public static String[] wordWrap(String rawString, int lineLength, String wrapPrefix) {
+        int maxWidth = lineLength * defaultCharWidth;
+
         // A null string is a single line
         if (rawString == null) {
             return new String[]{""};
         }
 
         // A string shorter than the lineWidth is a single line
-        if (rawString.length() <= lineLength && !rawString.contains("\n")) {
+        if (getWidth(rawString) <= maxWidth && !rawString.contains("\n")) {
             return new String[]{rawString};
         }
 
         // Work out wrapPrefix color chars
-        int wrapPrefixColorChars = hiddenCount(wrapPrefix);
-        int wraplineLength = lineLength - (wrapPrefix.length() - wrapPrefixColorChars);
+        int maxWrapWidth = maxWidth - getWidth(wrapPrefix);
 
         char[] rawChars = (rawString + ' ').toCharArray(); // add a trailing space to trigger pagination
         StringBuilder word = new StringBuilder();
         StringBuilder line = new StringBuilder();
         List<String> lines = new LinkedList<>();
-        int lineColorChars = 0;
+        int wordWidth = 0;
+        int lineWidth = 0;
 
         for (int i = 0; i < rawChars.length; i++) {
             char c = rawChars[i];
@@ -114,51 +138,48 @@ public class LocalChatPaginator extends ChatPaginator {
             // skip chat color modifiers
             if (c == ChatColor.COLOR_CHAR) {
                 word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase()));
-                lineColorChars += 2;
                 i++; // Eat the next character as we have already processed it
                 continue;
             }
 
-            if (c == ' ' || c == '\n') {
-                if (line.length() == 0 && word.length() > (lines.size() == 0 ? lineLength : wraplineLength)) { // special case: extremely long word begins a line
-                    lines.addAll(Arrays.asList(word.toString().split("(?<=\\G.{" + (lines.size() == 0 ? lineLength : wraplineLength) + "})")));
+            int width = getWidth(c);
 
-                } else if (line.length() + 1 + word.length() - lineColorChars == (lines.size() == 0 ? lineLength : wraplineLength)) { // Line exactly the correct length...newline
-                    if (line.length() > 0) {
-                        line.append(' ');
-                    }
-                    line.append(word);
-                    lines.add(line.toString());
-                    line = new StringBuilder();
-                    lineColorChars = 0;
-                } else if (line.length() + 1 + word.length() - lineColorChars > (lines.size() == 0 ? lineLength : wraplineLength)) { // Line too long...break the line at last space
-                    lines.add(line.toString());
-                    line = new StringBuilder();
-
-                    for (String partialWord : word.toString().split("(?<=\\G.{" + (lines.size() == 0 ? lineLength : wraplineLength) + "})")) {
-                        if (line.length() > 0) {
-                            lines.add(line.toString());
-                        }
-                        line = new StringBuilder(partialWord);
-                    }
-                    lineColorChars = 0;
-                } else {
-
-                    if (line.length() > 0) {
-                        line.append(' ');
-                    }
-                    line.append(word);
+            if (c != ' ' && c != '\n') {
+                // Extremely long word begins a line, break the word up
+                if (line.length() == 0 && wordWidth + width >= (lines.size() == 0 ? maxWidth : maxWrapWidth)) {
+                    lines.add(word.toString());
+                    word = new StringBuilder();
+                    wordWidth = 0;
                 }
-                word = new StringBuilder();
 
-                if (c == '\n') { // Newline forces the line to flush
+                // Word too long with rest of line, force line to wrap
+                if (line.length() > 0 && lineWidth + wordWidth + width >= (lines.size() == 0 ? maxWidth : maxWrapWidth)) {
                     lines.add(line.toString());
                     line = new StringBuilder();
-                    lineColorChars = 0;
+                    lineWidth = 0;
                 }
-            } else {
+
                 word.append(c);
+                wordWidth += width;
+                continue;
             }
+
+            if (c == '\n') {
+                // NewLine forces a new line
+                lines.add(line.toString());
+                line = new StringBuilder();
+                lineWidth = 0;
+                continue;
+            }
+
+            if (line.length() > 0) {
+                line.append(' ');
+                lineWidth += getWidth(' ');
+            }
+            line.append(word);
+            lineWidth += wordWidth;
+            word = new StringBuilder();
+            wordWidth = 0;
         }
 
         if (line.length() > 0) { // Only add the last line if there is anything to add
@@ -178,6 +199,27 @@ public class LocalChatPaginator extends ChatPaginator {
         }
 
         return lines.toArray(new String[0]);
+    }
+
+    /**
+     * Return the width of text taking into account variable font size and ignoring hidden characters
+     */
+    public static int getWidth(String input) {
+        int ret = 0;
+        char[] rawChars = input.toCharArray();
+
+        for (int i = 0; i < rawChars.length; i++) {
+            if (rawChars[i] == ChatColor.COLOR_CHAR) {
+                i += 1;
+                continue;
+            }
+            ret += getWidth(rawChars[i]);
+        }
+        return ret;
+    }
+
+    public static int getWidth(Character c) {
+        return fontSizes.containsKey(c) ? fontSizes.get(c) : defaultCharWidth;
     }
 
     /**

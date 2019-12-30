@@ -176,7 +176,7 @@ public class MenuConvIO extends ChatConvIO {
         stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
 
         stand.setGravity(false);
-        stand.setVisible(true);
+        stand.setVisible(false);
 
         // Mount the player to it using packets
         WrapperPlayServerMount mount = new WrapperPlayServerMount();
