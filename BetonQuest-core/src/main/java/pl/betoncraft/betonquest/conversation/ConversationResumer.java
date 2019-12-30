@@ -62,7 +62,7 @@ public class ConversationResumer implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e) {
         if (!e.getPlayer().equals(player)) {
             return;
@@ -77,7 +77,7 @@ public class ConversationResumer implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onQuit(PlayerQuitEvent e) {
         if (!e.getPlayer().equals(player)) {
             return;

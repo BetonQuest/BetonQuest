@@ -32,9 +32,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -341,7 +343,7 @@ public class MenuConvIO extends ChatConvIO {
 
     // Override this event from our parent
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onReply(AsyncPlayerChatEvent event) {
     }
 
@@ -359,11 +361,41 @@ public class MenuConvIO extends ChatConvIO {
                 .replace("{npc_name}", npcName);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) {
+        if (event.getPlayer() != player) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        if (debounce) {
+            return;
+        }
+
+        if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+            switch (controls.get(CONTROL.LEFT_CLICK)) {
+                case CANCEL:
+                    if (!conv.isMovementBlock()) {
+                        conv.endConversation();
+                    }
+                    debounce = true;
+                    break;
+                case SELECT:
+                    conv.passPlayerAnswer(selectedOption + 1);
+                    debounce = true;
+                    break;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getPlayer() != player) {
             return;
         }
+
+        event.setCancelled(true);
 
         if (debounce) {
             return;
@@ -388,8 +420,6 @@ public class MenuConvIO extends ChatConvIO {
                             break;
                     }
                 }
-
-                event.setCancelled(true);
         }
 
     }
@@ -609,11 +639,13 @@ public class MenuConvIO extends ChatConvIO {
         return false;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() != player) {
             return;
         }
+
+        event.setCancelled(true);
 
         if (debounce) {
             return;
@@ -636,11 +668,7 @@ public class MenuConvIO extends ChatConvIO {
                         break;
                 }
             }
-
-            event.setCancelled(true);
         }
-
-        event.setCancelled(true);
     }
 
     @EventHandler
@@ -653,6 +681,12 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
+        event.setCancelled(true);
+
+        if (debounce) {
+            return;
+        }
+
         // Cheat and assume the closest distance between previous and new slots is the direction scrolled
         int slotDistance = event.getPreviousSlot() - event.getNewSlot();
 
@@ -661,6 +695,7 @@ public class MenuConvIO extends ChatConvIO {
             if (selectedOption < options.size() - 1) {
                 oldSelectedOption = selectedOption;
                 selectedOption++;
+                debounce = true;
                 updateDisplay();
             }
         } else if (slotDistance != 0) {
@@ -668,6 +703,7 @@ public class MenuConvIO extends ChatConvIO {
             if (selectedOption > 0) {
                 oldSelectedOption = selectedOption;
                 selectedOption--;
+                debounce = true;
                 updateDisplay();
             }
         }

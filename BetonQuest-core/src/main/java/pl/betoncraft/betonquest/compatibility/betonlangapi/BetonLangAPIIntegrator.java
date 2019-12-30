@@ -45,7 +45,7 @@ public class BetonLangAPIIntegrator implements Integrator {
             updateLang(player);
         }
         Bukkit.getPluginManager().registerEvents(new Listener() {
-            @EventHandler
+            @EventHandler(ignoreCancelled = true)
             public void onJoin(PlayerJoinEvent event) {
                 updateLang(event.getPlayer());
             }

@@ -54,7 +54,7 @@ public class JoinQuitListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
         // if player was kicked, don't load the data
         if (event.getLoginResult() != Result.ALLOWED) {
@@ -65,7 +65,7 @@ public class JoinQuitListener implements Listener {
         plugin.putPlayerData(playerID, new PlayerData(playerID));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         // start objectives when the data is loaded

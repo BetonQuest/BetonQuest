@@ -17,8 +17,6 @@
  */
 package pl.betoncraft.betonquest.conversation;
 
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,11 +27,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Listener which starts conversation on clicking on NPCs made from blocks.
@@ -55,7 +54,7 @@ public class CubeNPCListener implements Listener {
      *
      * @param event SignChangeEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSignPlace(SignChangeEvent event) {
         if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
             // if the player doesn't have the required permission deny the
@@ -71,11 +70,8 @@ public class CubeNPCListener implements Listener {
      *
      * @param event PlayerInteractEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNPCClick(final PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         // check if the player has required permission
         if (!event.getPlayer().hasPermission("betonquest.conversation")) {
             return;

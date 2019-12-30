@@ -57,12 +57,12 @@ public class BlockObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
-        if (containsPlayer(playerID) && !event.isCancelled() && selector.match(event.getBlock()) && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
             // add the block to the total amount
             BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.add();
@@ -84,12 +84,12 @@ public class BlockObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
-        if (containsPlayer(playerID) && !event.isCancelled() && selector.match(event.getBlock()) && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
             // remove the block from the total amount
             BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.remove();

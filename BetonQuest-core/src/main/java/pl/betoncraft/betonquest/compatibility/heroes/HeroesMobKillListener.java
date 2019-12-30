@@ -35,7 +35,7 @@ public class HeroesMobKillListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHeroesKill(HeroKillCharacterEvent event) {
         MobKillNotifier.addKill(event.getAttacker().getPlayer(), event.getDefender().getEntity());
     }

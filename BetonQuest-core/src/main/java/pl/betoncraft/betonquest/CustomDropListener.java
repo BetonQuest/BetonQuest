@@ -34,7 +34,7 @@ public class CustomDropListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         int i = 0;
         while (event.getEntity().hasMetadata("betonquest-drops-" + i)) {

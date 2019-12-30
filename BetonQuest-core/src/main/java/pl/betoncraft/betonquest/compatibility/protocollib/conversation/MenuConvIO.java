@@ -31,9 +31,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -171,9 +173,10 @@ public class MenuConvIO extends ChatConvIO {
 
     private void start() {
         // Create something painful looking for the player to sit on and make it invisible.
-        stand = player.getWorld().spawn(player.getLocation().clone().add(0, -player.getEyeHeight(true) / 2, 0), ArmorStand.class);
+        stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
 
-        stand.setVisible(false);
+        stand.setGravity(false);
+        stand.setVisible(true);
 
         // Mount the player to it using packets
         WrapperPlayServerMount mount = new WrapperPlayServerMount();
@@ -320,7 +323,7 @@ public class MenuConvIO extends ChatConvIO {
 
     // Override this event from our parent
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onReply(AsyncPlayerChatEvent event) {
     }
 
@@ -338,11 +341,41 @@ public class MenuConvIO extends ChatConvIO {
                 .replace("{npc_name}", npcName);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) {
+        if (event.getPlayer() != player) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        if (debounce) {
+            return;
+        }
+
+        if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+            switch (controls.get(CONTROL.LEFT_CLICK)) {
+                case CANCEL:
+                    if (!conv.isMovementBlock()) {
+                        conv.endConversation();
+                    }
+                    debounce = true;
+                    break;
+                case SELECT:
+                    conv.passPlayerAnswer(selectedOption + 1);
+                    debounce = true;
+                    break;
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getPlayer() != player) {
             return;
         }
+
+        event.setCancelled(true);
 
         if (debounce) {
             return;
@@ -367,8 +400,6 @@ public class MenuConvIO extends ChatConvIO {
                             break;
                     }
                 }
-
-                event.setCancelled(true);
         }
 
     }
@@ -587,11 +618,13 @@ public class MenuConvIO extends ChatConvIO {
         return false;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() != player) {
             return;
         }
+
+        event.setCancelled(true);
 
         if (debounce) {
             return;
@@ -614,26 +647,21 @@ public class MenuConvIO extends ChatConvIO {
                         break;
                 }
             }
-
-            event.setCancelled(true);
         }
 
-        event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(PlayerItemHeldEvent event) {
         if (event.getPlayer() != player) {
-            return;
-        }
-
-        if (event.isCancelled()) {
             return;
         }
 
         if (!controls.containsKey(CONTROL.SCROLL)) {
             return;
         }
+
+        event.setCancelled(true);
 
         if (debounce) {
             return;
@@ -660,7 +688,6 @@ public class MenuConvIO extends ChatConvIO {
             }
         }
 
-        event.setCancelled(true);
     }
 
     public enum ACTION {

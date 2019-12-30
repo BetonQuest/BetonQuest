@@ -55,7 +55,7 @@ public class ShearObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onShear(PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP)
             return;

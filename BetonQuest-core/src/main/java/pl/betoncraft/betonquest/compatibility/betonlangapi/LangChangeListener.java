@@ -37,7 +37,7 @@ public class LangChangeListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onLanguageChange(PlayerLanguageChangeEvent event) {
         if (Config.getLanguages().contains(event.getLanguage())) {
             BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer()))

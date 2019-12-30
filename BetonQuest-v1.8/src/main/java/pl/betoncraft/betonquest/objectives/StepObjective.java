@@ -26,10 +26,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -51,7 +51,7 @@ public class StepObjective extends Objective implements Listener {
         loc = instruction.getLocation();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onStep(PlayerInteractEvent event) {
         if (event.getAction() != Action.PHYSICAL) {
             return;

@@ -52,7 +52,7 @@ public class LocationObjective extends Objective implements Listener {
         range = instruction.getVarNum();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         qreHandler.handle(() -> {
             String playerID = PlayerConverter.getID(event.getPlayer());

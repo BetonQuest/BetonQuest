@@ -42,11 +42,8 @@ public class CitizensListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;
         }
@@ -69,8 +66,8 @@ public class CitizensListener implements Listener {
                     event.getNPC());
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void CitizensReload(final CitizensReloadEvent event) {
         CitizensHologram.reload();
     }

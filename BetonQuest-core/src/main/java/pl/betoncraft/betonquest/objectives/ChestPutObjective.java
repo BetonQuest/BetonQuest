@@ -78,7 +78,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChestClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player))
             return;

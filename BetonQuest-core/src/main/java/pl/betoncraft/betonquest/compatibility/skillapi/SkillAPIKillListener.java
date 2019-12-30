@@ -37,11 +37,8 @@ public class SkillAPIKillListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onKill(SkillDamageEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (!(event.getDamager() instanceof Player)) {
             return;
         }

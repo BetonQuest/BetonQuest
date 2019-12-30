@@ -26,8 +26,8 @@ import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -50,7 +50,7 @@ public class NPCKillObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNpcKill(MobKilledEvent event) {
         NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
         if (npc == null) {

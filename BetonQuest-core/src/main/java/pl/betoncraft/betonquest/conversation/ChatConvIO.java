@@ -87,7 +87,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWalkAway(PlayerMoveEvent event) {
         // return if it's someone else
         if (!event.getPlayer().equals(player)) {
@@ -137,10 +137,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(AsyncPlayerChatEvent event) {
-        if (event.isCancelled())
-            return;
         if (!event.getPlayer().equals(player))
             return;
         String message = event.getMessage().trim();

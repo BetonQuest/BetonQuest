@@ -44,7 +44,7 @@ public class RespawnObjective extends Objective implements Listener {
         location = instruction.getLocation(instruction.getOptional("location"));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(PlayerRespawnEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {

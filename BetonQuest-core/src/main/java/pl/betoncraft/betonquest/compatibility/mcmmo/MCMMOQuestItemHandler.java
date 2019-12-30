@@ -41,17 +41,15 @@ public class MCMMOQuestItemHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onQuestItemSalvaging(McMMOPlayerSalvageCheckEvent event) {
-        if (event.isCancelled()) return;
         if (Utils.isQuestItem(event.getSalvageItem())) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onQuestItemDisarm(McMMOPlayerDisarmEvent event) {
-        if (event.isCancelled()) return;
         if (Utils.isQuestItem(event.getPlayer().getInventory().getItemInMainHand())) {
             event.setCancelled(true);
         } else if (Journal.isJournal(PlayerConverter.getID(event.getPlayer()), event.getPlayer().getInventory().getItemInMainHand())) {

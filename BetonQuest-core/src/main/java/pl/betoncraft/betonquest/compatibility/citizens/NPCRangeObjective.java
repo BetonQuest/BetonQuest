@@ -55,7 +55,7 @@ public class NPCRangeObjective extends Objective implements Listener {
         radius = instruction.getVarNum();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         qreHandler.handle(() -> {
             final Player player = event.getPlayer();

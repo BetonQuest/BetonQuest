@@ -53,7 +53,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBossKill(MythicMobDeathEvent event) {
         if (names.contains(event.getMobType().getInternalName()) && event.getKiller() instanceof Player) {
             String playerID = PlayerConverter.getID((Player) event.getKiller());

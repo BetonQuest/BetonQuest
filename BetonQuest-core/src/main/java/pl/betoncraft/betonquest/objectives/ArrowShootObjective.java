@@ -56,7 +56,7 @@ public class ArrowShootObjective extends Objective implements Listener {
         range = instruction.getVarNum();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArrowHit(ProjectileHitEvent event) {
         // check if it's the arrow shot by the player with active objectve
         final Projectile arrow = event.getEntity();

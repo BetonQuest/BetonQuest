@@ -67,7 +67,7 @@ public class MobKillObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMobKill(MobKilledEvent event) {
         // check if it's the right entity type
         if (!event.getEntity().getType().equals(mobType)) {

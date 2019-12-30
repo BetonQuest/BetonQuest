@@ -46,7 +46,7 @@ public class ExperienceObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onLevelUp(PlayerLevelChangeEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {

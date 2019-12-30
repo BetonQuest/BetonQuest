@@ -49,7 +49,7 @@ public class RegionObjective extends Objective implements Listener {
         name = instruction.next();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {

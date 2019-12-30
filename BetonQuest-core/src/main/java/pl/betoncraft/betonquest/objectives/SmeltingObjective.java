@@ -53,7 +53,7 @@ public class SmeltingObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSmelting(FurnaceExtractEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && event.getItemType().equals(material) && checkConditions(playerID)) {
@@ -65,7 +65,7 @@ public class SmeltingObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onShiftSmelting(InventoryClickEvent event) {
         if (event.getInventory().getType().equals(InventoryType.FURNACE) && event.getRawSlot() == 2
                 && event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {

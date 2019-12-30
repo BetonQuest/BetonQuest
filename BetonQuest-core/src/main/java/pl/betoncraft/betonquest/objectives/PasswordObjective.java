@@ -50,14 +50,14 @@ public class PasswordObjective extends Objective implements Listener {
         ignoreCase = instruction.hasArgument("ignoreCase");
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         if (chatInput(false, event.getPlayer(), event.getMessage())) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if (chatInput(true, event.getPlayer(), event.getMessage())) {
             event.setCancelled(true);

@@ -93,7 +93,7 @@ public class Saver extends Thread implements Listener {
         notify();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDataUpdate(QuestDataUpdateEvent e) {
         add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID()}));
         add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID(), e.getData()}));

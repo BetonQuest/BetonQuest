@@ -67,10 +67,8 @@ public class CombatTagger implements Listener {
         return result;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.isCancelled())
-            return;
         ArrayList<String> IDs = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
             IDs.add(PlayerConverter.getID((Player) event.getEntity()));
@@ -94,7 +92,7 @@ public class CombatTagger implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(PlayerDeathEvent event) {
         String playerID = PlayerConverter.getID(event.getEntity());
         tagged.remove(playerID);

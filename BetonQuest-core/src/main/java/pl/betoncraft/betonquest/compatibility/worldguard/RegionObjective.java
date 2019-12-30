@@ -78,7 +78,7 @@ public class RegionObjective extends Objective implements Listener {
         return region.contains(BukkitAdapter.asBlockVector(loc));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {

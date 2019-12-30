@@ -56,7 +56,7 @@ public class TameObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTaming(EntityTameEvent event) {
         if (event.getOwner() instanceof Player) {
             String playerID = PlayerConverter.getID((Player) event.getOwner());

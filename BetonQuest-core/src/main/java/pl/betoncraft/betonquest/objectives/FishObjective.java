@@ -76,7 +76,7 @@ public class FishObjective extends Objective implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onFishCatch(PlayerFishEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (event.getState() != State.CAUGHT_FISH)

@@ -44,7 +44,7 @@ public class ConsumeObjective extends Objective implements Listener {
         item = instruction.getQuestItem();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && item.compare(event.getItem()) && checkConditions(playerID)) {

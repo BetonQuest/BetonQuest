@@ -61,11 +61,8 @@ public class QuestItemHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -94,7 +91,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemMove(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -135,7 +132,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -149,7 +146,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
@@ -161,7 +158,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDeath(PlayerDeathEvent event) {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
             return;
@@ -187,7 +184,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(PlayerRespawnEvent event) {
         if (Config.getString("config.remove_items_after_respawn").equals("false"))
             return;
@@ -205,7 +202,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemFrameClick(PlayerInteractEntityEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
@@ -222,7 +219,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
@@ -233,7 +230,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemBreak(PlayerItemBreakEvent event) {
         if (BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable").equalsIgnoreCase("false")) {
             return;

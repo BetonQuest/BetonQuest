@@ -54,11 +54,8 @@ public class CraftingObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(CraftItemEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (event.getWhoClicked() instanceof Player) {
             Player player = (Player) event.getWhoClicked();
             String playerID = PlayerConverter.getID(player);
@@ -72,7 +69,7 @@ public class CraftingObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onShiftCrafting(InventoryClickEvent event) {
         if (event.getSlotType() == SlotType.RESULT
                 && event.getClick().equals(ClickType.SHIFT_LEFT)

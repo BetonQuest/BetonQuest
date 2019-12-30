@@ -30,9 +30,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -50,7 +50,7 @@ public class RegionObjective extends Objective implements Listener {
         name = instruction.next();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {

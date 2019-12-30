@@ -50,7 +50,7 @@ public class EnchantObjective extends Objective implements Listener {
         if (enchantments.isEmpty()) throw new InstructionParseException("Not enough arguments");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEnchant(EnchantItemEvent event) {
         String playerID = PlayerConverter.getID(event.getEnchanter());
         if (!containsPlayer(playerID))

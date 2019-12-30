@@ -52,7 +52,7 @@ public class KillPlayerObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onKill(PlayerDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
             return;

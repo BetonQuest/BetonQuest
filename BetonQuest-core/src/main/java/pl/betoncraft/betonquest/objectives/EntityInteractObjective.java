@@ -249,7 +249,7 @@ public class EntityInteractObjective extends Objective {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
         }
 
-        @EventHandler
+        @EventHandler(ignoreCancelled = true)
         public void onDamage(EntityDamageByEntityEvent e) {
             Player player;
             // check if entity is damaged by a Player
@@ -270,10 +270,10 @@ public class EntityInteractObjective extends Objective {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
         }
 
-        @EventHandler
+        @EventHandler(ignoreCancelled = true)
         public void onRightClick(PlayerInteractEntityEvent e) {
-            boolean succes = onInteract(e.getPlayer(), e.getRightClicked());
-            if (succes && cancel) {
+            boolean success = onInteract(e.getPlayer(), e.getRightClicked());
+            if (success && cancel) {
                 e.setCancelled(true);
             }
         }

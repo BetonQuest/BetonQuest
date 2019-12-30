@@ -121,7 +121,7 @@ public class Backpack implements Listener {
         this(playerID, DisplayType.DEFAULT);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked().equals(player)) {
             // if the player clicked, then cancel this event
@@ -135,7 +135,7 @@ public class Backpack implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClosing(InventoryCloseEvent event) {
         if (event.getPlayer().equals(player)) {
             HandlerList.unregisterAll(this);

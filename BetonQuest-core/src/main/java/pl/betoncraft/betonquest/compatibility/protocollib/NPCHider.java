@@ -223,12 +223,12 @@ public class NPCHider extends BukkitRunnable implements Listener {
         return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNPCSpawn(NPCSpawnEvent event) {
         applyVisibility(event.getNPC());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         applyVisibility(event.getPlayer());
     }

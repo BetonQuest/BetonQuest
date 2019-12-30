@@ -189,7 +189,7 @@ public class Compatibility implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPluginEnable(PluginEnableEvent event) {
         hook(event.getPlugin());
     }

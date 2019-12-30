@@ -350,7 +350,7 @@ public class Conversation implements Listener {
         return data.isMovementBlocked();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(player)) {
             return;
@@ -365,7 +365,7 @@ public class Conversation implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         // prevent damage to (or from) player while in conversation
         if ((event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(playerID))
@@ -375,7 +375,7 @@ public class Conversation implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onQuit(PlayerQuitEvent event) {
         // if player quits, end conversation (why keep listeners running?)
         if (event.getPlayer().equals(player)) {
@@ -654,13 +654,13 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            // print options
-            printOptions(data.getPointers(playerID, option, OptionType.NPC));
-
             // fire events
             for (EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
                 BetonQuest.event(playerID, event);
             }
+
+            // print options
+            printOptions(data.getPointers(playerID, option, OptionType.NPC));
         }
     }
 

@@ -49,7 +49,7 @@ public class NPCInteractObjective extends Objective implements Listener {
         cancel = instruction.hasArgument("cancel");
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCClick(NPCRightClickEvent event) {
         String playerID = PlayerConverter.getID(event.getClicker());
         if (event.getNPC().getId() != id || !containsPlayer(playerID)) {

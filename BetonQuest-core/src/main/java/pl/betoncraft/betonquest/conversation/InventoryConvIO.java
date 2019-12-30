@@ -262,7 +262,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }.runTask(BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -290,7 +290,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
             return;

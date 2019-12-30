@@ -17,8 +17,6 @@
  */
 package pl.betoncraft.betonquest.objectives;
 
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,7 +26,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
@@ -37,6 +34,8 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * The player must step on the pressure plate
@@ -53,7 +52,7 @@ public class StepObjective extends Objective implements Listener {
         loc = instruction.getLocation();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onStep(PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {

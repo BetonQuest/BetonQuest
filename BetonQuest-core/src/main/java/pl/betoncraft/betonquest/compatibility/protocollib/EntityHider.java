@@ -216,19 +216,19 @@ public class EntityHider implements Listener {
     private Listener constructBukkit() {
         return new Listener() {
 
-            @EventHandler
+            @EventHandler(ignoreCancelled = true)
             public void onEntityDeath(EntityDeathEvent e) {
                 removeEntity(e.getEntity(), true);
             }
 
-            @EventHandler
+            @EventHandler(ignoreCancelled = true)
             public void onChunkUnload(ChunkUnloadEvent e) {
                 for (Entity entity : e.getChunk().getEntities()) {
                     removeEntity(entity, false);
                 }
             }
 
-            @EventHandler
+            @EventHandler(ignoreCancelled = true)
             public void onPlayerQuit(PlayerQuitEvent e) {
                 removePlayer(e.getPlayer());
             }

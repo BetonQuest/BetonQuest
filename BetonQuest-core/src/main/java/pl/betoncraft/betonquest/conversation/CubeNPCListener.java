@@ -55,7 +55,7 @@ public class CubeNPCListener implements Listener {
      *
      * @param event SignChangeEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSignPlace(SignChangeEvent event) {
         if (event.getLine(0).equalsIgnoreCase("[NPC]") && !event.getPlayer().hasPermission("betonquest.admin")) {
             // if the player doesn't have the required permission deny the
@@ -72,7 +72,7 @@ public class CubeNPCListener implements Listener {
      * @param event PlayerInteractEvent
      */
     @SuppressWarnings("deprecation")
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNPCClick(final PlayerInteractEvent event) {
 
         // Only fire the event for the main hand to avoid that the event is triggered two times.
@@ -80,9 +80,6 @@ public class CubeNPCListener implements Listener {
             return; // off hand packet, ignore.
         }
 
-        if (event.isCancelled()) {
-            return;
-        }
         // check if the player has required permission
         if (!event.getPlayer().hasPermission("betonquest.conversation")) {
             return;

@@ -72,7 +72,7 @@ public class ActionObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {

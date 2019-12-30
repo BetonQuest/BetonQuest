@@ -59,8 +59,12 @@ public class CitizensWalkingListener implements Listener {
         return instance;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (event.getConversation() instanceof CitizensConversation) {
             new BukkitRunnable() {
 
@@ -85,7 +89,7 @@ public class CitizensWalkingListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
         if (event.getConversation() instanceof CitizensConversation) {
             new BukkitRunnable() {

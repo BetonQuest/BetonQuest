@@ -52,7 +52,7 @@ public class StepObjective extends Objective implements Listener {
         loc = instruction.getLocation();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onStep(PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {

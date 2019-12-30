@@ -45,7 +45,7 @@ public class BreedObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBreeding(EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
             String playerID = PlayerConverter.getID((Player) event.getBreeder());

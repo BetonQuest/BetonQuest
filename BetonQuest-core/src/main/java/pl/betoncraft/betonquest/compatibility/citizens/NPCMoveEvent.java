@@ -127,7 +127,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance().getJavaPlugin());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNavigationEnd(final NavigationCompleteEvent event) {
         NPC npc = event.getNPC();
         if (npc.getId() != id) {

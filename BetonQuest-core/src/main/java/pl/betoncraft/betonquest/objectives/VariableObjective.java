@@ -62,11 +62,8 @@ public class VariableObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {
             return;

@@ -73,7 +73,7 @@ public class TellrawConvIO extends ChatConvIO {
         number = string.toString();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCommandAnswer(PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(player))
             return;

@@ -62,7 +62,7 @@ public class PotionObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onIngredientPut(InventoryClickEvent event) {
         if (event.getInventory().getType() != InventoryType.BREWING)
             return;
@@ -74,7 +74,7 @@ public class PotionObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final String playerID = locations.remove(event.getBlock().getLocation());
         if (playerID == null)
