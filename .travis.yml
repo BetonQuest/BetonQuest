@@ -18,7 +18,7 @@ matrix:
       script: mvn clean package -Drelease
       after_success:
         - if [ "$TRAVIS_BRANCH" == "master" ]; then
-          curl -F "pass=$pass" -F "id=$TRAVIS_BUILD_NUMBER" -F "hash=$TRAVIS_COMMIT" -F "branch=$TRAVIS_BRANCH" -F "plugin=@target/BetonQuest.jar" https://betonquest.pl";
+          curl -F "pass=$pass" -F "id=$TRAVIS_BUILD_NUMBER" -F "hash=$TRAVIS_COMMIT" -F "branch=$TRAVIS_BRANCH" -F "plugin=@target/BetonQuest.jar" https://betonquest.pl;
           chmod +x discord.sh;
           ./discord.sh;
           fi
