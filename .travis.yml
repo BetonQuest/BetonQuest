@@ -1,12 +1,12 @@
+env:
+  global:
+    - secure: FxpoMJmkjBKy0qsPMLcs9fpiquJ217s5qlRC9sCTf7GWkDydqDV8ZAIy9LihOf17qH/m0U8Ii6BmOeH/V0Oa1CPhTvHVrLw+aBN6OrMWUs9EmPqa7pCpk+p6Rr81/matzfbKjTGBsSqFMAj5Aj4VpR7RTyQEBh+cZgORgbrnatU=
+    - secure: QS9IQXvglj/DPaqY69AEEegEylJ/7dyqElm++LQMsOrfVCr1MUnPo2xBqciThsrBSQsqP+Llc+xGWK+/iFTxHgHhJuvcZmyZb9i+M0ISqoJkluZwZjIzYcBe3N7mo36JKqBzIkTgVvvkXPr5pn8PmYVKlgIzV2QbYRT42NIFn4U=
 matrix:
   include:
     - language: java
       jdk:
         - openjdk8
-      env:
-        global:
-          - secure: FxpoMJmkjBKy0qsPMLcs9fpiquJ217s5qlRC9sCTf7GWkDydqDV8ZAIy9LihOf17qH/m0U8Ii6BmOeH/V0Oa1CPhTvHVrLw+aBN6OrMWUs9EmPqa7pCpk+p6Rr81/matzfbKjTGBsSqFMAj5Aj4VpR7RTyQEBh+cZgORgbrnatU=
-          - secure: QS9IQXvglj/DPaqY69AEEegEylJ/7dyqElm++LQMsOrfVCr1MUnPo2xBqciThsrBSQsqP+Llc+xGWK+/iFTxHgHhJuvcZmyZb9i+M0ISqoJkluZwZjIzYcBe3N7mo36JKqBzIkTgVvvkXPr5pn8PmYVKlgIzV2QbYRT42NIFn4U=
       branches:
         except:
           - gh-pages
