@@ -36,6 +36,7 @@ import pl.betoncraft.betonquest.conversation.Interceptor;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Provide a packet interceptor to get all chat packets to player
@@ -65,16 +66,13 @@ public class PacketInterceptor implements Interceptor, Listener {
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
                     PacketContainer packet = event.getPacket();
                     BaseComponent[] bc = (BaseComponent[]) packet.getModifier().read(1);
-                    if (bc != null) {
-                        String message = TextComponent.toLegacyText(bc);
-                        // Tagged packet, remove tag and let through
-                        if (message.contains("_bq_")) {
-                            packet.getModifier().write(1, new BaseComponent[]{new TextComponent(message.replace("_bq_", ""))});
-                            event.setPacket(packet);
-                            return;
-                        }
+                    if (bc != null && bc.length > 0 && ((TextComponent) bc[0]).getText().equals("_bq_")) {
+                        packet.getModifier().write(1, Arrays.copyOfRange(bc, 1, bc.length));
+                        event.setPacket(packet);
+                        return;
                     }
 
+                    // Else save message to replay later
                     WrapperPlayServerChat chat = new WrapperPlayServerChat(event.getPacket());
                     event.setCancelled(true);
                     messages.add(chat);
@@ -96,9 +94,8 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     @Override
     public void sendMessage(BaseComponent... message) {
-        // Tag the message. Is there a better way?
+        // Tag the message. Is there a better way? Perhaps an invisible method is better
         BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent("_bq_")}, message);
-
         player.spigot().sendMessage(components);
     }
 

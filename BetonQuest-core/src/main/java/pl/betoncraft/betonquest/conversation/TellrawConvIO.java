@@ -106,7 +106,6 @@ public class TellrawConvIO extends ChatConvIO {
             component.setStrikethrough(strikethrough);
             component.setObfuscated(magic);
             component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
-
             conv.sendMessage(parts.toArray(new BaseComponent[0]));
         }
     }

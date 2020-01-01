@@ -133,7 +133,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
         if (Config.getString("config.notify_pullback").equalsIgnoreCase("true")) {
-            Config.sendNotify(PlayerConverter.getID(event.getPlayer()), "pullback", "pullback,error");
+            conv.sendMessage(Config.getMessage(Config.getLanguage(), "pullback"));
         }
     }
 

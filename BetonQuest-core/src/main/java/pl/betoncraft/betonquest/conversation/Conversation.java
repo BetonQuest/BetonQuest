@@ -297,9 +297,14 @@ public class Conversation implements Listener {
         //play conversation end sound
         Config.playSound(playerID, "end");
 
-        // End interceptor
+        // End interceptor after a second
         if (interceptor != null) {
-            interceptor.end();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    interceptor.end();
+                }
+            }.runTaskLater(BetonQuest.getInstance().getJavaPlugin(), 20);
         }
 
         // delete conversation
