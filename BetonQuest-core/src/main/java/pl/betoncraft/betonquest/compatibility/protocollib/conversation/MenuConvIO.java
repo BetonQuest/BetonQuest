@@ -24,6 +24,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -73,7 +74,7 @@ public class MenuConvIO extends ChatConvIO {
     protected PacketAdapter packetAdapter;
     protected BukkitRunnable displayRunnable;
     protected boolean debounce = false;
-    protected String displayOutput;
+    protected BaseComponent[] displayOutput;
     protected String formattedNpcName;
     protected String configControlSelect = "jump,left_click";
 
@@ -562,7 +563,7 @@ public class MenuConvIO extends ChatConvIO {
             }
         }
 
-        displayOutput = StringUtils.stripEnd(displayBuilder.toString(), "\n");
+        displayOutput = TextComponent.fromLegacyText(StringUtils.stripEnd(displayBuilder.toString(), "\n"));
 
         showDisplay();
     }

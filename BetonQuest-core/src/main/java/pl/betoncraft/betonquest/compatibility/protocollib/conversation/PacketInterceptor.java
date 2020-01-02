@@ -66,7 +66,7 @@ public class PacketInterceptor implements Interceptor, Listener {
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
                     PacketContainer packet = event.getPacket();
                     BaseComponent[] bc = (BaseComponent[]) packet.getModifier().read(1);
-                    if (bc != null && bc.length > 0 && ((TextComponent) bc[0]).getText().equals("_bq_")) {
+                    if (bc != null && bc.length > 0 && ((TextComponent) bc[0]).getText().contains("_bq_")) {
                         packet.getModifier().write(1, Arrays.copyOfRange(bc, 1, bc.length));
                         event.setPacket(packet);
                         return;
@@ -88,8 +88,7 @@ public class PacketInterceptor implements Interceptor, Listener {
      */
     @Override
     public void sendMessage(String message) {
-        // Tag the message. Is there a better way?
-        player.spigot().sendMessage(TextComponent.fromLegacyText("_bq_" + message));
+        sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
