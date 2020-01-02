@@ -16,7 +16,13 @@
     </a>
 </p>
 
-# BetonQuest
+---
+
+**Documentation**: <a href="https://co0sh.github.io/BetonQuest/" target="_blank">https://co0sh.github.io/BetonQuest</a>
+
+**Source Code**: <a href="https://github.com/Co0sh/BetonQuest/" target="_blank">https://github.com/Co0sh/BetonQuest</a>
+
+---
 
 BetonQuest is a Spigot questing plugin. It lets the users create complex quests, NPC conversations and other server mechanics for their players.
 
