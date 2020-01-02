@@ -20,9 +20,11 @@ package pl.betoncraft.betonquest.conversation;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,15 +99,21 @@ public class TellrawConvIO extends ChatConvIO {
     public void display() {
         super.display();
         for (int j = 1; j <= options.size(); j++) {
+            // Build ColorString
+            TextComponent colorComponent = new TextComponent();
+            colorComponent.setBold(bold);
+            colorComponent.setStrikethrough(strikethrough);
+            colorComponent.setObfuscated(magic);
+            colorComponent.setColor(color.asBungee());
+            String colorString = colorComponent.toLegacyText();
+
             // We avoid ComponentBuilder as it's not available pre 1.9
             List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
-            parts.addAll(Arrays.asList(TextComponent.fromLegacyText(options.get(j))));
-            BaseComponent component = parts.get(parts.size() - 1);
-            component.setColor(color.asBungee());
-            component.setBold(bold);
-            component.setStrikethrough(strikethrough);
-            component.setObfuscated(magic);
-            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
+            parts.addAll(Arrays.asList(TextComponent.fromLegacyText(colorString + Utils.replaceReset(StringUtils.stripEnd(options.get(j), "\n"), colorString))));
+            for (BaseComponent component : parts) {
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
+            }
+
             conv.sendMessage(parts.toArray(new BaseComponent[0]));
         }
     }
