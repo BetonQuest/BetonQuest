@@ -1,6 +1,22 @@
-![BetonQuest](https://betonquest.pl/assets/logo.png)
+<p align="center">
+  <a href="https://co0sh.github.io/BetonQuest/"><img src="https://betonquest.pl/assets/logo.png" alt="BetonQuest"></a>
+</p>
 
-# BetonQuest [![Build Status](https://travis-ci.org/Co0sh/BetonQuest.svg?branch=master)](https://travis-ci.org/Co0sh/BetonQuest)
+<p align="center">Minecraft RPG Questing Plugin</p>
+
+<p align="center">
+    <a href="https://travis-ci.org/Co0sh/BetonQuest" target="_blank">
+        <img src="https://travis-ci.org/Co0sh/BetonQuest.svg?branch=master" alt="Build Status">
+    </a>
+    <a href="https://github.com/Co0sh/BetonQuest/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
+      </a>
+    <a href="https://discord.gg/MvmkHEu" target="_blank">
+        <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
+    </a>
+</p>
+
+# BetonQuest
 
 BetonQuest is a Spigot questing plugin. It lets the users create complex quests, NPC conversations and other server mechanics for their players.
 
@@ -48,47 +64,7 @@ BetonQuest is installed like any other Spigot plugin, by dropping the _BetonQues
 
 ## Documentation
 
-The documentation for the current plugin features is located in [`docs`](docs) directory. You can also find the same docs compiled into a _.pdf_ file on the [dev website](https://betonquest.pl).
-
-If you're looking for documentation for the latest stable release head to the [Wiki](https://github.com/Co0sh/BetonQuest/wiki). You can also view the wiki's history if you clone it locally with:
-
-```
-git clone https://github.com/Co0sh/BetonQuest.wiki.git
-```
-
-### Contents
-
-* [Home](https://github.com/Co0sh/BetonQuest/wiki/)
-* [Installation and Configuration](https://github.com/Co0sh/BetonQuest/wiki/Installation-and-Configuration)
-* [Commands and Permissions](docs/Commands-and-permissions.md)
-* [**Quick start tutorial**](docs/Quick-start-tutorial.md)
-* [Reference](docs/Reference.md.md)
-  * [Conversations](docs/Reference.md#conversations)
-  * [Conditions](docs/Reference.md#conditions)
-  * [Events](docs/Reference.md#events)
-  * [Objectives](docs/Reference.md#objectives)
-  * [Packages](docs/Reference.md#packages)
-  * [Global variables](docs/Reference.md#global-variables)
-  * [Canceling quests](docs/Reference.md#canceling-quests)
-  * [Global locations](docs/Reference.md#global-locations)
-  * [Static events](docs/Reference.md#static-events)
-  * [Journal](docs/Reference.md#journal)
-  * [Tags](docs/Reference.md#tags)
-  * [Points](docs/Reference.md#points)
-  * [NPCs](docs/Reference.md#npcs)
-  * [Items](docs/Reference.md#items)
-  * [Backpack](docs/Reference.md#backpack)
-  * [Party](docs/Reference.md#party)
-* [_Condition List_](docs/Conditions-List.md)
-* [_Events List_](docs/Events-List.md)
-* [_Objectives List_](docs/Objectives-List.md)
-* [_Variables List_](docs/Variables-List.md)
-* [Compatibility](docs/Compatibility.md)
-* [Tips and tricks](docs/Tips-and-tricks.md)
-* [Frequently Asked Questions](docs/Frequently-Asked-Questions.md)
-* [Info for developers](docs/Info-for-developers.md)
-* [Contributing](docs/Contributing.md)
-* [Images](docs/Images.md)
+The documentation for the current plugin features is located in [here](https://co0sh.github.io/BetonQuest/). You can also find the same docs compiled into a _.pdf_ file [here](https://co0sh.github.io/BetonQuest/pdf/documentation.pdf).
 
 ## Contributing
 
