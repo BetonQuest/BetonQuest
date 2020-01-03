@@ -7,7 +7,11 @@ edit_uri: ""
 copyright: '© 2019  Jakub "Co0sh" Sapalski. GPLv3'
 
 extra_css:
-  - 'css/extra.css'
+  - 'css/mkpdf.css'
+  - 'css/version_select.css'
+
+extra_javascript:
+  - 'js/version_select.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:

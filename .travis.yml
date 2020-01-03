@@ -19,8 +19,8 @@ matrix:
       after_success:
         - if [ "$TRAVIS_BRANCH" == "master" ]; then
           curl -F "pass=$pass" -F "id=$TRAVIS_BUILD_NUMBER" -F "hash=$TRAVIS_COMMIT" -F "branch=$TRAVIS_BRANCH" -F "plugin=@target/BetonQuest.jar" https://betonquest.pl;
-          chmod +x discord.sh;
-          ./discord.sh;
+          chmod +x scripts/discord.sh;
+          scripts/discord.sh;
           fi
     - language: python
       python: 3.6
@@ -31,11 +31,6 @@ matrix:
         pip: true
       script:
         - if [ -n "${DEPLOY_KEY}" -a "${TRAVIS_PULL_REQUEST}" = "false" ]; then
-          eval `ssh-agent -s`;
-          ssh-add <(echo "$DEPLOY_KEY" | base64 -d);
-          git config user.name "Automatic Publish";
-          git remote add gh-token "git@github.com:${TRAVIS_REPO_SLUG}";
-          git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
-          echo "Pushing to github";
-          mkdocs gh-deploy -v --clean --remote-name gh-token;
+          chmod +x scripts/deploy-docs.sh;
+          scripts/deploy-docs.sh;
           fi;
