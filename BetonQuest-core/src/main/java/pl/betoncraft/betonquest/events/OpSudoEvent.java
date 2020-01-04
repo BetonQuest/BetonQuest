@@ -18,6 +18,8 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -43,17 +45,24 @@ public class OpSudoEvent extends QuestEvent {
     @Override
     public void run(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
-        boolean previousOp = player.isOp();
-        try {
-            player.setOp(true);
-            for (String command : commands)
-                player.performCommand(command.replace("%player%", player.getName()));
-        } catch (Exception e) {
-            LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
-            LogUtils.logThrowable(e);
-        } finally {
-            player.setOp(previousOp);
-        }
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                boolean previousOp = player.isOp();
+                try {
+                    player.setOp(true);
+                    for (String command : commands)
+                        player.performCommand(command.replace("%player%", player.getName()));
+                } catch (Exception e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
+                    LogUtils.logThrowable(e);
+                } finally {
+                    player.setOp(previousOp);
+                }
+            }
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
+
     }
 
 }

@@ -18,6 +18,8 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -45,8 +47,14 @@ public class SudoEvent extends QuestEvent {
     @Override
     public void run(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
-        for (String command : commands)
-            player.performCommand(command.replace("%player%", player.getName()));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (String command : commands)
+                    player.performCommand(command.replace("%player%", player.getName()));
+            }
+        }.runTask(BetonQuest.getInstance().getJavaPlugin());
+
     }
 
 }
