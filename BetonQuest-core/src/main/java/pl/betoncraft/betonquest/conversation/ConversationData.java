@@ -77,6 +77,7 @@ public class ConversationData {
         // get the main data
         FileConfiguration conv = pack.getConversation(name).getConfig();
         if (conv.isConfigurationSection("quester")) {
+            //noinspection ConstantConditions
             for (String lang : conv.getConfigurationSection("quester").getKeys(false)) {
                 quester.put(lang, pack.getString("conversations." + name + ".quester." + lang));
             }
@@ -84,6 +85,7 @@ public class ConversationData {
             quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
         }
         if (conv.isConfigurationSection("prefix")) {
+            //noinspection ConstantConditions
             for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                 String pref = pack.getString("conversations." + name + ".prefix." + lang);
                 if (pref != null && !pref.equals("")) {
@@ -124,7 +126,7 @@ public class ConversationData {
             throw new InstructionParseException("No registered interceptor found: " + rawInterceptor);
         }
 
-        if (quester == null || quester.isEmpty()) {
+        if (quester.isEmpty()) {
             throw new InstructionParseException("Quester's name is not defined");
         }
         for (String value : quester.values()) {
@@ -345,7 +347,7 @@ public class ConversationData {
     }
 
     public String getText(String playerID, String lang, String option, OptionType type) {
-        Option o = null;
+        Option o;
         if (type == OptionType.NPC) {
             o = NPCOptions.get(option);
         } else {
@@ -380,7 +382,11 @@ public class ConversationData {
         } else {
             options = playerOptions;
         }
-        return options.get(option).getEvents(playerID);
+        if (options.containsKey(option)) {
+            return options.get(option).getEvents(playerID);
+        } else {
+            return new EventID[0];
+        }
     }
 
     public String[] getPointers(String playerID, String option, OptionType type) {
@@ -449,11 +455,16 @@ public class ConversationData {
             String defaultLang = Config.getLanguage();
             ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
+            if (conv == null) {
+                return;
+            }
+
             // Prefix
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
+                    //noinspection ConstantConditions
                     for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                        @SuppressWarnings("ConstantConditions") String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -473,6 +484,7 @@ public class ConversationData {
             // Text
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
+                    //noinspection ConstantConditions
                     for (String lang : conv.getConfigurationSection("text").getKeys(false)) {
                         text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
                                 + lang));
