@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.commands;
 
+import de.slikey.effectlib.effect.LoveEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.EventID;
@@ -51,6 +53,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.ComponentBuilder;
+import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Updater;
@@ -1340,28 +1343,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             player.sendMessage("§4ERROR");
             return;
         }
-        String[] parts = origin.split(";");
-        if (parts.length < 3) {
-            player.sendMessage("§4ERROR");
-            return;
-        }
-        double x, y, z;
+        Vector vector;
         try {
-            x = Double.parseDouble(parts[0]);
-            y = Double.parseDouble(parts[1]);
-            z = Double.parseDouble(parts[2]);
-        } catch (NumberFormatException e) {
+            vector = LocationData.parseVector(origin);
+        }catch (InstructionParseException e) {
             player.sendMessage("§4ERROR");
-            LogUtils.getLogger().log(Level.WARNING, "Could not parse number: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
         }
-        Location loc = player.getLocation();
-        x = loc.getX() - x;
-        y = loc.getY() - y;
-        z = loc.getZ() - z;
         Config.setString(pack + ".main.variables.vectors." + args[2],
-                String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, x, y, z));
+                String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, vector.getBlockX(), vector.getBlockY(), vector.getBlockZ()));
         player.sendMessage("§2OK");
     }
 
