@@ -27,79 +27,165 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
+import java.util.Locale;
+import java.util.logging.Level;
+
 /**
  * This class parses various location strings.
  */
 public class LocationData {
 
-    private Location loc;
-    private Variable variable;
-    private Vector vector = null;
-    private Type type;
+    /**
+     * This is a regex, that matches '123', '123.456', '0.456' and '.456'
+     */
+    public final static String REGEX_DOUBLE = "[+-]?([0-9]*[.])?[0-9]+";
+    /**
+     * This is a regex, that matches the format of a location
+     */
+    public final static String REGEX_LOCATION = "\\(" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ";"
+            + "(\\w+\\.?)*+" + "(;" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ")?\\)";
+    /**
+     * This is a regex, that matches the format of a vector
+     */
+    public final static String REGEX_VECTOR = "\\(" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + "\\)";
 
     /**
-     * Parses the location string.
-     *
-     * @param packName name of the package, required for variable resolution
-     * @param string   string containing raw location, written like
-     *                 '100;200;300;world;0;0', where the first three numbers
-     *                 are x,y,z coordinates, world is name of the world,
-     *                 followed by optional yaw and pitch.
-     * @throws InstructionParseException when there is an error while parsing the location
+     * If a {@link Location} is given, this represent it, otherwise null
      */
-    public LocationData(String packName, String string) throws InstructionParseException {
-        // parse the vector
+    private final Location loc;
+    /**
+     * If a {@link Variable} is given, this represent it, otherwise null
+     */
+    private final Variable variable;
+    /**
+     * The {@link Vector}
+     */
+    private final Vector vector;
+
+    /**
+     * This parse a string, that contains a {@link Location}. The location has
+     * to be in the format '(x;y;z;world[;yaw;pitch])'. Optional it is followed
+     * by the key '->', followed with a {@link Vector}. The vector has to be in
+     * the format '(x;y;z)'. A {@link Vector} is added to the {@link Location}.
+     *
+     * @param packName
+     *            Name of the package, required for variable resolution
+     * @param locationData
+     *            string containing raw location, as defined above
+     * @throws InstructionParseException
+     *             Is thrown, if there is an error while parsing the
+     *             locationData
+     */
+    public LocationData(final String packName, final String locationData) throws InstructionParseException {
         String base = null;
-        if (string.contains("->")) {
-            String[] main = string.split("->");
-            if (main.length != 2) {
-                throw new InstructionParseException("Incorrect vector format (" + base + ")");
-            }
-            String vec = main[1];
-            if (!vec.matches("^\\(-?\\d+.?\\d*;-?\\d+.?\\d*;-?\\d+.?\\d*\\)(;.+)?$")) {
-                throw new InstructionParseException("Incorrect vector format");
-            }
-            String[] numbers = vec.substring(1, vec.indexOf(')')).split(";");
-            double x, y, z;
-            try {
-                x = Double.parseDouble(numbers[0]);
-                y = Double.parseDouble(numbers[1]);
-                z = Double.parseDouble(numbers[2]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse vector numbers", e);
-            }
-            vector = new Vector(x, y, z);
-            base = main[0];
+        if (locationData.contains("->")) {
+            final String[] parts = locationData.split("->");
+            vector = parseVector(parts[1]);
+            base = parts[0];
         } else {
             vector = new Vector(0, 0, 0);
-            base = string;
+            base = locationData;
         }
-        // special keyword "player" is the same as %location% variable
-        // it's used for backwards compatibility
-        if (base.toLowerCase().equals("player")) {
-            base = "%location%";
-        }
-        // parse the base
+
+        // TODO Remove this code in the version 1.13 or later
+        // This support the old implementation of %player%
+        // Don't forget to remove the Method
+        base = resolvePlayerVariable(packName, base);
+
         if (base.startsWith("%") && base.endsWith("%")) {
-            type = Type.VARIABLE;
+            loc = null;
             variable = BetonQuest.createVariable(Config.getPackages().get(packName), base);
         } else {
-            type = Type.LOCATION;
-            loc = parseAbsoluteFormat(base);
+            loc = parseLocation(base);
+            variable = null;
         }
     }
 
-    private Location parseAbsoluteFormat(String abs) throws InstructionParseException {
-        String[] parts = abs.split(";");
-        if (parts.length < 4) {
-            throw new InstructionParseException("Wrong location format (" + abs + ")");
+    @Deprecated
+    private String resolvePlayerVariable(final String pack, final String strg) {
+        if ("player".equalsIgnoreCase(strg)) {
+            LogUtils.getLogger().log(Level.WARNING, "You still use 'player' instead of '%location%' in package '" + pack
+                    + "'. This is deprecated and should be updated. This will be removed in a future version.");
+            return "%location%";
         }
-        World world = Bukkit.getWorld(parts[3]);
+        return strg;
+    }
+
+    private Location getBaseLoc(final String playerID) throws QuestRuntimeException {
+        if (loc != null) {
+            return loc;
+        }
+        if (variable != null) {
+            if (playerID == null) {
+                throw new QuestRuntimeException("Variable location cannot accessed without the player."
+                        + " consider changing it to absolute coordinates");
+            }
+            final String value = variable.getValue(playerID);
+            try {
+                return parseLocation(value);
+            } catch (InstructionParseException e) {
+                throw new QuestRuntimeException("Error while parsing location.", e);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param playerID
+     *            ID of the player, needed for location resolution
+     * @return the location represented by this object
+     * @throws QuestRuntimeException
+     *             Is thrown, when location is defined for the player but the
+     *             player cannot be accessed
+     */
+    public Location getLocation(final String playerID) throws QuestRuntimeException {
+        return getBaseLoc(playerID).clone().add(vector);
+    }
+
+    /**
+     * Parse the location from {@link LocationData#getLocation(String)} into a
+     * String
+     * 
+     * @param playerID
+     *            the ID of the player if it is a Variable location, or null
+     * @return
+     * @throws QuestRuntimeException
+     */
+    public String toString(final String playerID) throws QuestRuntimeException {
+        final Location loc = getLocation(playerID);
+        return String.format(Locale.US, "%.2f;%.2f;%.2f;%s;%.2f;%.2f", loc.getBlockX(), loc.getBlockY(),
+                loc.getBlockZ(),
+                loc.getWorld().getName(), loc.getYaw(), loc.getPitch());
+    }
+
+    /**
+     * Parse a string into a location. The location has to be in the format
+     * '(x;y;z;world[;yaw;pitch])'
+     * 
+     * @param loc
+     *            The string, that represent the location
+     * @return The location
+     * @throws InstructionParseException
+     *             Is thrown, if the location is not in the right format, or it
+     *             could not be parsed into double values, or the World does not
+     *             exists
+     */
+    public static Location parseLocation(final String loc) throws InstructionParseException {
+        if (loc == null || !loc.matches("^" + REGEX_LOCATION + "$")) {
+            throw new InstructionParseException("Incorrect location format '" + loc
+                    + "'. A location has to be in the format '(x;y;z;world[;yaw;pitch])'");
+        }
+        final String[] parts = loc.substring(1, loc.indexOf(')')).split(";");
+
+        final World world = Bukkit.getWorld(parts[3]);
         if (world == null) {
             throw new InstructionParseException("World " + parts[3] + " does not exists.");
         }
-        double x, y, z;
-        float yaw = 0, pitch = 0;
+        double x;
+        double y;
+        double z;
+        float yaw = 0;
+        float pitch = 0;
         try {
             x = Double.parseDouble(parts[0]);
             y = Double.parseDouble(parts[1]);
@@ -109,44 +195,38 @@ public class LocationData {
                 pitch = Float.parseFloat(parts[5]);
             }
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse location coordinates", e);
+            throw new InstructionParseException("Could not parse a number in the location.", e);
         }
-        loc = new Location(world, x, y, z, yaw, pitch);
-        return loc;
-    }
-
-    private Location getBaseLoc(String playerID) throws QuestRuntimeException {
-        switch (type) {
-            case LOCATION:
-                return loc;
-            case VARIABLE:
-                if (playerID == null) {
-                    throw new QuestRuntimeException("Variable location cannot accessed without the player;"
-                            + " consider changing it to absolute coordinates");
-                }
-                String value = variable.getValue(playerID);
-                try {
-                    return loc = parseAbsoluteFormat(value);
-                } catch (InstructionParseException e) {
-                    throw new QuestRuntimeException("Could not resolve a variable to location format: " + e.getMessage(), e);
-                }
-            default:
-                return null;
-        }
+        return new Location(world, x, y, z, yaw, pitch);
     }
 
     /**
-     * @param playerID ID of the player, needed for location resolution
-     * @return the location represented by this object
-     * @throws QuestRuntimeException when location is defined for the player but the player cannot
-     *                               be accessed
+     * Parse a string into a vector. The Vector has to be in the format
+     * '(x;y;z)'
+     * 
+     * @param vector
+     *            The string, that represent the vector
+     * @return The vector
+     * @throws InstructionParseException
+     *             Is thrown, if the Vector is not in the right format, or it
+     *             could not be parsed into double values
      */
-    public Location getLocation(String playerID) throws QuestRuntimeException {
-        return getBaseLoc(playerID).clone().add(vector);
+    public static Vector parseVector(final String vector) throws InstructionParseException {
+        if (vector == null || !vector.matches("^" + REGEX_VECTOR + "$")) {
+            throw new InstructionParseException(
+                    "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
+        }
+        final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
+        double x;
+        double y;
+        double z;
+        try {
+            x = Double.parseDouble(parts[0]);
+            y = Double.parseDouble(parts[1]);
+            z = Double.parseDouble(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InstructionParseException("Could not parse a number in the vector.", e);
+        }
+        return new Vector(x, y, z);
     }
-
-    private enum Type {
-        LOCATION, VARIABLE
-    }
-
 }
