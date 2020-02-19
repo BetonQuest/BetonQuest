@@ -1289,6 +1289,12 @@ public class ConfigUpdater {
                             new Record(UpdateType.RENAME_ALL_POINTS, new String[]{packName + "." + point, point}));
                 }
             }
+            for (String packName : points.keySet()) {
+                for (String point : points.get(packName)) {
+                    instance.getSaver().add(
+                            new Record(UpdateType.RENAME_ALL_GLOBAL_POINTS, new String[]{packName + "." + point, point}));
+                }
+            }
             // remove "tag_point_prefix" option from main.yml files
             for (ConfigPackage pack : Config.getPackages().values()) {
                 String packName = pack.getName();

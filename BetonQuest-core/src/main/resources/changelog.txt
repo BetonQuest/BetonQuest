@@ -2,6 +2,8 @@ v1.12-dev
 Additions:
   * Condition 'wand' can now have an option 'amount'
 Changes:
+  * Items for HolographicDisplays are now defines in items.yml
+  * Command 'bq rename' can now be used for globalpoints
   * Removed Deprecated Exceptions
 Fixes:
 

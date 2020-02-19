@@ -31,9 +31,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.ConditionID;
+import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -119,6 +122,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     }
 
                     HologramConfig hologramConfig = new HologramConfig();
+                    hologramConfig.pack = pack;
 
                     try {
                         String[] vectorParts = settings.getString("vector", "0;3;0").split(";");
@@ -239,7 +243,36 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                             hologram.getVisibilityManager().setVisibleByDefault(false);
                             for (String line : npcHologram.config.settings.getStringList("lines")) {
                                 if (line.startsWith("item:")) {
-                                    hologram.appendItemLine(new ItemStack(Material.matchMaterial(line.substring(5))));
+                                    try {
+                                        String args[] = line.substring(5).split(":");
+                                        ItemID itemID = new ItemID(npcHologram.config.pack, args[0]);
+                                        int stackSize = 1;
+                                        try {
+                                            stackSize = Integer.valueOf(args[1]);
+                                        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                        }
+                                        ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                                        stack.setAmount(stackSize);
+                                        hologram.appendItemLine(stack);
+                                    } catch (InstructionParseException e) {
+                                        LogUtils.getLogger().log(Level.WARNING, "Could not parse item " + line.substring(5) + " hologram: "
+                                                + e.getMessage());
+                                        LogUtils.logThrowable(e);
+                                    } catch (ObjectNotFoundException e) {
+                                        LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + line.substring(5).split(":")[0]
+                                                + " hologram: " + e.getMessage());
+                                        LogUtils.logThrowable(e);
+                                        
+                                        //TODO Remove this code in the version 1.13 or later
+                                        //This support the old implementation of Items 
+                                        Material material = Material.matchMaterial(line.substring(5));
+                                        if(material != null) {
+                                            LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
+                                                    + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
+                                            hologram.appendItemLine(new ItemStack(material));
+                                        }
+                                        //Remove up to here
+                                    }
                                 } else {
                                     hologram.appendTextLine(line.replace('&', '§'));
                                 }
@@ -318,6 +351,6 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private List<ConditionID> conditions;
         private Vector vector;
         private ConfigurationSection settings;
-
+        private ConfigPackage pack;
     }
 }
