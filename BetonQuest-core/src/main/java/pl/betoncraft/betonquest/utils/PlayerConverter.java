@@ -27,7 +27,6 @@ import java.util.UUID;
  *
  * @author Jakub Sapalski
  */
-@SuppressWarnings("deprecation")
 public class PlayerConverter {
 
     /**
@@ -46,6 +45,7 @@ public class PlayerConverter {
      * @param name - name of the player from which playerID needs to be extracted
      * @return playerID of the player
      */
+    @SuppressWarnings("deprecation")
     public static String getID(String name) {
         return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
     }

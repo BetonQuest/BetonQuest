@@ -464,7 +464,7 @@ public class ConversationData {
                 if (conv.isConfigurationSection("prefix")) {
                     //noinspection ConstantConditions
                     for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        @SuppressWarnings("ConstantConditions") String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                        String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
                             inlinePrefix.put(lang, pref);
                         }

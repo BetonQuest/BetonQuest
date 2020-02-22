@@ -210,6 +210,7 @@ public class Instruction {
         return getEnchantments(next());
     }
 
+    @SuppressWarnings("deprecation")
     public HashMap<Enchantment, Integer> getEnchantments(String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -221,7 +222,6 @@ public class Instruction {
             if (enchParts.length != 2) {
                 throw new PartParseException("Wrong enchantment format: " + enchant);
             }
-            @SuppressWarnings("deprecation")
             Enchantment ID = Enchantment.getByName(enchParts[0]);
             if (ID == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);

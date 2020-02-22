@@ -35,8 +35,8 @@ import pl.betoncraft.betonquest.config.Zipper;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Connector.QueryType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.database.Database;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.io.File;
 import java.io.IOException;

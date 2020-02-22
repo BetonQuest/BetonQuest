@@ -41,12 +41,6 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class JoinQuitListener implements Listener {
-
-    /**
-     * BetonQuest's instance.
-     */
-    private BetonQuest instance = BetonQuest.getInstance();
-
     /**
      * Creates new listener, which will handle the data loading/saving
      */

@@ -95,6 +95,7 @@ public class EnchantmentsHandler {
         int level = 1;
         Number nr = Number.WHATEVER;
 
+        @SuppressWarnings("deprecation")
         void set(String enchant) throws InstructionParseException {
             String[] parts;
             if (enchant == null || (parts = enchant.split(":")).length == 0) {

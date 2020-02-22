@@ -35,12 +35,10 @@ import java.util.logging.Level;
  */
 public class ConditionRequirement extends CustomRequirement {
 
-    @SuppressWarnings("deprecation")
     public ConditionRequirement() {
         setName("BetonQuest condition");
         setAuthor("Co0sh");
-        addData("Condition");
-        addDescription("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)");
+        addStringPrompt("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)", null);
     }
 
     @Override
