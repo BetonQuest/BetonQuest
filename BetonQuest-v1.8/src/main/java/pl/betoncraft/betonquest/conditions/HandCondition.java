@@ -33,12 +33,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class HandCondition extends Condition {
 
     private final QuestItem questItem;
-    private final boolean offhand;
 
     public HandCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
         questItem = new QuestItem(instruction.getItem());
-        offhand = instruction.hasArgument("offhand");
     }
 
     @Override
