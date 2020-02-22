@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.vault;
 
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -47,13 +48,12 @@ public class PermissionEvent extends QuestEvent {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) {
         // Run in Main Thread
         Bukkit.getScheduler().runTask(BetonQuest.getInstance().getJavaPlugin(), () -> {
             Permission vault = VaultIntegrator.getPermission();
-            String player = PlayerConverter.getPlayer(playerID).getName();
+            Player player = PlayerConverter.getPlayer(playerID);
             if (add) {
                 if (perm) {
                     // world add perm

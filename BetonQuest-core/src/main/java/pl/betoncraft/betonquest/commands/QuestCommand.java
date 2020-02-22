@@ -892,7 +892,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Adds item held in hand to items.yml file
      */
-    @SuppressWarnings("deprecation")
     private void handleItems(CommandSender sender, String[] args) {
         // sender must be a player
         if (!(sender instanceof Player)) {
@@ -918,7 +917,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         Player player = (Player) sender;
         ItemStack item = null;
-        item = player.getItemInHand();
+        item = player.getInventory().getItemInMainHand();
 
         // if item is air then there is nothing to add to items.yml
         if (item == null || item.getType() == Material.AIR) {

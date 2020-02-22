@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
  *
  * @author Jakub Sapalski
  */
+@SuppressWarnings("deprecation")
 public class DoorEvent extends QuestEvent {
 
     private LocationData loc;

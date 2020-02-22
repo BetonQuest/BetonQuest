@@ -42,9 +42,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Displays a particle above NPCs with conversations.
@@ -219,7 +219,6 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void activateEffects() {
 
         // display effects for all players
@@ -258,13 +257,12 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // fire the effect
                 EffectLibIntegrator.getEffectManager().start(
-                        effect.name,
-                        effect.settings,
-                        new DynamicLocation(loc, null),
-                        new DynamicLocation(null, null),
-                        (Map<String, String>) null,
+                        effect.name, 
+                        effect.settings, 
+                        new DynamicLocation(loc, null), 
+                        new DynamicLocation(null, null), 
+                        (ConfigurationSection) null, 
                         player);
-
             }
         }
     }

@@ -152,23 +152,6 @@ public class MathVariable extends Variable {
         Operation(char operator) {
             this.operator = operator;
         }
-
-        static Operation fromOperator(char operator) {
-            for (Operation operation : values()) {
-                if (operation.operator == operator) return operation;
-            }
-            throw new IllegalArgumentException(operator + " is not a supported operator");
-        }
-
-        static Operation fromOperator(String operator) {
-            if (operator.length() != 1)
-                throw new IllegalArgumentException(operator + " is not a supported operator");
-            else return Operation.fromOperator(operator.charAt(0));
-        }
-
-        public char getOperator() {
-            return operator;
-        }
     }
 
     private interface Calculable {
