@@ -53,7 +53,6 @@ public class SpawnMobEvent extends QuestEvent {
     private QuestItem leggings;
     private QuestItem boots;
     private QuestItem mainHand;
-    private QuestItem offHand;
     private Item[] drops;
 
     public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
@@ -88,7 +87,6 @@ public class SpawnMobEvent extends QuestEvent {
         item = instruction.getItem(instruction.getOptional("m"));
         mainHand = item == null ? null : new QuestItem(item);
         item = instruction.getItem(instruction.getOptional("o"));
-        offHand = item == null ? null : new QuestItem(item);
         drops = instruction.getItemList(instruction.getOptional("drops"));
     }
 
