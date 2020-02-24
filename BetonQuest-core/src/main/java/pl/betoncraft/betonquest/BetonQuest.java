@@ -755,7 +755,6 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Loads events and conditions to the maps
      */
-    @SuppressWarnings("deprecation")
     public void loadData() {
         // save data of all objectives to the players
         for (Objective objective : objectives.values()) {
@@ -925,8 +924,6 @@ public class BetonQuest extends VersionPlugin {
             ConversationData.postEnableCheck();
             LogUtils.getLogger().log(Level.FINE, "Everything in package " + packName + " loaded");
         }
-        // load global locations
-        new GlobalLocations();
         // done
         LogUtils.getLogger().log(Level.INFO, "There are " + conditions.size() + " conditions, " + events.size() + " events, "
                 + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
@@ -942,7 +939,6 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Reloads the plugin.
      */
-    @SuppressWarnings("deprecation")
     public void reload() {
         // reload the configuration
         LogUtils.getLogger().log(Level.FINE, "Reloading configuration");
@@ -954,7 +950,6 @@ public class BetonQuest extends VersionPlugin {
         // stop current global locations listener
         // and start new one with reloaded configs
         LogUtils.getLogger().log(Level.FINE, "Restarting global locations");
-        new GlobalLocations();
         new GlobalObjectives();
         new ConversationColors();
         Compatibility.reload();
@@ -971,7 +966,6 @@ public class BetonQuest extends VersionPlugin {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onDisable() {
         // suspend all conversations
@@ -984,8 +978,6 @@ public class BetonQuest extends VersionPlugin {
         // cancel database saver
         saver.end();
         Compatibility.disable();
-        // stop global location listener
-        GlobalLocations.stop();
         database.closeConnection();
         // cancel static events (they are registered outside of Bukkit so it
         // won't happen automatically)
