@@ -18,15 +18,14 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
@@ -61,25 +60,40 @@ public class CraftingObjective extends Objective implements Listener {
             String playerID = PlayerConverter.getID(player);
             CraftData playerData = (CraftData) dataMap.get(playerID);
             if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-                playerData.subtract(event.getRecipe().getResult().getAmount());
+                int absoluteCreations = countPossibleCrafts(event);
+                int remainingSpace = countRemainingSpace(player);
+                playerData.subtract(Math.min(remainingSpace, absoluteCreations));
                 if (playerData.isZero()) {
                     completeObjective(playerID);
                 }
+
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onShiftCrafting(InventoryClickEvent event) {
-        if (event.getSlotType() == SlotType.RESULT
-                && event.getClick().equals(ClickType.SHIFT_LEFT)
-                && event.getWhoClicked() instanceof Player) {
-            Player player = (Player) event.getWhoClicked();
-            String playerID = PlayerConverter.getID(player);
-            if (containsPlayer(playerID)) {
-                event.setCancelled(true);
+    private int countPossibleCrafts(CraftItemEvent event) {
+        int possibleCreations = 1;
+        if (event.isShiftClick()) {
+            possibleCreations = Integer.MAX_VALUE;
+            for (ItemStack item : event.getInventory().getMatrix()) {
+                if (item != null && !item.getType().equals(Material.AIR)) {
+                    possibleCreations = Math.min(possibleCreations, item.getAmount());
+                }
             }
         }
+        return possibleCreations * event.getRecipe().getResult().getAmount();
+    }
+
+    private int countRemainingSpace(Player player) {
+        int remainingSpace = 0;
+        for (ItemStack i : player.getInventory().getStorageContents()) {
+            if (i == null || i.getType().equals(Material.AIR)) {
+                remainingSpace += item.getMaterial().getMaxStackSize();
+            } else if (i.equals(item.generate(i.getAmount()))) {
+                remainingSpace += item.getMaterial().getMaxStackSize() - i.getAmount();
+            }
+        }
+        return remainingSpace;
     }
 
     @Override
