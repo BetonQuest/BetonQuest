@@ -6,6 +6,7 @@ Changes:
   * Command 'bq rename' can now be used for globalpoints
 Fixes:
     * Renaming an NPC will not cause an NPE for a NPC Hologram
+    * Objective 'craft' now supports shift-clicking
 
 v1.11-dev
 Additions:
