@@ -20,8 +20,8 @@ package pl.betoncraft.betonquest.compatibility.quests;
 import me.blackvein.quests.CustomRequirement;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

@@ -24,8 +24,8 @@ import ch.njol.util.Kleenean;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConditionID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 

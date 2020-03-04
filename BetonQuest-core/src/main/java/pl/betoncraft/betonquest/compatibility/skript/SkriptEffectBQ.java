@@ -25,8 +25,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.EventID;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
