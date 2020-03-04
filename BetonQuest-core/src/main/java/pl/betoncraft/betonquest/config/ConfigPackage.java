@@ -17,9 +17,9 @@
  */
 package pl.betoncraft.betonquest.config;
 
-import pl.betoncraft.betonquest.GlobalVariableID;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.GlobalVariableID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 

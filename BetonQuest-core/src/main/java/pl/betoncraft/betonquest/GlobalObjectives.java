@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest;
 
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.id.ObjectiveID;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -60,7 +60,7 @@ abstract public class Condition {
      * error message describing the problem.
      *
      * @param instruction the Instruction object; you can get one from ID instance with
-     *                    {@link pl.betoncraft.betonquest.ID#generateInstruction()
+     *                    {@link pl.betoncraft.betonquest.id.ID#generateInstruction()
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
      */

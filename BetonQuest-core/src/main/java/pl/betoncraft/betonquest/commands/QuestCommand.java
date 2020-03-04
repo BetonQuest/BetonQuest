@@ -33,11 +33,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.ConditionID;
-import pl.betoncraft.betonquest.EventID;
-import pl.betoncraft.betonquest.ItemID;
 import pl.betoncraft.betonquest.Journal;
-import pl.betoncraft.betonquest.ObjectiveID;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
@@ -51,6 +47,10 @@ import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.id.ConditionID;
+import pl.betoncraft.betonquest.id.EventID;
+import pl.betoncraft.betonquest.id.ItemID;
+import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.ComponentBuilder;
 import pl.betoncraft.betonquest.utils.LocationData;
@@ -1423,6 +1423,22 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     playerData.modifyPoints(rename, points);
                 }
                 break;
+            case "globalpoints":
+            case "globalpoint":
+            case "gpoints":
+            case "gpoint":
+            case "gp":
+                updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
+                int globalpoints = 0;
+                for (Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
+                     if (globalpoint.getCategory().equals(name)) {
+                         globalpoints = globalpoint.getCount();
+                         break;
+                     }
+                }
+                BetonQuest.getInstance().getGlobalData().removePointsCategory(name);
+                BetonQuest.getInstance().getGlobalData().modifyPoints(rename, globalpoints);
+                break;
             case "objectives":
             case "objective":
             case "o":
@@ -1643,7 +1659,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("give", "give <name>");
-        cmds.put("rename", "rename <tag/point/objective/journal> <old> <new>");
+        cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
         cmds.put("vector", "vector <pack.varname> <vectorname>");
