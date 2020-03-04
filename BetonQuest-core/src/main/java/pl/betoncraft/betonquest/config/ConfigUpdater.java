@@ -3400,6 +3400,7 @@ public class ConfigUpdater {
          * @param rawPath path for the variable
          * @return the String object representing requested variable
          */
+        @SuppressWarnings("unused")
         public String getString(String rawPath) {
 
             // get parts of path

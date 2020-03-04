@@ -35,13 +35,11 @@ import java.util.logging.Level;
  */
 public class EventReward extends CustomReward {
 
-    @SuppressWarnings("deprecation")
     public EventReward() {
         setName("BetonQuest event");
         setAuthor("Co0sh");
         setRewardName("Event");
-        addData("Event");
-        addDescription("Event", "Specify BetonQuest event name (with the package, like: package.event)");
+        addStringPrompt("Event", "Specify BetonQuest event name (with the package, like: package.event)", null);
     }
 
     @Override

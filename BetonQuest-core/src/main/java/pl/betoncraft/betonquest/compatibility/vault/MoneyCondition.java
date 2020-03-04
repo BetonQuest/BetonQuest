@@ -38,13 +38,12 @@ public class MoneyCondition extends Condition {
         amount = instruction.getVarNum();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean check(String playerID) throws QuestRuntimeException {
         double a = amount.getDouble(playerID);
         if (a < 0)
             a = -a;
-        return VaultIntegrator.getEconomy().has(PlayerConverter.getPlayer(playerID).getName(), a);
+        return VaultIntegrator.getEconomy().has(PlayerConverter.getPlayer(playerID), a);
     }
 
 }

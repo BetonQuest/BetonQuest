@@ -33,7 +33,6 @@ import pl.betoncraft.betonquest.utils.LocationData;
 public class SetBlockEvent extends QuestEvent {
 
     private final Material block;
-    private final byte data;
     private final LocationData loc;
 
     public SetBlockEvent(Instruction instruction) throws InstructionParseException {
@@ -42,14 +41,12 @@ public class SetBlockEvent extends QuestEvent {
         persistent = true;
         block = instruction.getMaterial(instruction.next());
         loc = instruction.getLocation();
-        data = instruction.getByte(instruction.getOptional("data"), (byte) 0);
     }
 
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         location.getBlock().setType(block);
-//		location.getBlock().setData(data);
     }
 
 }

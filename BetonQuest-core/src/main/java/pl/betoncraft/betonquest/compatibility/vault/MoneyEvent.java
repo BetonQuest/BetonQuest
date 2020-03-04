@@ -54,7 +54,6 @@ public class MoneyEvent extends QuestEvent {
         notify = instruction.hasArgument("notify");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
@@ -71,13 +70,13 @@ public class MoneyEvent extends QuestEvent {
         String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
 
         if (difference > 0) {
-            VaultIntegrator.getEconomy().depositPlayer(player.getName(), difference);
+            VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
                 Config.sendNotify(playerID, "money_given",
                         new String[]{df.format(difference), currencyName}, "money_given,info");
             }
         } else if (difference < 0) {
-            VaultIntegrator.getEconomy().withdrawPlayer(player.getName(), -difference);
+            VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
                 Config.sendNotify(playerID, "money_taken",
                         new String[]{df.format(difference), currencyName}, "money_taken,info");

@@ -71,7 +71,6 @@ public class CubeNPCListener implements Listener {
      *
      * @param event PlayerInteractEvent
      */
-    @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onNPCClick(final PlayerInteractEvent event) {
 

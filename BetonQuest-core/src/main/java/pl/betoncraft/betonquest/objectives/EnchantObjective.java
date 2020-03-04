@@ -93,6 +93,7 @@ public class EnchantObjective extends Objective implements Listener {
             this.level = level;
         }
 
+        @SuppressWarnings("deprecation")
         public static EnchantmentData convert(String string) throws InstructionParseException {
             String[] parts = string.split(":");
             if (parts.length != 2)

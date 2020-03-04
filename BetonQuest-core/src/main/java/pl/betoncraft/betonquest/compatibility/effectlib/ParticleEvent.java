@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -28,8 +27,6 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-
-import java.util.Map;
 
 /**
  * Displays an effect.
@@ -59,18 +56,18 @@ public class ParticleEvent extends QuestEvent {
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
-        Entity originEntity = (loc == null) ? p : null;
+        // This is not used at the moment
+        // Entity originEntity = (loc == null) ? p : null;
         Player targetPlayer = pr1vate ? p : null;
         EffectLibIntegrator.getEffectManager().start(effectClass,
                 parameters,
                 new DynamicLocation(location, null),
                 new DynamicLocation(null, null),
-                (Map<String, String>) null,
+                (ConfigurationSection) null,
                 targetPlayer);
     }
 

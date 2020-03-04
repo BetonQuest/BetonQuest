@@ -248,6 +248,10 @@ public class MenuConvIO extends ChatConvIO {
                             case SELECT:
                                 conv.passPlayerAnswer(selectedOption + 1);
                                 break;
+                        case MOVE:
+                            break;
+                        default:
+                            break;
                         }
                     } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
                         // Player moved Backwards
@@ -287,6 +291,10 @@ public class MenuConvIO extends ChatConvIO {
                             case SELECT:
                                 conv.passPlayerAnswer(selectedOption + 1);
                                 break;
+                        case MOVE:
+                            break;
+                        default:
+                            break;
                         }
                     } else if (Math.abs(steerEvent.getForward()) < 0.01) {
                         debounce = false;
@@ -385,6 +393,10 @@ public class MenuConvIO extends ChatConvIO {
                     conv.passPlayerAnswer(selectedOption + 1);
                     debounce = true;
                     break;
+            case MOVE:
+                break;
+            default:
+                break;
             }
         }
     }
@@ -418,8 +430,20 @@ public class MenuConvIO extends ChatConvIO {
                             conv.passPlayerAnswer(selectedOption + 1);
                             debounce = true;
                             break;
+                    case MOVE:
+                        break;
+                    default:
+                        break;
                     }
                 }
+        case PHYSICAL:
+            break;
+        case RIGHT_CLICK_AIR:
+            break;
+        case RIGHT_CLICK_BLOCK:
+            break;
+        default:
+            break;
         }
 
     }
@@ -666,6 +690,10 @@ public class MenuConvIO extends ChatConvIO {
                         conv.passPlayerAnswer(selectedOption + 1);
                         debounce = true;
                         break;
+                case MOVE:
+                    break;
+                default:
+                    break;
                 }
             }
         }
