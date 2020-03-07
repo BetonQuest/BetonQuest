@@ -173,9 +173,9 @@ public class LocationData {
     public static Location parseLocation(final String loc) throws InstructionParseException {
         if (loc == null || !loc.matches("^" + REGEX_LOCATION + "$")) {
             throw new InstructionParseException("Incorrect location format '" + loc
-                    + "'. A location has to be in the format '(x;y;z;world[;yaw;pitch])'");
+                    + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
         }
-        final String[] parts = loc.substring(1, loc.indexOf(')')).split(";");
+        final String[] parts = loc.split(";");
 
         final World world = Bukkit.getWorld(parts[3]);
         if (world == null) {
