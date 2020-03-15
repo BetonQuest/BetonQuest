@@ -46,7 +46,7 @@ import java.util.logging.Level;
 
 public class Instruction {
 
-    protected String instruction;
+    private String instruction;
     protected String[] parts;
     private ConfigPackage pack;
     private ID id;

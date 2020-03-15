@@ -22,12 +22,17 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class EventID extends ID {
 
-    public EventID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public EventID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
-        rawInstruction = super.pack.getString("events." + super.id);
+    }
+
+    @Override
+    protected String generateRawInstruction() throws ObjectNotFoundException {
+        final String rawInstruction = getPackage().getString("events." + getBaseID());
         if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Event '" + getFullID() + "' is not defined");
+            throw new ObjectNotFoundException("Event '" + getFullID() + "' is not defined!");
         }
+        return rawInstruction;
     }
 
 }
