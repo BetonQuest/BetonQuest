@@ -299,8 +299,8 @@ public class BetonQuest extends VersionPlugin {
             LogUtils.logThrowable(e);
             return false;
         }
-        boolean isMet = (outcome && !conditionID.inverted()) || (!outcome && conditionID.inverted());
-        LogUtils.getLogger().log(Level.FINE, (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
+        boolean isMet = conditionID.invert(outcome);
+        LogUtils.getLogger().log(Level.FINE, String.valueOf(isMet).toUpperCase() + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
                 + conditionID + " for player " + PlayerConverter.getName(playerID));
         return isMet;
     }

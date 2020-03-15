@@ -15,27 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.VariableInstruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class GlobalVariableID extends ID {
-    public GlobalVariableID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+
+    public GlobalVariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }
 
     @Override
-    public Instruction generateInstruction() {
-        return new VariableInstruction(pack, this, id);
+    protected String generateRawInstruction() throws ObjectNotFoundException {
+        final String rawInstruction = getPackage().getString("main.variables." + getBaseID());
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException("Global variable '" + getFullID() + "' is not defined!");
+        }
+        return rawInstruction;
     }
-
-    @Override
-    public String getFullID() {
-        return pack.getName() + "-" + getBaseID();
-    }
-
 }

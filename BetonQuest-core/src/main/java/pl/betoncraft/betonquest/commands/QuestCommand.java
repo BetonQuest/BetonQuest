@@ -1063,7 +1063,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // display message about condition
         sendMessage(sender, "player_condition", new String[] {
-                (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
+                (conditionID.isInverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))
         });
     }

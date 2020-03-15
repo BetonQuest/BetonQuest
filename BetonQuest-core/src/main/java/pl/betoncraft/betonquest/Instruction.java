@@ -46,7 +46,7 @@ import java.util.logging.Level;
 
 public class Instruction {
 
-    protected String instruction;
+    private String instruction;
     protected String[] parts;
     private ConfigPackage pack;
     private ID id;
@@ -63,10 +63,6 @@ public class Instruction {
             LogUtils.logThrowable(e);
         }
         this.instruction = instruction;
-
-        // Split by space, except when it's between quotes. This allows stuff like:
-        // instruction Test1 Test2 title:"This is a title"
-//		this.parts = instruction.split(" ");
         this.parts = Utils.split(instruction);
     }
 

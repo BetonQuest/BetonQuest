@@ -22,26 +22,35 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ConditionID extends ID {
 
-    private boolean inverted;
+    private final boolean inverted;
 
-    public ConditionID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ConditionID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(id));
-        this.inverted = id.startsWith("!");
-        rawInstruction = super.pack.getString("conditions." + super.id);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined");
-        }
+        this.inverted = id.charAt(0) == '!';
     }
 
-    private static String removeExclamationMark(String id) {
-        if (id.startsWith("!")) {
-            id = id.substring(1);
+    @Override
+    protected String generateRawInstruction() throws ObjectNotFoundException {
+        final String rawInstruction = getPackage().getString("conditions." + getBaseID());
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined!");
+        }
+        return rawInstruction;
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+    
+    public boolean invert(boolean bool) {
+        return inverted ? !bool : bool;
+    }
+
+    private static String removeExclamationMark(final String id) {
+        if (id.charAt(0) == '!') {
+            return id.substring(1);
         }
         return id;
-    }
-
-    public boolean inverted() {
-        return inverted;
     }
 
 }
