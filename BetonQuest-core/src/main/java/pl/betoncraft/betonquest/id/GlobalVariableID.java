@@ -20,8 +20,14 @@ package pl.betoncraft.betonquest.id;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * VariableID represents a variable marked with $
+ */
 public class GlobalVariableID extends ID {
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public GlobalVariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }

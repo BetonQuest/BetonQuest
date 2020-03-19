@@ -20,8 +20,14 @@ package pl.betoncraft.betonquest.id;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * ObjectiveID represents an objective
+ */
 public class ObjectiveID extends ID {
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public ObjectiveID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }

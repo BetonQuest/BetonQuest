@@ -1013,7 +1013,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // fire the event
         BetonQuest.event(playerID, eventID);
         sendMessage(sender, "player_event", new String[] {
-                eventID.generateInstruction().getInstruction()
+                eventID.getInstruction().getInstruction()
         });
     }
 
@@ -1063,7 +1063,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // display message about condition
         sendMessage(sender, "player_condition", new String[] {
-                (conditionID.isInverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
+                (conditionID.isInverted() ? "! " : "") + conditionID.getInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))
         });
     }
@@ -1516,7 +1516,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             // rename objective in the file
             nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1],
-                    nameID.generateInstruction().getInstruction());
+                    nameID.getInstruction().getInstruction());
             nameID.getPackage().getObjectives().saveConfig();
             // rename objective instance
             ObjectiveID renameID;

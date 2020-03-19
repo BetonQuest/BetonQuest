@@ -131,7 +131,7 @@ public class QuestItem {
      * @throws InstructionParseException when item parsing goes wrong
      */
     public QuestItem(ItemID itemID) throws InstructionParseException {
-        this(itemID.generateInstruction());
+        this(itemID.getInstruction());
     }
 
     /**

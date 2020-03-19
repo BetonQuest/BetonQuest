@@ -20,8 +20,14 @@ package pl.betoncraft.betonquest.id;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * EventID represents an event
+ */
 public class EventID extends ID {
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public EventID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }
