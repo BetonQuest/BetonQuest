@@ -170,7 +170,7 @@ public class GlobalLocations extends BukkitRunnable {
         public GlobalLocation(ObjectiveID objectiveID) throws InstructionParseException {
             this.objectiveID = objectiveID;
             LogUtils.getLogger().log(Level.FINE, "Creating new GlobalLocation from " + objectiveID + " event.");
-            Instruction instruction = objectiveID.generateInstruction();
+            Instruction instruction = objectiveID.getInstruction();
             // check amount of arguments in event's instruction
             location = instruction.getLocation();
             range = instruction.getVarNum();

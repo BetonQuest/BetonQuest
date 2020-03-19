@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.id;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
@@ -30,19 +31,19 @@ public class ConditionID extends ID {
     }
 
     @Override
-    protected String generateRawInstruction() throws ObjectNotFoundException {
+    protected Instruction generateInstruction() throws ObjectNotFoundException {
         final String rawInstruction = getPackage().getString("conditions." + getBaseID());
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined!");
         }
-        return rawInstruction;
+        return new Instruction(getPackage(), this, rawInstruction);
     }
 
     public boolean isInverted() {
         return inverted;
     }
-    
-    public boolean invert(boolean bool) {
+
+    public boolean invert(final boolean bool) {
         return inverted ? !bool : bool;
     }
 

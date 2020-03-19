@@ -434,7 +434,7 @@ public class BetonQuest extends VersionPlugin {
             throw new InstructionParseException("Variable type " + parts[0] + " is not registered");
         }
         try {
-            Variable variable = variableClass.getConstructor(Instruction.class).newInstance(new VariableInstruction(pack, null, instruction));
+            Variable variable = variableClass.getConstructor(Instruction.class).newInstance(new Instruction(pack, null, instruction, true));
             variables.put(ID, variable);
             LogUtils.getLogger().log(Level.FINE, "Variable " + ID + " loaded");
             return variable;
@@ -790,7 +790,7 @@ public class BetonQuest extends VersionPlugin {
                 }
                 String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = ID.getInstruction().getPart(0);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Objective type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
@@ -804,7 +804,7 @@ public class BetonQuest extends VersionPlugin {
                     continue;
                 }
                 try {
-                    QuestEvent event = eventClass.getConstructor(Instruction.class).newInstance(ID.generateInstruction());
+                    QuestEvent event = eventClass.getConstructor(Instruction.class).newInstance(ID.getInstruction());
                     events.put(ID, event);
                     LogUtils.getLogger().log(Level.FINE, "  Event '" + ID + "' loaded");
                 } catch (InvocationTargetException e) {
@@ -834,7 +834,7 @@ public class BetonQuest extends VersionPlugin {
                 }
                 String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = ID.getInstruction().getPart(0);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Condition type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
@@ -848,7 +848,7 @@ public class BetonQuest extends VersionPlugin {
                     continue;
                 }
                 try {
-                    Condition condition = conditionClass.getConstructor(Instruction.class).newInstance(ID.generateInstruction());
+                    Condition condition = conditionClass.getConstructor(Instruction.class).newInstance(ID.getInstruction());
                     conditions.put(ID, condition);
                     LogUtils.getLogger().log(Level.FINE, "  Condition '" + ID + "' loaded");
                 } catch (InvocationTargetException e) {
@@ -878,7 +878,7 @@ public class BetonQuest extends VersionPlugin {
                 }
                 String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = ID.getInstruction().getPart(0);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Objective type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
@@ -894,7 +894,7 @@ public class BetonQuest extends VersionPlugin {
                 }
                 try {
                     Objective objective = objectiveClass.getConstructor(Instruction.class)
-                            .newInstance(ID.generateInstruction());
+                            .newInstance(ID.getInstruction());
                     objectives.put(ID, objective);
                     LogUtils.getLogger().log(Level.FINE, "  Objective '" + ID + "' loaded");
                 } catch (InvocationTargetException e) {

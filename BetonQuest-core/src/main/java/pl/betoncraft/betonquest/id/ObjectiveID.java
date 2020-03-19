@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.id;
 
+import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
@@ -27,12 +28,12 @@ public class ObjectiveID extends ID {
     }
 
     @Override
-    protected String generateRawInstruction() throws ObjectNotFoundException {
+    protected Instruction generateInstruction() throws ObjectNotFoundException {
         final String rawInstruction = getPackage().getString("objectives." + getBaseID());
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Objective '" + getFullID() + "' is not defined!");
         }
-        return rawInstruction;
+        return new Instruction(getPackage(), this, rawInstruction);
     }
 
 }

@@ -18,7 +18,6 @@
 package pl.betoncraft.betonquest.id;
 
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.VariableInstruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
@@ -32,13 +31,8 @@ public class VariableID extends ID {
     }
 
     @Override
-    public Instruction generateInstruction() {
-        return new VariableInstruction(getPackage(), this, getBaseID());
-    }
-
-    @Override
-    protected String generateRawInstruction() throws ObjectNotFoundException {
-        return null;
+    protected Instruction generateInstruction() throws ObjectNotFoundException {
+        return new Instruction(getPackage(), this, getBaseID(), true);
     }
 
 }

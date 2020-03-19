@@ -172,7 +172,7 @@ public class ConfigPackage {
             String varVal;
             try {
                 GlobalVariableID variableID = new GlobalVariableID(this, varName);
-                varVal = variableID.generateInstruction().getInstruction();
+                varVal = variableID.getInstruction().getInstruction();
             } catch (ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, e.getMessage());
                 LogUtils.logThrowable(e);
