@@ -17,18 +17,23 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * NoID represents a virtual internal ID
+ */
 public class NoID extends ID {
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public NoID(final ConfigPackage pack) throws ObjectNotFoundException {
         super(pack, "no-id");
     }
 
     @Override
-    protected Instruction generateInstruction() throws ObjectNotFoundException {
+    protected String generateRawInstruction() throws ObjectNotFoundException {
         return null;
     }
 

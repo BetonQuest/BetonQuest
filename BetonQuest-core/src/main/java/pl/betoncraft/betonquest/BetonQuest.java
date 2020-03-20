@@ -775,7 +775,10 @@ public class BetonQuest extends VersionPlugin {
             String packName = pack.getName();
             LogUtils.getLogger().log(Level.FINE, "Loading stuff in package " + packName);
             FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
-            for (String key : eConfig.getKeys(false)) {
+            for (String key : eConfig.getKeys(true)) {
+                if(eConfig.isConfigurationSection(key)) {
+                    continue;
+                }
                 if (key.contains(" ")) {
                     LogUtils.getLogger().log(Level.WARNING, "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
@@ -819,7 +822,10 @@ public class BetonQuest extends VersionPlugin {
                 }
             }
             FileConfiguration cConfig = pack.getConditions().getConfig();
-            for (String key : cConfig.getKeys(false)) {
+            for (String key : cConfig.getKeys(true)) {
+                if(cConfig.isConfigurationSection(key)) {
+                    continue;
+                }
                 if (key.contains(" ")) {
                     LogUtils.getLogger().log(Level.WARNING, "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
@@ -863,7 +869,10 @@ public class BetonQuest extends VersionPlugin {
                 }
             }
             FileConfiguration oConfig = pack.getObjectives().getConfig();
-            for (String key : oConfig.getKeys(false)) {
+            for (String key : oConfig.getKeys(true)) {
+                if(oConfig.isConfigurationSection(key)) {
+                    continue;
+                }
                 if (key.contains(" ")) {
                     LogUtils.getLogger().log(Level.WARNING, "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;

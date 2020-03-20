@@ -21,18 +21,43 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * VariableID represents a variable marked with %
+ */
 public class VariableID extends ID {
 
+    /**
+     * Instruction generated from the rawInstruction
+     */
+    private Instruction instruction;
+
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public VariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, pack.getName() + "." + id);
+        super(pack, pack.getName() + ID.SEPARATOR_STR + id);
         if (!(super.getBaseID().charAt(0) == '%' && super.getBaseID().charAt(super.getBaseID().length() - 1) == '%')) {
             throw new ObjectNotFoundException("Variable instruction has to start and end with '%' characters");
         }
     }
 
+    /**
+     * @see ID#getInstruction()
+     */
+    public Instruction getInstruction() {
+        if (instruction == null) {
+            try {
+                instruction = new Instruction(getPackage(), this, generateRawInstruction(), true);
+            } catch (final ObjectNotFoundException e) {
+                return null;
+            }
+        }
+        return instruction;
+    }
+
     @Override
-    protected Instruction generateInstruction() throws ObjectNotFoundException {
-        return new Instruction(getPackage(), this, getBaseID(), true);
+    protected String generateRawInstruction() throws ObjectNotFoundException {
+        return getBaseID();
     }
 
 }

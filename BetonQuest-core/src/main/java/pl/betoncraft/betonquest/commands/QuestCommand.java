@@ -61,6 +61,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
+import pl.betoncraft.betonquest.id.ID;
 import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
@@ -435,16 +436,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
         String last = args[args.length - 1];
-        if (last == null || !last.contains(".")) {
+        if (last == null || !last.contains(ID.SEPARATOR_STR)) {
             return completePackage(sender, args);
         } else {
-            String pack = last.substring(0, last.indexOf("."));
+            String pack = last.substring(0, last.indexOf(ID.SEPARATOR_STR));
             ConfigPackage configPack = Config.getPackages().get(pack);
             if (configPack == null)
                 return new ArrayList<>();
             if (type == null) {
                 List<String> completations = new ArrayList<>();
-                completations.add(pack + ".");
+                completations.add(pack + ID.SEPARATOR_STR);
                 return completations;
             }
             ConfigAccessor accessor;
@@ -469,8 +470,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             FileConfiguration configuration = accessor.getConfig();
             List<String> completations = new ArrayList<>();
-            for (String key : configuration.getKeys(false)) {
-                completations.add(pack + "." + key);
+            for (String key : configuration.getKeys(true)) {
+                if(configuration.getConfigurationSection(key) == null) {
+                    completations.add(pack + ID.SEPARATOR_STR + key);
+                }
             }
             return completations;
         }

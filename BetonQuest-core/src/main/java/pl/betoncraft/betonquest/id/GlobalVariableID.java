@@ -17,22 +17,27 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * VariableID represents a variable marked with $
+ */
 public class GlobalVariableID extends ID {
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public GlobalVariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }
 
     @Override
-    protected Instruction generateInstruction() throws ObjectNotFoundException {
+    protected String generateRawInstruction() throws ObjectNotFoundException {
         final String rawInstruction = getPackage().getString("main.variables." + getBaseID());
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Global variable '" + getFullID() + "' is not defined!");
         }
-        return new Instruction(getPackage(), this, rawInstruction);
+        return rawInstruction;
     }
 }

@@ -17,32 +17,47 @@
  */
 package pl.betoncraft.betonquest.id;
 
-import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+/**
+ * ConditionID represents an condition
+ */
 public class ConditionID extends ID {
 
+    /**
+     * True if the condition is inverted with a exclamation mark
+     */
     private final boolean inverted;
 
+    /**
+     * @see ID#ID(ConfigPackage, String)
+     */
     public ConditionID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(id));
         this.inverted = id.charAt(0) == '!';
     }
 
     @Override
-    protected Instruction generateInstruction() throws ObjectNotFoundException {
+    protected String generateRawInstruction() throws ObjectNotFoundException {
         final String rawInstruction = getPackage().getString("conditions." + getBaseID());
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined!");
         }
-        return new Instruction(getPackage(), this, rawInstruction);
+        return rawInstruction;
     }
 
     public boolean isInverted() {
         return inverted;
     }
 
+    /**
+     * Invert a boolean, id the condition is inverted
+     * 
+     * @param bool
+     *            that should be inverted
+     * @return The inverted boolean, if the condiion is inverted
+     */
     public boolean invert(final boolean bool) {
         return inverted ? !bool : bool;
     }

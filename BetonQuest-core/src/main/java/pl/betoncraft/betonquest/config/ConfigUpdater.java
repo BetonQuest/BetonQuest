@@ -37,6 +37,7 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Database;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.id.ID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -60,6 +61,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Updates configuration files to the newest version.
@@ -82,7 +85,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v59";
+    private final String destination = "v60";
     /**
      * BetonQuest's instance
      */
@@ -95,6 +98,10 @@ public class ConfigUpdater {
      * Deprecated ConfigHandler, used for updating older configuration files
      */
     private ConfigHandler ch;
+    /**
+     * GLOBAL_VARIABLE_REGEX pattern
+     */
+    private static final Pattern GLOBAL_VARIABLE_REGEX = Pattern.compile("(\\$[^$\\s]+\\$)");
 
     public ConfigUpdater() {
         String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -197,6 +204,48 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    @SuppressWarnings("unused")
+    private void update_from_v59() {
+        LogUtils.getLogger().log(Level.INFO, "Start converting old package path Formats into the new package path formats...");
+        for (ConfigPackage pack : Config.getPackages().values()) {
+            update_from_v59_pack_separator(pack.getMain());
+            update_from_v59_pack_separator(pack.getConditions());
+            update_from_v59_pack_separator(pack.getCustom());
+            update_from_v59_pack_separator(pack.getEvents());
+            update_from_v59_pack_separator(pack.getItems());
+            update_from_v59_pack_separator(pack.getJournal());
+            update_from_v59_pack_separator(pack.getObjectives());
+            for(String conversation : pack.getConversationNames()) {
+                update_from_v59_pack_separator(pack.getConversation(conversation));
+            }
+        }
+        LogUtils.getLogger().log(Level.INFO, "Converting finished!");
+        config.set("version", "v60");
+        instance.saveConfig();
+    }
+    
+
+    private void update_from_v59_pack_separator(ConfigAccessor config) {
+        for(String key : config.getConfig().getKeys(true)) {
+            String value = config.getConfig().getString(key);
+            Matcher m = GLOBAL_VARIABLE_REGEX.matcher(value);
+            StringBuffer sb = new StringBuffer(value.length());
+            while (m.find()) {
+              String text = m.group(0);
+              text = StringUtils.replaceOnce(text, ".", ID.SEPARATOR_STR);
+              m.appendReplacement(sb, Matcher.quoteReplacement(text));
+            }
+            m.appendTail(sb);
+            String newValue = sb.toString();
+            
+            if(!value.equals(newValue)) {
+                LogUtils.getLogger().log(Level.INFO, "Updated config entry: (" + value + ") -> (" + newValue + ")");
+                config.getConfig().set(key, newValue);
+            }
+        }
+        config.saveConfig();
     }
 
     @SuppressWarnings("unused")

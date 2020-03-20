@@ -163,7 +163,7 @@ public class ConfigPackage {
         input = input.replace("$this$", name);
 
         // handle the rest
-        Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
+        Pattern global_variable_regex = Pattern.compile("\\$([^$\\s]+)\\$");
         while (true) {
             Matcher matcher = global_variable_regex.matcher(input);
             if (!matcher.find())
