@@ -395,18 +395,16 @@ public class Config
 	 * @return the ID of the conversation assigned to this NPC or null if there
 	 *         isn't one
 	 */
-	public static String getNpc(String value)
-	{
+	public static String getNpc(String value) {
 		// load npc assignments from all packages
-		for(String packName : packages.keySet())
-		{
+		for (String packName : packages.keySet()) {
 			ConfigPackage pack = packages.get(packName);
-			ConfigurationSection assignemnts = pack.getMain().getConfig().getConfigurationSection("npcs");
-			for(String assignment : assignemnts.getKeys(false))
-			{
-				if(assignment.equalsIgnoreCase(value))
-				{
-					return packName + "." + assignemnts.getString(assignment);
+			ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
+			if (assignments != null) {
+				for (String assignment : assignments.getKeys(false)) {
+					if (assignment.equalsIgnoreCase(value)) {
+						return packName + "." + assignments.getString(assignment);
+					}
 				}
 			}
 		}
