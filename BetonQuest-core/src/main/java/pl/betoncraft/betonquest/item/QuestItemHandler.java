@@ -17,6 +17,10 @@
  */
 package pl.betoncraft.betonquest.item;
 
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.ItemFrame;
@@ -34,19 +38,16 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.multiversion.item.ItemInHandHandler;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
-
-import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
 
 /**
  * Handler for Journals.
@@ -63,15 +64,15 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onItemDrop(PlayerDropItemEvent event) {
+    public void onItemDrop(final PlayerDropItemEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (playerID == null) {
             return;
         }
-        ItemStack item = event.getItemDrop().getItemStack();
+        final ItemStack item = event.getItemDrop().getItemStack();
         if (item == null) {
             return;
         }
@@ -83,9 +84,11 @@ public class QuestItemHandler implements Listener {
                 BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
                 event.getItemDrop().remove();
             }
-        } catch (Exception e) {
-            // if there is any problem with checking the item, prevent dropping it
-            // it will be frustrating for user but at least they won't duplicate items
+        } catch (final Exception e) {
+            // if there is any problem with checking the item, prevent dropping
+            // it
+            // it will be frustrating for user but at least they won't duplicate
+            // items
             event.setCancelled(true);
             LogUtils.getLogger().log(Level.WARNING, "Could not excecute onItemDrop in QuestItemHandler");
             LogUtils.logThrowable(e);
@@ -93,40 +96,40 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemMove(InventoryClickEvent event) {
+    public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         ItemStack item;
         switch (event.getAction()) {
-            case MOVE_TO_OTHER_INVENTORY:
-                item = event.getCurrentItem();
-                break;
-            case PLACE_ALL:
-            case PLACE_ONE:
-            case PLACE_SOME:
-            case SWAP_WITH_CURSOR:
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                    item = event.getCursor();
-                } else {
-                    item = null;
-                }
-                break;
-            case HOTBAR_MOVE_AND_READD:
-            case HOTBAR_SWAP:
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                    item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
-                } else {
-                    item = null;
-                }
-                break;
-            default:
+        case MOVE_TO_OTHER_INVENTORY:
+            item = event.getCurrentItem();
+            break;
+        case PLACE_ALL:
+        case PLACE_ONE:
+        case PLACE_SOME:
+        case SWAP_WITH_CURSOR:
+            if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                item = event.getCursor();
+            } else {
                 item = null;
-                break;
+            }
+            break;
+        case HOTBAR_MOVE_AND_READD:
+        case HOTBAR_SWAP:
+            if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+            } else {
+                item = null;
+            }
+            break;
+        default:
+            item = null;
+            break;
         }
         if (item != null && (Journal.isJournal(playerID, item) || Utils.isQuestItem(item))) {
             event.setCancelled(true);
@@ -134,46 +137,46 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemDrag(InventoryDragEvent event) {
+    public void onItemDrag(final InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         if (Journal.isJournal(playerID, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
+    public void onArmorStandEquip(final PlayerArmorStandManipulateEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        ItemStack item = event.getPlayerItem();
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final ItemStack item = event.getPlayerItem();
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (item != null && (Journal.isJournal(playerID, item) || Utils.isQuestItem(item))) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onDeath(PlayerDeathEvent event) {
+    public void onDeath(final PlayerDeathEvent event) {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        String playerID = PlayerConverter.getID(event.getEntity());
+        final String playerID = PlayerConverter.getID(event.getEntity());
         // check if there is data for this player; NPCs don't have data
         if (BetonQuest.getInstance().getPlayerData(playerID) == null)
             return;
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
-        List<ItemStack> drops = event.getDrops();
-        ListIterator<ItemStack> litr = drops.listIterator();
+        final List<ItemStack> drops = event.getDrops();
+        final ListIterator<ItemStack> litr = drops.listIterator();
         while (litr.hasNext()) {
-            ItemStack stack = litr.next();
+            final ItemStack stack = litr.next();
             if (Journal.isJournal(playerID, stack)) {
                 litr.remove();
             }
@@ -186,7 +189,7 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onRespawn(PlayerRespawnEvent event) {
+    public void onRespawn(final PlayerRespawnEvent event) {
         if (Config.getString("config.remove_items_after_respawn").equals("false"))
             return;
         // some plugins block item dropping after death and add those
@@ -195,7 +198,7 @@ public class QuestItemHandler implements Listener {
         // items, as they have been added to the backpack already
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
             return;
-        Inventory inv = event.getPlayer().getInventory();
+        final Inventory inv = event.getPlayer().getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
             if (Utils.isQuestItem(inv.getItem(i))) {
                 inv.setItem(i, null);
@@ -204,16 +207,16 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemFrameClick(PlayerInteractEntityEvent event) {
+    public void onItemFrameClick(final PlayerInteractEntityEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getRightClicked() instanceof ItemFrame) {
             ItemStack item = null;
-            item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
+            item = ItemInHandHandler.getItemInHand(event);
 
-            String playerID = PlayerConverter.getID(event.getPlayer());
+            final String playerID = PlayerConverter.getID(event.getPlayer());
             if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
@@ -221,7 +224,7 @@ public class QuestItemHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -233,15 +236,15 @@ public class QuestItemHandler implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
-    public void onItemBreak(PlayerItemBreakEvent event) {
+    public void onItemBreak(final PlayerItemBreakEvent event) {
         if (BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable").equalsIgnoreCase("false")) {
             return;
         }
         // prevent quest items from breaking
         if (Utils.isQuestItem(event.getBrokenItem())) {
-            ItemStack original = event.getBrokenItem();
+            final ItemStack original = event.getBrokenItem();
             original.setDurability((short) 0);
-            ItemStack copy = original.clone();
+            final ItemStack copy = original.clone();
             event.getPlayer().getInventory().removeItem(original);
             event.getPlayer().getInventory().addItem(copy);
         }
