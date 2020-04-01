@@ -17,14 +17,25 @@
  */
 package pl.betoncraft.betonquest;
 
-import au.com.grieve.multi_version_plugin.MultiVersionPlugin;
-import au.com.grieve.multi_version_plugin.VersionPlugin;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import au.com.grieve.multi_version_plugin.MultiVersionPlugin;
+import au.com.grieve.multi_version_plugin.VersionPlugin;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.api.LoadDataEvent;
 import pl.betoncraft.betonquest.api.Objective;
@@ -51,7 +62,6 @@ import pl.betoncraft.betonquest.conditions.EffectCondition;
 import pl.betoncraft.betonquest.conditions.EmptySlotsCondition;
 import pl.betoncraft.betonquest.conditions.ExperienceCondition;
 import pl.betoncraft.betonquest.conditions.FacingCondition;
-import pl.betoncraft.betonquest.conditions.FlyingCondition;
 import pl.betoncraft.betonquest.conditions.GameModeCondition;
 import pl.betoncraft.betonquest.conditions.GlobalPointCondition;
 import pl.betoncraft.betonquest.conditions.GlobalTagCondition;
@@ -156,6 +166,8 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.id.VariableID;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
+import pl.betoncraft.betonquest.multiversion.ConditionsLoader;
+import pl.betoncraft.betonquest.multiversion.ObjectivesLoader;
 import pl.betoncraft.betonquest.notify.ActionBarNotifyIO;
 import pl.betoncraft.betonquest.notify.AdvancementNotifyIO;
 import pl.betoncraft.betonquest.notify.BossBarNotifyIO;
@@ -167,7 +179,6 @@ import pl.betoncraft.betonquest.notify.TitleNotifyIO;
 import pl.betoncraft.betonquest.objectives.ActionObjective;
 import pl.betoncraft.betonquest.objectives.ArrowShootObjective;
 import pl.betoncraft.betonquest.objectives.BlockObjective;
-import pl.betoncraft.betonquest.objectives.BreedObjective;
 import pl.betoncraft.betonquest.objectives.ChestPutObjective;
 import pl.betoncraft.betonquest.objectives.ConsumeObjective;
 import pl.betoncraft.betonquest.objectives.CraftingObjective;
@@ -204,16 +215,6 @@ import pl.betoncraft.betonquest.variables.PlayerNameVariable;
 import pl.betoncraft.betonquest.variables.PointVariable;
 import pl.betoncraft.betonquest.variables.VersionVariable;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Represents BetonQuest plugin
  *
@@ -238,10 +239,10 @@ public class BetonQuest extends VersionPlugin {
     private boolean isMySQLUsed;
     private Saver saver;
     private Updater updater;
-    private ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
 
-    public BetonQuest(MultiVersionPlugin plugin) {
+    public BetonQuest(final MultiVersionPlugin plugin) {
         super(plugin);
         instance = this;
     }
@@ -258,11 +259,13 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Checks if the condition described by conditionID is met
      *
-     * @param conditionID ID of the condition to check, as defined in conditions.yml
-     * @param playerID    ID of the player which should be checked
+     * @param conditionID
+     *            ID of the condition to check, as defined in conditions.yml
+     * @param playerID
+     *            ID of the player which should be checked
      * @return if the condition is met
      */
-    public static boolean condition(String playerID, ConditionID conditionID) {
+    public static boolean condition(final String playerID, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
             LogUtils.getLogger().log(Level.FINE, "Null condition ID!");
@@ -270,7 +273,7 @@ public class BetonQuest extends VersionPlugin {
         }
         // get the condition
         Condition condition = null;
-        for (Entry<ConditionID, Condition> e : conditions.entrySet()) {
+        for (final Entry<ConditionID, Condition> e : conditions.entrySet()) {
             if (e.getKey().equals(conditionID)) {
                 condition = e.getValue();
                 break;
@@ -294,24 +297,28 @@ public class BetonQuest extends VersionPlugin {
         boolean outcome = false;
         try {
             outcome = condition.check(playerID);
-        } catch (QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while checking '" + conditionID + "' condition: " + e.getMessage());
+        } catch (final QuestRuntimeException e) {
+            LogUtils.getLogger().log(Level.WARNING,
+                    "Error while checking '" + conditionID + "' condition: " + e.getMessage());
             LogUtils.logThrowable(e);
             return false;
         }
-        boolean isMet = (outcome && !conditionID.inverted()) || (!outcome && conditionID.inverted());
-        LogUtils.getLogger().log(Level.FINE, (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
-                + conditionID + " for player " + PlayerConverter.getName(playerID));
+        final boolean isMet = (outcome && !conditionID.inverted()) || (!outcome && conditionID.inverted());
+        LogUtils.getLogger().log(Level.FINE,
+                (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
+                        + conditionID + " for player " + PlayerConverter.getName(playerID));
         return isMet;
     }
 
     /**
      * Fires the event described by eventID
      *
-     * @param eventID  ID of the event to fire, as defined in events.yml
-     * @param playerID ID of the player who the event is firing for
+     * @param eventID
+     *            ID of the event to fire, as defined in events.yml
+     * @param playerID
+     *            ID of the player who the event is firing for
      */
-    public static void event(String playerID, EventID eventID) {
+    public static void event(final String playerID, final EventID eventID) {
         // null check
         if (eventID == null) {
             LogUtils.getLogger().log(Level.FINE, "Null event ID!");
@@ -319,7 +326,7 @@ public class BetonQuest extends VersionPlugin {
         }
         // get the event
         QuestEvent event = null;
-        for (Entry<EventID, QuestEvent> e : events.entrySet()) {
+        for (final Entry<EventID, QuestEvent> e : events.entrySet()) {
             if (e.getKey().equals(eventID)) {
                 event = e.getValue();
                 break;
@@ -333,11 +340,12 @@ public class BetonQuest extends VersionPlugin {
         if (playerID == null) {
             LogUtils.getLogger().log(Level.FINE, "Firing static event " + eventID);
         } else {
-            LogUtils.getLogger().log(Level.FINE, "Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
+            LogUtils.getLogger().log(Level.FINE,
+                    "Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
         }
         try {
             event.fire(playerID);
-        } catch (QuestRuntimeException e) {
+        } catch (final QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while firing '" + eventID + "' event: " + e.getMessage());
             LogUtils.logThrowable(e);
         }
@@ -346,25 +354,28 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Creates new objective for given player
      *
-     * @param playerID    ID of the player
-     * @param objectiveID ID of the objective
+     * @param playerID
+     *            ID of the player
+     * @param objectiveID
+     *            ID of the objective
      */
-    public static void newObjective(String playerID, ObjectiveID objectiveID) {
+    public static void newObjective(final String playerID, final ObjectiveID objectiveID) {
         // null check
         if (playerID == null || objectiveID == null) {
             LogUtils.getLogger().log(Level.FINE, "Null arguments for the objective!");
             return;
         }
         Objective objective = null;
-        for (Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 objective = e.getValue();
                 break;
             }
         }
         if (objective.containsPlayer(playerID)) {
-            LogUtils.getLogger().log(Level.FINE, "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID +
-                    " objective");
+            LogUtils.getLogger().log(Level.FINE,
+                    "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID +
+                            " objective");
             return;
         }
         objective.newPlayer(playerID);
@@ -373,18 +384,21 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Resumes the existing objective for given player
      *
-     * @param playerID    ID of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
+     * @param playerID
+     *            ID of the player
+     * @param objectiveID
+     *            ID of the objective
+     * @param instruction
+     *            data instruction string
      */
-    public static void resumeObjective(String playerID, ObjectiveID objectiveID, String instruction) {
+    public static void resumeObjective(final String playerID, final ObjectiveID objectiveID, final String instruction) {
         // null check
         if (playerID == null || objectiveID == null || instruction == null) {
             LogUtils.getLogger().log(Level.FINE, "Null arguments for the objective!");
             return;
         }
         Objective objective = null;
-        for (Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 objective = e.getValue();
                 break;
@@ -395,7 +409,7 @@ public class BetonQuest extends VersionPlugin {
             return;
         }
         if (objective.containsPlayer(playerID)) {
-            LogUtils.getLogger().log(Level.FINE, 
+            LogUtils.getLogger().log(Level.FINE,
                     "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
             return;
         }
@@ -406,45 +420,50 @@ public class BetonQuest extends VersionPlugin {
      * Generates new instance of a Variable. If a similar one was already
      * created, it will return it instead of creating a new one.
      *
-     * @param pack        package in which the variable is defined
-     * @param instruction instruction of the variable, including both % characters.
+     * @param pack
+     *            package in which the variable is defined
+     * @param instruction
+     *            instruction of the variable, including both % characters.
      * @return the Variable instance
-     * @throws InstructionParseException when the variable parsing fails
+     * @throws InstructionParseException
+     *             when the variable parsing fails
      */
-    public static Variable createVariable(ConfigPackage pack, String instruction) throws InstructionParseException {
+    public static Variable createVariable(final ConfigPackage pack, final String instruction)
+            throws InstructionParseException {
         VariableID ID;
         try {
             ID = new VariableID(pack, instruction);
-        } catch (ObjectNotFoundException e) {
+        } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
-        for (Entry<VariableID, Variable> e : variables.entrySet()) {
+        for (final Entry<VariableID, Variable> e : variables.entrySet()) {
             if (e.getKey().equals(ID)) {
                 return e.getValue();
             }
         }
-        String[] parts = instruction.replace("%", "").split("\\.");
+        final String[] parts = instruction.replace("%", "").split("\\.");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments in variable " + ID);
         }
-        Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
+        final Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
         // if it's null then there is no such type registered, log an error
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + parts[0] + " is not registered");
         }
         try {
-            Variable variable = variableClass.getConstructor(Instruction.class).newInstance(new VariableInstruction(pack, null, instruction));
+            final Variable variable = variableClass.getConstructor(Instruction.class)
+                    .newInstance(new VariableInstruction(pack, null, instruction));
             variables.put(ID, variable);
             LogUtils.getLogger().log(Level.FINE, "Variable " + ID + " loaded");
             return variable;
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in " + ID + " variable: " + e.getCause().getMessage(), e);
             } else {
                 LogUtils.logThrowableReport(e);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.logThrowableReport(e);
         }
         return null;
@@ -456,24 +475,27 @@ public class BetonQuest extends VersionPlugin {
      * the user uses the same variables multiple times, the list will contain
      * only one occurence of this variable.
      *
-     * @param text text from which the variables will be resolved
+     * @param text
+     *            text from which the variables will be resolved
      * @return the list of unique variable instructions
      */
-    public static ArrayList<String> resolveVariables(String text) {
-        ArrayList<String> variables = new ArrayList<>();
-        Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+    public static ArrayList<String> resolveVariables(final String text) {
+        final ArrayList<String> variables = new ArrayList<>();
+        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
         while (matcher.find()) {
             final String variable = matcher.group();
-            if (!variables.contains(variable)) variables.add(variable);
+            if (!variables.contains(variable))
+                variables.add(variable);
         }
         return variables;
     }
 
     /**
-     * @param name name of the notify IO type
+     * @param name
+     *            name of the notify IO type
      * @return the class object for this notify IO type
      */
-    public static Class<? extends NotifyIO> getNotifyIO(String name) {
+    public static Class<? extends NotifyIO> getNotifyIO(final String name) {
         return notifyIOTypes.get(name);
     }
 
@@ -488,12 +510,13 @@ public class BetonQuest extends VersionPlugin {
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
-        this.database = new MySQL(getJavaPlugin(), getConfig().getString("mysql.host"), getConfig().getString("mysql.port"),
+        this.database = new MySQL(getJavaPlugin(), getConfig().getString("mysql.host"),
+                getConfig().getString("mysql.port"),
                 getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
                 getConfig().getString("mysql.pass"));
 
         // try to connect to MySQL
-        Connection con = database.getConnection();
+        final Connection con = database.getConnection();
         if (con != null) {
             LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
             isMySQLUsed = true;
@@ -537,7 +560,7 @@ public class BetonQuest extends VersionPlugin {
         // initialize static events
         new StaticEvents();
 
-        //initialize global objectives
+        // initialize global objectives
         new GlobalObjectives();
 
         // initialize combat tagging
@@ -595,7 +618,6 @@ public class BetonQuest extends VersionPlugin {
         registerConditions("gamemode", GameModeCondition.class);
         registerConditions("achievement", AchievementCondition.class);
         registerConditions("variable", VariableCondition.class);
-        registerConditions("fly", FlyingCondition.class);
         registerConditions("biome", BiomeCondition.class);
         registerConditions("dayofweek", DayOfWeekCondition.class);
         registerConditions("partialdate", PartialDateCondition.class);
@@ -604,6 +626,7 @@ public class BetonQuest extends VersionPlugin {
         registerConditions("facing", FacingCondition.class);
         registerConditions("conversation", ConversationCondition.class);
         registerConditions("mooncycle", MooncycleCondition.class);
+        ConditionsLoader.load(this);
 
         // register events
         registerEvents("message", MessageEvent.class);
@@ -677,9 +700,9 @@ public class BetonQuest extends VersionPlugin {
         registerObjectives("consume", ConsumeObjective.class);
         registerObjectives("variable", VariableObjective.class);
         registerObjectives("kill", KillPlayerObjective.class);
-        registerObjectives("breed", BreedObjective.class);
         registerObjectives("interact", EntityInteractObjective.class);
         registerObjectives("respawn", RespawnObjective.class);
+        ObjectivesLoader.load(this);
 
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
@@ -700,7 +723,6 @@ public class BetonQuest extends VersionPlugin {
         registerNotifyIO("title", TitleNotifyIO.class);
         registerNotifyIO("subtitle", SubTitleNotifyIO.class);
 
-
         // register variable types
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
@@ -718,15 +740,17 @@ public class BetonQuest extends VersionPlugin {
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         Bukkit.getScheduler().scheduleSyncDelayedTask(getJavaPlugin(), new Runnable() {
+
+            @Override
             public void run() {
                 // Load all events and conditions
                 loadData();
                 // Load global tags and points
                 globalData = new GlobalData();
                 // load data for all online players
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerID = PlayerConverter.getID(player);
-                    PlayerData playerData = new PlayerData(playerID);
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final String playerID = PlayerConverter.getID(player);
+                    final PlayerData playerData = new PlayerData(playerID);
                     playerDataMap.put(playerID, playerData);
                     playerData.startObjectives();
                     playerData.getJournal().update();
@@ -739,7 +763,7 @@ public class BetonQuest extends VersionPlugin {
         // block betonquestanswer logging (it's just a spam)
         try {
             Class.forName("org.apache.logging.log4j.core.Filter");
-            Logger coreLogger = (Logger) LogManager.getRootLogger();
+            final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not disable /betonquestanswer logging");
@@ -761,7 +785,7 @@ public class BetonQuest extends VersionPlugin {
      */
     public void loadData() {
         // save data of all objectives to the players
-        for (Objective objective : objectives.values()) {
+        for (final Objective objective : objectives.values()) {
             objective.close();
         }
         // clear previously loaded data
@@ -771,156 +795,174 @@ public class BetonQuest extends VersionPlugin {
         objectives.clear();
         variables.clear();
         // load new data
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            String packName = pack.getName();
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getName();
             LogUtils.getLogger().log(Level.FINE, "Loading stuff in package " + packName);
-            FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
-            for (String key : eConfig.getKeys(false)) {
+            final FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
+            for (final String key : eConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    LogUtils.getLogger().log(Level.WARNING, "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
                 EventID ID;
                 try {
                     ID = new EventID(pack, key);
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while loading event '" + packName + "." + key + "': " + e.getMessage());
+                } catch (final ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Error while loading event '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Objective type not defined in '" + packName + "." + key + "'");
+                } catch (final InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Objective type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                Class<? extends QuestEvent> eventClass = eventTypes.get(type);
+                final Class<? extends QuestEvent> eventClass = eventTypes.get(type);
                 if (eventClass == null) {
-                    // if it's null then there is no such type registered, log an error
+                    // if it's null then there is no such type registered, log
+                    // an error
                     LogUtils.getLogger().log(Level.WARNING, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + ID + "' event.");
                     continue;
                 }
                 try {
-                    QuestEvent event = eventClass.getConstructor(Instruction.class).newInstance(ID.generateInstruction());
+                    final QuestEvent event = eventClass.getConstructor(Instruction.class)
+                            .newInstance(ID.generateInstruction());
                     events.put(ID, event);
                     LogUtils.getLogger().log(Level.FINE, "  Event '" + ID + "' loaded");
-                } catch (InvocationTargetException e) {
+                } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        LogUtils.getLogger().log(Level.WARNING, "Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.getLogger().log(Level.WARNING,
+                                "Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
-            FileConfiguration cConfig = pack.getConditions().getConfig();
-            for (String key : cConfig.getKeys(false)) {
+            final FileConfiguration cConfig = pack.getConditions().getConfig();
+            for (final String key : cConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    LogUtils.getLogger().log(Level.WARNING, "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
                 ConditionID ID;
                 try {
                     ID = new ConditionID(pack, key);
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage());
+                } catch (final ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Error while loading condition '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Condition type not defined in '" + packName + "." + key + "'");
+                } catch (final InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Condition type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                Class<? extends Condition> conditionClass = conditionTypes.get(type);
-                // if it's null then there is no such type registered, log an error
+                final Class<? extends Condition> conditionClass = conditionTypes.get(type);
+                // if it's null then there is no such type registered, log an
+                // error
                 if (conditionClass == null) {
                     LogUtils.getLogger().log(Level.WARNING, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + ID + "' condition.");
                     continue;
                 }
                 try {
-                    Condition condition = conditionClass.getConstructor(Instruction.class).newInstance(ID.generateInstruction());
+                    final Condition condition = conditionClass.getConstructor(Instruction.class)
+                            .newInstance(ID.generateInstruction());
                     conditions.put(ID, condition);
                     LogUtils.getLogger().log(Level.FINE, "  Condition '" + ID + "' loaded");
-                } catch (InvocationTargetException e) {
+                } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        LogUtils.getLogger().log(Level.WARNING, "Error in '" + ID + "' condition (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.getLogger().log(Level.WARNING,
+                                "Error in '" + ID + "' condition (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
-            FileConfiguration oConfig = pack.getObjectives().getConfig();
-            for (String key : oConfig.getKeys(false)) {
+            final FileConfiguration oConfig = pack.getObjectives().getConfig();
+            for (final String key : oConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    LogUtils.getLogger().log(Level.WARNING, "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
                 ObjectiveID ID;
                 try {
                     ID = new ObjectiveID(pack, key);
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage());
+                } catch (final ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Error while loading objective '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
                     continue;
                 }
                 String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Objective type not defined in '" + packName + "." + key + "'");
+                } catch (final InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Objective type not defined in '" + packName + "." + key + "'");
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
+                final Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
                 // if it's null then there is no such type registered, log an
                 // error
                 if (objectiveClass == null) {
-                    LogUtils.getLogger().log(Level.WARNING, "Objective type " + type + " is not registered, check if it's"
-                            + " spelled correctly in '" + ID + "' objective.");
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Objective type " + type + " is not registered, check if it's"
+                                    + " spelled correctly in '" + ID + "' objective.");
                     continue;
                 }
                 try {
-                    Objective objective = objectiveClass.getConstructor(Instruction.class)
+                    final Objective objective = objectiveClass.getConstructor(Instruction.class)
                             .newInstance(ID.generateInstruction());
                     objectives.put(ID, objective);
                     LogUtils.getLogger().log(Level.FINE, "  Objective '" + ID + "' loaded");
-                } catch (InvocationTargetException e) {
+                } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        LogUtils.getLogger().log(Level.WARNING, "Error in '" + ID + "' objective (" + type + "): " + e.getCause().getMessage());
+                        LogUtils.getLogger().log(Level.WARNING,
+                                "Error in '" + ID + "' objective (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
-            for (String convName : pack.getConversationNames()) {
+            for (final String convName : pack.getConversationNames()) {
                 if (convName.contains(" ")) {
-                    LogUtils.getLogger().log(Level.WARNING, "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
-                            + " package)");
+                    LogUtils.getLogger().log(Level.WARNING,
+                            "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
+                                    + " package)");
                     continue;
                 }
                 try {
                     conversations.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, 
+                } catch (final InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.WARNING,
                             "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
                     LogUtils.logThrowable(e);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
@@ -929,14 +971,15 @@ public class BetonQuest extends VersionPlugin {
             LogUtils.getLogger().log(Level.FINE, "Everything in package " + packName + " loaded");
         }
         // done
-        LogUtils.getLogger().log(Level.INFO, "There are " + conditions.size() + " conditions, " + events.size() + " events, "
-                + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
-                + Config.getPackages().size() + " packages.");
+        LogUtils.getLogger().log(Level.INFO,
+                "There are " + conditions.size() + " conditions, " + events.size() + " events, "
+                        + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
+                        + Config.getPackages().size() + " packages.");
         // start those freshly loaded objectives for all players
-        for (PlayerData playerData : playerDataMap.values()) {
+        for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();
         }
-        //fire LoadDataEvent
+        // fire LoadDataEvent
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }
 
@@ -960,12 +1003,12 @@ public class BetonQuest extends VersionPlugin {
         // load all events, conditions, objectives, conversations etc.
         loadData();
         // start objectives and update journals for every online player
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String playerID = PlayerConverter.getID(player);
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            final String playerID = PlayerConverter.getID(player);
             LogUtils.getLogger().log(Level.FINE, "Updating journal for player " + PlayerConverter.getName(playerID));
-            PlayerData playerData = instance.getPlayerData(playerID);
+            final PlayerData playerData = instance.getPlayerData(playerID);
             GlobalObjectives.startAll(playerID);
-            Journal journal = playerData.getJournal();
+            final Journal journal = playerData.getJournal();
             journal.update();
         }
     }
@@ -973,8 +1016,8 @@ public class BetonQuest extends VersionPlugin {
     @Override
     public void onDisable() {
         // suspend all conversations
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            final Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
             if (conv != null)
                 conv.suspend();
             player.closeInventory();
@@ -1018,23 +1061,26 @@ public class BetonQuest extends VersionPlugin {
      * Stores the PlayerData in a map, so it can be retrieved using
      * getPlayerData(String playerID)
      *
-     * @param playerID   ID of the player
-     * @param playerData PlayerData object to store
+     * @param playerID
+     *            ID of the player
+     * @param playerData
+     *            PlayerData object to store
      */
-    public void putPlayerData(String playerID, PlayerData playerData) {
+    public void putPlayerData(final String playerID, final PlayerData playerData) {
         LogUtils.getLogger().log(Level.FINE, "Inserting data for " + PlayerConverter.getName(playerID));
         playerDataMap.put(playerID, playerData);
     }
 
     /**
-     * Retrieves PlayerData object for specified player. If the playerData
-     * does not exist but the player is online, it will create new playerData on
-     * the main thread and put it into the map.
+     * Retrieves PlayerData object for specified player. If the playerData does
+     * not exist but the player is online, it will create new playerData on the
+     * main thread and put it into the map.
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      * @return PlayerData object for the player
      */
-    public PlayerData getPlayerData(String playerID) {
+    public PlayerData getPlayerData(final String playerID) {
         PlayerData playerData = playerDataMap.get(playerID);
         if (playerData == null && PlayerConverter.getPlayer(playerID) != null) {
             playerData = new PlayerData(playerID);
@@ -1055,19 +1101,22 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Removes the database playerData from the map
      *
-     * @param playerID ID of the player whose playerData is to be removed
+     * @param playerID
+     *            ID of the player whose playerData is to be removed
      */
-    public void removePlayerData(String playerID) {
+    public void removePlayerData(final String playerID) {
         playerDataMap.remove(playerID);
     }
 
     /**
      * Registers new condition classes by their names
      *
-     * @param name           name of the condition type
-     * @param conditionClass class object for the condition
+     * @param name
+     *            name of the condition type
+     * @param conditionClass
+     *            class object for the condition
      */
-    public void registerConditions(String name, Class<? extends Condition> conditionClass) {
+    public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " condition type");
         conditionTypes.put(name, conditionClass);
     }
@@ -1075,10 +1124,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new event classes by their names
      *
-     * @param name       name of the event type
-     * @param eventClass class object for the condition
+     * @param name
+     *            name of the event type
+     * @param eventClass
+     *            class object for the condition
      */
-    public void registerEvents(String name, Class<? extends QuestEvent> eventClass) {
+    public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " event type");
         eventTypes.put(name, eventClass);
     }
@@ -1086,10 +1137,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new objective classes by their names
      *
-     * @param name           name of the objective type
-     * @param objectiveClass class object for the objective
+     * @param name
+     *            name of the objective type
+     * @param objectiveClass
+     *            class object for the objective
      */
-    public void registerObjectives(String name, Class<? extends Objective> objectiveClass) {
+    public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " objective type");
         objectiveTypes.put(name, objectiveClass);
     }
@@ -1097,10 +1150,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new conversation input/output class.
      *
-     * @param name        name of the IO type
-     * @param convIOClass class object to register
+     * @param name
+     *            name of the IO type
+     * @param convIOClass
+     *            class object to register
      */
-    public void registerConversationIO(String name, Class<? extends ConversationIO> convIOClass) {
+    public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " conversation IO type");
         convIOTypes.put(name, convIOClass);
     }
@@ -1108,10 +1163,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new interceptor class.
      *
-     * @param name             name of the interceptor type
-     * @param interceptorClass class object to register
+     * @param name
+     *            name of the interceptor type
+     * @param interceptorClass
+     *            class object to register
      */
-    public void registerInterceptor(String name, Class<? extends Interceptor> interceptorClass) {
+    public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " interceptor type");
         interceptorTypes.put(name, interceptorClass);
     }
@@ -1119,10 +1176,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new notify input/output class.
      *
-     * @param name    name of the IO type
-     * @param IOClass class object to register
+     * @param name
+     *            name of the IO type
+     * @param IOClass
+     *            class object to register
      */
-    public void registerNotifyIO(String name, Class<? extends NotifyIO> IOClass) {
+    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> IOClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " notify IO type");
         notifyIOTypes.put(name, IOClass);
     }
@@ -1130,10 +1189,12 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Registers new variable type.
      *
-     * @param name     name of the variable type
-     * @param variable class object of this type
+     * @param name
+     *            name of the variable type
+     * @param variable
+     *            class object of this type
      */
-    public void registerVariable(String name, Class<? extends Variable> variable) {
+    public void registerVariable(final String name, final Class<? extends Variable> variable) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " variable type");
         variableTypes.put(name, variable);
     }
@@ -1141,12 +1202,13 @@ public class BetonQuest extends VersionPlugin {
     /**
      * Returns the list of objectives of this player
      *
-     * @param playerID ID of the player
+     * @param playerID
+     *            ID of the player
      * @return list of this player's active objectives
      */
-    public ArrayList<Objective> getPlayerObjectives(String playerID) {
-        ArrayList<Objective> list = new ArrayList<>();
-        for (Objective objective : objectives.values()) {
+    public ArrayList<Objective> getPlayerObjectives(final String playerID) {
+        final ArrayList<Objective> list = new ArrayList<>();
+        for (final Objective objective : objectives.values()) {
             if (objective.containsPlayer(playerID)) {
                 list.add(objective);
             }
@@ -1155,20 +1217,22 @@ public class BetonQuest extends VersionPlugin {
     }
 
     /**
-     * @param name package name, dot and name of the conversation
+     * @param name
+     *            package name, dot and name of the conversation
      * @return ConversationData object for this conversation or null if it does
-     * not exist
+     *         not exist
      */
-    public ConversationData getConversation(String name) {
+    public ConversationData getConversation(final String name) {
         return conversations.get(name);
     }
 
     /**
-     * @param objectiveID package name, dot and ID of the objective
+     * @param objectiveID
+     *            package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */
-    public Objective getObjective(ObjectiveID objectiveID) {
-        for (Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+    public Objective getObjective(final ObjectiveID objectiveID) {
+        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 return e.getValue();
             }
@@ -1186,18 +1250,20 @@ public class BetonQuest extends VersionPlugin {
     }
 
     /**
-     * @param name name of the conversation IO type
+     * @param name
+     *            name of the conversation IO type
      * @return the class object for this conversation IO type
      */
-    public Class<? extends ConversationIO> getConvIO(String name) {
+    public Class<? extends ConversationIO> getConvIO(final String name) {
         return convIOTypes.get(name);
     }
 
     /**
-     * @param name name of the interceptor type
+     * @param name
+     *            name of the interceptor type
      * @return the class object for this interceptor type
      */
-    public Class<? extends Interceptor> getInterceptor(String name) {
+    public Class<? extends Interceptor> getInterceptor(final String name) {
         return interceptorTypes.get(name);
     }
 
@@ -1205,18 +1271,21 @@ public class BetonQuest extends VersionPlugin {
      * Resoles the variable for specified player. If the variable is not loaded
      * yet it will load it on the main thread.
      *
-     * @param packName name of the package
-     * @param name     name of the variable (instruction, with % characters)
-     * @param playerID ID of the player
+     * @param packName
+     *            name of the package
+     * @param name
+     *            name of the variable (instruction, with % characters)
+     * @param playerID
+     *            ID of the player
      * @return the value of this variable for given player
      */
-    public String getVariableValue(String packName, String name, String playerID) {
+    public String getVariableValue(final String packName, final String name, final String playerID) {
         try {
-            Variable var = createVariable(Config.getPackages().get(packName), name);
+            final Variable var = createVariable(Config.getPackages().get(packName), name);
             if (var == null)
                 return "could not resolve variable";
             return var.getValue(playerID);
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not create variable: " + e.getMessage());
             LogUtils.logThrowable(e);
             return "could not resolve variable";
@@ -1224,28 +1293,32 @@ public class BetonQuest extends VersionPlugin {
     }
 
     /**
-     * @param name the name of the event class, as previously registered
+     * @param name
+     *            the name of the event class, as previously registered
      * @return the class of the event
      */
-    public Class<? extends QuestEvent> getEventClass(String name) {
+    public Class<? extends QuestEvent> getEventClass(final String name) {
         return eventTypes.get(name);
     }
 
     /**
-     * @param name the name of the condition class, as previously registered
+     * @param name
+     *            the name of the condition class, as previously registered
      * @return the class of the event
      */
-    public Class<? extends Condition> getConditionClass(String name) {
+    public Class<? extends Condition> getConditionClass(final String name) {
         return conditionTypes.get(name);
     }
 
     /**
      * Renames the objective instance.
      *
-     * @param name   the current name
-     * @param rename the name it should have now
+     * @param name
+     *            the current name
+     * @param rename
+     *            the name it should have now
      */
-    public void renameObjective(ObjectiveID name, ObjectiveID rename) {
+    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
         objectives.put(rename, objectives.remove(name));
     }
 }
