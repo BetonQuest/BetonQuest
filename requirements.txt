@@ -1,4 +1,4 @@
-mkdocs
+mkdocs==1.0.4
 mkdocs-material
 mkpdfs-mkdocs
 mkdocs-git-revision-date-localized-plugin
