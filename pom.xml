@@ -245,7 +245,7 @@
         <!-- HolographicDisplays -->
         <repository>
             <id>filoghost-repo</id>
-            <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
