@@ -1,28 +1,36 @@
-site_name: BetonQuest
-site_author: Co0sh
+site_name: BetonQuest - UNOFFICIAL
+site_author: Co0sh and contributors
 site_url: https://betonquest.pl
-repo_name: Co0sh/BetonQuest
-repo_url: https://github.com/Co0sh/BetonQuest
+site_dir: target/docs
+repo_name: BetonQuest/BetonQuest
+repo_url: https://github.com/BetonQuest/BetonQuest
 edit_uri: ""
-copyright: '© 2019  Jakub "Co0sh" Sapalski. GPLv3'
+copyright: '© 2020  Jakub "Co0sh" Sapalski  & Contributers. GPLv3'
+
 
 extra_css:
   - 'css/mkpdf.css'
   - 'css/version_select.css'
+  - 'css/superFences.css'
 
 extra_javascript:
   - 'js/version_select.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
-  name: 'material'
-  logo: 'img/header_logo.png'
-  favicon: 'img/favicon.ico'
+  name: material
+  language: en
+  features:
+    - tabs
+    - instant
   palette:
-    primary: 'indigo'
-    accent: 'indigo'
-#  feature:
-#    tabs: false
+    primary: indigo
+    accent: indigo
+  font:
+      text: Roboto
+      code: Roboto Mono
+  logo: images/design/header_logo.png
+  favicon: images/design/favicon.ico
 
 
 
@@ -38,19 +46,20 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences
+  - pymdownx.tabbed
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
   - toc:
-      permalink: false
-#  - footnotes
-#  - metadata
+      permalink: true
+  - footnotes
 
 # Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine
 plugins:
@@ -58,30 +67,49 @@ plugins:
   - git-revision-date-localized:
       type: timeago
   - mkpdfs:
-      author: BetonQuest Developers
+      author: Co0sh and contributors
       toc_title: Table of contents
-      output_path: pdf/documentation.pdf
+      output_path: pdf/BetonQuest.pdf
       design: docs/css/pdf.css
+
 
 # Discord not yet supported but it will be soon
 extra:
   social:
-    - type: discord
-      link: https://discord.gg/MvmkHEu
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/rK6mfHq
+    - icon: fontawesome/solid/faucet
+      link: https://spigotmc.org/resources/betonquest.2117/
+    - icon: fontawesome/brands/github
+      link: https://github.com/BetonQuest/BetonQuest
+    - icon: fontawesome/solid/archive
+      link: https://betonquest.pl
+
+
 
 nav:
-  - Introduction: index.md
-  - Installation and Configuration: 02-Installation-and-Configuration.md
-  - Commands and Permissions: 03-Commands-and-permissions.md
-  - Quick Start Tutorial: 04-Quick-start-tutorial.md
-  - Reference: 05-Reference.md
-  - Notifications: Notifications.md
-  - Conditions: 06-Conditions-List.md
-  - Events: 07-Events-List.md
-  - Objectives: 08-Objectives-List.md
-  - Variables: 09-Variables-List.md
-  - Compatibility: 10-Compatibility.md
-  - Tips and Tricks: 11-Tips-and-tricks.md
-  - FAQ: 12-Frequently-Asked-Questions.md
-  - Developers: 13-Info-for-developers.md
-  - Contributing: 14-Contributing.md
+  - Introduction:
+      - General Information: index.md
+      - Installation and Configuration: 02-Installation-and-Configuration.md
+      - Commands and Permissions: 03-Commands-and-permissions.md
+  - Learning Beton:
+      - Prerequisites: Prerequisites.md
+      - Fundamentals: 04-Quick-start-tutorial.md
+      - Tips and Tricks: 11-Tips-and-tricks.md
+      - FAQ: 12-Frequently-Asked-Questions.md
+  - User Documentation:
+      - Reference: 05-Reference.md
+      - Events List: 07-Events-List.md
+      - Objectives List: 08-Objectives-List.md
+      - Conditions List: 06-Conditions-List.md
+      - Compability List: 10-Compatibility.md
+      - Notifications: Notifications.md
+      - Variables: 09-Variables-List.md
+  - Contributing:
+      - How to help the project: 14-Contributing.md
+  - Information for developers:
+      - Developers: 13-Info-for-developers.md
+
+google_analytics:
+  - UA-164568470-1
+  - auto

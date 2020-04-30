@@ -1,4 +1,6 @@
-mkdocs==1.0.4
-mkdocs-material
-mkpdfs-mkdocs
-mkdocs-git-revision-date-localized-plugin
+mkdocs==1.1
+mkdocs-exclude==1.0.2
+mkdocs-material==5.1.5
+git+https://github.com/jwaschkau/mkpdfs-mkdocs-plugin.git@fix/string-types
+mkdocs-git-revision-date-localized-plugin==0.5.0
+mkdocs-awesome-pages-plugin==2.2.1
