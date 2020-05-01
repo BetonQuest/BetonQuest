@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -43,14 +43,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class NPCRegionCondition extends Condition {
 
     private final int ID;
-    private final String region;
+    private final String regionName;
 
     public NPCRegionCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();
-        region = instruction.next();
+        regionName = instruction.next();
     }
 
     @Override
@@ -64,11 +64,16 @@ public class NPCRegionCondition extends Condition {
 
         Player player = PlayerConverter.getPlayer(playerID);
         WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(worldguardPlatform.getWorldByName(player.getWorld().getName()));
+        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
         if (manager == null) {
             return false;
         }
-        ApplicableRegionSet set = manager.getApplicableRegions(new Vector(player.getLocation().getX(), player.getLocation().getY(),player.getLocation().getZ()));
+        ProtectedRegion region = manager.getRegion(regionName);
+        if(region == null) {
+            return false;
+        }
+
+        ApplicableRegionSet set = manager.getApplicableRegions(BukkitAdapter.asVector(player.getLocation()));
 
         for (ProtectedRegion compare : set) {
             if (compare.equals(region))

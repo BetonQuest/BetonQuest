@@ -17,7 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -47,15 +47,13 @@ public class RegionCondition extends Condition {
     public boolean check(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
         WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(worldguardPlatform.getWorldByName(player.getWorld().getName()));
-        if (manager == null) {
-            return false;
-        }
+        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+        if (manager == null) return false;
         ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(new Vector(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+        if (region == null) return false;
+        ApplicableRegionSet set = manager.getApplicableRegions(BukkitAdapter.asVector(player.getLocation()));
         for (ProtectedRegion compare : set) {
-            if (compare.equals(region))
-                return true;
+            if (compare.equals(region)) return true;
         }
         return false;
     }

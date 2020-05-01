@@ -54,7 +54,8 @@ public class RegionCondition extends Condition {
             return false;
         }
         ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+        if (region == null) return false;
+        ApplicableRegionSet set = manager.getApplicableRegions(BukkitAdapter.asBlockVector(player.getLocation()));
         for (ProtectedRegion compare : set) {
             if (compare.equals(region))
                 return true;
