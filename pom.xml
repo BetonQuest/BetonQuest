@@ -76,8 +76,8 @@
 
         <!-- WorldGuard,WorldEdit -->
         <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
