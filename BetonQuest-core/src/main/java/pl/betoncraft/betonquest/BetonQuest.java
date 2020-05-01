@@ -842,6 +842,8 @@ public class BetonQuest extends VersionPlugin {
                                 "Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
+                        LogUtils.getLogger().log(Level.WARNING,
+                                "Error while loading '" + ID + "' event (" + type + ").");
                         LogUtils.logThrowableReport(e);
                     }
                 } catch (final Exception e) {

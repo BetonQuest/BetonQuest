@@ -311,13 +311,7 @@ public class Conversation implements Listener {
         list.remove(playerID);
         HandlerList.unregisterAll(this);
 
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
-            }
-        }.runTask(BetonQuest.getInstance().getJavaPlugin());
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(this));
     }
 
     /**
@@ -360,8 +354,6 @@ public class Conversation implements Listener {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (event.getMessage() == null)
-            return;
         String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
@@ -420,19 +412,7 @@ public class Conversation implements Listener {
         // delete conversation
         list.remove(playerID);
         HandlerList.unregisterAll(this);
-
-        try {
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
-                }
-            }.runTask(BetonQuest.getInstance().getJavaPlugin());
-        } catch (IllegalPluginAccessException e) {
-            LogUtils.logThrowableIgnore(e);
-        }
-
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(this));
     }
 
     /**
@@ -485,14 +465,8 @@ public class Conversation implements Listener {
 
         public void run() {
             // the conversation start event must be run on next tick
-            PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                }
-            }.runTask(BetonQuest.getInstance().getJavaPlugin());
+            PlayerConversationStartEvent event = new PlayerConversationStartEvent(conv);
+            Bukkit.getServer().getPluginManager().callEvent(event);
 
             // stop the conversation if it's canceled
             if (event.isCancelled())
@@ -562,15 +536,8 @@ public class Conversation implements Listener {
 
             // print NPC's text
             printNPCText();
-            ConversationOptionEvent e = new ConversationOptionEvent(player, conv, option, conv.option);
-
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getPluginManager().callEvent(e);
-                }
-            }.runTask(BetonQuest.getInstance().getJavaPlugin());
+            ConversationOptionEvent e = new ConversationOptionEvent(conv, option, conv.option);
+            Bukkit.getPluginManager().callEvent(e);
 
         }
     }
@@ -629,19 +596,13 @@ public class Conversation implements Listener {
             selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
             // print to player npc's answer
             printNPCText();
-            ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
+            ConversationOptionEvent event = new ConversationOptionEvent(conv, option, conv.option);
 
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                    // fire events
-                    for (EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
-                        BetonQuest.event(playerID, event);
-                    }
-                }
-            }.runTask(BetonQuest.getInstance().getJavaPlugin());
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            // fire events
+            for (EventID eventId : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
+                BetonQuest.event(playerID, eventId);
+            }
         }
     }
 
@@ -678,5 +639,9 @@ public class Conversation implements Listener {
         public void run() {
             endConversation();
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

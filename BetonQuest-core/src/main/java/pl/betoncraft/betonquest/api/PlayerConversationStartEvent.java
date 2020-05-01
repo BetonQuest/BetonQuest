@@ -19,8 +19,8 @@ package pl.betoncraft.betonquest.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import pl.betoncraft.betonquest.conversation.Conversation;
 
 /**
@@ -28,7 +28,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  *
  * @author Jakub Sapalski
  */
-public class PlayerConversationStartEvent extends PlayerEvent implements Cancellable {
+public class PlayerConversationStartEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private Conversation conversation;
@@ -37,11 +37,10 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     /**
      * Creates new conversation end event.
      *
-     * @param who          the player who started the conversation
      * @param conversation conversation which is about to start
      */
-    public PlayerConversationStartEvent(Player who, Conversation conversation) {
-        super(who);
+    public PlayerConversationStartEvent(Conversation conversation) {
+        super(true);
         this.conversation = conversation;
     }
 
@@ -55,6 +54,8 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     public Conversation getConversation() {
         return conversation;
     }
+
+    public Player getPlayer() { return conversation.getPlayer(); }
 
     public HandlerList getHandlers() {
         return handlers;

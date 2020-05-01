@@ -18,8 +18,8 @@
 package pl.betoncraft.betonquest.api;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import pl.betoncraft.betonquest.conversation.Conversation;
 
 /**
@@ -27,7 +27,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  *
  * @author Jakub Sapalski
  */
-public class PlayerConversationEndEvent extends PlayerEvent {
+public class PlayerConversationEndEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
     private Conversation conversation;
@@ -35,11 +35,10 @@ public class PlayerConversationEndEvent extends PlayerEvent {
     /**
      * Creates new conversation start event
      *
-     * @param who          player
      * @param conversation conversation which has been started
      */
-    public PlayerConversationEndEvent(Player who, Conversation conversation) {
-        super(who);
+    public PlayerConversationEndEvent(Conversation conversation) {
+        super(false);
         this.conversation = conversation;
     }
 
@@ -53,6 +52,8 @@ public class PlayerConversationEndEvent extends PlayerEvent {
     public Conversation getConversation() {
         return conversation;
     }
+
+    public Player getPlayer() { return conversation.getPlayer(); }
 
     public HandlerList getHandlers() {
         return handlers;

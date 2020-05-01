@@ -26,13 +26,12 @@ public class ConversationOptionEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private Player player;
     private Conversation conv;
     private String selectedOption;
     private String npcResponse;
 
-    public ConversationOptionEvent(Player player, Conversation conv, String playerChosen, String npcResponse) {
-        this.player = player;
+    public ConversationOptionEvent(Conversation conv, String playerChosen, String npcResponse) {
+        super(true);
         this.conv = conv;
         this.selectedOption = playerChosen;
         this.npcResponse = npcResponse;
@@ -46,7 +45,7 @@ public class ConversationOptionEvent extends Event {
      * @return the player who is having a conversation
      */
     public Player getPlayer() {
-        return player;
+        return conv.getPlayer();
     }
 
     /**
