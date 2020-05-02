@@ -9,7 +9,7 @@
     <a href="https://travis-ci.org/Co0sh/BetonQuest" target="_blank">
         <img src="https://travis-ci.org/Co0sh/BetonQuest.svg?branch=master" alt="Build Status">
     </a>
-    <a href="https://github.com/Co0sh/BetonQuest/blob/master/LICENSE">
+    <a href="https://github.com/BetonQuest/BetonQuest/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
       </a>
     <a href="https://discord.gg/MvmkHEu" target="_blank">
@@ -27,7 +27,7 @@
 
 BetonQuest is a Spigot questing plugin. It lets the users create complex quests, NPC conversations and other server mechanics for their players.
 
-This page is contains information important for developers. If you're a user of BetonQuest, head to the [Spigot page](https://www.spigotmc.org/resources/betonquest.2117/) or the [official Wiki](https://github.com/Co0sh/BetonQuest/wiki). Alternatively, you can ask for support on [Issues](https://github.com/Co0sh/BetonQuest/issues).
+This page is contains information important for developers. If you're a user of BetonQuest, head to the [Spigot page](https://www.spigotmc.org/resources/betonquest.2117/) or the [official Wiki](https://github.com/BetonQuest/BetonQuest/wiki). Alternatively, you can ask for support on [Issues](https://github.com/BetonQuest/BetonQuest/issues).
 
 ## Getting started
 
@@ -37,7 +37,7 @@ If you're looking for an already compiled binaries visit [Releases](https://gith
 
 In order to compile BetonQuest you need to have [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed on your system (version 8 or later). This is basically the Java compiler.
 
-In order to easily build the plugin _.jar_ file you'll need [Maven](https://maven.apache.org), the build automation tool. Simply download a binary zip archive and unpack it somewhere on your system. Don't forget to add `bin` directory [to your PATH](https://www.google.com/search?q=add+directory+to+path).
+In order to easily build the plugin _.jar_ file you'll need [Maven](https://maven.apache.org), the build automation tool. Simply download a binary zip archive and unpack it somewhere on your system. Don't forget to add `bin` directory [to your PATH](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
 
 Additionally, Maven needs the [`JAVA_HOME` environment variable](https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html) to point to your JDK installation in order to work.
 
@@ -71,7 +71,7 @@ BetonQuest is installed like any other Spigot plugin, by dropping the _BetonQues
 
 ## Documentation
 
-The documentation for the current plugin features is located in [here](https://betonquest.github.io/BetonQuest/en/latest/). You can also find the same docs compiled into a _.pdf_ file [here](https://betonquest.github.io/BetonQuest/en/latest/pdf/documentation.pdf).
+The documentation for the current plugin features is located in [here](https://betonquest.github.io/BetonQuest/). You can also find the same docs compiled into a _.pdf_ file [here](https://betonquest.github.io/BetonQuest/en/latest/pdf/documentation.pdf).
 
 ## Contributing
 
