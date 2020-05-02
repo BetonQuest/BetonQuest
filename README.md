@@ -19,7 +19,7 @@
 
 ---
 
-**Documentation**: <a href="https://betonquest.github.io/BetonQuest/en/latest/" target="_blank">https://betonquest.github.io/BetonQuest/en/latest/</a>
+**Documentation**: <a href="https://betonquest.github.io/BetonQuest/" target="_blank">https://betonquest.github.io/BetonQuest/</a>
 
 **Source Code**: <a href="https://github.com/BetonQuest/BetonQuest/" target="_blank">https://github.com/BetonQuest/BetonQuest</a>
 
