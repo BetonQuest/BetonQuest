@@ -17,17 +17,21 @@
  */
 package pl.betoncraft.betonquest;
 
+import co.aikar.locales.LocaleManager;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.persistence.PersistentDataType;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
@@ -37,13 +41,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -52,11 +50,12 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class Journal {
+    public static final NamespacedKey JOURNAL_KEY = new NamespacedKey(BetonQuest.getInstance().getJavaPlugin(), "journal");
 
     private String playerID;
     private List<Pointer> pointers;
     private List<String> texts = new ArrayList<>();
-    private String lang;
+    private Locale lang;
     private String mainPage;
 
     /**
@@ -66,7 +65,7 @@ public class Journal {
      * @param list     list of pointers to journal entries
      * @param lang     default language to use when generating the journal
      */
-    public Journal(String playerID, String lang, List<Pointer> list) {
+    public Journal(String playerID, Locale lang, List<Pointer> list) {
         // generate texts from list of pointers
         this.playerID = playerID;
         this.lang = lang;
@@ -80,18 +79,17 @@ public class Journal {
      * @param item     ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
-    public static boolean isJournal(String playerID, ItemStack item) {
+    public static boolean isJournal(PlayerData playerData, ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
             return false;
         }
+        if(!item.hasItemMeta()) return false;
+        String s = item.getItemMeta().getPersistentDataContainer().get(JOURNAL_KEY, PersistentDataType.STRING);
         // get language
-        String playerLang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-        // check all properties of the item and return the result
-        return (item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
-                && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
-                && item.getItemMeta().hasLore()
-                && item.getItemMeta().getLore().contains(Config.getMessage(playerLang, "journal_lore")));
+        // String lang = playerData.getLanguage().getCountry();
+
+        return s != null; // && s.equalsIgnoreCase(lang);
     }
 
     /**
@@ -178,7 +176,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
-    public void generateTexts(String lang) {
+    public void generateTexts(Locale lang) {
         // remove previous texts
         texts.clear();
         this.lang = lang;

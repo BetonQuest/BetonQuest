@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.events;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -39,7 +40,7 @@ public class CancelEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        BetonQuest.getInstance().getPlayerData(playerID).cancelQuest(canceler);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.cancelQuest(canceler));
     }
 
 }

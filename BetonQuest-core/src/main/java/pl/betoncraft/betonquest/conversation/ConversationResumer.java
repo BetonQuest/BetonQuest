@@ -72,7 +72,7 @@ public class ConversationResumer implements Listener {
                 HandlerList.unregisterAll(this);
                 BetonQuest.getInstance().getSaver()
                         .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
-                new Conversation(playerID, conversationID, loc, option);
+                Conversation.of(playerID, conversationID, loc, option);
             }
         }
     }

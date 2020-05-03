@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -166,6 +167,9 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.id.VariableID;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
+import pl.betoncraft.betonquest.listener.CustomDropListener;
+import pl.betoncraft.betonquest.listener.JoinQuitListener;
+import pl.betoncraft.betonquest.listener.MobKillListener;
 import pl.betoncraft.betonquest.multiversion.ConditionsLoader;
 import pl.betoncraft.betonquest.multiversion.ObjectivesLoader;
 import pl.betoncraft.betonquest.notify.ActionBarNotifyIO;
@@ -750,12 +754,13 @@ public class BetonQuest extends VersionPlugin {
                 // load data for all online players
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
-                    final PlayerData playerData = new PlayerData(playerID);
-                    playerDataMap.put(playerID, playerData);
-                    playerData.startObjectives();
-                    playerData.getJournal().update();
-                    if (playerData.getConversation() != null)
-                        new ConversationResumer(playerID, playerData.getConversation());
+                    PlayerData.of(playerID).thenAccept(data -> {
+                        playerDataMap.put(playerID, data);
+                        data.startObjectives();
+                        data.getJournal().update();
+                        if (data.getConversation() != null)
+                            new ConversationResumer(playerID, data.getConversation());
+                    });
                 }
             }
         });
@@ -1008,10 +1013,11 @@ public class BetonQuest extends VersionPlugin {
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String playerID = PlayerConverter.getID(player);
             LogUtils.getLogger().log(Level.FINE, "Updating journal for player " + PlayerConverter.getName(playerID));
-            final PlayerData playerData = instance.getPlayerData(playerID);
-            GlobalObjectives.startAll(playerID);
-            final Journal journal = playerData.getJournal();
-            journal.update();
+
+            instance.getPlayerData(playerID).thenAccept(data -> {
+                GlobalObjectives.startAll(playerID);
+                data.getJournal().update();
+            });
         }
     }
 
@@ -1075,20 +1081,33 @@ public class BetonQuest extends VersionPlugin {
 
     /**
      * Retrieves PlayerData object for specified player. If the playerData does
-     * not exist but the player is online, it will create new playerData on the
-     * main thread and put it into the map.
+     * not exist but the player is online, it will create new playerData.
      *
      * @param playerID
      *            ID of the player
      * @return PlayerData object for the player
      */
-    public PlayerData getPlayerData(final String playerID) {
+    public CompletableFuture<PlayerData> getPlayerData(final String playerID) {
         PlayerData playerData = playerDataMap.get(playerID);
-        if (playerData == null && PlayerConverter.getPlayer(playerID) != null) {
-            playerData = new PlayerData(playerID);
-            putPlayerData(playerID, playerData);
+        if (playerData != null) return CompletableFuture.completedFuture(playerData);
+        if (PlayerConverter.getPlayer(playerID) != null) {
+            return PlayerData.of(playerID).thenApply(data -> {
+                putPlayerData(playerID, data);
+                return data;
+            });
         }
-        return playerData;
+        throw new IllegalArgumentException("PlayerID " + playerID + " is unknown.");
+    }
+
+    /**
+     * Retrieves PlayerData object for specified player. If the playerData does
+     * not exist but the player is online, it will return null.
+     *
+     * @param playerID ID of the player
+     * @return nullable PlayerData
+     */
+    public PlayerData getPlayerDataIfPresent(final String playerID) {
+        return playerDataMap.get(playerID);
     }
 
     /**

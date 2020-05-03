@@ -52,14 +52,16 @@ public class JournalEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        Journal journal = BetonQuest.getInstance().getPlayerData(playerID).getJournal();
-        if (add) {
-            journal.addPointer(new Pointer(name, new Date().getTime()));
-            Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");
-        } else if (name != null) {
-            journal.removePointer(name);
-        }
-        journal.update();
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
+            Journal journal = data.getJournal();
+            if (add) {
+                journal.addPointer(new Pointer(name, new Date().getTime()));
+                Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");
+            } else if (name != null) {
+                journal.removePointer(name);
+            }
+            journal.update();
+        });
     }
 
 }

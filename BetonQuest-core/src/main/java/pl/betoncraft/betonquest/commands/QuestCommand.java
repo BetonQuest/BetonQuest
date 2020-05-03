@@ -76,7 +76,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  *
  * @author Jakub Sapalski
  */
-public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
+public class QuestCommand {
 
     private BetonQuest instance = BetonQuest.getInstance();
     private String defaultPack = Config.getString("config.default_package");
@@ -90,7 +90,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
-    @Override
+
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("betonquest")) {
@@ -104,31 +104,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             // if there are arguments handle them
             // toLowerCase makes switch case-insensitive
             switch (args[0].toLowerCase()) {
-            case "conditions":
-            case "condition":
-            case "c":
-                // conditions are only possible for online players, so no
-                // MySQL async
-                // access is required
-                handleConditions(sender, args);
-                break;
-            case "events":
-            case "event":
-            case "e":
-                // the same goes for events
-                handleEvents(sender, args);
-                break;
-            case "items":
-            case "item":
-            case "i":
-                // and items, which only use configuration files (they
-                // should be sync)
-                handleItems(sender, args);
-                break;
-            case "give":
-            case "g":
-                giveItem(sender, args);
-                break;
+
             case "config":
                 // config is also only synchronous
                 handleConfig(sender, args);
@@ -473,34 +449,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 completations.add(pack + "." + key);
             }
             return completations;
-        }
-    }
-
-    /**
-     * Gives an item to the player
-     */
-    private void giveItem(CommandSender sender, String[] args) {
-        // sender must be a player
-        if (!(sender instanceof Player)) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, sender must be player");
-            return;
-        }
-        // and the item name must be specified
-        if (args.length < 2) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, item's name must be supplied");
-            sendMessage(sender, "specify_item");
-            return;
-        }
-        try {
-            ItemID itemID = new ItemID(null, args[1]);
-            QuestItem item = new QuestItem(itemID);
-            ((Player) sender).getInventory().addItem(item.generate(1));
-        } catch (InstructionParseException | ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[] {
-                    e.getMessage()
-            });
-            LogUtils.getLogger().log(Level.WARNING, "Error while creating an item: " + e.getMessage());
-            LogUtils.logThrowable(e);
         }
     }
 
@@ -910,63 +858,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 3)
             return completeId(sender, args, null);
         return new ArrayList<>();
-    }
-
-    /**
-     * Adds item held in hand to items.yml file
-     */
-
-    private void handleItems(CommandSender sender, String[] args) {
-        // sender must be a player
-        if (!(sender instanceof Player)) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, sender must be player");
-            return;
-        }
-        // and the item name must be specified
-        if (args.length < 2) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, item's name must be supplied");
-            sendMessage(sender, "specify_item");
-            return;
-        }
-        String itemID = args[1];
-        String pack;
-        String name;
-        if (itemID.contains(".")) {
-            String[] parts = itemID.split("\\.");
-            pack = parts[0];
-            name = parts[1];
-        } else {
-            pack = defaultPack;
-            name = itemID;
-        }
-        Player player = (Player) sender;
-        ItemStack item = null;
-        item = player.getInventory().getItemInMainHand();
-
-        // if item is air then there is nothing to add to items.yml
-        if (item == null || item.getType() == Material.AIR) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, item must not be air");
-            sendMessage(sender, "no_item");
-            return;
-        }
-        // define parts of the final string
-        ConfigPackage configPack = Config.getPackages().get(pack);
-        if (configPack == null) {
-            LogUtils.getLogger().log(Level.FINE, "Cannot continue, package does not exist");
-            sendMessage(sender, "specify_package");
-            return;
-        }
-        ConfigAccessor config = configPack.getItems();
-        String instructions = QuestItem.itemToString(item);
-        // save it in items.yml
-        LogUtils.getLogger().log(Level.FINE, "Saving item to configuration as " + args[1]);
-        config.getConfig().set(name, instructions.trim());
-        config.saveConfig();
-        // done
-        sendMessage(sender, "item_created", new String[] {
-                args[1]
-        });
-
     }
 
     /**

@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.item.QuestItem;
@@ -32,6 +33,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Gives the player specified items
@@ -73,10 +75,11 @@ public class GiveEvent extends QuestEvent {
                 }
                 ItemStack item = questItem.generate(stackSize);
                 HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
+                CompletableFuture<PlayerData> playerData = BetonQuest.getInstance().getPlayerData(playerID);
                 for (Integer leftNumber : left.keySet()) {
                     ItemStack itemStack = left.get(leftNumber);
                     if (Utils.isQuestItem(itemStack)) {
-                        BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
+                        playerData.thenAccept(data -> data.addItem(itemStack, stackSize));
                     } else {
                         player.getWorld().dropItem(player.getLocation(), itemStack);
                     }

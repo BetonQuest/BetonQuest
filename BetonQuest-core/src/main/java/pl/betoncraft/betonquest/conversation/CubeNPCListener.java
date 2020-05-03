@@ -115,7 +115,7 @@ public class CubeNPCListener implements Listener {
                     return;
                 }
                 event.setCancelled(true);
-                new Conversation(PlayerConverter.getID(event.getPlayer()), assignment,
+                Conversation.of(PlayerConverter.getID(event.getPlayer()), assignment,
                         event.getClickedBlock().getLocation().add(0.5, -1, 0.5));
             } else {
                 LogUtils.getLogger().log(Level.WARNING, "Cannot start conversation: nothing assigned to " + conversationID);

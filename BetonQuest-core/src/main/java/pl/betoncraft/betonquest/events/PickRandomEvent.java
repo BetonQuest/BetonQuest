@@ -75,7 +75,6 @@ public class PickRandomEvent extends QuestEvent {
             double found = Math.random() * total;
             double current = 0;
             //go through all random events and pick the first one where the current sum is higher than the found random number
-            inner:
             for (int i = 0; i < events.size(); i++) {
                 RandomEvent event = events.get(i);
                 current += event.getChance().getDouble(playerID);
@@ -85,7 +84,7 @@ public class PickRandomEvent extends QuestEvent {
                     //remove the event from the list so that it's not picked again
                     events.remove(i);
                     total -= event.getChance().getDouble(playerID);
-                    break inner;
+                    break;
                 }
             }
         }

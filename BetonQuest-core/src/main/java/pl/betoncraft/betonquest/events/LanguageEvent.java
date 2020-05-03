@@ -24,6 +24,8 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
+import java.util.Locale;
+
 /**
  * Changes player's language.
  *
@@ -31,11 +33,11 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  */
 public class LanguageEvent extends QuestEvent {
 
-    private String lang;
+    private Locale lang;
 
     public LanguageEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
-        lang = instruction.next();
+//        lang = instruction.next(); // TODO: Lang -> Locale
         if (!Config.getLanguages().contains(lang)) {
             throw new InstructionParseException("Language " + lang + " does not exists");
         }
@@ -43,7 +45,7 @@ public class LanguageEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) throws QuestRuntimeException {
-        BetonQuest.getInstance().getPlayerData(playerID).setLanguage(lang);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.setLanguage(lang));
     }
 
 }

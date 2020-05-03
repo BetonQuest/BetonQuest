@@ -18,10 +18,15 @@
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.session.MoveType;
+import com.sk89q.worldguard.session.Session;
+import com.sk89q.worldguard.session.handler.Handler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -33,6 +38,8 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.Set;
 
 /**
  * Player has to enter the WorldGuard region
@@ -112,5 +119,4 @@ public class RegionObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return "";
     }
-
 }

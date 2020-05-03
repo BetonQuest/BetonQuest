@@ -17,8 +17,12 @@
  */
 package pl.betoncraft.betonquest.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Single;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -28,8 +32,7 @@ import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 /**
@@ -37,13 +40,18 @@ import java.util.logging.Level;
  *
  * @author Jakub Sapalski
  */
-public class LangCommand implements CommandExecutor, SimpleTabCompleter {
-
-    public LangCommand() {
-        BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
-        BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);
+@CommandAlias("questlang")
+public class LangCommand extends BaseCommand {
+    public static void registerTabCompletions(BukkitCommandManager manager) {
+        manager.getCommandCompletions().registerCompletion("languages", c -> Config.getLanguages());
     }
 
+    @Default
+    public CompletableFuture<Void> onCommand(Player player, @Single String lang) {
+        return CompletableFuture.completedFuture(null);
+        // TODO: Better language implementation. Maybe try to use the language system from ACF
+    }
+/*
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("questlang")) {
@@ -86,13 +94,5 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            return Config.getLanguages();
-        }
-        return new ArrayList<>();
-    }
+    }*/
 }

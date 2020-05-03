@@ -17,40 +17,33 @@
  */
 package pl.betoncraft.betonquest.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Dependency;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Gives the player his journal
  *
  * @author Jakub Sapalski
  */
-public class JournalCommand implements CommandExecutor {
+@CommandAlias("journal")
+public class JournalCommand extends BaseCommand {
+    @Dependency
+    BetonQuest plugin;
 
-    /**
-     * Registers a new executor of the /journal command
-     */
-    public JournalCommand() {
-        BetonQuest.getInstance().getCommand("journal").setExecutor(this);
-    }
+    @Default
+    public CompletableFuture<Void> onCommand(Player player) {
+        // giving the player his journal
+        return plugin.getPlayerData(PlayerConverter.getID(player)).thenAccept(data -> data.getJournal()
+                .addToInv(Integer.parseInt(Config.getString("config.default_journal_slot"))));
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("journal")) {
-            // command sender must be a player, console can't have journal
-            if (sender instanceof Player) {
-                // giving the player his journal
-                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal()
-                        .addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
-            }
-            return true;
-        }
-        return false;
     }
 
 }

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest;
+package pl.betoncraft.betonquest.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.MobKillNotifier;
 
 /**

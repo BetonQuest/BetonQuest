@@ -163,23 +163,25 @@ public abstract class Objective {
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
         removePlayer(playerID);
-        BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
-        if (persistent) {
-            BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            addPlayer(playerID, getDefaultDataInstruction());
-        }
-        LogUtils.getLogger().log(Level.FINE,
-                "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
-                        + PlayerConverter.getName(playerID)
-                        + ", firing events.");
-        // fire all events
-        for (EventID event : events) {
-            BetonQuest.event(playerID, event);
-        }
-        LogUtils.getLogger().log(Level.FINE,
-                "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
-                        + PlayerConverter.getName(playerID)
-                        + " finished");
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(playerData -> {
+            playerData.removeRawObjective((ObjectiveID) instruction.getID());
+            if (persistent) {
+                playerData.addNewRawObjective((ObjectiveID) instruction.getID());
+                addPlayer(playerID, getDefaultDataInstruction());
+            }
+            LogUtils.getLogger().log(Level.FINE,
+                    "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
+                            + PlayerConverter.getName(playerID)
+                            + ", firing events.");
+            // fire all events
+            for (EventID event : events) {
+                BetonQuest.event(playerID, event);
+            }
+            LogUtils.getLogger().log(Level.FINE,
+                    "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
+                            + PlayerConverter.getName(playerID)
+                            + " finished");
+        });
     }
 
     /**
@@ -213,7 +215,7 @@ public abstract class Objective {
     public final void newPlayer(String playerID) {
         String def = getDefaultDataInstruction();
         addPlayer(playerID, def);
-        BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.addObjToDB(instruction.getID().getFullID(), def));
     }
 
     /**
@@ -313,8 +315,8 @@ public abstract class Objective {
     public void close() {
         stop();
         for (String playerID : dataMap.keySet()) {
-            BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(),
-                    dataMap.get(playerID).toString());
+            BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.addRawObjective(instruction.getID().getFullID(),
+                    dataMap.get(playerID).toString()));
         }
     }
 
@@ -394,7 +396,7 @@ public abstract class Objective {
             Bukkit.getPluginManager().callEvent(event);
             // update the journal so all possible variables display correct
             // information
-            BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();
+            BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.getJournal().update());
         }
 
     }

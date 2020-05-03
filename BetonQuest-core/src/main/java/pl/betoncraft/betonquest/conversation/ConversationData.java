@@ -29,11 +29,7 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -342,11 +338,11 @@ public class ConversationData {
         return interceptor;
     }
 
-    public String getText(String lang, String option, OptionType type) {
+    public String getText(Locale lang, String option, OptionType type) {
         return getText(null, lang, option, type);
     }
 
-    public String getText(String playerID, String lang, String option, OptionType type) {
+    public String getText(String playerID, Locale lang, String option, OptionType type) {
         Option o;
         if (type == OptionType.NPC) {
             o = NPCOptions.get(option);
@@ -441,9 +437,9 @@ public class ConversationData {
 
         private String name;
         private OptionType type;
-        private HashMap<String, String> inlinePrefix = new HashMap<>();
+        private HashMap<Locale, String> inlinePrefix = new HashMap<>();
 
-        private HashMap<String, String> text = new HashMap<>();
+        private HashMap<Locale, String> text = new HashMap<>();
         private List<ConditionID> conditions = new ArrayList<>();
         private List<EventID> events = new ArrayList<>();
         private List<String> pointers;
@@ -452,7 +448,7 @@ public class ConversationData {
         public Option(String name, String type, String visibleType) throws InstructionParseException {
             this.name = name;
             this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
-            String defaultLang = Config.getLanguage();
+            Locale defaultLang = Config.getLanguage();
             ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
             if (conv == null) {

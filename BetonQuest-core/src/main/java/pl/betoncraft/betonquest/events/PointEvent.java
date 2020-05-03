@@ -63,24 +63,15 @@ public class PointEvent extends QuestEvent {
 
     @Override
     public void run(final String playerID) throws QuestRuntimeException {
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
-                    try {
-                        addPoints(playerID, playerData);
-                    } catch (QuestRuntimeException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Error while asynchronously adding " + count + " points of '" + category
-                                + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
-                        LogUtils.logThrowable(e);
-                    }
-                }
-            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
-        } else {
-            PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-            addPoints(playerID, playerData);
-        }
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
+            try {
+                addPoints(playerID, data);
+            } catch (QuestRuntimeException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Error while adding " + count + " points of '" + category
+                        + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
+                LogUtils.logThrowable(e);
+            }
+        });
     }
 
     private void addPoints(String playerID, PlayerData playerData) throws QuestRuntimeException {

@@ -84,12 +84,14 @@ public class TakeEvent extends QuestEvent {
 
             // Remove Quest items from player's backpack
             if (counter > 0) {
-                List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-                ItemStack[] array = new ItemStack[]{};
-                array = backpack.toArray(array);
-                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
-                list.removeAll(Collections.singleton(null));
-                BetonQuest.getInstance().getPlayerData(playerID).setBackpack(list);
+                BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
+                    List<ItemStack> backpack = data.getBackpack();
+                    ItemStack[] array = new ItemStack[]{};
+                    array = backpack.toArray(array);
+                    LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
+                    list.removeAll(Collections.singleton(null));
+                    data.setBackpack(list);
+                });
             }
         }
     }

@@ -40,7 +40,7 @@ public class PlayerConversationStartEvent extends Event implements Cancellable {
      * @param conversation conversation which is about to start
      */
     public PlayerConversationStartEvent(Conversation conversation) {
-        super(true);
+        super(false);
         this.conversation = conversation;
     }
 

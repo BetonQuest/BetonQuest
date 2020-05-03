@@ -48,33 +48,16 @@ public class TagEvent extends QuestEvent {
 
     @Override
     public void run(final String playerID) {
-        if (PlayerConverter.getPlayer(playerID) != null) {
-            PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
             if (add) {
                 for (String tag : tags) {
-                    playerData.addTag(tag);
+                    data.addTag(tag);
                 }
             } else {
                 for (String tag : tags) {
-                    playerData.removeTag(tag);
+                    data.removeTag(tag);
                 }
             }
-        } else {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
-                    if (add) {
-                        for (String tag : tags) {
-                            playerData.addTag(tag);
-                        }
-                    } else {
-                        for (String tag : tags) {
-                            playerData.removeTag(tag);
-                        }
-                    }
-                }
-            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
-        }
+        });
     }
 }

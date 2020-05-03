@@ -27,6 +27,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.EventID;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -47,7 +48,7 @@ public class FolderEvent extends QuestEvent {
         super(instruction);
         staticness = true;
         persistent = true;
-        events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
+        events = instruction.getList(instruction::getEvent).toArray(new EventID[0]);
         delay = instruction.getVarNum(instruction.getOptional("delay"));
         random = instruction.getVarNum(instruction.getOptional("random"));
         ticks = instruction.hasArgument("ticks");
@@ -61,10 +62,7 @@ public class FolderEvent extends QuestEvent {
         int randomInt = random != null ? random.getInt(playerID) : 0;
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifiable ArrayList
-            ArrayList<EventID> eventsList = new ArrayList<>();
-            for (EventID event : events) {
-                eventsList.add(event);
-            }
+            ArrayList<EventID> eventsList = new ArrayList<>(Arrays.asList(events));
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
@@ -73,9 +71,7 @@ public class FolderEvent extends QuestEvent {
             }
         } else {
             // add all events if it's not random
-            for (EventID event : events) {
-                chosenList.add(event);
-            }
+            chosenList.addAll(Arrays.asList(events));
         }
         double time = (delay == null) ? 0d : delay.getDouble(playerID);
         if (ticks) {

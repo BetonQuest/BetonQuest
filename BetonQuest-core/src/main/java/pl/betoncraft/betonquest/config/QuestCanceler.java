@@ -37,6 +37,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -52,7 +53,7 @@ public class QuestCanceler {
     private EventID[] events;
     private ObjectiveID[] objectives;
     private Location loc;
-    private HashMap<String, String> name = new HashMap<>();
+    private HashMap<Locale, String> name = new HashMap<>();
 
     private String packName;
     private String cancelerName;
@@ -202,7 +203,7 @@ public class QuestCanceler {
      */
     public void cancel(String playerID) {
         LogUtils.getLogger().log(Level.FINE, "Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+        PlayerData playerData = BetonQuest.getInstance().getPlayerDataIfPresent(playerID);
         // remove tags, points, objectives and journals
         if (tags != null) {
             for (String tag : tags) {
@@ -269,7 +270,10 @@ public class QuestCanceler {
      * @return the name of the quest canceler
      */
     public String getName(String playerID) {
-        String questName = name.get(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
+        PlayerData playerData = BetonQuest.getInstance().getPlayerDataIfPresent(playerID);
+        String questName = null;
+        if (playerData != null)
+            questName = name.get(playerData.getLanguage());
         if (questName == null)
             questName = name.get(Config.getLanguage());
         if (questName == null)

@@ -1,0 +1,77 @@
+package pl.betoncraft.betonquest.config;
+
+import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
+
+public enum InternalMessagekeys implements MessageKeyProvider {
+    RELOADED,
+    SPECIFY_CONDITION,
+    SPECIFY_EVENT,
+    SPECIFY_ITEM,
+    SPECIFY_TAG,
+    SPECIFY_OBJECTIVE,
+    SPECIFY_CATEGORY_AND_AMOUNT,
+    SPECIFY_POINTER,
+    SPECIFY_DATE,
+    SPECIFY_ACTION,
+    SPECIFY_PATH,
+    SPECIFY_PACKAGE,
+    PACKAGE_CREATED,
+    PACKAGE_EXISTS,
+    CONFIG_SET_ERROR,
+    NO_ITEM,
+    ITEM_CREATED,
+    PLAYER_OBJECTIVES,
+    PLAYER_TAGS,
+    PLAYER_CONDITION,
+    PLAYER_EVENT,
+    PLAYER_POINTS,
+    PLAYER_JOURNAL,
+    POINTS_ADDED,
+    POINTS_REMOVED,
+    TAG_ADDED,
+    TAG_REMOVED,
+    GLOBAL_POINTS,
+    GLOBAL_TAGS,
+    GLOBAL_POINTS_PURGED,
+    GLOBAL_TAGS_PURGED,
+    OBJECTIVE_ADDED,
+    OBJECTIVE_REMOVED,
+    OBJECTIVE_COMPLETED,
+    POINTER_ADDED,
+    POINTER_REMOVED,
+    EVERYTHING_RENAMED,
+    EVERYTHING_REMOVED,
+    PURGED,
+    COMMAND_RELOAD,
+    COMMAND_OBJECTIVES,
+    COMMAND_TAGS,
+    COMMAND_POINTS,
+    COMMAND_JOURNAL,
+    COMMAND_CONDITION,
+    COMMAND_EVENT,
+    COMMAND_ITEM,
+    COMMAND_GIVE,
+    COMMAND_RENAME,
+    COMMAND_DELETE,
+    COMMAND_CONFIG,
+    COMMAND_VERSION,
+    COMMAND_VECTOR,
+    COMMAND_PURGE,
+    COMMAND_BACKUP,
+    COMMAND_GLOBALTAGS,
+    COMMAND_GLOBALPOINTS,
+    CLICK_TO_DOWNLOAD,
+    CLICK_TO_COPY,
+    OFFLINE,
+    DEFAULT_LANGUAGE_CHANGED,
+    ERROR;
+
+
+    public String path() { return "betonquest.internal." + toString().toLowerCase().replace("_", "-"); }
+
+    @Override
+    public MessageKey getMessageKey() {
+        return MessageKey.of(path());
+    }
+}

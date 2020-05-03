@@ -17,6 +17,8 @@
  */
 package pl.betoncraft.betonquest.config;
 
+import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,11 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -54,8 +52,8 @@ public class Config {
     private static ConfigAccessor internal;
     private static HashMap<String, ConfigPackage> packages = new HashMap<>();
     private static HashMap<String, QuestCanceler> cancelers = new HashMap<>();
-    private static String lang;
-    private static ArrayList<String> languages = new ArrayList<>();
+    private static Locale lang;
+    private static ArrayList<Locale> languages = new ArrayList<>();
     private File root;
     private static String defaultPackage = "default";
 
@@ -77,7 +75,7 @@ public class Config {
         instance = this;
         plugin = BetonQuest.getInstance();
         root = plugin.getDataFolder();
-        lang = plugin.getConfig().getString("language");
+        lang = Locale.forLanguageTag(plugin.getConfig().getString("language"));
 
         // save default config
         plugin.saveDefaultConfig();
@@ -244,7 +242,11 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(String lang, String message) {
+    public static String getMessage(String lang, MessageKeyProvider message) {
+        return getMessage(lang, message.getMessageKey(), null);
+    }
+
+    public static String getMessage(String lang, MessageKey message) {
         return getMessage(lang, message, null);
     }
 
@@ -322,7 +324,7 @@ public class Config {
     /**
      * @return the default language
      */
-    public static String getLanguage() {
+    public static Locale getLanguage() {
         return lang;
     }
 
@@ -477,7 +479,10 @@ public class Config {
      */
     public static String parseMessage(Player player, String messageName, String[] variables, String prefixName,
                                       String[] prefixVariables) {
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+        return "";
+        // TODO: do smth
+        /*
+        BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
         if (playerData == null)
             return null;
         String language = playerData.getLanguage();
@@ -490,7 +495,7 @@ public class Config {
                 message = prefix + message;
             }
         }
-        return message;
+        return message;*/
     }
 
     /**

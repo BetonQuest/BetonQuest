@@ -288,7 +288,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                         }
 
                         // We do this a tick later to work around a bug where holograms simply don't appear
-                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), () -> {
+                        Bukkit.getServer().getScheduler().runTaskLater(BetonQuest.getInstance().getJavaPlugin(), () -> {
                             if (npcHologram.hologram != null) {
                                 npcHologram.hologram.getVisibilityManager().showTo(player);
                             }
@@ -296,7 +296,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
                     } else {
                         if (npcHologram.hologram != null) {
-                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance().getJavaPlugin(), () -> {
+                            Bukkit.getServer().getScheduler().runTaskLater(BetonQuest.getInstance().getJavaPlugin(), () -> {
                                 if (npcHologram.hologram != null) {
                                     npcHologram.hologram.getVisibilityManager().hideTo(player);
                                 }

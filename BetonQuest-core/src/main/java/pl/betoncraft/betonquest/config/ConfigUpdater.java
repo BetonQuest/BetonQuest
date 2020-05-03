@@ -815,7 +815,7 @@ public class ConfigUpdater {
                         LogUtils.getLogger().log(Level.FINE, "    Checking part " + part);
                         if (part.startsWith("name:")) {
                             LogUtils.getLogger().log(Level.FINE, "    Found general name: " + part.substring(5));
-                            names.put(Config.getLanguage(), part.substring(5));
+                            names.put(Config.getLanguage().getLanguage(), part.substring(5));
                         } else if (part.startsWith("name_")) {
                             int colonIndex = part.indexOf(':');
                             if (colonIndex < 0)

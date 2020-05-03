@@ -48,7 +48,7 @@ public class GiveJournalEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        BetonQuest.getInstance().getPlayerData(playerID).getJournal().addToInv(journalSlot);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> data.getJournal().addToInv(journalSlot));
     }
 
 }

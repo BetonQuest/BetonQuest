@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,30 +29,17 @@ import pl.betoncraft.betonquest.Backpack.DisplayType;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+
 /**
  * The /compass command. It opens the list of quests.
  *
  * @author Jakub Sapalski
  */
-public class CompassCommand implements CommandExecutor {
-
-    /**
-     * Registers a new executor of the /compass command
-     */
-    public CompassCommand() {
-        BetonQuest.getInstance().getCommand("compass").setExecutor(this);
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("compass")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String playerID = PlayerConverter.getID(player);
-                new Backpack(playerID, DisplayType.COMPASS);
-            }
-            return true;
-        }
-        return false;
+@CommandAlias("compass")
+public class CompassCommand extends BaseCommand {
+    @Default
+    public void onCommand(Player player) {
+        String playerID = PlayerConverter.getID(player);
+        new Backpack(playerID, DisplayType.COMPASS);
     }
 }

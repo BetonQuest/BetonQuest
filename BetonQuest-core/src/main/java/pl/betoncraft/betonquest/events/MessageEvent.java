@@ -27,6 +27,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Sends a message to the player, in his language
@@ -49,7 +50,7 @@ public class MessageEvent extends QuestEvent {
         if (parts.length < 1) {
             throw new InstructionParseException("Message missing");
         }
-        String currentLang = Config.getLanguage();
+        Locale currentLang = Config.getLanguage();
         StringBuilder string = new StringBuilder();
         for (String part : parts) {
             if (part.startsWith("conditions:") || part.startsWith("condition:")) {
@@ -61,7 +62,7 @@ public class MessageEvent extends QuestEvent {
                 }
                 currentLang = part.substring(1, part.length() - 1);
             } else {
-                string.append(part + " ");
+                string.append(part).append(" ");
             }
         }
         if (string.length() > 0) {
@@ -86,19 +87,21 @@ public class MessageEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-        String message = messages.get(lang);
-        if (message == null) {
-            message = messages.get(Config.getLanguage());
-        }
-        if (message == null) {
-            message = messages.values().iterator().next();
-        }
-        for (String variable : variables) {
-            message = message.replace(variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
-        }
-        PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
+            String lang = data.getLanguage();
+            String message = messages.get(lang);
+            if (message == null) {
+                message = messages.get(Config.getLanguage());
+            }
+            if (message == null) {
+                message = messages.values().iterator().next();
+            }
+            for (String variable : variables) {
+                message = message.replace(variable,
+                        BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
+            }
+            PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        });
     }
 
 }

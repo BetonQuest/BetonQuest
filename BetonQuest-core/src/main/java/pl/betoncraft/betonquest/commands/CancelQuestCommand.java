@@ -17,6 +17,9 @@
  */
 package pl.betoncraft.betonquest.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,25 +34,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  *
  * @author Jakub Sapalski
  */
-public class CancelQuestCommand implements CommandExecutor {
-
-    /**
-     * Registers a new executor of the /cancelquest command
-     */
-    public CancelQuestCommand() {
-        BetonQuest.getInstance().getCommand("cancelquest").setExecutor(this);
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("cancelquest")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String playerID = PlayerConverter.getID(player);
-                new Backpack(playerID, DisplayType.CANCEL);
-            }
-            return true;
-        }
-        return false;
+@CommandAlias("cancelquest")
+public class CancelQuestCommand extends BaseCommand {
+    @Default
+    public void onCommand(Player player) {
+        String playerID = PlayerConverter.getID(player);
+        new Backpack(playerID, DisplayType.CANCEL);
     }
 }

@@ -324,7 +324,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             };
 
-            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
+            displayRunnable.runTaskTimer(BetonQuest.getInstance().getJavaPlugin(), configRefreshDelay, configRefreshDelay);
         }
 
         updateDisplay();

@@ -40,6 +40,6 @@ public class ConversationEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) {
-        new Conversation(playerID, conv, PlayerConverter.getPlayer(playerID).getLocation());
+        Conversation.of(playerID, conv, PlayerConverter.getPlayer(playerID).getLocation());
     }
 }

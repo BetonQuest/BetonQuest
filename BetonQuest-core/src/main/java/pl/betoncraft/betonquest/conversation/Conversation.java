@@ -38,6 +38,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
+import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
@@ -47,6 +48,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
@@ -62,7 +65,7 @@ public class Conversation implements Listener {
     private final String playerID;
     private final Player player;
     private final ConfigPackage pack;
-    private final String language;
+    private final Locale language;
     private final Location location;
     private final String convID;
     private final List<String> blacklist;
@@ -77,6 +80,10 @@ public class Conversation implements Listener {
 
     private HashMap<Integer, String> current = new HashMap<>();
 
+    public static CompletableFuture<Conversation> of(String playerID, String convID, Location location, String option) {
+        return BetonQuest.getInstance().getPlayerData(playerID)
+                .thenApply(data -> new Conversation(playerID, convID, location, option, data));
+    }
 
     /**
      * Starts a new conversation between player and npc at given location. It uses
@@ -86,8 +93,8 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(String playerID, String conversationID, Location location) {
-        this(playerID, conversationID, location, null);
+    public static CompletableFuture<Conversation> of(String playerID, String conversationID, Location location) {
+        return of(playerID, conversationID, location, null);
     }
 
     /**
@@ -100,15 +107,15 @@ public class Conversation implements Listener {
      * @param location       location where the conversation has been started
      * @param option         ID of the option from where to start
      */
-    public Conversation(final String playerID, final String conversationID,
-                        final Location location, String option) {
+    private Conversation(final String playerID, final String conversationID,
+                        final Location location, String option, PlayerData playerData) {
 
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.playerID = playerID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
-        this.language = plugin.getPlayerData(playerID).getLanguage();
+        this.language = playerData.getLanguage();
         this.location = location;
         this.convID = conversationID;
         this.data = plugin.getConversation(convID);
@@ -139,7 +146,7 @@ public class Conversation implements Listener {
             options = new String[]{option};
         }
 
-        new Starter(options).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
+        new Starter(options).runTask(BetonQuest.getInstance().getJavaPlugin());
     }
 
     /**
@@ -556,7 +563,7 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
+            new OptionPrinter(option).runTask(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 
@@ -574,7 +581,7 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
+            new ResponsePrinter(option).runTask(BetonQuest.getInstance().getJavaPlugin());
         }
     }
 

@@ -37,10 +37,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 /**
@@ -62,17 +60,20 @@ public class PlayerData {
     private List<ItemStack> backpack = new ArrayList<>();
     private String conv;
 
-    private String lang; // the player's language
+    private Locale lang; // the player's language
 
     /**
      * Creates new PlayerData for the player represented by playerID.
      *
      * @param playerID - ID of the player
      */
-    public PlayerData(String playerID) {
+    private PlayerData(String playerID) {
         this.playerID = playerID;
-        // load data from the database
-        loadAllPlayerData();
+    }
+
+    public static CompletableFuture<PlayerData> of(String playerID) {
+        PlayerData data = new PlayerData(playerID);
+        return CompletableFuture.runAsync(data::loadAllPlayerData).thenApply(n -> data);
     }
 
     /**
@@ -131,17 +132,17 @@ public class PlayerData {
             ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, new String[]{playerID});
             // put it there
             if (res6.next()) {
-                lang = res6.getString("language");
-                if (lang.equals("default")) {
-                    lang = Config.getLanguage();
+                lang = Locale.forLanguageTag(res6.getString("language"));
+                if (lang == null) {
+                    lang = Locale.forLanguageTag(Config.getLanguage());
                 }
                 conv = res6.getString("conversation");
                 if (conv == null || conv.equalsIgnoreCase("null")) {
                     conv = null;
                 }
             } else {
-                lang = Config.getLanguage();
-                saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, "default"}));
+                lang = Locale.forLanguageTag(Config.getLanguage());
+                saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, null}));
             }
 
             // log data to debugger
@@ -464,7 +465,7 @@ public class PlayerData {
     /**
      * @return the language this player uses
      */
-    public String getLanguage() {
+    public Locale getLanguage() {
         return lang;
     }
 
@@ -473,8 +474,8 @@ public class PlayerData {
      *
      * @param lang language to set
      */
-    public void setLanguage(String lang) {
-        if (lang.equalsIgnoreCase("default")) {
+    public void setLanguage(Locale lang) {
+        if (lang == null) {
             this.lang = Config.getLanguage();
         } else {
             this.lang = lang;

@@ -30,6 +30,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.BetonQuestPlugin;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -144,8 +145,10 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         String message = event.getMessage().trim();
         for (int i : options.keySet()) {
             if (message.equals(Integer.toString(i))) {
-                conv.sendMessage(answerFormat + options.get(i));
-                conv.passPlayerAnswer(i);
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance().getJavaPlugin(), () -> {
+                    conv.sendMessage(answerFormat + options.get(i));
+                    conv.passPlayerAnswer(i);
+                });
                 event.setCancelled(true);
                 return;
             }

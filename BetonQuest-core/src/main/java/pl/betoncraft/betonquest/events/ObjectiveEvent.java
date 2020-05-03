@@ -57,28 +57,7 @@ public class ObjectiveEvent extends QuestEvent {
         if (BetonQuest.getInstance().getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
-                    switch (action.toLowerCase()) {
-                        case "start":
-                        case "add":
-                            playerData.addNewRawObjective(objective);
-                            break;
-                        case "delete":
-                        case "remove":
-                            playerData.removeRawObjective(objective);
-                            break;
-                        case "complete":
-                        case "finish":
-                            LogUtils.getLogger().log(Level.WARNING, "Cannot complete objective for offline player!");
-                            break;
-                    }
-                }
-            }.runTaskAsynchronously(BetonQuest.getInstance().getJavaPlugin());
-        } else {
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(data -> {
             switch (action.toLowerCase()) {
                 case "start":
                 case "add":
@@ -87,13 +66,13 @@ public class ObjectiveEvent extends QuestEvent {
                 case "delete":
                 case "remove":
                     BetonQuest.getInstance().getObjective(objective).removePlayer(playerID);
-                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
+                    data.removeRawObjective(objective);
                     break;
                 case "complete":
                 case "finish":
                     BetonQuest.getInstance().getObjective(objective).completeObjective(playerID);
                     break;
             }
-        }
+        });
     }
 }

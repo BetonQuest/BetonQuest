@@ -92,26 +92,28 @@ public class TitleEvent extends QuestEvent {
 
     @Override
     public void run(String playerID) throws QuestRuntimeException {
-        String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-        String message = messages.get(lang);
-        if (message == null) {
-            message = messages.get(Config.getLanguage());
-        }
-        if (message == null) {
-            message = messages.values().iterator().next();
-        }
-        for (String variable : variables) {
-            message = message.replace(variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
-        }
-        String name = PlayerConverter.getName(playerID);
-        if ((fadeIn != 20 || stay != 100 || fadeOut != 20) && (fadeIn != 0 || stay != 0 || fadeOut != 0)) {
-            String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
-        }
-        String title = String.format("title %s %s {\"text\":\"%s\"}",
-                name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
+        BetonQuest.getInstance().getPlayerData(playerID).thenAccept(playerData -> {
+            String lang = playerData.getLanguage();
+            String message = messages.get(lang);
+            if (message == null) {
+                message = messages.get(Config.getLanguage());
+            }
+            if (message == null) {
+                message = messages.values().iterator().next();
+            }
+            for (String variable : variables) {
+                message = message.replace(variable,
+                        BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
+            }
+            String name = PlayerConverter.getName(playerID);
+            if ((fadeIn != 20 || stay != 100 || fadeOut != 20) && (fadeIn != 0 || stay != 0 || fadeOut != 0)) {
+                String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
+            }
+            String title = String.format("title %s %s {\"text\":\"%s\"}",
+                    name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
+        });
     }
 
     public enum TitleType {

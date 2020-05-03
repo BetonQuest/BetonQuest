@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest;
+package pl.betoncraft.betonquest.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -25,6 +25,9 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.GlobalObjectives;
+import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
@@ -56,18 +59,18 @@ public class JoinQuitListener implements Listener {
         }
         String playerID = event.getUniqueId().toString();
         BetonQuest plugin = BetonQuest.getInstance();
-        plugin.putPlayerData(playerID, new PlayerData(playerID));
+        plugin.getPlayerData(playerID);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         String playerID = PlayerConverter.getID(event.getPlayer());
         // start objectives when the data is loaded
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+        PlayerData playerData = BetonQuest.getInstance().getPlayerDataIfPresent(playerID);
         // if the data still isn't loaded, force loading (this happens sometimes
         // probably because AsyncPlayerPreLoginEvent does not fire)
         if (playerData == null) {
-            playerData = new PlayerData(playerID);
+            playerData = PlayerData.of(playerID).join();
             BetonQuest.getInstance().putPlayerData(playerID, playerData);
             LogUtils.getLogger().log(Level.WARNING, "Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }

@@ -31,7 +31,7 @@ public class ConversationOptionEvent extends Event {
     private String npcResponse;
 
     public ConversationOptionEvent(Conversation conv, String playerChosen, String npcResponse) {
-        super(true);
+        super(false);
         this.conv = conv;
         this.selectedOption = playerChosen;
         this.npcResponse = npcResponse;
