@@ -1,6 +1,10 @@
 mkdocs==1.1
 mkdocs-exclude==1.0.2
 mkdocs-material==5.1.5
-git+https://github.com/jwaschkau/mkpdfs-mkdocs-plugin.git@fix/string-types
 mkdocs-git-revision-date-localized-plugin==0.5.0
 mkdocs-awesome-pages-plugin==2.2.1
+
+# mkpdf
+# mkpdf-mkdocs-plugin
+# There is currently a bug with nested navigation sections this PR fixes this => https://github.com/comwes/mkpdfs-mkdocs-plugin/pull/21
+git+https://github.com/trogper/mkpdfs-mkdocs-plugin.git@fix-nested-sections

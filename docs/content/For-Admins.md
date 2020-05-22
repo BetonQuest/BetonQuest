@@ -1,0 +1,4 @@
+- truly unqiue quests that will make your server special
+- extensive customizabilty options (show convIOs and notifyIOs)
+- Good learning material for staff
+- Good support for staff

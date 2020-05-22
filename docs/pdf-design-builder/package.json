@@ -4,8 +4,8 @@
   "description": "The default mkpdfs design to use when generating the pdf report. This style will only be used for the pdf, not to be use for the webversion of the documentation as it can conflict with other themes.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node-sass report.scss ../../docs/css/pdf.css",
-    "build-compressed": "node-sass report.scss ../../docs/css/pdf.css --output-style compressed"
+    "build": "node-sass report.scss ../../docs/Tools_and_Settings/webCode/css/pdf.css",
+    "build-compressed": "node-sass report.scss ../../docs/Tools_and_Settings/webCode/css/pdf.css --output-style compressed"
   },
   "repository": {
     "type": "git",

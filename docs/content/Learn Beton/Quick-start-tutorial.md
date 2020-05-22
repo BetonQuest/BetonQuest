@@ -1,53 +1,97 @@
-# Quick start tutorial
+This section will teach you the very basics of BetonQuest.
 
-The first thing you probably want to after installing the plugin is to check out how it's working. If you want to use inventory GUI open _config.yml_ and change `default_conversation_IO` to `chest`, save the file and issue **/q reload** command on the server.
+## Checking out the "default" example quest. 
 
-Now log in and place somewhere in the world a block of stained clay. On top of it put a head (can be a Creeper's head), and on the side of the clay block place a sign. Write this on first and second line:
+Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been generated in your plugins folder.
+The folder you are looking for is named "_default_".
 
+Open it up and find a file called _main.yml_. It contains a lot of options but you only need to look at this sections:
+```YAML
+npcs:
+  'Innkeeper': innkeeper
+  '0': innkeeper
 ```
-[NPC]
-Innkeeper
-```
+You will need to change the `'0'` to the ID of the Citizens NPC you want to learn Beton with. 
+You obtain a NPC's ID by selecting it with **/npc sel** while looking at it and then running **/npc id**.   
+Execute **/q reload** and right-click the NPC.
 
-Done. Now right-click on the NPC's head. The conversation should start. If it did not, check if you correctly built the NPC. Ask the Innkeeper for some quests. He will tell you to cut some trees. If you want, type **/journal** to get the journal and see a new entry. Now, don't try to place any wood blocks. BetonQuest will detect that and increase the number of blocks to destroy. Just go and find some trees. Cut them down and if you're in creative mode, give yourself 16 blocks of wood. Now you can return to Innkeeper and give him the wood. You will receive the reward.
+The conversation should start. If it did not, check if you correctly assigned the ID. Ask the Innkeeper for some quests.
+He will tell you to cut some trees. If you want, type **/journal** to get the journal and see a new entry. Now, don't try to place any wood blocks.
+BetonQuest will detect that and increase the number of blocks to destroy. Just go and find some trees. Cut them down and if you're in creative mode,
+give yourself 16 blocks of wood. Now you can return to Innkeeper and give him the wood. You will receive the reward.
 
 ## Using events and conditions
 
-Now that you know how a (very) simple quest looks like time to start learning how to write something similar. Let's start with events. We won't do conversations just now, since they heavily use events and conditions, so you need to know them first. You can read complete reference to events in the _Reference_ chapter. Do that now or just continue with this tutorial.
+Now that you know how a (very) simple quest looks like time to start learning how to write something similar. 
+Let's start with events. We won't do conversations just now, since they heavily use events and conditions, 
+so you need to know them first. You can read complete reference to events in the [Reference chapter](../User%20Documentation/Reference.md#events). Do that now or just continue with this tutorial.
 
 ### Events
 
 Let's just open _events.yml_ file inside the _default_ package. At the end add a new line:
 
 ```YAML
-foo: message Hello world!
+mega: message Hello world!
 ```
 
-This is an event instruction. BetonQuest will use it to determine what type of event it is and what exactly should it do. `foo` is the name, `message` is the type and `Hello world!` tells the message type what it needs to display. In this case, if you run `foo` event, it will display to you `Hello world!` message. Now save the file, issue **/q reload** command and run the event with **/q e {name} foo** command (`q` is shortcut for `quest`, `e` is shortcut for `event`, `{name}` is your Minecraft name without the brackets and `foo` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
+This is an event instruction. BetonQuest will use it to determine what type of event it is and what exactly should it do. 
+`mega` is the name, `message` is the events type and `Hello world!` tells the message event what it needs to display. In this case,
+if you run `sayHello` event, it will display to you `Hello world!` message. Now save the file, issue **/q reload** command
+and run the event with **/q e {name} mega** command (`q` is shortcut for `quest`, `e` is shortcut for `event`, `{name}`
+is your Minecraft name without the brackets and `mega` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
 
-Let's create another event, more complicated one. `teleport` seems complicated enough. As you can read in the _Events list_, it needs a single argument, the location. Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`). Now add in _events.yml_ another line:
+Let's create another event, more complicated one. `teleport` seems complicated enough. As you can read in the [Events list](../User%20Documentation/Events-List.md),
+it needs a single argument, the location. Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`).
+Now add in _events.yml_ another line:
 
 ```YAML
-bar: teleport 100;200;300;world
+tp: teleport 100;200;300;world
 ```
 
-and replace `100` with your `x` coordinate, `200` with `y` and `300` with `z`. `world` needs to be replaced with your current world's name. Save the file, reload the plugin and run this event with a command described before. It should teleport you to the location you have specified.
+and replace `100` with your `x` coordinate, `200` with `y` and `300` with `z`. `world` needs to be replaced with your 
+current world's name. Save the file, reload the plugin (**/q reload**) and run this event with a command described
+ before.
+It should teleport you to the location you have specified.
 
-Congratulations, you have just created your first events. Go ahead and do some experiments with other event types. You can find them in _Events list_ chapter. Once you're done let's start learning conditions.
+Congratulations, you have just created your first events. Go ahead and do some experiments with other event types. 
+You can find them in [Events list](../User%20Documentation/Events-List.md) chapter. Once you're done let's start learning conditions.
 
 ### Conditions
 
 Open the _conditions.yml_ file and add there a new line:
 
 ```YAML
-foo: location 100;200;300;world;5
+mega: location 100;200;300;world;5
 ```
 
-Can you see how we named the `foo` condition in the same way as the `foo` event? They are not connected in any way. Condition names and event names are separated, so you can give them the same name without any problems. Now let's look at the instruction string. As you can suspect, `location` is a type of the condition. This one means that we'll be checking if the player is near that location (you should change the location to the place where you're standing right now, so you don't have to run around the world). Note that at the end of location argument there is an additional number, `5`. This is the maximum distance you can be away from the location to meet the condition. Alright, save the file and reload the plugin.
+Can you see how we named the `mega` condition in the same way as the `mega` event? They are not connected in any way.
+Condition names and event names are separated, so you can give them the same name without any problems. Now let's
+look at the instruction string. As you can suspect, `location` is a type of the condition. This one means that we'll be 
+checking if the player is near that location (you should change the location to the place where you're standing right now,
+so you don't have to run around the world). Note that at the end of location argument there is an additional number, `5`.
+This is the maximum distance you can be away from the location to meet the condition. Alright, save the file and reload the plugin.
 
-Now walk to the location you have defined in the condition. Try to stand on the exact block corresponding to that location. Issue **/q c {name} foo** command (`c` is shortcut for `condition`). It should show you "checking condition blah blah blah: **true**". We're focusing on that last word, **true**. This means that you're meeting the condition: you're standing withing 5 block radius of the location. Now move 2 blocks away and issue that command again. You should still be meeting the condition. Walk 4 more blocks away and try now. It should show **false**. You are now outside of that 5 block radius. Get it? Great.
+Now walk to the location you have defined in the condition. Try to stand on the exact block corresponding to that location. 
+Issue **/q c {name} mega** command (`c` is shortcut for `condition`). It should show you "checking condition blah blah
+blah: **true**". We're focusing on that last word, **true**. This means that you're meeting the condition: you're standing withing
+5 block radius of the location. Now move 2 blocks away and issue that command again. You should still be meeting the condition. 
+Walk 4 more blocks away and try now. It should show **false**. You are now outside of that 5 block radius. Get it? Great.
 
-Now I'll show you the simplest use of those conditions. Open the _events.yml_ file again, and at the end of `foo` instruction add `conditions:foo` argument. By the way, rename `foo` event to `baz`, so the names won't get confusing. Now you should have something like
+Now I'll show you the simplest use of those conditions. Open the _events.yml_ file again, and at the end of `mega` 
+instruction add `conditions:mega` argument. By the way, rename your events to something that actually fits the type
+of the event, otherwise it will get confusing really fast. Example:
+
+!!! example "Example"
+    === "events.yml"
+        ```YAML
+        sayHello: "message Hello world! conditions:isAtSpawn"
+        ```
+    === "conditions.yml"s
+        ```YAML
+        isAtSpawn: "location 100;200;300;world;5"
+        ```
+  
+
 
 ```YAML
 baz: message Hello world! conditions:foo
@@ -198,4 +242,4 @@ Here's the whole conversation you created, so you can check if you understood ev
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the [innkeeper.yml](https://github.com/Co0sh/BetonQuest/blob/master/BetonQuest-core/src/main/resources/default/defaultConversation.yml) file. Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
-You might want to check out the [Reference](05-Reference.md) chapter to see how to handle items in your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables, take a look at the appropriate lists (after the _Reference_ chapter).
+You might want to check out the [Reference](../User%20Documentation/Reference.md) chapter to see how to handle items in your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables, take a look at the appropriate lists (after the _Reference_ chapter).

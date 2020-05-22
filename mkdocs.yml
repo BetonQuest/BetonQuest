@@ -2,6 +2,7 @@ site_name: BetonQuest - UNOFFICIAL
 site_author: Co0sh and contributors
 site_url: https://betonquest.pl
 site_dir: target/docs
+docs_dir: docs/content
 repo_name: BetonQuest/BetonQuest
 repo_url: https://github.com/BetonQuest/BetonQuest
 edit_uri: ""
@@ -9,12 +10,12 @@ copyright: '© 2020  Jakub "Co0sh" Sapalski  & Contributers. GPLv3'
 
 
 extra_css:
-  - 'css/mkpdf.css'
-  - 'css/version_select.css'
-  - 'css/superFences.css'
+  - 'webCode/css/mkpdf.css'
+  - 'webCode/css/version_select.css'
+  - 'webCode/css/superFences.css'
 
 extra_javascript:
-  - 'js/version_select.js'
+  - 'webCode/js/version_select.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
@@ -26,10 +27,11 @@ theme:
   palette:
     primary: indigo
     accent: indigo
+    scheme: slate
   font:
-      text: Roboto
-      code: Roboto Mono
-  logo: images/design/header_logo.png
+    text: Roboto
+    code: Roboto Mono
+  logo: images/design/icon.png
   favicon: images/design/favicon.ico
 
 
@@ -45,6 +47,7 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
+  - pymdownx.keys
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -70,7 +73,7 @@ plugins:
       author: Co0sh and contributors
       toc_title: Table of contents
       output_path: pdf/BetonQuest.pdf
-      design: docs/css/pdf.css
+      design: docs/content/webCode/css/pdf.css
 
 
 # Discord not yet supported but it will be soon
@@ -85,30 +88,40 @@ extra:
     - icon: fontawesome/solid/archive
       link: https://betonquest.pl
 
-
-
 nav:
-  - Introduction:
-      - General Information: index.md
-      - Installation and Configuration: 02-Installation-and-Configuration.md
-      - Commands and Permissions: 03-Commands-and-permissions.md
-  - Learning Beton:
-      - Prerequisites: Prerequisites.md
-      - Fundamentals: 04-Quick-start-tutorial.md
-      - Tips and Tricks: 11-Tips-and-tricks.md
-      - FAQ: 12-Frequently-Asked-Questions.md
-  - User Documentation:
-      - Reference: 05-Reference.md
-      - Events List: 07-Events-List.md
-      - Objectives List: 08-Objectives-List.md
-      - Conditions List: 06-Conditions-List.md
-      - Compability List: 10-Compatibility.md
-      - Notifications: Notifications.md
-      - Variables: 09-Variables-List.md
-  - Contributing:
-      - How to help the project: 14-Contributing.md
-  - Information for developers:
-      - Developers: 13-Info-for-developers.md
+  - 'Home':
+      - index.md
+      - For-Admins.md
+      - For-Questers.md
+  - 'Learn Beton':
+      - Learn Beton/Welcome.md
+      - Learn Beton/Frequently-Asked-Questions.md
+      - Learn Beton/Installation-and-Configuration.md
+      - Learn Beton/Getting Started/YAML-for-questers.md
+      - Learn Beton/Quick-start-tutorial.md
+      - Learn Beton/Tips-and-tricks.md
+      - 'Getting Started':
+            - Learn Beton/Getting Started/Installing-BetonQuest.md
+            - Learn Beton/Getting Started/Setting-up-a-local-test-server.md
+            - Learn Beton/Getting Started/Setting-up-the-editor.md
+  - 'User Documentation':
+      - User Documentation/Commands and permissions.md
+      - User Documentation/Compatibility.md
+      - User Documentation/Conditions-List.md
+      - User Documentation/Events-List.md
+      - User Documentation/Notifications.md
+      - User Documentation/Objectives-List.md
+      - User Documentation/Reference.md
+      - User Documentation/Variables-List.md
+      - User Documentation/CHANGELOG.md
+  - 'Developer Documentation':
+      - Developer Documentation/Info-for-developers.md
+  - 'Contributing':
+      - Contributing/Contributing.md
+      - Contributing/old_contributing.md
+      - Contributing/Docs.md
+      - 'Devs':
+          - Contributing/Devs/Releasing.md
 
 google_analytics:
   - UA-164568470-1
