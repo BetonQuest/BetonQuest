@@ -702,7 +702,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new Metrics(this);
+        new Metrics(this, 551);
 
         // updater
         updater = new Updater(this.getFile());

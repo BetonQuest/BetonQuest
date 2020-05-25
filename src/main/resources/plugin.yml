@@ -1,5 +1,5 @@
 name: BetonQuest
-main: pl.betoncraft.betonquest.BetonQuestPlugin
+main: pl.betoncraft.betonquest.BetonQuest
 api-version: 1.13
 description: Advanced role-playing quests and NPC conversations
 authors: [Co0sh]

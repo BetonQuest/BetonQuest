@@ -132,16 +132,11 @@
             </snapshots>
         </repository>
 
-        <!--        <repository>-->
-        <!--            <id>bstats-repo</id>-->
-        <!--            <url>http://repo.bstats.org/content/repositories/releases/</url>-->
-        <!--            <releases>-->
-        <!--                <enabled>true</enabled>-->
-        <!--            </releases>-->
-        <!--            <snapshots>-->
-        <!--                <enabled>false</enabled>-->
-        <!--            </snapshots>-->
-        <!--        </repository>-->
+        <!-- bstats -->
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
 
         <!-- ProtocolLib -->
         <!--        <repository>-->
@@ -489,13 +484,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160212</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
-            <scope>provided</scope>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -549,6 +542,12 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
