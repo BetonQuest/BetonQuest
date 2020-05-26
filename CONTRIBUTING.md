@@ -23,11 +23,6 @@ Also, it's not necessary to prefix the issue title with tags like `[Feature]` or
 
 Great, simply open a new issue. Maybe someday someone will find the time to implement it.
 
-### You have a question?
-
-You can try searching Google. It indexes the issue tracker, so if someone had a similar problem, there's high chance you'll find their solution.
-
-If not, don't worry. Feel free to open a new issue. Don't ask questions in another one - it's always better to have one question per issue, for the sake of cleanliness.
 
 ### You want to implement a feature / fix a bug?
 
