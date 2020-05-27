@@ -1,34 +1,32 @@
 #Releasing
 
-BetonQuest has a custom build pipeline configured with GitHub('s) actions.     
+This project uses a custom buildpipeline that utilizes with GitHub('s) actions.     
+
 __**You need to follow all of the following steps for each release otherwise the build pipeline will break!**__
 
--**Step zero:** Prerequisites.
+-**Step zero:** Prerequisites
+
 Decide if the current version number in all of the files (e.g. pom.xml) is the actual version number that should be used for that release.
 Use the [Semantic Versioning](https://semver.org/) to do so.
 
--**Step one:** Build a release.
-You can create a release by tagging a commit with a version tag. A version tag needs to 
-Tag the successfully commit with the version from the pom.xml
+-**Step one:** Build a release
 
-- Post-Release
-pom.xml set new version 
-pom.xml properties version
-changelog.md add unreleased as the template suggest
-replace version tag and date + copy template
+You can create a release by tagging a commit with a version tag. A version tag needs to 
+tag the commit thats should be a release with the version from the pom.xml
+
+-**Step two:** Post-Release
+
+Set a new version in the pom.xml following the [Semantic Versioning](https://semver.org/) specification.
+Then edit the changelog.md in the projects root folder and replace the current `Unreleased` sections title with the just released version and date.
+Now copy the template from below into the file.
+
 
 ```CHANGELOG
-## [Unreleased] - ${current-date}
+## [Unreleased] - CURRENT_DATA_HERE
 ### Added
-- Condition 'wand' can now have an option 'amount'
 ### Changed
-- Items for HolographicDisplays are now defines in items.yml
-- Command 'bq rename' can now be used for globalpoints
 ### Deprecated
 ### Removed
-- Removed Deprecated Exceptions
 ### Fixes
-- Renaming an NPC will not cause an NPE for a NPC Hologram
-- Objective 'craft' now supports shift-clicking
 ### Security   
 ```
