@@ -281,15 +281,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Download Version
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/
-
       - name: Set Version
         run: |
-          POM_MAVEN_VERSION=$(cat build/Version.txt)
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
           IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
           echo ::set-env name=VERSION::${array[0]}
