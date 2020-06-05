@@ -46,7 +46,7 @@ else
   RELEADE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
 fi
 case "$JOB_STATUS" in
-  "Success" )
+  "success" )
     EMBED_COLOR=3066993
     DEV_BUILD_DOWNLOAD="Click to Download '$VERSION'!"
     STATUS_MESSAGE="$RELEASE_NAME is now available"
@@ -55,7 +55,7 @@ case "$JOB_STATUS" in
     COMMIT_ICON=$RELEADE_COMMIT_ICON_SUCCESS
     ;;
 
-  "Failure" )
+  "failure"|"cancelled" )
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
     DEV_BUILD_DOWNLOAD="Inspect the failure on '$VERSION'!"
