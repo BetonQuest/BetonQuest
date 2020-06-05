@@ -6,12 +6,12 @@ fi
 
 # Prepare keys
 eval "$(ssh-agent -s)"
-ssh-add <(echo "${DEPLOY_KEY}" | base64 -d) || exit 1
+ssh-add <(echo "${DEPLOY_KEY}" | base64 -d) || exit 2
 git config --global user.name "GitHub Actions"
 git config --global user.email "action@github.com"
 
 # Clone gh-pages branch
-git clone --depth=1 --branch=gh-pages "git@github.com:${GITHUB_REPOSITORY}" gh-pages || exit 1
+git clone --depth=1 --branch=gh-pages "git@github.com:${GITHUB_REPOSITORY}" gh-pages || exit 3
 
 VERSION_DIR=''
 
@@ -25,13 +25,13 @@ if [[ "${GITHUB_REF}" =~ ^refs/tags/v.+ ]]; then
 fi
 # IF this is not dev or version tag
 if [ "$VERSION_DIR" == '' ]; then
-  exit 1
+  exit 0
 fi
 
 echo "$0: Deploying documentation to gh-pages/versions/${VERSION_DIR}"
 rm -r "gh-pages/versions/${VERSION_DIR}"
-mkdir -p "gh-pages/versions/${VERSION_DIR}" || exit 1
-cp -r build/docs/* "gh-pages/versions/${VERSION_DIR}" || exit 1
+mkdir -p "gh-pages/versions/${VERSION_DIR}" || exit 4
+cp -r build/docs/* "gh-pages/versions/${VERSION_DIR}" || exit 5
 
 # Build versions.json from english
 cat <<EOF > gh-pages/versions.json
@@ -49,7 +49,7 @@ echo "Linking gh-pages/stable.txt to gh-pages/versions/${STABLE}"
 
 # Commit
 (
-  cd gh-pages || exit 1
+  cd gh-pages || exit 6
   git add -f .
   git commit -m "Deploy documentation version '${VERSION}'"
   git push -fq origin gh-pages > /dev/null
