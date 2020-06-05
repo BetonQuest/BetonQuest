@@ -270,6 +270,7 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           VERSION: ${{ env.VERSION }}
+          RELEASE: "release"
 
   deploy-snapshot:
     name: Deploy snapshot

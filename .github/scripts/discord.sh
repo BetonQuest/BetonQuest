@@ -36,7 +36,7 @@ if [ -n "$COMMIT_MESSAGE" ]; then
 fi
 ADDITIONAL_INFORMATION="$LINEBREAK${COMMIT_MESSAGE//$\\n/ }$LINEBREAK\\n$CREDITS"
 
-if [ "$3" = "release" ]; then
+if [ "$RELEASE" = "release" ]; then
   RELEASE_NAME="RELEASE"
   RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
   RELEADE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
@@ -48,7 +48,7 @@ fi
 case "$JOB_STATUS" in
   "success" )
     EMBED_COLOR=3066993
-    DEV_BUILD_DOWNLOAD="Click to Download '$VERSION'!"
+    DEV_BUILD_DOWNLOAD="Click to Download $VERSION!"
     STATUS_MESSAGE="$RELEASE_NAME is now available"
     BUILD_DOWNLOAD_URL=$RELEASE_DOWNLOAD_URL
     DESCRIPTION="${RELEASE_NAME}s can contain bugs, please report them [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
@@ -58,7 +58,7 @@ case "$JOB_STATUS" in
   "failure"|"cancelled" )
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
-    DEV_BUILD_DOWNLOAD="Inspect the failure on '$VERSION'!"
+    DEV_BUILD_DOWNLOAD="Inspect the failure on $VERSION!"
     BUILD_DOWNLOAD_URL=$COMMIT_URL
     DESCRIPTION=""
     COMMIT_ICON=$COMMIT_ICON_FAILURE
