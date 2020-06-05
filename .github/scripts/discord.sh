@@ -45,7 +45,7 @@ else
   RELEASE_DOWNLOAD_URL="https://betonquest.pl/"
   RELEADE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
 fi
-case "${JOB_STATUS}" in
+case "$JOB_STATUS" in
   "Success" )
     EMBED_COLOR=3066993
     DEV_BUILD_DOWNLOAD="Click to Download '$VERSION'!"
