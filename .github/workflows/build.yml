@@ -313,7 +313,8 @@ jobs:
       - name: Create snapshot
         run: |
           if [ -z ${PASSWORD} ]; then echo "WARNING!!\nYou need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          curl --insecure -F "secret=$PASSWORD" -F "version=$VERSION" -F "versionNumber=$VERSION_NUMBER" -F "buildNumber=$BUILD_NUMBER" -F "branch=$BRANCH_NAME" -F "commitHash=$COMMIT_HASH" -F "plugin=$PLUGIN" -F "docs=$DOCS" https://betonquest.pl
+          RESPONSE=$(curl --insecure -F "secret=$PASSWORD" -F "version=$VERSION" -F "versionNumber=$VERSION_NUMBER" -F "buildNumber=$BUILD_NUMBER" -F "branch=$BRANCH_NAME" -F "commitHash=$COMMIT_HASH" -F "plugin=$PLUGIN" -F "docs=$DOCS" https://betonquest.pl/api/v1/builds/upload)
+          if [ $RESPONSE != "Upload successful" ]; then echo "WARNING!!\nThe upload was not successful. The response was '$RESPONSE'"; exit 1; fi
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
           VERSION: ${{ env.VERSION }}
@@ -339,3 +340,5 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           VERSION: ${{ env.VERSION }}
+          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
+          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
