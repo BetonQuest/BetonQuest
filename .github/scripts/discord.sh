@@ -1,10 +1,10 @@
 #!/bin/bash
 if [ -z "$WEBHOOK_URL" ]; then
-  echo -e "WARNING!!\nYou need to pass the WEBHOOK_URL environment variable.\nFor details & guide, visit: https://github.com/DiscordHooks/github-actions-discord-webhook"
+  echo -e "WARNING! You need to pass the WEBHOOK_URL environment variable. For details & guide, visit: https://github.com/DiscordHooks/github-actions-discord-webhook"
   exit 1
 fi
 
-echo -e "[Webhook]: Sending webhook to Discord...\\n";
+echo -e "[Webhook]: Sending webhook to Discord...";
 
 AVATAR="https://github.com/actions.png"
 BETON_QUEST_URL="https://avatars1.githubusercontent.com/u/62897788?s=200&v=4"
@@ -39,28 +39,28 @@ ADDITIONAL_INFORMATION="$LINEBREAK${COMMIT_MESSAGE//$\\n/ }$LINEBREAK\\n$CREDITS
 if [ "$RELEASE" = "release" ]; then
   RELEASE_NAME="RELEASE"
   RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/tag/v${POM_MAVEN_VERSION}/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/tag/v$POM_MAVEN_VERSION/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
 else
   RELEASE_NAME="Dev-Build"
   RELEASE_DOWNLOAD_URL="https://betonquest.pl"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.pl/api/v1/builds/download/${VERSION}/${VERSION_NUMBER}/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.pl/api/v1/builds/download/$VERSION/$VERSION_NUMBER/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
 fi
 case "$JOB_STATUS" in
   "success" )
     EMBED_COLOR=3066993
-    DEV_BUILD_DOWNLOAD="Click to Download ${POM_MAVEN_VERSION}!"
+    DEV_BUILD_DOWNLOAD="Click to Download $POM_MAVEN_VERSION!"
     STATUS_MESSAGE="${RELEASE_NAME} is now available"
     BUILD_DOWNLOAD_URL=$RELEASE_DOWNLOAD_URL_DIRECT
-    DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}).Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
+    DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}). Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
     COMMIT_ICON=$RELEASE_COMMIT_ICON_SUCCESS
     ;;
 
   "failure"|"cancelled" )
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
-    DEV_BUILD_DOWNLOAD="Inspect the failure on ${POM_MAVEN_VERSION}!"
+    DEV_BUILD_DOWNLOAD="Inspect the failure on $POM_MAVEN_VERSION!"
     BUILD_DOWNLOAD_URL=$COMMIT_URL
     DESCRIPTION=""
     COMMIT_ICON=$COMMIT_ICON_FAILURE
@@ -110,4 +110,4 @@ WEBHOOK_DATA='{
 }'
 
 (curl --fail --progress-bar -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "${WEBHOOK_DATA//	/ }" "$WEBHOOK_URL" \
-  && echo -e "\\n[Webhook]: Successfully sent the webhook.") || echo -e "\\n[Webhook]: Unable to send webhook."
+  && echo -e "[Webhook]: Successfully sent the webhook.") || echo -e "[Webhook]: Unable to send webhook."

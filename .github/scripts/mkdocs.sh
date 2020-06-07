@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ -z "${DEPLOY_KEY}" ]; then
-  echo -e "WARNING!!\nYou need to pass the DEPLOY_KEY environment variable."
+  echo -e "WARNING! You need to pass the DEPLOY_KEY environment variable."
   exit 1
 fi
 
