@@ -90,20 +90,21 @@ extra:
 
 nav:
   - 'Home':
-      - index.md
+      - 'Welcome!': index.md
       - For-Admins.md
       - For-Questers.md
+      - Features.md
   - 'Learn Beton':
       - Learn Beton/Welcome.md
       - Learn Beton/Frequently-Asked-Questions.md
       - Learn Beton/Installation-and-Configuration.md
-      - Learn Beton/Getting Started/YAML-for-questers.md
       - Learn Beton/Quick-start-tutorial.md
       - Learn Beton/Tips-and-tricks.md
       - 'Getting Started':
-            - Learn Beton/Getting Started/Installing-BetonQuest.md
-            - Learn Beton/Getting Started/Setting-up-a-local-test-server.md
-            - Learn Beton/Getting Started/Setting-up-the-editor.md
+          - Learn Beton/Getting Started/Setting-up-a-local-test-server.md
+          - Learn Beton/Getting Started/Installing-BetonQuest.md
+          - Learn Beton/Getting Started/Setting-up-the-editor.md
+          - Learn Beton/Getting Started/YAML-for-questers.md
   - 'User Documentation':
       - User Documentation/Commands and permissions.md
       - User Documentation/Compatibility.md
