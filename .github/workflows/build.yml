@@ -194,7 +194,7 @@ jobs:
   deploy-release:
     name: Deploy release
     if: "always() && github.repository == 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
-    needs: [build, documentation]
+    needs: [prepare, build, documentation]
     runs-on: ubuntu-latest
 
     steps:
@@ -257,7 +257,7 @@ jobs:
   deploy-snapshot:
     name: Deploy snapshot
     if: "always() && github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
-    needs: [build, documentation]
+    needs: [prepare, build, documentation]
     runs-on: ubuntu-latest
 
     steps:
@@ -268,13 +268,11 @@ jobs:
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
+
           IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
-          VERSION=${array[0]}
-          VERSION_NUMBER=${array[2]}
-          BRANCH_NAME=${GITHUB_REF:11}
-          echo ::set-env name=VERSION::$VERSION
-          echo ::set-env name=VERSION_NUMBER::$VERSION_NUMBER
-          echo ::set-env name=BRANCH_NAME::$BRANCH_NAME
+          echo ::set-env name=VERSION::${array[0]}
+          echo ::set-env name=VERSION_NUMBER::${array[2]}
+          echo ::set-env name=BRANCH_NAME::${GITHUB_REF:11}
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
