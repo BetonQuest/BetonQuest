@@ -47,16 +47,12 @@ jobs:
           # Check if tag and pom version are equal
           if [ $TAG_MAVEN_VERSION != $POM_MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_MAVEN_VERSION' and pom is '$POM_MAVEN_VERSION'."; exit 1; fi
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Update Version for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
         run: |
           POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-${BUILD_NUMBER}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Update Version for Artifact Build
         if: "github.event_name == 'pull_request' || github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
@@ -64,16 +60,12 @@ jobs:
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
           POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Save Version to output
         id: save_version
         run: |
           echo "The version is '$POM_MAVEN_VERSION'"
           echo ::set-output name=version::$POM_MAVEN_VERSION
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
   build:
     name: Build artifacts
@@ -114,15 +106,11 @@ jobs:
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Set plugin version
         run: |
           sed -i "s~\${maven-version}~${POM_MAVEN_VERSION}~g" ./src/main/resources/plugin.yml
           echo "Set the plugin version to '${POM_MAVEN_VERSION}'"
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Build with Maven
         run: |
@@ -187,15 +175,11 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
           cp ./CHANGELOG.md './docs/content/User Documentation/CHANGELOG.md'
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Set docs version
         run: |
           sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./mkdocs.yml
           echo "Set the docs version to '${POM_MAVEN_VERSION}'"
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Build with mkdocs
         run: |
@@ -239,8 +223,6 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
@@ -269,7 +251,7 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
+          VERSION: ${{ env.POM_MAVEN_VERSION }}
           RELEASE: "release"
 
   deploy-snapshot:
@@ -309,8 +291,6 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Create snapshot
         run: |
@@ -319,10 +299,8 @@ jobs:
           if [ "${RESPONSE}" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
-          VERSION: ${{ env.VERSION }}
-          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
           BUILD_NUMBER: ${{ github.run_number }}
-          BRANCH_NAME: ${GITHUB_REF:11}
+          BRANCH_NAME: ${{ GITHUB_REF:11 }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "@build/output/BetonQuest.jar"
           DOCS: "@build/docs/pdf/BetonQuest.pdf"
@@ -341,6 +319,3 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
-          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
