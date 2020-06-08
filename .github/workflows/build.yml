@@ -264,15 +264,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set Version
+      - name: Set Version and prepare snapshot variables
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
           IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
           VERSION=${array[0]}
           VERSION_NUMBER=${array[2]}
+          BRANCH_NAME=${GITHUB_REF:11}
           echo ::set-env name=VERSION::$VERSION
           echo ::set-env name=VERSION_NUMBER::$VERSION_NUMBER
+          echo ::set-env name=BRANCH_NAME::$BRANCH_NAME
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
@@ -300,7 +302,6 @@ jobs:
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
           BUILD_NUMBER: ${{ github.run_number }}
-          BRANCH_NAME: ${{ GITHUB_REF:11 }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "@build/output/BetonQuest.jar"
           DOCS: "@build/docs/pdf/BetonQuest.pdf"
