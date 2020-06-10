@@ -9,24 +9,27 @@ You can either add BetonQuest.jar directly to your build path or use Maven. Firs
 3. Refresh your project in Eclipse.
 4. In Eclipse Project Explorer right click on BetonQuest.jar and select `Build Path -> Add to Build Path`.
 
-And if you're using Maven simply add this to your _pom.xml_:
+And if you're using Maven simply add this (temporary repo) to your _pom.xml_:
 
 ```XML
 <repositories>
     <repository>
         <id>betonquest-repo</id>
-        <url>https://betonquest.pl/mvn</url>
+        <url>http://amberproject.net:8082/repository/AmberProject/</url>
     </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>pl.betoncraft.betonquest</groupId>
-        <artifactId>BetonQuest</artifactId>
-        <version>1.8.5</version>
+        <groupId>pl.betoncraft</groupId>
+        <artifactId>betonquest</artifactId>
+        <version>1.12.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
+
+The version you need to choose must be 1.12.0 or newer. If you want to use dev builds use `X.X.X-SNAPSHOT`.
+Check amberproject.net:8082/repository/AmberProject/ if you are not sure
 
 ## Writing events
 
