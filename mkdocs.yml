@@ -2,7 +2,7 @@ site_name: BetonQuest - UNOFFICIAL
 site_author: Co0sh and contributors
 site_url: https://betonquest.pl
 site_dir: target/docs
-docs_dir: docs/content
+docs_dir: docs
 repo_name: BetonQuest/BetonQuest
 repo_url: https://github.com/BetonQuest/BetonQuest
 edit_uri: ""
@@ -73,7 +73,7 @@ plugins:
       author: Co0sh and contributors
       toc_title: Table of contents
       output_path: pdf/BetonQuest.pdf
-      design: docs/content/webCode/css/pdf.css
+      design: docs/webCode/css/pdf.css
 
 
 # Discord not yet supported but it will be soon

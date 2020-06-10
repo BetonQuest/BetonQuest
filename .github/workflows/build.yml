@@ -192,7 +192,7 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './docs/content/User Documentation/CHANGELOG.md'
+          cp ./CHANGELOG.md './docs/User Documentation/CHANGELOG.md'
         env:
           POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
