@@ -3,7 +3,7 @@ out/
 *.ipr
 *.iml
 modules.xml
-#/.idea
+/.idea
 
 
 
