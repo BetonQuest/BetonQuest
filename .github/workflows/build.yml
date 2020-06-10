@@ -6,6 +6,9 @@ jobs:
     name: Prepare version
     runs-on: ubuntu-latest
 
+    outputs:
+      VERSION: ${{ steps.save_version.outputs.version }}
+
     steps:
       - name: Check fork version tagging
         if: "github.repository != 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
@@ -28,6 +31,13 @@ jobs:
           echo "Collected the pom.xml version. The version is '$POM_MAVEN_VERSION'"
           mkdir build
 
+      - name: Generate build number for Development Build
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+        uses: einaregilsson/build-number@v2
+        with:
+          token: ${{ secrets.github_token }}
+          prefix: ${{ env.POM_MAVEN_VERSION }}
+
       - name: Update Version for Release Build
         if: "startsWith(github.ref,'refs/tags/v')"
         run: |
@@ -36,38 +46,26 @@ jobs:
           echo "Collected the tag version. The version is '$TAG_MAVEN_VERSION'"
           # Check if tag and pom version are equal
           if [ $TAG_MAVEN_VERSION != $POM_MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_MAVEN_VERSION' and pom is '$POM_MAVEN_VERSION'."; exit 1; fi
-          echo "The version is '$POM_MAVEN_VERSION'"
-          echo $POM_MAVEN_VERSION >> build/Version.txt
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
+          echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
       - name: Update Version for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
         run: |
-          if [ -z ${PASSWORD} ]; then echo "WARNING!!\nYou need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          BUILD_NUMBER=$(curl -F "secret=$PASSWORD" -F "version=$POM_MAVEN_VERSION -F "branch=$BRANCH_NAME" https://betonquest.pl/api/v1/buildNumber | jq -r ".number")
           POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-${BUILD_NUMBER}
-          echo "The version is '$POM_MAVEN_VERSION'"
-          echo $POM_MAVEN_VERSION >> build/Version.txt
-        env:
-          PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
-          BRANCH_NAME: ${GITHUB_REF:11}
+          echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
       - name: Update Version for Artifact Build
-        if: "startsWith(github.ref,'refs/pull/') || github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
+        if: "github.event_name == 'pull_request' || github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
         run: |
-          POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-ARTIFACT-${GITHUB_RUN_NUMBER}
-          echo "The version is '$POM_MAVEN_VERSION'"
-          echo $POM_MAVEN_VERSION >> build/Version.txt
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
+          if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
+          POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
+          echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
-      - name: Upload Version
-        uses: actions/upload-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/Version.txt
+      - name: Save Version to output
+        id: save_version
+        run: |
+          echo "The version is '$POM_MAVEN_VERSION'"
+          echo ::set-output name=version::$POM_MAVEN_VERSION
 
   build:
     name: Build artifacts
@@ -87,15 +85,9 @@ jobs:
           server-username: REPOSITORY_USER
           server-password: REPOSITORY_PASS
 
-      - name: Download Version
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/
-
       - name: Set Version
         run: |
-          POM_MAVEN_VERSION=$(cat build/Version.txt)
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
       - name: Cache dependencies
@@ -114,15 +106,11 @@ jobs:
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Set plugin version
         run: |
           sed -i "s~\${maven-version}~${POM_MAVEN_VERSION}~g" ./src/main/resources/plugin.yml
           echo "Set the plugin version to '${POM_MAVEN_VERSION}'"
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Build with Maven
         run: |
@@ -132,7 +120,7 @@ jobs:
           cp target/BetonQuest.jar build/output/
 
       - name: Publish to Maven Repo
-        if: "github.repository == 'BetonQuest/BetonQuest' && (github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
         run: |
           mvn -B deploy
         env:
@@ -163,15 +151,9 @@ jobs:
           python-version: '3.6'
           architecture: 'x64'
 
-      - name: Download Version
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/
-
       - name: Set Version
         run: |
-          POM_MAVEN_VERSION=$(cat build/Version.txt)
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
       - name: Cache dependencies
@@ -196,12 +178,11 @@ jobs:
         env:
           POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
+
       - name: Set docs version
         run: |
           sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./mkdocs.yml
           echo "Set the docs version to '${POM_MAVEN_VERSION}'"
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Build with mkdocs
         run: |
@@ -216,22 +197,16 @@ jobs:
   deploy-release:
     name: Deploy release
     if: "always() && github.repository == 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
-    needs: [build, documentation]
+    needs: [prepare, build, documentation]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Download Version
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/
-
       - name: Set Version
         run: |
-          POM_MAVEN_VERSION=$(cat build/Version.txt)
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
 
       - name: Download Artifacts
@@ -251,8 +226,6 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
@@ -281,31 +254,28 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
+          VERSION: ${{ env.POM_MAVEN_VERSION }}
+          RELEASE: "release"
 
   deploy-snapshot:
     name: Deploy snapshot
-    if: "always() && github.repository == 'BetonQuest/BetonQuest' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
-    needs: [build, documentation]
+    if: "always() && github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+    needs: [prepare, build, documentation]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Download Version
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Version
-          path: build/
-
-      - name: Set Version
+      - name: Set Version and prepare snapshot variables
         run: |
-          POM_MAVEN_VERSION=$(cat build/Version.txt)
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo ::set-env name=POM_MAVEN_VERSION::$POM_MAVEN_VERSION
+
           IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
           echo ::set-env name=VERSION::${array[0]}
           echo ::set-env name=VERSION_NUMBER::${array[2]}
+          echo ::set-env name=BRANCH_NAME::${GITHUB_REF:11}
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
@@ -324,19 +294,15 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-        env:
-          POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Create snapshot
         run: |
-          if [ -z ${PASSWORD} ]; then echo "WARNING!!\nYou need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          curl -F "secret=$PASSWORD" -F "version=$VERSION" -F "versionNumber=$VERSION_NUMBER" -F "buildNumber=$BUILD_NUMBER" -F "branch=$BRANCH_NAME" -F "commitHash=$COMMIT_HASH" -F "plugin=$PLUGIN" -F "docs=$DOCS" https://betonquest.pl
+          if [ -z ${PASSWORD} ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
+          RESPONSE=$(curl --insecure -F "secret=$PASSWORD" -F "version=$VERSION" -F "versionNumber=$VERSION_NUMBER" -F "buildNumber=$BUILD_NUMBER" -F "branch=$BRANCH_NAME" -F "commitHash=$COMMIT_HASH" -F "plugin=$PLUGIN" -F "docs=$DOCS" https://betonquest.pl/api/v1/builds/upload)
+          if [ "${RESPONSE}" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
-          VERSION: ${{ env.VERSION }}
-          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
-          BUILD_NUMBER: ${GITHUB_RUN_NUMBER}
-          BRANCH_NAME: ${GITHUB_REF:11}
+          BUILD_NUMBER: ${{ github.run_number }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "@build/output/BetonQuest.jar"
           DOCS: "@build/docs/pdf/BetonQuest.pdf"
@@ -355,4 +321,3 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
