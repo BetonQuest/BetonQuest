@@ -95,34 +95,33 @@ nav:
       - For-Questers.md
       - Features.md
   - 'Learn Beton':
-      - Learn Beton/Welcome.md
-      - Learn Beton/Frequently-Asked-Questions.md
-      - Learn Beton/Installation-and-Configuration.md
-      - Learn Beton/Quick-start-tutorial.md
-      - Learn Beton/Tips-and-tricks.md
+      - Learn-Beton/Welcome.md
+      - Learn-Beton/Frequently-Asked-Questions.md
+      - Learn-Beton/Installation-and-Configuration.md
+      - Learn-Beton/Quick-start-tutorial.md
+      - Learn-Beton/Tips-and-tricks.md
       - 'Getting Started':
-          - Learn Beton/Getting Started/Setting-up-a-local-test-server.md
-          - Learn Beton/Getting Started/Installing-BetonQuest.md
-          - Learn Beton/Getting Started/Setting-up-the-editor.md
-          - Learn Beton/Getting Started/YAML-for-questers.md
+          - Learn-Beton/Getting-Started/Setting-up-a-local-test-server.md
+          - Learn-Beton/Getting-Started/Installing-BetonQuest.md
+          - Learn-Beton/Getting-Started/Setting-up-the-editor.md
+          - Learn-Beton/Getting-Started/YAML-for-questers.md
   - 'User Documentation':
-      - User Documentation/Commands and permissions.md
-      - User Documentation/Compatibility.md
-      - User Documentation/Conditions-List.md
-      - User Documentation/Events-List.md
-      - User Documentation/Notifications.md
-      - User Documentation/Objectives-List.md
-      - User Documentation/Reference.md
-      - User Documentation/Variables-List.md
-      - User Documentation/CHANGELOG.md
+      - User-Documentation/Commands-and-permissions.md
+      - User-Documentation/Compatibility.md
+      - User-Documentation/Conditions-List.md
+      - User-Documentation/Events-List.md
+      - User-Documentation/Notifications.md
+      - User-Documentation/Objectives-List.md
+      - User-Documentation/Reference.md
+      - User-Documentation/Variables-List.md
+      - User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
-      - Developer Documentation/Info-for-developers.md
+      - Developer-Documentation/Info-for-developers.md
+      - Developer-Documentation/Releasing.md
   - 'Contributing':
       - Contributing/Contributing.md
-      - Contributing/old_contributing.md
+      - 'Old': Contributing/old_contributing.md
       - Contributing/Docs.md
-      - 'Devs':
-          - Contributing/Devs/Releasing.md
 
 google_analytics:
   - UA-164568470-1

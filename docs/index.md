@@ -29,4 +29,4 @@ For more information please visit the page that fits your needs the most:
 [<span style="font-size:30px">:handshake:</span> **I want to contribute!**](Contributing/Contributing.md)
 
 
-[<span style="font-size:30px">:man_technologist:</span> **Im a developer and want to add support for my plugin!**](Developer Documentation/Info-for-developers.md)
+[<span style="font-size:30px">:man_technologist:</span> **Im a developer and want to add support for my plugin!**](Developer-Documentation/Info-for-developers.md)

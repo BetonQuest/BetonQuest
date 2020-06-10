@@ -9,7 +9,7 @@ Check this list to see what fits your skills:
 You just need to follow the bug report template on GitHub to submit a bug report. Please give us __**all information that is requested in the template!**__
 
 ##Suggesting features
-Before you suggest a feature please make sure it does not already exist! Search in the docs and if you are not sure ask in the <a href="https://discord.com/invite/rK6mfHq">discord!</a> 
+Before you suggest a feature please make sure it does not already exist! Search in the docs and if you are not sure ask in the <a href="https://discord.com/invite/rK6mfHq" target="_blank">discord!</a> 
 Once you are sure the feature does not already exist please also make sure nobody has already suggested it. Both things will save us time and therefore make it possible
 to implement more features.
 
@@ -17,7 +17,8 @@ Once you did that too simply <a href="https://github.com/BetonQuest/BetonQuest/i
 open a new issue on GitHub</a>. Maybe someday someone will find the time to make your dream come true. **:man_mage:**
 
 ##Improving the docs
-
+If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs.md)!
 
 ##Writing code
+If you want to write code for BetonQuest check the [Developer Documentation](../Developer-Documentation/Info-for-developers.md)!
 

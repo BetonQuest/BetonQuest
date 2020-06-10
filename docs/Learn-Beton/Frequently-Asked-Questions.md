@@ -36,7 +36,7 @@ If you have any questions please read it first. It's very likely that it has bee
 
 **Q**: _Conversations are not working! I created NPC "Innkeeper" and he won't talk to me._
 
-**A**: Conversations are not linked to an NPC through names, as you can have multiple Innkeepers. You need to connect them with their ID. Read [this](../User%20Documentation/Reference.md#npcs).
+**A**: Conversations are not linked to an NPC through names, as you can have multiple Innkeepers. You need to connect them with their ID. Read [this](../User-Documentation/Reference.md#npcs).
 
 ***
 

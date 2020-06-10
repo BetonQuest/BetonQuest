@@ -6,3 +6,5 @@ result: <a href="https://the.link/" target="_blank">clickable text that opens a 
 ```YAML
 use_codeboxes: for code
 ```
+
+Replace all spaces in file and folder names with `-`!
