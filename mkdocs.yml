@@ -64,7 +64,7 @@ markdown_extensions:
       permalink: true
   - footnotes
 
-# Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine
+# Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine. But be carefull not to commit that.
 plugins:
   - search
   - git-revision-date-localized:
@@ -76,7 +76,6 @@ plugins:
       design: docs/webCode/css/pdf.css
 
 
-# Discord not yet supported but it will be soon
 extra:
   social:
     - icon: fontawesome/brands/discord
