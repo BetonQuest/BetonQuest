@@ -19,7 +19,7 @@
 * **/q rename {tag/point/globalpoint/objective/entry} {oldName} {newName}** - renames all specified things in the database
 * **/q delete {tag/point/objective/entry} {name}** - deletes all specified things in the database
 * **/q backup** - creates a backup of configuration files and database
-* **/q update** - updates the plugin to the newest release available. If you want to update to a development version instead, add `--dev` argument at the end of the command.
+* **/q update** - updates the plugin to the newest version.
 * **/q create {package}**: creates new package with given name, filled with default quest
 * **/q vector {packname.variable} {newvariable}**: calculates the vector from first location variable to you position and saves it as second variable
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins

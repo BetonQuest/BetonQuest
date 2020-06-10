@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.utils;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -26,104 +25,93 @@ public class Updater {
 
     private final BetonQuest plugin;
     private final String fileName;
-    private final Version localVersion;
     private final ConfigValues config;
-
     private Pair<Version, String> latest;
 
     public Updater(File file) {
-        fileName = file.getName();
-        plugin = BetonQuest.getInstance();
-        String version = plugin.getDescription().getVersion();
-        localVersion = new Version(version);
-        config = new ConfigValues();
+        this.plugin = BetonQuest.getInstance();
+        this.fileName = file.getName();
+        this.config = new ConfigValues();
         searchForUpdate();
     }
 
     private void searchForUpdate() {
-        latest = null;
+        latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
         config.load();
         if (!config.enabled) {
             return;
         }
 
-        if (localVersion.isDev() && !localVersion.isUnofficial()) {
-            LogUtils.getLogger().log(Level.WARNING, "Detected unofficial development version. Autoupdater disabled.");
+        if (latest.getKey().isUnofficial()) {
+            LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Disabled! An unofficial development version was detected.");
             return;
         }
-        LogUtils.getLogger().log(Level.INFO, "Autoupdater enabled.");
+        LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Enabled!");
         new BukkitRunnable() {
             @Override
             public void run() {
-                LogUtils.getLogger().log(Level.INFO, "Search for newer version...");
+                LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
                     findDev();
                 } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not get the latest dev build number!", e);
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
                     return;
                 }
                 try {
                     findRelease();
                 } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not get the latest release!", e);
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                     return;
                 }
-                if (latest != null) {
-                    LogUtils.getLogger().log(Level.INFO, "Found newer version '" + latest.getKey().getVersion()
-                            + "'" + (config.automatic ? ", it will be downloaded on next restart/reload.": "!"));
+                if (latest.getValue() != null) {
+                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
+                            + "'" + (config.automatic ? ", it will be downloaded and automatically installed on the next restart.": ", it will be installed, if you execute '/q update'!"));
+                    if(config.automatic) {
+                        update(Bukkit.getConsoleSender());
+                    }
+                }
+                else {
+                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
                 }
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());
     }
 
     private void findRelease() throws Exception {
-        Version highestVersion = new Version(localVersion);
-        String highestVersionURL = null;
-        JSONArray json = new JSONArray(readFromURL(RELEASE_API_URL));
+        JSONArray json = new JSONArray(readStringFromURL(RELEASE_API_URL));
         for (int i = 0; i < json.length(); i++) {
             JSONObject release = json.getJSONObject(i);
             Version version = new Version(release.getString("tag_name").substring(1));
             String url = release.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
-            if (highestVersion.isNewer(version)) {
-                highestVersion = version;
-                highestVersionURL = url;
+            if (latest.getKey().isNewer(version, config.updateStrategy)) {
+                latest = Pair.of(version, url);
             }
-
         }
-        latest = Pair.of(highestVersion, highestVersionURL);
     }
 
     private void findDev() throws Exception {
-        if (!config.updateStrategy.isDev) {
-            return;
-        }
-        Version highestVersion = new Version(localVersion);
-        String highestVersionURL = null;
-        JSONObject json = new JSONObject(readFromURL(DEV_API_LATEST));
+        JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
         Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
             String key = keys.next();
             String dev = json.getString(key);
-            Version version = new Version(key + dev);
-            String url = DEV_API_DOWNLOAD.replace(":version", key).replace(":versionNumber", dev);
-            if (highestVersion.isNewer(version)) {
-                highestVersion = version;
-                highestVersionURL = url;
+            Version version = new Version(key + "-DEV-" + dev);
+            String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
+            if (latest.getKey().isNewer(version, config.updateStrategy)) {
+                latest = Pair.of(version, url);
             }
-
         }
-        latest = Pair.of(highestVersion, highestVersionURL);
     }
 
     private void downloadUpdate() throws QuestRuntimeException {
-        LogUtils.getLogger().log(Level.INFO, "Updater started download of new version...");
+        LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Updater started download of new version...");
         if (!config.enabled) {
             throw new QuestRuntimeException("The updater is disabled in the config! Check config entry 'update.enabled'.");
         }
-        if (latest == null) {
+        if (latest.getValue() == null) {
             throw new QuestRuntimeException("The updater did not find an update! This can depend on your update_strategy, check config entry 'update.update_strategy'.");
         }
-        LogUtils.getLogger().log(Level.INFO, "The target version is '" + latest.getKey().getVersion() + "'...");
+        LogUtils.getLogger().log(Level.INFO, "(Autoupdater) The target version is '" + latest.getKey().getVersion() + "'...");
         try {
             URL remoteFile = new URL(latest.getValue());
             try (ReadableByteChannel rbc = Channels.newChannel(remoteFile.openStream())) {
@@ -139,29 +127,26 @@ public class Updater {
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 }
             }
-            latest = null;
-            LogUtils.getLogger().log(Level.INFO, "Download finished.");
+            latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
+            LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Download finished.");
         } catch (IOException e) {
             throw new QuestRuntimeException("Could not download the file. Try again or update manually.", e);
         }
     }
 
-    public void update(CommandSender sender, boolean checkAutoUpdate) {
+    public void update(CommandSender sender) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-                    if(checkAutoUpdate && !config.automatic) {
-                        throw new QuestRuntimeException("The auto updater is disabled! Check config entry 'update.auto_update'.");
-                    }
                     String version = getUpdateVersion();
                     downloadUpdate();
                     if (sender != null) {
-                        sender.sendMessage("§2Download finished. Restart the server to update the plugin to version '" + version + "'.");
+                        sender.sendMessage("§2(Autoupdater) Download finished. Restart the server to update the plugin to version '" + version + "'.");
                     }
                 } catch (QuestRuntimeException e) {
                     if (sender != null) {
-                        sender.sendMessage("§c" + e.getMessage());
+                        sender.sendMessage("§c(Autoupdater) " + e.getMessage());
                     }
                     LogUtils.logThrowable(e);
                 }
@@ -170,7 +155,7 @@ public class Updater {
     }
 
     public boolean isUpdateAvailable() {
-        return latest != null;
+        return latest.getValue() != null;
     }
 
     public String getUpdateVersion() {
@@ -184,7 +169,7 @@ public class Updater {
         searchForUpdate();
     }
 
-    private String readFromURL(String url) throws IOException {
+    private String readStringFromURL(String url) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader br = new BufferedReader(reader)) {
             StringBuilder sb = new StringBuilder();
             int cp;
@@ -201,6 +186,7 @@ public class Updater {
         private boolean automatic;
 
         private void load() {
+            // TODO Delete in BQ 2.0.0 getConfig().set("", null)
             plugin.getConfig().set("update.download_bugfixes", null);
             plugin.getConfig().set("update.notify_new_release", null);
             plugin.getConfig().set("update.notify_dev_build", null);
@@ -211,11 +197,11 @@ public class Updater {
             }
             else {
                 updateStrategy = UpdateStrategy.MINOR;
-                plugin.getConfig().set("update.strategy", updateStrategy.toString().toLowerCase());
+                plugin.getConfig().set("update.strategy", updateStrategy.toString());
                 plugin.saveConfig();
             }
-            if(plugin.getConfig().isSet("updater.automatic")) {
-                automatic = plugin.getConfig().getBoolean("updater.automatic");
+            if(plugin.getConfig().isSet("update.automatic")) {
+                automatic = plugin.getConfig().getBoolean("update.automatic");
             }
             else {
                 automatic = true;
@@ -240,23 +226,28 @@ public class Updater {
         }
     }
 
-    private class Version {
-        public static final String DEV_TAG = "-DEV-";
-        public static final String UNOFFICIAL_TAG = "UNOFFICIAL";
-        public static final String ARTIFACT_TAG = "ARTIFACT-";
+    public static class Version {
+        public static final String DEV_TAG = "DEV-";
 
         private final String version;
         private final DefaultArtifactVersion artifactVersion;
-
-        private final boolean dev;
+        private final Integer dev;
         private final boolean unofficial;
 
         public Version(String version) {
             this.version = version;
-            artifactVersion = new DefaultArtifactVersion(version);
+            this.artifactVersion = new DefaultArtifactVersion(version);
 
-            dev = version.contains(DEV_TAG);
-            unofficial = dev && (version.contains(ARTIFACT_TAG) || version.endsWith(UNOFFICIAL_TAG));
+            Integer dev = null;
+            boolean unofficial = false;
+            try {
+                dev = Integer.valueOf(artifactVersion.getQualifier().substring(DEV_TAG.length()));
+            }
+            catch (Exception e) {
+                unofficial = artifactVersion.getQualifier() != null;
+            }
+            this.dev = dev;
+            this.unofficial = unofficial;
         }
 
         public Version(Version v) {
@@ -266,14 +257,14 @@ public class Updater {
             this.unofficial = v.unofficial;
         }
 
-        public boolean isNewer(final Version v) {
-            if (!config.updateStrategy.isDev && v.dev) {
+        public boolean isNewer(final Version v, UpdateStrategy updateStrategy) {
+            if (isUnofficial() || v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
                 return false;
             }
             int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
             int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), v.artifactVersion.getMinorVersion());
             int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), v.artifactVersion.getIncrementalVersion());
-            switch (config.updateStrategy) {
+            switch (updateStrategy) {
                 case MAYOR:
                 case MAYOR_DEV:
                     if (mayorVersion > 0) {
@@ -298,7 +289,12 @@ public class Updater {
                         } else if (patchVersion < 0) {
                             return true;
                         } else {
-                            return new ComparableVersion(version).compareTo(new ComparableVersion(v.version)) < 0;
+                            if(dev == null || v.dev == null) {
+                                return dev != null;
+                            }
+                            else {
+                                return dev.compareTo(v.dev) < 0;
+                            }
                         }
                     }
                 default:
@@ -311,7 +307,7 @@ public class Updater {
         }
 
         public boolean isDev() {
-            return dev;
+            return dev != null;
         }
 
         public boolean isUnofficial() {

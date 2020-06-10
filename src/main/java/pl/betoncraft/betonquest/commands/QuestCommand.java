@@ -270,7 +270,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }.runTaskAsynchronously(BetonQuest.getInstance());
                 break;
             case "update":
-                BetonQuest.getInstance().getUpdater().update(sender, false);
+                BetonQuest.getInstance().getUpdater().update(sender);
                 break;
             case "reload":
                 // just reloading
@@ -309,7 +309,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             return Arrays.asList("reload", "objective", "tag", "point", "globaltag", "globalpoint", "journal",
                     "condition", "event", "item", "give", "rename", "delete",
-                    "config", "vector", "version", "backup", "debug");
+                    "config", "vector", "version", "backup", "debug", "update");
         }
         switch (args[0].toLowerCase()) {
         case "conditions":
@@ -371,10 +371,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return null;
             else
                 return new ArrayList<>();
-        case "update":
-            return completeUpdate(sender, args);
         case "debug":
             return completeDebug(sender, args);
+        case "update":
         case "reload":
         case "backup":
         case "create":
@@ -382,21 +381,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         default:
             return new ArrayList<>();
         }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest update command
-     *
-     * @param sender
-     * @param args
-     * @return
-     */
-    private List<String> completeUpdate(CommandSender sender, String[] args) {
-        if (args.length == 2)
-            return Arrays.asList("--dev");
-        else
-            return new ArrayList<>();
     }
 
     /**

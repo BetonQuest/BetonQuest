@@ -960,8 +960,6 @@ public class BetonQuest extends JavaPlugin {
         // cancel static events (they are registered outside of Bukkit so it
         // won't happen automatically)
         StaticEvents.stop();
-        // update if needed
-        updater.update(null, true);
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
     }

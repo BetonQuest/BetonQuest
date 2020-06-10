@@ -17,13 +17,17 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
 * Configure MySQL or SQLite database. Fill it to use MySQL or leave it blank (or incorrect) to use SQLite.
 * Language is just the currently used translation of the plugin. Currently there are 7 languages available: English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl) and Italian (it).
 * `update` section controls the updater. It has the following settings:
-    - `enable` option is set to true by default, and it controls whether the plugin should do anything update-related.
-    - `download_bugfixes` controls whether BetonQuest should automatically update bugfix versions (like _1.7.3 -> 1.7.4_ or _1.8.1 -> 1.8.3_).
-        These versions **do not** change how the plugin works, they only fix bugs, so it is helpful to set it to `true`.
-    - `notify_new_release` option is responsible for displaying a notification at startup about new releases (like _1.7.6 -> 1.8_).
-        This will inform the user on newly introduced features and changes to existing ones, but these changes are not downloaded automatically. Use `/q update` when you're ready to update.
-    - If a development version is being used, there will be a third setting here, `notify_dev_build`.
-        This is the same as `notify_new_release`, but it checks the development builds instead. There are no specific version checking here, so if the found dev number is higher, it will appear. You are responsible for downloading new development builds.
+    - `enabled` default `true`. Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
+    - `strategy` default `MINOR`. The update strategy is more difficult to understand. A version is a number, that consists of three parts. For example `1.2.3`, the `1` is named `MAYOR`, the `2` `MINOR` and the `3` `PATCH`. The table below show you what will be downloaded with which strategy.
+      A strategy followed by a `_DEV` will also download new Dev-Builds.Be warned, that Dev-Builds can contain bugs.
+           
+       strategy         | `MAYOR`/`MAYOR_DEV` | `MINOR`/`MINOR_DEV`| `PATCH`/`PATCH_DEV`|
+       ---------------- | ------------------- | ------------------ | ------------------ |
+       Bug Fixes        | :white_check_mark:  | :white_check_mark: | :white_check_mark: |
+       New Features     | :white_check_mark:  | :white_check_mark: | :x:                | 
+       Breaking Changes | :white_check_mark:  | :x:                | :x:                |
+        
+    - `automatic` default `true`. If true the updater is downloading automatically new Versions. If false, the updater is only downloading new versions with the update command.
 * `default_journal_slot` is a number of slots where the journal will appear after using `/journal` command.
 * `citizens_npcs_by_name` sets whether NPCs from citizens2 should be identified in main.yml by their name instead of their id.
 * `max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).
