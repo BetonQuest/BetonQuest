@@ -15,19 +15,30 @@ The configuration of BetonQuest is done mainly in _config.yml_ file. All options
     Do not touch "version" option! It may corrupt your files!
 
 * Configure MySQL or SQLite database. Fill it to use MySQL or leave it blank (or incorrect) to use SQLite.
-* Language is just the currently used translation of the plugin. Currently there are 7 languages available: English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl) and Italian (it).
-* `update` section controls the updater. It has the following settings:
-    - `enabled` default `true`. Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
-    - `strategy` default `MINOR`. The update strategy is more difficult to understand. A version is a number, that consists of three parts. For example `1.2.3`, the `1` is named `MAYOR`, the `2` `MINOR` and the `3` `PATCH`. The table below show you what will be downloaded with which strategy.
-      A strategy followed by a `_DEV` will also download new Dev-Builds.Be warned, that Dev-Builds can contain bugs.
-           
-       strategy         | `MAYOR`/`MAYOR_DEV` | `MINOR`/`MINOR_DEV`| `PATCH`/`PATCH_DEV`|
-       ---------------- | ------------------- | ------------------ | ------------------ |
-       Bug Fixes        | :white_check_mark:  | :white_check_mark: | :white_check_mark: |
-       New Features     | :white_check_mark:  | :white_check_mark: | :x:                | 
-       Breaking Changes | :white_check_mark:  | :x:                | :x:                |
+* Language is just the currently used translation of the plugin. Currently there are 7 languages available: 
+English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl) and Italian (it).
+* The `update` section controls the updater. It has the following settings:
+    - `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
+    - `strategy` (default `MINOR`). The update strategy is more difficult to understand.
+    Each plugin version is a number, that consists of three parts. For example `2.4.3`, the  first number (`2` in this example)
+    is named `MAYOR`, the second `MINOR` (`4` in this example) and the third `PATCH` (`3` in this example).
+    When we release a new version of BetonQuest we will change these numbers in a specific way. Each number has a fixed meaning. 
+    The table below shows you what's included in the update when we increase any of the three digits:    
+  
         
-    - `automatic` default `true`. If true the updater is downloading automatically new Versions. If false, the updater is only downloading new versions with the update command.
+        | Update Strategy  | `MAYOR`                | `MINOR`                | `PATCH`                |
+        |------------------|------------------------|------------------------|------------------------|
+        | Bug Fixes        | :white_check_mark:     | :white_check_mark:     | :white_check_mark:     | 
+        | New Features     | :white_check_mark:     | :white_check_mark:     | :x:                    | 
+        | Breaking Changes | :white_check_mark:     | :x:                    | :x:                    | 
+        
+        You can also append `_DEV` to each strategy. This will download the dev builds for the corresponding version. This
+         is not recommended for production/live servers, as devbuilds can contain bugs. 
+    
+      
+    - `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
+    the updater will only download new versions when the update command is executed.   
+    
 * `default_journal_slot` is a number of slots where the journal will appear after using `/journal` command.
 * `citizens_npcs_by_name` sets whether NPCs from citizens2 should be identified in main.yml by their name instead of their id.
 * `max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).

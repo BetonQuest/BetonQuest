@@ -117,10 +117,11 @@ nav:
   - 'Developer Documentation':
       - Developer-Documentation/Info-for-developers.md
       - Developer-Documentation/Releasing.md
+      - Developer-Documentation/Versioning.md
   - 'Contributing':
       - Contributing/Contributing.md
       - 'Old': Contributing/old_contributing.md
-      - Contributing/Docs.md
+      - Contributing/Docs/Docs.md
 
 google_analytics:
   - UA-164568470-1

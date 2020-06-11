@@ -8,6 +8,13 @@ use_codeboxes: for code
 ```
 
 Replace all spaces in file and folder names with `-`!
+Lists must be decleared as such:
+* Top Level
+    - Second Level
+    - Second Level
+* Another Top level
+
+A single line may only have 170 characters. Please wrap at 121 though.
 
 
 Clone in IntelliJ and select the "Docs" project scope.

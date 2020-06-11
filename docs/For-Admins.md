@@ -20,7 +20,7 @@ This is also true for the learning curve, your staff will need some time to lear
 However, one of the goals of the further development of BetonQuest is to reduce the overhead that is needed for simple quests. 
 
 
-Feature[^1]                   | BetonQuest         | Quests            | BeautyQuests          | QuestCreator             | MangoQuest          |  
+Feature[^1]               | BetonQuest         | Quests            | BeautyQuests          | QuestCreator             | MangoQuest          |  
 ------------------------- | ------------------ | ----------------- | --------------------- | ------------------------ | -----------         |
 Free                      | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
 OpenSource                | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:                      | :white_check_mark:  |
