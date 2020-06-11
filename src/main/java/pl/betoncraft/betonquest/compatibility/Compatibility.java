@@ -33,7 +33,6 @@ import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.heroes.HeroesIntegrator;
 import pl.betoncraft.betonquest.compatibility.holographicdisplays.HolographicDisplaysIntegrator;
 import pl.betoncraft.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
-import pl.betoncraft.betonquest.compatibility.legendquest.LegendQuestIntegrator;
 import pl.betoncraft.betonquest.compatibility.magic.MagicIntegrator;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOIntegrator;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
@@ -41,7 +40,6 @@ import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderAPIInteg
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.quests.QuestsIntegrator;
-import pl.betoncraft.betonquest.compatibility.racesandclasses.RacesAndClassesIntegrator;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
 import pl.betoncraft.betonquest.compatibility.skillapi.SkillAPIIntegrator;
 import pl.betoncraft.betonquest.compatibility.skript.SkriptIntegrator;
@@ -89,8 +87,6 @@ public class Compatibility implements Listener {
         integrators.put("Shopkeepers", new ShopkeepersIntegrator());
         integrators.put("PlaceholderAPI", new PlaceholderAPIIntegrator());
         integrators.put("HolographicDisplays", new HolographicDisplaysIntegrator());
-        integrators.put("RacesAndClasses", new RacesAndClassesIntegrator());
-        integrators.put("LegendQuest", new LegendQuestIntegrator());
         integrators.put("BetonLangAPI", new BetonLangAPIIntegrator());
         integrators.put("BountifulAPI", new BountifulAPIIntegrator());
         integrators.put("ProtocolLib", new ProtocolLibIntegrator());

@@ -11,9 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Items for HolographicDisplays are now defines in items.yml
 - Command 'bq rename' can now be used for globalpoints
+- The old updater was replaced with a new one
+- AchievementCondition is replaced with AdvancementCondition
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
+- Removed RacesAndClasses support
+- Removed LegendQuest support
 ### Fixes
 - Renaming an NPC will not cause an NPE for a NPC Hologram
 - Objective 'craft' now supports shift-clicking
