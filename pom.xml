@@ -31,15 +31,33 @@
         <repository>
             <id>spigot-api</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <!-- PaperMC -->
         <repository>
             <id>destroystokyo-repo</id>
             <url>https://papermc.io/repo/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <!-- WorldGuard,WorldEdit -->
@@ -160,7 +178,7 @@
         <!-- Mythic Mobs -->
         <repository>
             <id>mythic</id>
-            <url>https://mvn.lumine.io/#browse/browse:maven-releases</url>
+            <url>http://dev.lumine.io:8081/repository/maven-releases/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -327,8 +345,14 @@
         <dependency>
             <groupId>io.lumine.xikage</groupId>
             <artifactId>MythicMobs</artifactId>
-            <version>4.9.2</version>
+            <version>4.7.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
