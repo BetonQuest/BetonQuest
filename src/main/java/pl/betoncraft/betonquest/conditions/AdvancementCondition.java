@@ -15,33 +15,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility.racesandclasses;
+package pl.betoncraft.betonquest.conditions;
 
-import de.tobiyas.racesandclasses.APIs.ManaAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Checks RaC mana.
+ * Checks if the player has specified condition.
  *
  * @author Jakub Sapalski
  */
-public class RaCManaCondition extends Condition {
+public class AdvancementCondition extends Condition {
 
-    private VariableNumber number;
+    private final Advancement advancement;
 
-    public RaCManaCondition(Instruction instruction) throws InstructionParseException {
+    @SuppressWarnings("deprecation")
+    public AdvancementCondition(Instruction instruction) throws InstructionParseException {
         super(instruction);
-        number = instruction.getVarNum();
+        String i = instruction.next();
+        String[] split = i.split(":");
+        advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
+        if(advancement == null) {
+            throw new InstructionParseException("No such advancement: " + i);
+        }
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
-        return ManaAPI.getCurrentMana(PlayerConverter.getPlayer(playerID)) >= number.getDouble(playerID);
+    public boolean check(String playerID) {
+        AdvancementProgress progress = PlayerConverter.getPlayer(playerID).getAdvancementProgress(advancement);
+        return progress.isDone();
     }
 
 }

@@ -17,10 +17,10 @@
  */
 package pl.betoncraft.betonquest.compatibility.denizen;
 
-import net.aufdemrand.denizen.BukkitScriptEntryData;
-import net.aufdemrand.denizen.objects.dPlayer;
-import net.aufdemrand.denizencore.scripts.ScriptRegistry;
-import net.aufdemrand.denizencore.scripts.containers.core.TaskScriptContainer;
+import com.denizenscript.denizen.objects.PlayerTag;
+import com.denizenscript.denizen.utilities.implementation.BukkitScriptEntryData;
+import com.denizenscript.denizencore.scripts.ScriptRegistry;
+import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class DenizenTaskScriptEvent extends QuestEvent {
 
-    private String name;
+    private final String name;
 
     public DenizenTaskScriptEvent(Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -49,8 +49,8 @@ public class DenizenTaskScriptEvent extends QuestEvent {
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
-        BukkitScriptEntryData data = new BukkitScriptEntryData(dPlayer.mirrorBukkitPlayer(player), null);
-        script.runTaskScript(data, null);
+        BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
+        script.run(data, null);
     }
 
 }
