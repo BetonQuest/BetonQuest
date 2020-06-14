@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed Deprecated Exceptions
 - Removed RacesAndClasses support
 - Removed LegendQuest support
+- Removed the CLAY NPC
 ### Fixes
 - Renaming an NPC will not cause an NPE for a NPC Hologram
 - Objective 'craft' now supports shift-clicking

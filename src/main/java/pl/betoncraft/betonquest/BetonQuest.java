@@ -395,9 +395,6 @@ public class BetonQuest extends JavaPlugin {
         // instantiating of these important things
         new JoinQuitListener();
 
-        // instantiate default conversation start listener
-        new CubeNPCListener();
-
         // instantiate journal handler
         new QuestItemHandler();
 
