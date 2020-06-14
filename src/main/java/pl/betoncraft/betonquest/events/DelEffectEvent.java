@@ -39,7 +39,7 @@ public class DelEffectEvent extends QuestEvent {
     private final boolean any;
 
     public DelEffectEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String next = instruction.next();
 
         if (next.equalsIgnoreCase("any")) {
@@ -56,13 +56,14 @@ public class DelEffectEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         if (any) {
             p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
         } else {
             effects.forEach(p::removePotionEffect);
         }
+        return null;
     }
 
 }

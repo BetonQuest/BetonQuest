@@ -36,13 +36,13 @@ public class HandCondition extends Condition {
     private final boolean offhand;
 
     public HandCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questItem = new QuestItem(instruction.getItem());
         offhand = instruction.hasArgument("offhand");
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
         ItemStack item = null;
         item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();

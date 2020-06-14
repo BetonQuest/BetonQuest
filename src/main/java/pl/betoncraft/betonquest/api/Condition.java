@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  *
  * @author Jakub Sapalski
  */
-abstract public class Condition {
+abstract public class Condition extends ForceSyncHandler<Boolean>{
 
     /**
      * Stores instruction string for the condition.
@@ -64,7 +64,8 @@ abstract public class Condition {
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
      */
-    public Condition(Instruction instruction) {
+    public Condition(Instruction instruction, boolean forceSync) {
+        super(forceSync);
         this.instruction = instruction;
     }
 
@@ -98,5 +99,6 @@ abstract public class Condition {
      * @throws QuestRuntimeException when an error happens at runtime (for example a numeric
      *                               variable resolves to a string)
      */
-    abstract public boolean check(String playerID) throws QuestRuntimeException;
+    @Override
+    protected abstract Boolean execute(String playerID) throws QuestRuntimeException;
 }

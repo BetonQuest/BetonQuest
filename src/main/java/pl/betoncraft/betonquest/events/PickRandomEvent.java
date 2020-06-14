@@ -41,7 +41,7 @@ public class PickRandomEvent extends QuestEvent {
     private final VariableNumber amount;
 
     public PickRandomEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         super.persistent = true;
         super.staticness = true;
         this.events = instruction.getList(string -> {
@@ -61,7 +61,7 @@ public class PickRandomEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         List<RandomEvent> events = new ArrayList<>(this.events);
         double total = 0;
         // Calculate total amount of all "percentages" (so that it must not be 100)
@@ -89,6 +89,7 @@ public class PickRandomEvent extends QuestEvent {
                 }
             }
         }
+        return null;
     }
 
     private class RandomEvent {

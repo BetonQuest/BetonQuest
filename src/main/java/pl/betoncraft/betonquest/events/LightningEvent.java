@@ -34,16 +34,17 @@ public class LightningEvent extends QuestEvent {
     private final LocationData loc;
 
     public LightningEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         location.getWorld().strikeLightning(location);
+        return null;
     }
 
 }

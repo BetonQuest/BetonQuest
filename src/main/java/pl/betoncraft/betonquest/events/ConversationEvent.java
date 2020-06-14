@@ -34,12 +34,13 @@ public class ConversationEvent extends QuestEvent {
     private final String conv;
 
     public ConversationEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         conv = Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         new Conversation(playerID, conv, PlayerConverter.getPlayer(playerID).getLocation());
+        return null;
     }
 }

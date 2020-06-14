@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,17 +9,20 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.events;
+
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
@@ -30,7 +33,6 @@ import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.logging.Level;
 
 /**
  * Adds a compass specific tag to the player.
@@ -39,67 +41,68 @@ import java.util.logging.Level;
  */
 public class CompassEvent extends QuestEvent {
 
-    private Action action;
-    private String compass;
-    private ConfigurationSection compassSection;
-    private ConfigPackage compassPackage;
+	private final Action			action;
+	private final String			compass;
+	private ConfigurationSection	compassSection;
+	private ConfigPackage			compassPackage;
 
-    public CompassEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        persistent = true;
+	public CompassEvent(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+		persistent = true;
 
-        action = instruction.getEnum(Action.class);
-        compass = instruction.next();
+		action = instruction.getEnum(Action.class);
+		compass = instruction.next();
 
-        // Check if compass is valid
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
-            if (s != null) {
-                if (s.contains(compass)) {
-                    compassSection = s.getConfigurationSection(compass);
-                    compassPackage = pack;
-                    break;
-                }
-            }
-        }
-        if (compassSection == null) {
-            throw new InstructionParseException("Invalid compass location: " + compass);
-        }
-    }
+		// Check if compass is valid
+		for(final ConfigPackage pack : Config.getPackages().values()) {
+			final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
+			if(s != null) {
+				if(s.contains(compass)) {
+					compassSection = s.getConfigurationSection(compass);
+					compassPackage = pack;
+					break;
+				}
+			}
+		}
+		if(compassSection == null) {
+			throw new InstructionParseException("Invalid compass location: " + compass);
+		}
+	}
 
-    @Override
-    public void run(String playerID) {
-        switch (action) {
-            case ADD:
-            case DEL:
-                // Add Tag to player
-                try {
-                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).run(playerID);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
-                    LogUtils.logThrowable(e);
-                }
-                return;
-            case SET:
-                Location location;
-                try {
-                    location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
-                } catch (QuestRuntimeException | InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
-                    LogUtils.logThrowable(e);
-                    return;
-                }
+	@Override
+	protected Void execute(final String playerID) throws QuestRuntimeException {
+		switch(action) {
+			case ADD:
+			case DEL:
+				// Add Tag to player
+				try {
+					new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).handle(playerID);
+				} catch(final InstructionParseException e) {
+					LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
+					LogUtils.logThrowable(e);
+				}
+				return null;
+			case SET:
+				Location location;
+				try {
+					location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
+				} catch(QuestRuntimeException | InstructionParseException e) {
+					LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
+					LogUtils.logThrowable(e);
+					return null;
+				}
 
-                Player player = PlayerConverter.getPlayer(playerID);
-                if (player != null) {
-                    player.setCompassTarget(location);
-                }
-        }
-    }
+				final Player player = PlayerConverter.getPlayer(playerID);
+				if(player != null) {
+					player.setCompassTarget(location);
+				}
+		}
+		return null;
+	}
 
-    public enum Action {
-        ADD,
-        DEL,
-        SET
-    }
+	public enum Action {
+		ADD,
+		DEL,
+		SET
+	}
 }

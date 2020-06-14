@@ -33,13 +33,13 @@ public class VariableCondition extends Condition {
     private String regex;
 
     public VariableCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         variable = instruction.next();
         regex = instruction.next().replace('_', ' ');
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID).matches(regex);
     }
 

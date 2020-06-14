@@ -35,7 +35,7 @@ public class GlobalPointCondition extends PointCondition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         return check(playerID, BetonQuest.getInstance().getGlobalData().getPoints());
     }
 

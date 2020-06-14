@@ -44,13 +44,13 @@ public class GiveEvent extends QuestEvent {
     private final boolean notify;
 
     public GiveEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         for (Item theItem : questItems) {
             QuestItem questItem = theItem.getItem();
@@ -84,5 +84,6 @@ public class GiveEvent extends QuestEvent {
                 amountInt = amountInt - stackSize;
             }
         }
+        return null;
     }
 }

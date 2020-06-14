@@ -44,7 +44,7 @@ public class EffectEvent extends QuestEvent {
     private final boolean icon;
 
     public EffectEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String type = instruction.next();
         effect = PotionEffectType.getByName(type);
         if (effect == null) {
@@ -69,9 +69,10 @@ public class EffectEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         PlayerConverter.getPlayer(playerID).addPotionEffect(
                 new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient, !hidden, icon));
+        return null;
     }
 
 }

@@ -38,7 +38,7 @@ public class ChestItemCondition extends Condition {
     private final LocationData loc;
 
     public ChestItemCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         // extract data
@@ -47,7 +47,7 @@ public class ChestItemCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         InventoryHolder chest;
         try {

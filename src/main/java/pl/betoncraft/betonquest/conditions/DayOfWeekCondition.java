@@ -35,7 +35,7 @@ public class DayOfWeekCondition extends Condition {
     private final DayOfWeek day;
 
     public DayOfWeekCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         super.staticness = true;
         super.persistent = true;
         String dayString = instruction.next();
@@ -56,7 +56,7 @@ public class DayOfWeekCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         day = day == 1 ? 7 : day - 1;

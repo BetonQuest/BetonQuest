@@ -36,7 +36,7 @@ public class GlobalTagEvent extends TagEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         GlobalData globalData = BetonQuest.getInstance().getGlobalData();
         if (add) {
             for (String tag : tags) {
@@ -47,5 +47,6 @@ public class GlobalTagEvent extends TagEvent {
                 globalData.removeTag(tag);
             }
         }
+        return null;
     }
 }

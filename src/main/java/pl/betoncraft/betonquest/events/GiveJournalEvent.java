@@ -36,7 +36,7 @@ public class GiveJournalEvent extends QuestEvent {
     private int journalSlot;
 
     public GiveJournalEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         try {
             journalSlot = Integer.parseInt(Config.getString("config.default_journal_slot"));
         } catch (Exception e) {
@@ -47,8 +47,9 @@ public class GiveJournalEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         BetonQuest.getInstance().getPlayerData(playerID).getJournal().addToInv(journalSlot);
+        return null;
     }
 
 }

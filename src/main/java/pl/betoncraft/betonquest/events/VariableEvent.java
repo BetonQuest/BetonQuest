@@ -38,7 +38,7 @@ public class VariableEvent extends QuestEvent {
     private ArrayList<String> valueVariables;
 
     public VariableEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         id = instruction.getObjective();
         key = instruction.next();
         keyVariables = BetonQuest.resolveVariables(key);
@@ -47,7 +47,7 @@ public class VariableEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Objective obj = BetonQuest.getInstance().getObjective(id);
         if (!(obj instanceof VariableObjective)) {
             throw new QuestRuntimeException(id.getFullID() + " is not a variable objective");
@@ -67,6 +67,7 @@ public class VariableEvent extends QuestEvent {
             throw new QuestRuntimeException("Player " + PlayerConverter.getName(playerID) + " does not have '" +
                     id.getFullID() + "' objective, cannot store a variable.");
         }
+        return null;
     }
 
 }

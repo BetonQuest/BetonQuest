@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,11 +9,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.compatibility.skript;
 
@@ -21,10 +21,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
 
 /**
  * Fires the custom event for Skript to listen to
@@ -33,46 +35,48 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class BQEventSkript extends QuestEvent {
 
-    private final String id;
+	private final String id;
 
-    public BQEventSkript(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        id = instruction.next();
-    }
+	public BQEventSkript(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+		id = instruction.next();
+	}
 
-    @Override
-    public void run(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        CustomEventForSkript event = new CustomEventForSkript(player, id);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-    }
+	@Override
+	protected Void execute(final String playerID) {
+		final Player player = PlayerConverter.getPlayer(playerID);
+		final CustomEventForSkript event = new CustomEventForSkript(player, id);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		return null;
+	}
 
-    /**
-     * Custom event, which runs for Skript to listen.
-     *
-     * @author Jakub Sapalski
-     */
-    public static class CustomEventForSkript extends PlayerEvent {
+	/**
+	 * Custom event, which runs for Skript to listen.
+	 *
+	 * @author Jakub Sapalski
+	 */
+	public static class CustomEventForSkript extends PlayerEvent {
 
-        private static final HandlerList handlers = new HandlerList();
-        private final String id;
+		private static final HandlerList	handlers	= new HandlerList();
+		private final String				id;
 
-        public CustomEventForSkript(Player who, String id) {
-            super(who);
-            this.id = id;
-        }
+		public CustomEventForSkript(final Player who, final String id) {
+			super(who);
+			this.id = id;
+		}
 
-        public static HandlerList getHandlerList() {
-            return handlers;
-        }
+		public static HandlerList getHandlerList() {
+			return handlers;
+		}
 
-        public String getID() {
-            return id;
-        }
+		public String getID() {
+			return id;
+		}
 
-        public HandlerList getHandlers() {
-            return handlers;
-        }
+		@Override
+		public HandlerList getHandlers() {
+			return handlers;
+		}
 
-    }
+	}
 }

@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,17 +9,20 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.compatibility.playerpoints;
+
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
+
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -27,7 +30,6 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.UUID;
 
 /**
  * Adds/removes/multiplies/divides PlayerPoints points.
@@ -36,40 +38,41 @@ import java.util.UUID;
  */
 public class PlayerPointsEvent extends QuestEvent {
 
-    private VariableNumber count;
-    private boolean multi;
-    private PlayerPointsAPI api;
+	private VariableNumber			count;
+	private boolean					multi;
+	private final PlayerPointsAPI	api;
 
-    public PlayerPointsEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        String string = instruction.next();
-        if (string.startsWith("*")) {
-            multi = true;
-            string = string.replace("*", "");
-        } else {
-            multi = false;
-        }
-        try {
-            count = new VariableNumber(instruction.getPackage().getName(), string);
-        } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse point amount", e);
-        }
-        api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
-    }
+	public PlayerPointsEvent(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+		String string = instruction.next();
+		if(string.startsWith("*")) {
+			multi = true;
+			string = string.replace("*", "");
+		} else {
+			multi = false;
+		}
+		try {
+			count = new VariableNumber(instruction.getPackage().getName(), string);
+		} catch(final NumberFormatException e) {
+			throw new InstructionParseException("Could not parse point amount", e);
+		}
+		api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
+	}
 
-    @Override
-    public void run(String playerID) throws QuestRuntimeException {
-        UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
-        if (multi) {
-            api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
-        } else {
-            double i = count.getDouble(playerID);
-            if (i < 0) {
-                api.take(uuid, (int) Math.floor(-i));
-            } else {
-                api.give(uuid, (int) Math.floor(i));
-            }
-        }
-    }
+	@Override
+	protected Void execute(final String playerID) throws QuestRuntimeException {
+		final UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
+		if(multi) {
+			api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
+		} else {
+			final double i = count.getDouble(playerID);
+			if(i < 0) {
+				api.take(uuid, (int) Math.floor(-i));
+			} else {
+				api.give(uuid, (int) Math.floor(i));
+			}
+		}
+		return null;
+	}
 
 }

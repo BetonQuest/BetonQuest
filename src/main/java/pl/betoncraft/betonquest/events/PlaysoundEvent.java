@@ -40,7 +40,7 @@ public class PlaysoundEvent extends QuestEvent {
     private final float pitch;
 
     public PlaysoundEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         sound = instruction.next();
         location = instruction.getLocation(instruction.getOptional("location"));
         String category = instruction.getOptional("category");
@@ -54,12 +54,13 @@ public class PlaysoundEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         if (location != null) {
             player.playSound(location.getLocation(playerID), sound, soundCategoty, volume, pitch);
         } else {
             player.playSound(player.getLocation(), sound, soundCategoty, volume, pitch);
         }
+        return null;
     }
 }

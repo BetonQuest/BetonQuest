@@ -48,13 +48,13 @@ public class TakeEvent extends QuestEvent {
     private int counter;
 
     public TakeEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         for (Item item : questItems) {
             QuestItem questItem = item.getItem();
@@ -92,6 +92,7 @@ public class TakeEvent extends QuestEvent {
                 BetonQuest.getInstance().getPlayerData(playerID).setBackpack(list);
             }
         }
+        return null;
     }
 
     private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {

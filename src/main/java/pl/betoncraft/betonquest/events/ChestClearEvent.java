@@ -35,14 +35,14 @@ public class ChestClearEvent extends QuestEvent {
     private final LocationData loc;
 
     public ChestClearEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         InventoryHolder chest;
         try {
@@ -52,6 +52,7 @@ public class ChestClearEvent extends QuestEvent {
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         chest.getInventory().clear();
+        return null;
     }
 
 }

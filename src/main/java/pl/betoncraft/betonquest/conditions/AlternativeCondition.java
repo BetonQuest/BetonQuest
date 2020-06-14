@@ -35,12 +35,12 @@ public class AlternativeCondition extends Condition {
     private List<ConditionID> conditions;
 
     public AlternativeCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         conditions = instruction.getList(e -> instruction.getCondition(e));
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         for (ConditionID condition : conditions) {
             if (BetonQuest.condition(playerID, condition)) {
                 return true;

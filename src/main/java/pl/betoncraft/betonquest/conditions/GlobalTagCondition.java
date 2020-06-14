@@ -35,7 +35,7 @@ public class GlobalTagCondition extends TagCondition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return BetonQuest.getInstance().getGlobalData().hasTag(tag);
     }
 

@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,11 +9,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.compatibility.betonlangapi;
 
@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+
 /**
  * BetonLangAPI event which overrides the default language event.
  *
@@ -31,19 +32,20 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class BetonLangAPIEvent extends QuestEvent {
 
-    private String lang;
+	private final String lang;
 
-    public BetonLangAPIEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        lang = instruction.next();
-        if (!BetonLangAPI.getLanguages().contains(lang)) {
-            throw new InstructionParseException("Language " + lang + " does not exists");
-        }
-    }
+	public BetonLangAPIEvent(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+		lang = instruction.next();
+		if(!BetonLangAPI.getLanguages().contains(lang)) {
+			throw new InstructionParseException("Language " + lang + " does not exists");
+		}
+	}
 
-    @Override
-    public void run(String playerID) throws QuestRuntimeException {
-        BetonLangAPI.setLanguage(PlayerConverter.getPlayer(playerID), lang);
-    }
+	@Override
+	protected Void execute(final String playerID) throws QuestRuntimeException {
+		BetonLangAPI.setLanguage(PlayerConverter.getPlayer(playerID), lang);
+		return null;
+	}
 
 }

@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,13 +9,16 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -24,15 +27,15 @@ import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
 
 /**
  * Checks if a npc is inside a region
@@ -43,38 +46,40 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCRegionCondition extends Condition {
 
-    private final int ID;
-    private final String region;
+	private final int		ID;
+	private final String	region;
 
-    public NPCRegionCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        super.persistent = true;
-        super.staticness = true;
-        ID = instruction.getInt();
-        region = instruction.next();
-    }
+	public NPCRegionCondition(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+		super.persistent = true;
+		super.staticness = true;
+		ID = instruction.getInt();
+		region = instruction.next();
+	}
 
-    @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
-        if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
-        }
-        Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
+	@Override
+	protected Boolean execute(final String playerID) throws QuestRuntimeException {
+		final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+		if(npc == null) {
+			throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
+		}
+		final Entity npcEntity = npc.getEntity();
+		if(npcEntity == null)
+			return false;
 
-        Player player = PlayerConverter.getPlayer(playerID);
-        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
-        if (manager == null) {
-            return false;
-        }
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+		final Player player = PlayerConverter.getPlayer(playerID);
+		final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+		final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+		if(manager == null) {
+			return false;
+		}
+		final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation()
+				.getZ()));
 
-        for (ProtectedRegion compare : set) {
-            if (compare.equals(region))
-                return true;
-        }
-        return false;
-    }
+		for(final ProtectedRegion compare : set) {
+			if(compare.equals(region))
+				return true;
+		}
+		return false;
+	}
 }

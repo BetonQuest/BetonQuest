@@ -38,13 +38,13 @@ public class LocationCondition extends Condition {
     private final VariableNumber range;
 
     public LocationCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         loc = instruction.getLocation();
         range = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         Player player = PlayerConverter.getPlayer(playerID);
         if (!location.getWorld().equals(player.getWorld())) {

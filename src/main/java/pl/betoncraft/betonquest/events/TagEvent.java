@@ -37,7 +37,7 @@ public class TagEvent extends QuestEvent {
     protected final boolean add;
 
     public TagEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         persistent = true;
         add = instruction.next().equalsIgnoreCase("add");
         tags = instruction.getArray();
@@ -47,7 +47,7 @@ public class TagEvent extends QuestEvent {
     }
 
     @Override
-    public void run(final String playerID) {
+    protected Void execute(final String playerID) {
         if (PlayerConverter.getPlayer(playerID) != null) {
             PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             if (add) {
@@ -76,5 +76,6 @@ public class TagEvent extends QuestEvent {
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         }
+        return null;
     }
 }

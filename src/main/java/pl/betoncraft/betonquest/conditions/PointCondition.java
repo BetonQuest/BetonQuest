@@ -41,14 +41,14 @@ public class PointCondition extends Condition {
     protected final boolean equal;
 
     public PointCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         category = Utils.addPackage(instruction.getPackage(), instruction.next());
         count = instruction.getVarNum();
         equal = instruction.hasArgument("equal");
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         return check(playerID, BetonQuest.getInstance().getPlayerData(playerID).getPoints());
     }
 

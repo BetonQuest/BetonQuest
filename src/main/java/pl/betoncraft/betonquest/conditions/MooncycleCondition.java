@@ -37,13 +37,13 @@ public class MooncycleCondition extends Condition {
     private VariableNumber thisCycle;
 
     public MooncycleCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         this.thisCycle = instruction.getVarNum();
     }
 
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         int days = (int) player.getWorld().getFullTime() / 24000;
         int phaseInt = days % 8;

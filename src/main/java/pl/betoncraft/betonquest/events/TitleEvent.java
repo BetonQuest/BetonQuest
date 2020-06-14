@@ -39,7 +39,7 @@ public class TitleEvent extends QuestEvent {
     protected int fadeIn, stay, fadeOut;
 
     public TitleEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         type = instruction.getEnum(TitleType.class);
         String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {
@@ -91,7 +91,7 @@ public class TitleEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
@@ -112,6 +112,7 @@ public class TitleEvent extends QuestEvent {
         String title = String.format("title %s %s {\"text\":\"%s\"}",
                 name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
+        return null;
     }
 
     public enum TitleType {

@@ -33,7 +33,7 @@ public class TimeCondition extends Condition {
     private final double timeMax;
 
     public TimeCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String[] theTime = instruction.next().split("-");
         if (theTime.length != 2) {
             throw new InstructionParseException("Wrong time format");
@@ -47,7 +47,7 @@ public class TimeCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
         if (time >= 18000) {
             // 18000 minecraft-time is midnight, so there is new

@@ -48,7 +48,7 @@ public class MonstersCondition extends Condition {
     private String marked;
 
     public MonstersCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         String[] rawTypes = instruction.getArray();
@@ -89,7 +89,7 @@ public class MonstersCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         int[] neededAmounts = new int[types.length];
         for (int i = 0; i < neededAmounts.length; i++) {

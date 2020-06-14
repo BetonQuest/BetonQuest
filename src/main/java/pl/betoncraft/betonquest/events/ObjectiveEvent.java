@@ -42,7 +42,7 @@ public class ObjectiveEvent extends QuestEvent {
     private final String action;
 
     public ObjectiveEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         action = instruction.next();
         objective = instruction.getObjective();
         if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"})
@@ -53,7 +53,7 @@ public class ObjectiveEvent extends QuestEvent {
     }
 
     @Override
-    public void run(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         if (BetonQuest.getInstance().getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
@@ -95,5 +95,6 @@ public class ObjectiveEvent extends QuestEvent {
                     break;
             }
         }
+        return null;
     }
 }

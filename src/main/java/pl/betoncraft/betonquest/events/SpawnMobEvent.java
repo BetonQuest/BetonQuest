@@ -57,7 +57,7 @@ public class SpawnMobEvent extends QuestEvent {
     private Item[] drops;
 
     public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -93,7 +93,7 @@ public class SpawnMobEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         int a = amount.getInt(playerID);
         for (int i = 0; i < a; i++) {
@@ -129,5 +129,6 @@ public class SpawnMobEvent extends QuestEvent {
                 entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked));
             }
         }
+        return null;
     }
 }

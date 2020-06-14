@@ -34,7 +34,7 @@ public class WeatherEvent extends QuestEvent {
     private final boolean thunder;
 
     public WeatherEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String part = instruction.next();
         switch (part) {
             case "sun":
@@ -58,10 +58,11 @@ public class WeatherEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         World world = PlayerConverter.getPlayer(playerID).getWorld();
         world.setStorm(storm);
         world.setThundering(thunder);
+        return null;
     }
 
 }

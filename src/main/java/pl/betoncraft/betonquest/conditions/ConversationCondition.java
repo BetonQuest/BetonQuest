@@ -36,7 +36,7 @@ public class ConversationCondition extends Condition {
     private String conversationID;
 
     public ConversationCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
 
         if (instruction.next() == null) {
             throw new InstructionParseException("Missing conversation parameter");
@@ -46,7 +46,7 @@ public class ConversationCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
 
         ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
 

@@ -1,6 +1,6 @@
 /*
  * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
+ * Copyright (C) 2016 Jakub "Co0sh" Sapalski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,11 +9,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package pl.betoncraft.betonquest.compatibility.protocollib;
 
@@ -23,14 +23,16 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+
 public class UpdateVisibilityNowEvent extends QuestEvent {
 
-    public UpdateVisibilityNowEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
-    }
+	public UpdateVisibilityNowEvent(final Instruction instruction) throws InstructionParseException {
+		super(instruction, true);
+	}
 
-    @Override
-    public void run(String id) throws QuestRuntimeException {
-        NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
-    }
+	@Override
+	protected Void execute(final String id) throws QuestRuntimeException {
+		NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
+		return null;
+	}
 }

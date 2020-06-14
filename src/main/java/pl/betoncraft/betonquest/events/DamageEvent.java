@@ -34,13 +34,14 @@ public class DamageEvent extends QuestEvent {
     private final VariableNumber damage;
 
     public DamageEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         damage = instruction.getVarNum();
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         PlayerConverter.getPlayer(playerID).damage(Math.abs(damage.getDouble(playerID)));
+        return null;
     }
 
 }

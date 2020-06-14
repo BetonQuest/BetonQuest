@@ -28,7 +28,7 @@ public class GameModeCondition extends Condition {
     private GameMode gameMode;
 
     public GameModeCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next().toUpperCase();
         try {
             gameMode = GameMode.valueOf(string);
@@ -38,7 +38,7 @@ public class GameModeCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return PlayerConverter.getPlayer(playerID).getGameMode() == gameMode;
     }
 
