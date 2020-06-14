@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - Renaming an NPC will not cause an NPE for a NPC Hologram
 - Objective 'craft' now supports shift-clicking
+- Fixed generation of default package
 ### Security
 
 ## [1.11.0] - 2020-01-02
