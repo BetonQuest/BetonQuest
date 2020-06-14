@@ -35,7 +35,7 @@ public class SudoEvent extends QuestEvent {
     private final String[] commands;
 
     public SudoEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         try {
             String string = instruction.getInstruction();
             commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
@@ -45,16 +45,12 @@ public class SudoEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (String command : commands)
-                    player.performCommand(command.replace("%player%", player.getName()));
-            }
-        }.runTask(BetonQuest.getInstance());
-
+        for (String command : commands) {
+            player.performCommand(command.replace("%player%", player.getName()));
+        }
+        return null;
     }
 
 }

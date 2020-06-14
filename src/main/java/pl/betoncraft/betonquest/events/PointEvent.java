@@ -44,7 +44,7 @@ public class PointEvent extends QuestEvent {
     protected final String category;
 
     public PointEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         persistent = true;
         category = Utils.addPackage(instruction.getPackage(), instruction.next());
         String number = instruction.next();
@@ -62,7 +62,7 @@ public class PointEvent extends QuestEvent {
     }
 
     @Override
-    public void run(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
                 @Override
@@ -81,6 +81,7 @@ public class PointEvent extends QuestEvent {
             PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             addPoints(playerID, playerData);
         }
+        return null;
     }
 
     private void addPoints(String playerID, PlayerData playerData) throws QuestRuntimeException {

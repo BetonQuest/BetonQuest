@@ -32,12 +32,12 @@ public class PermissionCondition extends Condition {
     private final String permission;
 
     public PermissionCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         permission = instruction.next();
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return PlayerConverter.getPlayer(playerID).hasPermission(permission);
     }
 

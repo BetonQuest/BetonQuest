@@ -44,7 +44,7 @@ public class FolderEvent extends QuestEvent {
     public boolean minutes;
 
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         staticness = true;
         persistent = true;
         events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
@@ -55,7 +55,7 @@ public class FolderEvent extends QuestEvent {
     }
 
     @Override
-    public void run(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();
         // choose randomly which events should be fired
         int randomInt = random != null ? random.getInt(playerID) : 0;
@@ -93,6 +93,7 @@ public class FolderEvent extends QuestEvent {
                 }
             }
         }.runTaskLater(BetonQuest.getInstance(), (int) time);
+        return null;
     }
 
 }

@@ -39,7 +39,7 @@ public class JournalEvent extends QuestEvent {
     private final boolean add;
 
     public JournalEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         String first = instruction.next();
         if (first.equalsIgnoreCase("update")) {
             name = null;
@@ -51,7 +51,7 @@ public class JournalEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Journal journal = BetonQuest.getInstance().getPlayerData(playerID).getJournal();
         if (add) {
             journal.addPointer(new Pointer(name, new Date().getTime()));
@@ -60,6 +60,7 @@ public class JournalEvent extends QuestEvent {
             journal.removePointer(name);
         }
         journal.update();
+        return null;
     }
 
 }

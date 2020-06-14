@@ -41,7 +41,7 @@ public class ChestGiveEvent extends QuestEvent {
     private final LocationData loc;
 
     public ChestGiveEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -49,7 +49,7 @@ public class ChestGiveEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         InventoryHolder chest;
         try {
@@ -77,6 +77,6 @@ public class ChestGiveEvent extends QuestEvent {
                 amount = amount - stackSize;
             }
         }
+        return null;
     }
-
 }

@@ -43,7 +43,7 @@ public class HeroesClassCondition extends Condition {
     private VariableNumber level;
 
     public HeroesClassCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         primary = string.equalsIgnoreCase("primary");
         mastered = string.equals("mastered");
@@ -60,7 +60,7 @@ public class HeroesClassCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
         if (hero == null)
             return false;

@@ -99,10 +99,10 @@ public class ChestPutObjective extends Objective implements Listener {
                 return;
             if (!event.getInventory().getHolder().equals(chest))
                 return;
-            if (chestItemCondition.check(playerID) && checkConditions(playerID)) {
+            if (chestItemCondition.handle(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
                 if (chestTakeEvent != null)
-                    chestTakeEvent.run(playerID);
+                    chestTakeEvent.handle(playerID);
             }
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());

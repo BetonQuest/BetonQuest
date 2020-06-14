@@ -38,7 +38,7 @@ public class CommandEvent extends QuestEvent {
     private final Command[] commands;
 
     public CommandEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         staticness = true;
         persistent = true;
         try {
@@ -58,7 +58,7 @@ public class CommandEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         for (Command command : commands) {
             if (command.variables.isEmpty()) {
                 // if there are no variables, this is a global command
@@ -93,6 +93,7 @@ public class CommandEvent extends QuestEvent {
                 }
             }
         }
+        return null;
     }
 
     private class Command {

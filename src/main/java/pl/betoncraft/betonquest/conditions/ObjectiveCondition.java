@@ -33,7 +33,7 @@ public class ObjectiveCondition extends Condition {
     public final ObjectiveID objective;
 
     public ObjectiveCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         objective = instruction.getObjective();
         if (objective == null) {
             throw new InstructionParseException("Objective does not exist");
@@ -41,7 +41,7 @@ public class ObjectiveCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return BetonQuest.getInstance().getObjective(objective).containsPlayer(playerID);
     }
 

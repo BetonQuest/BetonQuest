@@ -36,12 +36,12 @@ public class FacingCondition extends Condition {
     private final Direction direction;
 
     public FacingCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         direction = instruction.getEnum(Direction.class);
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         float rotation = p.getLocation().getYaw();
         final float pitch = p.getLocation().getPitch();

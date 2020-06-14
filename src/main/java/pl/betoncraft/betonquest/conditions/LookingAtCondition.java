@@ -41,7 +41,7 @@ public class LookingAtCondition extends Condition {
     private final BlockSelector selector;
 
     public LookingAtCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         loc = instruction.getLocation(instruction.getOptional("loc"));
         selector = instruction.getBlockSelector(instruction.getOptional("type"));
         if (loc == null && selector == null)
@@ -53,7 +53,7 @@ public class LookingAtCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         Block lookingAt = p.getTargetBlock(null, 6);
         if (loc != null) {

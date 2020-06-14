@@ -39,7 +39,7 @@ public class DoorEvent extends QuestEvent {
     private ToggleType type;
 
     public DoorEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -52,7 +52,7 @@ public class DoorEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         BlockState state = block.getState();
         MaterialData data = state.getData();
@@ -72,6 +72,7 @@ public class DoorEvent extends QuestEvent {
             state.setData((MaterialData) openable);
             state.update();
         }
+        return null;
     }
 
     private enum ToggleType {

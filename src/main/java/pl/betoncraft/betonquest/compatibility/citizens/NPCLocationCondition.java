@@ -42,7 +42,7 @@ public class NPCLocationCondition extends Condition {
     private final VariableNumber radius;
 
     public NPCLocationCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction,true);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();
@@ -51,7 +51,7 @@ public class NPCLocationCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");

@@ -28,7 +28,7 @@ public class Condition_JobFull extends Condition {
     private String sJobName;
 
     public Condition_JobFull(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -41,7 +41,8 @@ public class Condition_JobFull extends Condition {
         throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
     }
 
-    public boolean check(String playerID) {
+    @Override
+    protected Boolean execute(String playerID) {
         for (Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 if (job.getMaxSlots() == null)

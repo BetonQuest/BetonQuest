@@ -51,7 +51,7 @@ public class KillMobEvent extends QuestEvent {
 
 
     public KillMobEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         type = instruction.getEnum(EntityType.class);
@@ -68,7 +68,7 @@ public class KillMobEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         final double radius_squared = this.radius.getDouble(playerID) * this.radius.getDouble(playerID);
         location
@@ -92,5 +92,6 @@ public class KillMobEvent extends QuestEvent {
                 })
                 //remove them
                 .forEach(Entity::remove);
+        return null;
     }
 }

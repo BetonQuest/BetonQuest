@@ -50,7 +50,7 @@ public class NotifyEvent extends QuestEvent {
      */
 
     public NotifyEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
 
         data = new HashMap<>();
         StringJoiner messageBuilder = new StringJoiner(" ");
@@ -74,9 +74,10 @@ public class NotifyEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         Notify.get(category, data).sendNotify(message, player);
+        return null;
     }
 
 }

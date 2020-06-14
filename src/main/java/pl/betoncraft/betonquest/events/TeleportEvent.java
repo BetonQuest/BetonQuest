@@ -38,19 +38,18 @@ public class TeleportEvent extends QuestEvent {
     private final LocationData loc;
 
     public TeleportEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         loc = instruction.getLocation();
     }
 
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Conversation conv = Conversation.getConversation(playerID);
         if (conv != null)
             conv.endConversation();
 
         Location playerLocation = loc.getLocation(playerID);
 
-        // Execute in main thread
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(),
-                () -> PlayerConverter.getPlayer(playerID).teleport(playerLocation));
+        PlayerConverter.getPlayer(playerID).teleport(playerLocation);
+        return null;
     }
 }

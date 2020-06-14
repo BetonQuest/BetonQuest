@@ -36,7 +36,7 @@ public class WorldCondition extends Condition {
     private World world;
 
     public WorldCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String name = instruction.next();
         world = Bukkit.getWorld(name);
         if (world == null) {
@@ -49,7 +49,7 @@ public class WorldCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return PlayerConverter.getPlayer(playerID).getWorld().equals(world);
     }
 

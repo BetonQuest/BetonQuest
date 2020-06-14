@@ -56,7 +56,7 @@ public class PasteSchematicEvent extends QuestEvent {
     private boolean noAir;
 
     public PasteSchematicEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         loc = instruction.getLocation();
         we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         File folder = new File(we.getDataFolder(), "schematics");
@@ -76,7 +76,7 @@ public class PasteSchematicEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         try {
             Location location = loc.getLocation(playerID);
             ClipboardFormat format = ClipboardFormats.findByFile(file);
@@ -103,6 +103,7 @@ public class PasteSchematicEvent extends QuestEvent {
             LogUtils.getLogger().log(Level.WARNING, "Error while pasting a schematic: " + e.getMessage());
             LogUtils.logThrowable(e);
         }
+        return null;
     }
 
 }

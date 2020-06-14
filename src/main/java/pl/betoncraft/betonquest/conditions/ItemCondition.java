@@ -38,12 +38,12 @@ public class ItemCondition extends Condition {
     private final Item[] questItems;
 
     public ItemCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questItems = instruction.getItemList();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         int successfulChecks = 0; // Count of successful checks
 
         for (Item questItem : questItems) {

@@ -29,11 +29,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class SneakCondition extends Condition {
 
     public SneakCondition(Instruction instruction) {
-        super(instruction);
+        super(instruction, true);
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return PlayerConverter.getPlayer(playerID).isSneaking();
     }
 

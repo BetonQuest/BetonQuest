@@ -47,7 +47,7 @@ public class WandCondition extends Condition {
     private VariableNumber amount;
 
     public WandCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         switch (string) {
             case "hand":
@@ -86,7 +86,7 @@ public class WandCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         int heldAmount;
 

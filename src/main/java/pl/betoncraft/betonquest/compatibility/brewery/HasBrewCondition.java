@@ -35,7 +35,7 @@ public class HasBrewCondition extends Condition {
     private BRecipe brew;
 
     public HasBrewCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
 
         count = instruction.getInt();
         if (count < 1) {
@@ -60,7 +60,7 @@ public class HasBrewCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;

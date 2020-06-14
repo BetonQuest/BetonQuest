@@ -35,7 +35,7 @@ public class TakeBrewEvent extends QuestEvent {
     private BRecipe brew;
 
     public TakeBrewEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction,true);
 
         count = instruction.getInt();
         if (count < 1) {
@@ -60,7 +60,7 @@ public class TakeBrewEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
 
         Player p = PlayerConverter.getPlayer(playerID);
 
@@ -81,7 +81,7 @@ public class TakeBrewEvent extends QuestEvent {
                 }
             }
         }
-
         p.updateInventory();
+        return null;
     }
 }

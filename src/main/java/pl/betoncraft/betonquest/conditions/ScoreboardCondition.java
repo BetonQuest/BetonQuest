@@ -39,13 +39,13 @@ public class ScoreboardCondition extends Condition {
     private final VariableNumber count;
 
     public ScoreboardCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         objective = instruction.next();
         count = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         Objective obj = board.getObjective(objective);
         if (obj == null) {

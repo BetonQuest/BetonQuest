@@ -30,11 +30,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class FlyingCondition extends Condition {
 
     public FlyingCondition(Instruction instruction) {
-        super(instruction);
+        super(instruction, true);
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         return PlayerConverter.getPlayer(playerID).isGliding();
     }
 

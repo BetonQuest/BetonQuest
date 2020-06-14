@@ -34,7 +34,7 @@ public class Event_AddLevel extends QuestEvent {
     private Integer nAddLevel;
 
     public Event_AddLevel(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         if (instruction.size() < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -53,7 +53,7 @@ public class Event_AddLevel extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
 
         List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
@@ -65,5 +65,6 @@ public class Event_AddLevel extends QuestEvent {
                     oJob.getJob().getMaxLevel();
             }
         }
+        return null;
     }
 }

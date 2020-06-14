@@ -37,7 +37,7 @@ public class RandomCondition extends Condition {
     private final VariableNumber rangeOfRandom;
 
     public RandomCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         staticness = true;
         persistent = true;
         String[] values = instruction.next().split("-");
@@ -54,7 +54,7 @@ public class RandomCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Random generator = new Random();
         int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
         return temp <= valueMax.getInt(playerID);

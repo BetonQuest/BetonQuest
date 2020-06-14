@@ -40,7 +40,7 @@ public class ScoreboardEvent extends QuestEvent {
     final String objective;
 
     public ScoreboardEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         persistent = true;
         objective = instruction.next();
         String number = instruction.next();
@@ -58,7 +58,7 @@ public class ScoreboardEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws IllegalStateException, QuestRuntimeException {
+    protected Void execute(String playerID) throws IllegalStateException, QuestRuntimeException {
         Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         Objective obj = board.getObjective(objective);
         if (obj == null) {
@@ -70,6 +70,7 @@ public class ScoreboardEvent extends QuestEvent {
         } else {
             score.setScore((int) Math.floor(score.getScore() + count.getDouble(playerID)));
         }
+        return null;
     }
 
 }

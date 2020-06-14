@@ -34,7 +34,7 @@ public class Event_AddExp extends QuestEvent {
     private double nAddExperience;
 
     public Event_AddExp(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -53,7 +53,7 @@ public class Event_AddExp extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
 
         List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
@@ -63,5 +63,6 @@ public class Event_AddExp extends QuestEvent {
                 oJob.addExperience(nAddExperience);
             }
         }
+        return null;
     }
 }

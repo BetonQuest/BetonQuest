@@ -41,7 +41,7 @@ public class PartialDateCondition extends Condition {
     private final List<TimeInterval> year;
 
     public PartialDateCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         super.staticness = true;
         super.persistent = true;
         String dayOfMonthString = instruction.getOptional("day");
@@ -65,7 +65,7 @@ public class PartialDateCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Calendar current = Calendar.getInstance();
         if (dayOfMonth != null) {
             int day = current.get(Calendar.DAY_OF_MONTH);

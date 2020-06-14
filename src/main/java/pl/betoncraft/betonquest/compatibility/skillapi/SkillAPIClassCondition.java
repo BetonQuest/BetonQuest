@@ -35,7 +35,7 @@ public class SkillAPIClassCondition extends Condition {
     private boolean exact;
 
     public SkillAPIClassCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         className = instruction.next();
         if (!SkillAPI.isClassRegistered(className)) {
             throw new InstructionParseException("Class '" + className + "' is not registered");
@@ -44,7 +44,7 @@ public class SkillAPIClassCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
         if (exact) {
             return data.isExactClass(SkillAPI.getClass(className));

@@ -45,7 +45,7 @@ public class CompassEvent extends QuestEvent {
     private ConfigPackage compassPackage;
 
     public CompassEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         persistent = true;
 
         action = instruction.getEnum(Action.class);
@@ -68,18 +68,18 @@ public class CompassEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         switch (action) {
             case ADD:
             case DEL:
                 // Add Tag to player
                 try {
-                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).run(playerID);
+                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).handle(playerID);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
                     LogUtils.logThrowable(e);
                 }
-                return;
+                return null;
             case SET:
                 Location location;
                 try {
@@ -87,7 +87,7 @@ public class CompassEvent extends QuestEvent {
                 } catch (QuestRuntimeException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
                     LogUtils.logThrowable(e);
-                    return;
+                    return null;
                 }
 
                 Player player = PlayerConverter.getPlayer(playerID);
@@ -95,6 +95,7 @@ public class CompassEvent extends QuestEvent {
                     player.setCompassTarget(location);
                 }
         }
+        return null;
     }
 
     public enum Action {

@@ -48,7 +48,7 @@ public class ClearEvent extends QuestEvent {
     private String marked;
 
     public ClearEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         String[] entities = instruction.getArray();
@@ -71,7 +71,7 @@ public class ClearEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Location location = loc.getLocation(playerID);
         Collection<Entity> entities = location.getWorld().getEntities();
         loop:
@@ -109,6 +109,7 @@ public class ClearEvent extends QuestEvent {
                 }
             }
         }
+        return null;
     }
 
 }

@@ -35,7 +35,7 @@ public class Condition_JobLevel extends Condition {
     private int nMaxLevel;
 
     public Condition_JobLevel(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -54,7 +54,8 @@ public class Condition_JobLevel extends Condition {
         throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
     }
 
-    public boolean check(String playerID) {
+    @Override
+    protected Boolean execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
 
         List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();

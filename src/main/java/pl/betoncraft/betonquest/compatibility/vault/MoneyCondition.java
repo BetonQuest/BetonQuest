@@ -34,12 +34,12 @@ public class MoneyCondition extends Condition {
     private final VariableNumber amount;
 
     public MoneyCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         amount = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         double a = amount.getDouble(playerID);
         if (a < 0)
             a = -a;

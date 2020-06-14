@@ -38,7 +38,7 @@ public class RealTimeCondition extends Condition {
     private final int minutesMax;
 
     public RealTimeCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         super.staticness = true;
         super.persistent = true;
         String[] theTime = instruction.next().split("-");
@@ -68,7 +68,7 @@ public class RealTimeCondition extends Condition {
 
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Calendar cal = Calendar.getInstance();
         Date now = cal.getTime();
         Date startTime = atTime(cal, hoursMin, minutesMin);

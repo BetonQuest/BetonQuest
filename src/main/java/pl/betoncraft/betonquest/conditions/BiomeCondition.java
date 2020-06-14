@@ -35,12 +35,12 @@ public class BiomeCondition extends Condition {
     private final Biome biome;
 
     public BiomeCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         biome = instruction.getEnum(Biome.class);
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         return (player.getLocation().getBlock().getBiome() == this.biome);
     }

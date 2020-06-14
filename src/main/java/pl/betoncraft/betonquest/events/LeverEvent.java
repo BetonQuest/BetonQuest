@@ -37,7 +37,7 @@ public class LeverEvent extends QuestEvent {
     private ToggleType type;
 
     public LeverEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -50,10 +50,10 @@ public class LeverEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         if (!block.getType().equals(Material.LEVER)) {
-            return;
+            return null;
         }
 
         Powerable lever = (Powerable) block.getBlockData();
@@ -69,6 +69,7 @@ public class LeverEvent extends QuestEvent {
                 lever.setPowered(!lever.isPowered());
                 break;
         }
+        return null;
     }
 
     private enum ToggleType {

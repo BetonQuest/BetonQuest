@@ -42,7 +42,7 @@ import java.util.logging.Level;
  *
  * @author Jakub Sapalski
  */
-public abstract class QuestEvent {
+public abstract class QuestEvent extends ForceSyncHandler<Void>{
 
     /**
      * Stores instruction string for the event.
@@ -62,6 +62,16 @@ public abstract class QuestEvent {
     protected boolean persistent = false;
 
     /**
+     * @deprecated There is a new constructor that handles thread safety.
+     * Using this may worsen your event performance!
+     */
+    // TODO Delete in BQ 2.0.0
+    @Deprecated
+    public QuestEvent(Instruction instruction) throws InstructionParseException {
+        this(instruction, true);
+    }
+
+    /**
      * Creates new instance of the event. The event should parse instruction
      * string without doing anything else. If anything goes wrong, throw
      * {@link InstructionParseException} with error message describing the
@@ -70,9 +80,12 @@ public abstract class QuestEvent {
      * @param instruction the Instruction object representing this event; you need to
      *                    extract all required data from it and throw
      *                    {@link InstructionParseException} if there is anything wrong
+     * @param forceSync If set to true this executes the event on the servers main thread.
+     *                  Otherwise it will just keep the current thread (which could also be the main thread!).
      * @throws InstructionParseException when the is an error in the syntax or argument parsing
      */
-    public QuestEvent(Instruction instruction) throws InstructionParseException {
+    public QuestEvent(Instruction instruction, boolean forceSync) throws InstructionParseException {
+        super(forceSync);
         this.instruction = instruction;
         String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
         String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
@@ -97,11 +110,12 @@ public abstract class QuestEvent {
      * @throws QuestRuntimeException when there is an error while running the event (for example a
      *                               numeric variable resolved to a string)
      */
-    abstract public void run(String playerID) throws QuestRuntimeException;
+    @Override
+    protected abstract Void execute(String playerID) throws QuestRuntimeException;
 
     /**
      * Fires an event for the player. It checks event conditions, so there's no need to
-     * do that in {@link #run(String) run()} method.
+     * do that in {@link #execute(String)} method.
      *
      * @param playerID ID of the player for whom the event will fire
      * @throws QuestRuntimeException passes the exception from the event up the stack
@@ -111,19 +125,20 @@ public abstract class QuestEvent {
             // handle static event
             if (!staticness) {
                 LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
+                players:
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String ID = PlayerConverter.getID(player);
                     for (ConditionID condition : conditions) {
                         if (!BetonQuest.condition(ID, condition)) {
                             LogUtils.getLogger().log(Level.FINE, "  Event conditions were not met for player " + player.getName());
-                            continue;
+                            continue players;
                         }
                     }
                     LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
-                    run(ID);
+                    execute(ID);
                 }
             } else {
-                run(null);
+                execute(null);
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             // handle persistent event
@@ -131,7 +146,7 @@ public abstract class QuestEvent {
                 LogUtils.getLogger().log(Level.FINE, "Player " + playerID + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
-            run(playerID);
+            execute(playerID);
         } else {
             // handle standard event
             for (ConditionID condition : conditions) {
@@ -140,7 +155,7 @@ public abstract class QuestEvent {
                     return;
                 }
             }
-            run(playerID);
+            execute(playerID);
         }
     }
 }

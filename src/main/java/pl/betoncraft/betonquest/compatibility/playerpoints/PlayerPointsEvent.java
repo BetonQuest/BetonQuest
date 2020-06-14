@@ -41,7 +41,7 @@ public class PlayerPointsEvent extends QuestEvent {
     private PlayerPointsAPI api;
 
     public PlayerPointsEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         if (string.startsWith("*")) {
             multi = true;
@@ -58,7 +58,7 @@ public class PlayerPointsEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
         if (multi) {
             api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
@@ -70,6 +70,7 @@ public class PlayerPointsEvent extends QuestEvent {
                 api.give(uuid, (int) Math.floor(i));
             }
         }
+        return null;
     }
 
 }

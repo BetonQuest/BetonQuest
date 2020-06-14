@@ -36,7 +36,7 @@ public class CheckCondition extends Condition {
     ArrayList<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");
@@ -85,9 +85,9 @@ public class CheckCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         for (Condition condition : internalConditions) {
-            if (!condition.check(playerID))
+            if (!condition.handle(playerID))
                 return false;
         }
         return true;

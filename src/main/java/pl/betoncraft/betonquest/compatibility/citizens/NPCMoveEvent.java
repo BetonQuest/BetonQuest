@@ -60,7 +60,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private boolean blockConversations;
 
     public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction,true);
         id = instruction.getInt();
         if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
@@ -96,24 +96,24 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         // this event should not run if the player is offline
         if (PlayerConverter.getPlayer(playerID) == null) {
             currentPlayer = null;
-            return;
+            return null;
         }
         NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         if (!npc.isSpawned()) {
-            return;
+            return null;
         }
         if (currentPlayer != null) {
             for (EventID event : failEvents) {
                 BetonQuest.event(playerID, event);
             }
-            return;
+            return null;
         }
         locationsIterator = locations.listIterator(0);
         LocationData firstLocation = locationsIterator.next();
@@ -125,6 +125,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         currentPlayer = playerID;
         movingNPCs.put(npc.getId(), blockConversations);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        return null;
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -37,7 +37,7 @@ public class GiveBrewEvent extends QuestEvent {
     private BRecipe recipe;
 
     public GiveBrewEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
 
         amount = instruction.getInt();
 
@@ -65,7 +65,7 @@ public class GiveBrewEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
 
         ItemStack[] brews = new ItemStack[amount];
@@ -78,5 +78,6 @@ public class GiveBrewEvent extends QuestEvent {
         for (ItemStack item : remaining) {
             p.getWorld().dropItem(p.getLocation(), item);
         }
+        return null;
     }
 }

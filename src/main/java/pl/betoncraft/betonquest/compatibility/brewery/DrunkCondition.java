@@ -30,7 +30,7 @@ public class DrunkCondition extends Condition {
     private Integer drunkness;
 
     public DrunkCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
 
         drunkness = instruction.getInt();
 
@@ -40,7 +40,7 @@ public class DrunkCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         BPlayer bPlayer = BPlayer.get(PlayerConverter.getPlayer(playerID));
         return bPlayer != null && bPlayer.getDrunkeness() >= drunkness;
     }

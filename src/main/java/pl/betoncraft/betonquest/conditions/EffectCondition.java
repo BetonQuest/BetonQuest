@@ -33,7 +33,7 @@ public class EffectCondition extends Condition {
     private final PotionEffectType type;
 
     public EffectCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         type = PotionEffectType.getByName(string);
         if (type == null) {
@@ -42,7 +42,7 @@ public class EffectCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         return PlayerConverter.getPlayer(playerID).hasPotionEffect(type);
     }
 

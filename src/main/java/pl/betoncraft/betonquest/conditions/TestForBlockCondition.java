@@ -36,7 +36,7 @@ public class TestForBlockCondition extends Condition {
     private final BlockSelector selector;
 
     public TestForBlockCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -48,7 +48,7 @@ public class TestForBlockCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
 
         return selector.match(block);

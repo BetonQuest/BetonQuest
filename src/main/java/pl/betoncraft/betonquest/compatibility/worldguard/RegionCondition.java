@@ -41,12 +41,12 @@ public class RegionCondition extends Condition {
     private final String name;
 
     public RegionCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         name = instruction.next();
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
         WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
         RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));

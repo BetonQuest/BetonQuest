@@ -34,7 +34,7 @@ public class Event_DelLevel extends QuestEvent {
     private Integer nAddLevel;
 
     public Event_DelLevel(Instruction instructions) throws InstructionParseException {
-        super(instructions);
+        super(instructions,true);
 
         if (instructions.size() < 3) {
             throw new InstructionParseException("Not enough arguments");
@@ -54,7 +54,7 @@ public class Event_DelLevel extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
 
         List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
@@ -66,5 +66,6 @@ public class Event_DelLevel extends QuestEvent {
                     oJob.setLevel(1);
             }
         }
+        return null;
     }
 }

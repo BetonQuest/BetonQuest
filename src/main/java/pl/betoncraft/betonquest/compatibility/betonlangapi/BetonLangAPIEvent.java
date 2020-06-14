@@ -34,7 +34,7 @@ public class BetonLangAPIEvent extends QuestEvent {
     private String lang;
 
     public BetonLangAPIEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         lang = instruction.next();
         if (!BetonLangAPI.getLanguages().contains(lang)) {
             throw new InstructionParseException("Language " + lang + " does not exists");
@@ -42,8 +42,9 @@ public class BetonLangAPIEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         BetonLangAPI.setLanguage(PlayerConverter.getPlayer(playerID), lang);
+        return null;
     }
 
 }

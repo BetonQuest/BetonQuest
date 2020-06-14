@@ -42,13 +42,13 @@ public class NPCDistanceCondition extends Condition {
     private final VariableNumber distance;
 
     public NPCDistanceCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction,true);
         id = instruction.getInt();
         distance = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         double distance = this.distance.getDouble(playerID);

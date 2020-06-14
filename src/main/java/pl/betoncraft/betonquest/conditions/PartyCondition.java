@@ -43,7 +43,7 @@ public class PartyCondition extends Condition {
     private VariableNumber count;
 
     public PartyCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         range = instruction.getVarNum();
         conditions = instruction.getList(e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
         everyone = instruction.getList(instruction.getOptional("every"), e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
@@ -52,7 +52,7 @@ public class PartyCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         // get the party
         ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions

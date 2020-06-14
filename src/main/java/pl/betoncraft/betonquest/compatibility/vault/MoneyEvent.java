@@ -40,7 +40,7 @@ public class MoneyEvent extends QuestEvent {
     private boolean multi;
 
     public MoneyEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         if (string.startsWith("*")) {
             multi = true;
@@ -55,7 +55,7 @@ public class MoneyEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         // get the difference between target money and current money
         double current = VaultIntegrator.getEconomy().getBalance(player);
@@ -82,5 +82,6 @@ public class MoneyEvent extends QuestEvent {
                         new String[]{df.format(difference), currencyName}, "money_taken,info");
             }
         }
+        return null;
     }
 }

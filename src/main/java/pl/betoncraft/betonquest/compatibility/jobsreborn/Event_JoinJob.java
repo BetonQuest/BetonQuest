@@ -30,7 +30,7 @@ public class Event_JoinJob extends QuestEvent {
     private String sJobName;
 
     public Event_JoinJob(Instruction instructions) throws InstructionParseException {
-        super(instructions);
+        super(instructions,true);
 
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
@@ -45,13 +45,14 @@ public class Event_JoinJob extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
         for (Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 Jobs.getPlayerManager().getJobsPlayer(oPlayer).joinJob(job);
-                return;
+                return null;
             }
         }
+        return null;
     }
 }

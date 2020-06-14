@@ -36,13 +36,13 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
     private boolean override;
 
     public QuestEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questName = instruction.next();
         override = instruction.hasArgument("check-requirements");
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Quest quest = null;
         for (Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
@@ -52,9 +52,10 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
         }
         if (quest == null) {
             LogUtils.getLogger().log(Level.WARNING, "Quest '" + questName + "' is not defined");
-            return;
+            return null;
         }
         QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
+        return null;
     }
 
 }

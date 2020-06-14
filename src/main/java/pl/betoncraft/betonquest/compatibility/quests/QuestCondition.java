@@ -32,12 +32,12 @@ public class QuestCondition extends Condition {
     private String questName;
 
     public QuestCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         questName = instruction.next();
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         for (String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).getCompletedQuests()) {
             if (q.replace(' ', '_').equalsIgnoreCase(questName))
                 return true;

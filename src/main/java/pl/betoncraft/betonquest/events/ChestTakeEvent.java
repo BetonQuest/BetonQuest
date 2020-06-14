@@ -39,7 +39,7 @@ public class ChestTakeEvent extends QuestEvent {
     private LocationData loc;
 
     public ChestTakeEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction,true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -47,7 +47,7 @@ public class ChestTakeEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Block block = loc.getLocation(playerID).getBlock();
         InventoryHolder chest;
         try {
@@ -62,6 +62,7 @@ public class ChestTakeEvent extends QuestEvent {
             // Remove Quest items from player's inventory
             chest.getInventory().setContents(removeItems(chest.getInventory().getContents(), questItem, amount));
         }
+        return null;
     }
 
     private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem, int amount) {

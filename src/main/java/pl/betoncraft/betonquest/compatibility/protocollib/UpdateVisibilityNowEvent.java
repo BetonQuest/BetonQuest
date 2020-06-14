@@ -26,11 +26,12 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class UpdateVisibilityNowEvent extends QuestEvent {
 
     public UpdateVisibilityNowEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
     }
 
     @Override
-    public void run(String id) throws QuestRuntimeException {
+    protected Void execute(String id) throws QuestRuntimeException {
         NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
+        return null;
     }
 }

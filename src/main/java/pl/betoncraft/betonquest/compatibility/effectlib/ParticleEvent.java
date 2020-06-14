@@ -41,7 +41,7 @@ public class ParticleEvent extends QuestEvent {
     private boolean pr1vate;
 
     public ParticleEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String string = instruction.next();
         parameters = instruction.getPackage().getCustom().getConfig().getConfigurationSection("effects." + string);
         if (parameters == null) {
@@ -57,7 +57,7 @@ public class ParticleEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player p = PlayerConverter.getPlayer(playerID);
         Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
         // This is not used at the moment
@@ -69,6 +69,7 @@ public class ParticleEvent extends QuestEvent {
                 new DynamicLocation(null, null),
                 (ConfigurationSection) null,
                 targetPlayer);
+        return null;
     }
 
 }

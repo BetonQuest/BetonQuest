@@ -38,10 +38,10 @@ public class GlobalPointEvent extends PointEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         GlobalData globalData = BetonQuest.getInstance().getGlobalData();
         addPoints(playerID, globalData);
-
+        return null;
     }
 
     private void addPoints(String playerId, GlobalData globalData) throws QuestRuntimeException {

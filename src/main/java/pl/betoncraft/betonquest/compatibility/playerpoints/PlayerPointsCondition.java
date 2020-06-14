@@ -40,13 +40,13 @@ public class PlayerPointsCondition extends Condition {
     private PlayerPointsAPI api;
 
     public PlayerPointsCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         count = instruction.getVarNum();
         api = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
         return api.look(uuid) >= count.getInt(playerID);
     }

@@ -40,7 +40,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
     private final VariableNumber level;
 
     public MythicSpawnMobEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         loc = instruction.getLocation();
         String[] mobParts = instruction.next().split(":");
         if (mobParts.length != 2) {
@@ -52,7 +52,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         int a = amount.getInt(playerID);
         int l = level.getInt(playerID);
         Location location = loc.getLocation(playerID);
@@ -63,6 +63,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
             }
         }
+        return null;
     }
 
 }

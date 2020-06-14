@@ -36,7 +36,7 @@ public class RunEvent extends QuestEvent {
     ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
     public RunEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         staticness = false;
         persistent = false;
         String[] parts = instruction.getInstruction().substring(3).trim().split(" ");
@@ -87,9 +87,10 @@ public class RunEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         for (QuestEvent event : internalEvents) {
-            event.run(playerID);
+            event.handle(playerID);
         }
+        return null;
     }
 }

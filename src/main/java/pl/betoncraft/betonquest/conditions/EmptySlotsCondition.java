@@ -36,12 +36,12 @@ public class EmptySlotsCondition extends Condition {
     private final VariableNumber needed;
 
     public EmptySlotsCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         needed = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         ItemStack[] items = null;
         items = player.getInventory().getStorageContents();

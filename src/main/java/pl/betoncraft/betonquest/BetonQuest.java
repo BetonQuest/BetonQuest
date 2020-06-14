@@ -140,7 +140,7 @@ public class BetonQuest extends JavaPlugin {
         // and check if it's met or not
         boolean outcome = false;
         try {
-            outcome = condition.check(playerID);
+            outcome = condition.handle(playerID);
         } catch (final QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING,
                     "Error while checking '" + conditionID + "' condition: " + e.getMessage());

@@ -35,7 +35,7 @@ public class BountifulTitleEvent extends TitleEvent {
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
@@ -62,6 +62,7 @@ public class BountifulTitleEvent extends TitleEvent {
                 BountifulAPI.sendTitle(player, fadeIn, stay, fadeOut, null, Utils.format(message));
                 break;
         }
+        return null;
     }
 
 }

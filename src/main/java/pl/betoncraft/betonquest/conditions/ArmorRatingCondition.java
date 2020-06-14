@@ -37,12 +37,12 @@ public class ArmorRatingCondition extends Condition {
     private final VariableNumber required;
 
     public ArmorRatingCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         required = instruction.getVarNum();
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
         int rating = 0;
         ItemStack boots = inv.getBoots();

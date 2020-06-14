@@ -37,7 +37,7 @@ public class PermissionEvent extends QuestEvent {
     private final boolean add, perm;
 
     public PermissionEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         add = instruction.next().equalsIgnoreCase("add");
         perm = instruction.next().equalsIgnoreCase("perm");
         permission = instruction.next();
@@ -49,28 +49,27 @@ public class PermissionEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         // Run in Main Thread
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            Permission vault = VaultIntegrator.getPermission();
-            Player player = PlayerConverter.getPlayer(playerID);
-            if (add) {
-                if (perm) {
-                    // world add perm
-                    vault.playerAdd(world, player, permission);
-                } else {
-                    // world add group
-                    vault.playerAddGroup(world, player, permission);
-                }
+        Permission vault = VaultIntegrator.getPermission();
+        Player player = PlayerConverter.getPlayer(playerID);
+        if (add) {
+            if (perm) {
+                // world add perm
+                vault.playerAdd(world, player, permission);
             } else {
-                if (perm) {
-                    // world remove perm
-                    vault.playerRemove(world, player, permission);
-                } else {
-                    // world remove group
-                    vault.playerRemoveGroup(world, player, permission);
-                }
+                // world add group
+                vault.playerAddGroup(world, player, permission);
             }
-        });
+        } else {
+            if (perm) {
+                // world remove perm
+                vault.playerRemove(world, player, permission);
+            } else {
+                // world remove group
+                vault.playerRemoveGroup(world, player, permission);
+            }
+        }
+        return null;
     }
 }

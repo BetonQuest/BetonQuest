@@ -37,7 +37,7 @@ public class McMMOSkillLevelCondition extends Condition {
     private final VariableNumber level;
 
     public McMMOSkillLevelCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         skillType = instruction.next().toUpperCase();
         if (!SkillAPI.getSkills().contains(skillType)) {
             throw new InstructionParseException("Invalid skill name");
@@ -46,7 +46,7 @@ public class McMMOSkillLevelCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), skillType) >= level.getInt(playerID);
     }
 

@@ -39,7 +39,7 @@ public class MessageEvent extends QuestEvent {
     private final ArrayList<String> variables = new ArrayList<>();
 
     public MessageEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         String[] parts;
         try {
             parts = instruction.getInstruction().substring(8).split(" ");
@@ -85,7 +85,7 @@ public class MessageEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
@@ -99,6 +99,7 @@ public class MessageEvent extends QuestEvent {
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }
         PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        return null;
     }
 
 }

@@ -110,13 +110,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // conditions are only possible for online players, so no
                 // MySQL async
                 // access is required
-                handleConditions(sender, args);
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        handleConditions(sender, args);
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
                 break;
             case "events":
             case "event":
             case "e":
                 // the same goes for events
-                handleEvents(sender, args);
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        handleEvents(sender, args);
+                    }
+                }.runTaskAsynchronously(BetonQuest.getInstance());
                 break;
             case "items":
             case "item":

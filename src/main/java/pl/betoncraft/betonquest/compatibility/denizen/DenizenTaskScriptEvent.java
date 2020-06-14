@@ -38,12 +38,12 @@ public class DenizenTaskScriptEvent extends QuestEvent {
     private final String name;
 
     public DenizenTaskScriptEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         name = instruction.next();
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
@@ -51,6 +51,7 @@ public class DenizenTaskScriptEvent extends QuestEvent {
         }
         BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
         script.run(data, null);
+        return null;
     }
 
 }

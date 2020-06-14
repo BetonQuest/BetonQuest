@@ -40,7 +40,7 @@ public class SkillAPILevelCondition extends Condition {
     private VariableNumber level;
 
     public SkillAPILevelCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         className = instruction.next();
         if (!SkillAPI.isClassRegistered(className)) {
             throw new InstructionParseException("Class '" + className + "' is not registered");
@@ -49,7 +49,7 @@ public class SkillAPILevelCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
         PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
         Optional<PlayerClass> playerClass = data
                 .getClasses()

@@ -33,7 +33,7 @@ public class OpSudoEvent extends QuestEvent {
     private final String[] commands;
 
     public OpSudoEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         try {
             String string = instruction.getInstruction();
             commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
@@ -43,26 +43,20 @@ public class OpSudoEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         Player player = PlayerConverter.getPlayer(playerID);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                boolean previousOp = player.isOp();
-                try {
-                    player.setOp(true);
-                    for (String command : commands)
-                        player.performCommand(command.replace("%player%", player.getName()));
-                } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
-                    LogUtils.logThrowable(e);
-                } finally {
-                    player.setOp(previousOp);
-                }
-            }
-        }.runTask(BetonQuest.getInstance());
-
+        boolean previousOp = player.isOp();
+        try {
+            player.setOp(true);
+            for (String command : commands)
+                player.performCommand(command.replace("%player%", player.getName()));
+        } catch (Exception e) {
+            LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
+            LogUtils.logThrowable(e);
+        } finally {
+            player.setOp(previousOp);
+        }
+        return null;
     }
 
 }

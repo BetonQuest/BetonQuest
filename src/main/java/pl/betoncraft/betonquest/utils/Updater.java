@@ -166,7 +166,9 @@ public class Updater {
     }
 
     public void reload() {
-        searchForUpdate();
+        if(!latest.getKey().isUnofficial()) {
+            searchForUpdate();
+        }
     }
 
     private String readStringFromURL(String url) throws IOException {

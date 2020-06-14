@@ -37,25 +37,26 @@ public class HeroesExperienceEvent extends QuestEvent {
     private VariableNumber amount;
 
     public HeroesExperienceEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         primary = instruction.next().equalsIgnoreCase("primary");
         amount = instruction.getVarNum();
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
         if (hero == null)
-            return;
+            return null;
         if (primary) {
             if (hero.getHeroClass() == null)
-                return;
+                return null;
             hero.addExp(amount.getInt(playerID), hero.getHeroClass(), hero.getPlayer().getLocation());
         } else {
             if (hero.getSecondClass() == null)
-                return;
+                return null;
             hero.addExp(amount.getInt(playerID), hero.getSecondClass(), hero.getPlayer().getLocation());
         }
+        return null;
     }
 
 }

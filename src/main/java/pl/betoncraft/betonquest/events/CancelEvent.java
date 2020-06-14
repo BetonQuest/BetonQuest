@@ -33,13 +33,14 @@ public class CancelEvent extends QuestEvent {
     private String canceler;
 
     public CancelEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, false);
         canceler = Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         BetonQuest.getInstance().getPlayerData(playerID).cancelQuest(canceler);
+        return null;
     }
 
 }

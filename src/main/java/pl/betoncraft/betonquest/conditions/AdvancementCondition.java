@@ -37,7 +37,7 @@ public class AdvancementCondition extends Condition {
 
     @SuppressWarnings("deprecation")
     public AdvancementCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String i = instruction.next();
         String[] split = i.split(":");
         advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
@@ -47,7 +47,7 @@ public class AdvancementCondition extends Condition {
     }
 
     @Override
-    public boolean check(String playerID) {
+    protected Boolean execute(String playerID) {
         AdvancementProgress progress = PlayerConverter.getPlayer(playerID).getAdvancementProgress(advancement);
         return progress.isDone();
     }

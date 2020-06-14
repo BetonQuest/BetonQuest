@@ -34,7 +34,7 @@ public class TimeEvent extends QuestEvent {
     private final boolean add;
 
     public TimeEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         String time = instruction.next();
         try {
             if (add = time.startsWith("+")) {
@@ -48,13 +48,14 @@ public class TimeEvent extends QuestEvent {
     }
 
     @Override
-    public void run(String playerID) {
+    protected Void execute(String playerID) {
         World world = PlayerConverter.getPlayer(playerID).getWorld();
         long time = amount;
         if (add) {
             time += world.getTime();
         }
         world.setTime(time % 24000);
+        return null;
     }
 
 }

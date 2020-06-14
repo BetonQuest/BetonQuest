@@ -36,13 +36,13 @@ public class EXPEvent extends QuestEvent {
     private final boolean level;
 
     public EXPEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, true);
         this.amount = instruction.getVarNum();
         this.level = instruction.hasArgument("level") || instruction.hasArgument("l");
     }
 
     @Override
-    public void run(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         int amount = this.amount.getInt(playerID);
         if (level) {
@@ -50,5 +50,6 @@ public class EXPEvent extends QuestEvent {
         } else {
             player.giveExp(amount);
         }
+        return null;
     }
 }
