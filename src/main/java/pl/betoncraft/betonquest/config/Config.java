@@ -100,7 +100,7 @@ public class Config {
         defaultPackage = plugin.getConfig().getString("default_package", defaultPackage);
 
         // save example package
-        createPackage(defaultPackage);
+        createDefaultPackage(defaultPackage);
 
         // load packages
         for (File file : plugin.getDataFolder().listFiles()) {
@@ -130,7 +130,7 @@ public class Config {
      * @param packName name of the new package
      * @return true if the package was created, false if it already existed
      */
-    public static boolean createPackage(String packName) {
+    public static boolean createDefaultPackage(String packName) {
         File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
             LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");

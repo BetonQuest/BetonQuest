@@ -87,14 +87,16 @@ public final class LogUtils {
         try {
             renameLogFile();
             setupLoggerHandler();
-            
-            final String debug = BetonQuest.getInstance().getConfig().getString("debug");
 
-            if (debug == null) {
+            final boolean dataFolderExists = BetonQuest.getInstance().getDataFolder().exists();
+            final String debugString = BetonQuest.getInstance().getConfig().getString("debugString");
+            final boolean debugReadError = debugString == null && !dataFolderExists;
+
+            if (debugReadError) {
                 getLogger().log(Level.WARNING,
                         "It was not possible to read, if debugging is enabled. This enables debugging mode automatically.");
             }
-            if (debug == null || "true".equals(debug)) {
+            if (debugReadError || "true".equals(debugString)) {
                 startDebug();
             }
         } catch (Exception e) {
