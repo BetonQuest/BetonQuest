@@ -54,6 +54,16 @@ abstract public class Condition extends ForceSyncHandler<Boolean>{
     protected boolean persistent = false;
 
     /**
+     * @deprecated There is a new constructor that handles thread safety.
+     * Using this may worsen your conditions performance!
+     */
+    // TODO Delete in BQ 2.0.0
+    @Deprecated
+    public Condition(Instruction instruction) {
+        this(instruction, true);
+    }
+
+    /**
      * Creates new instance of the condition. The condition should parse
      * instruction string at this point and extract all the data from it. If
      * anything goes wrong, throw {@link InstructionParseException} with an
@@ -63,6 +73,8 @@ abstract public class Condition extends ForceSyncHandler<Boolean>{
      *                    {@link pl.betoncraft.betonquest.id.ID#generateInstruction()
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
+     * @param forceSync If set to true this executes the condition on the servers main thread.
+     *                  Otherwise it will just keep the current thread (which could also be the main thread!).
      */
     public Condition(Instruction instruction, boolean forceSync) {
         super(forceSync);
