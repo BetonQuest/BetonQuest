@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
-- Condition 'wand' can now have an option 'amount'
+- Condition 'wand' can now have an option '
+- Implementing 1.15 support for Events and Conditions
 ### Changed
 - Items for HolographicDisplays are now defines in items.yml
 - Command 'bq rename' can now be used for globalpoints
