@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
@@ -47,7 +48,7 @@ public class McMMOSkillLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(String playerID) throws QuestRuntimeException {
-        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), skillType) >= level.getInt(playerID);
+        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), PrimarySkillType.valueOf(skillType.toUpperCase())) >= level.getInt(playerID);
     }
 
 }

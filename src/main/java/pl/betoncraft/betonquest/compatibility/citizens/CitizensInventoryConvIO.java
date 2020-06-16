@@ -34,6 +34,8 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         super(conv, playerID);
     }
 
+    // Deprecated methods could be replaced with SkinTrait
+    @SuppressWarnings("deprecation")
     @Override
     public void display() {
         super.display();
