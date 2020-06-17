@@ -51,7 +51,7 @@ abstract public class ForceSyncHandler<T> {
      * or from {@link ForceSyncHandler#handle(String)}'s {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
     public T handle(String playerID) throws QuestRuntimeException {
-        if(forceSync) {
+        if(forceSync && !Bukkit.isPrimaryThread()) {
             Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(playerID));
             try {
                 return returnFuture.get();
