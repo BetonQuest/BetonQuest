@@ -135,10 +135,10 @@ public abstract class QuestEvent extends ForceSyncHandler<Void>{
                         }
                     }
                     LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
-                    execute(ID);
+                    handle(ID);
                 }
             } else {
-                execute(null);
+                handle(null);
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             // handle persistent event
@@ -146,7 +146,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void>{
                 LogUtils.getLogger().log(Level.FINE, "Player " + playerID + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
-            execute(playerID);
+            handle(playerID);
         } else {
             // handle standard event
             for (ConditionID condition : conditions) {
@@ -155,7 +155,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void>{
                     return;
                 }
             }
-            execute(playerID);
+            handle(playerID);
         }
     }
 }
