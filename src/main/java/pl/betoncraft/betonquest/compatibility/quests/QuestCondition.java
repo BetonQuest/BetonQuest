@@ -38,7 +38,7 @@ public class QuestCondition extends Condition {
 
     @Override
     protected Boolean execute(String playerID) {
-        for (String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).getCompletedQuests()) {
+        for (String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests()) {
             if (q.replace(' ', '_').equalsIgnoreCase(questName))
                 return true;
         }

@@ -54,7 +54,7 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
             LogUtils.getLogger().log(Level.WARNING, "Quest '" + questName + "' is not defined");
             return null;
         }
-        QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getName(playerID)).takeQuest(quest, override);
+        QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).takeQuest(quest, override);
         return null;
     }
 
