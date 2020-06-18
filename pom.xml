@@ -159,7 +159,7 @@
 
         <!-- Repository ID: jitpack.io -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
@@ -168,6 +168,12 @@
             <groupId>com.github.SkriptLang</groupId>
             <artifactId>Skript</artifactId>
             <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.PikaMug</groupId>
+            <artifactId>Quests</artifactId>
+            <version>0265e09</version>
             <scope>provided</scope>
         </dependency>
 
@@ -234,12 +240,6 @@
             <groupId>com.sucy.skill</groupId>
             <artifactId>SkillAPI</artifactId>
             <version>3.37</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.blackvein.quests</groupId>
-            <artifactId>quests</artifactId>
-            <version>3.6.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
