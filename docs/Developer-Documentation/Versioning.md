@@ -13,4 +13,7 @@ These result in a versioning like this:
 4. 1.12.0-DEV-UNOFFICAL  
 
 The output jar does not contain the version in its name due to limits with the Spigot updater.
-Another reason is to make it clear which one of the buidpipeline output jars is the correct one for users.
+Another reason is to make it clear which one of the buildpipeline output jars is the correct one for users.
+
+Therefore, the runnable jar file is `BetonQuest.jar`. The version can only be seen Ingame by using /q version.
+
