@@ -210,6 +210,10 @@ public class Updater {
                 plugin.getConfig().set("update.automatic", automatic);
                 plugin.saveConfig();
             }
+            if(latest.getKey().isDev()) {
+                updateStrategy = updateStrategy.toDev();
+                automatic = false;
+            }
         }
     }
 
@@ -225,6 +229,19 @@ public class Updater {
 
         UpdateStrategy(final boolean isDev) {
             this.isDev = isDev;
+        }
+
+        public UpdateStrategy toDev() {
+            switch (this) {
+                case MAYOR:
+                    return MAYOR_DEV;
+                case MINOR:
+                    return MINOR_DEV;
+                case PATCH:
+                    return PATCH_DEV;
+                default:
+                    return this;
+            }
         }
     }
 
