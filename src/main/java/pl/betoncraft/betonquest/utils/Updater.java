@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 import java.io.*;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
@@ -54,14 +55,22 @@ public class Updater {
                 try {
                     findDev();
                 } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
-                    return;
+                    if(e instanceof UnknownHostException) {
+                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
+                    }
+                    else {
+                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
+                    }
                 }
                 try {
                     findRelease();
                 } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
-                    return;
+                    if(e instanceof UnknownHostException) {
+                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
+                    }
+                    else {
+                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
+                    }
                 }
                 if (latest.getValue() != null) {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
