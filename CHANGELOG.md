@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
 ### Changed
+- devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
 - Command 'bq rename' can now be used for globalpoints
 - The old updater was replaced with a new one
@@ -21,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed LegendQuest support
 - Removed the CLAY NPC
 ### Fixes
+- linebreaks in strings
+- notify:1 for block objective did not work
+- asynchronous database access for objectives
 - Renaming an NPC will not cause an NPE for a NPC Hologram
 - Objective 'craft' now supports shift-clicking
 - Fixed generation of default package

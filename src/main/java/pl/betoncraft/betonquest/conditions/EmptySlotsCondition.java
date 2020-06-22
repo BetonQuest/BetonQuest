@@ -34,24 +34,25 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class EmptySlotsCondition extends Condition {
 
     private final VariableNumber needed;
+    private final boolean equal;
 
     public EmptySlotsCondition(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         needed = instruction.getVarNum();
+        equal = instruction.hasArgument("equal");
     }
 
     @Override
     protected Boolean execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
-        ItemStack[] items = null;
-        items = player.getInventory().getStorageContents();
+        ItemStack[] items = player.getInventory().getStorageContents();
 
         int empty = 0;
         for (ItemStack item : items) {
             if (item == null)
                 empty++;
         }
-        return empty >= needed.getInt(playerID);
+        return equal ? empty == needed.getInt(playerID) : empty >= needed.getInt(playerID);
     }
 
 }
