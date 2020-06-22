@@ -85,7 +85,8 @@ To meet this condition the player must have an active potion effect. There is on
 
 ## Empty inventory slots: `empty`
 
-To meet this condition the player has to have specified amount of empty slots in his inventory.
+To meet this condition the players inventory must have the specified amount of empty slots or more.
+If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the `equal` argument.
 
 !!! example
     ```YAML
