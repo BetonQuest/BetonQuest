@@ -237,7 +237,14 @@ Taming has the same properties as mob kill objective.
 
 ## Variable: `variable`
 
-This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it. While this objective is active though, everything the player types in chat (and matches special pattern) will become a variable. The pattern is `key: value`. So if you type that, it will create a variable called `key`, which will resolve to `value` string. These are not global variables, you can access them as objective properties. Let's say you defined this objective as `var` in your _objectives.yml_ file. You can access the variable in any conversation, event or condition with `%objective.var.key%` - and in case of this example, it will resolve to `value`. The player can type something else, and the variable will change its value. Variables are per-player, so my `key` variable will be different from your `key` variable, depending on what we were typing in chat. You can have as much variables here as you want. To remove this objective use `objective delete` event - there is no other way.
+This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.
+While this objective is active though, everything the player types in chat (and matches special pattern) will become a variable.
+The pattern is `key: value`. So if you type that, it will create a variable called `key`, which will resolve to `value` string.
+These are not global variables, you can access them as objective properties. Let's say you defined this objective as `var` in your _objectives.yml_ file.
+You can access the variable in any conversation, event or condition with `%objective.var.key%` - and in case of this example, it will resolve to `value`.
+The player can type something else, and the variable will change its value. Variables are per-player, so my `key` variable 
+will be different from your `key` variable, depending on what we were typing in chat. You can have as much variables here as you want.
+To remove this objective use `objective delete` event - there is no other way.
 
 You can also use `variable` event to change variables stored in this objective. There is one optional argument, `no-chat`. If you use it, the objective won't be modified by what players type in chat.
 

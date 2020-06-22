@@ -92,15 +92,20 @@ To meet this condition the player has to have specified amount of empty slots in
     empty 5
     ```
 
-## Entities in area: `entities` 
+## Entities in area: `monsters` 
 
 **persistent**, **static**
 
-This condition will return true only if there is a specified amount (or more) of specified entities in the specified area. There are three required arguments - entity type, location and range. Entities are defined as a list separated by commas. Each entity type (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) can have additional `:amount` suffix, for example `ZOMBIE:5,SKELETON:2` means 5 or more zombies and 2 or more skeletons. Location is standard. Range is a number representing a radius in which the entities will be looked for. You can also specify additional `name:` argument, with the name of the required entity. Replace all spaces with `_` here. You can use `marked:` argument to check only for monsters marked in `spawn` event.
+This condition will return true only if there is a specified amount (or more) of specified entities in the specified area. 
+There are three required arguments - entity type, location and range. Entities are defined as a list separated by commas.
+Each entity type (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html))
+can have an additional amount suffix, for example `ZOMBIE:5,SKELETON:2` means 5 or more zombies and 2 or more skeletons.
+The location is defined as usual. The number after the location is the range around the location in which will be checked for these entities. You can also specify additional `name:` argument,
+with the name of the required entity. Replace all spaces with `_` here. You can use `marked:` argument to check only for entities marked in `spawn` event.
 
 !!! example
     ```YAML
-    entities ZOMBIE:2 100;200;300;world 10 name:Deamon
+    monsters ZOMBIE:2 100;200;300;world 10 name:Deamon
     ```
 
 ## Experience: `experience`

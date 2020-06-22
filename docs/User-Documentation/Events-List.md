@@ -330,8 +330,16 @@ Another container for events. It picks one (ore multiple) of the given events an
 
 ## Play sound: `playsound`
 
-This event will play a specified sound for the player. The only required argument is the sound name (can take custom values if you're using a resource pack). There are also a few optional arguments. `location:` makes the sound play at specified location, `category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`), `volume:` is a decimal responsible for the sound's volume and `pitch:` specifies the pitch.
+This event will play a specified sound for the player. The only required argument is the sound name in **lower case** letters
+(can take custom values if you're using a resource pack). There are also a few optional arguments. 
+`category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`),
+`volume:` is a decimal responsible for the sound's volume, `pitch:` specifies the pitch and `location:` makes the sound play at specified location.
 
+!!! example
+    ```YAML
+    playsound: playsound minecraft:entity.ender_dragon.hurt category:MASTER volume:0.8 pitch:0.8 location:-60;69;-336;World`
+    ```
+    
 ## Point: `point`
 
 **persistent**
