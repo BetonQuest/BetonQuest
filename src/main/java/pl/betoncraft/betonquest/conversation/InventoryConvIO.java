@@ -51,6 +51,7 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class InventoryConvIO implements Listener, ConversationIO {
+    private static final HashMap<String, ItemStack> skullCache = new HashMap<>();
 
     protected String response = null;
     protected HashMap<Integer, String> options = new HashMap<>();
@@ -156,17 +157,31 @@ public class InventoryConvIO implements Listener, ConversationIO {
         inv.setContents(new ItemStack[9 * rows]);
         ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
-        ItemStack npc = new ItemStack(Material.PLAYER_HEAD);
-        npc.setDurability((short) 3);
-        SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
-        npcMeta.setOwner(npcName);
-        npcMeta.setDisplayName(npcNameColor + npcName);
-        // NPC Text
-        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(response, npcTextColor),
-                45)));
+        ItemStack npc;
+        if(skullCache.containsKey(npcName)) {
+            npc = skullCache.get(npcName);
+        }
+        else {
+            npc = new ItemStack(Material.PLAYER_HEAD);
+            npc.setDurability((short) 3);
+            SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
+            npcMeta.setDisplayName(npcNameColor + npcName);
+            // NPC Text
+            npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                    Utils.replaceReset(response, npcTextColor),
+                    45)));
 
-        npc.setItemMeta(npcMeta);
+            npc.setItemMeta(npcMeta);
+            Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+                SkullMeta meta = (SkullMeta) npc.getItemMeta();
+                meta.setOwner(npcName);
+                npc.setItemMeta(meta);
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                    inv.setItem(0, npc);
+                    skullCache.put(npcName, npc);
+                });
+            });
+        }
         buttons[0] = npc;
         // this is the number of an option
         int next = 0;
