@@ -23,6 +23,8 @@ Result: <a href="https://betonquest.pl/" target="_blank">Clickable text that ope
 
 ##Displaying (YAML) code
 
+You must use codeboxes with the specific language set in the header (`YAML` in this example).
+You also have to enable line numbers by adding the `linenums="1"` argument. 
 ``` linenums="1"
  ``` YAML linenums="1"
  use: "codeboxes for code"
@@ -33,6 +35,16 @@ Result:
 ``` YAML linenums="1"
 use: "codeboxes for code"
 ```
+### Refering to YAML elements in written text
+
+An example of this would be to reference an event name in an explanation.
+
+``` YAML linenums="1"
+The event `someEvent` prints a message to the player!
+```
+
+Result:
+The event `someEvent` prints a message to the player!
 
 ##File names
 

@@ -120,8 +120,10 @@ nav:
       - Developer-Documentation/Versioning.md
   - 'Contributing':
       - Contributing/Contributing.md
+      - 'Docs':
+          - Contributing/Docs/Setup.md
+          - Contributing/Docs/Guidelines.md
       - 'Old': Contributing/old_contributing.md
-      - Contributing/Docs/Guidelines.md
 
 google_analytics:
   - UA-164568470-1
