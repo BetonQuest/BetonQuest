@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed RacesAndClasses support
 - Removed LegendQuest support
 - Removed the CLAY NPC
+- removed legacy material support
 ### Fixes
 - linebreaks in strings
 - notify:1 for block objective did not work

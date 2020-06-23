@@ -295,9 +295,6 @@ public class Instruction {
             return null;
         }
         Material material = Material.matchMaterial(string);
-        if (material == null) {
-            material = Material.matchMaterial(string, true);
-        }
         return material;
     }
 
