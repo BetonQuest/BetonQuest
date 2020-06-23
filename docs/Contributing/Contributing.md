@@ -22,14 +22,7 @@ Therefore, we would be happy if you could translate it to your language and shar
 You can send us the edited messages.yml file via discord or submit a pull request.
 
 ##Improving the docs
-If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Docs.md)!
+If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Guidelines.md)!
 
 ##Writing code
-If you want to write code for BetonQuest check the [Developer Documentation](../Developer-Documentation/Info-for-developers.md)!
-
-
-Changes:         | Mayor (**X**.2.5)   |  Minor  (1.**X**.5) |   Patch  (1.2.**X**) |
----------------- | ------------------- | ------------------ | ------------------ |
-Bug Fixes        | :white_check_mark:  | :white_check_mark: | :white_check_mark: |
-New Features     | :white_check_mark:  | :white_check_mark: | :x:                | 
-Breaking Changes | :white_check_mark:  | :x:                | :x:                | 
+If you want to write code for BetonQuest check the [Developer Documentation](../Developer-Documentation/Info-for-developers.md)!3 

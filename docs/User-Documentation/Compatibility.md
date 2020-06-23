@@ -232,7 +232,7 @@ npc_holograms:
   # How often to check conditions
   check_interval: 100
   
-  # Holograms follow npcs when they move (higher cpu when true)
+  # Holograms follow npcs when they move (higher cpu usage when true)
   follow: false
 
   # Disable npc_holograms
@@ -242,7 +242,7 @@ npc_holograms:
   default:
     # Lines in hologram
     lines:
-      - !
+      - "Some text!"
     # Vector offset to NPC position to place hologram
     vector: 0;3;0
 
@@ -340,83 +340,6 @@ Triggers when player levels up.
 
 Triggers when player makes {amount} of money from jobs.
 
-## [LegendQuest](http://dev.bukkit.org/bukkit-plugins/legendquest/)
-
-### Conditions
-
-#### Attribute: `lqattribute`
-
-Checks player's attributes. The first argument is attribute (STR, CON, DEX, INT, WIS, CHR) and the second argument is a number - minimal required level of the attribute.
-
-!!! example
-    ```YAML
-    lqattribute INT 10
-    ```
-
-#### Class: `lqclass`
-
-Checks if the player has specified class. It can also check subclass if you add `--subclass` argument.
-
-!!! example
-    ```YAML
-    lqclass Cleric`
-    ```
-
-#### Karma: `lqkarma`
-
-Checks if the player has specified amount of karma. The only argument is a number - minimal amount of karma required.
-
-!!! example
-    ```YAML
-    lqkarma 20
-    ```
-
-#### Race: `lqrace`
-
-Checks if the player has specified race.
-
-!!! example
-    ```YAML
-    lqrace Dwarf`
-    ```
-
-### Variables
-
-#### Attribute: `lqattribute`
-
-Resolves to player's attribute. The first argument is name of the attribute (like in `lqattribute` condition), second one is either `amount` or `left:` followed by a number. First of these will simply display attribute level and second will display the difference between attribute level and the number.
-
-!!! example
-    ```YAML
-    %lqattribute.str.left:13
-    ```
-
-#### Class: `lqclass`
-
-Resolves to player's class.
-
-!!! example
-    ```YAML
-    %lqclass%
-    ```
-
-#### Karma: `lqkarma`
-
-Resolves to player's karma. The only argument here is either `amount` or `left:` followed by a number. First of these will simply display karma amount and second will display the difference between karma amount and the number.
-
-!!! example
-    ```YAML
-    %lqkarma.amount%
-    ```
-
-#### Race: `lqrace`
-
-Resolves to player's race.
-
-!!! example
-    ```YAML
-    %lqrace%
-    ```
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
@@ -628,151 +551,6 @@ This event will start the quest for the player. The first argument must be the n
 !!! example
     ```YAML
     quest stone_miner check-requirements
-    ```
-
-## [RacesAndClasses](http://dev.bukkit.org/bukkit-plugins/racesandclasses/)
-
-Another race/class/skill plugin. By installing RacesAndClasses you gain access to these events, conditions and variables:
-
-### Conditions
-
-#### Class: `racclass`
-
-This conditions checks if the player has specified class. You can use `none` to check if he does not have any class.
-
-!!! example
-    ```YAML
-    racclass warrior
-    ```
-    
-#### Experience: `racexo`
-
-This condition is met if the player has experience equal or greater than specified.
-
-!!! example
-    ```YAML
-    racexo 600
-    ```
-    
-#### Level: `raclevel`
-
-This condition is met if the player has a level equal or greater than specified.
-
-!!! example
-    ```YAML
-    raclevel 5
-    ```
-    
-#### Mana: `racmana`
-
-This condition is met if the player has mana equal or greater than specified.
-
-!!! example
-    ```YAML
-    racmana 1
-    ```
-    
-#### Race: `racrace`
-
-This condition checks if the player has specified race. You can use `none` to check if he does not have any race.
-
-!!! example
-    ```YAML
-    racrace Elv
-    ```
-    
-#### Trait: `ractrait`
-
-This condition checks if the player has the specified trait.
-
-!!! example
-    ```YAML
-    ractrait SwordDamageIncreaseTrait
-    ```
-
-### Events
-
-#### Class: `racclass`
-
-This event sets player's class to the specified one.
-
-!!! example
-    ```YAML
-    racclass magician
-    ```
-
-#### Experience: `racexo`
-
-This event adds (or removes if negative) experience.
-
-!!! example
-    ```YAML
-    racexo 100
-    ```
-    
-#### Level: `raclevel`
-
-This event adds (or removes if negative) levels.
-
-!!! example
-    ```YAML
-    raclevel -2
-    ```
-
-#### Mana: `racmana`
-
-This event adds (or removes if negative) mana. You can use `refill` instead of a number to simply set mana to player's maximum.
-
-!!! example
-    ```YAML
-    racmana refill
-    ```
-    
-#### Race: `racrace`
-
-This event sets player's race to the specified one.
-
-!!! example
-    ```YAML
-    racrace Orc
-    ```
-
-### Variables
-
-#### Class: `racclass`
-
-This variable resolves to class name.
-
-!!! example
-    ```YAML
-    %racclass%
-    ```
-
-#### Experience: `racexo`
-
-This variable has 2 possible arguments: `amount` will resolve to player's experience and `left:` will display how much experience the player lacks to the specified number.
-
-!!! example
-    ```YAML
-    %racexo:amount%
-    ```
-
-#### Level: `raclevel`
-
-This variable has 2 possible arguments: `amount` will resolve to player's level and `left:` will display how many levels the player lacks to the specified number.
-
-!!! example
-    ```YAML
-    %raclevel.left:5%
-    ```
-    
-#### Race: `racrace`
-
-This variable resolves to race name.
-
-!!! example
-    ```YAML
-    %racrace%
     ```
 
 ## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)

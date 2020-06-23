@@ -24,14 +24,17 @@ Feature[^1]               | BetonQuest         | Quests            | BeautyQuest
 ------------------------- | ------------------ | ----------------- | --------------------- | ------------------------ | -----------         |
 Free                      | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
 OpenSource                | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:                      | :white_check_mark:  |
-API                       | :white_check_mark: | :question:        | :question:            | :question:               | :question:          |
+API                       | :white_check_mark: | :question:        | :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
 Version Support           | 1.13.2-1.15.2      | 1.7-1.15.2        | 1.11-1.15.2           | 1.7-1.15.2               | 1.13-1.15.2         | 
-Database Support          | SQL Lite & MySQL   | :question:        | :question:            | MySQL                    | :question:          |
-Per Player Language       | :white_check_mark: | :question:        | :x:                   | MySQL                    | :question:          |
-Multi-Path Conversations  | :white_check_mark: | :question:        | :question:            | :question:               | :question:          |
-Client Side NPCs          | :white_check_mark: | :question:        | :question:            | :question:               | :question:          |
+Database Support          | SQL Lite & MySQL   | :x:               | :x:                   | MySQL                    | :question:          |
+Bungee Support            | :x:                | :x:               | :x:                   | :x:                      | :question:          |
+Per Player Language       | :white_check_mark: | :question:        | :x:                   | :x:                      | :question:          |
+Multi-Path Conversations  | :white_check_mark: | :question:        | :question:            | :white_check_mark:       | :question:          |
+Client Side NPCs          | :white_check_mark: | :question:        | :question:            | :white_check_mark:       | :question:          |
 Ingame Editor             | :x:                | :question:        | :question:            | :white_check_mark:       | :x:                 |
-External Editor           | :white_check_mark: | :question:        | :question:            | :question:               | :white_check_mark:  |
-Integrated Plugins        | 22                 | :question:        | :question:            | :question:               | 7                   |
+External Editor           | :white_check_mark: | :question:        | :question:            | :x:                      | :white_check_mark:  |
+Organized File Structure  | :white_check_mark: | :x:               | :question:            | :white_check_mark:       | :white_check_mark:  |
+Integrated Plugins        | 20                 | 12                | 15                    | 23                       | 7                   |
 
-[^1]: This table was last updated on the 26th of May 2020. If there are any mistakes let us know!
+[^1]: This table has been last updated on the 19th of June 2020. If there are any mistakes let us know!
+[^2]: This means that Open Source plugins cannot add support which is considered as an unfriendly policy.

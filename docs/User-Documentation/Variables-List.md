@@ -1,5 +1,9 @@
 # Variables List
 
+## Custom Strings
+
+It is possible to save multiple custom strings per player. This works by using the [`variable`](Objectives-List.md#variable-variable) objective and the [`variable`](Events-List.md#variable-variable) event. 
+
 ## Global point: `globalpoint`
 
 Works the same as normal point variable but instead of displaying points from a players category it displays points in a global, player independent category.
