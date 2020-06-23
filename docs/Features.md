@@ -37,3 +37,14 @@ in your quests as rewards or conditions. BetonQuest also features a set of power
 behaviour to your items. For example, you could make a proper "Quest Item" that cannot be dropped and won't be dropped when the player dies.
 This system is *really* powerful, read the [final concept](https://github.com/BetonQuest/BetonQuest/issues/1037#issuecomment-590513472)
 to get an idea of what will be possible.
+
+##Countless Integrations
+
+BetonQuest supports dozens of plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to more advanced ones such as EffectLib. 
+
+It also offers support for other quest plugins, so you can just keep your old quests and create further additions to your quest
+lines based upon the progress in your old plugin.
+
+If just Beton isn't enough you can always just hook into Skript or Denizen too.
+
+Full list of integrations [here](User-Documentation/Compatibility.md).

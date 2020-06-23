@@ -121,7 +121,7 @@ nav:
   - 'Contributing':
       - Contributing/Contributing.md
       - 'Old': Contributing/old_contributing.md
-      - Contributing/Docs/Docs.md
+      - Contributing/Docs/Guidelines.md
 
 google_analytics:
   - UA-164568470-1
