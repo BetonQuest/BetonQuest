@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v59";
+    private final String destination = "v60";
     /**
      * BetonQuest's instance
      */
@@ -197,6 +197,25 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    @SuppressWarnings("unused")
+    private void update_from_v59() {
+        LogUtils.getLogger().log(Level.INFO, "Rename Objective potion to brew");
+        for (ConfigPackage pack : Config.getPackages().values()) {
+            LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
+            for (String key : pack.getObjectives().getConfig().getKeys(false)) {
+                String instruction = pack.getObjectives().getConfig().getString(key);
+                if (instruction.startsWith("potion ")) {
+                    LogUtils.getLogger().log(Level.FINE, "    Replacing potion in '" + key + "' objective");
+                    pack.getObjectives().getConfig().set(key, instruction.replaceFirst("potion ", "brew "));
+                }
+            }
+            pack.getObjectives().saveConfig();
+        }
+        LogUtils.getLogger().log(Level.INFO, "Successfully renamed Objective potion to brew");
+        config.set("version", "v60");
+        instance.saveConfig();
     }
 
     @SuppressWarnings("unused")

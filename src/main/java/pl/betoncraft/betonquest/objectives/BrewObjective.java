@@ -45,7 +45,7 @@ import java.util.HashMap;
  *
  * @author Jakub Sapalski
  */
-public class PotionObjective extends Objective implements Listener {
+public class BrewObjective extends Objective implements Listener {
 
     private final QuestItem potion;
     private final int amount;
@@ -53,13 +53,13 @@ public class PotionObjective extends Objective implements Listener {
     private final int notifyInterval;
     private final HashMap<Location, String> locations = new HashMap<>();
 
-    public PotionObjective(Instruction instruction) throws InstructionParseException {
+    public BrewObjective(Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = PotionData.class;
         potion = instruction.getQuestItem();
         amount = instruction.getInt();
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
+        notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -107,7 +107,7 @@ public class PotionObjective extends Objective implements Listener {
                 // check if the objective has been completed
                 if (data.getAmount() >= amount) {
                     completeObjective(playerID);
-                } else if (brewed && notify && data.getAmount() % notifyInterval == 0) {
+                } else if (notify && data.getAmount() % notifyInterval == 0) {
                     Config.sendNotify(playerID, "potions_to_brew",
                             new String[]{String.valueOf(amount - data.getAmount())},
                             "potions_to_brew,info");

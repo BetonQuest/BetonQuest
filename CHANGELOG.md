@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command 'bq rename' can now be used for globalpoints
 - The old updater was replaced with a new one
 - AchievementCondition is replaced with AdvancementCondition
+- Renamed objective Potion to Brew
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
@@ -31,7 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Objective 'craft' now supports shift-clicking
 - Fixed generation of default package
 - fixed line breaks
-- fixed block objective notify interval of 1
+- fixed events notify interval of 1
+- fixed potion/brew objective notify
 ### Security
 
 ## [1.11.0] - 2020-01-02
