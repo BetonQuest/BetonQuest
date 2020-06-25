@@ -1,8 +1,8 @@
 # Compatibility
 
-BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, 
-Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LegendQuest, Magic, mcMMO, MythicMobs, 
-PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RacesAndClasses, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit 
+BetonQuest can hook into other plugins to extend its functionality. Currently, 22 plugins are supported: BountifulAPI, 
+Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic, mcMMO, MythicMobs, nuNPCDestinations, 
+PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RPGMenu, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit 
 and WorldGuard.
 
 ## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
@@ -401,6 +401,8 @@ Spawn specified amount of MythicMobs at given location. The first argument is a 
     ```YAML
     mspawnmob 100;200;300;world SkeletalKnight:1 5
     ```
+    
+    
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
 
