@@ -173,13 +173,18 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
             npc.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
-                SkullMeta meta = (SkullMeta) npc.getItemMeta();
-                meta.setOwner(npcName);
-                npc.setItemMeta(meta);
-                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                    inv.setItem(0, npc);
-                    skullCache.put(npcName, npc);
-                });
+                try {
+                    SkullMeta meta = (SkullMeta) npc.getItemMeta();
+                    meta.setOwner(npcName);
+                    npc.setItemMeta(meta);
+                    Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                        skullCache.put(npcName, npc);
+                        inv.setItem(0, npc);
+                    });
+                }
+                catch (Exception e) {
+                    LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
+                }
             });
         }
         buttons[0] = npc;
