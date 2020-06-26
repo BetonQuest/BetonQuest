@@ -13,9 +13,6 @@
         <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
       </a>
     <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/">
-        <img src="https://img.shields.io/bstats/players/551?label=online%20players&logo=BetonQuest&logoColor=RED" />
-     </a>
-    <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/">
         <img src="https://img.shields.io/bstats/servers/551" />
      </a>
     <a href="https://discord.gg/MvmkHEu" target="_blank">
