@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed line breaks
 - fixed events notify interval of 1
 - fixed potion/brew objective notify
+- fixed workaround when chest converationIO has no available start points
 ### Security
 
 ## [1.11.0] - 2020-01-02

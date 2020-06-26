@@ -29,6 +29,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -318,13 +319,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        // Work around a bug where inventory is null. We'll log it but move on by closing the conversation
-        if (inv == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Player closed inventory whilst in conversation but has null inventory. Implementing work-around.");
-            conv.endConversation();
-            HandlerList.unregisterAll(this);
-            return;
-        }
 
         // allow for closing previous option inventory
         if (switching) {
@@ -358,7 +352,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowClose = true;
-        if (response == null && options.isEmpty()) {
+        if (response == null && options.isEmpty() && inv != null) {
             player.closeInventory();
         }
     }
