@@ -180,7 +180,7 @@ public class Utils {
                 int lines = 0;
                 for (String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
                     StringBuilder line_builder = new StringBuilder();
-                    int line__length = line.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
+                    int line__length = getStringLength(line);
                     if (line__length <= chars_per_line) {
                         if (++lines > lines_per_page) {
                             pages.add(page.toString());
@@ -191,8 +191,9 @@ public class Utils {
                         continue;
                     }
                     for (String word : line.split(" ")) {
-                        int word_length = word.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
-                        if (line_builder.length() + word_length > chars_per_line) {
+                        int word_length = getStringLength(word);
+                        int line_builder_length = getStringLength(line_builder.toString());
+                        if (line_builder_length + word_length > chars_per_line) {
                             if (++lines > lines_per_page) {
                                 pages.add(page.toString());
                                 lines = 1;
@@ -225,6 +226,10 @@ public class Utils {
             }
         }
         return pages;
+    }
+
+    private static int getStringLength(String string) {
+        return string.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
     }
 
     /**
