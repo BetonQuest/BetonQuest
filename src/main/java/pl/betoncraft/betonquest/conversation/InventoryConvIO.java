@@ -271,10 +271,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (printMessages)
             conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
-        inv.setContents(buttons);
         new BukkitRunnable() {
             @Override
             public void run() {
+                inv.setContents(buttons);
                 switching = true;
                 player.openInventory(inv);
                 switching = false;
