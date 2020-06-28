@@ -159,7 +159,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
         ItemStack npc;
-        if(skullCache.containsKey(npcName)) {
+        if(skullCache.containsKey(npcName) && false) {
             npc = skullCache.get(npcName);
         }
         else {
@@ -175,9 +175,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             npc.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
                 try {
-                    SkullMeta meta = (SkullMeta) npc.getItemMeta();
-                    meta.setOwner(npcName);
-                    npc.setItemMeta(meta);
+                    npc.setItemMeta(setSkullMeta((SkullMeta) npc.getItemMeta()));
                     Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
                         skullCache.put(npcName, npc);
                         inv.setItem(0, npc);
@@ -281,6 +279,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 processingLastClick = false;
             }
         }.runTask(BetonQuest.getInstance());
+    }
+
+    @SuppressWarnings("deprecation")
+    protected SkullMeta setSkullMeta(SkullMeta meta) {
+        meta.setOwner(npcName);
+        return meta;
     }
 
     @EventHandler(ignoreCancelled = true)

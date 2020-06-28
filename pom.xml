@@ -146,8 +146,8 @@
         <!-- Repository ID: everything -->
         <dependency>
             <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizensapi</artifactId>
-            <version>2.0.26-SNAPSHOT</version>
+            <artifactId>citizens</artifactId>
+            <version>2.0.27-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
