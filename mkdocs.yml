@@ -105,14 +105,15 @@ nav:
           - Learn-Beton/Getting-Started/Setting-up-the-editor.md
           - Learn-Beton/Getting-Started/YAML-for-questers.md
   - 'User Documentation':
-      - User-Documentation/Commands-and-permissions.md
-      - User-Documentation/Compatibility.md
-      - User-Documentation/Conditions-List.md
-      - User-Documentation/Events-List.md
-      - User-Documentation/Notifications.md
-      - User-Documentation/Objectives-List.md
       - User-Documentation/Reference.md
+      - 'Basic Types':
+          - User-Documentation/Objectives-List.md
+          - User-Documentation/Conditions-List.md
+          - User-Documentation/Events-List.md
+          - '3th party types': User-Documentation/Compatibility.md
+      - User-Documentation/Notifications.md
       - User-Documentation/Variables-List.md
+      - User-Documentation/Commands-and-permissions.md
       - User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
       - Developer-Documentation/Info-for-developers.md
