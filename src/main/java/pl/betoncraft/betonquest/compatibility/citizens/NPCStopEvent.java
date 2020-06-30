@@ -17,50 +17,43 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.VariableNumber;
-import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
- * Checks if the player is close to a npc
- * <p>
- * Created on 30.09.2018.
- *
- * @author Jonas Blocher
+ * Stop the NPC when he is walking
  */
-public class NPCDistanceCondition extends Condition {
+public class NPCStopEvent extends QuestEvent implements Listener {
+    private int ID;
 
-    private final int id;
-    private final VariableNumber distance;
-
-    public NPCDistanceCondition(Instruction instruction) throws InstructionParseException {
+    public NPCStopEvent(Instruction instruction) throws InstructionParseException {
         super(instruction,true);
-        id = instruction.getInt();
-        if (id < 0) {
+        super.persistent = true;
+        super.staticness = true;
+        ID = instruction.getInt();
+        if (ID < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
-        distance = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-        double distance = this.distance.getDouble(playerID);
+    protected Void execute(String playerID) throws QuestRuntimeException {
+        NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
-        Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
-        if (!npcEntity.getWorld().equals(player.getWorld())) return false;
-        return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;
+        if (!npc.isSpawned()) {
+            return null;
+        }
+        NPCMoveEvent.stopNPCMoving(npc);
+        npc.getNavigator().cancelNavigation();
+        return null;
     }
 }

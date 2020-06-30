@@ -44,6 +44,9 @@ public class NPCKillObjective extends Objective implements Listener {
         super(instruction);
         template = NPCData.class;
         ID = instruction.getInt();
+        if (ID < 0) {
+            throw new InstructionParseException("NPC ID cannot be less than 0");
+        }
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
         if (amount < 1) {
             throw new InstructionParseException("Amount cannot be less than 1");

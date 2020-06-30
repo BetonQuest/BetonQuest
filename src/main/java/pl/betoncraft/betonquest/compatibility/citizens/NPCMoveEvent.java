@@ -84,6 +84,10 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         return movingNPCs.containsKey(npc.getId());
     }
 
+    public static void stopNPCMoving(NPC npc) {
+        movingNPCs.remove(npc.getId());
+    }
+
     /**
      * Checks if you can talk to an npc or if it's moving because of a 'move' event and conversations are blocked
      *
@@ -132,6 +136,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     public void onNavigationEnd(final NavigationCompleteEvent event) {
         NPC npc = event.getNPC();
         if (npc.getId() != id) {
+            return;
+        }
+        if(!movingNPCs.containsKey(npc.getId())) {
             return;
         }
         if (locationsIterator.hasNext()) {

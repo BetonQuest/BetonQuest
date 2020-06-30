@@ -18,30 +18,38 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.VariableNumber;
-import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.LogUtils;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
 
 /**
- * Checks if a npc is at a specific location
- * <p>
- * Created on 01.10.2018.
- *
- * @author Jonas Blocher
+ * Stop the NPC when he is walking and teleport hin to a given location
  */
-public class NPCLocationCondition extends Condition {
-
-    private final int ID;
+public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final LocationData location;
-    private final VariableNumber radius;
+    private int ID;
 
-    public NPCLocationCondition(Instruction instruction) throws InstructionParseException {
+    public NPCTeleportEvent(Instruction instruction) throws InstructionParseException {
         super(instruction,true);
         super.persistent = true;
         super.staticness = true;
@@ -50,20 +58,20 @@ public class NPCLocationCondition extends Condition {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         location = instruction.getLocation();
-        radius = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(String playerID) throws QuestRuntimeException {
         NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
-        Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
-        double radius = this.radius.getDouble(playerID);
-        Location location = this.location.getLocation(playerID);
-        if (!location.getWorld().equals(npcEntity.getWorld())) return false;
-        return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
+        if (!npc.isSpawned()) {
+            return null;
+        }
+        NPCMoveEvent.stopNPCMoving(npc);
+        npc.getNavigator().cancelNavigation();
+        npc.teleport(location.getLocation(playerID), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        return null;
     }
 }
