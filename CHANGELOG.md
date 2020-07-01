@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
 - New Chat event, that write chat messages for a player
+- Added stopnpc event, that will stop the movenpc event
+- Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
