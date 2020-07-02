@@ -43,11 +43,6 @@ public class Updater {
             return;
         }
 
-        if (latest.getKey().isUnofficial()) {
-            LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Disabled! An unofficial development version was detected.");
-            return;
-        }
-        LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Enabled!");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -219,7 +214,7 @@ public class Updater {
                 plugin.getConfig().set("update.automatic", automatic);
                 plugin.saveConfig();
             }
-            if(latest.getKey().isDev()) {
+            if(latest.getKey().isDev() | latest.getKey().isUnofficial()) {
                 updateStrategy = updateStrategy.toDev();
                 automatic = false;
             }
@@ -286,7 +281,7 @@ public class Updater {
         }
 
         public boolean isNewer(final Version v, UpdateStrategy updateStrategy) {
-            if (isUnofficial() || v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
+            if (v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
                 return false;
             }
             int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
@@ -317,11 +312,13 @@ public class Updater {
                         } else if (patchVersion < 0) {
                             return true;
                         } else {
-                            if(dev == null || v.dev == null) {
-                                return dev != null;
+                            Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
+                            Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
+                            if(thisDev == null || targetDev == null) {
+                                return thisDev != null;
                             }
                             else {
-                                return dev.compareTo(v.dev) < 0;
+                                return thisDev.compareTo(targetDev) < 0;
                             }
                         }
                     }

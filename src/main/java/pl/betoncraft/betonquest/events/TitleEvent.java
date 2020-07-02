@@ -39,7 +39,7 @@ public class TitleEvent extends QuestEvent {
     protected int fadeIn, stay, fadeOut;
 
     public TitleEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
+        super(instruction, true);
         type = instruction.getEnum(TitleType.class);
         String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {
