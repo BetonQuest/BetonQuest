@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The old updater was replaced with a new one
 - AchievementCondition is replaced with AdvancementCondition
 - Renamed objective Potion to Brew
+- Renamed 'monsters' condition to 'entities'
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
