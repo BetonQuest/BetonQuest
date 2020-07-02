@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The old updater was replaced with a new one
 - AchievementCondition is replaced with AdvancementCondition
 - Renamed objective Potion to Brew
+- Title event has a new syntax, that has to be updated manually
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed LegendQuest support
 - Removed the CLAY NPC
 - removed legacy material support
+- removed BountifulAPI dependency, that was only needed for title event
 ### Fixes
 - linebreaks in strings
 - notify:1 for block objective did not work

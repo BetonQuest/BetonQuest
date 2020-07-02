@@ -1,22 +1,9 @@
 # Compatibility
 
-BetonQuest can hook into other plugins to extend its functionality. Currently there are 22 plugins: BountifulAPI, 
+BetonQuest can hook into other plugins to extend its functionality. Currently there are 21 plugins: 
 Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LegendQuest, Magic, mcMMO, MythicMobs, 
 PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RacesAndClasses, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit 
 and WorldGuard.
-
-## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
-
-### Events
-#### Title: `title`
-
-BountifulAPI enables you to use `title` event without spamming the console with `/title` command output.
-The syntax is exactly the same as in regular `title` event described in _Events List_.
-
-!!! example
-    ```YAML
-    title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
-    ```
 
 ## NPC's with [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 

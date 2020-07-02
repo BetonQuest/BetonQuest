@@ -443,11 +443,15 @@ Sets or adds time. The only argument is time to be set (integer) or time to be a
 
 ## Title: `title`
 
-This event displays a title or a subtitle. The first argument is the type (`title` or `subtitle`), second argument are title's duration times (in ticks) separated by semicolons - fade in, stay and fade out: `20;100;20`. If you set it to three zeros (`0;0;0`) the plugin will use default Minecraft values. After these two required arguments there is a title message, formatted like in the `message` event, which supports multiple languages, color codes and variables. Keep in mind that the subtitle will only appear if the title is visible - that's how Minecraft works.
+This event displays a title with a subtitle. The first argument are title's duration times (in ticks) separated by semicolons - fade in, stay and fade out: `20;100;20`. If you set it to three zeros (`0;0;0`) the plugin will use default Minecraft values. The next argument is a title message, formatted like in the `message` event, which supports multiple languages, color codes and variables. You can separate the title from the subtitle with a `|` and if you write nothing before or after the `|` the title or the subtitle is empty. 
 
 !!! example
     ```YAML
-    title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
+    title 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
+    title 0;0;0 {en} Lobby joined!|Wellcome {pl} Dołączono do lobby!|Wellcome
+    title 20;300;0 Only a Title
+    title 20;300;0 Also only a Title|
+    title 20;300;0 |A Subtitle
     ```
 
 ## Teleport: `teleport`

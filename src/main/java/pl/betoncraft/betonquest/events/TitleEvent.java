@@ -18,29 +18,31 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class TitleEvent extends QuestEvent {
 
-    protected TitleType type;
     protected Map<String, String> messages = new HashMap<>();
     protected List<String> variables = new ArrayList<>();
     protected int fadeIn, stay, fadeOut;
 
     public TitleEvent(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        type = instruction.getEnum(TitleType.class);
         String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {
             throw new InstructionParseException("Could not parse title time.");
@@ -52,6 +54,11 @@ public class TitleEvent extends QuestEvent {
             fadeOut = Integer.parseInt(timeParts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse title time.", e);
+        }
+        if(fadeIn == 0 && stay == 0 && fadeOut == 0) {
+            fadeIn = 20;
+            stay = 100;
+            fadeOut = 20;
         }
         String[] parts = instruction.getInstruction().split(" ");
         String currentLang = Config.getLanguage();
@@ -104,19 +111,28 @@ public class TitleEvent extends QuestEvent {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }
-        String name = PlayerConverter.getName(playerID);
-        if ((fadeIn != 20 || stay != 100 || fadeOut != 20) && (fadeIn != 0 || stay != 0 || fadeOut != 0)) {
-            String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        String title = message;
+        String subtitle = null;
+        if(message.contains("|")){
+            String[] parts = message.split("\\|");
+            if(parts.length == 1) {
+                if(message.startsWith("\\|")) {
+                    title = null;
+                    subtitle = parts[0];
+                }
+                else {
+                    title = parts[0];
+                    subtitle = null;
+                }
+            }
+            else {
+                title = parts[0];
+                subtitle = parts[1];
+            }
         }
-        String title = String.format("title %s %s {\"text\":\"%s\"}",
-                name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
+        Player player = PlayerConverter.getPlayer(playerID);
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
         return null;
     }
-
-    public enum TitleType {
-        TITLE, SUBTITLE
-    }
-
 }

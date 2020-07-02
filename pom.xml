@@ -266,12 +266,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.connorlinfoot</groupId>
-            <artifactId>BountifulAPI</artifactId>
-            <version>1.6.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>io.lumine.xikage</groupId>
             <artifactId>MythicMobs</artifactId>
             <version>4.7.0</version>
