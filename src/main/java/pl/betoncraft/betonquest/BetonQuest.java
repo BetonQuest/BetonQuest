@@ -449,7 +449,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("testforblock", TestForBlockCondition.class);
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
-        registerConditions("monsters", MonstersCondition.class);
+        registerConditions("entities", EntityCondition.class);
         registerConditions("objective", ObjectiveCondition.class);
         registerConditions("check", CheckCondition.class);
         registerConditions("chestitem", ChestItemCondition.class);

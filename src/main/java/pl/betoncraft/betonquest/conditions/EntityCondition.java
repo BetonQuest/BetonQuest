@@ -34,11 +34,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Checks if there are specified monsters in the area
+ * Checks if there are specified entities in the area
  *
  * @author Jakub Sapalski
  */
-public class MonstersCondition extends Condition {
+public class EntityCondition extends Condition {
 
     private EntityType[] types;
     private VariableNumber[] amounts;
@@ -47,7 +47,7 @@ public class MonstersCondition extends Condition {
     private String name;
     private String marked;
 
-    public MonstersCondition(Instruction instruction) throws InstructionParseException {
+    public EntityCondition(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -76,7 +76,7 @@ public class MonstersCondition extends Condition {
                     amounts[i] = new VariableNumber(1);
                 }
             } catch (IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown mob type: " + rawTypes[i], e);
+                throw new InstructionParseException("Unknown entity type: " + rawTypes[i], e);
             }
         }
         loc = instruction.getLocation();

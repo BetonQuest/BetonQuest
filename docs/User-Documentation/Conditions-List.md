@@ -93,7 +93,7 @@ If you want to check for a specific amount (for example for a full inventory wit
     empty 5
     ```
 
-## Entities in area: `monsters` 
+## Entities in area: `entities` 
 
 **persistent**, **static**
 
@@ -106,7 +106,7 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 !!! example
     ```YAML
-    monsters ZOMBIE:2 100;200;300;world 10 name:Deamon
+    entities ZOMBIE:2 100;200;300;world 10 name:Deamon
     ```
 
 ## Experience: `experience`
