@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed potion/brew objective notify
 - fixed workaround when chest converationIO has no available start points
 - fixed journal line breaking
+- fixed movement of movenpc event
 ### Security
 
 ## [1.11.0] - 2020-01-02

@@ -18,7 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
+import net.citizensnpcs.api.ai.event.*;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -133,13 +133,31 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onNavigationEnd(final NavigationCompleteEvent event) {
+    public void onNavigation(final NavigationCancelEvent event) {
+        onContinue(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNavigation(final NavigationCompleteEvent event) {
+        onContinue(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNavigation(final NavigationStuckEvent event) {
+        onContinue(event);
+    }
+
+    public void onContinue(NavigationEvent event) {
         NPC npc = event.getNPC();
         if (npc.getId() != id) {
             return;
         }
         if(!movingNPCs.containsKey(npc.getId())) {
             return;
+        }
+        if(event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
+            LogUtils.getLogger().log(Level.WARNING, "The NPC was stucked, maybe the distance between two points was too high. "
+                    + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
             try {
