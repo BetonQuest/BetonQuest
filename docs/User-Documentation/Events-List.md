@@ -9,6 +9,21 @@ This event works in the same way as a quest canceler in the backpack. Running it
     cancel wood
     ```
 
+## Chat player message
+
+This event will send the given message as the player. Therefore, it will look like as if the player did send the message. 
+The instruction string is the command, without leading slash. You can only use `%player%` as a variable in this event.
+Additional messages can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
+
+If a plugin does not work with the sudo / command event you need to use this event.
+
+!!! example
+    ``` YAML
+    sendMSG: "chat Hello!"
+    sendMultipleMSGs: "chat Hi %player%|ban %player%|pardon %player%"
+    sendPluginCommand: "chat /someCommand x y z"
+    ```
+
 ## Chest Clear: `chestclear`
  
 **persistent**, **static**
@@ -76,7 +91,10 @@ compass:
 
 **persistent**, **static**
 
-Runs specified command from the console. The instruction string is the command, without leading slash. You can use variables here, but variables other than `%player%` won't resolve if the event is fired from delayed `folder` and the player is offline now. You can define additional commands by separating them with `|` character. If you want a `|` character then use `\|`.
+Runs specified command from the console. The instruction string is the command, without leading slash.
+You can use variables here, but variables other than `%player%` won't resolve if the event is fired from delayed `folder`
+and the player is offline now. You can define additional commands by separating them with `|` character.
+If you want to use a `|` character in the command use `\|`.
 
 !!! example
     ```YAML
@@ -301,7 +319,8 @@ Manages the objectives. Syntax is `objective <action> name`, where `<action>` ca
 
 ## OPSudo: `opsudo`
 
-This event is similar to `command` event, the only difference is that it will fire a command as the player with temporary OP permissions
+This event is similar to `command` event, the only difference is that it will fire a command as the player with temporary OP permissions.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 !!! example
     ```YAML
@@ -406,6 +425,7 @@ You can specify armor which the mob will wear and items it will hold with `h:` (
 ## Sudo: `sudo`
 
 This event is similar to `command` event, the only difference is that it will fire a command as the player.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 !!! example
     ```YAML
@@ -416,7 +436,8 @@ This event is similar to `command` event, the only difference is that it will fi
 
 **persistent**
 
-This event adds (or removes) a tag to the player. The first argument after event's name must be `add` or `del`. Next goes the tag name. It can't contain spaces (though `_` is fine). Additional tags can be added, separated by commas (without spaces).
+This event adds (or removes) a tag to the player. The first argument after event's name must be `add` or `del`.
+Next goes the tag name. It can't contain spaces (though `_` is fine). Additional tags can be added, separated by commas (without spaces).
 
 !!! example
     ```YAML
@@ -425,7 +446,10 @@ This event adds (or removes) a tag to the player. The first argument after event
 
 ## Take Items: `take`
 
-Removes items from player’s inventory or backpack (in that order). If the items aren't quest items don't use `take` event with player options in conversations! The player can drop items before selecting the option and pickup them after the event fires. Validate it on NPC’s reaction! Defining instruction string is the same as in give event.  You can also specify `notify` keyword to display a simple message to the player about loosing items.
+Removes items from player’s inventory or backpack (in that order). If the items aren't quest items don't use `take` event with player options in conversations!
+The player can drop items before selecting the option and pickup them after the event fires.
+Validate it on NPC’s reaction! Defining instruction string is the same as in give event.
+You can also specify `notify` keyword to display a simple message to the player about loosing items.
 
 !!! example
     ```YAML
@@ -434,7 +458,9 @@ Removes items from player’s inventory or backpack (in that order). If the item
 
 ## Time: `time`
 
-Sets or adds time. The only argument is time to be set (integer) or time to be added (integer prefixed with +), in 24 hours format. Subtracting time is done by adding more time (if you think of this, it actually makes sense). Minutes can be achieved with floating point.
+Sets or adds time. The only argument is time to be set (integer) or time to be added (integer prefixed with +),
+in 24 hours format. Subtracting time is done by adding more time (if you think of this, it actually makes sense).
+Minutes can be achieved with floating point.
 
 !!! example
     ```YAML
@@ -443,7 +469,12 @@ Sets or adds time. The only argument is time to be set (integer) or time to be a
 
 ## Title: `title`
 
-This event displays a title or a subtitle. The first argument is the type (`title` or `subtitle`), second argument are title's duration times (in ticks) separated by semicolons - fade in, stay and fade out: `20;100;20`. If you set it to three zeros (`0;0;0`) the plugin will use default Minecraft values. After these two required arguments there is a title message, formatted like in the `message` event, which supports multiple languages, color codes and variables. Keep in mind that the subtitle will only appear if the title is visible - that's how Minecraft works.
+This event displays a title or a subtitle. The first argument is the type (`title` or `subtitle`),
+second argument are title's duration times (in ticks) separated by semicolons - fade in, stay and fade out:
+`20;100;20`. If you set it to three zeros (`0;0;0`) the plugin will use default Minecraft values.
+After these two required arguments there is a title message, formatted like in the `message` event,
+which supports multiple languages, color codes and variables.
+Keep in mind that the subtitle will only appear if the title is visible - that's how Minecraft works.
 
 !!! example
     ```YAML
@@ -452,7 +483,8 @@ This event displays a title or a subtitle. The first argument is the type (`titl
 
 ## Teleport: `teleport`
 
-Teleports the player to a specified location, with or without head rotation. It will also end the conversation, if the player has one active. The first and only argument must be location. It's a good idea to use yaw and pitch here.
+Teleports the player to a specified location, with or without head rotation. It will also end the conversation,
+if the player has one active.The first and only argument must be location. It's a good idea to use yaw and pitch here.
 
 !!! example
     ```YAML
@@ -461,7 +493,10 @@ Teleports the player to a specified location, with or without head rotation. It 
 
 ## Variable: `variable`
 
-This event has only one purpose - to change variables stored in `variable` objective. The first argument is the ID of a `variable` objective (if you use any other type you will get an error). Second one is the key of the variable and the third is the value. Both can use `%...%` variables. Refer to `variable` objective documentation for information about storing variables.
+This event has only one purpose - to change variables stored in `variable` objective.
+The first argument is the ID of a `variable` objective (if you use any other type you will get an error).
+Second one is the key of the variable and the third is the value. Both can use `%...%` variables.
+Refer to `variable` objective documentation for information about storing variables.
 
 !!! example
     ```YAML

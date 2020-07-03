@@ -45,9 +45,9 @@ When you'll finish your class you need to invoke `registerEvents(String name, Cl
 
 ## Writing conditions
 
-Writing conditions is easy too. They must extend `Condition` and override `check(String playerID)` method, which should return `true` or `false`, depending on if the condition was met. You register them using `registerConditions(String name, Class<? extends Condition)` method from BetonQuest instance as well. The rest is almost the same, you're defining the constructor which will parse the `Instruction` object and overriding `check(String playerID)` method to check if the player meets the condition. Don't worry about inverting it, as it's automatically done by BetonQuest.
+Writing conditions is easy too. They must extend `Condition` and override `execute(String playerID)` method, which should return `true` or `false`, depending on if the condition was met. You register them using `registerConditions(String name, Class<? extends Condition)` method from BetonQuest instance as well. The rest is almost the same, you're defining the constructor which will parse the `Instruction` object and overriding `execute(String playerID)` method to check if the player meets the condition. Don't worry about inverting it, as it's automatically done by BetonQuest.
 
-Conditions are always getting an online player in the `check(String playerID)` method, so you don't need to check that manually.
+Conditions are always getting an online player in the `execute(String playerID)` method, so you don't need to check that manually.
 
 ## Writing objectives
 
