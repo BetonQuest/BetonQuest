@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AchievementCondition is replaced with AdvancementCondition
 - Renamed objective Potion to Brew
 - Renamed 'monsters' condition to 'entities'
+- new config option mysql.enabled
+    - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
