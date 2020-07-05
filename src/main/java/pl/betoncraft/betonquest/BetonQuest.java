@@ -354,13 +354,14 @@ public class BetonQuest extends JavaPlugin {
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
-        this.database = new MySQL(this, getConfig().getString("mysql.host"),
-                getConfig().getString("mysql.port"),
-                getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
-                getConfig().getString("mysql.pass"));
-
-        // try to connect to MySQL
-        final Connection con = database.getConnection();
+        Connection con = null;
+        if(getConfig().getBoolean("mysql.enabled", true)) {
+            this.database = new MySQL(this, getConfig().getString("mysql.host"),
+                    getConfig().getString("mysql.port"),
+                    getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
+                    getConfig().getString("mysql.pass"));
+            con = database.getConnection();
+        }
         if (con != null) {
             LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
             isMySQLUsed = true;
