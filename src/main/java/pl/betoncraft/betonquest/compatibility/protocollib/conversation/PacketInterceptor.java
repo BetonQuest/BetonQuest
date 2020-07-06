@@ -53,7 +53,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         this.player = PlayerConverter.getPlayer(playerID);
 
         // Intercept Packets
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.MONITOR,
                 PacketType.Play.Server.CHAT
 
         ) {
