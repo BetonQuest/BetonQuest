@@ -44,17 +44,67 @@ public class AnswerFilter implements Filter {
     }
 
     @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, String arg3, Object... arg4) {
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object... objects) {
         return null;
     }
 
     @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, Object arg3, Throwable arg4) {
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o) {
         return null;
     }
 
     @Override
-    public Result filter(Logger arg0, Level arg1, Marker arg2, Message arg3, Throwable arg4) {
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7, Object o8) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7, Object o8, Object o9) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, Object o, Throwable throwable) {
+        return null;
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, Message message, Throwable throwable) {
         return null;
     }
 
@@ -71,6 +121,11 @@ public class AnswerFilter implements Filter {
     @Override
     public State getState() {
         return null;
+    }
+
+    @Override
+    public void initialize() {
+
     }
 
     @Override

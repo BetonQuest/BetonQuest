@@ -6,12 +6,15 @@
 <p align="center">Minecraft RPG Questing Plugin</p>
 
 <p align="center">
-    <a href="https://travis-ci.org/Co0sh/BetonQuest" target="_blank">
-        <img src="https://travis-ci.org/Co0sh/BetonQuest.svg?branch=master" alt="Build Status">
+    <a href="https://github.com/BetonQuest/BetonQuest/actions" target="_blank">
+        <img src="https://github.com/BetonQuest/BetonQuest/workflows/Build/badge.svg?branch=master&event=push">
     </a>
     <a href="https://github.com/BetonQuest/BetonQuest/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
       </a>
+    <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/">
+        <img src="https://img.shields.io/bstats/servers/551" />
+     </a>
     <a href="https://discord.gg/MvmkHEu" target="_blank">
         <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
     </a>

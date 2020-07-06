@@ -354,13 +354,14 @@ public class BetonQuest extends JavaPlugin {
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
-        this.database = new MySQL(this, getConfig().getString("mysql.host"),
-                getConfig().getString("mysql.port"),
-                getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
-                getConfig().getString("mysql.pass"));
-
-        // try to connect to MySQL
-        final Connection con = database.getConnection();
+        Connection con = null;
+        if(getConfig().getBoolean("mysql.enabled", true)) {
+            this.database = new MySQL(this, getConfig().getString("mysql.host"),
+                    getConfig().getString("mysql.port"),
+                    getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
+                    getConfig().getString("mysql.pass"));
+            con = database.getConnection();
+        }
         if (con != null) {
             LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
             isMySQLUsed = true;
@@ -449,7 +450,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("testforblock", TestForBlockCondition.class);
         registerConditions("empty", EmptySlotsCondition.class);
         registerConditions("party", PartyCondition.class);
-        registerConditions("monsters", MonstersCondition.class);
+        registerConditions("entities", EntityCondition.class);
         registerConditions("objective", ObjectiveCondition.class);
         registerConditions("check", CheckCondition.class);
         registerConditions("chestitem", ChestItemCondition.class);
@@ -516,6 +517,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("pickrandom", PickRandomEvent.class);
         registerEvents("xp", EXPEvent.class);
         registerEvents("notify", NotifyEvent.class);
+        registerEvents("chat", ChatEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
@@ -536,7 +538,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("enchant", EnchantObjective.class);
         registerObjectives("shear", ShearObjective.class);
         registerObjectives("chestput", ChestPutObjective.class);
-        registerObjectives("potion", PotionObjective.class);
+        registerObjectives("brew", BrewObjective.class);
         registerObjectives("vehicle", VehicleObjective.class);
         registerObjectives("consume", ConsumeObjective.class);
         registerObjectives("variable", VariableObjective.class);

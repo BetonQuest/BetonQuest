@@ -29,6 +29,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,6 +52,7 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class InventoryConvIO implements Listener, ConversationIO {
+    private static final HashMap<String, ItemStack> skullCache = new HashMap<>();
 
     protected String response = null;
     protected HashMap<Integer, String> options = new HashMap<>();
@@ -156,17 +158,34 @@ public class InventoryConvIO implements Listener, ConversationIO {
         inv.setContents(new ItemStack[9 * rows]);
         ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
-        ItemStack npc = new ItemStack(Material.PLAYER_HEAD);
-        npc.setDurability((short) 3);
-        SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
-        npcMeta.setOwner(npcName);
-        npcMeta.setDisplayName(npcNameColor + npcName);
-        // NPC Text
-        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(response, npcTextColor),
-                45)));
+        ItemStack npc;
+        if(skullCache.containsKey(npcName) && false) {
+            npc = skullCache.get(npcName);
+        }
+        else {
+            npc = new ItemStack(Material.PLAYER_HEAD);
+            npc.setDurability((short) 3);
+            SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
+            npcMeta.setDisplayName(npcNameColor + npcName);
+            // NPC Text
+            npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                    Utils.replaceReset(response, npcTextColor),
+                    45)));
 
-        npc.setItemMeta(npcMeta);
+            npc.setItemMeta(npcMeta);
+            Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+                try {
+                    npc.setItemMeta(setSkullMeta((SkullMeta) npc.getItemMeta()));
+                    Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                        skullCache.put(npcName, npc);
+                        inv.setItem(0, npc);
+                    });
+                }
+                catch (Exception e) {
+                    LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
+                }
+            });
+        }
         buttons[0] = npc;
         // this is the number of an option
         int next = 0;
@@ -250,16 +269,22 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (printMessages)
             conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
-        inv.setContents(buttons);
         new BukkitRunnable() {
             @Override
             public void run() {
+                inv.setContents(buttons);
                 switching = true;
                 player.openInventory(inv);
                 switching = false;
                 processingLastClick = false;
             }
         }.runTask(BetonQuest.getInstance());
+    }
+
+    @SuppressWarnings("deprecation")
+    protected SkullMeta setSkullMeta(SkullMeta meta) {
+        meta.setOwner(npcName);
+        return meta;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -298,13 +323,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        // Work around a bug where inventory is null. We'll log it but move on by closing the conversation
-        if (inv == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Player closed inventory whilst in conversation but has null inventory. Implementing work-around.");
-            conv.endConversation();
-            HandlerList.unregisterAll(this);
-            return;
-        }
 
         // allow for closing previous option inventory
         if (switching) {
@@ -338,7 +356,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowClose = true;
-        if (response == null && options.isEmpty()) {
+        if (response == null && options.isEmpty() && inv != null) {
             player.closeInventory();
         }
     }

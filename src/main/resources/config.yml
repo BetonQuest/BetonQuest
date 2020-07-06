@@ -1,5 +1,6 @@
 version: v59
 mysql:
+  enabled: false
   host: ''
   port: ''
   user: ''

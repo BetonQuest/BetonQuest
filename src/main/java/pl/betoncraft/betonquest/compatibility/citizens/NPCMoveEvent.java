@@ -18,7 +18,7 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
+import net.citizensnpcs.api.ai.event.*;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -48,7 +48,7 @@ import java.util.logging.Level;
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
-    private static HashMap<Integer, Boolean> movingNPCs = new HashMap<>();
+    private static HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
 
     private final List<LocationData> locations;
     private int id;
@@ -71,6 +71,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         doneEvents = instruction.getList(instruction.getOptional("done"), instruction::getEvent).toArray(new EventID[0]);
         failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
         blockConversations = instruction.hasArgument("block");
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     /**
@@ -81,7 +82,13 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * standing or moving because other reasons
      */
     public static boolean isNPCMoving(NPC npc) {
-        return movingNPCs.containsKey(npc.getId());
+        return movingNPCs.containsKey(npc.getId()) && movingNPCs.get(npc.getId()).currentPlayer != null;
+    }
+
+    public static void stopNPCMoving(NPC npc) {
+        if(movingNPCs.containsKey(npc.getId())) {
+            movingNPCs.get(npc.getId()).currentPlayer = null;
+        }
     }
 
     /**
@@ -92,7 +99,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      */
     public static boolean blocksTalking(NPC npc) {
         if (!isNPCMoving(npc)) return false;
-        return movingNPCs.get(npc.getId());
+        return movingNPCs.get(npc.getId()).blockConversations;
     }
 
     @Override
@@ -102,17 +109,17 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             currentPlayer = null;
             return null;
         }
+        if (currentPlayer != null) {
+            for (EventID event : failEvents) {
+                BetonQuest.event(playerID, event);
+            }
+            return null;
+        }
         NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         if (!npc.isSpawned()) {
-            return null;
-        }
-        if (currentPlayer != null) {
-            for (EventID event : failEvents) {
-                BetonQuest.event(playerID, event);
-            }
             return null;
         }
         locationsIterator = locations.listIterator(0);
@@ -123,16 +130,36 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             npc.getNavigator().setTarget(firstLocation.getLocation(playerID));
         }
         currentPlayer = playerID;
-        movingNPCs.put(npc.getId(), blockConversations);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        movingNPCs.put(npc.getId(), this);
         return null;
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onNavigationEnd(final NavigationCompleteEvent event) {
+    public void onNavigation(final NavigationCancelEvent event) {
+        onContinue(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNavigation(final NavigationCompleteEvent event) {
+        onContinue(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNavigation(final NavigationStuckEvent event) {
+        onContinue(event);
+    }
+
+    public void onContinue(NavigationEvent event) {
         NPC npc = event.getNPC();
         if (npc.getId() != id) {
             return;
+        }
+        if(currentPlayer == null || locationsIterator == null) {
+            return;
+        }
+        if(event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
+            LogUtils.getLogger().log(Level.WARNING, "The NPC was stucked, maybe the distance between two points was too high. "
+                    + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
             try {
@@ -148,7 +175,6 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             }
             return;
         }
-        HandlerList.unregisterAll(this);
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (QuestRuntimeException e) {
@@ -160,10 +186,10 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             @Override
             public void run() {
                 npc.getNavigator().setPaused(false);
-                movingNPCs.remove(npc.getId());
                 for (EventID event : doneEvents) {
                     BetonQuest.event(currentPlayer, event);
                 }
+                locationsIterator = null;
                 currentPlayer = null;
             }
         }.runTaskLater(BetonQuest.getInstance(), waitTicks);

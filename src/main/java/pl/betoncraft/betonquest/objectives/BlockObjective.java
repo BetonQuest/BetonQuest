@@ -50,7 +50,7 @@ public class BlockObjective extends Objective implements Listener {
         selector = instruction.getBlockSelector();
         neededAmount = instruction.getInt();
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
+        notify = instruction.hasArgument("notify") || notifyInterval > 0;
 
         if (selector != null && !selector.isValid()) {
             throw new InstructionParseException("Invalid selector: " + selector.toString());

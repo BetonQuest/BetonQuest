@@ -15,34 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility.quests;
+package pl.betoncraft.betonquest.events;
 
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
+import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
- * Checks if the player has done specified quest before.
+ * Forces the player to run commands.
  *
  * @author Jakub Sapalski
  */
-public class QuestCondition extends Condition {
+public class ChatEvent extends QuestEvent {
 
-    private String questName;
+    private final String[] messages;
 
-    public QuestCondition(Instruction instruction) throws InstructionParseException {
+    public ChatEvent(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        questName = instruction.next();
+        try {
+            String string = instruction.getInstruction();
+            messages = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
+        } catch (Exception e) {
+            throw new InstructionParseException("Could not parse message", e);
+        }
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests()) {
-            if (q.replace(' ', '_').equalsIgnoreCase(questName))
-                return true;
-        }
-        return false;
+    protected Void execute(String playerID) {
+        Player player = PlayerConverter.getPlayer(playerID);
+        for (String message : messages)
+            player.chat(message.replace("%player%", player.getName()));
+        return null;
     }
 
 }

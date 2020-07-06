@@ -86,14 +86,15 @@ To meet this condition the player must have an active potion effect. There is on
 
 ## Empty inventory slots: `empty`
 
-To meet this condition the player has to have specified amount of empty slots in his inventory.
+To meet this condition the players inventory must have the specified amount of empty slots or more.
+If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the `equal` argument.
 
 !!! example
     ```YAML
     empty 5
     ```
 
-## Entities in area: `monsters` 
+## Entities in area: `entities` 
 
 **persistent**, **static**
 
@@ -106,7 +107,7 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 !!! example
     ```YAML
-    monsters ZOMBIE:2 100;200;300;world 10 name:Deamon
+    entities ZOMBIE:2 100;200;300;world 10 name:Deamon
     ```
 
 ## Experience: `experience`

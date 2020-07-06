@@ -49,7 +49,7 @@ public class KillPlayerObjective extends Objective implements Listener {
         required = instruction.getList(instruction.getOptional("required"), e -> instruction.getCondition(e))
                 .toArray(new ConditionID[0]);
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
+        notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
     @EventHandler(ignoreCancelled = true)

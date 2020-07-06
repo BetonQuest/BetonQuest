@@ -10,16 +10,18 @@ and WorldGuard.
 ### Events
 #### Title: `title`
 
-BountifulAPI enables you to use `title` event without spamming the console with `/title` command output. The syntax is exactly the same as in regular `title` event described in _Events List_.
+BountifulAPI enables you to use `title` event without spamming the console with `/title` command output.
+The syntax is exactly the same as in regular `title` event described in _Events List_.
 
 !!! example
     ```YAML
     title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
     ```
 
-## [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
+## NPC's with [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 
-If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it, these NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective.
+If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
+it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
 
 !!! notice
     When you use Citizens, in main.yml you need to specify the ID of the NPC instead of the name!
@@ -28,7 +30,8 @@ If you have this plugin you can use it's NPCs for conversations. I highly recomm
 
 #### NPC distance: `npcdistance`
 
-This condition will return true if the player is closer to the NPC with the given ID than the given distance. The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
+This condition will return true if the player is closer to the NPC with the given ID than the given distance.
+ The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
 
 !!! example
     ```YAML
@@ -64,18 +67,45 @@ This condition will return true if a npc is inside a region. First argument is t
 
 #### Move NPC: `movenpc`
 
-This event will make the NPC move to a specified location. It will not return on its own, so you have to set a single path point with _/npc path_ command - it will then return to that point every time. If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event). You can also specify multiple locations separated by colons to let the npc follow a path of locations. You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving, `wait:` is a number of tick the NPC will wait at its destination before firing events, `done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails. Move event can fail if the NPC is already moving for another player.
+This event will make the NPC move to a specified location. It will not return on its own,
+so you have to set a single path point with _/npc path_ command - it will then return to that point every time.
+If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens
+configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event).
+You can also specify multiple locations separated by colons to let the npc follow a path of locations.
+You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving,
+`wait:` is a number of tick the NPC will wait at its destination before firing events,
+`done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails.
+Move event can fail if the NPC is already moving for another player.
 
 !!! example
     ```YAML
     movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
     ```
 
+#### Stop moving NPC: `stopnpc`
+
+This will stop all current move tasks for the npc with the given ID.
+
+!!! example
+    ```YAML
+    stopnpc 16
+    ```
+    
+#### Teleport NPC: `teleportnpc`
+
+This event will teleport the NPC with the given ID to the given location.
+
+!!! example
+    ```YAML
+    teleportnpc 53 100;200;300;world
+    ```
+
 ### Objectives
 
 #### NPC Interact: `npcinteract`
 
-The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start. The first argument is number (ID of the NPC), and the second is optional `cancel`.
+The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start.
+The first argument is number (ID of the NPC), and the second is optional `cancel`.
 
 !!! example
     ```YAML
@@ -766,6 +796,7 @@ There is only one argument in this variable, `amount` for showing money amount o
 #### Paste schematic: `paste`
 
 This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
+If you have only a `.schem` schematic, simply append `.schem` to the schematic name.
 
 !!! example
     ```YAML

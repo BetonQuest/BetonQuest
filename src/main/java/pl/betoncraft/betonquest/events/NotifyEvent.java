@@ -50,7 +50,7 @@ public class NotifyEvent extends QuestEvent {
      */
 
     public NotifyEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
+        super(instruction, true);
 
         data = new HashMap<>();
         StringJoiner messageBuilder = new StringJoiner(" ");

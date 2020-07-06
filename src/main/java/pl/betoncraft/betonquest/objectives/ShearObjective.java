@@ -52,7 +52,7 @@ public class ShearObjective extends Objective implements Listener {
         name = rawName == null ? null : rawName.replace('_', ' ');
         color = instruction.getOptional("color");
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
+        notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
     @EventHandler(ignoreCancelled = true)
