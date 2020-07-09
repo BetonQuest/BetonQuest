@@ -1,6 +1,6 @@
 # Conditions List
 
-## Achievement: `advancement`
+## Advancement: `advancement`
 
 This condition checks if the player has specified advancement. The only argument is the full name of the advancement.
 This includes the namespace, the tab and the name of the advancement as configured on your server. 
