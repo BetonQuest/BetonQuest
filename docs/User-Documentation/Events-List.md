@@ -9,7 +9,7 @@ This event works in the same way as a quest canceler in the backpack. Running it
     cancel wood
     ```
 
-## Chat player message
+## Chat player message `chat`
 
 This event will send the given message as the player. Therefore, it will look like as if the player did send the message. 
 The instruction string is the command, without leading slash. You can only use `%player%` as a variable in this event.
