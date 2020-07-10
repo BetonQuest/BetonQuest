@@ -57,11 +57,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MenuConvIO extends ChatConvIO {
+
+    // Thread safety
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     // Actions
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
@@ -69,8 +75,8 @@ public class MenuConvIO extends ChatConvIO {
 
     protected int oldSelectedOption = 0;
     protected int selectedOption = 0;
-    protected boolean started = false;
-    protected boolean ended = false;
+    protected AtomicBoolean started = new AtomicBoolean(false);
+    protected AtomicBoolean ended = new AtomicBoolean(false);
     protected PacketAdapter packetAdapter;
     protected BukkitRunnable displayRunnable;
     protected boolean debounce = false;
@@ -173,125 +179,138 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private void start() {
-        // Create something painful looking for the player to sit on and make it invisible.
-        stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
+        if (hasStartedUnsafe()) {
+            return;
+        }
 
-        stand.setGravity(false);
-        stand.setVisible(false);
+        lock.writeLock().lock();
+        try {
+            if (hasStarted()) {
+                return;
+            }
 
-        // Mount the player to it using packets
-        WrapperPlayServerMount mount = new WrapperPlayServerMount();
-        mount.setEntityID(stand.getEntityId());
-        mount.setPassengerIds(new int[]{player.getEntityId()});
+            // Create something painful looking for the player to sit on and make it invisible.
+            stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
 
-        // Send Packets
-        mount.sendPacket(player);
+            stand.setGravity(false);
+            stand.setVisible(false);
 
-        // Display Actionbar to hide the dismount message
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
+            // Mount the player to it using packets
+            WrapperPlayServerMount mount = new WrapperPlayServerMount();
+            mount.setEntityID(stand.getEntityId());
+            mount.setPassengerIds(new int[]{player.getEntityId()});
 
-        // Intercept Packets
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
-                PacketType.Play.Client.STEER_VEHICLE,
-                PacketType.Play.Server.ANIMATION
-        ) {
+            // Send Packets
+            mount.sendPacket(player);
 
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                if (event.getPacketType().equals(PacketType.Play.Server.ANIMATION)) {
-                    WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
+            // Display Actionbar to hide the dismount message
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
 
-                    if (animation.getEntityID() == player.getEntityId()) {
+            // Intercept Packets
+            packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
+                    PacketType.Play.Client.STEER_VEHICLE,
+                    PacketType.Play.Server.ANIMATION
+            ) {
+
+                @Override
+                public void onPacketSending(PacketEvent event) {
+                    if (event.getPacketType().equals(PacketType.Play.Server.ANIMATION)) {
+                        WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
+
+                        if (animation.getEntityID() == player.getEntityId()) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void onPacketReceiving(PacketEvent event) {
+                    if (event.getPlayer() != player || options.size() == 0) {
+                        return;
+                    }
+
+                    if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
+                        WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
+
+                        if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
+                            // Player Jumped
+                            debounce = true;
+
+                            switch (controls.get(CONTROL.JUMP)) {
+                                case CANCEL:
+                                    if (!conv.isMovementBlock()) {
+                                        conv.endConversation();
+                                    }
+                                    break;
+                                case SELECT:
+                                    conv.passPlayerAnswer(selectedOption + 1);
+                                    break;
+                                case MOVE:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                            // Player moved Backwards
+                            oldSelectedOption = selectedOption;
+                            selectedOption++;
+                            debounce = true;
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    updateDisplay();
+                                }
+                            }.runTaskAsynchronously(getPlugin());
+
+                        } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                            // Player moved Forwards
+
+                            oldSelectedOption = selectedOption;
+                            selectedOption--;
+                            debounce = true;
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    updateDisplay();
+                                }
+                            }.runTaskAsynchronously(getPlugin());
+
+                        } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
+                            // Player Dismounted
+                            debounce = true;
+
+                            switch (controls.get(CONTROL.SNEAK)) {
+                                case CANCEL:
+                                    if (!conv.isMovementBlock()) {
+                                        conv.endConversation();
+                                    }
+                                    break;
+                                case SELECT:
+                                    conv.passPlayerAnswer(selectedOption + 1);
+                                    break;
+                                case MOVE:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else if (Math.abs(steerEvent.getForward()) < 0.01) {
+                            debounce = false;
+                        }
+
                         event.setCancelled(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onPacketReceiving(PacketEvent event) {
-                if (event.getPlayer() != player || options.size() == 0) {
-                    return;
-                }
-
-                if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
-                    WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
-
-                    if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
-                        // Player Jumped
-                        debounce = true;
-
-                        switch (controls.get(CONTROL.JUMP)) {
-                            case CANCEL:
-                                if (!conv.isMovementBlock()) {
-                                    conv.endConversation();
-                                }
-                                break;
-                            case SELECT:
-                                conv.passPlayerAnswer(selectedOption + 1);
-                                break;
-                        case MOVE:
-                            break;
-                        default:
-                            break;
-                        }
-                    } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
-                        // Player moved Backwards
-                        oldSelectedOption = selectedOption;
-                        selectedOption++;
-                        debounce = true;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                updateDisplay();
-                            }
-                        }.runTaskAsynchronously(getPlugin());
-
-                    } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
-                        // Player moved Forwards
-
-                        oldSelectedOption = selectedOption;
-                        selectedOption--;
-                        debounce = true;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                updateDisplay();
-                            }
-                        }.runTaskAsynchronously(getPlugin());
-
-                    } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
-                        // Player Dismounted
-                        debounce = true;
-
-                        switch (controls.get(CONTROL.SNEAK)) {
-                            case CANCEL:
-                                if (!conv.isMovementBlock()) {
-                                    conv.endConversation();
-                                }
-                                break;
-                            case SELECT:
-                                conv.passPlayerAnswer(selectedOption + 1);
-                                break;
-                        case MOVE:
-                            break;
-                        default:
-                            break;
-                        }
-                    } else if (Math.abs(steerEvent.getForward()) < 0.01) {
-                        debounce = false;
+                        return;
                     }
 
-                    event.setCancelled(true);
-                    return;
                 }
+            };
 
-            }
-        };
+            ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
-
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        started = true;
+            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+            started.set(true);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -306,7 +325,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Only want to hook the player when there are player options
-        if (!started && options.size() > 0) {
+        if (!hasStarted() && options.size() > 0) {
             start();
         }
 
@@ -318,7 +337,7 @@ public class MenuConvIO extends ChatConvIO {
                 public void run() {
                     showDisplay();
 
-                    if (ended) {
+                    if (hasEnded()) {
                         this.cancel();
                     }
                 }
@@ -352,81 +371,106 @@ public class MenuConvIO extends ChatConvIO {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(PlayerInteractEntityEvent event) {
-        if (event.getPlayer() != player) {
+        if (!isActiveUnsafe()) {
             return;
         }
 
-        event.setCancelled(true);
-
-        if (debounce) {
-            return;
-        }
-
-        if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-            switch (controls.get(CONTROL.LEFT_CLICK)) {
-                case CANCEL:
-                    if (!conv.isMovementBlock()) {
-                        conv.endConversation();
-                    }
-                    debounce = true;
-                    break;
-                case SELECT:
-                    conv.passPlayerAnswer(selectedOption + 1);
-                    debounce = true;
-                    break;
-            case MOVE:
-                break;
-            default:
-                break;
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
             }
+
+            if (event.getPlayer() != player) {
+                return;
+            }
+
+            event.setCancelled(true);
+
+            if (debounce) {
+                return;
+            }
+
+            if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+                switch (controls.get(CONTROL.LEFT_CLICK)) {
+                    case CANCEL:
+                        if (!conv.isMovementBlock()) {
+                            conv.endConversation();
+                        }
+                        debounce = true;
+                        break;
+                    case SELECT:
+                        conv.passPlayerAnswer(selectedOption + 1);
+                        debounce = true;
+                        break;
+                    case MOVE:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } finally {
+            lock.readLock().unlock();
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (event.getPlayer() != player) {
+        if (!isActiveUnsafe()) {
             return;
         }
 
-        event.setCancelled(true);
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
+            }
 
-        if (debounce) {
-            return;
-        }
+            if (event.getPlayer() != player) {
+                return;
+            }
 
-        switch (event.getAction()) {
-            case LEFT_CLICK_AIR:
-            case LEFT_CLICK_BLOCK:
+            event.setCancelled(true);
 
-                if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+            if (debounce) {
+                return;
+            }
 
-                    switch (controls.get(CONTROL.LEFT_CLICK)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            debounce = true;
-                            break;
-                        case SELECT:
-                            conv.passPlayerAnswer(selectedOption + 1);
-                            debounce = true;
-                            break;
-                    case MOVE:
-                        break;
-                    default:
-                        break;
+            switch (event.getAction()) {
+                case LEFT_CLICK_AIR:
+                case LEFT_CLICK_BLOCK:
+
+                    if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+
+                        switch (controls.get(CONTROL.LEFT_CLICK)) {
+                            case CANCEL:
+                                if (!conv.isMovementBlock()) {
+                                    conv.endConversation();
+                                }
+                                debounce = true;
+                                break;
+                            case SELECT:
+                                conv.passPlayerAnswer(selectedOption + 1);
+                                debounce = true;
+                                break;
+                            case MOVE:
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
-        case PHYSICAL:
-            break;
-        case RIGHT_CLICK_AIR:
-            break;
-        case RIGHT_CLICK_BLOCK:
-            break;
-        default:
-            break;
+                case PHYSICAL:
+                    break;
+                case RIGHT_CLICK_AIR:
+                    break;
+                case RIGHT_CLICK_BLOCK:
+                    break;
+                default:
+                    break;
+            }
+        } finally {
+            lock.readLock().unlock();
         }
-
     }
 
     protected void showDisplay() {
@@ -615,24 +659,36 @@ public class MenuConvIO extends ChatConvIO {
      */
     @Override
     public void end() {
-        ended = true;
-
-        if (started) {
-            // Stop Listening for Packets
-            ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
-
-            // Destroy Stand
-            stand.remove();
-            stand = null;
+        if (hasEndedUnsafe()) {
+            return;
         }
+        lock.writeLock().lock();
+        try {
+            if (hasEnded()) {
+                return;
+            }
 
-        // Stop updating display
-        if (displayRunnable != null) {
-            displayRunnable.cancel();
-            displayRunnable = null;
+            ended.set(true);
+
+            if (hasStarted()) {
+                // Stop Listening for Packets
+                ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
+
+                // Destroy Stand
+                stand.remove();
+                stand = null;
+            }
+
+            // Stop updating display
+            if (displayRunnable != null) {
+                displayRunnable.cancel();
+                displayRunnable = null;
+            }
+
+            super.end();
+        } finally {
+            lock.writeLock().unlock();
         }
-
-        super.end();
     }
 
     /**
@@ -645,78 +701,141 @@ public class MenuConvIO extends ChatConvIO {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if (event.getDamager() != player) {
+        if (!isActiveUnsafe()) {
             return;
         }
 
-        event.setCancelled(true);
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
+            }
 
-        if (debounce) {
-            return;
-        }
+            if (event.getDamager() != player) {
+                return;
+            }
 
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            event.setCancelled(true);
 
-            if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+            if (debounce) {
+                return;
+            }
 
-                switch (controls.get(CONTROL.LEFT_CLICK)) {
-                    case CANCEL:
-                        if (!conv.isMovementBlock()) {
-                            conv.endConversation();
-                        }
-                        debounce = true;
-                        break;
-                    case SELECT:
-                        conv.passPlayerAnswer(selectedOption + 1);
-                        debounce = true;
-                        break;
-                case MOVE:
-                    break;
-                default:
-                    break;
+            if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+
+                if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+
+                    switch (controls.get(CONTROL.LEFT_CLICK)) {
+                        case CANCEL:
+                            if (!conv.isMovementBlock()) {
+                                conv.endConversation();
+                            }
+                            debounce = true;
+                            break;
+                        case SELECT:
+                            conv.passPlayerAnswer(selectedOption + 1);
+                            debounce = true;
+                            break;
+                        case MOVE:
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+        } finally {
+            lock.readLock().unlock();
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(PlayerItemHeldEvent event) {
-        if (event.getPlayer() != player) {
+        if (!isActiveUnsafe()) {
             return;
         }
 
-        if (!controls.containsKey(CONTROL.SCROLL)) {
-            return;
-        }
-
-        event.setCancelled(true);
-
-        if (debounce) {
-            return;
-        }
-
-        // Cheat and assume the closest distance between previous and new slots is the direction scrolled
-        int slotDistance = event.getPreviousSlot() - event.getNewSlot();
-
-        if (slotDistance > 5 || (slotDistance < 0 && slotDistance >= -5)) {
-            // Scrolled down
-            if (selectedOption < options.size() - 1) {
-                oldSelectedOption = selectedOption;
-                selectedOption++;
-                updateDisplay();
-                debounce = true;
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
             }
-        } else if (slotDistance != 0) {
-            // Scrolled up
-            if (selectedOption > 0) {
-                oldSelectedOption = selectedOption;
-                selectedOption--;
-                updateDisplay();
-                debounce = true;
-            }
-        }
 
+            if (event.getPlayer() != player) {
+                return;
+            }
+
+            if (!controls.containsKey(CONTROL.SCROLL)) {
+                return;
+            }
+
+            event.setCancelled(true);
+
+            if (debounce) {
+                return;
+            }
+
+            // Cheat and assume the closest distance between previous and new slots is the direction scrolled
+            int slotDistance = event.getPreviousSlot() - event.getNewSlot();
+
+            if (slotDistance > 5 || (slotDistance < 0 && slotDistance >= -5)) {
+                // Scrolled down
+                if (selectedOption < options.size() - 1) {
+                    oldSelectedOption = selectedOption;
+                    selectedOption++;
+                    updateDisplay();
+                    debounce = true;
+                }
+            } else if (slotDistance != 0) {
+                // Scrolled up
+                if (selectedOption > 0) {
+                    oldSelectedOption = selectedOption;
+                    selectedOption--;
+                    updateDisplay();
+                    debounce = true;
+                }
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private boolean isActiveUnsafe() {
+        return hasStarted() && !hasEnded();
+    }
+
+    private boolean isActive() {
+        lock.readLock().lock();
+        try {
+            return isActiveUnsafe();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private boolean hasStartedUnsafe() {
+        return started.get();
+    }
+
+    private boolean hasStarted() {
+        lock.readLock().lock();
+        try {
+            return hasStartedUnsafe();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private boolean hasEndedUnsafe() {
+        return ended.get();
+    }
+
+    private boolean hasEnded() {
+        lock.readLock().lock();
+        try {
+            return hasEndedUnsafe();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public enum ACTION {

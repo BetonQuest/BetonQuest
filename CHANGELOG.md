@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed journal line breaking
 - fixed movement of movenpc event
 - fixed npcmove event
+- fixed bug, where a player causes an exception when he spams right left clicks in menu conversationIO 
 ### Security
 
 ## [1.11.0] - 2020-01-02

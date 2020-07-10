@@ -226,7 +226,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Repository ID: >shopkeepers-releases -->
+        <!-- Repository ID: shopkeepers-releases -->
         <dependency>
             <groupId>com.nisovin.shopkeepers</groupId>
             <artifactId>ShopkeepersAPI</artifactId>
