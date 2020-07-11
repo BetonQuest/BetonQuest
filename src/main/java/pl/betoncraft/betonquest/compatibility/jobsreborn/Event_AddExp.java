@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
@@ -55,14 +56,19 @@ public class Event_AddExp extends QuestEvent {
     @Override
     protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(oPlayer);
+		if (jPlayer == null) {
+			return null;
+		}
 
-        List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+        List<JobProgression> oJobs = jPlayer.getJobProgression();
         for (JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
-                //User has the job, return true
                 oJob.addExperience(nAddExperience);
+				break;
             }
         }
+
         return null;
     }
 }

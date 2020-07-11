@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -47,12 +48,18 @@ public class Event_JoinJob extends QuestEvent {
     @Override
     protected Void execute(String playerID) {
         Player oPlayer = PlayerConverter.getPlayer(playerID);
+
         for (Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
-                Jobs.getPlayerManager().getJobsPlayer(oPlayer).joinJob(job);
+				JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(oPlayer);
+				if (jPlayer != null) {
+					jPlayer.joinJob(job);
+				}
+
                 return null;
             }
         }
+
         return null;
     }
 }
