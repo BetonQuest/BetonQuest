@@ -194,7 +194,7 @@ public class QuestItem {
             for (String line : meta.getLore()) {
                 string.append(line + ";");
             }
-            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_");
+            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
         if (meta.hasEnchants()) {
             StringBuilder string = new StringBuilder();
