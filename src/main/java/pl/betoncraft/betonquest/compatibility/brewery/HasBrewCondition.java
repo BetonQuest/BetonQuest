@@ -19,8 +19,8 @@
 package pl.betoncraft.betonquest.compatibility.brewery;
 
 import com.dre.brewery.BIngredients;
-import com.dre.brewery.BRecipe;
 import com.dre.brewery.Brew;
+import com.dre.brewery.recipe.BRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
@@ -45,7 +45,7 @@ public class HasBrewCondition extends Condition {
         String name = instruction.next().replace("_", " ");
 
         BRecipe recipe = null;
-        for (BRecipe r : BIngredients.recipes) {
+        for (BRecipe r : BRecipe.getAllRecipes()) {
             if (r.hasName(name)) {
                 recipe = r;
                 break;
