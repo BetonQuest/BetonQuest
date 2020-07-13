@@ -25,7 +25,7 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 public class Condition_JobFull extends Condition {
-    private Jobs sJob;
+    private Job sJob;
 
     public Condition_JobFull(Instruction instruction) throws InstructionParseException {
         super(instruction, true);

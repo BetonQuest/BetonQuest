@@ -20,6 +20,7 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
