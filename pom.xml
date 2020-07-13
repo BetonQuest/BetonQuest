@@ -110,6 +110,14 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <!-- This repository is a temporary solution and should be replaced with the original repo, if it is fixed -->
+        <repository>
+            <id>temp-brewery-repo</id>
+            <url>http://erethon.de/repo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -177,6 +185,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Repository ID: temp-brewery-repo -->
+        <dependency>
+            <groupId>com.dre</groupId>
+            <artifactId>brewery</artifactId>
+            <version>2.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Repository ID: placeholderapi-repo -->
         <dependency>
             <groupId>me.clip</groupId>
@@ -226,7 +242,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Repository ID: >shopkeepers-releases -->
+        <!-- Repository ID: shopkeepers-releases -->
         <dependency>
             <groupId>com.nisovin.shopkeepers</groupId>
             <artifactId>ShopkeepersAPI</artifactId>
@@ -257,12 +273,6 @@
             <groupId>pl.betoncraft</groupId>
             <artifactId>BetonLangAPI</artifactId>
             <version>1.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.dre</groupId>
-            <artifactId>brewery</artifactId>
-            <version>1.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
