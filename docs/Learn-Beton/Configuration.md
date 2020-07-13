@@ -1,17 +1,20 @@
 # Configuration
 
-The configuration of BetonQuest is done mainly in _config.yml_ file. All of its options are described on this page.
-There is also additional information about backups, updates and how to revert changes that you made to the config.
-If you don't understand some options yet just keep their default values. You can always change them when
+The configuration of BetonQuest is mainly done in the `config.yml` file. All of its options are described on this page.
+There is also additional information about backups, updates and database transfers.
+If you fail to understand options just keep their default values. You can always change them when
 you have gained a more complete understanding of this plugin. 
 
 
 ## Config Options
+
 !!! warning
-    Do not touch "version" option! It may corrupt your files!
+    **Do not touch `version:` option! It may corrupt your files!**
 
 
 ### MySQL Database
+
+#### Setup
 
 In order to use a MySQL Database for saving all the data you need to fill out the mysql config section.
 ``` YAML linenums="1"
@@ -25,7 +28,8 @@ mysql:
   prefix: betonquest_  #The table prefix of BetonQuests data in the database.
 ```
 
-### Migrating database from SQLite to MySQL and back
+
+#### Migrating a database from SQLite to MySQL and back
 
 Follow these few simple steps to migrate your database easily:
 
@@ -33,7 +37,7 @@ Follow these few simple steps to migrate your database easily:
 2. Extract database backup from it.
 3. Turn the server off.
 4. Place the _database-backup.yml_ file inside the plugin's directory.
-5. Edit which database type you want to use by setting the `enabled` option in the ´mysql´ section to true or false.
+5. Edit which database type you want to use by setting the `enabled` option in the `mysql` section to true or false.
 6. Start the server.
 7. Check for errors.
 8. If there are no errors, enjoy your migrated database.
@@ -41,8 +45,8 @@ Follow these few simple steps to migrate your database easily:
 
 ### Default Language
  
-Language is just the currently used translation of the plugin. Currently there are 7 languages available: 
-English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl) and Italian (it).
+`language:` is the default translation of the plugin for every new player. Currently, there are 9 languages available: 
+English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl), Italian (it) and Hungarian (hu).
 
 ### Updating
 The `update` section controls the updater. It has the following settings:
@@ -54,81 +58,128 @@ The `update` section controls the updater. It has the following settings:
     The table below shows you what's included in the update when we increase any of the three digits:    
   
         
-        | Update Strategy  | `MAYOR`                | `MINOR`                | `PATCH`                |
-        |------------------|------------------------|------------------------|------------------------|
-        | Bug Fixes        | :white_check_mark:     | :white_check_mark:     | :white_check_mark:     | 
-        | New Features     | :white_check_mark:     | :white_check_mark:     | :x:                    | 
-        | Breaking Changes | :white_check_mark:     | :x:                    | :x:                    | 
-        
-        You can also append `_DEV` to each strategy. This will download the dev builds for the corresponding version. This
-         is not recommended for production/live servers, as devbuilds can contain bugs. 
-    
-      
-    - `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
-    the updater will only download new versions when the update command is executed.   
+   | Update Strategy  | `MAYOR`                | `MINOR`                | `PATCH`                |
+   |------------------|------------------------|------------------------|------------------------|
+   | Bug Fixes        | :white_check_mark:     | :white_check_mark:     | :white_check_mark:     | 
+   | New Features     | :white_check_mark:     | :white_check_mark:     | :x:                    | 
+   | Breaking Changes | :white_check_mark:     | :x:                    | :x:                    | 
+   
+   You can also append `_DEV` to each strategy. This will download the dev builds for the corresponding version. This
+    is not recommended for production/live servers, as devbuilds can contain bugs. 
+  
+     
+   `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
+   the updater will only download new versions when the update command is executed.   
     
 ### Journal slots
-`default_journal_slot` is a number of slots where the journal will appear after using `/journal` command.
+`default_journal_slot` is the inventory slot in which the journal will appear after using the `/journal` command. BetonQuest will try to move items out of the way
+if the slot is occupied. If the inventory is full the journal will not be added. You can disable this behaviour by setting the option to `-1`. BetonQuest will then just
+use any free slot.
+
 ### Citizens identifier
-* `citizens_npcs_by_name` sets whether NPCs from citizens2 should be identified in main.yml by their name instead of their id.
+`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in main.yml by their name instead of their id. 
+This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same name by accident will trigger the same quest.
+
 ### Conversation End Distance
-* `max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).
+`max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).
+
 ### Default conversation style
-* `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used. `simple` is a conversation in chat. `tellraw` is an extension to provide clickable options, and `chest` is a conversation in inventory window. If you want to use chest and also write the conversation to the players chat, use `combined`. Others, like `menu` are available if you have the required plugins and other plugins can add additional IO types.
+`default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
+Read [this page](../User-Documentation/Conversations) for more information about conversation interfaces.
+
 ### Default Chat interceptor
-* `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used. `simple` attempts to catch chat events. `packet` uses protocollib to intercept packets before they reach the player. 
+`default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
+Read [this page](../User-Documentation/Conversations) for more information about chat interceptors.
+
 ### Conversation Chat Display options
-* `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
+`display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
+
 ### Combat Delay
-* `combat_delay` is a delay (in seconds) the player must wait before starting a conversation after combat.
+`combat_delay` is a delay (in seconds) the player must wait before starting a conversation after combat.
+
 ### Conversation pullback message
-* `notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in the case of chat-based conversations). It notifies players that they are in a conversation, and the pullback is not a bug.
+`notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in the case of chat-based conversations).
+It notifies players that they are in a conversation, and the pullback is not a bug.
+
 ### Default Package name
-* `default_package` is a name of the package that should be used when a package is not specified in /q command. This is for your convenience.
-### Keep 
-* `remove_items_after_respawn` option should be turned on if "keepInventory" gamerule is not being used. 
-    It prevents other plugins from duplicating quest items after death.
-    When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to restore all items to the player (for example WorldGuard custom flag keep-inventory). That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not readded. The "keepInventory" gamerule, however, works differently - the items are never dropped, so they cannot be added to backpack. Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule checking, so it is up to you to decide. Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.
+`default_package` is a name of the package that should be used when a package is not specified in /q command. This is for your convenience.
+
+### Adjusting the backpack to the KeepInventory gamerule
+`remove_items_after_respawn` option should be turned on if "keepInventory" gamerule is not being used. 
+It prevents other plugins from duplicating quest items after death.
+
+When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
+restore all items to the player (for example WorldGuard custom flag keep-inventory).
+That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not readded. 
+The "keepInventory" gamerule, however, works differently - the items are never dropped, so they cannot be added to backpack. 
+Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule checking, so it is up to you to decide.
+
+Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.
+    
 ### Quest Items break behaviour
-* `quest_items_unbreakable` controls whether quest items can be broken by usage. This was used in the past, when `unbreakable` tag couldn't be added to items. Turn it off and make your quest items unbreakable by vanilla means.
+`quest_items_unbreakable` controls whether quest items can be broken by using them.
+This was used in the past when the `unbreakable` tag couldn't be added to items.
+Turn it off and make your quest items unbreakable by vanilla means.
+
 ### Sounds
-* Sounds define what sounds will be played on these occasions:
-    - `start` and `end` refer to starting and ending conversations
-    - `journal` is updating journal
-    - `update` is played when there is a changelog file, used to draw your attention
-    - `full` is played when the player uses /j command but his inventory is full.
-    List of all possible sounds can be found [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html).
+This section defines what sounds will be played on these occasions:
+
+  * `start` and `end` refer to start and end points of conversations.
+  * `journal` is played upon updating the journal.
+  * `update` is played when there is a changelog file, used to draw your attention.
+  * `full` is played when the player executes `/journal` but his inventory is full.
+  
+  
+A list of all possible sounds for the latest Minecraft version can be found [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html).
+    
 ### Conversation Command Banlist
-* `cmd_blacklist` is a list of commands that can not be used while in conversation. Remember that you can only type single words (command names) here!
+`cmd_blacklist` is a list of commands that cannot be used during a conversation. Remember that you can only type single words (command names) here!
+
 ### Compatibility Hooks
-* `hook` controls compatibility with other plugins. You can turn off each hook here.
+`hook` controls compatibility with other plugins. You can turn off each hook here.
+
 ### Journal
-* `journal` controls various settings of the journal:
-    - `chars_per_page` is the number of characters before a page break. If it is set too high, the text on a journal page can overflow and become invisible. **This was replaced by `chars_per_line` and `lines_per_page` and is only required if you don't like the new behaviour.**
-    - `chars_per_line` is the number of characters before a line break. If it is set too high, the text on a journal page can overflow and become invisible. If this is not set, BQ will fall back on the old page wrapping behaviour configured through `chars_per_page`.
-    - `lines_per_page` is the number of lines before a new page. If it is set too high, the text on a journal page can overflow and become invisible. This is only required if `chars_per_line` is set.
-    - `one_entry_per_page` makes each entry take a single page. Note that it will not expand to other pages even if it overflows, so keep your entries short.
-    - `reversed_order` controls the chronological order of entries in the journal. By default, the entries are ordered from newest to oldest. It is reversible, but this will force players to click through many pages to get to the most recent entry.
-    - `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.
-    - `full_main_page` makes the main page always take a full page. If a lot of information is being displayed, it is advised to make this true. If you use the main page only for small notifications, set it to false, so the entries can follow immediately.
-    - `show_separator` shows a separator between journal entries (default: true). Customize the separator in `messages.yml` with the key `journal_separator`.
+`journal` controls various settings of the journal:
+
+  * `chars_per_page` is the number of characters before a page break. If it is set too high, the text on a journal page can overflow and become invisible.
+   **This was replaced by `chars_per_line` and `lines_per_page` and is only required if you don't like the new behaviour.**
+  * `chars_per_line` is the number of characters before a line break.
+   If it is set too high, the text on a journal page can overflow and become invisible.
+   If this is not set, BQ will fall back on the old page wrapping behaviour configured through `chars_per_page`.
+  * `lines_per_page` is the number of lines before a new page. If it is set too high, the text on a journal page can overflow and become invisible. 
+   This is only required if `chars_per_line` is set.
+  * `one_entry_per_page` makes each entry take a single page. Note that it will not expand to other pages even if it overflows, so keep your entries short.
+  * `reversed_order` controls the chronological order of entries in the journal. By default, the entries are ordered from newest to oldest.
+   It is reversible, but this will force players to click through many pages to get to the most recent entry.
+  * `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.
+  * `full_main_page` makes the main page always take a full page. If a lot of information is being displayed, it is advised to make this true.
+   If you use the main page only for small notifications, set it to false, so the entries can follow immediately.
+  * `show_separator` shows a separator between journal entries (default: true). Customize the separator in `messages.yml` with the key `journal_separator`.
+  
 ### Journal Colors
-* `journal_colors` controls the colors used in the journal. It takes color codes without the `&` character.
-    - `date.day` is the day number
-    - `date.hour` is the hour number
-    - `line` is the delimiter between entries
-    - `text` is the text of the entry
+`journal_colors` controls the colors used in the journal. It takes color codes without the `&` character.
+
+  * `date.day` is the day number
+  * `date.hour` is the hour number
+  * `line` is the delimiter between entries
+  * `text` is the text of the entry
+    
 ### Conversation Colors
-* `conversation_colors` controls the colors of the conversation. It takes [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html). If you want to add a font style (bold, italic etc.) you can add it after a comma.
-    - `npc` is the name of the NPC
-    - `player` is the name of the player
-    - `text` is the NPC's text
-    - `answer` is the text of player's answer (after choosing it)
-    - `number` is the option number
-    - `option` is the text of an option
-* `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) used in journal dates. It needs to have a space between the day and hour.
-* `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can slow your server down. However, if you experience any errors, turn this on and let the plugin gather the data and send logs to the developer. Note that the first run of the plugin will be logged anyway, just as a precaution.
-* `conversation_IO_config` manages settings for individual conoversation IO's:
+`conversation_colors` controls the colors of the conversation. It takes [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html). 
+If you want to add a font style (bold, italic etc.) do so after placing a comma.
+
+  * `npc` is the name of the NPC
+  * `player` is the name of the player
+  * `text` is the NPC's text
+  * `answer` is the text of player's answer (after choosing it)
+  * `number` is the option number
+  * `option` is the text of an option
+  * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) used in journal dates.
+   It needs to have a space between the day and hour.
+  * `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can slow your server down.
+   However, if you experience any errors, turn this on and let the plugin gather the data and send logs to the developer.
+   Note that the first run of the plugin will be logged anyway, just as a precaution.
+  * `conversation_IO_config` manages settings for individual conoversation IO's:
     - `chest` manages settings for the chest conversation IO
         - `show_number` will show the player number option if true (default: true)
         - `show_npc_text` will show the npc text in every player option if true (default: true)
