@@ -25,32 +25,33 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 public class Condition_JobFull extends Condition {
-    private String sJobName;
+    private Jobs sJob;
 
     public Condition_JobFull(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
+
         for (Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
-                sJobName = job.getName();
+                sJob = job;
                 return;
             }
         }
+
         throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
     }
 
     @Override
     protected Boolean execute(String playerID) {
-        for (Job job : Jobs.getJobs()) {
-            if (job.getName().equalsIgnoreCase(sJobName)) {
-                if (job.getMaxSlots() == null)
-                    return false;
-                if (job.getTotalPlayers() >= job.getMaxSlots())
-                    return true;
-            }
-        }
+		if (sJob == null || sJob.getMaxSlots() == null)
+			return false;
+
+		if (sJob.getTotalPlayers() >= sJob.getMaxSlots())
+			return true;
+
         return false;
     }
 }

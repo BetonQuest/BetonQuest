@@ -48,13 +48,6 @@
             </snapshots>
         </repository>
         <repository>
-            <id>bundabrg-repo</id>
-            <url>https://repo.worldguard.com.au/repository/maven-public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>everything</id>
             <url>http://repo.citizensnpcs.co/</url>
             <snapshots>
@@ -249,13 +242,10 @@
             <version>2.9.3</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- Repository ID: bundabrg-repo -->
         <dependency>
-            <groupId>com.gamingmesh.jobs</groupId>
+            <groupId>com.github.Zrips</groupId>
             <artifactId>Jobs</artifactId>
-            <version>4.8.0</version>
-            <scope>provided</scope>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sucy.skill</groupId>
