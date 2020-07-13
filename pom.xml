@@ -187,7 +187,7 @@
         <dependency>
             <groupId>com.github.Zrips</groupId>
             <artifactId>Jobs</artifactId>
-            <version>2873a7f</version>
+            <version>22f3f61</version>
             <scope>provided</scope>
         </dependency>
 
