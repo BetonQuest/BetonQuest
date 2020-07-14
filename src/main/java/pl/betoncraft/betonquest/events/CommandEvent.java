@@ -38,7 +38,7 @@ public class CommandEvent extends QuestEvent {
     private final Command[] commands;
 
     public CommandEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
+        super(instruction, false);
         staticness = true;
         persistent = true;
         try {

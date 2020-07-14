@@ -170,11 +170,7 @@ public class Journal {
         } else {
             list = new ArrayList<>(texts);
         }
-        List<String> pagesList = new ArrayList<>();
-        for(String entry : list) {
-            pagesList.addAll(Utils.pagesFromString(entry));
-        }
-        return pagesList;
+        return list;
     }
 
     /**

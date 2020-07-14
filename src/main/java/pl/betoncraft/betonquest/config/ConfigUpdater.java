@@ -77,12 +77,12 @@ public class ConfigUpdater {
             + "downgrade to the previous working version of the plugin and restore your "
             + "configuration from the backup. Don't forget to send this error to the developer"
             + ", so he can fix it! Sorry for inconvenience, here's the link:"
-            + " <https://github.com/BetonQuest/BetonQuest/issues> and a cookie: <http://i.imgur.com/iR4UMH5.png>";
+            + " <https://github.com/Co0sh/BetonQuest/issues> and a cookie: <http://i.imgur.com/iR4UMH5.png>";
     /**
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v61";
+    private final String destination = "v59";
     /**
      * BetonQuest's instance
      */
@@ -197,43 +197,6 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
-    }
-
-    private void update_from_v60() {
-        LogUtils.getLogger().log(Level.INFO, "Renaming 'monsters' condition to 'entities'");
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
-            for (String key : pack.getConditions().getConfig().getKeys(false)) {
-                String instruction = pack.getConditions().getConfig().getString(key);
-                if (instruction.startsWith("monsters ")) {
-                    LogUtils.getLogger().log(Level.FINE, "    Replacing monsters in '" + key + "' condition");
-                    pack.getConditions().getConfig().set(key, instruction.replaceFirst("monsters ", "entities "));
-                }
-            }
-            pack.getConditions().saveConfig();
-        }
-        LogUtils.getLogger().log(Level.INFO, "Successfully renamed 'monsters' condition to 'entities'");
-        config.set("version", "v61");
-        instance.saveConfig();
-    }
-
-    @SuppressWarnings("unused")
-    private void update_from_v59() {
-        LogUtils.getLogger().log(Level.INFO, "Rename Objective potion to brew");
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
-            for (String key : pack.getObjectives().getConfig().getKeys(false)) {
-                String instruction = pack.getObjectives().getConfig().getString(key);
-                if (instruction.startsWith("potion ")) {
-                    LogUtils.getLogger().log(Level.FINE, "    Replacing potion in '" + key + "' objective");
-                    pack.getObjectives().getConfig().set(key, instruction.replaceFirst("potion ", "brew "));
-                }
-            }
-            pack.getObjectives().saveConfig();
-        }
-        LogUtils.getLogger().log(Level.INFO, "Successfully renamed Objective potion to brew");
-        config.set("version", "v60");
-        instance.saveConfig();
     }
 
     @SuppressWarnings("unused")

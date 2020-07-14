@@ -86,7 +86,7 @@ public class EntityInteractObjective extends Objective {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         String r = instruction.getOptional("range");

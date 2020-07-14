@@ -7,45 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
-- equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
-- New Chat event, that write chat messages for a player
-- Added stopnpc event, that will stop the movenpc event
-- Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
 ### Changed
-- devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
 - Command 'bq rename' can now be used for globalpoints
 - The old updater was replaced with a new one
 - AchievementCondition is replaced with AdvancementCondition
-- Renamed objective Potion to Brew
-- Renamed 'monsters' condition to 'entities'
-- new config option mysql.enabled
-    - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
 - Removed RacesAndClasses support
 - Removed LegendQuest support
 - Removed the CLAY NPC
-- removed legacy material support
 ### Fixes
-- linebreaks in strings
-- notify:1 for block objective did not work
-- asynchronous database access for objectives
 - Renaming an NPC will not cause an NPE for a NPC Hologram
 - Objective 'craft' now supports shift-clicking
 - Fixed generation of default package
-- fixed line breaks
-- fixed events notify interval of 1
-- fixed potion/brew objective notify
-- fixed workaround when chest converationIO has no available start points
-- fixed journal line breaking
-- fixed movement of movenpc event
-- fixed npcmove event
-- fixed bug, where a player causes an exception when he spams right left clicks in menu conversationIO
-- fixed outdated Brewery dependency
 ### Security
 
 ## [1.11.0] - 2020-01-02

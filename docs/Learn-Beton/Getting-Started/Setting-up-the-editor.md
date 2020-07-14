@@ -41,11 +41,8 @@ If this for some reason doesn't work go to the extensions view in VSCode (++ctrl
 A full guide on extensions can be found <a href="https://code.visualstudio.com/docs/editor/extension-gallery" target="_blank">here</a>.
 
 ### Usage
-Start typing an event/condition/objective and press ++ctrl++ + ++space++. VSCode will list possible completions. 
-
-Navigating between options works by pressing ++tab++. If you want to go backwards you can invert the movement of the cursor by pressing ++shift++ and ++tab++.
-
-Some options need to be replaced by material names, messages... They will not show a drop-down menu.
-If an option does, you need to choose between the offered options. Optional options are displayed as an empty field in the drop down.  
-
-To exit and insert everything press ++tab++ one last time.
+When you start typing the instruction of an event/condition/objective VSCode will list possible completions with their wiki entries. 
+You can use the arrow up and down keys to select them.  
+If you found what you were looking for press the ++tab++ key.  
+Now all arguments will be added. To cycle through them press ++tab++ again.  
+To exit and insert everything press ++esc++.

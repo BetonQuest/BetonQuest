@@ -51,9 +51,6 @@ public class NPCRangeObjective extends Objective implements Listener {
         super(instruction);
         super.template = ObjectiveData.class;
         id = instruction.getInt();
-        if (id < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
-        }
         trigger = instruction.getEnum(Trigger.class);
         radius = instruction.getVarNum();
     }

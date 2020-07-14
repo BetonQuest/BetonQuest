@@ -19,7 +19,7 @@
 package pl.betoncraft.betonquest.compatibility.brewery;
 
 import com.dre.brewery.BIngredients;
-import com.dre.brewery.recipe.BRecipe;
+import com.dre.brewery.BRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
@@ -50,7 +50,7 @@ public class GiveBrewEvent extends QuestEvent {
         String name = instruction.next().replace("_", " ");
 
         BRecipe recipe = null;
-        for (BRecipe r : BRecipe.getAllRecipes()) {
+        for (BRecipe r : BIngredients.recipes) {
             if (r.hasName(name)) {
                 recipe = r;
                 break;

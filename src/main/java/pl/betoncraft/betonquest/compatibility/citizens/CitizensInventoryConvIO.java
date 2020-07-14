@@ -18,10 +18,8 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -29,7 +27,6 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
@@ -37,16 +34,30 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         super(conv, playerID);
     }
 
+    // Deprecated methods could be replaced with SkinTrait
+    @SuppressWarnings("deprecation")
     @Override
-    protected SkullMeta setSkullMeta(SkullMeta meta) {
+    public void display() {
+        super.display();
+
+        // Make sure we have an inventory
+        if (inv == null) {
+            return;
+        }
+
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
             CitizensConversation citizensConv = (CitizensConversation) conv;
+
+            // get the head meta
+            ItemStack head = inv.getContents()[0];
+            ItemMeta npcMeta = head.getItemMeta();
+
             // read the texture from the NPC
-            SkinTrait skinTrait = citizensConv.getNPC().getTrait(SkinTrait.class);
-            String texture = skinTrait.getTexture();
+            String texture = citizensConv.getNPC().data().get(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA);
 
             if (texture != null) { // Can be null if not cached yet
+
                 try {
                     // prepare reflection magics
                     Class<?> profileClass = Class.forName("com.mojang.authlib.GameProfile");
@@ -59,17 +70,22 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                             .newInstance(UUID.randomUUID(), null);
                     Object property = propertyClass
                             .getConstructor(String.class, String.class, String.class)
-                            .newInstance("textures", texture, skinTrait.getSignature());
+                            .newInstance("textures", texture, citizensConv.getNPC().data().get(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA));
                     Object propertyMap = profileClass
                             .getMethod("getProperties")
                             .invoke(profile);
                     propertyMapClass
                             .getMethod("put", Object.class, Object.class)
                             .invoke(propertyMap, "textures", property);
-                    Field field = meta.getClass().getDeclaredField("profile");
+                    Field field = npcMeta.getClass().getDeclaredField("profile");
                     field.setAccessible(true);
-                    field.set(meta, profile);
-                    return  meta;
+                    field.set(npcMeta, profile);
+
+                    // set the npcMeta back to the head and set the head back to the inventory
+                    // in case it doesn't happen automatically
+                    head.setItemMeta(npcMeta);
+                    inv.getContents()[0] = head;
+
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                         | InstantiationException | InvocationTargetException | NoSuchMethodException
                         | ClassNotFoundException e) {
@@ -77,7 +93,6 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 }
             }
         }
-        return super.setSkullMeta(meta);
     }
 
     public static class CitizensCombined extends CitizensInventoryConvIO {

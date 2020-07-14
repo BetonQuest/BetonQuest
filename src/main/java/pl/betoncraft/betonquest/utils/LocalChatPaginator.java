@@ -86,9 +86,9 @@ public class LocalChatPaginator extends ChatPaginator {
             }
         }
 
-        String result = lastFormats.stream()
+        String result = String.join("", lastFormats.stream()
                 .map(ChatColor::toString)
-                .collect(Collectors.joining(""));
+                .collect(Collectors.toList()));
 
         if (lastColor != null) {
             result = lastColor.toString() + result;
@@ -166,11 +166,8 @@ public class LocalChatPaginator extends ChatPaginator {
 
             if (c == '\n') {
                 // NewLine forces a new line
-                line.append(' ');
-                line.append(word);
                 lines.add(line.toString());
                 line = new StringBuilder();
-                word = new StringBuilder();
                 lineWidth = 0;
                 continue;
             }

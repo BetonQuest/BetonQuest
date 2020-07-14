@@ -46,9 +46,6 @@ public class NPCLocationCondition extends Condition {
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();
-        if (ID < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
-        }
         location = instruction.getLocation();
         radius = instruction.getVarNum();
     }

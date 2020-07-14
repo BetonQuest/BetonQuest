@@ -178,12 +178,9 @@ This objective also has two properties, `amount` and `left`. Amount is current a
     mobkill ZOMBIE 5 name:Uber_Zombie conditions:night
     ```
 
-## Potion brewing: `brew`
+## Potion brewing: `potion`
 
-To complete this objective the player needs to brew specified amount of specified potions.
-The first argument is a potion ID from _items.yml_. Second argument is amount of potions.
-You can optionally add `notify` argument to make the objective display progress to players,
-optionally with the notification interval after a colon.
+To complete this objective the player needs to brew specified amount of specified potions. The first argument is a potion ID from _items.yml_. Second argument is amount of potions. You can optionally add `notify` argument to make the objective display progress to players, optionally with the notification interval after colon.
 
 The brewing will be accepted if the player was the last one to click the ingredient slot in the brewing stand and there were no matching potions there already.
 
@@ -191,7 +188,7 @@ Potion objective has `amount` and `left:` properties.
 
 !!! example
     ```YAML
-    brew weird_concoction 4 event:add_tag
+    potion weird_concoction 4 event:add_tag
     ```
 
 ## Sheep shearing: `shear`

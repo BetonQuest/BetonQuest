@@ -20,7 +20,6 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobsPlayer;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -28,7 +27,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class Event_LeaveJob extends QuestEvent {
-    private Job sJob;
+    private String sJobName;
 
     public Event_LeaveJob(Instruction instructions) throws InstructionParseException {
         super(instructions, true);
@@ -36,28 +35,24 @@ public class Event_LeaveJob extends QuestEvent {
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-
         for (Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
-                sJob = job;
+                sJobName = job.getName();
                 return;
             }
         }
-
         throw new InstructionParseException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
     }
 
     @Override
     protected Void execute(String playerID) {
-		if (sJob == null)
-			return null;
-
         Player oPlayer = PlayerConverter.getPlayer(playerID);
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(oPlayer);
-		if (jPlayer != null) {
-			jPlayer.leaveJob(sJob);
-		}
-
+        for (Job job : Jobs.getJobs()) {
+            if (job.getName().equalsIgnoreCase(sJobName)) {
+                Jobs.getPlayerManager().getJobsPlayer(oPlayer).leaveJob(job);
+                return null;
+            }
+        }
         return null;
     }
 }

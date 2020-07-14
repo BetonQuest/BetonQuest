@@ -1,6 +1,14 @@
 package pl.betoncraft.betonquest.utils;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.json.JSONObject;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,11 +55,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version9, version1, version5, version6, version7, version8, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.MAYOR, true, version9, version2, version3, version4);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version10, version1, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, true, version10, version2, version3, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version11, version1, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, true, version11, version2, version3, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
 
         {
@@ -80,11 +86,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.MINOR, false, version9, version2, version1, version5, version6, version7, version8, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.MINOR, true, version9, version3, version4);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR, false, version10, version1, version2, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR, true, version10, version3, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.MINOR, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR, false, version11, version1, version2, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR, true, version11, version3, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.MINOR, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
 
         {
@@ -112,11 +116,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.PATCH, false, version9, version2, version3, version1, version5, version6, version7, version8, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.PATCH, true, version9, version4);
 
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH, false, version10, version1, version2, version3, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH, true, version10, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.PATCH, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH, false, version11, version1, version2, version3, version5, version6, version7, version8, version9, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH, true, version11, version4);
+            assertBooleanMulti(Updater.UpdateStrategy.PATCH, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
 
         {
@@ -146,11 +148,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, false, version9, version1, version5, version6, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, true, version9, version2, version3, version4, version7, version8);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, false, version10, version1, version5, version6, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, true, version10, version2, version3, version4, version7, version8, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, false, version11, version1, version5, version6, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, true, version11, version2, version3, version4, version7, version8, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.MAYOR_DEV, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
 
         {
@@ -179,11 +179,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, false, version9, version2, version1, version5, version6, version7, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, true, version9, version3, version4, version8);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, false, version10, version1, version2, version5, version6, version7, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, true, version10, version3, version4, version8, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, false, version11, version1, version2, version5, version6, version7, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, true, version11, version3, version4, version8, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.MINOR_DEV, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
 
         {
@@ -211,11 +209,9 @@ public class UpdaterTest {
             assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, false, version9, version2, version3, version1, version5, version6, version7, version8, version9, version10, version11);
             assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, true, version9, version4);
 
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, false, version10, version1, version2, version3, version5, version6, version7, version8, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, true, version10, version4, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, false, version10, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
 
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, false, version11, version1, version2, version3, version5, version6, version7, version8, version10, version11);
-            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, true, version11, version4, version9);
+            assertBooleanMulti(Updater.UpdateStrategy.PATCH_DEV, false, version11, version1, version2, version3, version4, version5, version6, version7, version8, version9, version10, version11);
         }
     }
 

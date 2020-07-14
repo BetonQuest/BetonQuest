@@ -12,7 +12,6 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 import java.io.*;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
@@ -43,6 +42,11 @@ public class Updater {
             return;
         }
 
+        if (latest.getKey().isUnofficial()) {
+            LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Disabled! An unofficial development version was detected.");
+            return;
+        }
+        LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Enabled!");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -50,22 +54,14 @@ public class Updater {
                 try {
                     findDev();
                 } catch (Exception e) {
-                    if(e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
-                    }
-                    else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
+                    return;
                 }
                 try {
                     findRelease();
                 } catch (Exception e) {
-                    if(e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
-                    }
-                    else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
+                    return;
                 }
                 if (latest.getValue() != null) {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
@@ -214,10 +210,6 @@ public class Updater {
                 plugin.getConfig().set("update.automatic", automatic);
                 plugin.saveConfig();
             }
-            if(latest.getKey().isDev() | latest.getKey().isUnofficial()) {
-                updateStrategy = updateStrategy.toDev();
-                automatic = false;
-            }
         }
     }
 
@@ -233,19 +225,6 @@ public class Updater {
 
         UpdateStrategy(final boolean isDev) {
             this.isDev = isDev;
-        }
-
-        public UpdateStrategy toDev() {
-            switch (this) {
-                case MAYOR:
-                    return MAYOR_DEV;
-                case MINOR:
-                    return MINOR_DEV;
-                case PATCH:
-                    return PATCH_DEV;
-                default:
-                    return this;
-            }
         }
     }
 
@@ -281,7 +260,7 @@ public class Updater {
         }
 
         public boolean isNewer(final Version v, UpdateStrategy updateStrategy) {
-            if (v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
+            if (isUnofficial() || v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
                 return false;
             }
             int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
@@ -312,13 +291,11 @@ public class Updater {
                         } else if (patchVersion < 0) {
                             return true;
                         } else {
-                            Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
-                            Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
-                            if(thisDev == null || targetDev == null) {
-                                return thisDev != null;
+                            if(dev == null || v.dev == null) {
+                                return dev != null;
                             }
                             else {
-                                return thisDev.compareTo(targetDev) < 0;
+                                return dev.compareTo(v.dev) < 0;
                             }
                         }
                     }

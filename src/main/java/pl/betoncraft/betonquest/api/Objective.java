@@ -391,7 +391,7 @@ public abstract class Objective {
          */
         protected void update() {
             QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
+            Bukkit.getPluginManager().callEvent(event);
             // update the journal so all possible variables display correct
             // information
             BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();

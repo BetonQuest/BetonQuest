@@ -64,7 +64,7 @@ public class MobKillObjective extends Objective implements Listener {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
     @EventHandler(ignoreCancelled = true)

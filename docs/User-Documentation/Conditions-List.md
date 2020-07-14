@@ -1,13 +1,12 @@
 # Conditions List
 
-## Advancement: `advancement`
+## Achievement: `achievement`
 
-This condition checks if the player has specified advancement. The only argument is the full name of the advancement.
-This includes the namespace, the tab and the name of the advancement as configured on your server. 
-[List of all vanilla advancements](https://minecraft.gamepedia.com/Advancement#List_of_advancements).
+This condition checks if the player has specified achievement (default Minecraft achievements). The first argument is name of the [achievement](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Achievement.html).
+
 !!! example
     ```YAML
-    advancement minecraft:adventure/kill_a_mob
+    achievement BUILD_FURNACE
     ```
 
 ## Conjunction: `and`
@@ -86,15 +85,14 @@ To meet this condition the player must have an active potion effect. There is on
 
 ## Empty inventory slots: `empty`
 
-To meet this condition the players inventory must have the specified amount of empty slots or more.
-If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the `equal` argument.
+To meet this condition the player has to have specified amount of empty slots in his inventory.
 
 !!! example
     ```YAML
     empty 5
     ```
 
-## Entities in area: `entities` 
+## Entities in area: `monsters` 
 
 **persistent**, **static**
 
@@ -107,7 +105,7 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 !!! example
     ```YAML
-    entities ZOMBIE:2 100;200;300;world 10 name:Deamon
+    monsters ZOMBIE:2 100;200;300;world 10 name:Deamon
     ```
 
 ## Experience: `experience`

@@ -110,14 +110,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <!-- This repository is a temporary solution and should be replaced with the original repo, if it is fixed -->
-        <repository>
-            <id>temp-brewery-repo</id>
-            <url>http://erethon.de/repo</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -154,8 +146,8 @@
         <!-- Repository ID: everything -->
         <dependency>
             <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizens</artifactId>
-            <version>2.0.27-SNAPSHOT</version>
+            <artifactId>citizensapi</artifactId>
+            <version>2.0.26-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -167,7 +159,7 @@
 
         <!-- Repository ID: jitpack.io -->
         <dependency>
-            <groupId>com.github.MilkBowl</groupId>
+            <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
@@ -176,26 +168,6 @@
             <groupId>com.github.SkriptLang</groupId>
             <artifactId>Skript</artifactId>
             <version>2.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.PikaMug</groupId>
-            <artifactId>Quests</artifactId>
-            <version>0265e09</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.Zrips</groupId>
-            <artifactId>Jobs</artifactId>
-            <version>2873a7f</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Repository ID: temp-brewery-repo -->
-        <dependency>
-            <groupId>com.dre</groupId>
-            <artifactId>brewery</artifactId>
-            <version>2.1.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -208,11 +180,6 @@
         </dependency>
 
         <!-- Repository ID: codemc-repo -->
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
-        </dependency>
         <dependency>
             <groupId>com.gmail.filoghost.holographicdisplays</groupId>
             <artifactId>holographicdisplays-api</artifactId>
@@ -248,7 +215,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Repository ID: shopkeepers-releases -->
+        <!-- Repository ID: >shopkeepers-releases -->
         <dependency>
             <groupId>com.nisovin.shopkeepers</groupId>
             <artifactId>ShopkeepersAPI</artifactId>
@@ -258,9 +225,21 @@
 
         <!-- Repository ID: bundabrg-repo -->
         <dependency>
+            <groupId>com.gamingmesh.jobs</groupId>
+            <artifactId>Jobs</artifactId>
+            <version>4.8.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.sucy.skill</groupId>
             <artifactId>SkillAPI</artifactId>
             <version>3.37</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.blackvein.quests</groupId>
+            <artifactId>quests</artifactId>
+            <version>3.6.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -273,6 +252,12 @@
             <groupId>pl.betoncraft</groupId>
             <artifactId>BetonLangAPI</artifactId>
             <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dre</groupId>
+            <artifactId>brewery</artifactId>
+            <version>1.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -290,6 +275,11 @@
 
         <!-- Repository ID: Central -->
         <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
             <version>3.6.3</version>
@@ -297,13 +287,13 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.13.3</version>
+            <version>2.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.13.3</version>
+            <version>2.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -327,24 +317,6 @@
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>5.6.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-core</artifactId>
-            <version>2.0.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

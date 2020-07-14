@@ -44,7 +44,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import pl.betoncraft.betonquest.*;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
@@ -54,10 +57,8 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.GlobalData;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver.Record;
-import pl.betoncraft.betonquest.events.GiveEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ItemID;
@@ -318,9 +319,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("condition", "event", "item", "give", "config", "objective", "globaltag",
-                    "globalpoint", "tag", "point", "journal", "delete", "rename", "vector", "version", "purge",
-                    "update", "reload", "backup", "create", "debug");
+            return Arrays.asList("reload", "objective", "tag", "point", "globaltag", "globalpoint", "journal",
+                    "condition", "event", "item", "give", "rename", "delete",
+                    "config", "vector", "version", "backup", "debug", "update");
         }
         switch (args[0].toLowerCase()) {
         case "conditions":
@@ -343,6 +344,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         case "objective":
         case "o":
             return completeObjectives(sender, args);
+        case "tags":
+        case "tag":
+        case "t":
+            return completeTags(sender, args);
+        case "points":
+        case "point":
+        case "p":
+            return completePoints(sender, args);
         case "globaltags":
         case "globaltag":
         case "gtag":
@@ -355,14 +364,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         case "gpoint":
         case "gp":
             return completeGlobalPoints(sender, args);
-        case "tags":
-        case "tag":
-        case "t":
-            return completeTags(sender, args);
-        case "points":
-        case "point":
-        case "p":
-            return completePoints(sender, args);
         case "journals":
         case "journal":
         case "j":
@@ -384,9 +385,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return new ArrayList<>();
         case "debug":
             return completeDebug(sender, args);
-        case "version":
-        case "ver":
-        case "v":
         case "update":
         case "reload":
         case "backup":
@@ -477,13 +475,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         try {
-            int splitIndex = args[1].indexOf(".");
-            String pack = args[1].substring(0, splitIndex);
-            String item = args[1].substring(splitIndex + 1);
-            ConfigPackage configPack = Config.getPackages().get(pack);
-            GiveEvent give = new GiveEvent(new Instruction(configPack, null , "give " + item));
-            give.fire(PlayerConverter.getID((Player) sender));
-        } catch (InstructionParseException | QuestRuntimeException e) {
+            ItemID itemID = new ItemID(null, args[1]);
+            QuestItem item = new QuestItem(itemID);
+            ((Player) sender).getInventory().addItem(item.generate(1));
+        } catch (InstructionParseException | ObjectNotFoundException e) {
             sendMessage(sender, "error", new String[] {
                     e.getMessage()
             });

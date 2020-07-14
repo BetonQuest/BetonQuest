@@ -21,13 +21,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
@@ -52,10 +48,6 @@ public class TellrawConvIO extends ChatConvIO {
     protected boolean magic;
     protected String number;
     private int count = 0;
-
-    static {
-        new UnknownCommandTellrawListener();
-    }
 
     public TellrawConvIO(Conversation conv, String playerID) {
         super(conv, playerID);
@@ -138,19 +130,5 @@ public class TellrawConvIO extends ChatConvIO {
         super.clear();
         hashes.clear();
         count = 0;
-    }
-
-    public static class UnknownCommandTellrawListener implements Listener {
-
-        public UnknownCommandTellrawListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
-
-        @EventHandler(priority = EventPriority.HIGH)
-        public void onCommand (PlayerCommandPreprocessEvent event) {
-            if (event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
-                event.setCancelled(true);
-            }
-        }
     }
 }
