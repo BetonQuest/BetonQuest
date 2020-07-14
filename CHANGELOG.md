@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed bug, where a player causes an exception when he spams right left clicks in menu conversationIO
 - fixed outdated Brewery dependency
 ### Security
+- fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 
 ## [1.11.0] - 2020-01-02
 ### Added
