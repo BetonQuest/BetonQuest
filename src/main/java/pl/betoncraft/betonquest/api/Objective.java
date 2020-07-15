@@ -21,6 +21,8 @@ import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.GlobalObjectives;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.database.Connector;
+import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
@@ -390,6 +392,9 @@ public abstract class Objective {
          * </p>
          */
         protected void update() {
+            Saver saver = BetonQuest.getInstance().getSaver();
+            saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objID}));
+            saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, new String[]{playerID, objID, toString()}));
             QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct

@@ -18,10 +18,8 @@
 package pl.betoncraft.betonquest.database;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.api.QuestDataUpdateEvent;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
@@ -91,12 +89,6 @@ public class Saver extends Thread implements Listener {
     public synchronized void end() {
         run = false;
         notify();
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onDataUpdate(QuestDataUpdateEvent e) {
-        add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID()}));
-        add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{e.getPlayerID(), e.getObjID(), e.getData()}));
     }
 
     /**

@@ -184,6 +184,12 @@
             <version>0265e09</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.Zrips</groupId>
+            <artifactId>Jobs</artifactId>
+            <version>2873a7f</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Repository ID: temp-brewery-repo -->
         <dependency>
@@ -251,12 +257,6 @@
         </dependency>
 
         <!-- Repository ID: bundabrg-repo -->
-        <dependency>
-            <groupId>com.gamingmesh.jobs</groupId>
-            <artifactId>Jobs</artifactId>
-            <version>4.8.0</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.sucy.skill</groupId>
             <artifactId>SkillAPI</artifactId>
