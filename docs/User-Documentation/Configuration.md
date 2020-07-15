@@ -49,26 +49,11 @@ Follow these few simple steps to migrate your database easily:
 English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl), Italian (it) and Hungarian (hu).
 
 ### Updating
-The `update` section controls the updater. It has the following settings:
-    - `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
-    - `strategy` (default `MINOR`). The update strategy is more difficult to understand.
-    Each plugin version is a number, that consists of three parts. For example `2.4.3`, the  first number (`2` in this example)
-    is named `MAYOR`, the second `MINOR` (`4` in this example) and the third `PATCH` (`3` in this example).
-    When we release a new version of BetonQuest we will change these numbers in a specific way. Each number has a fixed meaning. 
-    The table below shows you what's included in the update when we increase any of the three digits:    
-  
-        
-   | Update Strategy  | `MAYOR`                | `MINOR`                | `PATCH`                |
-   |------------------|------------------------|------------------------|------------------------|
-   | Bug Fixes        | :white_check_mark:     | :white_check_mark:     | :white_check_mark:     | 
-   | New Features     | :white_check_mark:     | :white_check_mark:     | :x:                    | 
-   | Breaking Changes | :white_check_mark:     | :x:                    | :x:                    | 
-   
-   You can also append `_DEV` to each strategy. This will download the dev builds for the corresponding version. This
-    is not recommended for production/live servers, as devbuilds can contain bugs. 
-  
-     
-   `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
+The `update` section controls the Auto-Updater. It has the following settings:
+
+  * `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
+  * `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is available [here](Updating-and-Backups.md).
+  * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
    the updater will only download new versions when the update command is executed.   
     
 ### Journal slots
@@ -85,11 +70,11 @@ This is a dangerous setting as two different NPC's at the opposite edges of your
 
 ### Default conversation style
 `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
-Read [this page](../User-Documentation/Conversations) for more information about conversation interfaces.
+Read [this page](Conversations.md) for more information about conversation interfaces.
 
 ### Default Chat interceptor
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
-Read [this page](../User-Documentation/Conversations) for more information about chat interceptors.
+Read [this page](Conversations.md) for more information about chat interceptors.
 
 ### Conversation Chat Display options
 `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
@@ -183,43 +168,3 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
     - `chest` manages settings for the chest conversation IO
         - `show_number` will show the player number option if true (default: true)
         - `show_npc_text` will show the npc text in every player option if true (default: true)
-
-## Updating
-
-The update process is safe and easy. After updating to a new version (manually or automatically),
-configuration files and database will be automatically backed up to a zip file to prevent losing your work due to errors.
-Then, configuration will be converted to a new version. At the end, the localization will be updated with new languages and the _changelog.txt_ file will be created.
-
-**Disclaimer for all versions below 2.0**: All comments in your configurations will be lost during the update process.
-
-When you enter the server, BetonQuest will alert you about changes and ask you to read changelog.txt file located in plugin's main directory.
-This helps players be aware of every change made by new versions. To learn more about how to recieve updates please read the `update` section in the
-[Configuration Section](#configuration) on this page. 
-
-All future versions of BetonQuest should have full compatibility with the current version of the plugin and server. 
-This means that the plugin should work _exactly_ the same way as it did before without bugs after updating. 
-The changes will be visible only in configuration format or new features.
-(For example in 1.5 inverting conditions was done by adding `--inverted` argument to the instruction.
-It was changed to the current format (with exclamation marks before the condition name) in 1.6 version. 
-The plugin had updated the configuration files automatically when switching to the new version.
-The only problem the user had was getting used to the new (better) way of negating conditions).
-
-If there were any unexpected errors during an update process, download the previous version,
-restore your configs from backup, and disable autoupdating feature. Don't forget to post your error so I can fix it!
-
-## Backups
-
-Every time the plugin updates the configuration, a backup will be created. 
-This is especially important if a development version is being used because they may be unstable. 
-A backup can also be created manually by running **/q backup** command. 
-It needs to be run from the console on an empty server because it heavily uses the database.
-
-You can find your backups in _backup_ directory in the plugin's folder.
-They are .zip files containing all your configuration and _database-backup.yml_ file, which - as the name says - is your database backup.
-To replace your configuration with an older backup, delete all the files (except backups and logs) and replace them with the files from .zip file.
-
-If you want your database loaded, place _database-backup.yml_ file in plugin's directory.
-When the plugin sees this file while enabling, it will backup the current database and load all data from that file to the database. 
-A backup of the old database can be found in _backups_ folder, so if you ever need to load it back,
-just rename it to _database-backup.yml_ and place it back in main plugin's directory. Note that _database-backup.yml_ file will be deleted after loading,
-so it does not replace your database on next plugin start.

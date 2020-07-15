@@ -96,7 +96,6 @@ nav:
   - 'Learn Beton':
       - Learn-Beton/Welcome.md
       - Learn-Beton/Frequently-Asked-Questions.md
-      - Learn-Beton/Configuration.md
       - Learn-Beton/Quick-start-tutorial.md
       - Learn-Beton/Tips-and-tricks.md
       - 'Getting Started':
@@ -112,7 +111,10 @@ nav:
       - 'Compatibility List': User-Documentation/Compatibility.md
       - User-Documentation/Variables-List.md
       - User-Documentation/Notifications.md
+      - User-Documentation/Conversations.md
+      - User-Documentation/Configuration.md
       - User-Documentation/Commands-and-permissions.md
+      - User-Documentation/Updating-and-Backups.md
       - User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
       - Developer-Documentation/Info-for-developers.md
