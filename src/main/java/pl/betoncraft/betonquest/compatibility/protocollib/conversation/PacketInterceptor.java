@@ -29,8 +29,10 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerChat;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.Interceptor;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -104,9 +106,14 @@ public class PacketInterceptor implements Interceptor, Listener {
         // Stop Listening for Packets
         ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
-        // Send all messages to player
-        for (WrapperPlayServerChat message : messages) {
-            message.sendPacket(player);
-        }
+        //Send all messages to player
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (WrapperPlayServerChat message : messages) {
+                    message.sendPacket(player);
+                }
+            }
+        }.runTaskLater(BetonQuest.getInstance(), 20);
     }
 }
