@@ -39,6 +39,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -52,6 +53,7 @@ import java.util.logging.Level;
 public class HologramLoop {
 
     private HashMap<Hologram, ConditionID[]> holograms = new HashMap<>();
+    private HashMap<Hologram, BukkitRunnable> runnables = new HashMap<>();
     private BukkitRunnable runnable;
 
     /**
@@ -73,6 +75,7 @@ public class HologramLoop {
                 List<String> lines = section.getStringList(key + ".lines");
                 String rawConditions = section.getString(key + ".conditions");
                 String rawLocation = section.getString(key + ".location");
+                int check_interval = section.getInt(key + ".check_interval", 0);
                 if (rawLocation == null) {
                     LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
                     continue;
@@ -93,7 +96,7 @@ public class HologramLoop {
                 }
                 Location location = null;
                 try {
-                    location = new LocationData(packName, rawLocation).getLocation(null);
+                    location = new LocationData(packName, pack.subst(rawLocation)).getLocation(null);
                 } catch (QuestRuntimeException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse location in " + key + " hologram: " + e.getMessage());
                     LogUtils.logThrowable(e);
@@ -136,7 +139,30 @@ public class HologramLoop {
                         hologram.appendTextLine(line.replace('&', '§'));
                     }
                 }
-                holograms.put(hologram, conditions);
+                if(check_interval == 0) {
+                    holograms.put(hologram, conditions);
+                }
+                else {
+                    final ConditionID[] conditionsList = conditions;
+                    BukkitRunnable runnable = new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player:
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                String playerID = PlayerConverter.getID(player);
+                                    for (ConditionID condition : conditionsList) {
+                                        if (!BetonQuest.condition(playerID, condition)) {
+                                            hologram.getVisibilityManager().hideTo(player);
+                                            continue player;
+                                        }
+                                    }
+                                hologram.getVisibilityManager().showTo(player);
+                            }
+                        }
+                    };
+                    runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, check_interval);
+                    runnables.put(hologram, runnable);
+                }
             }
         }
         // loop the holograms to show/hide them
@@ -158,7 +184,7 @@ public class HologramLoop {
                 }
             }
         };
-        runnable.runTaskTimer(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getConfig()
+        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getConfig()
                 .getInt("hologram_update_interval", 20 * 10));
     }
 
@@ -166,11 +192,15 @@ public class HologramLoop {
      * Cancels hologram updating loop and removes all BetonQuest-registered holograms.
      */
     public void cancel() {
-        if (runnable == null)
-            return;
-        runnable.cancel();
-        for (Hologram hologram : holograms.keySet()) {
-            hologram.delete();
+        if (runnable != null) {
+            runnable.cancel();
+            for (Hologram hologram : holograms.keySet()) {
+                hologram.delete();
+            }
+        }
+        for(Entry<Hologram, BukkitRunnable> h: runnables.entrySet()) {
+            h.getValue().cancel();
+            h.getKey().delete();
         }
     }
 
