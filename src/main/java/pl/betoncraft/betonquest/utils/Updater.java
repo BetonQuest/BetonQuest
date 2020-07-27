@@ -214,7 +214,7 @@ public class Updater {
                 plugin.getConfig().set("update.automatic", automatic);
                 plugin.saveConfig();
             }
-            if(latest.getKey().isDev() | latest.getKey().isUnofficial()) {
+            if(latest.getKey().isDev() && !updateStrategy.isDev || latest.getKey().isUnofficial()) {
                 updateStrategy = updateStrategy.toDev();
                 automatic = false;
             }
