@@ -249,6 +249,8 @@ holograms:
     - '&eBeton is strong.'
     location: 100;200;300;world
     conditions: has_some_quest, !finished_some_quest
+    # How often to check conditions (optional)
+    check_interval: 20
 ```
 
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the `custom_item` defined defined in items.yml. If the Item is defined for example as map, a floating map will be seen between two lines of text.
