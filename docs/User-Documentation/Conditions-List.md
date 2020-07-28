@@ -21,7 +21,7 @@ Conjunction of specified conditions. This means that every condition has to be m
 
 ## Armor: `armor`
 
-The armor condition requires the player to wear specified armor, as an item defined in _items.yml_ file.
+The armor condition requires the player to wear specified armor, as an item defined in _s.yml_ file.
 
 !!! example
     ```YAML
@@ -197,7 +197,7 @@ This condition requires the player to be _below_ specific Y height. The required
 
 ## Item in Inventory: `item`
 
-This event is met only when player has specified item in his inventory. You specify items in a list separated by commas (without spaces between!) Each item consists of its name and amount, separated by a colon. Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.
+This condition requires the player to have all specified items in his inventory or backpack. You specify items in a list separated by commas (without spaces between!) Each item consists of its name and amount, separated by a colon. Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.
 
 !!! example
     ```YAML
