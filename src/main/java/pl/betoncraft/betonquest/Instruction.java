@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Instruction {
 
@@ -460,6 +462,17 @@ public class Instruction {
         } catch (NumberFormatException e) {
             throw new PartParseException("Could not parse decimal value: " + string, e);
         }
+    }
+
+    public ArrayList<Integer> getAllNumbers() {
+        Pattern p = Pattern.compile("-?\\d+");
+        Matcher m = p.matcher(instruction);
+
+        ArrayList<Integer> result = new ArrayList<>();
+        while (m.find()) {
+            result.add(Integer.parseInt(m.group()));
+        }
+        return result;
     }
 
     ////////////////////

@@ -277,9 +277,8 @@ public class ConfigPackage {
 
     /**
      * Returns a string with inserted variables and color codes and linebreaks replaced
-     *
      * @param address
-     * @return
+     * @return a fully formatted string
      */
     public String getFormattedString(String address) {
         return Utils.format(getString(address));

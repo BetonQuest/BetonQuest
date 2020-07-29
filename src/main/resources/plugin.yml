@@ -7,6 +7,9 @@ website: https://www.spigotmc.org/resources/betonquest.2117/
 load: STARTUP
 softdepend:
 - Skript
+- MMOLib
+- MMOCore
+- MMOItems
 - Citizens
 - MythicMobs
 - Vault
