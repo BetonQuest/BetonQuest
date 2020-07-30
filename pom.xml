@@ -20,7 +20,7 @@
 
     <distributionManagement>
         <repository>
-            <id>${env.REPOSITORY_ID}</id>
+            <id>BetonQuest</id>
             <url>${env.REPOSITORY_URL}</url>
         </repository>
     </distributionManagement>

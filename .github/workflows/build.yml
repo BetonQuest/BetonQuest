@@ -81,7 +81,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-          server-id: ${{ secrets.REPOSITORY_ID }}
+          server-id: BetonQuest
           server-username: REPOSITORY_USER
           server-password: REPOSITORY_PASS
 
