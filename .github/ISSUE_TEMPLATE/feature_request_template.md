@@ -1,6 +1,9 @@
 ---
 name: Feature Request
 about: Suggest new features to help us improving the plugin
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
