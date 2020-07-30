@@ -531,11 +531,31 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</sourceFile>
+                            <sourceFile>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar
+                            </sourceFile>
                             <destinationFile>${project.build.directory}/${project.name}.jar</destinationFile>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.ec4j.maven</groupId>
+                <artifactId>editorconfig-maven-plugin</artifactId>
+                <version>0.1.0</version>
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>src/main/**/*.whatever</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
