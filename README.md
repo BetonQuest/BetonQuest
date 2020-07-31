@@ -37,7 +37,7 @@ This page is contains information important for developers. If you're a user of 
 
 ## Getting started
 
-If you're looking for an already compiled binaries visit [Releases](https://github.com/Co0sh/BetonQuest/releases) for standard releases or [dev website](https://betonquest.pl) for development builds. This section will cover setting up the BetonQuest development workflow.
+If you're looking for an already compiled binaries visit [Releases](https://github.com/BetonQuest/BetonQuest/releases) for standard releases or [dev website](https://betonquest.pl) for development builds. This section will cover setting up the BetonQuest development workflow.
 
 ### Prerequisites
 
