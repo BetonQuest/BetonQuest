@@ -36,7 +36,7 @@ mega: "message Hello world!"
 
 This is an event instruction. BetonQuest will use it to determine what type of event it is and what exactly should it do. 
 `mega` is the name, `message` is the events type and `Hello world!` tells the message event what it needs to display. In this case,
-if you run `sayHello` event, it will display to you `Hello world!` message. Now save the file, issue **/q reload** command
+if you run `mega` event, it will display to you `Hello world!` message. Now save the file, issue **/q reload** command
 and run the event with **/q e {name} mega** command (`q` is shortcut for `quest`, `e` is shortcut for `event`, `{name}`
 is your Minecraft name without the brackets and `mega` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
 

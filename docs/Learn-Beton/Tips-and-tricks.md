@@ -18,7 +18,7 @@ Starting the random quest must be blocked with a special tag. If there is no suc
 
 ## Each day different quest (same for every player)
 
-To do this use something called "[Static event](https://github.com/Co0sh/BetonQuest/wiki/Other-important-stuff#static-events)". Using the static event run `folder` event every day at some late hour (for example 4am). The `folder` event should be `random:1` and contain several different `setblock` events. These events will set some specific block to several different material types (for example dirt, stone, wood, sand etc). Now when the player starts the conversation and asks about the daily quest the NPC should check (using `testforblock` condition) which type of block is currently set and give the player different quest, depending on the block type.
+To do this use something called "[Static event](../../User-Documentation/Reference/#static-events)". Using the static event run `folder` event every day at some late hour (for example 4am). The `folder` event should be `random:1` and contain several different `setblock` events. These events will set some specific block to several different material types (for example dirt, stone, wood, sand etc). Now when the player starts the conversation and asks about the daily quest the NPC should check (using `testforblock` condition) which type of block is currently set and give the player different quest, depending on the block type.
 
 ## Make the NPC react randomly
 

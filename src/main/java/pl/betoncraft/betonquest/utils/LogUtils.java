@@ -25,7 +25,7 @@ public final class LogUtils {
     /**
      * The message, containing all information, to report a bug
      */
-    private static final String REPORT_MSG = "please report this to <https://github.com/Co0sh/BetonQuest/issues>. "
+    private static final String REPORT_MSG = "please report this to <https://github.com/BetonQuest/BetonQuest/issues>. "
             + "And there you have a cookie: <http://i.imgur.com/iR4UMH5.png>";
     /**
      * The file of the latest log
