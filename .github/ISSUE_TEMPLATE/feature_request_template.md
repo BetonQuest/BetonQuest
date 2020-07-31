@@ -1,20 +1,19 @@
 ---
 name: Feature Request
-about: Suggest new features to help us improving the plugin
+about: Suggest new features to help us improve the plugin
 title: ''
-labels: ''
+labels: Feature Request
 assignees: ''
 
 ---
 
-<!-- Please follow this template if you are suggesting a new feature -->
+<!-- Please follow this template if you suggest a new feature -->
 
 ## Feature request
 
-<!--provide a detailed description of your suggestion-->
+<!--Provide a detailed description of your suggestion-->
 
 ### Checklist:
-<!-- If you would check the following things before submitting a feature request you can save us some work ^.^
-(put an "X" between the brackets): -->
-- [ ] I made sure this dosn't already exist [(have a look at the wiki)](https://github.com/Co0sh/BetonQuest/wiki)
-- [ ] I made sure this wasn't already suggested [(search issues)](https://github.com/Co0sh/BetonQuest/issues)
+<!-- Check these things before posting the request! This will save us time which means more features for you! (put an "X" between the brackets): -->
+- [ ] I made sure this doesn't already exist [(have a look at the docs)](https://betonquest.github.io/BetonQuest/)
+- [ ] I made sure this wasn't already suggested [(search issues)](https://github.com/BetonQuest/BetonQuest/issues)
