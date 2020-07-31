@@ -15,7 +15,7 @@ And if you're using Maven simply add this (temporary repo) to your _pom.xml_:
 <repositories>
     <repository>
         <id>betonquest-repo</id>
-        <url>http://amberproject.net:8082/repository/AmberProject/</url>
+        <url>https://betonquest.org/nexus/repository/betonquest/</url>
     </repository>
 </repositories>
 
