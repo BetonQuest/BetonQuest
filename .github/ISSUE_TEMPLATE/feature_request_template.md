@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest new features to help us improve the plugin
+about: Suggest new features to help us improve the plugin!
 title: ''
 labels: Feature Request
 assignees: ''
