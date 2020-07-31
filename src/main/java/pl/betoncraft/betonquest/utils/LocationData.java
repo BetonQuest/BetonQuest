@@ -148,7 +148,7 @@ public class LocationData {
      * 
      * @param playerID
      *            the ID of the player if it is a Variable location, or null
-     * @return
+     * @return The players location as a String.
      * @throws QuestRuntimeException
      */
     public String toString(final String playerID) throws QuestRuntimeException {

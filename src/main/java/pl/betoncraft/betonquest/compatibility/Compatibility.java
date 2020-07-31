@@ -35,6 +35,9 @@ import pl.betoncraft.betonquest.compatibility.holographicdisplays.HolographicDis
 import pl.betoncraft.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
 import pl.betoncraft.betonquest.compatibility.magic.MagicIntegrator;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOIntegrator;
+import pl.betoncraft.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrator;
+import pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
+import pl.betoncraft.betonquest.compatibility.mmogroup.mmolib.MMOLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsIntegrator;
@@ -77,6 +80,9 @@ public class Compatibility implements Listener {
         integrators.put("WorldGuard", new WorldGuardIntegrator());
         integrators.put("WorldEdit", new WorldEditIntegrator());
         integrators.put("mcMMO", new McMMOIntegrator());
+        integrators.put("MMOLib", new MMOLibIntegrator());
+        integrators.put("MMOCore", new MMOCoreIntegrator());
+        integrators.put("MMOItems", new MMOItemsIntegrator());
         integrators.put("EffectLib", new EffectLibIntegrator());
         integrators.put("PlayerPoints", new PlayerPointsIntegrator());
         integrators.put("Heroes", new HeroesIntegrator());

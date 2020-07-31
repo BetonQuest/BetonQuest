@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Added integration for MMOGroup plugins (MMOCore, MMOItems, MMOLib)
+  * MMOClass condition (type & class)
+  * MMOProfession condition
+  * MMOAttribute condition
+  * MMOItems item condition (item in inventory)
+  * MMOItems hand condition (item in main/offhand)
+  * MMOLib stats condition  (a ton of stats from Core and Items combined)
 - equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
