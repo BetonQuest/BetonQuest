@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 /**
  * @deprecated Use the {@link pl.betoncraft.betonquest.id.ItemID} instead, this
- *             this will be removed in 13 release or later
+ * this will be removed in 13 release or later
  */
 public class ItemID extends pl.betoncraft.betonquest.id.ItemID {
 

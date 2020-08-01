@@ -35,7 +35,7 @@ public class TakeBrewEvent extends QuestEvent {
     private BRecipe brew;
 
     public TakeBrewEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
 
         count = instruction.getInt();
         if (count < 1) {

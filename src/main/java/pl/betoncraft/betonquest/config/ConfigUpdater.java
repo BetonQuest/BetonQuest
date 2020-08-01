@@ -1312,7 +1312,7 @@ public class ConfigUpdater {
                 pack.getMain().saveConfig();
             }
             // done, all packages have replaced tags and points
-            LogUtils.getLogger().log(Level.FINE, 
+            LogUtils.getLogger().log(Level.FINE,
                     "Done, all global tags and points are prefixed as global everywhere in every package. Updating the database.");
             for (String packName : tags.keySet()) {
                 for (String tag : tags.get(packName)) {

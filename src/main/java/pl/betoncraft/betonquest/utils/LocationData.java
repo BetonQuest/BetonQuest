@@ -68,13 +68,10 @@ public class LocationData {
      * by the key '->', followed with a {@link Vector}. The vector has to be in
      * the format '(x;y;z)'. A {@link Vector} is added to the {@link Location}.
      *
-     * @param packName
-     *            Name of the package, required for variable resolution
-     * @param locationData
-     *            string containing raw location, as defined above
-     * @throws InstructionParseException
-     *             Is thrown, if there is an error while parsing the
-     *             locationData
+     * @param packName     Name of the package, required for variable resolution
+     * @param locationData string containing raw location, as defined above
+     * @throws InstructionParseException Is thrown, if there is an error while parsing the
+     *                                   locationData
      */
     public LocationData(final String packName, final String locationData) throws InstructionParseException {
         String base = null;
@@ -131,12 +128,10 @@ public class LocationData {
     }
 
     /**
-     * @param playerID
-     *            ID of the player, needed for location resolution
+     * @param playerID ID of the player, needed for location resolution
      * @return the location represented by this object
-     * @throws QuestRuntimeException
-     *             Is thrown, when location is defined for the player but the
-     *             player cannot be accessed
+     * @throws QuestRuntimeException Is thrown, when location is defined for the player but the
+     *                               player cannot be accessed
      */
     public Location getLocation(final String playerID) throws QuestRuntimeException {
         return getBaseLoc(playerID).clone().add(vector);
@@ -145,9 +140,8 @@ public class LocationData {
     /**
      * Parse the location from {@link LocationData#getLocation(String)} into a
      * String
-     * 
-     * @param playerID
-     *            the ID of the player if it is a Variable location, or null
+     *
+     * @param playerID the ID of the player if it is a Variable location, or null
      * @return The players location as a String.
      * @throws QuestRuntimeException
      */
@@ -161,14 +155,12 @@ public class LocationData {
     /**
      * Parse a string into a location. The location has to be in the format
      * '(x;y;z;world[;yaw;pitch])'
-     * 
-     * @param loc
-     *            The string, that represent the location
+     *
+     * @param loc The string, that represent the location
      * @return The location
-     * @throws InstructionParseException
-     *             Is thrown, if the location is not in the right format, or it
-     *             could not be parsed into double values, or the World does not
-     *             exists
+     * @throws InstructionParseException Is thrown, if the location is not in the right format, or it
+     *                                   could not be parsed into double values, or the World does not
+     *                                   exists
      */
     public static Location parseLocation(final String loc) throws InstructionParseException {
         if (loc == null || !loc.matches("^" + REGEX_LOCATION + "$")) {
@@ -203,13 +195,11 @@ public class LocationData {
     /**
      * Parse a string into a vector. The Vector has to be in the format
      * '(x;y;z)'
-     * 
-     * @param vector
-     *            The string, that represent the vector
+     *
+     * @param vector The string, that represent the vector
      * @return The vector
-     * @throws InstructionParseException
-     *             Is thrown, if the Vector is not in the right format, or it
-     *             could not be parsed into double values
+     * @throws InstructionParseException Is thrown, if the Vector is not in the right format, or it
+     *                                   could not be parsed into double values
      */
     public static Vector parseVector(final String vector) throws InstructionParseException {
         if (vector == null || !vector.matches("^" + REGEX_VECTOR + "$")) {

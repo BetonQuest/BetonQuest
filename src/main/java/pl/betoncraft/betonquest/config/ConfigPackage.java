@@ -196,7 +196,7 @@ public class ConfigPackage {
                 }
 
                 if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
-                    LogUtils.getLogger().log(Level.WARNING, 
+                    LogUtils.getLogger().log(Level.WARNING,
                             String.format("Inner variable %s is not valid location, in variable %s, package %s.",
                                     innerVarName, varName, name));
                     return input;
@@ -277,6 +277,7 @@ public class ConfigPackage {
 
     /**
      * Returns a string with inserted variables and color codes and linebreaks replaced
+     *
      * @param address
      * @return a fully formatted string
      */

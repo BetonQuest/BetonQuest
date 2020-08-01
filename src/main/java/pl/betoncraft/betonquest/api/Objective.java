@@ -74,11 +74,9 @@ public abstract class Objective {
      * <b>Do not register listeners here!</b> There is a {@link #start()} method
      * for it.
      *
-     * @param instruction
-     *            Instruction object representing the objective; you need to
-     *            extract all required information from it
-     * @throws InstructionParseException
-     *             if the syntax is wrong or any error happens while parsing
+     * @param instruction Instruction object representing the objective; you need to
+     *                    extract all required information from it
+     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
      */
     public Objective(Instruction instruction) throws InstructionParseException {
         this.instruction = instruction;
@@ -143,11 +141,9 @@ public abstract class Objective {
      * need to have properties, i.e. "die" objective. By default it returns an
      * empty string.
      *
-     * @param name
-     *            the name of the property you need to return; you can parse it
-     *            to extract additional information
-     * @param playerID
-     *            ID of the player for whom the property is to be returned
+     * @param name     the name of the property you need to return; you can parse it
+     *                 to extract additional information
+     * @param playerID ID of the player for whom the property is to be returned
      * @return the property with given name
      */
     public String getProperty(String name, String playerID) {
@@ -159,8 +155,7 @@ public abstract class Objective {
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      *
-     * @param playerID
-     *            the ID of the player for whom the objective is to be completed
+     * @param playerID the ID of the player for whom the objective is to be completed
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
@@ -189,8 +184,7 @@ public abstract class Objective {
      * something that modifies data (e.g. killing zombies). If conditions are
      * met, you can safely modify the data.
      *
-     * @param playerID
-     *            ID of the player for whom the conditions are to be checked
+     * @param playerID ID of the player for whom the conditions are to be checked
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final String playerID) {
@@ -209,8 +203,7 @@ public abstract class Objective {
      * Adds this new objective to the player. Also updates the database with the
      * objective.
      *
-     * @param playerID
-     *            ID of the player
+     * @param playerID ID of the player
      */
     public final void newPlayer(String playerID) {
         String def = getDefaultDataInstruction();
@@ -250,8 +243,7 @@ public abstract class Objective {
      * In order to remove it from database use PlayerData.deleteObjective()
      * instead.
      *
-     * @param playerID
-     *            ID of the player
+     * @param playerID ID of the player
      */
     public final synchronized void removePlayer(String playerID) {
         dataMap.remove(playerID);
@@ -263,8 +255,7 @@ public abstract class Objective {
     /**
      * Checks if the player has this objective
      *
-     * @param playerID
-     *            ID of the player
+     * @param playerID ID of the player
      * @return true if the player has this objective
      */
     public final boolean containsPlayer(String playerID) {
@@ -274,8 +265,7 @@ public abstract class Objective {
     /**
      * Returns the data of the specified player
      *
-     * @param playerID
-     *            ID of the player
+     * @param playerID ID of the player
      * @return the data string for this objective
      */
     public final String getData(String playerID) {
@@ -300,8 +290,7 @@ public abstract class Objective {
      * Sets the label of this objective. Don't worry about it, it's only used by
      * the rest of BetonQuest's logic.
      *
-     * @param rename
-     *            new ID of the objective
+     * @param rename new ID of the objective
      */
     public void setLabel(ObjectiveID rename) {
         instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
@@ -351,14 +340,11 @@ public abstract class Objective {
          * constructor needs to parse the data in the instruction, so it can be
          * later retrieved and modified by your objective code.
          *
-         * @param instruction
-         *            the instruction of the data object; parse it to get all
-         *            required information
-         * @param playerID
-         *            ID of the player
-         * @param objID
-         *            ID of the objective, used by BetonQuest to store this
-         *            ObjectiveData in the database
+         * @param instruction the instruction of the data object; parse it to get all
+         *                    required information
+         * @param playerID    ID of the player
+         * @param objID       ID of the objective, used by BetonQuest to store this
+         *                    ObjectiveData in the database
          */
         public ObjectiveData(String instruction, String playerID, String objID) {
             this.instruction = instruction;
@@ -423,8 +409,7 @@ public abstract class Objective {
          * Runs a task and logs occurring quest runtime exceptions with a rate
          * limit
          *
-         * @param qreThrowing
-         *            a task that may throw a quest runtime exception
+         * @param qreThrowing a task that may throw a quest runtime exception
          */
         public void handle(QREThrowing qreThrowing) {
             try {

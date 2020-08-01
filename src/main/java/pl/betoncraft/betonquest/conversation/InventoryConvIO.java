@@ -159,10 +159,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
         ItemStack npc;
-        if(skullCache.containsKey(npcName) && false) {
+        if (skullCache.containsKey(npcName) && false) {
             npc = skullCache.get(npcName);
-        }
-        else {
+        } else {
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
             SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
@@ -180,8 +179,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         skullCache.put(npcName, npc);
                         inv.setItem(0, npc);
                     });
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
                 }
             });

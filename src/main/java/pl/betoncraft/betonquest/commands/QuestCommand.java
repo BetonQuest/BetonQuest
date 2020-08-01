@@ -103,211 +103,211 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             // if there are arguments handle them
             // toLowerCase makes switch case-insensitive
             switch (args[0].toLowerCase()) {
-            case "conditions":
-            case "condition":
-            case "c":
-                // conditions are only possible for online players, so no
-                // MySQL async
-                // access is required
-                new BukkitRunnable() {
+                case "conditions":
+                case "condition":
+                case "c":
+                    // conditions are only possible for online players, so no
+                    // MySQL async
+                    // access is required
+                    new BukkitRunnable() {
 
-                    @Override
-                    public void run() {
-                        handleConditions(sender, args);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "events":
-            case "event":
-            case "e":
-                // the same goes for events
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleEvents(sender, args);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "items":
-            case "item":
-            case "i":
-                // and items, which only use configuration files (they
-                // should be sync)
-                handleItems(sender, args);
-                break;
-            case "give":
-            case "g":
-                giveItem(sender, args);
-                break;
-            case "config":
-                // config is also only synchronous
-                handleConfig(sender, args);
-                break;
-            case "objectives":
-            case "objective":
-            case "o":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender1 = sender;
-                final String[] finalArgs1 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleObjectives(finalSender1, finalArgs1);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "globaltags":
-            case "globaltag":
-            case "gtag":
-            case "gtags":
-            case "gt":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender8 = sender;
-                final String[] finalArgs8 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleGlobalTags(finalSender8, finalArgs8);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "globalpoints":
-            case "globalpoint":
-            case "gpoints":
-            case "gpoint":
-            case "gp":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender9 = sender;
-                final String[] finalArgs9 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleGlobalPoints(finalSender9, finalArgs9);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "tags":
-            case "tag":
-            case "t":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender2 = sender;
-                final String[] finalArgs2 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleTags(finalSender2, finalArgs2);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "points":
-            case "point":
-            case "p":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender3 = sender;
-                final String[] finalArgs3 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handlePoints(finalSender3, finalArgs3);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "journals":
-            case "journal":
-            case "j":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender4 = sender;
-                final String[] finalArgs4 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleJournals(finalSender4, finalArgs4);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "delete":
-            case "del":
-            case "d":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender5 = sender;
-                final String[] finalArgs5 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleDeleting(finalSender5, finalArgs5);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "rename":
-            case "r":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender6 = sender;
-                final String[] finalArgs6 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        handleRenaming(finalSender6, finalArgs6);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "vector":
-            case "vec":
-                handleVector(sender, args);
-                break;
-            case "version":
-            case "ver":
-            case "v":
-                displayVersionInfo(sender);
-                break;
-            case "purge":
-                LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                final CommandSender finalSender7 = sender;
-                final String[] finalArgs7 = args;
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        purgePlayer(finalSender7, finalArgs7);
-                    }
-                }.runTaskAsynchronously(BetonQuest.getInstance());
-                break;
-            case "update":
-                BetonQuest.getInstance().getUpdater().update(sender);
-                break;
-            case "reload":
-                // just reloading
-                defaultPack = Config.getString("config.default_package");
-                instance.reload();
-                sendMessage(sender, "reloaded");
-                break;
-            case "backup":
-                // do a full plugin backup
-                if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
-                    sendMessage(sender, "offline");
+                        @Override
+                        public void run() {
+                            handleConditions(sender, args);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
-                }
-                Utils.backup();
-                break;
-            case "create":
-            case "package":
-                createNewPackage(sender, args);
-                break;
-            case "debug":
-                handleDebug(sender, args);
-                break;
-            default:
-                // there was an unknown argument, so handle this
-                sendMessage(sender, "unknown_argument");
-                break;
+                case "events":
+                case "event":
+                case "e":
+                    // the same goes for events
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleEvents(sender, args);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "items":
+                case "item":
+                case "i":
+                    // and items, which only use configuration files (they
+                    // should be sync)
+                    handleItems(sender, args);
+                    break;
+                case "give":
+                case "g":
+                    giveItem(sender, args);
+                    break;
+                case "config":
+                    // config is also only synchronous
+                    handleConfig(sender, args);
+                    break;
+                case "objectives":
+                case "objective":
+                case "o":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender1 = sender;
+                    final String[] finalArgs1 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleObjectives(finalSender1, finalArgs1);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "globaltags":
+                case "globaltag":
+                case "gtag":
+                case "gtags":
+                case "gt":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender8 = sender;
+                    final String[] finalArgs8 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleGlobalTags(finalSender8, finalArgs8);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "globalpoints":
+                case "globalpoint":
+                case "gpoints":
+                case "gpoint":
+                case "gp":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender9 = sender;
+                    final String[] finalArgs9 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleGlobalPoints(finalSender9, finalArgs9);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "tags":
+                case "tag":
+                case "t":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender2 = sender;
+                    final String[] finalArgs2 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleTags(finalSender2, finalArgs2);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "points":
+                case "point":
+                case "p":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender3 = sender;
+                    final String[] finalArgs3 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handlePoints(finalSender3, finalArgs3);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "journals":
+                case "journal":
+                case "j":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender4 = sender;
+                    final String[] finalArgs4 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleJournals(finalSender4, finalArgs4);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "delete":
+                case "del":
+                case "d":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender5 = sender;
+                    final String[] finalArgs5 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleDeleting(finalSender5, finalArgs5);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "rename":
+                case "r":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender6 = sender;
+                    final String[] finalArgs6 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleRenaming(finalSender6, finalArgs6);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "vector":
+                case "vec":
+                    handleVector(sender, args);
+                    break;
+                case "version":
+                case "ver":
+                case "v":
+                    displayVersionInfo(sender);
+                    break;
+                case "purge":
+                    LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
+                    final CommandSender finalSender7 = sender;
+                    final String[] finalArgs7 = args;
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            purgePlayer(finalSender7, finalArgs7);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
+                case "update":
+                    BetonQuest.getInstance().getUpdater().update(sender);
+                    break;
+                case "reload":
+                    // just reloading
+                    defaultPack = Config.getString("config.default_package");
+                    instance.reload();
+                    sendMessage(sender, "reloaded");
+                    break;
+                case "backup":
+                    // do a full plugin backup
+                    if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
+                        sendMessage(sender, "offline");
+                        break;
+                    }
+                    Utils.backup();
+                    break;
+                case "create":
+                case "package":
+                    createNewPackage(sender, args);
+                    break;
+                case "debug":
+                    handleDebug(sender, args);
+                    break;
+                default:
+                    // there was an unknown argument, so handle this
+                    sendMessage(sender, "unknown_argument");
+                    break;
             }
             LogUtils.getLogger().log(Level.FINE, "Command executing done");
             return true;
@@ -323,77 +323,77 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     "update", "reload", "backup", "create", "debug");
         }
         switch (args[0].toLowerCase()) {
-        case "conditions":
-        case "condition":
-        case "c":
-            return completeConditions(sender, args);
-        case "events":
-        case "event":
-        case "e":
-            return completeEvents(sender, args);
-        case "items":
-        case "item":
-        case "i":
-        case "give":
-        case "g":
-            return completeItems(sender, args);
-        case "config":
-            return completeConfig(sender, args);
-        case "objectives":
-        case "objective":
-        case "o":
-            return completeObjectives(sender, args);
-        case "globaltags":
-        case "globaltag":
-        case "gtag":
-        case "gtags":
-        case "gt":
-            return completeGlobalTags(sender, args);
-        case "globalpoints":
-        case "globalpoint":
-        case "gpoints":
-        case "gpoint":
-        case "gp":
-            return completeGlobalPoints(sender, args);
-        case "tags":
-        case "tag":
-        case "t":
-            return completeTags(sender, args);
-        case "points":
-        case "point":
-        case "p":
-            return completePoints(sender, args);
-        case "journals":
-        case "journal":
-        case "j":
-            return completeJournals(sender, args);
-        case "delete":
-        case "del":
-        case "d":
-            return completeDeleting(sender, args);
-        case "rename":
-        case "r":
-            return completeRenaming(sender, args);
-        case "vector":
-        case "vec":
-            return completeVector(sender, args);
-        case "purge":
-            if (args.length == 2)
-                return null;
-            else
+            case "conditions":
+            case "condition":
+            case "c":
+                return completeConditions(sender, args);
+            case "events":
+            case "event":
+            case "e":
+                return completeEvents(sender, args);
+            case "items":
+            case "item":
+            case "i":
+            case "give":
+            case "g":
+                return completeItems(sender, args);
+            case "config":
+                return completeConfig(sender, args);
+            case "objectives":
+            case "objective":
+            case "o":
+                return completeObjectives(sender, args);
+            case "globaltags":
+            case "globaltag":
+            case "gtag":
+            case "gtags":
+            case "gt":
+                return completeGlobalTags(sender, args);
+            case "globalpoints":
+            case "globalpoint":
+            case "gpoints":
+            case "gpoint":
+            case "gp":
+                return completeGlobalPoints(sender, args);
+            case "tags":
+            case "tag":
+            case "t":
+                return completeTags(sender, args);
+            case "points":
+            case "point":
+            case "p":
+                return completePoints(sender, args);
+            case "journals":
+            case "journal":
+            case "j":
+                return completeJournals(sender, args);
+            case "delete":
+            case "del":
+            case "d":
+                return completeDeleting(sender, args);
+            case "rename":
+            case "r":
+                return completeRenaming(sender, args);
+            case "vector":
+            case "vec":
+                return completeVector(sender, args);
+            case "purge":
+                if (args.length == 2)
+                    return null;
+                else
+                    return new ArrayList<>();
+            case "debug":
+                return completeDebug(sender, args);
+            case "version":
+            case "ver":
+            case "v":
+            case "update":
+            case "reload":
+            case "backup":
+            case "create":
+            case "package":
+            default:
                 return new ArrayList<>();
-        case "debug":
-            return completeDebug(sender, args);
-        case "version":
-        case "ver":
-        case "v":
-        case "update":
-        case "reload":
-        case "backup":
-        case "create":
-        case "package":
-        default:
-            return new ArrayList<>();
         }
     }
 
@@ -413,9 +413,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param sender
      * @param args
-     * @param type
-     *            - the type of the Id (item/event/journal/condition/objective),
-     *            null for unspecific
+     * @param type   - the type of the Id (item/event/journal/condition/objective),
+     *               null for unspecific
      * @return
      */
     private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
@@ -434,23 +433,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             ConfigAccessor accessor;
             switch (type) {
-            case ITEMS:
-                accessor = configPack.getItems();
-                break;
-            case EVENTS:
-                accessor = configPack.getEvents();
-                break;
-            case JOURNAL:
-                accessor = configPack.getJournal();
-                break;
-            case CONDITIONS:
-                accessor = configPack.getConditions();
-                break;
-            case OBJECTIVES:
-                accessor = configPack.getObjectives();
-                break;
-            default:
-                return new ArrayList<>();
+                case ITEMS:
+                    accessor = configPack.getItems();
+                    break;
+                case EVENTS:
+                    accessor = configPack.getEvents();
+                    break;
+                case JOURNAL:
+                    accessor = configPack.getJournal();
+                    break;
+                case CONDITIONS:
+                    accessor = configPack.getConditions();
+                    break;
+                case OBJECTIVES:
+                    accessor = configPack.getObjectives();
+                    break;
+                default:
+                    return new ArrayList<>();
             }
             FileConfiguration configuration = accessor.getConfig();
             List<String> completations = new ArrayList<>();
@@ -481,10 +480,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             String pack = args[1].substring(0, splitIndex);
             String item = args[1].substring(splitIndex + 1);
             ConfigPackage configPack = Config.getPackages().get(pack);
-            GiveEvent give = new GiveEvent(new Instruction(configPack, null , "give " + item));
+            GiveEvent give = new GiveEvent(new Instruction(configPack, null, "give " + item));
             give.fire(PlayerConverter.getID((Player) sender));
         } catch (InstructionParseException | QuestRuntimeException e) {
-            sendMessage(sender, "error", new String[] {
+            sendMessage(sender, "error", new String[]{
                     e.getMessage()
             });
             LogUtils.getLogger().log(Level.WARNING, "Error while creating an item: " + e.getMessage());
@@ -530,7 +529,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         LogUtils.getLogger().log(Level.FINE, "Purging player " + args[1]);
         playerData.purgePlayer();
         // done
-        sendMessage(sender, "purged", new String[] {
+        sendMessage(sender, "purged", new String[]{
                 args[1]
         });
     }
@@ -547,75 +546,75 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String action = args[1];
         String path = args[2];
         switch (action) {
-        case "read":
-        case "r":
-            LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-            String message = Config.getString(path);
-            sender.sendMessage(message == null ? "null" : message);
-            break;
-        case "set":
-        case "s":
-            if (args.length < 4) {
-                sendMessage(sender, "config_set_error");
-                return;
-            }
-            StringBuilder strBldr = new StringBuilder();
-            for (int i = 3; i < args.length; i++) {
-                strBldr.append(args[i] + " ");
-            }
-            if (strBldr.length() < 2) {
-                LogUtils.getLogger().log(Level.FINE, "Wrong path!");
-                sendMessage(sender, "specify_path");
-                return;
-            }
-            boolean set = Config.setString(path, (args[3].equalsIgnoreCase("null")) ? null : strBldr.toString().trim());
-            if (set) {
+            case "read":
+            case "r":
                 LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-                String message1 = Config.getString(path);
-                sender.sendMessage(message1 == null ? "null" : message1);
-            } else {
-                sendMessage(sender, "config_set_error");
-            }
-            break;
-        case "add":
-        case "a":
-            if (args.length < 4) {
-                sendMessage(sender, "config_set_error");
-                return;
-            }
-            StringBuilder strBldr2 = new StringBuilder();
-            for (int i = 3; i < args.length; i++) {
-                strBldr2.append(args[i] + " ");
-            }
-            if (strBldr2.length() < 2) {
-                LogUtils.getLogger().log(Level.FINE, "Wrong path!");
-                sendMessage(sender, "specify_path");
-                return;
-            }
-            String finalString = strBldr2.toString().trim();
-            boolean space = false;
-            if (finalString.startsWith("_")) {
-                finalString = finalString.substring(1);
-                space = true;
-            }
-            String oldString = Config.getString(path);
-            if (oldString == null) {
-                oldString = "";
-            }
-            boolean set2 = Config.setString(path, oldString + ((space) ? " " : "") + finalString);
-            if (set2) {
-                LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-                String message2 = Config.getString(path);
-                sender.sendMessage(message2 == null ? "null" : message2);
-            } else {
-                sendMessage(sender, "config_set_error");
-            }
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+                String message = Config.getString(path);
+                sender.sendMessage(message == null ? "null" : message);
+                break;
+            case "set":
+            case "s":
+                if (args.length < 4) {
+                    sendMessage(sender, "config_set_error");
+                    return;
+                }
+                StringBuilder strBldr = new StringBuilder();
+                for (int i = 3; i < args.length; i++) {
+                    strBldr.append(args[i] + " ");
+                }
+                if (strBldr.length() < 2) {
+                    LogUtils.getLogger().log(Level.FINE, "Wrong path!");
+                    sendMessage(sender, "specify_path");
+                    return;
+                }
+                boolean set = Config.setString(path, (args[3].equalsIgnoreCase("null")) ? null : strBldr.toString().trim());
+                if (set) {
+                    LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
+                    String message1 = Config.getString(path);
+                    sender.sendMessage(message1 == null ? "null" : message1);
+                } else {
+                    sendMessage(sender, "config_set_error");
+                }
+                break;
+            case "add":
+            case "a":
+                if (args.length < 4) {
+                    sendMessage(sender, "config_set_error");
+                    return;
+                }
+                StringBuilder strBldr2 = new StringBuilder();
+                for (int i = 3; i < args.length; i++) {
+                    strBldr2.append(args[i] + " ");
+                }
+                if (strBldr2.length() < 2) {
+                    LogUtils.getLogger().log(Level.FINE, "Wrong path!");
+                    sendMessage(sender, "specify_path");
+                    return;
+                }
+                String finalString = strBldr2.toString().trim();
+                boolean space = false;
+                if (finalString.startsWith("_")) {
+                    finalString = finalString.substring(1);
+                    space = true;
+                }
+                String oldString = Config.getString(path);
+                if (oldString == null) {
+                    oldString = "";
+                }
+                boolean set2 = Config.setString(path, oldString + ((space) ? " " : "") + finalString);
+                if (set2) {
+                    LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
+                    String message2 = Config.getString(path);
+                    sender.sendMessage(message2 == null ? "null" : message2);
+                } else {
+                    sendMessage(sender, "config_set_error");
+                }
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -672,46 +671,46 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String pointerName = (args[3].contains(".")) ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
-        case "add":
-        case "a":
-            Pointer pointer;
-            if (args.length < 5) {
-                long timestamp = new Date().getTime();
-                LogUtils.getLogger().log(Level.FINE, "Adding pointer with current date: " + timestamp);
-                pointer = new Pointer(pointerName, timestamp);
-            } else {
-                LogUtils.getLogger().log(Level.FINE, "Adding pointer with date " + args[4].replaceAll("_", " "));
-                try {
-                    pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"))
-                            .parse(args[4].replaceAll("_", " ")).getTime());
-                } catch (ParseException e) {
-                    sendMessage(sender, "specify_date");
-                    LogUtils.getLogger().log(Level.WARNING, "Could not parse date: " + e.getMessage());
-                    LogUtils.logThrowable(e);
-                    return;
+            case "add":
+            case "a":
+                Pointer pointer;
+                if (args.length < 5) {
+                    long timestamp = new Date().getTime();
+                    LogUtils.getLogger().log(Level.FINE, "Adding pointer with current date: " + timestamp);
+                    pointer = new Pointer(pointerName, timestamp);
+                } else {
+                    LogUtils.getLogger().log(Level.FINE, "Adding pointer with date " + args[4].replaceAll("_", " "));
+                    try {
+                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"))
+                                .parse(args[4].replaceAll("_", " ")).getTime());
+                    } catch (ParseException e) {
+                        sendMessage(sender, "specify_date");
+                        LogUtils.getLogger().log(Level.WARNING, "Could not parse date: " + e.getMessage());
+                        LogUtils.logThrowable(e);
+                        return;
+                    }
                 }
-            }
-            // add the pointer
-            journal.addPointer(pointer);
-            journal.update();
-            sendMessage(sender, "pointer_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            // remove the pointer
-            LogUtils.getLogger().log(Level.FINE, "Removing pointer");
-            journal.removePointer(pointerName);
-            journal.update();
-            sendMessage(sender, "pointer_removed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+                // add the pointer
+                journal.addPointer(pointer);
+                journal.update();
+                sendMessage(sender, "pointer_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                // remove the pointer
+                LogUtils.getLogger().log(Level.FINE, "Removing pointer");
+                journal.removePointer(pointerName);
+                journal.update();
+                sendMessage(sender, "pointer_removed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -770,36 +769,36 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
-        case "add":
-        case "a":
-            if (args.length < 5 || !args[4].matches("-?\\d+")) {
-                LogUtils.getLogger().log(Level.FINE, "Missing amount");
-                sendMessage(sender, "specify_amount");
-                return;
-            }
-            // add the point
-            LogUtils.getLogger().log(Level.FINE, "Adding points");
-            playerData.modifyPoints(category, Integer.parseInt(args[4]));
-            sendMessage(sender, "points_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            // remove the point (this is unnecessary as adding negative
-            // amounts
-            // subtracts points, but for the sake of users let's leave it
-            // here)
-            LogUtils.getLogger().log(Level.FINE, "Removing points");
-            playerData.removePointsCategory(category);
-            sendMessage(sender, "points_removed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+            case "add":
+            case "a":
+                if (args.length < 5 || !args[4].matches("-?\\d+")) {
+                    LogUtils.getLogger().log(Level.FINE, "Missing amount");
+                    sendMessage(sender, "specify_amount");
+                    return;
+                }
+                // add the point
+                LogUtils.getLogger().log(Level.FINE, "Adding points");
+                playerData.modifyPoints(category, Integer.parseInt(args[4]));
+                sendMessage(sender, "points_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                // remove the point (this is unnecessary as adding negative
+                // amounts
+                // subtracts points, but for the sake of users let's leave it
+                // here)
+                LogUtils.getLogger().log(Level.FINE, "Removing points");
+                playerData.removePointsCategory(category);
+                sendMessage(sender, "points_removed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -837,32 +836,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase()) {
-        case "add":
-        case "a":
-            if (args.length < 4 || !args[3].matches("-?\\d+")) {
-                LogUtils.getLogger().log(Level.FINE, "Missing amount");
-                sendMessage(sender, "specify_amount");
-                return;
-            }
-            // add the point
-            LogUtils.getLogger().log(Level.FINE, "Adding global points");
-            data.modifyPoints(category, Integer.parseInt(args[3]));
-            sendMessage(sender, "points_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            LogUtils.getLogger().log(Level.FINE, "Removing global points");
-            data.removePointsCategory(category);
-            sendMessage(sender, "points_removed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+            case "add":
+            case "a":
+                if (args.length < 4 || !args[3].matches("-?\\d+")) {
+                    LogUtils.getLogger().log(Level.FINE, "Missing amount");
+                    sendMessage(sender, "specify_amount");
+                    return;
+                }
+                // add the point
+                LogUtils.getLogger().log(Level.FINE, "Adding global points");
+                data.modifyPoints(category, Integer.parseInt(args[3]));
+                sendMessage(sender, "points_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                LogUtils.getLogger().log(Level.FINE, "Removing global points");
+                data.removePointsCategory(category);
+                sendMessage(sender, "points_removed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -951,7 +950,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         config.getConfig().set(name, instructions.trim());
         config.saveConfig();
         // done
-        sendMessage(sender, "item_created", new String[] {
+        sendMessage(sender, "item_created", new String[]{
                 args[1]
         });
 
@@ -991,7 +990,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             eventID = new EventID(null, args[2]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[] {
+            sendMessage(sender, "error", new String[]{
                     e.getMessage()
             });
             LogUtils.getLogger().log(Level.WARNING, "Could not find event: " + e.getMessage());
@@ -1000,7 +999,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // fire the event
         BetonQuest.event(playerID, eventID);
-        sendMessage(sender, "player_event", new String[] {
+        sendMessage(sender, "player_event", new String[]{
                 eventID.generateInstruction().getInstruction()
         });
     }
@@ -1042,7 +1041,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             conditionID = new ConditionID(null, args[2]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[] {
+            sendMessage(sender, "error", new String[]{
                     e.getMessage()
             });
             LogUtils.getLogger().log(Level.WARNING, "Could not find condition: " + e.getMessage());
@@ -1050,7 +1049,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        sendMessage(sender, "player_condition", new String[] {
+        sendMessage(sender, "player_condition", new String[]{
                 (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))
         });
@@ -1109,30 +1108,30 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
-        case "add":
-        case "a":
-            // add the tag
-            LogUtils.getLogger().log(Level.FINE,
-                    "Adding tag " + tag + " for player " + PlayerConverter.getName(playerID));
-            playerData.addTag(tag);
-            sendMessage(sender, "tag_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            // remove the tag
-            LogUtils.getLogger().log(Level.FINE,
-                    "Removing tag " + tag + " for player " + PlayerConverter.getName(playerID));
-            playerData.removeTag(tag);
-            sendMessage(sender, "tag_removed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+            case "add":
+            case "a":
+                // add the tag
+                LogUtils.getLogger().log(Level.FINE,
+                        "Adding tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                playerData.addTag(tag);
+                sendMessage(sender, "tag_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                // remove the tag
+                LogUtils.getLogger().log(Level.FINE,
+                        "Removing tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                playerData.removeTag(tag);
+                sendMessage(sender, "tag_removed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -1167,28 +1166,28 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase()) {
-        case "add":
-        case "a":
-            // add the tag
-            LogUtils.getLogger().log(Level.FINE, "Adding global tag " + tag);
-            data.addTag(tag);
-            sendMessage(sender, "tag_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            // remove the tag
-            LogUtils.getLogger().log(Level.FINE, "Removing global tag " + tag);
-            data.removeTag(tag);
-            sendMessage(sender, "tag_removed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+            case "add":
+            case "a":
+                // add the tag
+                LogUtils.getLogger().log(Level.FINE, "Adding global tag " + tag);
+                data.addTag(tag);
+                sendMessage(sender, "tag_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                // remove the tag
+                LogUtils.getLogger().log(Level.FINE, "Removing global tag " + tag);
+                data.removeTag(tag);
+                sendMessage(sender, "tag_removed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -1283,7 +1282,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             objectiveID = new ObjectiveID(null, args[3]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[] {
+            sendMessage(sender, "error", new String[]{
                     e.getMessage()
             });
             LogUtils.getLogger().log(Level.WARNING, "Could not find objective: " + e.getMessage());
@@ -1296,47 +1295,47 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         switch (args[2].toLowerCase()) {
-        case "start":
-        case "s":
-        case "add":
-        case "a":
-            LogUtils.getLogger().log(Level.FINE,
-                    "Adding new objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-            // add the objective
-            if (isOnline) {
-                BetonQuest.newObjective(playerID, objectiveID);
-            } else {
-                playerData.addNewRawObjective(objectiveID);
-            }
-            sendMessage(sender, "objective_added");
-            break;
-        case "remove":
-        case "delete":
-        case "del":
-        case "r":
-        case "d":
-            LogUtils.getLogger().log(Level.FINE,
-                    "Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-            objective.removePlayer(playerID);
-            playerData.removeRawObjective(objectiveID);
-            sendMessage(sender, "objective_removed");
-            break;
-        case "complete":
-        case "c":
-            LogUtils.getLogger().log(Level.FINE,
-                    "Completing objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-            if (isOnline) {
-                objective.completeObjective(playerID);
-            } else {
+            case "start":
+            case "s":
+            case "add":
+            case "a":
+                LogUtils.getLogger().log(Level.FINE,
+                        "Adding new objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+                // add the objective
+                if (isOnline) {
+                    BetonQuest.newObjective(playerID, objectiveID);
+                } else {
+                    playerData.addNewRawObjective(objectiveID);
+                }
+                sendMessage(sender, "objective_added");
+                break;
+            case "remove":
+            case "delete":
+            case "del":
+            case "r":
+            case "d":
+                LogUtils.getLogger().log(Level.FINE,
+                        "Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+                objective.removePlayer(playerID);
                 playerData.removeRawObjective(objectiveID);
-            }
-            sendMessage(sender, "objective_completed");
-            break;
-        default:
-            // if there was something else, display error message
-            LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
-            sendMessage(sender, "unknown_argument");
-            break;
+                sendMessage(sender, "objective_removed");
+                break;
+            case "complete":
+            case "c":
+                LogUtils.getLogger().log(Level.FINE,
+                        "Completing objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+                if (isOnline) {
+                    objective.completeObjective(playerID);
+                } else {
+                    playerData.removeRawObjective(objectiveID);
+                }
+                sendMessage(sender, "objective_completed");
+                break;
+            default:
+                // if there was something else, display error message
+                LogUtils.getLogger().log(Level.FINE, "The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
         }
     }
 
@@ -1443,132 +1442,132 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         UpdateType updateType;
         switch (type) {
-        case "tags":
-        case "tag":
-        case "t":
-            updateType = UpdateType.RENAME_ALL_TAGS;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-                playerData.removeTag(name);
-                playerData.addTag(rename);
-            }
-            break;
-        case "points":
-        case "point":
-        case "p":
-            updateType = UpdateType.RENAME_ALL_POINTS;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-                int points = 0;
-                for (Point point : playerData.getPoints()) {
-                    if (point.getCategory().equals(name)) {
-                        points = point.getCount();
+            case "tags":
+            case "tag":
+            case "t":
+                updateType = UpdateType.RENAME_ALL_TAGS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                    playerData.removeTag(name);
+                    playerData.addTag(rename);
+                }
+                break;
+            case "points":
+            case "point":
+            case "p":
+                updateType = UpdateType.RENAME_ALL_POINTS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                    int points = 0;
+                    for (Point point : playerData.getPoints()) {
+                        if (point.getCategory().equals(name)) {
+                            points = point.getCount();
+                            break;
+                        }
+                    }
+                    playerData.removePointsCategory(name);
+                    playerData.modifyPoints(rename, points);
+                }
+                break;
+            case "globalpoints":
+            case "globalpoint":
+            case "gpoints":
+            case "gpoint":
+            case "gp":
+                updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
+                int globalpoints = 0;
+                for (Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
+                    if (globalpoint.getCategory().equals(name)) {
+                        globalpoints = globalpoint.getCount();
                         break;
                     }
                 }
-                playerData.removePointsCategory(name);
-                playerData.modifyPoints(rename, points);
-            }
-            break;
-        case "globalpoints":
-        case "globalpoint":
-        case "gpoints":
-        case "gpoint":
-        case "gp":
-            updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
-            int globalpoints = 0;
-            for (Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
-                if (globalpoint.getCategory().equals(name)) {
-                    globalpoints = globalpoint.getCount();
-                    break;
+                BetonQuest.getInstance().getGlobalData().removePointsCategory(name);
+                BetonQuest.getInstance().getGlobalData().modifyPoints(rename, globalpoints);
+                break;
+            case "objectives":
+            case "objective":
+            case "o":
+                updateType = UpdateType.RENAME_ALL_OBJECTIVES;
+                // get ID and package
+                ObjectiveID nameID;
+                try {
+                    nameID = new ObjectiveID(null, name);
+                } catch (ObjectNotFoundException e) {
+                    sendMessage(sender, "error", new String[]{
+                            e.getMessage()
+                    });
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find Objective: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                    return;
                 }
-            }
-            BetonQuest.getInstance().getGlobalData().removePointsCategory(name);
-            BetonQuest.getInstance().getGlobalData().modifyPoints(rename, globalpoints);
-            break;
-        case "objectives":
-        case "objective":
-        case "o":
-            updateType = UpdateType.RENAME_ALL_OBJECTIVES;
-            // get ID and package
-            ObjectiveID nameID;
-            try {
-                nameID = new ObjectiveID(null, name);
-            } catch (ObjectNotFoundException e) {
-                sendMessage(sender, "error", new String[] {
-                        e.getMessage()
-                });
-                LogUtils.getLogger().log(Level.WARNING, "Could not find Objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
-                return;
-            }
-            // rename objective in the file
-            nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1],
-                    nameID.generateInstruction().getInstruction());
-            nameID.getPackage().getObjectives().saveConfig();
-            // rename objective instance
-            ObjectiveID renameID;
-            try {
-                renameID = new ObjectiveID(null, rename);
-            } catch (ObjectNotFoundException e) {
-                sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
-                LogUtils.logThrowableReport(e);
-                return;
-            }
-            BetonQuest.getInstance().renameObjective(nameID, renameID);
-            BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
-            // renaming an active objective probably isn't needed
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String playerID = PlayerConverter.getID(player);
-                boolean found = false;
-                String data = null;
-                for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
-                    if (obj.getLabel().equals(name)) {
-                        found = true;
-                        data = obj.getData(PlayerConverter.getID(player));
-                        break;
+                // rename objective in the file
+                nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1],
+                        nameID.generateInstruction().getInstruction());
+                nameID.getPackage().getObjectives().saveConfig();
+                // rename objective instance
+                ObjectiveID renameID;
+                try {
+                    renameID = new ObjectiveID(null, rename);
+                } catch (ObjectNotFoundException e) {
+                    sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
+                    LogUtils.logThrowableReport(e);
+                    return;
+                }
+                BetonQuest.getInstance().renameObjective(nameID, renameID);
+                BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
+                // renaming an active objective probably isn't needed
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    String playerID = PlayerConverter.getID(player);
+                    boolean found = false;
+                    String data = null;
+                    for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+                        if (obj.getLabel().equals(name)) {
+                            found = true;
+                            data = obj.getData(PlayerConverter.getID(player));
+                            break;
+                        }
                     }
+                    // skip the player if he does not have this objective
+                    if (found == false)
+                        continue;
+                    if (data == null)
+                        data = "";
+                    BetonQuest.getInstance().getObjective(nameID).removePlayer(playerID);
+                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
+                    BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
                 }
-                // skip the player if he does not have this objective
-                if (found == false)
-                    continue;
-                if (data == null)
-                    data = "";
-                BetonQuest.getInstance().getObjective(nameID).removePlayer(playerID);
-                BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
-                BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
-            }
-            nameID.getPackage().getObjectives().getConfig().set(nameID.getBaseID(), null);
-            nameID.getPackage().getObjectives().saveConfig();
-            break;
-        case "journals":
-        case "journal":
-        case "j":
-        case "entries":
-        case "entry":
-        case "e":
-            updateType = UpdateType.RENAME_ALL_ENTRIES;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
-                Pointer p = null;
-                for (Pointer pointer : journal.getPointers()) {
-                    if (pointer.getPointer().equals(name)) {
-                        p = pointer;
+                nameID.getPackage().getObjectives().getConfig().set(nameID.getBaseID(), null);
+                nameID.getPackage().getObjectives().saveConfig();
+                break;
+            case "journals":
+            case "journal":
+            case "j":
+            case "entries":
+            case "entry":
+            case "e":
+                updateType = UpdateType.RENAME_ALL_ENTRIES;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                    Pointer p = null;
+                    for (Pointer pointer : journal.getPointers()) {
+                        if (pointer.getPointer().equals(name)) {
+                            p = pointer;
+                        }
                     }
+                    // skip the player if he does not have this entry
+                    if (p == null)
+                        continue;
+                    journal.removePointer(name);
+                    journal.addPointer(new Pointer(rename, p.getTimestamp()));
+                    journal.update();
                 }
-                // skip the player if he does not have this entry
-                if (p == null)
-                    continue;
-                journal.removePointer(name);
-                journal.addPointer(new Pointer(rename, p.getTimestamp()));
-                journal.update();
-            }
-            break;
-        default:
-            sendMessage(sender, "unknown_argument");
-            return;
+                break;
+            default:
+                sendMessage(sender, "unknown_argument");
+                return;
         }
-        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[] {
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{
                 rename, name
         }));
         sendMessage(sender, "everything_renamed");
@@ -1604,63 +1603,63 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         UpdateType updateType;
         switch (type) {
-        case "tags":
-        case "tag":
-        case "t":
-            updateType = UpdateType.REMOVE_ALL_TAGS;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-                playerData.removeTag(name);
-            }
-            break;
-        case "points":
-        case "point":
-        case "p":
-            updateType = UpdateType.REMOVE_ALL_POINTS;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-                playerData.removePointsCategory(name);
-            }
-            break;
-        case "objectives":
-        case "objective":
-        case "o":
-            updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
-            ObjectiveID objectiveID;
-            try {
-                objectiveID = new ObjectiveID(null, name);
-            } catch (ObjectNotFoundException e) {
-                sendMessage(sender, "error", new String[] {
-                        e.getMessage()
-                });
-                LogUtils.getLogger().log(Level.WARNING, "Could not fine objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            case "tags":
+            case "tag":
+            case "t":
+                updateType = UpdateType.REMOVE_ALL_TAGS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                    playerData.removeTag(name);
+                }
+                break;
+            case "points":
+            case "point":
+            case "p":
+                updateType = UpdateType.REMOVE_ALL_POINTS;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                    playerData.removePointsCategory(name);
+                }
+                break;
+            case "objectives":
+            case "objective":
+            case "o":
+                updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
+                ObjectiveID objectiveID;
+                try {
+                    objectiveID = new ObjectiveID(null, name);
+                } catch (ObjectNotFoundException e) {
+                    sendMessage(sender, "error", new String[]{
+                            e.getMessage()
+                    });
+                    LogUtils.getLogger().log(Level.WARNING, "Could not fine objective: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                    return;
+                }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    String playerID = PlayerConverter.getID(player);
+                    BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
+                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
+                }
+                break;
+            case "journals":
+            case "journal":
+            case "j":
+            case "entries":
+            case "entry":
+            case "e":
+                updateType = UpdateType.REMOVE_ALL_ENTRIES;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                    journal.removePointer(name);
+                    journal.update();
+                }
+                break;
+            default:
+                sendMessage(sender, "unknown_argument");
                 return;
-            }
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String playerID = PlayerConverter.getID(player);
-                BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
-                BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
-            }
-            break;
-        case "journals":
-        case "journal":
-        case "j":
-        case "entries":
-        case "entry":
-        case "e":
-            updateType = UpdateType.REMOVE_ALL_ENTRIES;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
-                journal.removePointer(name);
-                journal.update();
-            }
-            break;
-        default:
-            sendMessage(sender, "unknown_argument");
-            return;
         }
-        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[] {
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{
                 name
         }));
         sendMessage(sender, "everything_removed");
@@ -1679,24 +1678,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("tag", "point", "objective", "entry");
         if (args.length == 3) {
             switch (args[1].toLowerCase()) {
-            case "tags":
-            case "tag":
-            case "t":
-            case "points":
-            case "point":
-            case "p":
-                return completeId(sender, args, null);
-            case "objectives":
-            case "objective":
-            case "o":
-                return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
-            case "journals":
-            case "journal":
-            case "j":
-            case "entries":
-            case "entry":
-            case "e":
-                return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+                case "tags":
+                case "tag":
+                case "t":
+                case "points":
+                case "point":
+                case "p":
+                    return completeId(sender, args, null);
+                case "objectives":
+                case "objective":
+                case "o":
+                    return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+                case "journals":
+                case "journal":
+                case "j":
+                case "entries":
+                case "entry":
+                case "e":
+                    return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
             }
         }
         return new ArrayList<>();
@@ -1737,7 +1736,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "
                                 + cmds.get(
-                                        command)
+                                command)
                                 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
                                 + Config.getMessage(lang, "command_" + command) + "\"}}]}");
             }
@@ -1791,14 +1790,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
         builder.append("BetonQuest version: ", ChatColor.AQUA).append(betonquest_version, ChatColor.GRAY)
                 .hover(click_to_copy).click(
-                        ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquest_version);
+                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquest_version);
         if (updates_command != null) {
             builder.append("\n        " + updates_string, ChatColor.YELLOW).hover(click_to_download)
                     .click(ComponentBuilder.ClickEvent.RUN_COMMAND, updates_command);
         }
         builder.append("\n", ChatColor.RESET).append("Server version: ", ChatColor.GOLD)
                 .append(spigot_version, ChatColor.GRAY).hover(click_to_copy).click(
-                        ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigot_version)
+                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigot_version)
                 .append("\n\n", ChatColor.RESET).append("Hooked into:\n", ChatColor.GREEN);
         if (hooked.isEmpty()) {
             builder.append("  ---", ChatColor.GRAY);
@@ -1813,7 +1812,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 builder.append(key, ChatColor.RESET).hover(click_to_copy)
                         .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString()).append(" (" + hooked
-                                .get(key) + ")", ChatColor.GRAY)
+                        .get(key) + ")", ChatColor.GRAY)
                         .hover(click_to_copy).click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
 
             }

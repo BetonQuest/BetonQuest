@@ -42,7 +42,7 @@ public class NPCLocationCondition extends Condition {
     private final VariableNumber radius;
 
     public NPCLocationCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();

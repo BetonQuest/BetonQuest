@@ -174,7 +174,7 @@ public class Compatibility implements Listener {
                 integrator.hook();
                 hooked.add(name);
             } catch (UnsupportedVersionException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ": " +  e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ": " + e.getMessage());
                 LogUtils.logThrowable(e);
             } catch (Exception e) {
                 LogUtils.getLogger().log(Level.WARNING, String.format("There was an error while hooking into %s %s"

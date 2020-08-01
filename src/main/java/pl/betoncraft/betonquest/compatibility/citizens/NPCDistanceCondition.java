@@ -42,7 +42,7 @@ public class NPCDistanceCondition extends Condition {
     private final VariableNumber distance;
 
     public NPCDistanceCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         id = instruction.getInt();
         if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");

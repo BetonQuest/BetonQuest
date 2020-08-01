@@ -39,7 +39,7 @@ public class ChestTakeEvent extends QuestEvent {
     private LocationData loc;
 
     public ChestTakeEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();

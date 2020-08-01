@@ -32,9 +32,9 @@
 }
 
 .tabbed-set input:nth-child(n+1):checked + label {
-    color: #FF5252;
+  color: #FF5252;
 }
 
 .tabbed-set input:nth-child(n+1):checked + label + .tabbed-content {
-    display: block;
+  display: block;
 }

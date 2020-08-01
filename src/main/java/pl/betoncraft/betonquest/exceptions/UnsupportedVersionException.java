@@ -48,11 +48,9 @@ public class UnsupportedVersionException extends Exception {
 
     /**
      * Constructs a new exception
-     * 
-     * @param plugin
-     *            The plugin, in the wrong version
-     * @param requiredVersion
-     *            The expected version
+     *
+     * @param plugin          The plugin, in the wrong version
+     * @param requiredVersion The expected version
      */
     public UnsupportedVersionException(final Plugin plugin, final String requiredVersion) {
         super(String.format("%s version %s is not supported. Please install version %s!",

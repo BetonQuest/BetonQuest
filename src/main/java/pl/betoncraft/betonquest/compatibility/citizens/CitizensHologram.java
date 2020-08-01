@@ -269,11 +269,11 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                                         LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + line.substring(5).split(":")[0]
                                                 + " hologram: " + e.getMessage());
                                         LogUtils.logThrowable(e);
-                                        
+
                                         //TODO Remove this code in the version 1.13 or later
-                                        //This support the old implementation of Items 
+                                        //This support the old implementation of Items
                                         Material material = Material.matchMaterial(line.substring(5));
-                                        if(material != null) {
+                                        if (material != null) {
                                             LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
                                                     + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
                                             hologram.appendItemLine(new ItemStack(material));

@@ -42,7 +42,7 @@ import java.util.logging.Level;
  *
  * @author Jakub Sapalski
  */
-public abstract class QuestEvent extends ForceSyncHandler<Void>{
+public abstract class QuestEvent extends ForceSyncHandler<Void> {
 
     /**
      * Stores instruction string for the event.
@@ -80,8 +80,8 @@ public abstract class QuestEvent extends ForceSyncHandler<Void>{
      * @param instruction the Instruction object representing this event; you need to
      *                    extract all required data from it and throw
      *                    {@link InstructionParseException} if there is anything wrong
-     * @param forceSync If set to true this executes the event on the servers main thread.
-     *                  Otherwise it will just keep the current thread (which could also be the main thread!).
+     * @param forceSync   If set to true this executes the event on the servers main thread.
+     *                    Otherwise it will just keep the current thread (which could also be the main thread!).
      * @throws InstructionParseException when the is an error in the syntax or argument parsing
      */
     public QuestEvent(Instruction instruction, boolean forceSync) throws InstructionParseException {

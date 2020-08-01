@@ -69,7 +69,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     Field field = meta.getClass().getDeclaredField("profile");
                     field.setAccessible(true);
                     field.set(meta, profile);
-                    return  meta;
+                    return meta;
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                         | InstantiationException | InvocationTargetException | NoSuchMethodException
                         | ClassNotFoundException e) {

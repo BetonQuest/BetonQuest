@@ -469,7 +469,7 @@ public class Backpack implements Listener {
                             continue;
                         }
                         if (location == null) {
-                            LogUtils.getLogger().log(Level.WARNING, 
+                            LogUtils.getLogger().log(Level.WARNING,
                                     "Location not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
@@ -486,7 +486,7 @@ public class Backpack implements Listener {
                         }
                         World world = Bukkit.getWorld(parts[3]);
                         if (world == null) {
-                            LogUtils.getLogger().log(Level.WARNING, 
+                            LogUtils.getLogger().log(Level.WARNING,
                                     "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
                         int x, y, z;

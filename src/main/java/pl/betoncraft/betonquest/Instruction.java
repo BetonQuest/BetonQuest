@@ -553,7 +553,7 @@ public class Instruction {
         public PartParseException(final String message) {
             super("Error while parsing " + (lastOptional == null ? current : lastOptional + " optional") + " argument: " + message);
         }
-        
+
         /**
          * {@link Exception#Exception(String, Throwable)}
          */

@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("DOMContentLoaded", function () {
   const BASE_URL = window.location.origin + "/" + window.location.pathname.split("/")[1];
   const CURRENT_VERSION = window.location.pathname.split("/")[3];
 
@@ -6,9 +6,9 @@ window.addEventListener("DOMContentLoaded", function() {
     const select = document.createElement("select");
     select.classList.add("form-control");
 
-    options.forEach(function(i) {
+    options.forEach(function (i) {
       const option = new Option(i.text, i.value, undefined,
-          i.value === selected);
+        i.value === selected);
       select.add(option);
     });
 
@@ -17,17 +17,17 @@ window.addEventListener("DOMContentLoaded", function() {
 
   const xhr = new XMLHttpRequest();
   xhr.open("GET", BASE_URL + "/versions.json");
-  xhr.onload = function() {
+  xhr.onload = function () {
     const versions = JSON.parse(this.responseText);
 
-    const realVersion = versions.find(function(i) {
+    const realVersion = versions.find(function (i) {
       return i.version === CURRENT_VERSION;
     }).version;
 
-    const select = makeSelect(versions.map(function(i) {
+    const select = makeSelect(versions.map(function (i) {
       return {text: i.title, value: i.version};
     }), realVersion);
-    select.addEventListener("change", function(event) {
+    select.addEventListener("change", function (event) {
       window.location.href = BASE_URL + "/versions/" + this.value;
     });
 

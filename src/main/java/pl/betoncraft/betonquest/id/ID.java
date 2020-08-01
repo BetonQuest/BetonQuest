@@ -76,7 +76,7 @@ public abstract class ID {
                 // use package name as absolute path if no relative path is available
                 this.pack = Config.getPackages().get(packName);
             }
-            if(id.length() == dotIndex + 1) {
+            if (id.length() == dotIndex + 1) {
                 throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
             }
             this.id = id.substring(dotIndex + 1);

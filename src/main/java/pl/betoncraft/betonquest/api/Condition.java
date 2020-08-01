@@ -35,7 +35,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  *
  * @author Jakub Sapalski
  */
-abstract public class Condition extends ForceSyncHandler<Boolean>{
+abstract public class Condition extends ForceSyncHandler<Boolean> {
 
     /**
      * Stores instruction string for the condition.
@@ -73,8 +73,8 @@ abstract public class Condition extends ForceSyncHandler<Boolean>{
      *                    {@link pl.betoncraft.betonquest.id.ID#generateInstruction()
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
-     * @param forceSync If set to true this executes the condition on the servers main thread.
-     *                  Otherwise it will just keep the current thread (which could also be the main thread!).
+     * @param forceSync   If set to true this executes the condition on the servers main thread.
+     *                    Otherwise it will just keep the current thread (which could also be the main thread!).
      */
     public Condition(Instruction instruction, boolean forceSync) {
         super(forceSync);
