@@ -32,7 +32,7 @@ abstract public class ForceSyncHandler<T> {
     }
 
     /**
-     *  This methods implementation will be executed by the {@link ForceSyncHandler#handle(String)} method.
+     * This methods implementation will be executed by the {@link ForceSyncHandler#handle(String)} method.
      *
      * @param playerID Unique internal player ID.
      * @return Return the corresponding ForceSyncHandler type.
@@ -41,17 +41,17 @@ abstract public class ForceSyncHandler<T> {
     protected abstract T execute(String playerID) throws QuestRuntimeException;
 
     /**
-     *  If {@link ForceSyncHandler#forceSync} is set to true the extending classes
-     *  {@link ForceSyncHandler#execute(String)} method will run on the servers main thread.
-     *  If set to false the {@link ForceSyncHandler#execute(String)} method will run on the current thread.
+     * If {@link ForceSyncHandler#forceSync} is set to true the extending classes
+     * {@link ForceSyncHandler#execute(String)} method will run on the servers main thread.
+     * If set to false the {@link ForceSyncHandler#execute(String)} method will run on the current thread.
      *
      * @param playerID Unique internal player ID.
      * @return {@link ForceSyncHandler#execute(String)}'s return value.
      * @throws QuestRuntimeException Either the QRE from the implemented {@link ForceSyncHandler#execute(String)}
-     * or from {@link ForceSyncHandler#handle(String)}'s {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
+     *                               or from {@link ForceSyncHandler#handle(String)}'s {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
     public T handle(String playerID) throws QuestRuntimeException {
-        if(forceSync && !Bukkit.isPrimaryThread()) {
+        if (forceSync && !Bukkit.isPrimaryThread()) {
             Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(playerID));
             try {
                 return returnFuture.get();
@@ -63,8 +63,7 @@ abstract public class ForceSyncHandler<T> {
                 }
                 throw new QuestRuntimeException(e);
             }
-        }
-        else {
+        } else {
             return execute(playerID);
         }
     }

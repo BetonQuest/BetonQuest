@@ -124,11 +124,11 @@ public class HologramLoop {
                         } catch (ObjectNotFoundException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + key + " hologram: " + e.getMessage());
                             LogUtils.logThrowable(e);
-                            
+
                             //TODO Remove this code in the version 1.13 or later
-                            //This support the old implementation of Items 
+                            //This support the old implementation of Items
                             Material material = Material.matchMaterial(line.substring(5));
-                            if(material != null) {
+                            if (material != null) {
                                 LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
                                         + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
                                 hologram.appendItemLine(new ItemStack(material));
@@ -139,10 +139,9 @@ public class HologramLoop {
                         hologram.appendTextLine(line.replace('&', '§'));
                     }
                 }
-                if(check_interval == 0) {
+                if (check_interval == 0) {
                     holograms.put(hologram, conditions);
-                }
-                else {
+                } else {
                     final ConditionID[] conditionsList = conditions;
                     BukkitRunnable runnable = new BukkitRunnable() {
                         @Override
@@ -150,12 +149,12 @@ public class HologramLoop {
                             player:
                             for (Player player : Bukkit.getOnlinePlayers()) {
                                 String playerID = PlayerConverter.getID(player);
-                                    for (ConditionID condition : conditionsList) {
-                                        if (!BetonQuest.condition(playerID, condition)) {
-                                            hologram.getVisibilityManager().hideTo(player);
-                                            continue player;
-                                        }
+                                for (ConditionID condition : conditionsList) {
+                                    if (!BetonQuest.condition(playerID, condition)) {
+                                        hologram.getVisibilityManager().hideTo(player);
+                                        continue player;
                                     }
+                                }
                                 hologram.getVisibilityManager().showTo(player);
                             }
                         }
@@ -198,7 +197,7 @@ public class HologramLoop {
                 hologram.delete();
             }
         }
-        for(Entry<Hologram, BukkitRunnable> h: runnables.entrySet()) {
+        for (Entry<Hologram, BukkitRunnable> h : runnables.entrySet()) {
             h.getValue().cancel();
             h.getKey().delete();
         }

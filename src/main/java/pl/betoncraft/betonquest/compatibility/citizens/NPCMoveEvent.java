@@ -60,7 +60,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private boolean blockConversations;
 
     public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         id = instruction.getInt();
         if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
@@ -86,7 +86,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     }
 
     public static void stopNPCMoving(NPC npc) {
-        if(movingNPCs.containsKey(npc.getId())) {
+        if (movingNPCs.containsKey(npc.getId())) {
             movingNPCs.get(npc.getId()).currentPlayer = null;
         }
     }
@@ -154,10 +154,10 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (npc.getId() != id) {
             return;
         }
-        if(currentPlayer == null || locationsIterator == null) {
+        if (currentPlayer == null || locationsIterator == null) {
             return;
         }
-        if(event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
+        if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
             LogUtils.getLogger().log(Level.WARNING, "The NPC was stucked, maybe the distance between two points was too high. "
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }

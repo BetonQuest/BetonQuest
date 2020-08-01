@@ -50,7 +50,7 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
     private int ID;
 
     public NPCTeleportEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();

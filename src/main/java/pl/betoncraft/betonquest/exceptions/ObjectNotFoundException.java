@@ -23,7 +23,7 @@ package pl.betoncraft.betonquest.exceptions;
 public class ObjectNotFoundException extends Exception {
 
     private static final long serialVersionUID = -6335789753445719198L;
-    
+
     /**
      * {@link Exception#Exception(String)}
      */

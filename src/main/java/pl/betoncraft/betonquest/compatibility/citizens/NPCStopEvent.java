@@ -34,7 +34,7 @@ public class NPCStopEvent extends QuestEvent implements Listener {
     private int ID;
 
     public NPCStopEvent(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();

@@ -50,31 +50,28 @@ public class Updater {
                 try {
                     findDev();
                 } catch (Exception e) {
-                    if(e instanceof UnknownHostException) {
+                    if (e instanceof UnknownHostException) {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
-                    }
-                    else {
+                    } else {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
                     }
                 }
                 try {
                     findRelease();
                 } catch (Exception e) {
-                    if(e instanceof UnknownHostException) {
+                    if (e instanceof UnknownHostException) {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
-                    }
-                    else {
+                    } else {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                     }
                 }
                 if (latest.getValue() != null) {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
-                            + "'" + (config.automatic ? ", it will be downloaded and automatically installed on the next restart.": ", it will be installed, if you execute '/q update'!"));
-                    if(config.automatic) {
+                            + "'" + (config.automatic ? ", it will be downloaded and automatically installed on the next restart." : ", it will be installed, if you execute '/q update'!"));
+                    if (config.automatic) {
                         update(Bukkit.getConsoleSender());
                     }
-                }
-                else {
+                } else {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
                 }
             }
@@ -170,7 +167,7 @@ public class Updater {
     }
 
     public void reload() {
-        if(!latest.getKey().isUnofficial()) {
+        if (!latest.getKey().isUnofficial()) {
             searchForUpdate();
         }
     }
@@ -198,23 +195,21 @@ public class Updater {
             plugin.getConfig().set("update.notify_dev_build", null);
 
             enabled = plugin.getConfig().getBoolean("update.enabled");
-            if(plugin.getConfig().isSet("update.strategy")) {
+            if (plugin.getConfig().isSet("update.strategy")) {
                 updateStrategy = UpdateStrategy.valueOf(plugin.getConfig().getString("update.strategy").toUpperCase());
-            }
-            else {
+            } else {
                 updateStrategy = UpdateStrategy.MINOR;
                 plugin.getConfig().set("update.strategy", updateStrategy.toString());
                 plugin.saveConfig();
             }
-            if(plugin.getConfig().isSet("update.automatic")) {
+            if (plugin.getConfig().isSet("update.automatic")) {
                 automatic = plugin.getConfig().getBoolean("update.automatic");
-            }
-            else {
+            } else {
                 automatic = true;
                 plugin.getConfig().set("update.automatic", automatic);
                 plugin.saveConfig();
             }
-            if(latest.getKey().isDev() && !updateStrategy.isDev || latest.getKey().isUnofficial()) {
+            if (latest.getKey().isDev() && !updateStrategy.isDev || latest.getKey().isUnofficial()) {
                 updateStrategy = updateStrategy.toDev();
                 automatic = false;
             }
@@ -265,8 +260,7 @@ public class Updater {
             boolean unofficial = false;
             try {
                 dev = Integer.valueOf(artifactVersion.getQualifier().substring(DEV_TAG.length()));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 unofficial = artifactVersion.getQualifier() != null;
             }
             this.dev = dev;
@@ -314,10 +308,9 @@ public class Updater {
                         } else {
                             Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
                             Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
-                            if(thisDev == null || targetDev == null) {
+                            if (thisDev == null || targetDev == null) {
                                 return thisDev != null;
-                            }
-                            else {
+                            } else {
                                 return thisDev.compareTo(targetDev) < 0;
                             }
                         }

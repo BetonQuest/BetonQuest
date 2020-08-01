@@ -47,7 +47,7 @@ public class NPCRegionCondition extends Condition {
     private final String region;
 
     public NPCRegionCondition(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         super.persistent = true;
         super.staticness = true;
         ID = instruction.getInt();

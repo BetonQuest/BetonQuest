@@ -147,7 +147,7 @@ public class TellrawConvIO extends ChatConvIO {
         }
 
         @EventHandler(priority = EventPriority.HIGH)
-        public void onCommand (PlayerCommandPreprocessEvent event) {
+        public void onCommand(PlayerCommandPreprocessEvent event) {
             if (event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
                 event.setCancelled(true);
             }

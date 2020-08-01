@@ -137,7 +137,7 @@ public class Config {
             def.mkdirs();
             saveResource(def, "default/main.yml", "main.yml");
             saveResource(def, "default/events.yml", "events.yml");
-            saveResource(def, "default/conditions.yml","conditions.yml");
+            saveResource(def, "default/conditions.yml", "conditions.yml");
             saveResource(def, "default/journal.yml", "journal.yml");
             saveResource(def, "default/items.yml", "items.yml");
             saveResource(def, "default/objectives.yml", "objectives.yml");

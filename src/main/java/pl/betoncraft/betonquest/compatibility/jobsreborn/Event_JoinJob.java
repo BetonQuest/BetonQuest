@@ -30,7 +30,7 @@ public class Event_JoinJob extends QuestEvent {
     private String sJobName;
 
     public Event_JoinJob(Instruction instructions) throws InstructionParseException {
-        super(instructions,true);
+        super(instructions, true);
 
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");

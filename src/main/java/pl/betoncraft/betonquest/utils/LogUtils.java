@@ -42,7 +42,8 @@ public final class LogUtils {
      */
     private static FileHandler fileHandler;
 
-    private LogUtils() {}
+    private LogUtils() {
+    }
 
     /**
      * Start writing the latest.log file
@@ -168,9 +169,8 @@ public final class LogUtils {
     /**
      * Log a throwable, that is already logged with a message, only to the debug
      * log
-     * 
-     * @param throwable
-     *            The {@link Throwable} to log
+     *
+     * @param throwable The {@link Throwable} to log
      */
     public static void logThrowable(final Throwable throwable) {
         final int stackSize = throwable.getStackTrace().length;
@@ -180,9 +180,8 @@ public final class LogUtils {
 
     /**
      * Log a throwable, that shouldn't normally occur, to the log
-     * 
-     * @param throwable
-     *            The {@link Throwable} to log
+     *
+     * @param throwable The {@link Throwable} to log
      */
     public static void logThrowableReport(final Throwable throwable) {
         LogUtils.getLogger().log(Level.SEVERE,
@@ -192,9 +191,8 @@ public final class LogUtils {
 
     /**
      * Log a throwable, that could be normally ignored, only to the debug log
-     * 
-     * @param throwable
-     *            The {@link Throwable} to log
+     *
+     * @param throwable The {@link Throwable} to log
      */
     public static void logThrowableIgnore(final Throwable throwable) {
         LogUtils.getLogger().log(Level.FINER,

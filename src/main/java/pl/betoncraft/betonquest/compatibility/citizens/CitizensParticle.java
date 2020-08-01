@@ -257,11 +257,11 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // fire the effect
                 EffectLibIntegrator.getEffectManager().start(
-                        effect.name, 
-                        effect.settings, 
-                        new DynamicLocation(loc, null), 
-                        new DynamicLocation(null, null), 
-                        (ConfigurationSection) null, 
+                        effect.name,
+                        effect.settings,
+                        new DynamicLocation(loc, null),
+                        new DynamicLocation(null, null),
+                        (ConfigurationSection) null,
                         player);
             }
         }

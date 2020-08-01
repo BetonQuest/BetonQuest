@@ -40,11 +40,11 @@ public class AdvancementCondition extends Condition {
         super(instruction, true);
         String i = instruction.next();
         if (!i.contains(":")) {
-            throw new InstructionParseException("The advancement '"+ i + "' is missing a namespace!");
+            throw new InstructionParseException("The advancement '" + i + "' is missing a namespace!");
         }
         String[] split = i.split(":");
         advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
-        if(advancement == null) {
+        if (advancement == null) {
             throw new InstructionParseException("No such advancement: " + i);
         }
     }

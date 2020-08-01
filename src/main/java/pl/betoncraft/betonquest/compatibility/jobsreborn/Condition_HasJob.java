@@ -33,7 +33,7 @@ public class Condition_HasJob extends Condition {
     private String sJobName;
 
     public Condition_HasJob(Instruction instruction) throws InstructionParseException {
-        super(instruction,true);
+        super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }

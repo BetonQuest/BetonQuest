@@ -171,7 +171,7 @@ public class Journal {
             list = new ArrayList<>(texts);
         }
         List<String> pagesList = new ArrayList<>();
-        for(String entry : list) {
+        for (String entry : list) {
             pagesList.addAll(Utils.pagesFromString(entry));
         }
         return pagesList;
@@ -212,7 +212,7 @@ public class Journal {
             String pointerName = parts[1];
             // resolve the text in player's language
             String text;
-            if(!pack.getJournal().getConfig().contains(pointerName)) {
+            if (!pack.getJournal().getConfig().contains(pointerName)) {
                 LogUtils.getLogger().log(Level.WARNING, "No defined journal entry " + pointerName + " in package " + pack.getName());
                 text = "error";
             } else if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
@@ -313,12 +313,11 @@ public class Journal {
                     // add the text to HashMap
                     numbers.add(i);
                     ArrayList<String> linesOrder;
-                    if(lines.containsKey(i)) {
-                    	linesOrder = lines.get(i);
-                    }
-                    else {
-                    	linesOrder = new ArrayList<String>();
-                    	lines.put(i, linesOrder);
+                    if (lines.containsKey(i)) {
+                        linesOrder = lines.get(i);
+                    } else {
+                        linesOrder = new ArrayList<String>();
+                        lines.put(i, linesOrder);
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
@@ -342,7 +341,7 @@ public class Journal {
             sortedlinesOrder = linesOrder.toArray(sortedlinesOrder);
             Arrays.sort(sortedlinesOrder);
             for (String s : sortedlinesOrder) {
-            	sortedLines.add(s);
+                sortedLines.add(s);
             }
         }
         return StringUtils.join(sortedLines, '\n').replace('&', '§');

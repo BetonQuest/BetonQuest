@@ -6,30 +6,30 @@ authors: [Co0sh]
 website: https://www.spigotmc.org/resources/betonquest.2117/
 load: STARTUP
 softdepend:
-- Skript
-- MMOLib
-- MMOCore
-- MMOItems
-- Citizens
-- MythicMobs
-- Vault
-- EffectLib
-- PlayerPoints
-- Heroes
-- Magic
-- Denizen
-- WorldEdit
-- WorldGuard
-- mcMMO
-- Shopkeepers
-- SkillAPI
-- Quests
-- PlaceholderAPI
-- HolographicDisplays
-- BetonLangAPI
-- ProtocolLib
-- Brewery
-- Jobs
+  - Skript
+  - MMOLib
+  - MMOCore
+  - MMOItems
+  - Citizens
+  - MythicMobs
+  - Vault
+  - EffectLib
+  - PlayerPoints
+  - Heroes
+  - Magic
+  - Denizen
+  - WorldEdit
+  - WorldGuard
+  - mcMMO
+  - Shopkeepers
+  - SkillAPI
+  - Quests
+  - PlaceholderAPI
+  - HolographicDisplays
+  - BetonLangAPI
+  - ProtocolLib
+  - Brewery
+  - Jobs
 version: ${maven-version}
 commands:
   betonquest:

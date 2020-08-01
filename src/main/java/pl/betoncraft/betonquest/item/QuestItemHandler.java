@@ -106,30 +106,30 @@ public class QuestItemHandler implements Listener {
         final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         ItemStack item;
         switch (event.getAction()) {
-        case MOVE_TO_OTHER_INVENTORY:
-            item = event.getCurrentItem();
-            break;
-        case PLACE_ALL:
-        case PLACE_ONE:
-        case PLACE_SOME:
-        case SWAP_WITH_CURSOR:
-            if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                item = event.getCursor();
-            } else {
+            case MOVE_TO_OTHER_INVENTORY:
+                item = event.getCurrentItem();
+                break;
+            case PLACE_ALL:
+            case PLACE_ONE:
+            case PLACE_SOME:
+            case SWAP_WITH_CURSOR:
+                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                    item = event.getCursor();
+                } else {
+                    item = null;
+                }
+                break;
+            case HOTBAR_MOVE_AND_READD:
+            case HOTBAR_SWAP:
+                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                    item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+                } else {
+                    item = null;
+                }
+                break;
+            default:
                 item = null;
-            }
-            break;
-        case HOTBAR_MOVE_AND_READD:
-        case HOTBAR_SWAP:
-            if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
-            } else {
-                item = null;
-            }
-            break;
-        default:
-            item = null;
-            break;
+                break;
         }
         if (item != null && (Journal.isJournal(playerID, item) || Utils.isQuestItem(item))) {
             event.setCancelled(true);

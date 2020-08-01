@@ -72,7 +72,7 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(),e );
+                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(), e);
             }
         }
 

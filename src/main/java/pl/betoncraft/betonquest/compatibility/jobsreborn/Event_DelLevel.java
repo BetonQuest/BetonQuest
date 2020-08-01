@@ -34,7 +34,7 @@ public class Event_DelLevel extends QuestEvent {
     private Integer nAddLevel;
 
     public Event_DelLevel(Instruction instructions) throws InstructionParseException {
-        super(instructions,true);
+        super(instructions, true);
 
         if (instructions.size() < 3) {
             throw new InstructionParseException("Not enough arguments");
