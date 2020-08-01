@@ -251,15 +251,6 @@ Only mobs that are in loaded chunks can be killed by using this event.
     killmob ZOMBIE 100;200;300;world 40 name:Bolec
     ```
 
-## Language: `language`
-
-This event changes player's language to the specified one. There is only one argument, the language name.
-
-!!! example
-    ```YAML
-    language es
-    ```
-
 ## Lever: `lever`
 
 **persistent**, **static**

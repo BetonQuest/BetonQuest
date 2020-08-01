@@ -1,22 +1,69 @@
 # Compatibility
+In total 27 plugins have dedicated support for BetonQuest.
 
-BetonQuest can hook into other plugins to extend its functionality. Currently, 22 plugins are supported: BountifulAPI, 
-Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic, mcMMO, MythicMobs, nuNPCDestinations, 
-PlaceholderAPI, PlayerPoints, ProtocolLib, Quests, RPGMenu, Shopkeepers, SkillAPI, Skript, Vault, WorldEdit 
-and WorldGuard.
+BetonQuest can hook into other plugins to extend its functionality. Currently, 24 plugins are supported:  
+BetonLangAPI, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
+mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests,
+Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
 
-## [BountifulAPI](https://www.spigotmc.org/resources/bountifulapi-1-8-1-12-1.1394/)
+Some plugins also hook into BetonQuest and provide support by themselves:  
+[nuNPCDestinations](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
+[RPGMenu](https://www.spigotmc.org/resources/rpgmenu.55170/),
+[NGVexJournal](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
+
+## [BetonLangAPI](https://github.com/Co0sh/BetonLangAPI/releases)
 
 ### Events
-#### Title: `title`
 
-BountifulAPI enables you to use `title` event without spamming the console with `/title` command output.
-The syntax is exactly the same as in regular `title` event described in _Events List_.
+#### Language: `language`
+
+This event changes player's language to the specified one. There is only one argument, the language name.
 
 !!! example
     ```YAML
-    title subtitle 0;0;0 {en} Lobby joined! {pl} Dołączono do lobby!
+    language es
     ```
+
+## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
+
+### Conditions
+
+#### Drunk: `drunk`
+This condition is true if the player is drunken. Only argument is the minimal drunkness (0-100).
+
+``` YAML linenums="1"
+drunk 50
+```
+
+#### Drunk Quality: `drunkquality`
+This condition is true if the player has the given drunk quality. Only argument is the minimal drunk quality (1-10).
+
+``` YAML linenums="1"
+drunkquality 3
+```
+
+#### Has Brew: `hasbrew`
+This condition is true if the player has the given grew with the specified amount in his inventory.
+
+``` YAML linenums="1"
+hasbrew MY_BREW 2
+```
+
+### Events
+
+#### Give Brew: `givebrew`
+Gives the player the specified drink. An amount needs to be specified.
+
+``` YAML linenums="1"
+givebrew MY_BREW 2
+```
+
+#### Take Brew: `takebrew`
+Removes the specified drink from the players inventory. An amount needs to be specified.
+
+``` YAML linenums="1"
+takebrew MY_OTHER_BREW 2
+```
 
 ## NPC's with [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
 
@@ -410,6 +457,59 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
+## MMOGroup ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+
+### Conditions
+
+#### MMOCore class: `mmoclass` 
+Checks if a player has the given MMOCore class. If a level has been specified the player needs to be on that level or higher to meet the condition.
+You can disable this behaviour by adding the `equal` argument. 
+```YAML linenums="1"
+mmoclass WARRIOR
+mmoclass MAGE 5
+mmoclass MAGE 5 equal
+```
+
+#### MMOCore attribute: `mmoattribute`
+Checks if a player has the specified attribute on the given level or higher.
+You can disable this behaviour by adding the `equal` argument. 
+```YAML linenums="1"
+mmoclass mmoattribute strength 2 
+mmoclass mmoattribute strength 2 equal
+```
+
+#### MMOCore profession: `mmoprofession`
+Checks if a player has the specified profession on the given level or higher.
+You can disable this behaviour by adding the `equal` argument. 
+```YAML linenums="1"
+mmoprofession mining 2 
+mmoprofession mining 2 equal
+```
+
+#### MMOItems item: `mmoitem`
+Checks if a player has the specified MMOItem in his inventory. If no amount has been defined the default amount is one.
+```YAML linenums="1"
+mmoitem ARMOR SKELETON_CROWN
+mmoitem GEMS SPEED_GEM 3
+```
+
+#### MMOItems hand: `mmohand`
+Checks if a player holds the specified MMOItem in his hand. Checks the main hand if not specified otherwise using the `offhand` argument.
+If no amount has been defined the default amount is one.
+```YAML linenums="1"
+mmohand ARMOR SKELETON_CROWN
+mmohand GEMS SPEED_GEM 3 offhand
+```
+
+#### MMOLib stat: `mmostat`
+Checks <a href="https://github.com/mmopluginteam/mmolib/blob/master/src/main/java/net/mmogroup/mmolib/api/stat/SharedStat.java" target="_blank">these</a>
+stats that combine all sorts of stats from MMOCore and MMOItems.
+The player needs to be on the specified level or higher in order to meet this condition.
+You can disable this behaviour by adding the `equal` argument. 
+```YAML linenums="1"
+mmostat DAMAGE_REDUCTION 3
+```
+
 ## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 
 Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
@@ -585,66 +685,6 @@ This event will start the quest for the player. The first argument must be the n
 !!! example
     ```YAML
     quest stone_miner check-requirements
-    ```
-
-## [RPGMenu](https://www.spigotmc.org/resources/rpgmenu.55170/)
-
-### New events
-
-#### Menu event: `menu`
-
-This event can be used to open and close menus.
-The first argument is the type of action that should be done.
-It is either `open` to open a new menu or `close` to close the currently opened menu of the player.
-If you want to open a menu you have to add a second argument which should be the id of a menu.
-If you want to open menus from other packages just use `packageName.id` format.
-
-!!! example
-    ```YAML
-    menu open quest_gui
-    menu close
-    ```
-
-### New conditions
-
-#### Menu condition: `menu`
-
-This condition can be used to check if the player has crurently opened any menu.
-You can add `id:` optional and specify the id of a menu to check if the player has opened the menu with this id.
-If you want to check for menus from other packages just use `packageName.id` format.
-
-!!! example
-    ```YAML
-    menu id:quest_gui
-    ```
-
-### New objectives
-
-#### menu objective:  `menu`
-
-This objective is completed when the player opens the menu with the given id.
-The only required argument is the id of the menu.
-If you want to use menus from other packages just use `packageName.id` format.
-
-The objective also has the property `menu` which can be used by the 
-[objective variable](https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Variables-List/#variables-list).
-It returns the title of the menu which should be opened.
-
-!!! example
-    ``` YAML
-    menu quest_gui
-    ```
-
-### New Variables
-
-#### menu variable: `menu`
-
-This variable displays the title of the menu that is currently opened by the player.
-If no menu is opened it will be just empty.
-
-!!! example
-    ``` YAML
-    %menu%
     ```
 
 ## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)

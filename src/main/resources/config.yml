@@ -30,7 +30,7 @@ sounds:
   update: 'false'
   full: 'false'
 cmd_blacklist:
-- spawn
+  - spawn
 hook:
   citizens: 'true'
   mythicmobs: 'true'
@@ -48,14 +48,14 @@ hook:
   shopkeepers: 'true'
   placeholderapi: 'true'
   holographicdisplays: 'true'
-  racesandclasses: 'true'
-  legendquest: 'true'
   worldedit: 'true'
   betonlangapi: 'true'
-  bountifulapi: 'true'
   protocollib: 'true'
   brewery: 'true'
   jobs: 'true'
+  mmolib: 'true'
+  mmocore: 'true'
+  mmoitems: 'true'
 journal:
   chars_per_line: '19'
   lines_per_page: '13'

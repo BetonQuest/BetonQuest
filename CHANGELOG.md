@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed Deprecated Exceptions
 - Removed RacesAndClasses support
 - Removed LegendQuest support
+- Removed BoutifulAPI support
 - Removed the CLAY NPC
 - removed legacy material support
 ### Fixes
