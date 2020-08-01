@@ -23,6 +23,9 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Campfire;
+import org.bukkit.block.Lectern;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,11 +36,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerItemBreakEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -251,4 +250,23 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onInteractEvent(final PlayerInteractEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        // this prevents the journal from being placed inside of item frame
+        if (event.getClickedBlock() != null
+                && (event.getClickedBlock().getType().equals(Material.LECTERN)
+                || event.getClickedBlock().getType().equals(Material.CAMPFIRE)
+                || event.getClickedBlock().getType().equals(Material.COMPOSTER))) {
+            final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
+                    : event.getPlayer().getInventory().getItemInOffHand();
+
+            final String playerID = PlayerConverter.getID(event.getPlayer());
+            if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

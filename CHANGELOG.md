@@ -56,6 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed bug, where a player causes an exception when he spams right left clicks in menu conversationIO
 - fixed outdated Brewery dependency
 - fixed message dublication when using the packet interceptor
+- fixed Journal interaction with Lectern
+- fixed QuestItem interaction with Lectern, Campfire and Composter
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 
