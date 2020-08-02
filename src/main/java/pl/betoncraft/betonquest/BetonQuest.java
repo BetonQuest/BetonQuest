@@ -474,6 +474,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("kill", KillEvent.class);
         registerEvents("effect", EffectEvent.class);
         registerEvents("deleffect", DelEffectEvent.class);
+        registerEvents("deletepoint", DeletePointEvent.class);
         registerEvents("spawn", SpawnMobEvent.class);
         registerEvents("killmob", KillMobEvent.class);
         registerEvents("time", TimeEvent.class);

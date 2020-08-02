@@ -119,6 +119,17 @@ Damages the player by specified amount of damage. The only argument is a number 
     damage 20
     ```
 
+## Delete Point: `deletepoint`
+
+**persistent**, **static**
+
+Delete the player points in a specified category.
+
+!!! example
+    ```YAML
+    deletepoint npc_attitude
+    ```
+
 ## Door: `door`
 
 **persistent**, **static**
