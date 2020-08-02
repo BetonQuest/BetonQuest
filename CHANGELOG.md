@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed message dublication when using the packet interceptor
 - fixed Journal interaction with Lectern
 - fixed QuestItem interaction with Lectern, Campfire and Composter
+- fixed journal update after magic inventory is closed
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 
