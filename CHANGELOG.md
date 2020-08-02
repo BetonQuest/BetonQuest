@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Tags and Objectives can now be removed with a static event for all players, even if they are not online
 - Added integration for MMOGroup plugins (MMOCore, MMOItems, MMOLib)
   * MMOClass condition (type & class)
   * MMOProfession condition

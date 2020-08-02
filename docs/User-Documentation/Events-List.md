@@ -425,7 +425,7 @@ Additional commands can be defined by separating them with `|` character. If you
 
 ## Tag: `tag`
 
-**persistent**
+**persistent**, **static**
 
 This event adds (or removes) a tag to the player. The first argument after event's name must be `add` or `del`.
 Next goes the tag name. It can't contain spaces (though `_` is fine). Additional tags can be added, separated by commas (without spaces).

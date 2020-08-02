@@ -17,11 +17,15 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ObjectiveID;
@@ -43,6 +47,7 @@ public class ObjectiveEvent extends QuestEvent {
 
     public ObjectiveEvent(Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        staticness = true;
         action = instruction.next();
         objective = instruction.getObjective();
         if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"})
@@ -57,7 +62,17 @@ public class ObjectiveEvent extends QuestEvent {
         if (BetonQuest.getInstance().getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
-        if (PlayerConverter.getPlayer(playerID) == null) {
+        if (playerID == null) {
+            if (action.toLowerCase().equals("delete") || action.toLowerCase().equals("remove")) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                    playerData.removeRawObjective(objective);
+                }
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, new String[]{
+                        objective.toString()
+                }));
+            }
+        } else if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
