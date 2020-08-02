@@ -232,6 +232,8 @@ This event will check a condition, and based on the outcome it will run the firs
 
 ## Journal: `journal`
 
+**static**
+
 Adds or deletes an entry to/from player’s journal. Entries are defined in `journal.yml` The first argument is action (add/del), the second one is name of the entry. You can also use only one argument, `update`, it will simply update the journal without addin any entries. It's useful when you need to update the main page.
 
 !!! example

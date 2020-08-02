@@ -17,13 +17,19 @@
  */
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.database.Connector;
+import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Date;
@@ -40,6 +46,7 @@ public class JournalEvent extends QuestEvent {
 
     public JournalEvent(Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        staticness = true;
         String first = instruction.next();
         if (first.equalsIgnoreCase("update")) {
             name = null;
@@ -52,14 +59,28 @@ public class JournalEvent extends QuestEvent {
 
     @Override
     protected Void execute(String playerID) {
-        Journal journal = BetonQuest.getInstance().getPlayerData(playerID).getJournal();
-        if (add) {
-            journal.addPointer(new Pointer(name, new Date().getTime()));
-            Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");
-        } else if (name != null) {
-            journal.removePointer(name);
+        if (playerID == null) {
+            if (!add && name != null) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                    playerData.getJournal().removePointer(name);
+                }
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, new String[]{
+                        name
+                }));
+            }
         }
-        journal.update();
+        else {
+            PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
+            Journal journal = playerData.getJournal();
+            if (add) {
+                journal.addPointer(new Pointer(name, new Date().getTime()));
+                Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");
+            } else if (name != null) {
+                journal.removePointer(name);
+            }
+            journal.update();
+        }
         return null;
     }
 

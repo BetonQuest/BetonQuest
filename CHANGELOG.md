@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 - Tags and Objectives can now be removed with a static event for all players, even if they are not online
-  * deletepoint event can now also be called to delete all points for all players 
+  * deletepoint event can now also be called to delete all points for all players
+  * journal del event can now also be called as static
 - Added integration for MMOGroup plugins (MMOCore, MMOItems, MMOLib)
   * MMOClass condition (type & class)
   * MMOProfession condition
@@ -23,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added stopnpc event, that will stop the movenpc event
 - Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
 - Added option check_interval for holograms in custom.yml andd added GlobalVariable support
-- Added deletepoint event to delete player points 
+- Added deletepoint event to delete player points
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
