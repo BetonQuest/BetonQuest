@@ -30,6 +30,7 @@ public class MythicMobsIntegrator implements Integrator {
 
     @Override
     public void hook() {
+        plugin.registerConditions("mythicmobdistance", MythicMobDistanceCondition.class);
         plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
         plugin.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
     }

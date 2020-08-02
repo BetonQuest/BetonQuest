@@ -17,21 +17,24 @@
  */
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.EventHandler;
+
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.HashSet;
-import java.util.Set;
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 
 /**
  * Player has to kill MythicMobs monster
@@ -47,28 +50,30 @@ public class MythicMobKillObjective extends Objective implements Listener {
     public MythicMobKillObjective(Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = MMData.class;
-        for (String name : instruction.getArray())
-            names.add(name);
+        Collections.addAll(names, instruction.getArray());
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
         notify = instruction.hasArgument("notify");
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(MythicMobDeathEvent event) {
-        if (names.contains(event.getMobType().getInternalName()) && event.getKiller() instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getKiller());
-            if (containsPlayer(playerID) && checkConditions(playerID)) {
-                MMData playerData = (MMData) dataMap.get(playerID);
-                playerData.kill();
-                if (playerData.killed()) {
-                    completeObjective(playerID);
-                } else if (notify) {
-                    // send a notification
-                    Config.sendNotify(playerID, "mobs_to_kill",
-                            new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
-                }
-            }
+        if (!names.contains(event.getMobType().getInternalName())) return;
+        if (!(event.getKiller() instanceof Player)) return;
+
+        String playerID = PlayerConverter.getID((Player) event.getKiller());
+        if (!containsPlayer(playerID)) return;
+        if (!checkConditions(playerID)) return;
+
+        MMData playerData = (MMData) dataMap.get(playerID);
+        playerData.kill();
+
+        if (playerData.killed()) {
+            completeObjective(playerID);
+        } else if (notify) {
+            // send a notification
+            Config.sendNotify(playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
         }
+
     }
 
     @Override
