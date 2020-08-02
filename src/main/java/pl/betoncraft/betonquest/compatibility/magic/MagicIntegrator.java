@@ -17,16 +17,22 @@
  */
 package pl.betoncraft.betonquest.compatibility.magic;
 
+import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 
-public class MagicIntegrator implements Integrator {
+public class MagicIntegrator implements Integrator, Listener {
 
     private BetonQuest plugin;
 
     public MagicIntegrator() {
         plugin = BetonQuest.getInstance();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -44,4 +50,11 @@ public class MagicIntegrator implements Integrator {
 
     }
 
+    @EventHandler
+    public void onSpellInventoryEvent(SpellInventoryEvent event) {
+        if (!event.isOpening()) {
+            String playerID = PlayerConverter.getID(event.getMage().getPlayer());
+            BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();
+        }
+    }
 }
