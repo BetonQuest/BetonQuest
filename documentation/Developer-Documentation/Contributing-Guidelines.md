@@ -36,7 +36,7 @@ git config --global core.autocrlf input
 #### Test your changes!
 Please ensure your changes actually work and haven't introduced any bugs.
 Therefore, you should compile the plugin and run it on a local 1.13+ test server.
-Please install any related dependencie! If you changed code related to MySQL then setup a MySQL on your machine and test if BetonQuest still saves its data correctly. 
+Please install any related dependencies! If you changed code related to MySQL then setup a MySQL on your machine and test if BetonQuest still saves its data correctly. 
 
 #### Does your change require updates to users configs?
 This would be the case if you removed arguments or renamed e.g. an event.
