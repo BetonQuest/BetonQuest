@@ -1,8 +1,7 @@
 
 ## Accessing the plugin
 
-Add this to you pom.yml.
-
+Add this to your pom.yml.
 
 ```XML
 <repositories>
@@ -20,8 +19,6 @@ Add this to you pom.yml.
     </dependency>
 </dependencies>
 ```
-
-The version you need to choose must be 1.12.0 or newer. 
 
 ## Writing events
 

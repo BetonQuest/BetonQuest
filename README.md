@@ -71,17 +71,19 @@ Report **Issues** here: https://github.com/BetonQuest/BetonQuest/issues/new/choo
 
 **Contributing:**
 
-```
-git clone https://github.com/BetonQuest/BetonQuest.git
-```
-
-**Make sure to set this git config setting in your project before touching any code:**
+**Make sure to set this git config setting in your project before cloning or touching any code:**
 
 Windows:
 ```
-git config core.autocrlf true
+git config --global core.autocrlf true
 ```
-Linux:
+MacOS & Linux:
 ``` 
-git config core.autocrlf input
+git config --global core.autocrlf input
+```
+
+Clone:
+
+```
+git clone https://github.com/BetonQuest/BetonQuest.git
 ```

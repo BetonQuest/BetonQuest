@@ -6,4 +6,4 @@ cool stuff and therefore requires some learning.
  <a href="https://discordapp.com/invite/rK6mfHq" target="_blank">discord :fontawesome-brands-discord:</a> !**    
  Its best to join it now before you forget we have one!
 
-Start you journey with the first page in _Getting Started_ (a topic on the left).
+Start your journey by [installing BetonQuest](./Getting-Started/Installing-BetonQuest.md).

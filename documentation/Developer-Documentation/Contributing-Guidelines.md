@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-The BetonQuest organisation recommends IntelliJ as the preferred IDE.
+The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Community Edition</a> as the preferred IDE.
 This makes it possible to ship a complete project setup that ensures a consistent code quality and style.
 The project has been setup using maven and will build immediately on your device without any extra work (like manually adding dependencies).
 
@@ -19,21 +19,24 @@ The first thing you should do is to clone the project from our GitHub repository
 git clone https://github.com/BetonQuest/BetonQuest.git
 ```
 
-**Make sure to set this git config setting in your project before touching any code:**
+**Make sure to set this git config setting in your project before cloning or touching any code:**
+
 Windows:
 ```
-git config core.autocrlf true
+git config --global core.autocrlf true
 ```
-Linux:
+MacOS & Linux:
 ``` 
-git config core.autocrlf input
+git config --global core.autocrlf input
 ```
 
 
 ### Get ready to create a Pull Request!
 
 #### Test your changes!
-Pretty self-explanatory, isn't it?
+Please ensure your changes actually work and haven't introduced any bugs.
+Therefore, you should compile the plugin and run it on a local 1.13+ test server.
+Please install any related dependencie! If you changed code related to MySQL then setup a MySQL on your machine and test if BetonQuest still saves its data correctly. 
 
 #### Does your change require updates to users configs?
 This would be the case if you removed arguments or renamed e.g. an event.
@@ -48,6 +51,7 @@ Now you just need to tick "Import Profile" to add our ruleset (_config/pmd-rules
 
 Please also remove any TODO's along with commented out code.
 
+You can run `mvn verify` locally to ensure that you meet (nearly) all conditions before creating a PR.
 
 #### Update the Changelog
 You need to add your changes to the _Changelog.md_ file that can be found in the projects root folder.
