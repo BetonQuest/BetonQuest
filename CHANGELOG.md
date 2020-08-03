@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
 - Added option check_interval for holograms in custom.yml andd added GlobalVariable support
 - Added deletepoint event to delete player points
+- Added mythicmobdistance condition that will check if a specific MythicMobs entity is near the player
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
