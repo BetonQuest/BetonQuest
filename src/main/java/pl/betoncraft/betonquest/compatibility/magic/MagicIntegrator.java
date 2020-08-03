@@ -32,12 +32,12 @@ public class MagicIntegrator implements Integrator, Listener {
 
     public MagicIntegrator() {
         plugin = BetonQuest.getInstance();
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void hook() {
         plugin.registerConditions("wand", WandCondition.class);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
