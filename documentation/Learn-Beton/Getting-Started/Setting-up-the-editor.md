@@ -49,3 +49,5 @@ Some options need to be replaced by material names, messages... They will not sh
 If an option does, you need to choose between the offered options. Optional options are displayed as an empty field in the drop down.  
 
 To exit and insert everything press ++tab++ one last time.
+
+Next step: [Quick-Start-Tutorial](./Quick-Start-Tutorial.md)

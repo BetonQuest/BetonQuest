@@ -21,8 +21,7 @@ Add this to you pom.yml.
 </dependencies>
 ```
 
-The version you need to choose must be 1.12.0 or newer. If you want to use dev builds use `X.X.X-SNAPSHOT`.
-Check amberproject.net:8082/repository/AmberProject/ if you are not sure
+The version you need to choose must be 1.12.0 or newer. 
 
 ## Writing events
 

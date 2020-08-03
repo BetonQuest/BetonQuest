@@ -52,11 +52,36 @@ Report **Issues** here: https://github.com/BetonQuest/BetonQuest/issues/new/choo
 
 **Developer Setup**:
 
+```XML
+<repositories>
+    <repository>
+        <id>betonquest-repo</id>
+        <url>https://betonquest.org/nexus/repository/betonquest/</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>pl.betoncraft</groupId>
+        <artifactId>betonquest</artifactId>
+        <version>1.12.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+```
+
+**Contributing:**
+
 ```
 git clone https://github.com/BetonQuest/BetonQuest.git
 ```
 
 **Make sure to set this git config setting in your project before touching any code:**
+
+Windows:
 ```
 git config core.autocrlf true
+```
+Linux:
+``` 
+git config core.autocrlf input
 ```
