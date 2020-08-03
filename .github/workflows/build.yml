@@ -68,7 +68,7 @@ jobs:
           echo ::set-output name=version::$POM_MAVEN_VERSION
 
   build:
-    name: Build artifacts
+    name: Build Artifacts
     if: always()
     needs: [prepare]
     runs-on: ubuntu-latest
@@ -136,7 +136,7 @@ jobs:
           path: build/output
 
   documentation:
-    name: Build docs
+    name: Build Documentation
     if: always()
     needs: [prepare]
     runs-on: ubuntu-latest
@@ -174,25 +174,25 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './docs/User-Documentation/CHANGELOG.md'
+          cp ./CHANGELOG.md './documentation/User-Documentation/CHANGELOG.md'
         env:
           POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
 
-      - name: Set docs version
+      - name: Set documentation version
         run: |
           sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./mkdocs.yml
-          echo "Set the docs version to '${POM_MAVEN_VERSION}'"
+          echo "Set the documentation version to '${POM_MAVEN_VERSION}'"
 
       - name: Build with mkdocs
         run: |
-          mkdocs build --site-dir="build/docs"
+          mkdocs build --site-dir="build/documentation"
 
-      - name: Upload Docs
+      - name: Upload documentation
         uses: actions/upload-artifact@v1
         with:
-          name: BetonQuest-Docs
-          path: build/docs
+          name: BetonQuest-Documentation
+          path: build/documentation
 
   deploy-release:
     name: Deploy release
@@ -215,11 +215,11 @@ jobs:
           name: BetonQuest-Artifacts
           path: build/output/
 
-      - name: Download Docs
+      - name: Download Documentation
         uses: actions/download-artifact@v1
         with:
-          name: BetonQuest-Docs
-          path: build/docs/
+          name: BetonQuest-Documentation
+          path: build/documentation/
 
       - name: Set CHANGELOG.md version
         run: |
@@ -238,7 +238,7 @@ jobs:
         with:
           args: |
             build/output/BetonQuest.jar
-            build/docs/pdf/BetonQuest.pdf
+            build/documentation/pdf/BetonQuest.pdf
 
       - name: Deploy to Github Pages
         run: |
@@ -283,11 +283,11 @@ jobs:
           name: BetonQuest-Artifacts
           path: build/output/
 
-      - name: Download Docs
+      - name: Download Documentation
         uses: actions/download-artifact@v1
         with:
-          name: BetonQuest-Docs
-          path: build/docs/
+          name: BetonQuest-Documentation
+          path: build/documentation/
 
       - name: Set CHANGELOG.md version
         run: |
@@ -305,7 +305,7 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "@build/output/BetonQuest.jar"
-          DOCS: "@build/docs/pdf/BetonQuest.pdf"
+          DOCS: "@build/documentation/pdf/BetonQuest.pdf"
 
       - name: Deploy to Github Pages
         run: |

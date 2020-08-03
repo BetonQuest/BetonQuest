@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build artifacts
+    name: Build Artifacts
     if: "always() && github.repository == 'BetonQuest/BetonQuest'"
     runs-on: ubuntu-latest
 
@@ -26,7 +26,7 @@ jobs:
           mvn -B package
 
   documentation:
-    name: Build docs
+    name: Build Documentation
     if: "always() && github.repository == 'BetonQuest/BetonQuest'"
     runs-on: ubuntu-latest
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: Build with mkdocs
         run: |
-          mkdocs build --site-dir="build/docs"
+          mkdocs build --site-dir="build/documentation"
 
   alert:
     name: Alert to Discord

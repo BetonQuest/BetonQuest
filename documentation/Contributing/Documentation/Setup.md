@@ -21,5 +21,17 @@ All the files are markdown files. Markdown is the stuff you partially know from 
 `_Underlinded text_` _result_
 
 The final docs are generated using mkdocs-material!
-Install with pip -r requirements.text
-Website with guides... mkdocs & markdown.
+
+Make sure <a href="https://www.python.org/downloads/" target="_blank">Python3</a> is installed on your local system.
+If you use Python for more than this you might want to look into <a href="https://docs.python.org/3/library/venv.html" target="_blank">python virtual environments</a> to avoid conflicts.
+This should not be the case for any non-devs though.
+
+Install all other dependencies by entering `pip install -r requirements.txt` in the console.
+
+### See your changes live
+Mkdocs enables you to create a website that shows you your changes while you make them.
+To start an http document server on `http://127.0.0.1:8000` execute:
+
+```
+mkdocs serve
+```

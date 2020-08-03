@@ -48,6 +48,6 @@ After you're done you're going to need to import the codebase into your editor. 
 
 To get the full potential of your IDE it's a good idea to enable Maven integration - that way it will know more about BetonQuest and will be able to help you with code completion.
 
-If you want to implement features like new events, objectives or conditions you can take a look at existing classes - they will tell you how to structure your own code. Read [Info-for-developers page](docs/Info-for-developers.md) for more explanations of the API.
+If you want to implement features like new events, objectives or conditions you can take a look at existing classes - they will tell you how to structure your own code. Read [Info-for-developers page](documentation/Info-for-developers.md) for more explanations of the API.
 
 Since BetonQuest is using Git for version control you'll probably need to know the basics of Git in order to push your code to the GitHub repository. There's a great tool which greatly helps with all Git-related stuff and has awesome tutorials - [GitKraken](https://www.gitkraken.com). Check it out!

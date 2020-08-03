@@ -1,15 +1,7 @@
-# Info for developers
 
 ## Accessing the plugin
 
-You can either add BetonQuest.jar directly to your build path or use Maven. First option if you're using Eclipse:
-
-1. Create a folder called lib in your project folder.
-2. Put BetonQuest.jar in this folder.
-3. Refresh your project in Eclipse.
-4. In Eclipse Project Explorer right click on BetonQuest.jar and select `Build Path -> Add to Build Path`.
-
-And if you're using Maven simply add this (temporary repo) to your _pom.xml_:
+Add this to your pom.yml.
 
 ```XML
 <repositories>
@@ -27,9 +19,6 @@ And if you're using Maven simply add this (temporary repo) to your _pom.xml_:
     </dependency>
 </dependencies>
 ```
-
-The version you need to choose must be 1.12.0 or newer. If you want to use dev builds use `X.X.X-SNAPSHOT`.
-Check amberproject.net:8082/repository/AmberProject/ if you are not sure
 
 ## Writing events
 

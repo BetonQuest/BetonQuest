@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Docs" pattern="file[betonquest]:docs/*||file[betonquest]:docs//*||file:mkdocs.yml" />
+  <scope name="Docs" pattern="file[betonquest]:documentation/*||file[betonquest]:documentation//*||file:mkdocs.yml" />
 </component>
