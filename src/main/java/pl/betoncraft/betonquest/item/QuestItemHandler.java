@@ -257,9 +257,10 @@ public class QuestItemHandler implements Listener {
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getClickedBlock() != null
-                && (event.getClickedBlock().getType().equals(Material.LECTERN)
-                || event.getClickedBlock().getType().equals(Material.CAMPFIRE)
-                || event.getClickedBlock().getType().equals(Material.COMPOSTER))) {
+                && (event.getClickedBlock().getType().toString().equals("LECTERN")
+                || event.getClickedBlock().getType().toString().equals("CAMPFIRE")
+                || event.getClickedBlock().getType().toString().equals("COMPOSTER")
+                || event.getClickedBlock().getType().toString().equals("RESPAWN_ANCHOR"))) {
             final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
                     : event.getPlayer().getInventory().getItemInOffHand();
 
