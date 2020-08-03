@@ -525,6 +525,19 @@ To complete this objective you need to kill specified amount of MythicMobs. The 
     mmobkill SkeletalKnight amount:2 events:reward
     ```
 
+### Conditions
+
+#### MythicMob distance: `mythicmobdistance`
+
+### Events
+
+Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.
+
+!!! example
+    ```YAML
+    mythicmobdistance SkeletalKnight 7
+    ```
+
 #### SpawnMob: `mspawnmob`
 
 Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
@@ -533,8 +546,6 @@ Spawn specified amount of MythicMobs at given location. The first argument is a 
     ```YAML
     mspawnmob 100;200;300;world SkeletalKnight:1 5
     ```
-    
-    
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
 
