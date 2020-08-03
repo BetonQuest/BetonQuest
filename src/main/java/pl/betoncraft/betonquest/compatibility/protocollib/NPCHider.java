@@ -193,7 +193,6 @@ public class NPCHider extends BukkitRunnable implements Listener {
     public void applyVisibility(NPC npcID) {
         //check if the npc is in the default registry
         if (npcID.getOwningRegistry() != CitizensAPI.getNPCRegistry()) {
-            System.out.println("X");
             return;
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
