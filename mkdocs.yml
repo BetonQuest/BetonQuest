@@ -117,11 +117,12 @@ nav:
       - User-Documentation/Updating-and-Backups.md
       - User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
-      - Developer-Documentation/Info-for-developers.md
+      - Developer-Documentation/Contributing-Guidelines.md
+      - Developer-Documentation/API.md
       - Developer-Documentation/Releasing.md
       - Developer-Documentation/Versioning.md
   - 'Contributing':
-      - Contributing/Contributing.md
+      - Contributing/Contributing-Guidelines.md
       - 'Docs':
           - Contributing/Docs/Setup.md
           - Contributing/Docs/Guidelines.md

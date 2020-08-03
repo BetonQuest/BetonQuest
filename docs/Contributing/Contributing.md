@@ -25,4 +25,4 @@ You can send us the edited messages.yml file via discord or submit a pull reques
 If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Guidelines.md)!
 
 ##Writing code
-If you want to write code for BetonQuest check the [Developer Documentation](../Developer-Documentation/Info-for-developers.md)!3 
+If you want to write code for BetonQuest check the [Developer Documentation](../Developer-Documentation/Info-for-developers.md)!
