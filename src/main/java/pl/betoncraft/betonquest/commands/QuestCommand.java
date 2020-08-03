@@ -90,7 +90,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("betonquest")) {
             LogUtils.getLogger().log(Level.FINE, "Executing /betonquest command for user " + sender.getName()
@@ -316,7 +316,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     @Override
-    public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 1) {
             return Arrays.asList("condition", "event", "item", "give", "config", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "vector", "version", "purge",
@@ -404,7 +404,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completePackage(CommandSender sender, String[] args) {
+    private List<String> completePackage(final CommandSender sender, final String[] args) {
         return new ArrayList<>(Config.getPackages().keySet());
     }
 
@@ -417,21 +417,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *               null for unspecific
      * @return
      */
-    private List<String> completeId(CommandSender sender, String[] args, ConfigAccessor.AccessorType type) {
-        String last = args[args.length - 1];
+    private List<String> completeId(final CommandSender sender, final String[] args, final ConfigAccessor.AccessorType type) {
+        final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
             return completePackage(sender, args);
         } else {
-            String pack = last.substring(0, last.indexOf("."));
-            ConfigPackage configPack = Config.getPackages().get(pack);
+            final String pack = last.substring(0, last.indexOf("."));
+            final ConfigPackage configPack = Config.getPackages().get(pack);
             if (configPack == null)
                 return new ArrayList<>();
             if (type == null) {
-                List<String> completations = new ArrayList<>();
+                final List<String> completations = new ArrayList<>();
                 completations.add(pack + ".");
                 return completations;
             }
-            ConfigAccessor accessor;
+            final ConfigAccessor accessor;
             switch (type) {
                 case ITEMS:
                     accessor = configPack.getItems();
@@ -451,9 +451,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 default:
                     return new ArrayList<>();
             }
-            FileConfiguration configuration = accessor.getConfig();
-            List<String> completations = new ArrayList<>();
-            for (String key : configuration.getKeys(false)) {
+            final FileConfiguration configuration = accessor.getConfig();
+            final List<String> completations = new ArrayList<>();
+            for (final String key : configuration.getKeys(false)) {
                 completations.add(pack + "." + key);
             }
             return completations;
@@ -463,7 +463,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Gives an item to the player
      */
-    private void giveItem(CommandSender sender, String[] args) {
+    private void giveItem(final CommandSender sender, final String[] args) {
         // sender must be a player
         if (!(sender instanceof Player)) {
             LogUtils.getLogger().log(Level.FINE, "Cannot continue, sender must be player");
@@ -476,11 +476,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         try {
-            int splitIndex = args[1].indexOf(".");
-            String pack = args[1].substring(0, splitIndex);
-            String item = args[1].substring(splitIndex + 1);
-            ConfigPackage configPack = Config.getPackages().get(pack);
-            GiveEvent give = new GiveEvent(new Instruction(configPack, null, "give " + item));
+            final int splitIndex = args[1].indexOf(".");
+            final String pack = args[1].substring(0, splitIndex);
+            final String item = args[1].substring(splitIndex + 1);
+            final ConfigPackage configPack = Config.getPackages().get(pack);
+            final GiveEvent give = new GiveEvent(new Instruction(configPack, null, "give " + item));
             give.fire(PlayerConverter.getID((Player) sender));
         } catch (InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", new String[]{
@@ -494,7 +494,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Creates new package
      */
-    private void createNewPackage(CommandSender sender, String[] args) {
+    private void createNewPackage(final CommandSender sender, final String[] args) {
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Package name is missing");
             sendMessage(sender, "specify_package");
@@ -510,14 +510,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Purges player's data
      */
-    private void purgePlayer(CommandSender sender, String[] args) {
+    private void purgePlayer(final CommandSender sender, final String[] args) {
         // playerID is required
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
+        final String playerID = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -537,19 +537,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Reads, sets or appends strings from/to config files
      */
-    private void handleConfig(CommandSender sender, String[] args) {
+    private void handleConfig(final CommandSender sender, final String[] args) {
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "No action specified!");
             sendMessage(sender, "specify_action");
             return;
         }
-        String action = args[1];
-        String path = args[2];
+        final String action = args[1];
+        final String path = args[2];
         switch (action) {
             case "read":
             case "r":
                 LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-                String message = Config.getString(path);
+                final String message = Config.getString(path);
                 sender.sendMessage(message == null ? "null" : message);
                 break;
             case "set":
@@ -558,7 +558,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     sendMessage(sender, "config_set_error");
                     return;
                 }
-                StringBuilder strBldr = new StringBuilder();
+                final StringBuilder strBldr = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
                     strBldr.append(args[i] + " ");
                 }
@@ -567,10 +567,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     sendMessage(sender, "specify_path");
                     return;
                 }
-                boolean set = Config.setString(path, (args[3].equalsIgnoreCase("null")) ? null : strBldr.toString().trim());
+                final boolean set = Config.setString(path, (args[3].equalsIgnoreCase("null")) ? null : strBldr.toString().trim());
                 if (set) {
                     LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-                    String message1 = Config.getString(path);
+                    final String message1 = Config.getString(path);
                     sender.sendMessage(message1 == null ? "null" : message1);
                 } else {
                     sendMessage(sender, "config_set_error");
@@ -582,7 +582,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     sendMessage(sender, "config_set_error");
                     return;
                 }
-                StringBuilder strBldr2 = new StringBuilder();
+                final StringBuilder strBldr2 = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
                     strBldr2.append(args[i] + " ");
                 }
@@ -601,10 +601,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 if (oldString == null) {
                     oldString = "";
                 }
-                boolean set2 = Config.setString(path, oldString + ((space) ? " " : "") + finalString);
+                final boolean set2 = Config.setString(path, oldString + ((space) ? " " : "") + finalString);
                 if (set2) {
                     LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
-                    String message2 = Config.getString(path);
+                    final String message2 = Config.getString(path);
                     sender.sendMessage(message2 == null ? "null" : message2);
                 } else {
                     sendMessage(sender, "config_set_error");
@@ -626,7 +626,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeConfig(CommandSender sender, String[] args) {
+    private List<String> completeConfig(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return Arrays.asList("set", "add", "read");
         return new ArrayList<>();
@@ -635,14 +635,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes journal entries of certain players
      */
-    private void handleJournals(CommandSender sender, String[] args) {
+    private void handleJournals(final CommandSender sender, final String[] args) {
         // playerID is required
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
+        final String playerID = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -650,13 +650,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             LogUtils.getLogger().log(Level.FINE, "Player is offline, loading his data");
             playerData = new PlayerData(playerID);
         }
-        Journal journal = playerData.getJournal();
+        final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
             LogUtils.getLogger().log(Level.FINE, "Listing journal pointers");
             sendMessage(sender, "player_journal");
-            for (Pointer pointer : journal.getPointers()) {
-                String date = new SimpleDateFormat(Config.getString("config.date_format"))
+            for (final Pointer pointer : journal.getPointers()) {
+                final String date = new SimpleDateFormat(Config.getString("config.date_format"))
                         .format(new Date(pointer.getTimestamp()));
                 sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
             }
@@ -668,14 +668,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_pointer");
             return;
         }
-        String pointerName = (args[3].contains(".")) ? args[3] : defaultPack + "." + args[3];
+        final String pointerName = (args[3].contains(".")) ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
             case "a":
-                Pointer pointer;
+                final Pointer pointer;
                 if (args.length < 5) {
-                    long timestamp = new Date().getTime();
+                    final long timestamp = new Date().getTime();
                     LogUtils.getLogger().log(Level.FINE, "Adding pointer with current date: " + timestamp);
                     pointer = new Pointer(pointerName, timestamp);
                 } else {
@@ -722,7 +722,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeJournals(CommandSender sender, String[] args) {
+    private List<String> completeJournals(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -735,14 +735,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes points of certain player
      */
-    private void handlePoints(CommandSender sender, String[] args) {
+    private void handlePoints(final CommandSender sender, final String[] args) {
         // playerID is required
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
+        final String playerID = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -752,10 +752,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
-            List<Point> points = playerData.getPoints();
+            final List<Point> points = playerData.getPoints();
             LogUtils.getLogger().log(Level.FINE, "Listing points");
             sendMessage(sender, "player_points");
-            for (Point point : points) {
+            for (final Point point : points) {
                 sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
             }
             return;
@@ -766,7 +766,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
+        final String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
@@ -808,14 +808,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param sender
      * @param args
      */
-    private void handleGlobalPoints(CommandSender sender, String[] args) {
-        GlobalData data = instance.getGlobalData();
+    private void handleGlobalPoints(final CommandSender sender, final String[] args) {
+        final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global points
         if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
-            List<Point> points = data.getPoints();
+            final List<Point> points = data.getPoints();
             LogUtils.getLogger().log(Level.FINE, "Listing global points");
             sendMessage(sender, "global_points");
-            for (Point point : points) {
+            for (final Point point : points) {
                 sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
             }
             return;
@@ -833,7 +833,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+        final String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase()) {
             case "add":
@@ -873,7 +873,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completePoints(CommandSender sender, String[] args) {
+    private List<String> completePoints(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -891,7 +891,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeGlobalPoints(CommandSender sender, String[] args) {
+    private List<String> completeGlobalPoints(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return Arrays.asList("add", "list", "del");
         if (args.length == 3)
@@ -903,7 +903,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Adds item held in hand to items.yml file
      */
 
-    private void handleItems(CommandSender sender, String[] args) {
+    private void handleItems(final CommandSender sender, final String[] args) {
         // sender must be a player
         if (!(sender instanceof Player)) {
             LogUtils.getLogger().log(Level.FINE, "Cannot continue, sender must be player");
@@ -915,18 +915,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_item");
             return;
         }
-        String itemID = args[1];
-        String pack;
-        String name;
+        final String itemID = args[1];
+        final String pack;
+        final String name;
         if (itemID.contains(".")) {
-            String[] parts = itemID.split("\\.");
+            final String[] parts = itemID.split("\\.");
             pack = parts[0];
             name = parts[1];
         } else {
             pack = defaultPack;
             name = itemID;
         }
-        Player player = (Player) sender;
+        final Player player = (Player) sender;
         ItemStack item = null;
         item = player.getInventory().getItemInMainHand();
 
@@ -937,14 +937,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // define parts of the final string
-        ConfigPackage configPack = Config.getPackages().get(pack);
+        final ConfigPackage configPack = Config.getPackages().get(pack);
         if (configPack == null) {
             LogUtils.getLogger().log(Level.FINE, "Cannot continue, package does not exist");
             sendMessage(sender, "specify_package");
             return;
         }
-        ConfigAccessor config = configPack.getItems();
-        String instructions = QuestItem.itemToString(item);
+        final ConfigAccessor config = configPack.getItems();
+        final String instructions = QuestItem.itemToString(item);
         // save it in items.yml
         LogUtils.getLogger().log(Level.FINE, "Saving item to configuration as " + args[1]);
         config.getConfig().set(name, instructions.trim());
@@ -964,7 +964,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeItems(CommandSender sender, String[] args) {
+    private List<String> completeItems(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
         return new ArrayList<>();
@@ -973,20 +973,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Fires an event for an online player. It cannot work for offline players!
      */
-    private void handleEvents(CommandSender sender, String[] args) {
+    private void handleEvents(final CommandSender sender, final String[] args) {
         // the player has to be specified every time
         if (args.length < 2 || (Bukkit.getPlayer(args[1]) == null && !args[1].equals("-"))) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Event's ID is missing");
             sendMessage(sender, "specify_event");
             return;
         }
-        EventID eventID;
+        final EventID eventID;
         try {
             eventID = new EventID(null, args[2]);
         } catch (ObjectNotFoundException e) {
@@ -1012,7 +1012,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeEvents(CommandSender sender, String[] args) {
+    private List<String> completeEvents(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -1023,21 +1023,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Checks if specified player meets condition described by ID
      */
-    private void handleConditions(CommandSender sender, String[] args) {
+    private void handleConditions(final CommandSender sender, final String[] args) {
         // the player has to be specified every time
         if (args.length < 2 || (Bukkit.getPlayer(args[1]) == null && !args[1].equals("-"))) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         // the condition ID
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Condition's ID is missing");
             sendMessage(sender, "specify_condition");
             return;
         }
-        ConditionID conditionID;
+        final ConditionID conditionID;
         try {
             conditionID = new ConditionID(null, args[2]);
         } catch (ObjectNotFoundException e) {
@@ -1063,7 +1063,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeConditions(CommandSender sender, String[] args) {
+    private List<String> completeConditions(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -1074,14 +1074,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes tags
      */
-    private void handleTags(CommandSender sender, String[] args) {
+    private void handleTags(final CommandSender sender, final String[] args) {
         // playerID is required
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
+        final String playerID = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -1091,10 +1091,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
-            List<String> tags = playerData.getTags();
+            final List<String> tags = playerData.getTags();
             LogUtils.getLogger().log(Level.FINE, "Listing tags");
             sendMessage(sender, "player_tags");
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 sender.sendMessage("§b- " + tag);
             }
             return;
@@ -1105,7 +1105,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
+        final String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase()) {
             case "add":
@@ -1138,14 +1138,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes global tags
      */
-    private void handleGlobalTags(CommandSender sender, String[] args) {
-        GlobalData data = instance.getGlobalData();
+    private void handleGlobalTags(final CommandSender sender, final String[] args) {
+        final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global tags
         if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
-            List<String> tags = data.getTags();
+            final List<String> tags = data.getTags();
             LogUtils.getLogger().log(Level.FINE, "Listing global tags");
             sendMessage(sender, "global_tags");
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 sender.sendMessage("§b- " + tag);
             }
             return;
@@ -1163,7 +1163,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+        final String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase()) {
             case "add":
@@ -1199,7 +1199,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeTags(CommandSender sender, String[] args) {
+    private List<String> completeTags(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -1217,7 +1217,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeGlobalTags(CommandSender sender, String[] args) {
+    private List<String> completeGlobalTags(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return Arrays.asList("list", "add", "del");
         if (args.length == 3)
@@ -1228,15 +1228,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
-    private void handleObjectives(CommandSender sender, String[] args) {
+    private void handleObjectives(final CommandSender sender, final String[] args) {
         // playerID is required
         if (args.length < 2) {
             LogUtils.getLogger().log(Level.FINE, "Player's name is missing");
             sendMessage(sender, "specify_player");
             return;
         }
-        String playerID = PlayerConverter.getID(args[1]);
-        boolean isOnline = !(PlayerConverter.getPlayer(playerID) == null);
+        final String playerID = PlayerConverter.getID(args[1]);
+        final boolean isOnline = !(PlayerConverter.getPlayer(playerID) == null);
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -1246,12 +1246,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's objectives
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
-            List<String> tags;
+            final List<String> tags;
             if (!isOnline) {
                 // if player is offline then convert his raw objective strings
                 // to tags
                 tags = new ArrayList<>();
-                for (String string : playerData.getRawObjectives().keySet()) {
+                for (final String string : playerData.getRawObjectives().keySet()) {
                     tags.add(string);
                 }
             } else {
@@ -1259,14 +1259,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // active
                 // objectives
                 tags = new ArrayList<>();
-                for (Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+                for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
                     tags.add(objective.getLabel());
                 }
             }
             // display objectives
             LogUtils.getLogger().log(Level.FINE, "Listing objectives");
             sendMessage(sender, "player_objectives");
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 sender.sendMessage("§b- " + tag);
             }
             return;
@@ -1278,7 +1278,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // get the objective
-        ObjectiveID objectiveID;
+        final ObjectiveID objectiveID;
         try {
             objectiveID = new ObjectiveID(null, args[3]);
         } catch (ObjectNotFoundException e) {
@@ -1289,7 +1289,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             LogUtils.logThrowable(e);
             return;
         }
-        Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
+        final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
         if (objective == null) {
             sendMessage(sender, "specify_objective");
             return;
@@ -1347,7 +1347,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeObjectives(CommandSender sender, String[] args) {
+    private List<String> completeObjectives(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return null;
         if (args.length == 3)
@@ -1363,29 +1363,29 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param sender
      * @param args
      */
-    private void handleVector(CommandSender sender, String[] args) {
+    private void handleVector(final CommandSender sender, final String[] args) {
         if (!(sender instanceof Player))
             return;
-        Player player = ((Player) sender);
+        final Player player = ((Player) sender);
         if (args.length != 3) {
             player.sendMessage("§4ERROR");
             return;
         }
         String pack = null, name = null;
         if (args[1].contains(".")) {
-            String[] parts = args[1].split("\\.");
+            final String[] parts = args[1].split("\\.");
             pack = parts[0];
             name = parts[1];
         } else {
             pack = defaultPack;
             name = args[1];
         }
-        String origin = Config.getString(pack + ".main.variables." + name);
+        final String origin = Config.getString(pack + ".main.variables." + name);
         if (origin == null) {
             player.sendMessage("§4ERROR");
             return;
         }
-        Vector vector;
+        final Vector vector;
         try {
             vector = LocationData.parseVector(origin);
         } catch (InstructionParseException e) {
@@ -1407,17 +1407,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeVector(CommandSender sender, String[] args) {
+    private List<String> completeVector(final CommandSender sender, final String[] args) {
         if (args.length == 2) {
             if (args[1] == null || !args[1].contains(".")) {
                 return completePackage(sender, args);
             }
-            String pack = args[1].substring(0, args[1].indexOf("."));
-            ConfigPackage configPack = Config.getPackages().get(pack);
+            final String pack = args[1].substring(0, args[1].indexOf("."));
+            final ConfigPackage configPack = Config.getPackages().get(pack);
             if (configPack == null)
                 return new ArrayList<>();
-            ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
-            Collection<String> keys = section.getKeys(false);
+            final ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
+            final Collection<String> keys = section.getKeys(false);
             if (keys.isEmpty())
                 return new ArrayList<>();
             return new ArrayList<>(keys);
@@ -1428,26 +1428,28 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Renames stuff.
      */
-    private void handleRenaming(CommandSender sender, String[] args) {
+    private void handleRenaming(final CommandSender sender, final String[] args) {
         if (args.length < 4) {
             sendMessage(sender, "arguments");
             return;
         }
-        String type = args[1].toLowerCase(), name = args[2], rename = args[3];
+        final String type = args[1].toLowerCase();
+        String name = args[2];
+        String rename = args[3];
         if (!name.contains(".")) {
             name = defaultPack + "." + name;
         }
         if (!rename.contains(".")) {
             rename = defaultPack + "." + rename;
         }
-        UpdateType updateType;
+        final UpdateType updateType;
         switch (type) {
             case "tags":
             case "tag":
             case "t":
                 updateType = UpdateType.RENAME_ALL_TAGS;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
                     playerData.removeTag(name);
                     playerData.addTag(rename);
                 }
@@ -1456,10 +1458,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.RENAME_ALL_POINTS;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
                     int points = 0;
-                    for (Point point : playerData.getPoints()) {
+                    for (final Point point : playerData.getPoints()) {
                         if (point.getCategory().equals(name)) {
                             points = point.getCount();
                             break;
@@ -1476,7 +1478,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "gp":
                 updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
                 int globalpoints = 0;
-                for (Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
+                for (final Point globalpoint : BetonQuest.getInstance().getGlobalData().getPoints()) {
                     if (globalpoint.getCategory().equals(name)) {
                         globalpoints = globalpoint.getCount();
                         break;
@@ -1490,7 +1492,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "o":
                 updateType = UpdateType.RENAME_ALL_OBJECTIVES;
                 // get ID and package
-                ObjectiveID nameID;
+                final ObjectiveID nameID;
                 try {
                     nameID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
@@ -1506,7 +1508,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         nameID.generateInstruction().getInstruction());
                 nameID.getPackage().getObjectives().saveConfig();
                 // rename objective instance
-                ObjectiveID renameID;
+                final ObjectiveID renameID;
                 try {
                     renameID = new ObjectiveID(null, rename);
                 } catch (ObjectNotFoundException e) {
@@ -1517,11 +1519,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
                 BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
                 // renaming an active objective probably isn't needed
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerID = PlayerConverter.getID(player);
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final String playerID = PlayerConverter.getID(player);
                     boolean found = false;
                     String data = null;
-                    for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
                         if (obj.getLabel().equals(name)) {
                             found = true;
                             data = obj.getData(PlayerConverter.getID(player));
@@ -1547,10 +1549,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
                     Pointer p = null;
-                    for (Pointer pointer : journal.getPointers()) {
+                    for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.getPointer().equals(name)) {
                             p = pointer;
                         }
@@ -1581,7 +1583,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeRenaming(CommandSender sender, String[] args) {
+    private List<String> completeRenaming(final CommandSender sender, final String[] args) {
         if (args.length <= 3)
             return completeDeleting(sender, args);
         if (args.length == 4)
@@ -1592,23 +1594,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Deleted stuff.
      */
-    private void handleDeleting(CommandSender sender, String[] args) {
+    private void handleDeleting(final CommandSender sender, final String[] args) {
         if (args.length < 3) {
             sendMessage(sender, "arguments");
             return;
         }
-        String type = args[1].toLowerCase(), name = args[2];
+        final String type = args[1].toLowerCase();
+        String name = args[2];
         if (!name.contains(".")) {
             name = defaultPack + "." + name;
         }
-        UpdateType updateType;
+        final UpdateType updateType;
         switch (type) {
             case "tags":
             case "tag":
             case "t":
                 updateType = UpdateType.REMOVE_ALL_TAGS;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
                     playerData.removeTag(name);
                 }
                 break;
@@ -1616,8 +1619,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.REMOVE_ALL_POINTS;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
                     playerData.removePointsCategory(name);
                 }
                 break;
@@ -1625,7 +1628,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "objective":
             case "o":
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
-                ObjectiveID objectiveID;
+                final ObjectiveID objectiveID;
                 try {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
@@ -1636,8 +1639,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     LogUtils.logThrowable(e);
                     return;
                 }
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerID = PlayerConverter.getID(player);
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final String playerID = PlayerConverter.getID(player);
                     BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
                 }
@@ -1649,8 +1652,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
                     journal.removePointer(name);
                     journal.update();
                 }
@@ -1673,7 +1676,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeDeleting(CommandSender sender, String[] args) {
+    private List<String> completeDeleting(final CommandSender sender, final String[] args) {
         if (args.length == 2)
             return Arrays.asList("tag", "point", "objective", "entry");
         if (args.length == 3) {
@@ -1704,10 +1707,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Displays help to the user.
      */
-    private void displayHelp(CommandSender sender, String alias) {
+    private void displayHelp(final CommandSender sender, final String alias) {
         LogUtils.getLogger().log(Level.FINE, "Just displaying help");
         // specify all commands
-        HashMap<String, String> cmds = new HashMap<>();
+        final HashMap<String, String> cmds = new HashMap<>();
         cmds.put("reload", "reload");
         cmds.put("objectives", "objective <player> [list/add/del] [objective]");
         cmds.put("globaltags", "globaltags [list/add/del/purge]");
@@ -1731,8 +1734,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof Player) {
-            String lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
-            for (String command : cmds.keySet()) {
+            final String lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
+            for (final String command : cmds.keySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "
                                 + cmds.get(
@@ -1741,32 +1744,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                                 + Config.getMessage(lang, "command_" + command) + "\"}}]}");
             }
         } else {
-            for (String command : cmds.keySet()) {
+            for (final String command : cmds.keySet()) {
                 sender.sendMessage("§c/" + alias + " " + cmds.get(command));
                 sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + command));
             }
         }
     }
 
-    private void displayVersionInfo(CommandSender sender) {
+    private void displayVersionInfo(final CommandSender sender) {
 
         // build clickable tellraw-like message by using bugee api or fall back
         // on unclickable messages
-        ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
+        final ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
 
         // get versions
         final String betonquest_version = BetonQuest.getInstance().getDescription().getVersion();
         final String spigot_version = Bukkit.getServer().getVersion();
 
         // get internal messages
-        String lang = (sender instanceof Player)
+        final String lang = (sender instanceof Player)
                 ? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
                 : Config.getLanguage();
-        String click_to_download = "§b" + Config.getMessage(lang, "click_to_download");
-        String click_to_copy = "§b" + Config.getMessage(lang, "click_to_copy");
+        final String click_to_download = "§b" + Config.getMessage(lang, "click_to_download");
+        final String click_to_copy = "§b" + Config.getMessage(lang, "click_to_copy");
 
         // get available updates
-        Updater updater = BetonQuest.getInstance().getUpdater();
+        final Updater updater = BetonQuest.getInstance().getUpdater();
         String updates_string = "";
         String updates_command = null;
         if (updater.isUpdateAvailable()) {
@@ -1775,14 +1778,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         // get hooked Plugins
-        TreeMap<String, String> hooked = new TreeMap<>();
-        for (String plugin : Compatibility.getHooked()) {
-            Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
+        final TreeMap<String, String> hooked = new TreeMap<>();
+        for (final String plugin : Compatibility.getHooked()) {
+            final Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
             if (pl != null)
                 hooked.put(plugin, pl.getDescription().getVersion());
         }
-        StringJoiner hooked_raw = new StringJoiner(", ");
-        for (String key : hooked.navigableKeySet()) {
+        final StringJoiner hooked_raw = new StringJoiner(", ");
+        for (final String key : hooked.navigableKeySet()) {
             hooked_raw.add(key + " (" + hooked.get(key) + ")");
         }
 
@@ -1803,7 +1806,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             builder.append("  ---", ChatColor.GRAY);
         } else {
             boolean first = true;
-            for (String key : hooked.navigableKeySet()) {
+            for (final String key : hooked.navigableKeySet()) {
                 if (first)
                     first = false;
                 else {
@@ -1822,13 +1825,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         builder.send(sender);
     }
 
-    private void handleDebug(CommandSender sender, String[] args) {
+    private void handleDebug(final CommandSender sender, final String[] args) {
         if (args.length == 1) {
             sender.sendMessage(
                     "§2Debugging mode is currently " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
             return;
         }
-        Boolean input = args[1].equalsIgnoreCase("true") ? Boolean.TRUE
+        final Boolean input = args[1].equalsIgnoreCase("true") ? Boolean.TRUE
                 : args[1].equalsIgnoreCase("false") ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
@@ -1850,22 +1853,22 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
-    private List<String> completeDebug(CommandSender sender, String[] args) {
+    private List<String> completeDebug(final CommandSender sender, final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("true", "false");
         }
         return null;
     }
 
-    private void sendMessage(CommandSender sender, String messageName) {
+    private void sendMessage(final CommandSender sender, final String messageName) {
         sendMessage(sender, messageName, null);
     }
 
-    private void sendMessage(CommandSender sender, String messageName, String[] variables) {
+    private void sendMessage(final CommandSender sender, final String messageName, final String[] variables) {
         if (sender instanceof Player) {
             Config.sendMessage(PlayerConverter.getID((Player) sender), messageName, variables);
         } else {
-            String message = Config.getMessage(Config.getLanguage(), messageName, variables);
+            final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);
         }
     }

@@ -32,7 +32,7 @@ public class WeatherCondition extends Condition {
 
     private final String weather;
 
-    public WeatherCondition(Instruction instruction) throws InstructionParseException {
+    public WeatherCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         weather = instruction.next().toLowerCase().trim();
         if (!weather.equals("sun") && !weather.equals("clear") && !weather.equals("rain") && !weather.equals("rainy")
@@ -42,8 +42,8 @@ public class WeatherCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
+    protected Boolean execute(final String playerID) {
+        final World world = PlayerConverter.getPlayer(playerID).getWorld();
         switch (weather) {
             case "sun":
             case "clear":

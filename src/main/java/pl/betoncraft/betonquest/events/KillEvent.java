@@ -30,13 +30,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class KillEvent extends QuestEvent {
 
-    public KillEvent(Instruction instruction) throws InstructionParseException {
+    public KillEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
         player.damage(player.getHealth() + 1);
         return null;
     }

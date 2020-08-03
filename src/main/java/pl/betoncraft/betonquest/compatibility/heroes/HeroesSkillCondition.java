@@ -33,14 +33,14 @@ public class HeroesSkillCondition extends Condition {
 
     private String skillName;
 
-    public HeroesSkillCondition(Instruction instruction) throws InstructionParseException {
+    public HeroesSkillCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         skillName = instruction.next();
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final String playerID) {
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
         if (hero == null)
             return false;
         return hero.canUseSkill(skillName);

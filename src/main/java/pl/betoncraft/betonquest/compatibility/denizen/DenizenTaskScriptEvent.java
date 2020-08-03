@@ -37,19 +37,19 @@ public class DenizenTaskScriptEvent extends QuestEvent {
 
     private final String name;
 
-    public DenizenTaskScriptEvent(Instruction instruction) throws InstructionParseException {
+    public DenizenTaskScriptEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         name = instruction.next();
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
-        BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
+        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
         script.run(data, null);
         return null;
     }

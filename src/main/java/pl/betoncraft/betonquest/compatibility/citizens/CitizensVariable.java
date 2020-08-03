@@ -40,7 +40,7 @@ public class CitizensVariable extends Variable {
     private int id;
     private TYPE key;
 
-    public CitizensVariable(Instruction instruction) throws InstructionParseException {
+    public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
         id = instruction.getInt();
@@ -52,8 +52,8 @@ public class CitizensVariable extends Variable {
     }
 
     @Override
-    public String getValue(String playerID) {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+    public String getValue(final String playerID) {
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
             return "";
         }
@@ -65,7 +65,7 @@ public class CitizensVariable extends Variable {
                 return npc.getFullName();
             case LOCATION:
                 if (npc.getEntity() != null) {
-                    Location loc = npc.getEntity().getLocation();
+                    final Location loc = npc.getEntity().getLocation();
                     return String.format("%.2f;%.2f;%.2f;%s;%.2f;%.2f",
                             loc.getX(),
                             loc.getY(),

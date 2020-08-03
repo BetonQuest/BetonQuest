@@ -40,7 +40,7 @@ public class SQLite extends Database {
      * @param plugin     Plugin instance
      * @param dbLocation Location of the Database (Must end in .db)
      */
-    public SQLite(Plugin plugin, String dbLocation) {
+    public SQLite(final Plugin plugin, final String dbLocation) {
         super(plugin);
         this.dbLocation = dbLocation;
     }
@@ -50,7 +50,7 @@ public class SQLite extends Database {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();
         }
-        File file = new File(plugin.getDataFolder(), dbLocation);
+        final File file = new File(plugin.getDataFolder(), dbLocation);
         if (!(file.exists())) {
             try {
                 file.createNewFile();

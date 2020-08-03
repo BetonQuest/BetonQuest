@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 public class GlobalVariableID extends pl.betoncraft.betonquest.id.GlobalVariableID {
 
-    public GlobalVariableID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public GlobalVariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }
 

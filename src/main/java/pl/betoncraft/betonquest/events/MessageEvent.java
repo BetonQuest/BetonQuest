@@ -38,9 +38,9 @@ public class MessageEvent extends QuestEvent {
     private final HashMap<String, String> messages = new HashMap<>();
     private final ArrayList<String> variables = new ArrayList<>();
 
-    public MessageEvent(Instruction instruction) throws InstructionParseException {
+    public MessageEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        String[] parts;
+        final String[] parts;
         try {
             parts = instruction.getInstruction().substring(8).split(" ");
         } catch (IndexOutOfBoundsException e) {
@@ -51,7 +51,7 @@ public class MessageEvent extends QuestEvent {
         }
         String currentLang = Config.getLanguage();
         StringBuilder string = new StringBuilder();
-        for (String part : parts) {
+        for (final String part : parts) {
             if (part.startsWith("conditions:") || part.startsWith("condition:")) {
                 continue;
             } else if (part.matches("^\\{.+\\}$")) {
@@ -70,8 +70,8 @@ public class MessageEvent extends QuestEvent {
         if (messages.isEmpty()) {
             throw new InstructionParseException("Message missing");
         }
-        for (String message : messages.values()) {
-            for (String variable : BetonQuest.resolveVariables(message)) {
+        for (final String message : messages.values()) {
+            for (final String variable : BetonQuest.resolveVariables(message)) {
                 try {
                     BetonQuest.createVariable(instruction.getPackage(), variable);
                 } catch (InstructionParseException e) {
@@ -85,8 +85,8 @@ public class MessageEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+    protected Void execute(final String playerID) {
+        final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
             message = messages.get(Config.getLanguage());
@@ -94,7 +94,7 @@ public class MessageEvent extends QuestEvent {
         if (message == null) {
             message = messages.values().iterator().next();
         }
-        for (String variable : variables) {
+        for (final String variable : variables) {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }

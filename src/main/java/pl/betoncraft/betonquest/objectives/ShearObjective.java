@@ -44,11 +44,11 @@ public class ShearObjective extends Objective implements Listener {
     private final boolean notify;
     private final int notifyInterval;
 
-    public ShearObjective(Instruction instruction) throws InstructionParseException {
+    public ShearObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = SheepData.class;
         amount = instruction.getPositive();
-        String rawName = instruction.getOptional("name");
+        final String rawName = instruction.getOptional("name");
         name = rawName == null ? null : rawName.replace('_', ' ');
         color = instruction.getOptional("color");
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
@@ -56,17 +56,17 @@ public class ShearObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onShear(PlayerShearEntityEvent event) {
+    public void onShear(final PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP)
             return;
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID))
             return;
         if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name)))
             return;
         if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
             return;
-        SheepData data = (SheepData) dataMap.get(playerID);
+        final SheepData data = (SheepData) dataMap.get(playerID);
 
         if (checkConditions(playerID)) {
             data.shearSheep();
@@ -80,7 +80,7 @@ public class ShearObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(((SheepData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -108,7 +108,7 @@ public class ShearObjective extends Objective implements Listener {
 
         private int amount;
 
-        public SheepData(String instruction, String playerID, String objID) {
+        public SheepData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

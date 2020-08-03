@@ -8,17 +8,17 @@ public class UpdaterTest {
 
     @Test
     public void testVersionCompare() {
-        Updater.Version version1 = createAndCheckVersion("1.0.0", false, false);
-        Updater.Version version2 = createAndCheckVersion("2.0.0", false, false);
-        Updater.Version version3 = createAndCheckVersion("1.1.0", false, false);
-        Updater.Version version4 = createAndCheckVersion("1.0.1", false, false);
-        Updater.Version version5 = createAndCheckVersion("1.0.0-DEV-1", true, false);
-        Updater.Version version6 = createAndCheckVersion("1.0.0-DEV-2", true, false);
-        Updater.Version version7 = createAndCheckVersion("2.0.0-DEV-1", true, false);
-        Updater.Version version8 = createAndCheckVersion("1.1.0-DEV-1", true, false);
-        Updater.Version version9 = createAndCheckVersion("1.0.1-DEV-1", true, false);
-        Updater.Version version10 = createAndCheckVersion("1.0.1-DEV-UNOFFICIAL", false, true);
-        Updater.Version version11 = createAndCheckVersion("1.0.1-ARTIFACT-1", false, true);
+        final Updater.Version version1 = createAndCheckVersion("1.0.0", false, false);
+        final Updater.Version version2 = createAndCheckVersion("2.0.0", false, false);
+        final Updater.Version version3 = createAndCheckVersion("1.1.0", false, false);
+        final Updater.Version version4 = createAndCheckVersion("1.0.1", false, false);
+        final Updater.Version version5 = createAndCheckVersion("1.0.0-DEV-1", true, false);
+        final Updater.Version version6 = createAndCheckVersion("1.0.0-DEV-2", true, false);
+        final Updater.Version version7 = createAndCheckVersion("2.0.0-DEV-1", true, false);
+        final Updater.Version version8 = createAndCheckVersion("1.1.0-DEV-1", true, false);
+        final Updater.Version version9 = createAndCheckVersion("1.0.1-DEV-1", true, false);
+        final Updater.Version version10 = createAndCheckVersion("1.0.1-DEV-UNOFFICIAL", false, true);
+        final Updater.Version version11 = createAndCheckVersion("1.0.1-ARTIFACT-1", false, true);
 
         {
             assertBooleanMulti(Updater.UpdateStrategy.MAYOR, false, version1, version1, version5, version6, version7, version8, version9, version10, version11);
@@ -219,14 +219,14 @@ public class UpdaterTest {
         }
     }
 
-    private void assertBooleanMulti(Updater.UpdateStrategy strategy, boolean expected, Updater.Version v, Updater.Version... versions) {
-        for (Updater.Version version : versions) {
+    private void assertBooleanMulti(final Updater.UpdateStrategy strategy, final boolean expected, final Updater.Version v, final Updater.Version... versions) {
+        for (final Updater.Version version : versions) {
             assertEquals(expected, v.isNewer(version, strategy), "UpdateStrategy: '" + strategy + "', Version: '" + v.getVersion() + "', with Version: '" + version.getVersion() + "', expected: '" + expected + "'!");
         }
     }
 
-    private Updater.Version createAndCheckVersion(String v, boolean isDev, boolean isUnofficial) {
-        Updater.Version version = new Updater.Version(v);
+    private Updater.Version createAndCheckVersion(final String v, final boolean isDev, final boolean isUnofficial) {
+        final Updater.Version version = new Updater.Version(v);
         assertEquals(v, version.getVersion(), "Check Version on " + v);
         assertEquals(isDev, version.isDev(), "Check Dev on " + v);
         assertEquals(isUnofficial, version.isUnofficial(), "Check Unofficial on " + v);

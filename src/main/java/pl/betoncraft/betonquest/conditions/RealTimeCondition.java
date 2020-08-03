@@ -37,17 +37,17 @@ public class RealTimeCondition extends Condition {
     private final int hoursMax;
     private final int minutesMax;
 
-    public RealTimeCondition(Instruction instruction) throws InstructionParseException {
+    public RealTimeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.staticness = true;
         super.persistent = true;
-        String[] theTime = instruction.next().split("-");
+        final String[] theTime = instruction.next().split("-");
         if (theTime.length != 2) {
             throw new InstructionParseException("Wrong time format");
         }
         try {
-            String[] timeMin = theTime[0].split(":");
-            String[] timeMax = theTime[1].split(":");
+            final String[] timeMin = theTime[0].split(":");
+            final String[] timeMax = theTime[1].split(":");
             if (timeMin.length != 2 || timeMax.length != 2) {
                 throw new InstructionParseException("Could not parse time");
             }
@@ -68,11 +68,11 @@ public class RealTimeCondition extends Condition {
 
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Calendar cal = Calendar.getInstance();
-        Date now = cal.getTime();
-        Date startTime = atTime(cal, hoursMin, minutesMin);
-        Date endTime = atTime(cal, hoursMax, minutesMax);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Calendar cal = Calendar.getInstance();
+        final Date now = cal.getTime();
+        final Date startTime = atTime(cal, hoursMin, minutesMin);
+        final Date endTime = atTime(cal, hoursMax, minutesMax);
         if (startTime.before(endTime)) {
             return now.after(startTime) && now.before(endTime);
         } else {
@@ -80,7 +80,7 @@ public class RealTimeCondition extends Condition {
         }
     }
 
-    private Date atTime(Calendar day, int hours, int minutes) {
+    private Date atTime(final Calendar day, final int hours, final int minutes) {
         day.setLenient(false);
         day.set(Calendar.HOUR_OF_DAY, hours);
         day.set(Calendar.HOUR, hours < 12 ? hours : hours - 12);

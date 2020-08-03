@@ -50,7 +50,7 @@ public class KillMobEvent extends QuestEvent {
     private String marked;
 
 
-    public KillMobEvent(Instruction instruction) throws InstructionParseException {
+    public KillMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -68,8 +68,8 @@ public class KillMobEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
         final double radius_squared = this.radius.getDouble(playerID) * this.radius.getDouble(playerID);
         location
                 .getWorld()

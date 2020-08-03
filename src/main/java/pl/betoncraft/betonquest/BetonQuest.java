@@ -262,7 +262,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public static Variable createVariable(final ConfigPackage pack, final String instruction)
             throws InstructionParseException {
-        VariableID ID;
+        final VariableID ID;
         try {
             ID = new VariableID(pack, instruction);
         } catch (final ObjectNotFoundException e) {
@@ -635,7 +635,7 @@ public class BetonQuest extends JavaPlugin {
                             "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                EventID ID;
+                final EventID ID;
                 try {
                     ID = new EventID(pack, key);
                 } catch (final ObjectNotFoundException e) {
@@ -644,7 +644,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                String type;
+                final String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
@@ -685,7 +685,7 @@ public class BetonQuest extends JavaPlugin {
                             "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                ConditionID ID;
+                final ConditionID ID;
                 try {
                     ID = new ConditionID(pack, key);
                 } catch (final ObjectNotFoundException e) {
@@ -694,7 +694,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                String type;
+                final String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
@@ -735,7 +735,7 @@ public class BetonQuest extends JavaPlugin {
                             "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                ObjectiveID ID;
+                final ObjectiveID ID;
                 try {
                     ID = new ObjectiveID(pack, key);
                 } catch (final ObjectNotFoundException e) {
@@ -744,7 +744,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                String type;
+                final String type;
                 try {
                     type = ID.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {

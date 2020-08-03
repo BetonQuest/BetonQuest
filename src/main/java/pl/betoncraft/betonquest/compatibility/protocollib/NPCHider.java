@@ -83,18 +83,18 @@ public class NPCHider extends BukkitRunnable implements Listener {
 
     private void loadFromConfig() {
 
-        for (ConfigPackage cfgPackage : Config.getPackages().values()) {
-            FileConfiguration custom = cfgPackage.getCustom().getConfig();
+        for (final ConfigPackage cfgPackage : Config.getPackages().values()) {
+            final FileConfiguration custom = cfgPackage.getCustom().getConfig();
             if (custom == null) {
                 continue;
             }
-            ConfigurationSection section = custom.getConfigurationSection("hide_npcs");
+            final ConfigurationSection section = custom.getConfigurationSection("hide_npcs");
             if (section == null) {
                 continue;
             }
             npcs:
-            for (String npcID : section.getKeys(false)) {
-                int id;
+            for (final String npcID : section.getKeys(false)) {
+                final int id;
                 try {
                     id = Integer.parseInt(npcID);
                 } catch (NumberFormatException e) {
@@ -102,10 +102,10 @@ public class NPCHider extends BukkitRunnable implements Listener {
                     LogUtils.logThrowable(e);
                     continue npcs;
                 }
-                Set<ConditionID> conditions = new HashSet<>();
-                String conditionsString = section.getString(npcID);
+                final Set<ConditionID> conditions = new HashSet<>();
+                final String conditionsString = section.getString(npcID);
 
-                for (String condition : conditionsString.split(",")) {
+                for (final String condition : conditionsString.split(",")) {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
                     } catch (ObjectNotFoundException e) {
@@ -146,13 +146,13 @@ public class NPCHider extends BukkitRunnable implements Listener {
      * @param player the player
      * @param npcID  ID of the NPC
      */
-    public void applyVisibility(Player player, Integer npcID) {
+    public void applyVisibility(final Player player, final Integer npcID) {
         boolean hidden = true;
-        Set<ConditionID> conditions = npcs.get(npcID);
+        final Set<ConditionID> conditions = npcs.get(npcID);
         if (conditions == null || conditions.isEmpty()) {
             hidden = false;
         } else {
-            for (ConditionID condition : conditions) {
+            for (final ConditionID condition : conditions) {
                 if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
                     hidden = false;
                     break;
@@ -160,7 +160,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
             }
         }
 
-        NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
             LogUtils.getLogger().log(Level.WARNING, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
@@ -179,8 +179,8 @@ public class NPCHider extends BukkitRunnable implements Listener {
      *
      * @param player the player
      */
-    public void applyVisibility(Player player) {
-        for (Integer npcID : npcs.keySet()) {
+    public void applyVisibility(final Player player) {
+        for (final Integer npcID : npcs.keySet()) {
             applyVisibility(player, npcID);
         }
     }
@@ -190,12 +190,12 @@ public class NPCHider extends BukkitRunnable implements Listener {
      *
      * @param npcID ID of the NPC
      */
-    public void applyVisibility(NPC npcID) {
+    public void applyVisibility(final NPC npcID) {
         //check if the npc is in the default registry
         if (npcID.getOwningRegistry() != CitizensAPI.getNPCRegistry()) {
             return;
         }
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (final Player p : Bukkit.getOnlinePlayers()) {
             applyVisibility(p, npcID.getId());
         }
     }
@@ -204,8 +204,8 @@ public class NPCHider extends BukkitRunnable implements Listener {
      * Updates the visibility of all NPCs for all players.
      */
     public void applyVisibility() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            for (Integer npcID : npcs.keySet()) {
+        for (final Player p : Bukkit.getOnlinePlayers()) {
+            for (final Integer npcID : npcs.keySet()) {
                 applyVisibility(p, npcID);
             }
         }
@@ -218,17 +218,17 @@ public class NPCHider extends BukkitRunnable implements Listener {
      * @param npc    ID of the NPC
      * @return true if the NPC is visible to that player, false otherwise
      */
-    public boolean isInvisible(Player player, NPC npc) {
+    public boolean isInvisible(final Player player, final NPC npc) {
         return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onNPCSpawn(NPCSpawnEvent event) {
+    public void onNPCSpawn(final NPCSpawnEvent event) {
         applyVisibility(event.getNPC());
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(final PlayerJoinEvent event) {
         applyVisibility(event.getPlayer());
     }
 }

@@ -20,12 +20,12 @@ public class MMOCoreUtils {
         MMOCoreAttributeConfig = YamlConfiguration.loadConfiguration(new File(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder(), "attributes.yml"));
     }
 
-    public static int getMMOCoreAttribute(UUID uuid, String attribute) {
-        PlayerAttributes attributes = PlayerData.get(uuid).getAttributes();
+    public static int getMMOCoreAttribute(final UUID uuid, final String attribute) {
+        final PlayerAttributes attributes = PlayerData.get(uuid).getAttributes();
         return attributes.getAttribute(new PlayerAttribute(MMOCoreAttributeConfig.getConfigurationSection(attribute)));
     }
 
-    public static void isMMOConfigValidForAttribute(String attributeName) throws InstructionParseException {
+    public static void isMMOConfigValidForAttribute(final String attributeName) throws InstructionParseException {
         if (!MMOCoreAttributeConfig.contains(attributeName))
             throw new InstructionParseException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
     }

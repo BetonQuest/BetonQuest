@@ -50,9 +50,9 @@ abstract public class ForceSyncHandler<T> {
      * @throws QuestRuntimeException Either the QRE from the implemented {@link ForceSyncHandler#execute(String)}
      *                               or from {@link ForceSyncHandler#handle(String)}'s {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
-    public T handle(String playerID) throws QuestRuntimeException {
+    public T handle(final String playerID) throws QuestRuntimeException {
         if (forceSync && !Bukkit.isPrimaryThread()) {
-            Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(playerID));
+            final Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(playerID));
             try {
                 return returnFuture.get();
             } catch (InterruptedException e) {

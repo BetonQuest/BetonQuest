@@ -46,14 +46,14 @@ public class StepObjective extends Objective implements Listener {
 
     private final LocationData loc;
 
-    public StepObjective(Instruction instruction) throws InstructionParseException {
+    public StepObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         loc = instruction.getLocation();
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onStep(PlayerInteractEvent event) {
+    public void onStep(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
             return; // off hand packet, ignore.
@@ -65,8 +65,8 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            String playerID = PlayerConverter.getID(event.getPlayer());
-            Block block = loc.getLocation(playerID).getBlock();
+            final String playerID = PlayerConverter.getID(event.getPlayer());
+            final Block block = loc.getLocation(playerID).getBlock();
             if (!event.getClickedBlock().equals(block)) {
                 return;
             }
@@ -102,9 +102,9 @@ public class StepObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("location")) {
-            Block block;
+            final Block block;
             try {
                 block = loc.getLocation(playerID).getBlock();
             } catch (QuestRuntimeException e) {

@@ -38,20 +38,20 @@ public class ScoreboardCondition extends Condition {
     private final String objective;
     private final VariableNumber count;
 
-    public ScoreboardCondition(Instruction instruction) throws InstructionParseException {
+    public ScoreboardCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         objective = instruction.next();
         count = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        Objective obj = board.getObjective(objective);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        final Objective obj = board.getObjective(objective);
         if (obj == null) {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
-        Score score = obj.getScore(PlayerConverter.getName(playerID));
+        final Score score = obj.getScore(PlayerConverter.getName(playerID));
         return score.getScore() >= count.getInt(playerID);
     }
 

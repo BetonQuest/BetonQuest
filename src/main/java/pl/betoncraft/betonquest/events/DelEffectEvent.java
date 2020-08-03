@@ -38,9 +38,9 @@ public class DelEffectEvent extends QuestEvent {
     private final List<PotionEffectType> effects;
     private final boolean any;
 
-    public DelEffectEvent(Instruction instruction) throws InstructionParseException {
+    public DelEffectEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String next = instruction.next();
+        final String next = instruction.next();
 
         if (next.equalsIgnoreCase("any")) {
             any = true;
@@ -48,7 +48,7 @@ public class DelEffectEvent extends QuestEvent {
         } else {
             any = false;
             effects = instruction.getList(next, (type -> {
-                PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase());
+                final PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase());
                 if (effect == null) throw new InstructionParseException("Effect type '" + type + "' does not exist");
                 else return effect;
             }));
@@ -56,8 +56,8 @@ public class DelEffectEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
         if (any) {
             p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
         } else {

@@ -43,11 +43,11 @@ public class EventReward extends CustomReward {
     }
 
     @Override
-    public void giveReward(Player player, Map<String, Object> dataMap) {
-        String string = dataMap.get("Event").toString();
+    public void giveReward(final Player player, final Map<String, Object> dataMap) {
+        final String string = dataMap.get("Event").toString();
         try {
-            String playerID = PlayerConverter.getID(player);
-            EventID event = new EventID(null, string);
+            final String playerID = PlayerConverter.getID(player);
+            final EventID event = new EventID(null, string);
             BetonQuest.event(playerID, event);
         } catch (ObjectNotFoundException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage());

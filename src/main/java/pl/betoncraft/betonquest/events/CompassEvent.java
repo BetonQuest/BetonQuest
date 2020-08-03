@@ -44,7 +44,7 @@ public class CompassEvent extends QuestEvent {
     private ConfigurationSection compassSection;
     private ConfigPackage compassPackage;
 
-    public CompassEvent(Instruction instruction) throws InstructionParseException {
+    public CompassEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         persistent = true;
 
@@ -52,8 +52,8 @@ public class CompassEvent extends QuestEvent {
         compass = instruction.next();
 
         // Check if compass is valid
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
             if (s != null) {
                 if (s.contains(compass)) {
                     compassSection = s.getConfigurationSection(compass);
@@ -68,7 +68,7 @@ public class CompassEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         switch (action) {
             case ADD:
             case DEL:
@@ -81,7 +81,7 @@ public class CompassEvent extends QuestEvent {
                 }
                 return null;
             case SET:
-                Location location;
+                final Location location;
                 try {
                     location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
                 } catch (QuestRuntimeException | InstructionParseException e) {
@@ -90,7 +90,7 @@ public class CompassEvent extends QuestEvent {
                     return null;
                 }
 
-                Player player = PlayerConverter.getPlayer(playerID);
+                final Player player = PlayerConverter.getPlayer(playerID);
                 if (player != null) {
                     player.setCompassTarget(location);
                 }

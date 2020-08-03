@@ -40,7 +40,7 @@ public class NPCKillObjective extends Objective implements Listener {
     private final int ID;
     private final int amount;
 
-    public NPCKillObjective(Instruction instruction) throws InstructionParseException {
+    public NPCKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = NPCData.class;
         ID = instruction.getInt();
@@ -54,16 +54,16 @@ public class NPCKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onNpcKill(MobKilledEvent event) {
-        NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
+    public void onNpcKill(final MobKilledEvent event) {
+        final NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
         if (npc == null) {
             return;
         }
         if (npc.getId() != ID) {
             return;
         }
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        NPCData playerData = (NPCData) dataMap.get(playerID);
+        final String playerID = PlayerConverter.getID(event.getPlayer());
+        final NPCData playerData = (NPCData) dataMap.get(playerID);
         if (containsPlayer(playerID) && checkConditions(playerID)) {
             playerData.kill();
             if (playerData.killed()) {
@@ -88,7 +88,7 @@ public class NPCKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -101,7 +101,7 @@ public class NPCKillObjective extends Objective implements Listener {
 
         private int amount;
 
-        public NPCData(String instruction, String playerID, String objID) {
+        public NPCData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

@@ -41,10 +41,10 @@ public class TameObjective extends Objective implements Listener {
     private final TamableMobs type;
     private final int amount;
 
-    public TameObjective(Instruction instruction) throws InstructionParseException {
+    public TameObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = TameData.class;
-        String string = instruction.next();
+        final String string = instruction.next();
         try {
             type = TamableMobs.valueOf(string.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -57,14 +57,14 @@ public class TameObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onTaming(EntityTameEvent event) {
+    public void onTaming(final EntityTameEvent event) {
         if (event.getOwner() instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getOwner());
+            final String playerID = PlayerConverter.getID((Player) event.getOwner());
             if (!dataMap.containsKey(playerID)) {
                 return;
             }
-            LivingEntity entity = event.getEntity();
-            TameData playerData = (TameData) dataMap.get(playerID);
+            final LivingEntity entity = event.getEntity();
+            final TameData playerData = (TameData) dataMap.get(playerID);
             switch (type) {
                 case WOLF:
                     if (entity.getType().equals(EntityType.WOLF) && checkConditions(playerID)) {
@@ -106,7 +106,7 @@ public class TameObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((TameData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -123,7 +123,7 @@ public class TameObjective extends Objective implements Listener {
 
         private int amount;
 
-        public TameData(String instruction, String playerID, String objID) {
+        public TameData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

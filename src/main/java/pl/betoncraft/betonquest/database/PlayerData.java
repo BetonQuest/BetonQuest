@@ -69,7 +69,7 @@ public class PlayerData {
      *
      * @param playerID - ID of the player
      */
-    public PlayerData(String playerID) {
+    public PlayerData(final String playerID) {
         this.playerID = playerID;
         // load data from the database
         loadAllPlayerData();
@@ -81,41 +81,41 @@ public class PlayerData {
     public void loadAllPlayerData() {
         try {
             // get connection to the database
-            Connector con = new Connector();
+            final Connector con = new Connector();
 
             // load objectives
-            ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, new String[]{playerID});
+            final ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, new String[]{playerID});
             // put them into the list
             while (res1.next()) {
                 objectives.put(res1.getString("objective"), res1.getString("instructions"));
             }
 
             // load tags
-            ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[]{playerID});
+            final ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[]{playerID});
             // put them into the list
             while (res2.next())
                 tags.add(res2.getString("tag"));
 
             // load journals
-            ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[]{playerID});
+            final ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[]{playerID});
             // put them into the list
             while (res3.next()) {
                 entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
             }
 
             // load points
-            ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[]{playerID});
+            final ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[]{playerID});
             // put them into the list
             while (res4.next())
                 points.add(new Point(res4.getString("category"), res4.getInt("count")));
 
             // load backpack
-            ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, new String[]{playerID});
+            final ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, new String[]{playerID});
             // put items into the list
             while (res5.next()) {
-                String instruction = res5.getString("instruction");
-                int amount = res5.getInt("amount");
-                ItemStack item;
+                final String instruction = res5.getString("instruction");
+                final int amount = res5.getInt("amount");
+                final ItemStack item;
                 try {
                     item = new QuestItem(instruction).generate(amount);
                 } catch (InstructionParseException e) {
@@ -128,7 +128,7 @@ public class PlayerData {
             }
 
             // load language
-            ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, new String[]{playerID});
+            final ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, new String[]{playerID});
             // put it there
             if (res6.next()) {
                 lang = res6.getString("language");
@@ -170,7 +170,7 @@ public class PlayerData {
      * @param tag tag to check
      * @return true if the player has this tag
      */
-    public boolean hasTag(String tag) {
+    public boolean hasTag(final String tag) {
         return tags.contains(tag);
     }
 
@@ -179,7 +179,7 @@ public class PlayerData {
      *
      * @param tag tag to add
      */
-    public void addTag(String tag) {
+    public void addTag(final String tag) {
         if (!tags.contains(tag)) {
             tags.add(tag);
             saver.add(new Record(UpdateType.ADD_TAGS, new String[]{playerID, tag}));
@@ -192,7 +192,7 @@ public class PlayerData {
      *
      * @param tag tag to remove
      */
-    public void removeTag(String tag) {
+    public void removeTag(final String tag) {
         tags.remove(tag);
         saver.add(new Record(UpdateType.REMOVE_TAGS, new String[]{playerID, tag}));
     }
@@ -213,8 +213,8 @@ public class PlayerData {
      * @param category name of the category
      * @return amount of points
      */
-    public int hasPointsFromCategory(String category) {
-        for (Point p : points) {
+    public int hasPointsFromCategory(final String category) {
+        for (final Point p : points) {
             if (p.getCategory().equals(category)) {
                 return p.getCount();
             }
@@ -229,10 +229,10 @@ public class PlayerData {
      * @param category points will be added to this category
      * @param count    how much points will be added (or subtracted if negative)
      */
-    public void modifyPoints(String category, int count) {
+    public void modifyPoints(final String category, final int count) {
         saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
         // check if the category already exists
-        for (Point point : points) {
+        for (final Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 // if it does, add points to it
                 saver.add(new Record(UpdateType.ADD_POINTS,
@@ -251,9 +251,9 @@ public class PlayerData {
      *
      * @param category name of a point category
      */
-    public void removePointsCategory(String category) {
+    public void removePointsCategory(final String category) {
         Point pointToRemove = null;
-        for (Point point : points) {
+        for (final Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 pointToRemove = point;
             }
@@ -282,9 +282,9 @@ public class PlayerData {
      * this action (so they won't be started twice)
      */
     public void startObjectives() {
-        for (String objective : objectives.keySet()) {
+        for (final String objective : objectives.keySet()) {
             try {
-                ObjectiveID objectiveID = new ObjectiveID(null, objective);
+                final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(playerID, objectiveID, objectives.get(objective));
             } catch (ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
@@ -309,12 +309,12 @@ public class PlayerData {
      *
      * @param objectiveID ID of the objective
      */
-    public void addNewRawObjective(ObjectiveID objectiveID) {
-        Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
+    public void addNewRawObjective(final ObjectiveID objectiveID) {
+        final Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
         if (obj == null) {
             return;
         }
-        String data = obj.getDefaultDataInstruction();
+        final String data = obj.getDefaultDataInstruction();
         if (addRawObjective(objectiveID.toString(), data))
             saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID.toString(), data}));
     }
@@ -329,7 +329,7 @@ public class PlayerData {
      * @return true if the objective was successfully added, false if it was
      * already there
      */
-    public boolean addRawObjective(String objectiveID, String data) {
+    public boolean addRawObjective(final String objectiveID, final String data) {
         if (objectives.containsKey(objectiveID)) {
             return false;
         }
@@ -342,7 +342,7 @@ public class PlayerData {
      *
      * @param objectiveID the ID of the objective
      */
-    public void removeRawObjective(ObjectiveID objectiveID) {
+    public void removeRawObjective(final ObjectiveID objectiveID) {
         objectives.remove(objectiveID.toString());
         removeObjFromDB(objectiveID.toString());
     }
@@ -353,7 +353,7 @@ public class PlayerData {
      * @param objectiveID the ID of the objective
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
-    public void addObjToDB(String objectiveID, String data) {
+    public void addObjToDB(final String objectiveID, final String data) {
         saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
     }
 
@@ -362,7 +362,7 @@ public class PlayerData {
      *
      * @param objectiveID the ID of the objective to remove
      */
-    public void removeObjFromDB(String objectiveID) {
+    public void removeObjFromDB(final String objectiveID) {
         saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objectiveID}));
     }
 
@@ -380,13 +380,13 @@ public class PlayerData {
      *
      * @param list list of all items in the backpack
      */
-    public void setBackpack(List<ItemStack> list) {
+    public void setBackpack(final List<ItemStack> list) {
         this.backpack = list;
         // update the database (quite expensive way, should be changed)
         saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
-        for (ItemStack itemStack : list) {
-            String instruction = QuestItem.itemToString(itemStack);
-            String amount = String.valueOf(itemStack.getAmount());
+        for (final ItemStack itemStack : list) {
+            final String instruction = QuestItem.itemToString(itemStack);
+            final String amount = String.valueOf(itemStack.getAmount());
             saver.add(new Record(UpdateType.ADD_BACKPACK, new String[]{playerID, instruction, amount}));
         }
     }
@@ -406,8 +406,8 @@ public class PlayerData {
      * @param item   ItemStack to add to backpack
      * @param amount amount of the items
      */
-    public void addItem(ItemStack item, int amount) {
-        for (ItemStack itemStack : backpack) {
+    public void addItem(final ItemStack item, int amount) {
+        for (final ItemStack itemStack : backpack) {
             if (item.isSimilar(itemStack)) {
                 // if items are similar they can be joined in a single itemstack
                 if (amount + itemStack.getAmount() <= itemStack.getMaxStackSize()) {
@@ -427,7 +427,7 @@ public class PlayerData {
             // if the amount is greater than max size of the itemstack, create
             // max
             // stacks until it's lower
-            ItemStack newItem = item.clone();
+            final ItemStack newItem = item.clone();
             int maxSize = newItem.getType().getMaxStackSize();
             if (amount > maxSize) {
                 if (maxSize == 0) {
@@ -443,9 +443,9 @@ public class PlayerData {
         }
         // update the database (quite expensive way, should be changed)
         saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
-        for (ItemStack itemStack : backpack) {
-            String instruction = QuestItem.itemToString(itemStack);
-            String newAmount = String.valueOf(itemStack.getAmount());
+        for (final ItemStack itemStack : backpack) {
+            final String instruction = QuestItem.itemToString(itemStack);
+            final String newAmount = String.valueOf(itemStack.getAmount());
             saver.add(new Record(UpdateType.ADD_BACKPACK, new String[]{playerID, instruction, newAmount}));
         }
     }
@@ -455,8 +455,8 @@ public class PlayerData {
      *
      * @param name name of the canceler
      */
-    public void cancelQuest(String name) {
-        QuestCanceler canceler = Config.getCancelers().get(name);
+    public void cancelQuest(final String name) {
+        final QuestCanceler canceler = Config.getCancelers().get(name);
         if (canceler != null)
             canceler.cancel(playerID);
     }
@@ -473,7 +473,7 @@ public class PlayerData {
      *
      * @param lang language to set
      */
-    public void setLanguage(String lang) {
+    public void setLanguage(final String lang) {
         if (lang.equalsIgnoreCase("default")) {
             this.lang = Config.getLanguage();
         } else {
@@ -495,7 +495,7 @@ public class PlayerData {
      * Purges all player's data from the database and from this object.
      */
     public void purgePlayer() {
-        for (Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+        for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
             obj.removePlayer(playerID);
         }
         // clear all lists

@@ -49,7 +49,7 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final LocationData location;
     private int ID;
 
-    public NPCTeleportEvent(Instruction instruction) throws InstructionParseException {
+    public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
@@ -61,8 +61,8 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }

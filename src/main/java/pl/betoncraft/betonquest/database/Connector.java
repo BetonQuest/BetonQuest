@@ -70,9 +70,9 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
-    public ResultSet querySQL(QueryType type, String[] args) {
+    public ResultSet querySQL(final QueryType type, final String[] args) {
         try {
-            PreparedStatement statement;
+            final PreparedStatement statement;
             switch (type) {
                 case SELECT_JOURNAL:
                     statement = connection
@@ -160,9 +160,9 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
-    public void updateSQL(UpdateType type, String[] args) {
+    public void updateSQL(final UpdateType type, final String[] args) {
         try {
-            PreparedStatement statement;
+            final PreparedStatement statement;
             switch (type) {
                 case ADD_OBJECTIVES:
                     statement = connection.prepareStatement(

@@ -35,16 +35,16 @@ public class EXPEvent extends QuestEvent {
     private final VariableNumber amount;
     private final boolean level;
 
-    public EXPEvent(Instruction instruction) throws InstructionParseException {
+    public EXPEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.amount = instruction.getVarNum();
         this.level = instruction.hasArgument("level") || instruction.hasArgument("l");
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        int amount = this.amount.getInt(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final int amount = this.amount.getInt(playerID);
         if (level) {
             player.giveExpLevels(amount);
         } else {

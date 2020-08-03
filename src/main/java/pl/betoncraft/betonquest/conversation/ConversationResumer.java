@@ -46,16 +46,16 @@ public class ConversationResumer implements Listener {
     private Location loc;
     private double distance;
 
-    public ConversationResumer(String playerID, String convID) {
+    public ConversationResumer(final String playerID, final String convID) {
         this.original = convID;
         this.player = PlayerConverter.getPlayer(playerID);
         this.playerID = playerID;
-        String[] parts = convID.split(" ");
+        final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];
         if (option.equalsIgnoreCase("null"))
             return;
-        String[] locParts = parts[2].split(";");
+        final String[] locParts = parts[2].split(";");
         this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
                 Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));
         this.distance = Double.valueOf(Config.getString("config.max_npc_distance"));
@@ -63,7 +63,7 @@ public class ConversationResumer implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent e) {
+    public void onMove(final PlayerMoveEvent e) {
         if (!e.getPlayer().equals(player)) {
             return;
         }
@@ -78,7 +78,7 @@ public class ConversationResumer implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onQuit(PlayerQuitEvent e) {
+    public void onQuit(final PlayerQuitEvent e) {
         if (!e.getPlayer().equals(player)) {
             return;
         }

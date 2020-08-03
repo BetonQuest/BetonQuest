@@ -15,7 +15,7 @@ public class MMOLibStatCondition extends Condition {
     private final double targetLevel;
     private boolean mustBeEqual;
 
-    public MMOLibStatCondition(Instruction instruction) throws InstructionParseException {
+    public MMOLibStatCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         statName = instruction.next();
@@ -26,10 +26,10 @@ public class MMOLibStatCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
-        MMOData data = MMOData.get(p);
-        double actualLevel = data.getStatMap().getStat(statName);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
+        final MMOData data = MMOData.get(p);
+        final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
 

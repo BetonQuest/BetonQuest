@@ -37,7 +37,7 @@ public class ExplosionEvent extends QuestEvent {
     private final VariableNumber power;
     private final LocationData loc;
 
-    public ExplosionEvent(Instruction instruction) throws InstructionParseException {
+    public ExplosionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -49,8 +49,8 @@ public class ExplosionEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
         location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(),
                 (float) power.getDouble(playerID), setsFire, breaksBlocks);
         return null;

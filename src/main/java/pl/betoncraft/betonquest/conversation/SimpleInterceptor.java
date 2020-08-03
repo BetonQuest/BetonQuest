@@ -38,7 +38,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
     protected final Player player;
     private ArrayList<String> messages = new ArrayList<>();
 
-    public SimpleInterceptor(Conversation conv, String playerID) {
+    public SimpleInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -48,19 +48,19 @@ public class SimpleInterceptor implements Interceptor, Listener {
      * Send message, bypassing Interceptor
      */
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(final String message) {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
-    public void sendMessage(BaseComponent... message) {
+    public void sendMessage(final BaseComponent... message) {
         player.spigot().sendMessage(message);
     }
 
     /**
      * This method prevents concurrent list modification
      */
-    private synchronized void addMessage(String message) {
+    private synchronized void addMessage(final String message) {
         messages.add(message);
     }
 
@@ -69,13 +69,13 @@ public class SimpleInterceptor implements Interceptor, Listener {
         HandlerList.unregisterAll(this);
 
         // Send all messages to player
-        for (String message : messages) {
+        for (final String message : messages) {
             player.sendMessage(message);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(final AsyncPlayerChatEvent event) {
         // store all messages so they can be displayed to the player
         // once the conversation is finished
         if (event.getPlayer() != player && event.getRecipients().contains(player)) {

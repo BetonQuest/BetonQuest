@@ -43,7 +43,7 @@ public class PointEvent extends QuestEvent {
     protected final boolean multi;
     protected final String category;
 
-    public PointEvent(Instruction instruction) throws InstructionParseException {
+    public PointEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         persistent = true;
         category = Utils.addPackage(instruction.getPackage(), instruction.next());
@@ -67,7 +67,7 @@ public class PointEvent extends QuestEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
+                    final PlayerData playerData = new PlayerData(playerID);
                     try {
                         addPoints(playerID, playerData);
                     } catch (QuestRuntimeException e) {
@@ -78,15 +78,15 @@ public class PointEvent extends QuestEvent {
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             addPoints(playerID, playerData);
         }
         return null;
     }
 
-    private void addPoints(String playerID, PlayerData playerData) throws QuestRuntimeException {
+    private void addPoints(final String playerID, final PlayerData playerData) throws QuestRuntimeException {
         if (multi) {
-            for (Point p : playerData.getPoints()) {
+            for (final Point p : playerData.getPoints()) {
                 if (p.getCategory().equalsIgnoreCase(category)) {
                     playerData.modifyPoints(category,
                             (int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));

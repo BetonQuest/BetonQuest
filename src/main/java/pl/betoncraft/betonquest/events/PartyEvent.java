@@ -40,7 +40,7 @@ public class PartyEvent extends QuestEvent {
     private EventID[] events;
     private VariableNumber range;
 
-    public PartyEvent(Instruction instruction) throws InstructionParseException {
+    public PartyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         range = instruction.getVarNum();
         conditions = instruction.getList(e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
@@ -48,11 +48,11 @@ public class PartyEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
                 .getName(), conditions);
-        for (String memberID : members) {
-            for (EventID event : events) {
+        for (final String memberID : members) {
+            for (final EventID event : events) {
                 BetonQuest.event(memberID, event);
             }
         }

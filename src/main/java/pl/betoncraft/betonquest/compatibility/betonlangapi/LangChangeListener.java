@@ -38,7 +38,7 @@ public class LangChangeListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onLanguageChange(PlayerLanguageChangeEvent event) {
+    public void onLanguageChange(final PlayerLanguageChangeEvent event) {
         if (Config.getLanguages().contains(event.getLanguage())) {
             BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer()))
                     .setLanguage(event.getLanguage());

@@ -56,12 +56,12 @@ public class BossBarNotifyIO extends NotifyIO {
     private int stay = 70;
     private int countdown = 0;
 
-    public BossBarNotifyIO(Map<String, String> data) {
+    public BossBarNotifyIO(final Map<String, String> data) {
         super(data);
 
         if (getData().containsKey("barflags")) {
             barFlags = new ArrayList<>();
-            for (String flag : getData().get("barflags").split(",")) {
+            for (final String flag : getData().get("barflags").split(",")) {
                 try {
                     barFlags.add(BarFlag.valueOf(flag.toUpperCase()));
                 } catch (IllegalArgumentException e) {
@@ -119,17 +119,17 @@ public class BossBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
-        BossBar bossBar = Bukkit.createBossBar(Utils.format(message), barColor, style);
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
+        final BossBar bossBar = Bukkit.createBossBar(Utils.format(message), barColor, style);
         if (barFlags != null) {
-            for (BarFlag flag : barFlags) {
+            for (final BarFlag flag : barFlags) {
                 bossBar.addFlag(flag);
             }
         }
         bossBar.setProgress(progress);
 
         // Show bar
-        for (Player player : players) {
+        for (final Player player : players) {
             bossBar.addPlayer(player);
         }
 
@@ -146,8 +146,8 @@ public class BossBarNotifyIO extends NotifyIO {
 
         // If Countdown, then divide stay by countdown and reduce progress to 0 by those intevals
         if (countdown > 0) {
-            int interval = stay / countdown;
-            double amount = progress / ((double) countdown);
+            final int interval = stay / countdown;
+            final double amount = progress / ((double) countdown);
             new BukkitRunnable() {
 
                 @Override

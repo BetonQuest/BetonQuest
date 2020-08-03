@@ -173,9 +173,9 @@ public class LocationData {
         if (world == null) {
             throw new InstructionParseException("World " + parts[3] + " does not exists.");
         }
-        double x;
-        double y;
-        double z;
+        final double x;
+        final double y;
+        final double z;
         float yaw = 0;
         float pitch = 0;
         try {
@@ -207,9 +207,9 @@ public class LocationData {
                     "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
         }
         final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
-        double x;
-        double y;
-        double z;
+        final double x;
+        final double y;
+        final double z;
         try {
             x = Double.parseDouble(parts[0]);
             y = Double.parseDouble(parts[1]);

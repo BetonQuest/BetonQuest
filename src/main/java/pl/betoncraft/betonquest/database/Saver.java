@@ -68,7 +68,7 @@ public class Saver extends Thread implements Listener {
                 con.refresh();
                 active = true;
             }
-            Record rec = queue.poll();
+            final Record rec = queue.poll();
             con.updateSQL(rec.getType(), rec.getArgs());
         }
     }
@@ -78,7 +78,7 @@ public class Saver extends Thread implements Listener {
      *
      * @param rec Record to save
      */
-    public synchronized void add(Record rec) {
+    public synchronized void add(final Record rec) {
         queue.add(rec);
         notify();
     }
@@ -108,7 +108,7 @@ public class Saver extends Thread implements Listener {
          * @param type method used for saving the data
          * @param args list of Strings which will be saved to the database
          */
-        public Record(UpdateType type, String[] args) {
+        public Record(final UpdateType type, final String[] args) {
             this.type = type;
             this.args = args;
         }

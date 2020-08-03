@@ -34,10 +34,10 @@ public class HeightCondition extends Condition {
 
     private final VariableNumber height;
 
-    public HeightCondition(Instruction instruction) throws InstructionParseException {
+    public HeightCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
-        String packName = instruction.getPackage().getName();
+        final String string = instruction.next();
+        final String packName = instruction.getPackage().getName();
         if (string.matches("\\-?\\d+\\.?\\d*")) {
             try {
                 height = new VariableNumber(packName, string);
@@ -54,7 +54,7 @@ public class HeightCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         return PlayerConverter.getPlayer(playerID).getLocation().getY() < height.getDouble(playerID);
     }
 

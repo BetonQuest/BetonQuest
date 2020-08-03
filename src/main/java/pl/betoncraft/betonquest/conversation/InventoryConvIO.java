@@ -76,37 +76,37 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNumber = true;
     protected boolean showNPCText = true;
 
-    public InventoryConvIO(Conversation conv, String playerID) {
+    public InventoryConvIO(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
-        HashMap<String, ChatColor[]> colors = ConversationColors.getColors();
+        final HashMap<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("npc")) {
+        for (final ChatColor color : colors.get("npc")) {
             string.append(color);
         }
         this.npcNameColor = string.toString();
         string = new StringBuilder();
-        for (ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.get("text")) {
             string.append(color);
         }
         this.npcTextColor = string.toString();
         string = new StringBuilder();
-        for (ChatColor color : colors.get("number")) {
+        for (final ChatColor color : colors.get("number")) {
             string.append(color);
         }
         string.append("%number%.");
         this.numberFormat = string.toString();
         string = new StringBuilder();
-        for (ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.get("option")) {
             string.append(color);
         }
         this.optionColor = string.toString();
         string = new StringBuilder();
-        for (ChatColor color : colors.get("player")) {
+        for (final ChatColor color : colors.get("player")) {
             string.append(color);
         }
         string.append(player.getName() + ChatColor.RESET + ": ");
-        for (ChatColor color : colors.get("answer")) {
+        for (final ChatColor color : colors.get("answer")) {
             string.append(color);
         }
         answerPrefix = string.toString();
@@ -114,7 +114,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
         // Load config
         if (BetonQuest.getInstance().getConfig().contains("conversation_IO_config.chest")) {
-            ConfigurationSection config = BetonQuest.getInstance().getConfig().getConfigurationSection("conversation_IO_config.chest");
+            final ConfigurationSection config = BetonQuest.getInstance().getConfig().getConfigurationSection("conversation_IO_config.chest");
             showNumber = config.getBoolean("show_number", true);
             showNPCText = config.getBoolean("show_npc_text", true);
         }
@@ -123,13 +123,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void setNpcResponse(String npcName, String response) {
+    public void setNpcResponse(final String npcName, final String response) {
         this.npcName = npcName;
         this.response = Utils.replaceReset(response, npcTextColor);
     }
 
     @Override
-    public void addPlayerOption(String option) {
+    public void addPlayerOption(final String option) {
         i++;
         options.put(i, Utils.replaceReset(option, optionColor));
     }
@@ -156,15 +156,15 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // this itemstack represents slots in the inventory
         inv = Bukkit.createInventory(null, 9 * rows, "NPC");
         inv.setContents(new ItemStack[9 * rows]);
-        ItemStack[] buttons = new ItemStack[9 * rows];
+        final ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
-        ItemStack npc;
+        final ItemStack npc;
         if (skullCache.containsKey(npcName) && false) {
             npc = skullCache.get(npcName);
         } else {
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
-            SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
+            final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
             npcMeta.setDisplayName(npcNameColor + npcName);
             // NPC Text
             npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
@@ -204,10 +204,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
             short data = 0;
             // get the custom material
             if (option.matches("^\\{[a-zA-Z0-9_: ]+\\}(?s:.*)$")) {
-                String fullMaterial = option.substring(1, option.indexOf('}'));
+                final String fullMaterial = option.substring(1, option.indexOf('}'));
                 String materialName = fullMaterial;
                 if (materialName.contains(":")) {
-                    int colonIndex = materialName.indexOf(':');
+                    final int colonIndex = materialName.indexOf(':');
                     try {
                         data = Short.valueOf(materialName.substring(colonIndex + 1));
                     } catch (NumberFormatException e) {
@@ -231,12 +231,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
             // remove custom material prefix from the option
             options.put(next, option);
             // set the display name and lore of the option
-            ItemStack item = new ItemStack(material);
+            final ItemStack item = new ItemStack(material);
             item.setDurability(data);
-            ItemMeta meta = item.getItemMeta();
+            final ItemMeta meta = item.getItemMeta();
 
-            StringBuilder string = new StringBuilder();
-            for (ChatColor color : ConversationColors.getColors().get("number")) {
+            final StringBuilder string = new StringBuilder();
+            for (final ChatColor color : ConversationColors.getColors().get("number")) {
                 string.append(color);
             }
 
@@ -246,7 +246,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 meta.setDisplayName(" ");
             }
 
-            ArrayList<String> lines = new ArrayList<>();
+            final ArrayList<String> lines = new ArrayList<>();
 
             if (showNPCText) {
                 // NPC Text
@@ -280,13 +280,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings("deprecation")
-    protected SkullMeta setSkullMeta(SkullMeta meta) {
+    protected SkullMeta setSkullMeta(final SkullMeta meta) {
         meta.setOwner(npcName);
         return meta;
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -295,16 +295,16 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         event.setCancelled(true);
         if (processingLastClick) return;
-        int slot = event.getRawSlot();
+        final int slot = event.getRawSlot();
         // calculate the option number
         if (slot % 9 > 1) {
-            int row = (int) Math.floor(slot / 9);
+            final int row = (int) Math.floor(slot / 9);
             // raw column number minus two columns (npc head an empty space)
             // and plus one (because options are indexed starting with 1)
-            int col = (slot % 9) - 2 + 1;
+            final int col = (slot % 9) - 2 + 1;
             // each row can have 7 options, add column number to get an option
-            int choosen = (row * 7) + col;
-            String message = options.get(choosen);
+            final int choosen = (row * 7) + col;
+            final String message = options.get(choosen);
             if (message != null) {
                 processingLastClick = true;
                 if (printMessages) conv.sendMessage(answerPrefix + message);
@@ -314,7 +314,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onClose(InventoryCloseEvent event) {
+    public void onClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
@@ -364,18 +364,18 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
-    protected ArrayList<String> stringToLines(String singleLine, String color, String prefix) {
-        ArrayList<String> multiLine = new ArrayList<>();
+    protected ArrayList<String> stringToLines(final String singleLine, final String color, String prefix) {
+        final ArrayList<String> multiLine = new ArrayList<>();
         boolean firstLinePrefix = prefix != null;
         if (prefix == null)
             prefix = "";
-        String[] lineBreaks = (prefix + singleLine).split("\n");
-        for (String brokenLine : lineBreaks) {
-            String[] arr = brokenLine.split(" ");
+        final String[] lineBreaks = (prefix + singleLine).split("\n");
+        for (final String brokenLine : lineBreaks) {
+            final String[] arr = brokenLine.split(" ");
             StringBuilder line = new StringBuilder();
             for (int i = 0; i < arr.length; i++) {
                 //don't count color codes for line length
-                int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(arr[i]).length();
+                final int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(arr[i]).length();
                 if (rawLength + 1 > 42) {
                     if (firstLinePrefix) {
                         firstLinePrefix = false;
@@ -402,7 +402,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(Conversation conv, String playerID) {
+        public Combined(final Conversation conv, final String playerID) {
             super(conv, playerID);
             super.printMessages = true;
         }

@@ -28,14 +28,14 @@ public class SimpleConvIO extends ChatConvIO {
 
     private String optionFormat;
 
-    public SimpleConvIO(Conversation conv, String playerID) {
+    public SimpleConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
-        StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("number")) {
+        final StringBuilder string = new StringBuilder();
+        for (final ChatColor color : colors.get("number")) {
             string.append(color);
         }
         string.append("%number%. ");
-        for (ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.get("option")) {
             string.append(color);
         }
         optionFormat = string.toString();

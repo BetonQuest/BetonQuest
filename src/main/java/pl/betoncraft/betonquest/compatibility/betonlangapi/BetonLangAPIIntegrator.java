@@ -41,12 +41,12 @@ public class BetonLangAPIIntegrator implements Integrator {
     @Override
     public void hook() {
         new LangChangeListener();
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
             updateLang(player);
         }
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler(ignoreCancelled = true)
-            public void onJoin(PlayerJoinEvent event) {
+            public void onJoin(final PlayerJoinEvent event) {
                 updateLang(event.getPlayer());
             }
         }, BetonQuest.getInstance());
@@ -68,10 +68,10 @@ public class BetonLangAPIIntegrator implements Integrator {
      *
      * @param player the player whose language needs to be changed
      */
-    private void updateLang(Player player) {
-        String lang = BetonLangAPI.getLanguage(player);
+    private void updateLang(final Player player) {
+        final String lang = BetonLangAPI.getLanguage(player);
         if (Config.getLanguages().contains(lang)) {
-            PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+            final PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
             if (!data.getLanguage().equals(lang)) {
                 data.setLanguage(lang);
             }

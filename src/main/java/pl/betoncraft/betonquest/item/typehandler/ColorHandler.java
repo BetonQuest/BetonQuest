@@ -28,7 +28,7 @@ public class ColorHandler {
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
     private Existence colorE = Existence.WHATEVER;
 
-    public void set(String string) throws InstructionParseException {
+    public void set(final String string) throws InstructionParseException {
         if (string.equalsIgnoreCase("none")) {
             colorE = Existence.FORBIDDEN;
             return;
@@ -41,7 +41,7 @@ public class ColorHandler {
         return color;
     }
 
-    public boolean check(Color color) {
+    public boolean check(final Color color) {
         switch (colorE) {
             case WHATEVER:
                 return true;

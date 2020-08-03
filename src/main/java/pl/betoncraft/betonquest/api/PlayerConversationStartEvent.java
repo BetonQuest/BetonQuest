@@ -40,7 +40,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
      * @param who          the player who started the conversation
      * @param conversation conversation which is about to start
      */
-    public PlayerConversationStartEvent(Player who, Conversation conversation) {
+    public PlayerConversationStartEvent(final Player who, final Conversation conversation) {
         super(who);
         this.conversation = conversation;
     }
@@ -66,7 +66,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     }
 
     @Override
-    public void setCancelled(boolean arg) {
+    public void setCancelled(final boolean arg) {
         canceled = arg;
     }
 

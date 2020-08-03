@@ -70,10 +70,10 @@ public class CitizensWalkingListener implements Listener {
 
                 @Override
                 public void run() {
-                    CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    NPC npc = conv.getNPC();
+                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
+                    final NPC npc = conv.getNPC();
                     if (!npcs.containsKey(npc)) {
-                        Navigator nav = npc.getNavigator();
+                        final Navigator nav = npc.getNavigator();
                         npcs.put(npc, 1);
                         locs.put(npc, nav.getTargetAsLocation());
                         nav.setPaused(true);
@@ -96,14 +96,14 @@ public class CitizensWalkingListener implements Listener {
 
                 @Override
                 public void run() {
-                    CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    NPC npc = conv.getNPC();
+                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
+                    final NPC npc = conv.getNPC();
                     Integer i = npcs.get(npc);
                     i--;
                     if (i == 0) {
                         npcs.remove(npc);
                         if (npc.isSpawned()) {
-                            Navigator nav = npc.getNavigator();
+                            final Navigator nav = npc.getNavigator();
                             nav.setPaused(false);
                             nav.setTarget(locs.remove(npc));
                         }
@@ -119,7 +119,7 @@ public class CitizensWalkingListener implements Listener {
      * @param npc a npc to check for
      * @return true if the movement of the npc is paused because of a player talking with the npc
      */
-    public boolean isMovementPaused(NPC npc) {
+    public boolean isMovementPaused(final NPC npc) {
         return npcs.containsKey(npc);
     }
 
@@ -131,7 +131,7 @@ public class CitizensWalkingListener implements Listener {
      * @param npc      a npc
      * @param location the location to which the npc should move
      */
-    public void setNewTargetLocation(NPC npc, Location location) {
+    public void setNewTargetLocation(final NPC npc, final Location location) {
         locs.put(npc, location);
     }
 

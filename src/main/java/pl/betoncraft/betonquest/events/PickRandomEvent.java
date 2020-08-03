@@ -40,16 +40,16 @@ public class PickRandomEvent extends QuestEvent {
     private final List<RandomEvent> events;
     private final VariableNumber amount;
 
-    public PickRandomEvent(Instruction instruction) throws InstructionParseException {
+    public PickRandomEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.persistent = true;
         super.staticness = true;
         this.events = instruction.getList(string -> {
             if (!string.matches("\\d+(\\.\\d+)?%[^%]*"))
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
-            String[] parts = string.split("%");
-            VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
-            EventID id;
+            final String[] parts = string.split("%");
+            final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
+            final EventID id;
             try {
                 id = new EventID(instruction.getPackage(), parts[1]);
             } catch (ObjectNotFoundException e) {
@@ -61,23 +61,23 @@ public class PickRandomEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        List<RandomEvent> events = new ArrayList<>(this.events);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final List<RandomEvent> events = new ArrayList<>(this.events);
         double total = 0;
         // Calculate total amount of all "percentages" (so that it must not be 100)
-        for (RandomEvent event : events) {
+        for (final RandomEvent event : events) {
             total += event.getChance().getDouble(playerID);
         }
         //pick as many events as given with pick optional (or 1 if amount wasn't specified)
         int pick = (this.amount != null) ? this.amount.getInt(playerID) : 1;
         while (pick-- > 0 && !events.isEmpty()) {
             //choose a random number between 0 and the total amount of percentages
-            double found = Math.random() * total;
+            final double found = Math.random() * total;
             double current = 0;
             //go through all random events and pick the first one where the current sum is higher than the found random number
             inner:
             for (int i = 0; i < events.size(); i++) {
-                RandomEvent event = events.get(i);
+                final RandomEvent event = events.get(i);
                 current += event.getChance().getDouble(playerID);
                 if (current >= found) {
                     //run the event
@@ -97,7 +97,7 @@ public class PickRandomEvent extends QuestEvent {
         private final EventID id;
         private final VariableNumber chance;
 
-        public RandomEvent(EventID id, VariableNumber chance) {
+        public RandomEvent(final EventID id, final VariableNumber chance) {
             this.id = id;
             this.chance = chance;
         }

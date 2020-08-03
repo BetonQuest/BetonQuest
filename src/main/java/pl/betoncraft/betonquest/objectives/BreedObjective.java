@@ -37,7 +37,7 @@ public class BreedObjective extends Objective implements Listener {
     private final int amount;
     private final boolean notify;
 
-    public BreedObjective(Instruction instruction) throws InstructionParseException {
+    public BreedObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = BreedData.class;
         type = instruction.getEntity();
@@ -46,14 +46,14 @@ public class BreedObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBreeding(EntityBreedEvent event) {
+    public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getBreeder());
+            final String playerID = PlayerConverter.getID((Player) event.getBreeder());
             if (!containsPlayer(playerID)) {
                 return;
             }
             if (checkConditions(playerID)) {
-                BreedData data = (BreedData) dataMap.get(playerID);
+                final BreedData data = (BreedData) dataMap.get(playerID);
                 data.breed();
                 if (data.getAmount() == 0) {
                     completeObjective(playerID);
@@ -81,7 +81,7 @@ public class BreedObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((BreedData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -94,7 +94,7 @@ public class BreedObjective extends Objective implements Listener {
 
         private int amount;
 
-        public BreedData(String instruction, String playerID, String objID) {
+        public BreedData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

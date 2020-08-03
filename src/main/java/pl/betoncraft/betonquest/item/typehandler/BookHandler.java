@@ -37,7 +37,7 @@ public class BookHandler {
         return title;
     }
 
-    public void setTitle(String string) {
+    public void setTitle(final String string) {
         if (string.equalsIgnoreCase("none")) {
             titleE = Existence.FORBIDDEN;
         } else {
@@ -50,7 +50,7 @@ public class BookHandler {
         return author;
     }
 
-    public void setAuthor(String string) {
+    public void setAuthor(final String string) {
         if (string.equalsIgnoreCase("none")) {
             authorE = Existence.FORBIDDEN;
         } else {
@@ -63,7 +63,7 @@ public class BookHandler {
         return text;
     }
 
-    public void setText(String string) {
+    public void setText(final String string) {
         if (string.equalsIgnoreCase("none")) {
             text.add(""); // this will prevent "Invalid book tag" message in the empty book
             textE = Existence.FORBIDDEN;
@@ -73,7 +73,7 @@ public class BookHandler {
         }
     }
 
-    public boolean checkTitle(String string) {
+    public boolean checkTitle(final String string) {
         switch (titleE) {
             case WHATEVER:
                 return true;
@@ -85,7 +85,7 @@ public class BookHandler {
         return true;
     }
 
-    public boolean checkAuthor(String string) {
+    public boolean checkAuthor(final String string) {
         switch (authorE) {
             case WHATEVER:
                 return true;
@@ -97,7 +97,7 @@ public class BookHandler {
         return true;
     }
 
-    public boolean checkText(List<String> list) {
+    public boolean checkText(final List<String> list) {
         switch (textE) {
             case WHATEVER:
                 return true;

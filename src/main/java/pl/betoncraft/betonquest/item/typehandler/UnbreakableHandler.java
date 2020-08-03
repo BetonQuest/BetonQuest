@@ -23,7 +23,7 @@ public class UnbreakableHandler {
 
     private Existence unbreakable = Existence.WHATEVER;
 
-    public void set(String string) {
+    public void set(final String string) {
         if (string.equalsIgnoreCase("true")) {
             unbreakable = Existence.REQUIRED;
         } else {
@@ -35,7 +35,7 @@ public class UnbreakableHandler {
         return unbreakable == Existence.REQUIRED;
     }
 
-    public boolean check(boolean bool) {
+    public boolean check(final boolean bool) {
         switch (unbreakable) {
             case WHATEVER:
                 return true;

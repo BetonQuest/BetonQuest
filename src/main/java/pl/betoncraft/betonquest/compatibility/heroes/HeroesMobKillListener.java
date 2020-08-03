@@ -36,7 +36,7 @@ public class HeroesMobKillListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onHeroesKill(HeroKillCharacterEvent event) {
+    public void onHeroesKill(final HeroKillCharacterEvent event) {
         MobKillNotifier.addKill(event.getAttacker().getPlayer(), event.getDefender().getEntity());
     }
 

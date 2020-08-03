@@ -32,7 +32,7 @@ public class MoneyVariable extends Variable {
     private Type type;
     private int amount;
 
-    public MoneyVariable(Instruction instruction) throws InstructionParseException {
+    public MoneyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         if (instruction.next().equalsIgnoreCase("amount")) {
             type = Type.AMOUNT;
@@ -47,7 +47,7 @@ public class MoneyVariable extends Variable {
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         switch (type) {
             case AMOUNT:
                 return String.valueOf(VaultIntegrator.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));

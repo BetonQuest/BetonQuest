@@ -33,7 +33,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
         handle.getModifier().writeDefaults();
     }
 
-    public WrapperPlayServerChat(PacketContainer packet) {
+    public WrapperPlayServerChat(final PacketContainer packet) {
         super(packet, TYPE);
     }
 
@@ -53,7 +53,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setMessage(WrappedChatComponent value) {
+    public void setMessage(final WrappedChatComponent value) {
         handle.getChatComponents().write(0, value);
     }
 
@@ -61,7 +61,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
         return handle.getChatTypes().read(0);
     }
 
-    public void setChatType(ChatType type) {
+    public void setChatType(final ChatType type) {
         handle.getChatTypes().write(0, type);
     }
 
@@ -76,7 +76,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
      */
     @Deprecated
     public byte getPosition() {
-        Byte position = handle.getBytes().readSafely(0);
+        final Byte position = handle.getBytes().readSafely(0);
         if (position != null) {
             return position;
         } else {
@@ -91,7 +91,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
      * @deprecated Magic values replaced by enum
      */
     @Deprecated
-    public void setPosition(byte value) {
+    public void setPosition(final byte value) {
         handle.getBytes().writeSafely(0, value);
 
         if (EnumWrappers.getChatTypeClass() != null) {

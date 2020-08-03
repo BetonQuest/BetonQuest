@@ -7,7 +7,7 @@ public class MMOItemsIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuest plugin = BetonQuest.getInstance();
         plugin.registerConditions("mmoitem", MMOItemsItemCondition.class);
         plugin.registerConditions("mmohand", MMOItemsHandCondition.class);
     }

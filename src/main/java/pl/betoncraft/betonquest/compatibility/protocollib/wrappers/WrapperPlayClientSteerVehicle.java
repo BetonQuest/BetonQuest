@@ -28,7 +28,7 @@ public class WrapperPlayClientSteerVehicle extends AbstractPacket {
         handle.getModifier().writeDefaults();
     }
 
-    public WrapperPlayClientSteerVehicle(PacketContainer packet) {
+    public WrapperPlayClientSteerVehicle(final PacketContainer packet) {
         super(packet, TYPE);
     }
 
@@ -48,7 +48,7 @@ public class WrapperPlayClientSteerVehicle extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setSideways(float value) {
+    public void setSideways(final float value) {
         handle.getFloat().write(0, value);
     }
 
@@ -68,7 +68,7 @@ public class WrapperPlayClientSteerVehicle extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setForward(float value) {
+    public void setForward(final float value) {
         handle.getFloat().write(1, value);
     }
 
@@ -76,7 +76,7 @@ public class WrapperPlayClientSteerVehicle extends AbstractPacket {
         return handle.getBooleans().read(0);
     }
 
-    public void setJump(boolean value) {
+    public void setJump(final boolean value) {
         handle.getBooleans().write(0, value);
     }
 
@@ -84,7 +84,7 @@ public class WrapperPlayClientSteerVehicle extends AbstractPacket {
         return handle.getBooleans().read(1);
     }
 
-    public void setUnmount(boolean value) {
+    public void setUnmount(final boolean value) {
         handle.getBooleans().write(1, value);
     }
 

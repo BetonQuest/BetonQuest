@@ -24,7 +24,7 @@ public class UtilsTest {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(BetonQuest.class);
-        BetonQuest betonQuestInstance = Mockito.mock(BetonQuest.class);
+        final BetonQuest betonQuestInstance = Mockito.mock(BetonQuest.class);
         PowerMockito.suppress(MemberMatcher.methodsDeclaredIn(JavaPlugin.class));
         PowerMockito.when(BetonQuest.getInstance()).thenReturn(betonQuestInstance);
         PowerMockito.mockStatic(LogUtils.class);
@@ -37,12 +37,12 @@ public class UtilsTest {
 
     @Test
     public void testPagesFromString() {
-        String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
+        final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
 
-        List<String> journalTextFormatted = new ArrayList<>();
+        final List<String> journalTextFormatted = new ArrayList<>();
         journalTextFormatted.add("&aActive Quest: &aFlint\n" + "&1wants you to visit\n" + "the Farm located at\n" + "191, 23, -167!\n");
 
-        List<String> journal = Utils.pagesFromString(journalText);
+        final List<String> journal = Utils.pagesFromString(journalText);
         assertEquals(journalTextFormatted, journal);
     }
 }

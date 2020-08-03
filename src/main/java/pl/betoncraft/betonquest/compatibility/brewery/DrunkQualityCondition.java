@@ -29,7 +29,7 @@ public class DrunkQualityCondition extends Condition {
 
     private Integer quality;
 
-    public DrunkQualityCondition(Instruction instruction) throws InstructionParseException {
+    public DrunkQualityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         quality = instruction.getInt();
@@ -40,8 +40,8 @@ public class DrunkQualityCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        BPlayer bPlayer = BPlayer.get(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final BPlayer bPlayer = BPlayer.get(PlayerConverter.getPlayer(playerID));
         return bPlayer.getQuality() >= quality;
     }
 }

@@ -43,7 +43,7 @@ public class PasswordObjective extends Objective implements Listener {
     private final String regex;
     private final boolean ignoreCase;
 
-    public PasswordObjective(Instruction instruction) throws InstructionParseException {
+    public PasswordObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         regex = instruction.next().replace('_', ' ');
@@ -51,26 +51,26 @@ public class PasswordObjective extends Objective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(final AsyncPlayerChatEvent event) {
         if (chatInput(false, event.getPlayer(), event.getMessage())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onCommand(PlayerCommandPreprocessEvent event) {
+    public void onCommand(final PlayerCommandPreprocessEvent event) {
         if (chatInput(true, event.getPlayer(), event.getMessage())) {
             event.setCancelled(true);
         }
     }
 
-    private boolean chatInput(boolean fromCommand, Player player, String message) {
+    private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
         final String playerID = PlayerConverter.getID(player);
         if (containsPlayer(playerID)) {
-            String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
+            final String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
                     "password");
             if (message.startsWith(prefix)) {
-                String password = message.substring(prefix.length());
+                final String password = message.substring(prefix.length());
                 if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
                     new BukkitRunnable() {
                         @Override

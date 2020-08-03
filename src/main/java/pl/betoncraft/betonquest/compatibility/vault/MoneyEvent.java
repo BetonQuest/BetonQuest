@@ -39,7 +39,7 @@ public class MoneyEvent extends QuestEvent {
     private final boolean notify;
     private boolean multi;
 
-    public MoneyEvent(Instruction instruction) throws InstructionParseException {
+    public MoneyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         String string = instruction.next();
         if (string.startsWith("*")) {
@@ -55,19 +55,19 @@ public class MoneyEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         // get the difference between target money and current money
-        double current = VaultIntegrator.getEconomy().getBalance(player);
-        double target;
+        final double current = VaultIntegrator.getEconomy().getBalance(player);
+        final double target;
         if (multi)
             target = current * amount.getDouble(playerID);
         else
             target = current + amount.getDouble(playerID);
 
-        double difference = target - current;
-        DecimalFormat df = new DecimalFormat("#.00");
-        String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
+        final double difference = target - current;
+        final DecimalFormat df = new DecimalFormat("#.00");
+        final String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
 
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);

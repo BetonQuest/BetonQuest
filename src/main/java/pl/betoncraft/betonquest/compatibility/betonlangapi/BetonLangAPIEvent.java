@@ -33,7 +33,7 @@ public class BetonLangAPIEvent extends QuestEvent {
 
     private String lang;
 
-    public BetonLangAPIEvent(Instruction instruction) throws InstructionParseException {
+    public BetonLangAPIEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         lang = instruction.next();
         if (!BetonLangAPI.getLanguages().contains(lang)) {
@@ -42,7 +42,7 @@ public class BetonLangAPIEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         BetonLangAPI.setLanguage(PlayerConverter.getPlayer(playerID), lang);
         return null;
     }

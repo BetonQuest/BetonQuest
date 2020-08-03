@@ -48,7 +48,7 @@ abstract public class Variable {
      *                    extract all required data from it and throw
      *                    {@link InstructionParseException} if there is anything wrong
      */
-    public Variable(Instruction instruction) {
+    public Variable(final Instruction instruction) {
         this.instruction = instruction;
     }
 

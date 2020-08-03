@@ -102,16 +102,16 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
     private ArmorStand stand = null;
 
-    public MenuConvIO(Conversation conv, String playerID) {
+    public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
 
         // Load Configuration from custom.yml with some sane defaults, loading our current package last
-        for (ConfigPackage pack : Stream.concat(
+        for (final ConfigPackage pack : Stream.concat(
                 Config.getPackages().values().stream()
                         .filter(p -> p != conv.getPackage()),
                 Stream.of(conv.getPackage()))
                 .collect(Collectors.toList())) {
-            ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("menu_conv_io");
+            final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("menu_conv_io");
             if (section == null) {
                 continue;
             }
@@ -137,7 +137,7 @@ public class MenuConvIO extends ChatConvIO {
 
         // Sort out Controls
         try {
-            for (CONTROL control : Arrays.stream(configControlCancel.split(","))
+            for (final CONTROL control : Arrays.stream(configControlCancel.split(","))
                     .map(String::toUpperCase)
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
@@ -150,7 +150,7 @@ public class MenuConvIO extends ChatConvIO {
             LogUtils.logThrowable(e);
         }
         try {
-            for (CONTROL control : Arrays.stream(configControlSelect.split(","))
+            for (final CONTROL control : Arrays.stream(configControlSelect.split(","))
                     .map(String::toUpperCase)
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
@@ -164,7 +164,7 @@ public class MenuConvIO extends ChatConvIO {
             LogUtils.logThrowable(e);
         }
         try {
-            for (CONTROL control : Arrays.stream(configControlMove.split(","))
+            for (final CONTROL control : Arrays.stream(configControlMove.split(","))
                     .map(String::toUpperCase)
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
@@ -196,7 +196,7 @@ public class MenuConvIO extends ChatConvIO {
             stand.setVisible(false);
 
             // Mount the player to it using packets
-            WrapperPlayServerMount mount = new WrapperPlayServerMount();
+            final WrapperPlayServerMount mount = new WrapperPlayServerMount();
             mount.setEntityID(stand.getEntityId());
             mount.setPassengerIds(new int[]{player.getEntityId()});
 
@@ -213,9 +213,9 @@ public class MenuConvIO extends ChatConvIO {
             ) {
 
                 @Override
-                public void onPacketSending(PacketEvent event) {
+                public void onPacketSending(final PacketEvent event) {
                     if (event.getPacketType().equals(PacketType.Play.Server.ANIMATION)) {
-                        WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
+                        final WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
 
                         if (animation.getEntityID() == player.getEntityId()) {
                             event.setCancelled(true);
@@ -224,13 +224,13 @@ public class MenuConvIO extends ChatConvIO {
                 }
 
                 @Override
-                public void onPacketReceiving(PacketEvent event) {
+                public void onPacketReceiving(final PacketEvent event) {
                     if (event.getPlayer() != player || options.size() == 0) {
                         return;
                     }
 
                     if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
-                        WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
+                        final WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
 
                         if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
                             // Player Jumped
@@ -352,7 +352,7 @@ public class MenuConvIO extends ChatConvIO {
     // Override this event from our parent
     @Override
     @EventHandler(ignoreCancelled = true)
-    public void onReply(AsyncPlayerChatEvent event) {
+    public void onReply(final AsyncPlayerChatEvent event) {
     }
 
     /**
@@ -363,14 +363,14 @@ public class MenuConvIO extends ChatConvIO {
      * @param response the text the NPC chose
      */
     @Override
-    public void setNpcResponse(String npcName, String response) {
+    public void setNpcResponse(final String npcName, final String response) {
         super.setNpcResponse(npcName, response);
         formattedNpcName = configNpcNameFormat
                 .replace("{npc_name}", npcName);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) {
+    public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
         if (!isActiveUnsafe()) {
             return;
         }
@@ -415,7 +415,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerInteractEvent(PlayerInteractEvent event) {
+    public void playerInteractEvent(final PlayerInteractEvent event) {
         if (!isActiveUnsafe()) {
             return;
         }
@@ -486,11 +486,11 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // NPC Text
-        String msgNpcText = configNpcText
+        final String msgNpcText = configNpcText
                 .replace("{npc_text}", npcText)
                 .replace("{npc_name}", npcName);
 
-        List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
+        final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
                 Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
                 .collect(Collectors.toList());
 
@@ -507,7 +507,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less space for all options due to npc text
-        List<String> optionsSelected = new ArrayList<>();
+        final List<String> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption;
         int currentDirection = selectedOption != oldSelectedOption ? selectedOption - oldSelectedOption : 1;
         int topOption = options.size();
@@ -531,10 +531,10 @@ public class MenuConvIO extends ChatConvIO {
                 topOption = optionIndex;
             }
 
-            List<String> optionLines;
+            final List<String> optionLines;
 
             if (i == 0) {
-                String optionText = configOptionSelected
+                final String optionText = configOptionSelected
                         .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", npcName);
 
@@ -545,7 +545,7 @@ public class MenuConvIO extends ChatConvIO {
 
 
             } else {
-                String optionText = configOptionText
+                final String optionText = configOptionText
                         .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", npcName);
 
@@ -573,7 +573,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Build the displayOutput
-        StringBuilder displayBuilder = new StringBuilder();
+        final StringBuilder displayBuilder = new StringBuilder();
 
         // If NPC name type is chat_top, show it
         if (configNpcNameType.equals("chat")) {
@@ -700,7 +700,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+    public void entityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
         if (!isActiveUnsafe()) {
             return;
         }
@@ -749,7 +749,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerItemHeldEvent(PlayerItemHeldEvent event) {
+    public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (!isActiveUnsafe()) {
             return;
         }
@@ -775,7 +775,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             // Cheat and assume the closest distance between previous and new slots is the direction scrolled
-            int slotDistance = event.getPreviousSlot() - event.getNewSlot();
+            final int slotDistance = event.getPreviousSlot() - event.getNewSlot();
 
             if (slotDistance > 5 || (slotDistance < 0 && slotDistance >= -5)) {
                 // Scrolled down

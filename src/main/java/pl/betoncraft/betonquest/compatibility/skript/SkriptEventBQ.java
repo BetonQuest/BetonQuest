@@ -33,25 +33,25 @@ public class SkriptEventBQ extends SkriptEvent {
     private Literal<?> literal;
 
     @Override
-    public String toString(Event e, boolean debug) {
+    public String toString(final Event e, final boolean debug) {
         return "on betonquest event";
     }
 
     @Override
-    public boolean init(Literal<?>[] args, int matchedPattern, ParseResult parseResult) {
+    public boolean init(final Literal<?>[] args, final int matchedPattern, final ParseResult parseResult) {
         literal = args[0];
         return true;
     }
 
     @Override
-    public boolean check(Event e) {
+    public boolean check(final Event e) {
         if (e instanceof BQEventSkript.CustomEventForSkript) {
             final BQEventSkript.CustomEventForSkript event = (BQEventSkript.CustomEventForSkript) e;
             return literal.check(e, new Checker<Object>() {
                 @Override
-                public boolean check(Object o) {
+                public boolean check(final Object o) {
                     if (o instanceof String) {
-                        String id = (String) o;
+                        final String id = (String) o;
                         return (event.getID().equals(id));
                     }
                     return false;

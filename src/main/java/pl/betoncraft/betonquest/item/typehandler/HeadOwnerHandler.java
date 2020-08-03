@@ -24,7 +24,7 @@ public class HeadOwnerHandler {
     private String owner = null;
     private Existence ownerE = Existence.WHATEVER;
 
-    public void set(String string) {
+    public void set(final String string) {
         if (string.equalsIgnoreCase("none")) {
             ownerE = Existence.FORBIDDEN;
         } else {
@@ -37,7 +37,7 @@ public class HeadOwnerHandler {
         return owner;
     }
 
-    public boolean check(String string) {
+    public boolean check(final String string) {
         switch (ownerE) {
             case WHATEVER:
                 return true;

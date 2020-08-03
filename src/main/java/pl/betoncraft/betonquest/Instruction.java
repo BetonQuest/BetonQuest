@@ -56,7 +56,7 @@ public class Instruction {
     private int current = 1;
     private String lastOptional = null;
 
-    public Instruction(ConfigPackage pack, ID id, String instruction) {
+    public Instruction(final ConfigPackage pack, final ID id, final String instruction) {
         this.pack = pack;
         try {
             this.id = id == null ? new NoID(pack) : id;
@@ -105,7 +105,7 @@ public class Instruction {
         return getPart(current);
     }
 
-    public String getPart(int index) throws InstructionParseException {
+    public String getPart(final int index) throws InstructionParseException {
         if (parts.length <= index) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -114,8 +114,8 @@ public class Instruction {
         return parts[index];
     }
 
-    public String getOptional(String prefix) {
-        for (String part : parts) {
+    public String getOptional(final String prefix) {
+        for (final String part : parts) {
             if (part.toLowerCase().startsWith(prefix.toLowerCase() + ":")) {
                 lastOptional = prefix;
                 current = -1;
@@ -125,8 +125,8 @@ public class Instruction {
         return null;
     }
 
-    public boolean hasArgument(String argument) {
-        for (String part : parts) {
+    public boolean hasArgument(final String argument) {
+        for (final String part : parts) {
             if (part.equalsIgnoreCase(argument)) {
                 return true;
             }
@@ -142,7 +142,7 @@ public class Instruction {
         return getLocation(next());
     }
 
-    public LocationData getLocation(String string) throws InstructionParseException {
+    public LocationData getLocation(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -157,7 +157,7 @@ public class Instruction {
         return getVarNum(next());
     }
 
-    public VariableNumber getVarNum(String string) throws InstructionParseException {
+    public VariableNumber getVarNum(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -172,7 +172,7 @@ public class Instruction {
         return getQuestItem(next());
     }
 
-    private QuestItem getQuestItem(String string) throws InstructionParseException {
+    private QuestItem getQuestItem(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -187,15 +187,15 @@ public class Instruction {
         return getItemList(next());
     }
 
-    public Item[] getItemList(String string) throws InstructionParseException {
-        String[] array = getArray(string);
-        Item[] items = new Item[array.length];
+    public Item[] getItemList(final String string) throws InstructionParseException {
+        final String[] array = getArray(string);
+        final Item[] items = new Item[array.length];
         for (int i = 0; i < items.length; i++) {
             try {
-                ItemID item;
-                VariableNumber number;
+                final ItemID item;
+                final VariableNumber number;
                 if (array[i].contains(":")) {
-                    String[] parts = array[i].split(":", 2);
+                    final String[] parts = array[i].split(":", 2);
                     item = getItem(parts[0]);
                     number = getVarNum(parts[1]);
                 } else {
@@ -215,22 +215,22 @@ public class Instruction {
     }
 
     @SuppressWarnings("deprecation")
-    public HashMap<Enchantment, Integer> getEnchantments(String string) throws InstructionParseException {
+    public HashMap<Enchantment, Integer> getEnchantments(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
-        HashMap<Enchantment, Integer> enchants = new HashMap<>();
-        String[] array = getArray(string);
-        for (String enchant : array) {
-            String[] enchParts = enchant.split(":");
+        final HashMap<Enchantment, Integer> enchants = new HashMap<>();
+        final String[] array = getArray(string);
+        for (final String enchant : array) {
+            final String[] enchParts = enchant.split(":");
             if (enchParts.length != 2) {
                 throw new PartParseException("Wrong enchantment format: " + enchant);
             }
-            Enchantment ID = Enchantment.getByName(enchParts[0]);
+            final Enchantment ID = Enchantment.getByName(enchParts[0]);
             if (ID == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
-            Integer level;
+            final Integer level;
             try {
                 level = new Integer(enchParts[1]);
             } catch (NumberFormatException e) {
@@ -245,19 +245,20 @@ public class Instruction {
         return getEffects(next());
     }
 
-    public List<PotionEffect> getEffects(String string) throws InstructionParseException {
+    public List<PotionEffect> getEffects(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
-        List<PotionEffect> effects = new ArrayList<>();
-        String[] array = getArray(string);
-        for (String effect : array) {
-            String[] effParts = effect.split(":");
-            PotionEffectType ID = PotionEffectType.getByName(effParts[0]);
+        final List<PotionEffect> effects = new ArrayList<>();
+        final String[] array = getArray(string);
+        for (final String effect : array) {
+            final String[] effParts = effect.split(":");
+            final PotionEffectType ID = PotionEffectType.getByName(effParts[0]);
             if (ID == null) {
                 throw new PartParseException("Unknown potion effect" + effParts[0]);
             }
-            int power, duration;
+            final int power;
+            final int duration;
             try {
                 power = Integer.parseInt(effect.split(":")[1]) - 1;
                 duration = Integer.parseInt(effect.split(":")[2]) * 20;
@@ -273,11 +274,11 @@ public class Instruction {
     ///    Enums    ///
     ///////////////////
 
-    public <T extends Enum<T>> T getEnum(Class<T> clazz) throws InstructionParseException {
+    public <T extends Enum<T>> T getEnum(final Class<T> clazz) throws InstructionParseException {
         return getEnum(next(), clazz);
     }
 
-    public <T extends Enum<T>> T getEnum(String string, Class<T> clazz) throws InstructionParseException {
+    public <T extends Enum<T>> T getEnum(final String string, final Class<T> clazz) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -292,11 +293,11 @@ public class Instruction {
         return getMaterial(next());
     }
 
-    public Material getMaterial(String string) {
+    public Material getMaterial(final String string) {
         if (string == null) {
             return null;
         }
-        Material material = Material.matchMaterial(string);
+        final Material material = Material.matchMaterial(string);
         return material;
     }
 
@@ -304,7 +305,7 @@ public class Instruction {
         return getBlockSelector(next());
     }
 
-    public BlockSelector getBlockSelector(String string) throws InstructionParseException {
+    public BlockSelector getBlockSelector(final String string) throws InstructionParseException {
         return new BlockSelector(string);
     }
 
@@ -312,7 +313,7 @@ public class Instruction {
         return getEnum(next(), EntityType.class);
     }
 
-    public EntityType getEntity(String string) throws InstructionParseException {
+    public EntityType getEntity(final String string) throws InstructionParseException {
         return getEnum(string, EntityType.class);
     }
 
@@ -320,7 +321,7 @@ public class Instruction {
         return getEnum(next(), PotionType.class);
     }
 
-    public PotionType getPotion(String string) throws InstructionParseException {
+    public PotionType getPotion(final String string) throws InstructionParseException {
         return getEnum(string, PotionType.class);
     }
 
@@ -332,7 +333,7 @@ public class Instruction {
         return getEvent(next());
     }
 
-    public EventID getEvent(String string) throws InstructionParseException {
+    public EventID getEvent(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -347,7 +348,7 @@ public class Instruction {
         return getCondition(next());
     }
 
-    public ConditionID getCondition(String string) throws InstructionParseException {
+    public ConditionID getCondition(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -362,7 +363,7 @@ public class Instruction {
         return getObjective(next());
     }
 
-    public ObjectiveID getObjective(String string) throws InstructionParseException {
+    public ObjectiveID getObjective(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -377,7 +378,7 @@ public class Instruction {
         return getItem(next());
     }
 
-    public ItemID getItem(String string) throws InstructionParseException {
+    public ItemID getItem(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -396,7 +397,7 @@ public class Instruction {
         return getByte(next(), (byte) 0);
     }
 
-    public byte getByte(String string, byte def) throws InstructionParseException {
+    public byte getByte(final String string, final byte def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -411,8 +412,8 @@ public class Instruction {
         return getPositive(next(), 0);
     }
 
-    public int getPositive(String string, int def) throws InstructionParseException {
-        int i = getInt(string, def);
+    public int getPositive(final String string, final int def) throws InstructionParseException {
+        final int i = getInt(string, def);
         if (i < 1) {
             throw new InstructionParseException("Number cannot be less than 1");
         }
@@ -423,7 +424,7 @@ public class Instruction {
         return getInt(next(), 0);
     }
 
-    public int getInt(String string, int def) throws InstructionParseException {
+    public int getInt(final String string, final int def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -438,7 +439,7 @@ public class Instruction {
         return getLong(next(), 0);
     }
 
-    public long getLong(String string, long def) throws InstructionParseException {
+    public long getLong(final String string, final long def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -453,7 +454,7 @@ public class Instruction {
         return getDouble(next(), 0.0);
     }
 
-    public double getDouble(String string, double def) throws InstructionParseException {
+    public double getDouble(final String string, final double def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -465,10 +466,10 @@ public class Instruction {
     }
 
     public ArrayList<Integer> getAllNumbers() {
-        Pattern p = Pattern.compile("-?\\d+");
-        Matcher m = p.matcher(instruction);
+        final Pattern p = Pattern.compile("-?\\d+");
+        final Matcher m = p.matcher(instruction);
 
-        ArrayList<Integer> result = new ArrayList<>();
+        final ArrayList<Integer> result = new ArrayList<>();
         while (m.find()) {
             result.add(Integer.parseInt(m.group()));
         }
@@ -483,24 +484,24 @@ public class Instruction {
         return getArray(next());
     }
 
-    public String[] getArray(String string) {
+    public String[] getArray(final String string) {
         if (string == null) {
             return new String[0];
         }
         return string.split("[,]");
     }
 
-    public <T> List<T> getList(Converter<T> converter) throws InstructionParseException {
+    public <T> List<T> getList(final Converter<T> converter) throws InstructionParseException {
         return getList(next(), converter);
     }
 
-    public <T> List<T> getList(String string, Converter<T> converter) throws InstructionParseException {
+    public <T> List<T> getList(final String string, final Converter<T> converter) throws InstructionParseException {
         if (string == null) {
             return new ArrayList<T>(0);
         }
-        String[] array = getArray(string);
-        List<T> list = new ArrayList<>(array.length);
-        for (String part : array) {
+        final String[] array = getArray(string);
+        final List<T> list = new ArrayList<>(array.length);
+        for (final String part : array) {
             list.add(converter.convert(part));
         }
         return list;
@@ -520,7 +521,7 @@ public class Instruction {
         private QuestItem questItem;
         private VariableNumber amount;
 
-        public Item(ItemID itemID, VariableNumber amount) throws InstructionParseException {
+        public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
             this.itemID = itemID;
             this.questItem = new QuestItem(itemID);
             this.amount = amount;
@@ -534,7 +535,7 @@ public class Instruction {
             return questItem;
         }
 
-        public boolean isItemEqual(ItemStack item) {
+        public boolean isItemEqual(final ItemStack item) {
             return questItem.compare(item);
         }
 

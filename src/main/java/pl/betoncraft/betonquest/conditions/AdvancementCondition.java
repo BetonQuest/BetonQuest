@@ -36,13 +36,13 @@ public class AdvancementCondition extends Condition {
     private final Advancement advancement;
 
     @SuppressWarnings("deprecation")
-    public AdvancementCondition(Instruction instruction) throws InstructionParseException {
+    public AdvancementCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String i = instruction.next();
+        final String i = instruction.next();
         if (!i.contains(":")) {
             throw new InstructionParseException("The advancement '" + i + "' is missing a namespace!");
         }
-        String[] split = i.split(":");
+        final String[] split = i.split(":");
         advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
         if (advancement == null) {
             throw new InstructionParseException("No such advancement: " + i);
@@ -50,8 +50,8 @@ public class AdvancementCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        AdvancementProgress progress = PlayerConverter.getPlayer(playerID).getAdvancementProgress(advancement);
+    protected Boolean execute(final String playerID) {
+        final AdvancementProgress progress = PlayerConverter.getPlayer(playerID).getAdvancementProgress(advancement);
         return progress.isDone();
     }
 

@@ -36,7 +36,7 @@ public abstract class Database {
     protected String prefix;
     protected Connection con;
 
-    protected Database(Plugin plugin) {
+    protected Database(final Plugin plugin) {
         this.plugin = plugin;
         this.prefix = plugin.getConfig().getString("mysql.prefix", "");
     }
@@ -60,15 +60,15 @@ public abstract class Database {
         con = null;
     }
 
-    public void createTables(boolean isMySQLUsed) {
-        String autoIncrement;
+    public void createTables(final boolean isMySQLUsed) {
+        final String autoIncrement;
         if (isMySQLUsed) {
             autoIncrement = "AUTO_INCREMENT";
         } else {
             autoIncrement = "AUTOINCREMENT";
         }
         // create tables if they don't exist
-        Connection connection = getConnection();
+        final Connection connection = getConnection();
         try {
             connection.createStatement()
                     .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER PRIMARY KEY "

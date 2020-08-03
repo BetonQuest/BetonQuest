@@ -34,7 +34,7 @@ public class TakeBrewEvent extends QuestEvent {
     private Integer count;
     private BRecipe brew;
 
-    public TakeBrewEvent(Instruction instruction) throws InstructionParseException {
+    public TakeBrewEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         count = instruction.getInt();
@@ -42,10 +42,10 @@ public class TakeBrewEvent extends QuestEvent {
             throw new InstructionParseException("Can't give less than one brew!");
         }
 
-        String name = instruction.next().replace("_", " ");
+        final String name = instruction.next().replace("_", " ");
 
         BRecipe recipe = null;
-        for (BRecipe r : BRecipe.getAllRecipes()) {
+        for (final BRecipe r : BRecipe.getAllRecipes()) {
             if (r.hasName(name)) {
                 recipe = r;
                 break;
@@ -60,14 +60,14 @@ public class TakeBrewEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
 
-        Player p = PlayerConverter.getPlayer(playerID);
+        final Player p = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;
 
         for (int i = 0; i < p.getInventory().getSize(); i++) {
-            ItemStack item = p.getInventory().getItem(i);
+            final ItemStack item = p.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
                 if (item.getAmount() - remaining <= 0) {
                     remaining -= item.getAmount();

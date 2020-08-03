@@ -34,11 +34,11 @@ public class DayOfWeekCondition extends Condition {
 
     private final DayOfWeek day;
 
-    public DayOfWeekCondition(Instruction instruction) throws InstructionParseException {
+    public DayOfWeekCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.staticness = true;
         super.persistent = true;
-        String dayString = instruction.next();
+        final String dayString = instruction.next();
         DayOfWeek d;
         try {
             d = DayOfWeek.of(Integer.parseInt(dayString));
@@ -56,8 +56,8 @@ public class DayOfWeekCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Calendar calendar = Calendar.getInstance();
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         day = day == 1 ? 7 : day - 1;
         //As calendar.get(Calendar.DAY_OF_WEEK) returns 1 on sunday, 2 oin monday, and so on this has to be fixed

@@ -34,15 +34,15 @@ public class ObjectivePropertyVariable extends Variable {
     private ObjectiveID objective;
     private String propertyName;
 
-    public ObjectivePropertyVariable(Instruction instruction) throws InstructionParseException {
+    public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         objective = instruction.getObjective();
         propertyName = instruction.next();
     }
 
     @Override
-    public String getValue(String playerID) {
-        Objective objective = BetonQuest.getInstance().getObjective(this.objective);
+    public String getValue(final String playerID) {
+        final Objective objective = BetonQuest.getInstance().getObjective(this.objective);
         // existence of an objective is checked now because it may not exist yet
         // when variable is created (in case of "message" event)
         if (objective == null)

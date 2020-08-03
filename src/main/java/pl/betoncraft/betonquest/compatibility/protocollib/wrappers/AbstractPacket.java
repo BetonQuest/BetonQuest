@@ -35,7 +35,7 @@ public abstract class AbstractPacket {
      * @param handle - handle to the raw packet data.
      * @param type   - the packet type.
      */
-    protected AbstractPacket(PacketContainer handle, PacketType type) {
+    protected AbstractPacket(final PacketContainer handle, final PacketType type) {
         // Make sure we're given a valid packet
         if (handle == null)
             throw new IllegalArgumentException("Packet handle cannot be NULL.");
@@ -61,7 +61,7 @@ public abstract class AbstractPacket {
      * @param receiver - the receiver.
      * @throws RuntimeException If the packet cannot be sent.
      */
-    public void sendPacket(Player receiver) {
+    public void sendPacket(final Player receiver) {
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver,
                     getHandle());
@@ -86,7 +86,7 @@ public abstract class AbstractPacket {
      * @deprecated Misspelled. recieve to receive
      */
     @Deprecated
-    public void recievePacket(Player sender) {
+    public void recievePacket(final Player sender) {
         try {
             ProtocolLibrary.getProtocolManager().recieveClientPacket(sender,
                     getHandle());
@@ -101,7 +101,7 @@ public abstract class AbstractPacket {
      * @param sender - the sender.
      * @throws RuntimeException if the packet cannot be received.
      */
-    public void receivePacket(Player sender) {
+    public void receivePacket(final Player sender) {
         try {
             ProtocolLibrary.getProtocolManager().recieveClientPacket(sender,
                     getHandle());

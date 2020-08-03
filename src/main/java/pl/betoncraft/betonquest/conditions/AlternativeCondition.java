@@ -34,14 +34,14 @@ public class AlternativeCondition extends Condition {
 
     private List<ConditionID> conditions;
 
-    public AlternativeCondition(Instruction instruction) throws InstructionParseException {
+    public AlternativeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         conditions = instruction.getList(e -> instruction.getCondition(e));
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (ConditionID condition : conditions) {
+    protected Boolean execute(final String playerID) {
+        for (final ConditionID condition : conditions) {
             if (BetonQuest.condition(playerID, condition)) {
                 return true;
             }

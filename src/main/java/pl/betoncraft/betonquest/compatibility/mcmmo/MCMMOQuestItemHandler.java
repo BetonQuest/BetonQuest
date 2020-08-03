@@ -42,14 +42,14 @@ public class MCMMOQuestItemHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onQuestItemSalvaging(McMMOPlayerSalvageCheckEvent event) {
+    public void onQuestItemSalvaging(final McMMOPlayerSalvageCheckEvent event) {
         if (Utils.isQuestItem(event.getSalvageItem())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onQuestItemDisarm(McMMOPlayerDisarmEvent event) {
+    public void onQuestItemDisarm(final McMMOPlayerDisarmEvent event) {
         if (Utils.isQuestItem(event.getPlayer().getInventory().getItemInMainHand())) {
             event.setCancelled(true);
         } else if (Journal.isJournal(PlayerConverter.getID(event.getPlayer()), event.getPlayer().getInventory().getItemInMainHand())) {

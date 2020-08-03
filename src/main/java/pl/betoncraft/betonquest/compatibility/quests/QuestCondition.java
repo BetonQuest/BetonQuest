@@ -31,14 +31,14 @@ public class QuestCondition extends Condition {
 
     private String questName;
 
-    public QuestCondition(Instruction instruction) throws InstructionParseException {
+    public QuestCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questName = instruction.next();
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests()) {
+    protected Boolean execute(final String playerID) {
+        for (final String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests()) {
             if (q.replace(' ', '_').equalsIgnoreCase(questName))
                 return true;
         }

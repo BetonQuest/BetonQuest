@@ -32,13 +32,13 @@ public class TagCondition extends Condition {
 
     protected final String tag;
 
-    public TagCondition(Instruction instruction) throws InstructionParseException {
+    public TagCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         tag = Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 
     @Override
-    protected Boolean execute(String playerID) {
+    protected Boolean execute(final String playerID) {
         return BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag);
     }
 

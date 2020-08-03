@@ -57,17 +57,17 @@ public class LocalChatPaginator extends ChatPaginator {
     /**
      * Takes a string and returns the last colors that can be copied to a new line
      */
-    public static String getLastColors(String input) {
+    public static String getLastColors(final String input) {
         ChatColor lastColor = null;
-        List<ChatColor> lastFormats = new ArrayList<>();
+        final List<ChatColor> lastFormats = new ArrayList<>();
 
-        int length = input.length();
+        final int length = input.length();
 
         for (int index = length - 1; index > -1; --index) {
-            char section = input.charAt(index);
+            final char section = input.charAt(index);
             if (section == 167 && index < length - 1) {
-                char c = input.charAt(index + 1);
-                ChatColor color = ChatColor.getByChar(c);
+                final char c = input.charAt(index + 1);
+                final ChatColor color = ChatColor.getByChar(c);
 
                 if (color != null) {
                     if (color.equals(ChatColor.RESET)) {
@@ -96,7 +96,7 @@ public class LocalChatPaginator extends ChatPaginator {
         return result;
     }
 
-    public static String[] wordWrap(String rawString, int lineLength) {
+    public static String[] wordWrap(final String rawString, final int lineLength) {
         return wordWrap(rawString, lineLength, "");
     }
 
@@ -109,8 +109,8 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    public static String[] wordWrap(String rawString, int lineLength, String wrapPrefix) {
-        int maxWidth = lineLength * defaultCharWidth;
+    public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
+        final int maxWidth = lineLength * defaultCharWidth;
 
         // A null string is a single line
         if (rawString == null) {
@@ -123,17 +123,17 @@ public class LocalChatPaginator extends ChatPaginator {
         }
 
         // Work out wrapPrefix color chars
-        int maxWrapWidth = maxWidth - getWidth(wrapPrefix);
+        final int maxWrapWidth = maxWidth - getWidth(wrapPrefix);
 
-        char[] rawChars = (rawString + ' ').toCharArray(); // add a trailing space to trigger pagination
+        final char[] rawChars = (rawString + ' ').toCharArray(); // add a trailing space to trigger pagination
         StringBuilder word = new StringBuilder();
         StringBuilder line = new StringBuilder();
-        List<String> lines = new LinkedList<>();
+        final List<String> lines = new LinkedList<>();
         int wordWidth = 0;
         int lineWidth = 0;
 
         for (int i = 0; i < rawChars.length; i++) {
-            char c = rawChars[i];
+            final char c = rawChars[i];
 
             // skip chat color modifiers
             if (c == ChatColor.COLOR_CHAR) {
@@ -142,7 +142,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 continue;
             }
 
-            int width = getWidth(c);
+            final int width = getWidth(c);
 
             if (c != ' ' && c != '\n') {
                 // Extremely long word begins a line, break the word up
@@ -207,9 +207,9 @@ public class LocalChatPaginator extends ChatPaginator {
     /**
      * Return the width of text taking into account variable font size and ignoring hidden characters
      */
-    public static int getWidth(String input) {
+    public static int getWidth(final String input) {
         int ret = 0;
-        char[] rawChars = input.toCharArray();
+        final char[] rawChars = input.toCharArray();
 
         for (int i = 0; i < rawChars.length; i++) {
             if (rawChars[i] == ChatColor.COLOR_CHAR) {
@@ -221,16 +221,16 @@ public class LocalChatPaginator extends ChatPaginator {
         return ret;
     }
 
-    public static int getWidth(Character c) {
+    public static int getWidth(final Character c) {
         return fontSizes.containsKey(c) ? fontSizes.get(c) : defaultCharWidth;
     }
 
     /**
      * Return the length of the line minus hidden characters
      */
-    public static int lineLength(String input) {
+    public static int lineLength(final String input) {
         int ret = 0;
-        char[] rawChars = input.toCharArray();
+        final char[] rawChars = input.toCharArray();
         for (int i = 0; i < rawChars.length; i++) {
             if (rawChars[i] == ChatColor.COLOR_CHAR) {
                 i += 1;
@@ -244,11 +244,11 @@ public class LocalChatPaginator extends ChatPaginator {
     /**
      * Return the number of hidden characters in input
      */
-    public static int hiddenCount(String input) {
-        char[] rawChars = input.toCharArray();
+    public static int hiddenCount(final String input) {
+        final char[] rawChars = input.toCharArray();
         int count = 0;
         for (int i = 0; i < rawChars.length; i++) {
-            char c = rawChars[i];
+            final char c = rawChars[i];
 
             if (c == ChatColor.COLOR_CHAR) {
                 count += 2;

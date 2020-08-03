@@ -43,18 +43,18 @@ public class GiveEvent extends QuestEvent {
     private final Item[] questItems;
     private final boolean notify;
 
-    public GiveEvent(Instruction instruction) throws InstructionParseException {
+    public GiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (Item theItem : questItems) {
-            QuestItem questItem = theItem.getItem();
-            VariableNumber amount = theItem.getAmount();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        for (final Item theItem : questItems) {
+            final QuestItem questItem = theItem.getItem();
+            final VariableNumber amount = theItem.getAmount();
             int amountInt = amount.getInt(playerID);
             if (notify) {
                 Config.sendNotify(playerID, "items_given",
@@ -65,16 +65,16 @@ public class GiveEvent extends QuestEvent {
                         "items_given,info");
             }
             while (amountInt > 0) {
-                int stackSize;
+                final int stackSize;
                 if (amountInt > 64) {
                     stackSize = 64;
                 } else {
                     stackSize = amountInt;
                 }
-                ItemStack item = questItem.generate(stackSize);
-                HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
-                for (Integer leftNumber : left.keySet()) {
-                    ItemStack itemStack = left.get(leftNumber);
+                final ItemStack item = questItem.generate(stackSize);
+                final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
+                for (final Integer leftNumber : left.keySet()) {
+                    final ItemStack itemStack = left.get(leftNumber);
                     if (Utils.isQuestItem(itemStack)) {
                         BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
                     } else {

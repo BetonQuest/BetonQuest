@@ -33,18 +33,18 @@ public class HavingShopCondition extends Condition {
 
     private final VariableNumber amount;
 
-    public HavingShopCondition(Instruction instruction) throws InstructionParseException {
+    public HavingShopCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         persistent = true;
         amount = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         int count = amount.getInt(playerID);
-        for (Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
+        for (final Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
             if (s instanceof PlayerShopkeeper) {
-                PlayerShopkeeper ps = (PlayerShopkeeper) s;
+                final PlayerShopkeeper ps = (PlayerShopkeeper) s;
                 if (ps.getOwnerUUID() != null && ps.getOwnerUUID().toString().equals(playerID)) {
                     count--;
                     if (count == 0) {

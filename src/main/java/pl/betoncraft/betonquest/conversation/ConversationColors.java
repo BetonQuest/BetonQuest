@@ -40,32 +40,32 @@ public class ConversationColors {
 
     public ConversationColors() {
         try {
-            String[] text = Config.getString("config.conversation_colors.text").split(",");
+            final String[] text = Config.getString("config.conversation_colors.text").split(",");
             textColors = new ChatColor[text.length];
             for (int i = 0; i < text.length; i++) {
                 textColors[i] = ChatColor.valueOf(text[i].toUpperCase().trim().replace(" ", "_"));
             }
-            String[] npc = Config.getString("config.conversation_colors.npc").split(",");
+            final String[] npc = Config.getString("config.conversation_colors.npc").split(",");
             npcColors = new ChatColor[npc.length];
             for (int i = 0; i < npc.length; i++) {
                 npcColors[i] = ChatColor.valueOf(npc[i].toUpperCase().trim().replace(" ", "_"));
             }
-            String[] player = Config.getString("config.conversation_colors.player").split(",");
+            final String[] player = Config.getString("config.conversation_colors.player").split(",");
             playerColors = new ChatColor[player.length];
             for (int i = 0; i < player.length; i++) {
                 playerColors[i] = ChatColor.valueOf(player[i].toUpperCase().trim().replace(" ", "_"));
             }
-            String[] number = Config.getString("config.conversation_colors.number").split(",");
+            final String[] number = Config.getString("config.conversation_colors.number").split(",");
             numberColors = new ChatColor[number.length];
             for (int i = 0; i < number.length; i++) {
                 numberColors[i] = ChatColor.valueOf(number[i].toUpperCase().trim().replace(" ", "_"));
             }
-            String[] answer = Config.getString("config.conversation_colors.answer").split(",");
+            final String[] answer = Config.getString("config.conversation_colors.answer").split(",");
             answerColors = new ChatColor[answer.length];
             for (int i = 0; i < answer.length; i++) {
                 answerColors[i] = ChatColor.valueOf(answer[i].toUpperCase().trim().replace(" ", "_"));
             }
-            String[] option = Config.getString("config.conversation_colors.option").split(",");
+            final String[] option = Config.getString("config.conversation_colors.option").split(",");
             optionColors = new ChatColor[option.length];
             for (int i = 0; i < option.length; i++) {
                 optionColors[i] = ChatColor.valueOf(option[i].toUpperCase().trim().replace(" ", "_"));
@@ -87,7 +87,7 @@ public class ConversationColors {
      * @return the map of conversation colors
      */
     public static HashMap<String, ChatColor[]> getColors() {
-        HashMap<String, ChatColor[]> map = new HashMap<>();
+        final HashMap<String, ChatColor[]> map = new HashMap<>();
         map.put("text", textColors);
         map.put("option", optionColors);
         map.put("answer", answerColors);

@@ -53,7 +53,7 @@ public class BrewObjective extends Objective implements Listener {
     private final int notifyInterval;
     private final HashMap<Location, String> locations = new HashMap<>();
 
-    public BrewObjective(Instruction instruction) throws InstructionParseException {
+    public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = PotionData.class;
         potion = instruction.getQuestItem();
@@ -63,11 +63,11 @@ public class BrewObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onIngredientPut(InventoryClickEvent event) {
+    public void onIngredientPut(final InventoryClickEvent event) {
         if (event.getInventory().getType() != InventoryType.BREWING)
             return;
         if (event.getRawSlot() == 3 || event.getClick().equals(ClickType.SHIFT_LEFT)) {
-            String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+            final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
             if (!containsPlayer(playerID))
                 return;
             locations.put(((BrewingStand) event.getInventory().getHolder()).getLocation(), playerID);
@@ -119,14 +119,14 @@ public class BrewObjective extends Objective implements Listener {
     /**
      * Checks if this ItemStack matches a potion defined in "effects" HashMap.
      */
-    private boolean checkPotion(ItemStack item) {
+    private boolean checkPotion(final ItemStack item) {
         if (item == null)
             return false;
         return potion.compare(item);
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((PotionData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -155,7 +155,7 @@ public class BrewObjective extends Objective implements Listener {
 
         private int amount;
 
-        public PotionData(String instruction, String playerID, String objID) {
+        public PotionData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

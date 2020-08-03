@@ -73,9 +73,9 @@ public class BlockSelector {
 
             if (string.contains("]")) {
                 states = new HashMap<>();
-                for (String raw : string.substring(0, string.indexOf("]")).split(",")) {
+                for (final String raw : string.substring(0, string.indexOf("]")).split(",")) {
                     if (raw.contains("=")) {
-                        String[] kv = raw.split("=", 2);
+                        final String[] kv = raw.split("=", 2);
 
                         states.put(kv[0].toLowerCase().trim(), kv[1].toLowerCase().trim());
                     }
@@ -100,7 +100,7 @@ public class BlockSelector {
      * Return true if the selector matches at least one valid block
      */
     public boolean isValid() {
-        for (Material m : Material.values()) {
+        for (final Material m : Material.values()) {
             if (match(m)) {
                 return true;
             }
@@ -114,7 +114,7 @@ public class BlockSelector {
      * If we match multiple materials we will return the first match
      */
     public Material getMaterial() {
-        for (Material m : Material.values()) {
+        for (final Material m : Material.values()) {
             if (match(m)) {
                 return m;
             }
@@ -125,8 +125,8 @@ public class BlockSelector {
     /**
      * Return true if material matches our selector. State is ignored
      */
-    public boolean match(Material material) {
-        NamespacedKey materialKey;
+    public boolean match(final Material material) {
+        final NamespacedKey materialKey;
         try {
             materialKey = material.getKey();
         } catch (IllegalArgumentException e) {
@@ -139,7 +139,7 @@ public class BlockSelector {
             return false;
         }
 
-        Matcher matcher = typePattern.matcher(materialKey.getKey());
+        final Matcher matcher = typePattern.matcher(materialKey.getKey());
 
         return matcher.find();
     }
@@ -150,28 +150,28 @@ public class BlockSelector {
      * @param block Block to test
      * @return boolean True if a match occurred
      */
-    public boolean match(Block block) {
-        String blockString = block.getBlockData().getAsString().toLowerCase();
+    public boolean match(final Block block) {
+        final String blockString = block.getBlockData().getAsString().toLowerCase();
 
         // Starts with our prefix?
         if (!blockString.startsWith(prefix + ":")) {
             return false;
         }
 
-        String blockType;
+        final String blockType;
         Map<String, String> blockStates = null;
         if (blockString.contains("[")) {
             blockType = blockString.substring(blockString.indexOf(":") + 1, blockString.indexOf("["));
             blockStates = new HashMap<>();
-            for (String raw : blockString.substring(blockString.indexOf("[") + 1, blockString.indexOf("]")).split(",")) {
-                String[] kv = raw.split("=", 2);
+            for (final String raw : blockString.substring(blockString.indexOf("[") + 1, blockString.indexOf("]")).split(",")) {
+                final String[] kv = raw.split("=", 2);
                 blockStates.put(kv[0].trim(), kv[1].trim());
             }
         } else {
             blockType = blockString.substring(blockString.indexOf(":") + 1);
         }
 
-        Matcher matcher = typePattern.matcher(blockType);
+        final Matcher matcher = typePattern.matcher(blockType);
 
         if (!matcher.find()) {
             return false;
@@ -182,7 +182,7 @@ public class BlockSelector {
                 return false;
             }
 
-            for (String state : states.keySet()) {
+            for (final String state : states.keySet()) {
                 if (!blockStates.containsKey(state)) {
                     return false;
                 }

@@ -40,7 +40,7 @@ public class ItemAmountVariable extends Variable {
     private Type type;
     private int amount;
 
-    public ItemAmountVariable(Instruction instruction) throws InstructionParseException {
+    public ItemAmountVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         questItem = instruction.getQuestItem();
         if (instruction.next().toLowerCase().startsWith("left:")) {
@@ -59,10 +59,10 @@ public class ItemAmountVariable extends Variable {
     }
 
     @Override
-    public String getValue(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
+    public String getValue(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
         int playersAmount = 0;
-        for (ItemStack item : player.getInventory().getContents()) {
+        for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null) {
                 continue;
             }
@@ -71,8 +71,8 @@ public class ItemAmountVariable extends Variable {
             }
             playersAmount += item.getAmount();
         }
-        List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-        for (ItemStack item : backpackItems) {
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+        for (final ItemStack item : backpackItems) {
             if (item == null) {
                 continue;
             }

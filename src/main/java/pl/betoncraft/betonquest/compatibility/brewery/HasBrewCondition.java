@@ -34,7 +34,7 @@ public class HasBrewCondition extends Condition {
     private Integer count;
     private BRecipe brew;
 
-    public HasBrewCondition(Instruction instruction) throws InstructionParseException {
+    public HasBrewCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         count = instruction.getInt();
@@ -42,10 +42,10 @@ public class HasBrewCondition extends Condition {
             throw new InstructionParseException("Can't give less than one brew!");
         }
 
-        String name = instruction.next().replace("_", " ");
+        final String name = instruction.next().replace("_", " ");
 
         BRecipe recipe = null;
-        for (BRecipe r : BRecipe.getAllRecipes()) {
+        for (final BRecipe r : BRecipe.getAllRecipes()) {
             if (r.hasName(name)) {
                 recipe = r;
                 break;
@@ -60,13 +60,13 @@ public class HasBrewCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;
 
         for (int i = 0; i < p.getInventory().getSize(); i++) {
-            ItemStack item = p.getInventory().getItem(i);
+            final ItemStack item = p.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
 
                 remaining -= item.getAmount();

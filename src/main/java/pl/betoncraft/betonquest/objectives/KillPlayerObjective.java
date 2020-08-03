@@ -38,7 +38,7 @@ public class KillPlayerObjective extends Objective implements Listener {
     private ConditionID[] required;
     private boolean notify;
 
-    public KillPlayerObjective(Instruction instruction) throws InstructionParseException {
+    public KillPlayerObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = KillData.class;
         amount = instruction.getInt();
@@ -53,17 +53,17 @@ public class KillPlayerObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onKill(PlayerDeathEvent event) {
+    public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
             return;
         }
-        String victim = PlayerConverter.getID(event.getEntity());
-        String killer = PlayerConverter.getID(event.getEntity().getKiller());
+        final String victim = PlayerConverter.getID(event.getEntity());
+        final String killer = PlayerConverter.getID(event.getEntity().getKiller());
         if (containsPlayer(killer)) {
             if (name != null && !event.getEntity().getName().equalsIgnoreCase(name)) {
                 return;
             }
-            for (ConditionID condition : required) {
+            for (final ConditionID condition : required) {
                 if (!BetonQuest.condition(victim, condition)) {
                     return;
                 }
@@ -71,7 +71,7 @@ public class KillPlayerObjective extends Objective implements Listener {
             if (!checkConditions(killer)) {
                 return;
             }
-            KillData data = (KillData) dataMap.get(killer);
+            final KillData data = (KillData) dataMap.get(killer);
             data.kill();
             if (data.getLeft() <= 0) {
                 completeObjective(killer);
@@ -101,7 +101,7 @@ public class KillPlayerObjective extends Objective implements Listener {
 
         private int amount;
 
-        public KillData(String instruction, String playerID, String objID) {
+        public KillData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

@@ -35,14 +35,14 @@ public class CheckCondition extends Condition {
 
     ArrayList<Condition> internalConditions = new ArrayList<>();
 
-    public CheckCondition(Instruction instruction) throws InstructionParseException {
+    public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
+        final String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");
         }
         StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
+        for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (builder.length() != 0) {
                     internalConditions.add(createCondition(builder.toString().trim()));
@@ -59,12 +59,12 @@ public class CheckCondition extends Condition {
     /**
      * Constructs a condition with given instruction and returns it.
      */
-    private Condition createCondition(String instruction) throws InstructionParseException {
-        String[] parts = instruction.split(" ");
+    private Condition createCondition(final String instruction) throws InstructionParseException {
+        final String[] parts = instruction.split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
-        Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
+        final Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
         if (conditionClass == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"
@@ -85,8 +85,8 @@ public class CheckCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        for (Condition condition : internalConditions) {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        for (final Condition condition : internalConditions) {
             if (!condition.handle(playerID))
                 return false;
         }

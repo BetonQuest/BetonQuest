@@ -50,7 +50,7 @@ public class MobKillObjective extends Objective implements Listener {
     protected String marked;
     protected boolean notify;
 
-    public MobKillObjective(Instruction instruction) throws InstructionParseException {
+    public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = MobData.class;
         mobType = instruction.getEnum(EntityType.class);
@@ -68,7 +68,7 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMobKill(MobKilledEvent event) {
+    public void onMobKill(final MobKilledEvent event) {
         // check if it's the right entity type
         if (!event.getEntity().getType().equals(mobType)) {
             return;
@@ -83,18 +83,18 @@ public class MobKillObjective extends Objective implements Listener {
             if (!event.getEntity().hasMetadata("betonquest-marked")) {
                 return;
             }
-            List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-            for (MetadataValue m : meta) {
+            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
+            for (final MetadataValue m : meta) {
                 if (!m.asString().equals(marked)) {
                     return;
                 }
             }
         }
         // check if the player has this objective
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
             // the right mob was killed, handle data update
-            MobData playerData = (MobData) dataMap.get(playerID);
+            final MobData playerData = (MobData) dataMap.get(playerID);
             playerData.subtract();
             if (playerData.isZero()) {
                 completeObjective(playerID);
@@ -122,7 +122,7 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(((MobData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -135,7 +135,7 @@ public class MobKillObjective extends Objective implements Listener {
 
         private int amount;
 
-        public MobData(String instruction, String playerID, String objID) {
+        public MobData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

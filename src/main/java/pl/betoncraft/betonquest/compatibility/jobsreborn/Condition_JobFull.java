@@ -27,12 +27,12 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 public class Condition_JobFull extends Condition {
     private String sJobName;
 
-    public Condition_JobFull(Instruction instruction) throws InstructionParseException {
+    public Condition_JobFull(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        for (Job job : Jobs.getJobs()) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
                 sJobName = job.getName();
                 return;
@@ -42,8 +42,8 @@ public class Condition_JobFull extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (Job job : Jobs.getJobs()) {
+    protected Boolean execute(final String playerID) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 if (job.getMaxSlots() == null)
                     return false;

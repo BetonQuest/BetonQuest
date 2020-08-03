@@ -28,11 +28,11 @@ import java.util.Map;
  */
 public class SuppressNotifyIO extends NotifyIO {
 
-    public SuppressNotifyIO(Map<String, String> data) {
+    public SuppressNotifyIO(final Map<String, String> data) {
         super(data);
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
     }
 }

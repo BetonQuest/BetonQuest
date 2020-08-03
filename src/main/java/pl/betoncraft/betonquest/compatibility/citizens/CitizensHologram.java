@@ -74,13 +74,13 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         // Start this when all plugins loaded
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance(), () -> {
             // loop across all packages
-            for (ConfigPackage pack : Config.getPackages().values()) {
+            for (final ConfigPackage pack : Config.getPackages().values()) {
 
                 // load all NPC's
                 if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
-                    for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
+                    for (final String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
                         try {
-                            NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
+                            final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
                             if (npc != null) {
                                 npcs.put(npcID, new ArrayList<>());
                             }
@@ -91,7 +91,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 }
 
                 // npc_holograms contains all holograms for NPCs
-                ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
+                final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
 
                 // if it's not defined then we're not displaying holograms
                 if (section == null) {
@@ -114,19 +114,19 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 follow = section.getBoolean("follow", false);
 
                 // loading hologram config
-                for (String key : section.getKeys(false)) {
-                    ConfigurationSection settings = section.getConfigurationSection(key);
+                for (final String key : section.getKeys(false)) {
+                    final ConfigurationSection settings = section.getConfigurationSection(key);
 
                     // if the key is not a configuration section then it's not a hologram
                     if (settings == null) {
                         continue;
                     }
 
-                    HologramConfig hologramConfig = new HologramConfig();
+                    final HologramConfig hologramConfig = new HologramConfig();
                     hologramConfig.pack = pack;
 
                     try {
-                        String[] vectorParts = settings.getString("vector", "0;3;0").split(";");
+                        final String[] vectorParts = settings.getString("vector", "0;3;0").split(";");
                         hologramConfig.vector = new Vector(
                                 Double.parseDouble(vectorParts[0]),
                                 Double.parseDouble(vectorParts[1]),
@@ -140,9 +140,9 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
                     // load all conditions
                     hologramConfig.conditions = new ArrayList<>();
-                    String rawConditions = settings.getString("conditions");
+                    final String rawConditions = settings.getString("conditions");
                     if (rawConditions != null) {
-                        for (String part : rawConditions.split(",")) {
+                        for (final String part : rawConditions.split(",")) {
                             try {
                                 hologramConfig.conditions.add(new ConditionID(pack, part));
                             } catch (ObjectNotFoundException e) {
@@ -156,16 +156,16 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     hologramConfig.settings = settings;
 
                     // load all NPCs for which this effect can be displayed
-                    List<String> affectedNpcs = new ArrayList<>();
-                    for (int id : settings.getIntegerList("npcs")) {
-                        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+                    final List<String> affectedNpcs = new ArrayList<>();
+                    for (final int id : settings.getIntegerList("npcs")) {
+                        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
                         if (npc != null && npcs.containsKey(String.valueOf(id))) {
                             affectedNpcs.add(String.valueOf(id));
                         }
                     }
 
-                    for (String npcID : settings.getIntegerList("npcs").size() == 0 ? npcs.keySet() : affectedNpcs) {
-                        NPCHologram npcHologram = new NPCHologram();
+                    for (final String npcID : settings.getIntegerList("npcs").size() == 0 ? npcs.keySet() : affectedNpcs) {
+                        final NPCHologram npcHologram = new NPCHologram();
                         npcHologram.config = hologramConfig;
                         npcs.get(npcID).add(npcHologram);
                     }
@@ -208,8 +208,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         }
 
         // Destroy all holograms
-        for (String npcID : npcs.keySet()) {
-            for (NPCHologram npcHologram : npcs.get(npcID)) {
+        for (final String npcID : npcs.keySet()) {
+            for (final NPCHologram npcHologram : npcs.get(npcID)) {
                 if (npcHologram.hologram != null) {
                     npcHologram.hologram.delete();
                     npcHologram.hologram = null;
@@ -223,20 +223,20 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         boolean npcUpdater = false;
 
         // Handle updating each NPC
-        for (String npcID : npcs.keySet()) {
-            for (NPCHologram npcHologram : npcs.get(npcID)) {
+        for (final String npcID : npcs.keySet()) {
+            for (final NPCHologram npcHologram : npcs.get(npcID)) {
                 boolean hologramEnabled = false;
 
-                NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
 
                 if (npc == null) {
                     continue;
                 }
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
+                for (final Player player : Bukkit.getOnlinePlayers()) {
                     boolean visible = true;
 
-                    for (ConditionID condition : npcHologram.config.conditions) {
+                    for (final ConditionID condition : npcHologram.config.conditions) {
                         if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
                             visible = false;
                             break;
@@ -246,19 +246,19 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                     if (visible) {
                         hologramEnabled = true;
                         if (npcHologram.hologram == null) {
-                            Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.config.vector));
+                            final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.config.vector));
                             hologram.getVisibilityManager().setVisibleByDefault(false);
-                            for (String line : npcHologram.config.settings.getStringList("lines")) {
+                            for (final String line : npcHologram.config.settings.getStringList("lines")) {
                                 if (line.startsWith("item:")) {
                                     try {
-                                        String args[] = line.substring(5).split(":");
-                                        ItemID itemID = new ItemID(npcHologram.config.pack, args[0]);
+                                        final String[] args = line.substring(5).split(":");
+                                        final ItemID itemID = new ItemID(npcHologram.config.pack, args[0]);
                                         int stackSize = 1;
                                         try {
                                             stackSize = Integer.valueOf(args[1]);
                                         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                         }
-                                        ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                                        final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                                         stack.setAmount(stackSize);
                                         hologram.appendItemLine(stack);
                                     } catch (InstructionParseException e) {
@@ -272,7 +272,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
                                         //TODO Remove this code in the version 1.13 or later
                                         //This support the old implementation of Items
-                                        Material material = Material.matchMaterial(line.substring(5));
+                                        final Material material = Material.matchMaterial(line.substring(5));
                                         if (material != null) {
                                             LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
                                                     + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
@@ -325,10 +325,10 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 updater = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        for (String npcID : npcs.keySet()) {
-                            for (NPCHologram npcHologram : npcs.get(npcID)) {
+                        for (final String npcID : npcs.keySet()) {
+                            for (final NPCHologram npcHologram : npcs.get(npcID)) {
                                 if (npcHologram.hologram != null) {
-                                    NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
+                                    final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
                                     if (npc != null) {
                                         npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.config.vector));
                                     }

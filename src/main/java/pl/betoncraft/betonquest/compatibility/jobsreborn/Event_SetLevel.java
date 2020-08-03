@@ -33,13 +33,13 @@ public class Event_SetLevel extends QuestEvent {
     private String sJobName;
     private Integer nLevel;
 
-    public Event_SetLevel(Instruction instructions) throws InstructionParseException {
+    public Event_SetLevel(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 
         if (instructions.size() < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
-        for (Job job : Jobs.getJobs()) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
                 sJobName = job.getName();
                 try {
@@ -54,11 +54,11 @@ public class Event_SetLevel extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player oPlayer = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) {
+        final Player oPlayer = PlayerConverter.getPlayer(playerID);
 
-        List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
-        for (JobProgression oJob : oJobs) {
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+        for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
                 if (oJob.getJob().getMaxLevel() <= this.nLevel)

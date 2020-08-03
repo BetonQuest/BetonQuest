@@ -47,11 +47,11 @@ public class ClearEvent extends QuestEvent {
     private boolean kill;
     private String marked;
 
-    public ClearEvent(Instruction instruction) throws InstructionParseException {
+    public ClearEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
-        String[] entities = instruction.getArray();
+        final String[] entities = instruction.getArray();
         types = new EntityType[entities.length];
         for (int i = 0; i < types.length; i++) {
             try {
@@ -71,11 +71,11 @@ public class ClearEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
-        Collection<Entity> entities = location.getWorld().getEntities();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
+        final Collection<Entity> entities = location.getWorld().getEntities();
         loop:
-        for (Entity entity : entities) {
+        for (final Entity entity : entities) {
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }
@@ -86,20 +86,20 @@ public class ClearEvent extends QuestEvent {
                 if (!entity.hasMetadata("betonquest-marked")) {
                     continue;
                 }
-                List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
-                for (MetadataValue m : meta) {
+                final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
+                for (final MetadataValue m : meta) {
                     if (!m.asString().equals(marked)) {
                         continue loop;
                     }
                 }
             }
-            double r = range.getDouble(playerID);
+            final double r = range.getDouble(playerID);
             if (entity.getLocation().distanceSquared(location) < r * r) {
-                EntityType entityType = entity.getType();
-                for (EntityType allowedType : types) {
+                final EntityType entityType = entity.getType();
+                for (final EntityType allowedType : types) {
                     if (entityType == allowedType) {
                         if (kill) {
-                            LivingEntity living = (LivingEntity) entity;
+                            final LivingEntity living = (LivingEntity) entity;
                             living.damage(living.getHealth() + 10);
                         } else {
                             entity.remove();

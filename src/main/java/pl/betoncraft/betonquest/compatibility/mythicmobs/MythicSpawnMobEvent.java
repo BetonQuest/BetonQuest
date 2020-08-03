@@ -39,10 +39,10 @@ public class MythicSpawnMobEvent extends QuestEvent {
     private final VariableNumber amount;
     private final VariableNumber level;
 
-    public MythicSpawnMobEvent(Instruction instruction) throws InstructionParseException {
+    public MythicSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
-        String[] mobParts = instruction.next().split(":");
+        final String[] mobParts = instruction.next().split(":");
         if (mobParts.length != 2) {
             throw new InstructionParseException("Wrong mob format");
         }
@@ -52,10 +52,10 @@ public class MythicSpawnMobEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        int a = amount.getInt(playerID);
-        int l = level.getInt(playerID);
-        Location location = loc.getLocation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final int a = amount.getInt(playerID);
+        final int l = level.getInt(playerID);
+        final Location location = loc.getLocation(playerID);
         for (int i = 0; i < a; i++) {
             try {
                 new BukkitAPIHelper().spawnMythicMob(mob, location, l);

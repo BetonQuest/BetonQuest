@@ -63,28 +63,28 @@ public class QuestCanceler {
      * @param cancelerID ID of the canceler (package.name)
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
-    public QuestCanceler(String cancelerID) throws InstructionParseException {
+    public QuestCanceler(final String cancelerID) throws InstructionParseException {
         if (cancelerID == null)
             throw new InstructionParseException("Name is null");
         // get the instruction
-        String[] parts = cancelerID.split("\\.");
+        final String[] parts = cancelerID.split("\\.");
         if (parts.length != 2)
             throw new InstructionParseException("ID is incorrect");
         packName = parts[0];
         cancelerName = parts[1];
-        ConfigPackage pack = Config.getPackages().get(packName);
+        final ConfigPackage pack = Config.getPackages().get(packName);
         if (pack == null)
             throw new InstructionParseException("Package does not exist");
-        String rawEvents = pack.getString("main.cancel." + cancelerName + ".events"),
-                rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions"),
-                rawTags = pack.getString("main.cancel." + cancelerName + ".tags"),
-                rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives"),
-                rawPoints = pack.getString("main.cancel." + cancelerName + ".points"),
-                rawJournal = pack.getString("main.cancel." + cancelerName + ".journal"),
-                rawLoc = pack.getString("main.cancel." + cancelerName + ".loc");
+        final String rawEvents = pack.getString("main.cancel." + cancelerName + ".events");
+        final String rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions");
+        final String rawTags = pack.getString("main.cancel." + cancelerName + ".tags");
+        final String rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives");
+        final String rawPoints = pack.getString("main.cancel." + cancelerName + ".points");
+        final String rawJournal = pack.getString("main.cancel." + cancelerName + ".journal");
+        final String rawLoc = pack.getString("main.cancel." + cancelerName + ".loc");
         // get the name
         if (pack.getMain().getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
-            for (String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
+            for (final String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
                     .getKeys(false)) {
                 name.put(lang, pack.getString("main.cancel." + cancelerName + ".name." + lang));
             }
@@ -98,7 +98,7 @@ public class QuestCanceler {
         }
         // parse it to get the data
         if (rawEvents != null) {
-            String[] arr = rawEvents.split(",");
+            final String[] arr = rawEvents.split(",");
             events = new EventID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
@@ -111,7 +111,7 @@ public class QuestCanceler {
             events = new EventID[0];
         }
         if (rawConditions != null) {
-            String[] arr = rawConditions.split(",");
+            final String[] arr = rawConditions.split(",");
             conditions = new ConditionID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
@@ -124,7 +124,7 @@ public class QuestCanceler {
             conditions = new ConditionID[0];
         }
         if (rawObjectives != null) {
-            String[] arr = rawObjectives.split(",");
+            final String[] arr = rawObjectives.split(",");
             objectives = new ObjectiveID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
@@ -139,14 +139,16 @@ public class QuestCanceler {
         tags = (rawTags != null) ? rawTags.split(",") : null;
         points = (rawPoints != null) ? rawPoints.split(",") : null;
         journal = (rawJournal != null) ? rawJournal.split(",") : null;
-        String[] locParts = (rawLoc != null) ? rawLoc.split(";") : null;
+        final String[] locParts = (rawLoc != null) ? rawLoc.split(";") : null;
         // get location
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
                 LogUtils.getLogger().log(Level.WARNING, "Wrong location format in quest canceler " + name);
                 return;
             }
-            double x, y, z;
+            final double x;
+            double y;
+            final double z;
             try {
                 x = Double.parseDouble(locParts[0]);
                 y = Double.parseDouble(locParts[1]);
@@ -156,7 +158,7 @@ public class QuestCanceler {
                 LogUtils.logThrowable(e);
                 return;
             }
-            World world = Bukkit.getWorld(locParts[3]);
+            final World world = Bukkit.getWorld(locParts[3]);
             if (world == null) {
                 LogUtils.getLogger().log(Level.WARNING, "The world doesn't exist in quest canceler " + name);
                 return;
@@ -184,10 +186,10 @@ public class QuestCanceler {
      * @param playerID ID of the player
      * @return true if all conditions are met, false otherwise
      */
-    public boolean show(String playerID) {
+    public boolean show(final String playerID) {
         if (conditions == null)
             return true;
-        for (ConditionID condition : conditions) {
+        for (final ConditionID condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;
             }
@@ -200,12 +202,12 @@ public class QuestCanceler {
      *
      * @param playerID ID of the player
      */
-    public void cancel(String playerID) {
+    public void cancel(final String playerID) {
         LogUtils.getLogger().log(Level.FINE, "Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
         // remove tags, points, objectives and journals
         if (tags != null) {
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing tag " + tag);
                 if (!tag.contains(".")) {
                     playerData.removeTag(packName + "." + tag);
@@ -215,7 +217,7 @@ public class QuestCanceler {
             }
         }
         if (points != null) {
-            for (String point : points) {
+            for (final String point : points) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing points " + point);
                 if (!point.contains(".")) {
                     playerData.removePointsCategory(packName + "." + point);
@@ -225,15 +227,15 @@ public class QuestCanceler {
             }
         }
         if (objectives != null) {
-            for (ObjectiveID objectiveID : objectives) {
+            for (final ObjectiveID objectiveID : objectives) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing objective " + objectiveID);
                 BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
                 playerData.removeRawObjective(objectiveID);
             }
         }
         if (journal != null) {
-            Journal j = playerData.getJournal();
-            for (String entry : journal) {
+            final Journal j = playerData.getJournal();
+            for (final String entry : journal) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing entry " + entry);
                 if (entry.contains(".")) {
                     j.removePointer(entry);
@@ -250,13 +252,13 @@ public class QuestCanceler {
         }
         // fire all events
         if (events != null) {
-            for (EventID event : events) {
+            for (final EventID event : events) {
                 BetonQuest.event(playerID, event);
             }
         }
         // done
         LogUtils.getLogger().log(Level.FINE, "Quest removed!");
-        String questName = getName(playerID);
+        final String questName = getName(playerID);
         Config.sendNotify(playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
     }
 
@@ -268,7 +270,7 @@ public class QuestCanceler {
      * @param playerID ID of the player
      * @return the name of the quest canceler
      */
-    public String getName(String playerID) {
+    public String getName(final String playerID) {
         String questName = name.get(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
         if (questName == null)
             questName = name.get(Config.getLanguage());
@@ -281,18 +283,18 @@ public class QuestCanceler {
         return questName.replace("_", " ").replace("&", "§");
     }
 
-    public ItemStack getItem(String playerID) {
+    public ItemStack getItem(final String playerID) {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
-                ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
+                final ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
         }
-        ItemMeta meta = stack.getItemMeta();
+        final ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(getName(playerID));
         stack.setItemMeta(meta);
         return stack;

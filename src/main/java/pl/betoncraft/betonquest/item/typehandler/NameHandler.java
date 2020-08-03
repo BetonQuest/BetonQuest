@@ -25,7 +25,7 @@ public class NameHandler {
     private String name = null;
     private Existence e = Existence.WHATEVER;
 
-    public void set(String name) throws InstructionParseException {
+    public void set(final String name) throws InstructionParseException {
         if (name == null || name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");
         }
@@ -41,7 +41,7 @@ public class NameHandler {
         return name;
     }
 
-    public boolean check(String name) {
+    public boolean check(final String name) {
         switch (e) {
             case WHATEVER:
                 return true;

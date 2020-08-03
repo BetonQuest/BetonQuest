@@ -64,8 +64,8 @@ public class Utils {
      */
     public static void backup() {
         LogUtils.getLogger().log(Level.INFO, "Backing up!");
-        long time = new Date().getTime();
-        BetonQuest instance = BetonQuest.getInstance();
+        final long time = new Date().getTime();
+        final BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
             LogUtils.getLogger().log(Level.WARNING, "There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
@@ -73,12 +73,12 @@ public class Utils {
                     + " you don't want to downgrade later.");
         }
         // create backups folder if it does not exist
-        File backupFolder = new File(instance.getDataFolder(), "backups");
+        final File backupFolder = new File(instance.getDataFolder(), "backups");
         if (!backupFolder.isDirectory()) {
             backupFolder.mkdir();
         }
         // zip all the files
-        String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
+        final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
                 + instance.getConfig().getString("version", null);
         new Zipper(instance.getDataFolder().getAbsolutePath(), outputPath);
         // delete database backup so it doesn't make a mess later on
@@ -94,37 +94,37 @@ public class Utils {
      * @param databaseBackupFile non-existent file where the database should be dumped
      * @return true if the backup was successful, false if there was an error
      */
-    public static boolean backupDatabase(File databaseBackupFile) {
-        BetonQuest instance = BetonQuest.getInstance();
+    public static boolean backupDatabase(final File databaseBackupFile) {
+        final BetonQuest instance = BetonQuest.getInstance();
         try {
             boolean done = true;
             // prepare the config file
             databaseBackupFile.createNewFile();
-            ConfigAccessor accessor = new ConfigAccessor(databaseBackupFile, databaseBackupFile.getName(), AccessorType.OTHER);
-            FileConfiguration config = accessor.getConfig();
+            final ConfigAccessor accessor = new ConfigAccessor(databaseBackupFile, databaseBackupFile.getName(), AccessorType.OTHER);
+            final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
-            HashMap<String, ResultSet> map = new HashMap<>();
-            String[] tables = new String[]{"objectives", "tags", "points", "journals", "player"};
+            final HashMap<String, ResultSet> map = new HashMap<>();
+            final String[] tables = new String[]{"objectives", "tags", "points", "journals", "player"};
             // open database connection
-            Connector database = new Connector();
+            final Connector database = new Connector();
             // load resultsets into the map
-            for (String table : tables) {
+            for (final String table : tables) {
                 LogUtils.getLogger().log(Level.FINE, "Loading " + table);
-                String enumName = ("LOAD_ALL_" + table).toUpperCase();
+                final String enumName = ("LOAD_ALL_" + table).toUpperCase();
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
-            for (String key : map.keySet()) {
+            for (final String key : map.keySet()) {
                 LogUtils.getLogger().log(Level.FINE, "Saving " + key + " to the backup file");
                 // prepare resultset and meta
-                ResultSet res = map.get(key);
-                ResultSetMetaData rsmd = res.getMetaData();
+                final ResultSet res = map.get(key);
+                final ResultSetMetaData rsmd = res.getMetaData();
                 // get the list of column names
-                List<String> columns = new ArrayList<>();
-                int columnCount = rsmd.getColumnCount();
+                final List<String> columns = new ArrayList<>();
+                final int columnCount = rsmd.getColumnCount();
                 LogUtils.getLogger().log(Level.FINE, "  There are " + columnCount + " columns in this ResultSet");
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    String columnName = rsmd.getColumnName(i);
+                    final String columnName = rsmd.getColumnName(i);
                     LogUtils.getLogger().log(Level.FINE, "    Adding column " + columnName);
                     columns.add(columnName);
                 }
@@ -132,9 +132,9 @@ public class Utils {
                 int counter = 0;
                 while (res.next()) {
                     // for each column add a value to a config
-                    for (String columnName : columns) {
+                    for (final String columnName : columns) {
                         try {
-                            String value = res.getString(columnName);
+                            final String value = res.getString(columnName);
                             config.set(key + "." + counter + "." + columnName, value);
                         } catch (SQLException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
@@ -155,7 +155,7 @@ public class Utils {
         } catch (IOException | SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "There was an error during database backup: " + e.getMessage());
             LogUtils.logThrowable(e);
-            File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
+            final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
                 brokenFile.delete();
             }
@@ -169,18 +169,18 @@ public class Utils {
      * @param string text to convert
      * @return the list of pages for a book
      */
-    public static List<String> pagesFromString(String string) {
-        List<String> pages = new ArrayList<>();
-        String[] bigPages = string.split("\\|");
-        for (String bigPage : bigPages) {
+    public static List<String> pagesFromString(final String string) {
+        final List<String> pages = new ArrayList<>();
+        final String[] bigPages = string.split("\\|");
+        for (final String bigPage : bigPages) {
             if (Config.getString("config.journal.lines_per_page") != null) {
                 final int chars_per_line = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
                 final int lines_per_page = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
                 int lines = 0;
-                for (String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
+                for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
                     StringBuilder line_builder = new StringBuilder();
-                    int line__length = getStringLength(line);
+                    final int line__length = getStringLength(line);
                     if (line__length <= chars_per_line) {
                         if (++lines > lines_per_page) {
                             pages.add(page.toString());
@@ -190,9 +190,9 @@ public class Utils {
                         page.append(line).append('\n');
                         continue;
                     }
-                    for (String word : line.split(" ")) {
-                        int word_length = getStringLength(word);
-                        int line_builder_length = getStringLength(line_builder.toString());
+                    for (final String word : line.split(" ")) {
+                        final int word_length = getStringLength(word);
+                        final int line_builder_length = getStringLength(line_builder.toString());
                         if (line_builder_length + word_length > chars_per_line) {
                             if (++lines > lines_per_page) {
                                 pages.add(page.toString());
@@ -215,7 +215,7 @@ public class Utils {
             } else {
                 final int chars_per_page = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
-                for (String word : bigPage.split(" ")) {
+                for (final String word : bigPage.split(" ")) {
                     if (page.length() + word.length() + 1 > chars_per_page) {
                         pages.add(page.toString().trim());
                         page = new StringBuilder();
@@ -228,7 +228,7 @@ public class Utils {
         return pages;
     }
 
-    private static int getStringLength(String string) {
+    private static int getStringLength(final String string) {
         return string.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
     }
 
@@ -239,15 +239,15 @@ public class Utils {
         boolean isOldDatabaseBackedUP = false;
         String filename = null;
         try {
-            BetonQuest instance = BetonQuest.getInstance();
-            File file = new File(instance.getDataFolder(), "database-backup.yml");
+            final BetonQuest instance = BetonQuest.getInstance();
+            final File file = new File(instance.getDataFolder(), "database-backup.yml");
             // if the backup doesn't exist then there is nothing to load, return
             if (!file.exists()) {
                 return;
             }
             LogUtils.getLogger().log(Level.INFO, "Loading database backup!");
             // backup the database
-            File backupFolder = new File(instance.getDataFolder(), "backups");
+            final File backupFolder = new File(instance.getDataFolder(), "backups");
             if (!backupFolder.isDirectory()) {
                 backupFolder.mkdirs();
             }
@@ -263,15 +263,15 @@ public class Utils {
                         + "forever. Because of that the loading of backup was aborted!");
                 return;
             }
-            ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
-            FileConfiguration config = accessor.getConfig();
-            Database database = instance.getDB();
+            final ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
+            final FileConfiguration config = accessor.getConfig();
+            final Database database = instance.getDB();
             // create tables if they don't exist, so we can be 100% sure
             // that we can drop them without an error (should've been done
             // in a different way...)
             database.createTables(instance.isMySQLUsed());
             // drop all tables
-            Connector con = new Connector();
+            final Connector con = new Connector();
             con.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
             con.updateSQL(UpdateType.DROP_TAGS, new String[]{});
             con.updateSQL(UpdateType.DROP_POINTS, new String[]{});
@@ -280,49 +280,49 @@ public class Utils {
             // create new tables
             database.createTables(instance.isMySQLUsed());
             // load objectives
-            ConfigurationSection objectives = config.getConfigurationSection("objectives");
+            final ConfigurationSection objectives = config.getConfigurationSection("objectives");
             if (objectives != null)
-                for (String key : objectives.getKeys(false)) {
+                for (final String key : objectives.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_OBJECTIVE,
                             new String[]{objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
                                     objectives.getString(key + ".objective"),
                                     objectives.getString(key + ".instructions"),});
                 }
             // load tags
-            ConfigurationSection tags = config.getConfigurationSection("tags");
+            final ConfigurationSection tags = config.getConfigurationSection("tags");
             if (tags != null)
-                for (String key : tags.getKeys(false)) {
+                for (final String key : tags.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_TAG, new String[]{tags.getString(key + ".id"),
                             tags.getString(key + ".playerID"), tags.getString(key + ".tag"),});
                 }
             // load points
-            ConfigurationSection points = config.getConfigurationSection("points");
+            final ConfigurationSection points = config.getConfigurationSection("points");
             if (points != null)
-                for (String key : points.getKeys(false)) {
+                for (final String key : points.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_POINT,
                             new String[]{points.getString(key + ".id"), points.getString(key + ".playerID"),
                                     points.getString(key + ".category"), points.getString(key + ".count"),});
                 }
             // load journals
-            ConfigurationSection journals = config.getConfigurationSection("journals");
+            final ConfigurationSection journals = config.getConfigurationSection("journals");
             if (journals != null)
-                for (String key : journals.getKeys(false)) {
+                for (final String key : journals.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_JOURNAL,
                             new String[]{journals.getString(key + ".id"), journals.getString(key + ".playerID"),
                                     journals.getString(key + ".pointer"), journals.getString(key + ".date"),});
                 }
             // load backpack
-            ConfigurationSection backpack = config.getConfigurationSection("backpack");
+            final ConfigurationSection backpack = config.getConfigurationSection("backpack");
             if (backpack != null)
-                for (String key : backpack.getKeys(false)) {
+                for (final String key : backpack.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_BACKPACK,
                             new String[]{backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
                                     backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"),});
                 }
             // load player
-            ConfigurationSection player = config.getConfigurationSection("player");
+            final ConfigurationSection player = config.getConfigurationSection("player");
             if (player != null)
-                for (String key : player.getKeys(false)) {
+                for (final String key : player.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_PLAYER,
                             new String[]{player.getString(key + ".id"), player.getString(key + ".playerID"),
                                     player.getString(key + ".language"), player.getString(key + ".conversation")});
@@ -351,7 +351,7 @@ public class Utils {
      * @param item ItemStack to check
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
-    public static boolean isQuestItem(ItemStack item) {
+    public static boolean isQuestItem(final ItemStack item) {
         if (item == null) {
             return false;
         }
@@ -359,16 +359,16 @@ public class Utils {
                 && item.getItemMeta().getLore().contains(Config.getMessage(Config.getLanguage(), "quest_item"));
     }
 
-    public static ArrayList<String> getParty(String playerID, double range, String pack, ConditionID[] conditions) {
+    public static ArrayList<String> getParty(final String playerID, final double range, final String pack, final ConditionID[] conditions) {
         final ArrayList<String> list = new ArrayList<>();
-        Player player = PlayerConverter.getPlayer(playerID);
-        Location loc = player.getLocation();
-        double squared = range * range;
-        for (Player otherPlayer : loc.getWorld().getPlayers()) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final Location loc = player.getLocation();
+        final double squared = range * range;
+        for (final Player otherPlayer : loc.getWorld().getPlayers()) {
             if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
-                String otherPlayerID = PlayerConverter.getID(otherPlayer);
+                final String otherPlayerID = PlayerConverter.getID(otherPlayer);
                 boolean meets = true;
-                for (ConditionID condition : conditions) {
+                for (final ConditionID condition : conditions) {
                     if (!BetonQuest.condition(otherPlayerID, condition)) {
                         meets = false;
                         break;
@@ -390,7 +390,7 @@ public class Utils {
      * @param string ID of event/condition/objective/item etc.
      * @return full ID with package prefix
      */
-    public static String addPackage(ConfigPackage pack, String string) {
+    public static String addPackage(final ConfigPackage pack, final String string) {
         if (string.contains(".")) {
             return string;
         } else {
@@ -405,7 +405,7 @@ public class Utils {
      * @return the Color (never null)
      * @throws InstructionParseException when something goes wrong
      */
-    public static Color getColor(String string) throws InstructionParseException {
+    public static Color getColor(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Color is not specified");
         }
@@ -439,13 +439,13 @@ public class Utils {
      * @param def   default color code to use instead of resetting; use null for regular reset code
      * @return the colorful pages ready to split into multiple lines
      */
-    public static List<String> multiLineColorCodes(List<String> pages, String def) {
+    public static List<String> multiLineColorCodes(final List<String> pages, final String def) {
         String lastCodes = "";
-        ListIterator<String> i = pages.listIterator();
-        List<String> result = new ArrayList<>();
+        final ListIterator<String> i = pages.listIterator();
+        final List<String> result = new ArrayList<>();
 
         while (i.hasNext()) {
-            String line = i.next();
+            final String line = i.next();
             result.add(lastCodes + replaceReset(line, def));
             lastCodes = LocalChatPaginator.getLastColors(line);
         }
@@ -456,7 +456,7 @@ public class Utils {
     /**
      * Replace resets with colorcode
      */
-    public static String replaceReset(String string, String color) {
+    public static String replaceReset(final String string, final String color) {
         return string.replace(ChatColor.RESET.toString(), ChatColor.RESET + color);
     }
 
@@ -470,7 +470,7 @@ public class Utils {
      * @param lineBreaks if {@code \\n} should be replaced with {@code \n}
      * @return a formatted version of the input string
      */
-    public static String format(String string, boolean colorCodes, boolean lineBreaks) {
+    public static String format(String string, final boolean colorCodes, final boolean lineBreaks) {
         if (colorCodes) string = string.replaceAll("&(?=[A-Ra-r0-9])", "§");
         if (lineBreaks) string = string.replaceAll("(?<!\\\\)\\\\n", "\n");
         return string;
@@ -482,16 +482,16 @@ public class Utils {
      * @param string the input string
      * @return a formatted version of the input string
      */
-    public static String format(String string) {
+    public static String format(final String string) {
         return format(string, true, true);
     }
 
     /**
      * Split a string by white space, except if between quotes
      */
-    public static String[] split(String string) {
-        List<String> list = new ArrayList<>();
-        Matcher m = Pattern.compile("(?:(?:(\\S*)(?:\")([^\"]*?)(?:\"))|(\\S+))\\s*").matcher(string);
+    public static String[] split(final String string) {
+        final List<String> list = new ArrayList<>();
+        final Matcher m = Pattern.compile("(?:(?:(\\S*)(?:\")([^\"]*?)(?:\"))|(\\S+))\\s*").matcher(string);
         while (m.find()) {
             if (m.group(3) != null) {
                 list.add(m.group(3));

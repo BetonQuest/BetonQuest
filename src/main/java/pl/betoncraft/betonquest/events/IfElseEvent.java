@@ -35,7 +35,7 @@ public class IfElseEvent extends QuestEvent {
     private EventID event;
     private EventID elseEvent;
 
-    public IfElseEvent(Instruction instruction) throws InstructionParseException {
+    public IfElseEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         condition = instruction.getCondition();
         event = instruction.getEvent();
@@ -46,7 +46,7 @@ public class IfElseEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
+    protected Void execute(final String playerID) {
         if (BetonQuest.condition(playerID, condition)) {
             BetonQuest.event(playerID, event);
         } else {

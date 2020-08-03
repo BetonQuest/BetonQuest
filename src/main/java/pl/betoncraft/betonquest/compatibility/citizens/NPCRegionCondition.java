@@ -46,7 +46,7 @@ public class NPCRegionCondition extends Condition {
     private final int ID;
     private final String region;
 
-    public NPCRegionCondition(Instruction instruction) throws InstructionParseException {
+    public NPCRegionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
@@ -58,23 +58,23 @@ public class NPCRegionCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
-        Entity npcEntity = npc.getEntity();
+        final Entity npcEntity = npc.getEntity();
         if (npcEntity == null) return false;
 
-        Player player = PlayerConverter.getPlayer(playerID);
-        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
         if (manager == null) {
             return false;
         }
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+        final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 
-        for (ProtectedRegion compare : set) {
+        for (final ProtectedRegion compare : set) {
             if (compare.equals(region))
                 return true;
         }

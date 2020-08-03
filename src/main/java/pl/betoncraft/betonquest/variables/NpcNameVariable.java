@@ -29,13 +29,13 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class NpcNameVariable extends Variable {
 
-    public NpcNameVariable(Instruction instruction) {
+    public NpcNameVariable(final Instruction instruction) {
         super(instruction);
     }
 
     @Override
-    public String getValue(String playerID) {
-        Conversation conv = Conversation.getConversation(playerID);
+    public String getValue(final String playerID) {
+        final Conversation conv = Conversation.getConversation(playerID);
         if (conv == null)
             return "";
         return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());

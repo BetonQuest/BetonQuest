@@ -83,8 +83,8 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public String onPlaceholderRequest(Player player, String identifier) {
-        String pack;
+    public String onPlaceholderRequest(final Player player, String identifier) {
+        final String pack;
         if (identifier.contains(":")) {
             pack = identifier.substring(0, identifier.indexOf(':'));
             identifier = identifier.substring(identifier.indexOf(':') + 1);

@@ -32,10 +32,10 @@ public class OpSudoEvent extends QuestEvent {
 
     private final String[] commands;
 
-    public OpSudoEvent(Instruction instruction) throws InstructionParseException {
+    public OpSudoEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         try {
-            String string = instruction.getInstruction();
+            final String string = instruction.getInstruction();
             commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
         } catch (Exception e) {
             throw new InstructionParseException("Could not parse commands", e);
@@ -43,12 +43,12 @@ public class OpSudoEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        boolean previousOp = player.isOp();
+    protected Void execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            for (String command : commands)
+            for (final String command : commands)
                 player.performCommand(command.replace("%player%", player.getName()));
         } catch (Exception e) {
             LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);

@@ -46,7 +46,7 @@ public class DurabilityHandler {
         return durability;
     }
 
-    public boolean check(int durability) {
+    public boolean check(final int durability) {
         switch (e) {
             case WHATEVER:
                 return true;

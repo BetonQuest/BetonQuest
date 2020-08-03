@@ -67,18 +67,18 @@ public class ConversationData {
      * @param name the name of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
-    public ConversationData(ConfigPackage pack, String name) throws InstructionParseException {
+    public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
-        String pkg = pack.getName();
+        final String pkg = pack.getName();
         LogUtils.getLogger().log(Level.FINE, String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
         convName = name;
         // get the main data
-        FileConfiguration conv = pack.getConversation(name).getConfig();
+        final FileConfiguration conv = pack.getConversation(name).getConfig();
         if (conv.isConfigurationSection("quester")) {
             //noinspection ConstantConditions
-            for (String lang : conv.getConfigurationSection("quester").getKeys(false)) {
+            for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
                 quester.put(lang, pack.getString("conversations." + name + ".quester." + lang));
             }
         } else {
@@ -86,27 +86,27 @@ public class ConversationData {
         }
         if (conv.isConfigurationSection("prefix")) {
             //noinspection ConstantConditions
-            for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                String pref = pack.getString("conversations." + name + ".prefix." + lang);
+            for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
+                final String pref = pack.getString("conversations." + name + ".prefix." + lang);
                 if (pref != null && !pref.equals("")) {
                     prefix.put(lang, pref);
                 }
             }
         } else {
-            String pref = pack.getString("conversations." + name + ".prefix");
+            final String pref = pack.getString("conversations." + name + ".prefix");
             if (pref != null && !pref.equals("")) {
                 prefix.put(Config.getLanguage(), pref);
             }
         }
-        String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
-        String rawStartingOptions = pack.getString("conversations." + name + ".first");
-        String stop = pack.getString("conversations." + name + ".stop");
+        final String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
+        final String rawStartingOptions = pack.getString("conversations." + name + ".first");
+        final String stop = pack.getString("conversations." + name + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
-        String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
-        String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
+        final String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
+        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
 
         // check if all data is valid (or at least exist)
-        for (String s : rawConvIO.split(",")) {
+        for (final String s : rawConvIO.split(",")) {
             if (BetonQuest.getInstance().getConvIO(s.trim()) != null) {
                 convIO = s.trim();
                 break;
@@ -116,7 +116,7 @@ public class ConversationData {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
         }
 
-        for (String s : rawInterceptor.split(",")) {
+        for (final String s : rawInterceptor.split(",")) {
             if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
                 break;
@@ -129,14 +129,14 @@ public class ConversationData {
         if (quester.isEmpty()) {
             throw new InstructionParseException("Quester's name is not defined");
         }
-        for (String value : quester.values()) {
+        for (final String value : quester.values()) {
             if (value == null) throw new InstructionParseException("Quester's name is not defined");
         }
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
         }
         if (rawFinalEvents != null && !rawFinalEvents.equals("")) {
-            String[] array = rawFinalEvents.split(",");
+            final String[] array = rawFinalEvents.split(",");
             finalEvents = new EventID[array.length];
             for (int i = 0; i < array.length; i++) {
                 try {
@@ -149,12 +149,12 @@ public class ConversationData {
             finalEvents = new EventID[0];
         }
         // load all NPC options
-        ConfigurationSection NPCSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");
+        final ConfigurationSection NPCSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");
         if (NPCSection == null) {
             throw new InstructionParseException("NPC_options section not defined");
         }
         NPCOptions = new HashMap<>();
-        for (String key : NPCSection.getKeys(false)) {
+        for (final String key : NPCSection.getKeys(false)) {
             NPCOptions.put(key, new NPCOption(key));
         }
         // check if all starting options point to existing NPC options
@@ -163,9 +163,9 @@ public class ConversationData {
         for (int i = 0; i < startingOptions.length; i++) {
             startingOptions[i] = startingOptions[i].trim();
         }
-        for (String startingOption : startingOptions) {
+        for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
-                String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
+                final String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
                         + startingOption;
                 externalPointers.add(entirePointer);
             } else if (!NPCOptions.containsKey(startingOption)) {
@@ -173,25 +173,25 @@ public class ConversationData {
             }
         }
         // load all Player options
-        ConfigurationSection playerSection = pack.getConversation(name).getConfig()
+        final ConfigurationSection playerSection = pack.getConversation(name).getConfig()
                 .getConfigurationSection("player_options");
         playerOptions = new HashMap<>();
         if (playerSection != null) {
-            for (String key : playerSection.getKeys(false)) {
+            for (final String key : playerSection.getKeys(false)) {
                 playerOptions.put(key, new PlayerOption(key));
             }
         }
 
         // check if every pointer points to existing option.
-        for (Option option : NPCOptions.values()) {
-            for (String pointer : option.getPointers()) {
+        for (final Option option : NPCOptions.values()) {
+            for (final String pointer : option.getPointers()) {
                 if (!playerOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s points to %s player option, but it does not exist",
                                     option.getName(), pointer));
                 }
             }
-            for (String extend : option.getExtends()) {
+            for (final String extend : option.getExtends()) {
                 if (!NPCOptions.containsKey(extend)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s extends %s, but it does not exist",
@@ -199,10 +199,10 @@ public class ConversationData {
                 }
             }
         }
-        for (Option option : playerOptions.values()) {
-            for (String pointer : option.getPointers()) {
+        for (final Option option : playerOptions.values()) {
+            for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
+                    final String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
                     externalPointers.add(entirePointer);
                 } else if (!NPCOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
@@ -210,7 +210,7 @@ public class ConversationData {
                                     option.getName(), pointer));
                 }
             }
-            for (String extend : option.getExtends()) {
+            for (final String extend : option.getExtends()) {
                 if (!playerOptions.containsKey(extend)) {
                     throw new InstructionParseException(
                             String.format("Player option %s extends %s, but it does not exist",
@@ -233,14 +233,14 @@ public class ConversationData {
      * not throw any exceptions, just display errors in the console.
      */
     public static void postEnableCheck() {
-        for (String externalPointer : externalPointers) {
-            String[] parts = externalPointer.split("\\.");
-            String packName = parts[0];
-            String sourceConv = parts[1];
-            String sourceOption = parts[2];
-            String targetConv = parts[3];
-            String targetOption = parts[4];
-            ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
+        for (final String externalPointer : externalPointers) {
+            final String[] parts = externalPointer.split("\\.");
+            final String packName = parts[0];
+            final String sourceConv = parts[1];
+            final String sourceOption = parts[2];
+            final String targetConv = parts[3];
+            final String targetOption = parts[4];
+            final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
                 LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ((sourceOption.equals("<starting_option>")) ? "starting option"
@@ -276,7 +276,7 @@ public class ConversationData {
      *               conversation
      * @return the conversation prefix, or null if not defined
      */
-    public String getPrefix(String lang, String option) {
+    public String getPrefix(final String lang, final String option) {
         // get prefix from an option
         if (option != null) {
             String pref = NPCOptions.get(option).getInlinePrefix(lang);
@@ -299,7 +299,7 @@ public class ConversationData {
      * @param lang language of quester's name
      * @return the quester's name
      */
-    public String getQuester(String lang) {
+    public String getQuester(final String lang) {
         String text = quester.get(lang);
         if (text == null) {
             text = quester.get(Config.getLanguage());
@@ -342,12 +342,12 @@ public class ConversationData {
         return interceptor;
     }
 
-    public String getText(String lang, String option, OptionType type) {
+    public String getText(final String lang, final String option, final OptionType type) {
         return getText(null, lang, option, type);
     }
 
-    public String getText(String playerID, String lang, String option, OptionType type) {
-        Option o;
+    public String getText(final String playerID, final String lang, final String option, final OptionType type) {
+        final Option o;
         if (type == OptionType.NPC) {
             o = NPCOptions.get(option);
         } else {
@@ -365,8 +365,8 @@ public class ConversationData {
         return pack.getName();
     }
 
-    public ConditionID[] getConditionIDs(String option, OptionType type) {
-        HashMap<String, Option> options;
+    public ConditionID[] getConditionIDs(final String option, final OptionType type) {
+        final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
             options = NPCOptions;
         } else {
@@ -375,8 +375,8 @@ public class ConversationData {
         return options.get(option).getConditions();
     }
 
-    public EventID[] getEventIDs(String playerID, String option, OptionType type) {
-        HashMap<String, Option> options;
+    public EventID[] getEventIDs(final String playerID, final String option, final OptionType type) {
+        final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
             options = NPCOptions;
         } else {
@@ -389,8 +389,8 @@ public class ConversationData {
         }
     }
 
-    public String[] getPointers(String playerID, String option, OptionType type) {
-        HashMap<String, Option> options;
+    public String[] getPointers(final String playerID, final String option, final OptionType type) {
+        final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
             options = NPCOptions;
         } else {
@@ -399,28 +399,29 @@ public class ConversationData {
         return options.get(option).getPointers(playerID);
     }
 
-    public Option getOption(String option, OptionType type) {
+    public Option getOption(final String option, final OptionType type) {
         return type == OptionType.NPC ? NPCOptions.get(option) : playerOptions.get(option);
     }
 
     /**
      * Check if conversation has at least one valid option for player
      */
-    public boolean isReady(String playerID) {
+    public boolean isReady(final String playerID) {
         options:
-        for (String option : getStartingOptions()) {
-            String convName, optionName;
+        for (final String option : getStartingOptions()) {
+            final String convName;
+            final String optionName;
             if (option.contains(".")) {
-                String[] parts = option.split("\\.");
+                final String[] parts = option.split("\\.");
                 convName = parts[0];
                 optionName = parts[1];
             } else {
                 convName = getName();
                 optionName = option;
             }
-            ConfigPackage pack = Config.getPackages().get(getPackName());
-            ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
-            for (ConditionID condition : currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC)) {
+            final ConfigPackage pack = Config.getPackages().get(getPackName());
+            final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
+            for (final ConditionID condition : currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC)) {
                 if (!BetonQuest.condition(playerID, condition)) {
                     continue options;
                 }
@@ -449,11 +450,11 @@ public class ConversationData {
         private List<String> pointers;
         private List<String> extendLinks;
 
-        public Option(String name, String type, String visibleType) throws InstructionParseException {
+        public Option(final String name, final String type, final String visibleType) throws InstructionParseException {
             this.name = name;
             this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
-            String defaultLang = Config.getLanguage();
-            ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
+            final String defaultLang = Config.getLanguage();
+            final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
             if (conv == null) {
                 return;
@@ -463,8 +464,8 @@ public class ConversationData {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     //noinspection ConstantConditions
-                    for (String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                    for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
+                        final String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -474,7 +475,7 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    String pref = pack.subst(conv.getString("prefix"));
+                    final String pref = pack.subst(conv.getString("prefix"));
                     if (pref != null && !pref.equals("")) {
                         inlinePrefix.put(defaultLang, pref);
                     }
@@ -485,7 +486,7 @@ public class ConversationData {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
                     //noinspection ConstantConditions
-                    for (String lang : conv.getConfigurationSection("text").getKeys(false)) {
+                    for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
                         text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
                                 + lang));
                     }
@@ -496,20 +497,20 @@ public class ConversationData {
                     text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
                 }
 
-                ArrayList<String> variables = new ArrayList<>();
-                for (String theText : text.values()) {
+                final ArrayList<String> variables = new ArrayList<>();
+                for (final String theText : text.values()) {
                     if (theText == null || theText.equals(""))
                         throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
                     // variables are possibly duplicated because there probably is
                     // the same variable in every language
-                    ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
-                    for (String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
+                    final ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
+                    for (final String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
                         if (variables.contains(possiblyDuplicatedVariable))
                             continue;
                         variables.add(possiblyDuplicatedVariable);
                     }
                 }
-                for (String variable : variables) {
+                for (final String variable : variables) {
                     try {
                         BetonQuest.createVariable(pack, variable);
                     } catch (InstructionParseException e) {
@@ -521,7 +522,7 @@ public class ConversationData {
 
             // Conditions
             try {
-                for (String rawCondition : pack.subst(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                for (final String rawCondition : pack.subst(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
                     if (!Objects.equals(rawCondition, "")) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
@@ -533,7 +534,7 @@ public class ConversationData {
 
             // Events
             try {
-                for (String rawEvent : pack.subst(conv.getString("events", conv.getString("event", ""))).split(",")) {
+                for (final String rawEvent : pack.subst(conv.getString("events", conv.getString("event", ""))).split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
@@ -560,7 +561,7 @@ public class ConversationData {
             return name;
         }
 
-        public String getInlinePrefix(String lang) {
+        public String getInlinePrefix(final String lang) {
             String thePrefix = inlinePrefix.get(lang);
             if (thePrefix == null) {
                 thePrefix = inlinePrefix.get(Config.getLanguage());
@@ -568,23 +569,23 @@ public class ConversationData {
             return thePrefix;
         }
 
-        public String getText(String playerID, String lang) {
+        public String getText(final String playerID, final String lang) {
             return getText(playerID, lang, new ArrayList<>());
         }
 
-        public String getText(String playerID, String lang, List<String> optionPath) {
+        public String getText(final String playerID, final String lang, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return "";
             }
             optionPath.add(getName());
 
-            StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
+            final StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
 
             if (playerID != null) {
                 extend:
-                for (String extend : extendLinks) {
-                    for (ConditionID condition : getOption(extend, type).getConditions()) {
+                for (final String extend : extendLinks) {
+                    for (final ConditionID condition : getOption(extend, type).getConditions()) {
                         if (!BetonQuest.condition(playerID, condition)) {
                             continue extend;
                         }
@@ -601,34 +602,34 @@ public class ConversationData {
             return getConditions(new ArrayList<>());
         }
 
-        public ConditionID[] getConditions(List<String> optionPath) {
+        public ConditionID[] getConditions(final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new ConditionID[0];
             }
             optionPath.add(getName());
 
-            List<ConditionID> ret = new ArrayList<>(conditions);
+            final List<ConditionID> ret = new ArrayList<>(conditions);
 
             return ret.toArray(new ConditionID[0]);
         }
 
-        public EventID[] getEvents(String playerID) {
+        public EventID[] getEvents(final String playerID) {
             return getEvents(playerID, new ArrayList<>());
         }
 
-        public EventID[] getEvents(String playerID, List<String> optionPath) {
+        public EventID[] getEvents(final String playerID, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new EventID[0];
             }
             optionPath.add(getName());
 
-            List<EventID> ret = new ArrayList<>(events);
+            final List<EventID> ret = new ArrayList<>(events);
 
             extend:
-            for (String extend : extendLinks) {
-                for (ConditionID condition : getOption(extend, type).getConditions()) {
+            for (final String extend : extendLinks) {
+                for (final ConditionID condition : getOption(extend, type).getConditions()) {
                     if (!BetonQuest.condition(playerID, condition)) {
                         continue extend;
                     }
@@ -644,23 +645,23 @@ public class ConversationData {
             return getPointers(null);
         }
 
-        public String[] getPointers(String playerID) {
+        public String[] getPointers(final String playerID) {
             return getPointers(playerID, new ArrayList<>());
         }
 
-        public String[] getPointers(String playerID, List<String> optionPath) {
+        public String[] getPointers(final String playerID, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new String[0];
             }
             optionPath.add(getName());
 
-            List<String> ret = new ArrayList<>(pointers);
+            final List<String> ret = new ArrayList<>(pointers);
 
             if (playerID != null) {
                 extend:
-                for (String extend : extendLinks) {
-                    for (ConditionID condition : getOption(extend, type).getConditions()) {
+                for (final String extend : extendLinks) {
+                    for (final ConditionID condition : getOption(extend, type).getConditions()) {
                         if (!BetonQuest.condition(playerID, condition)) {
                             continue extend;
                         }
@@ -682,7 +683,7 @@ public class ConversationData {
      * Represents an option which can be choosen by the Player
      */
     private class PlayerOption extends Option {
-        public PlayerOption(String name) throws InstructionParseException {
+        public PlayerOption(final String name) throws InstructionParseException {
             super(name, "player_options", "player option");
         }
     }
@@ -691,7 +692,7 @@ public class ConversationData {
      * Represents an option which can be choosen by the NPC
      */
     private class NPCOption extends Option {
-        public NPCOption(String name) throws InstructionParseException {
+        public NPCOption(final String name) throws InstructionParseException {
             super(name, "NPC_options", "NPC option");
         }
     }

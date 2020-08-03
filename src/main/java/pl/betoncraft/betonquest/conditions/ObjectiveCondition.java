@@ -32,7 +32,7 @@ public class ObjectiveCondition extends Condition {
 
     public final ObjectiveID objective;
 
-    public ObjectiveCondition(Instruction instruction) throws InstructionParseException {
+    public ObjectiveCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         objective = instruction.getObjective();
         if (objective == null) {
@@ -41,7 +41,7 @@ public class ObjectiveCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
+    protected Boolean execute(final String playerID) {
         return BetonQuest.getInstance().getObjective(objective).containsPlayer(playerID);
     }
 

@@ -39,17 +39,17 @@ public class MathVariable extends Variable {
 
     private final Calculable calculation;
 
-    public MathVariable(Instruction instruction) throws InstructionParseException {
+    public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        String instruction_string = instruction.getInstruction();
+        final String instruction_string = instruction.getInstruction();
         if (!instruction_string.matches("math\\.calc:.+")) throw new InstructionParseException("invalid format");
         this.calculation = this.parse(instruction_string.substring("math.calc:".length()));
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         try {
-            double value = this.calculation.calculate(playerID);
+            final double value = this.calculation.calculate(playerID);
             if (value % 1 == 0)
                 return String.format(Locale.US, "%.0f", value);
             return String.valueOf(value);
@@ -79,7 +79,7 @@ public class MathVariable extends Variable {
         //calculate the absolute value
         if (string.matches("\\|.+\\|")) return new AbsoluteValue(this.parse(string.substring(1, string.length() - 1)));
         String tempCopy = string;
-        Matcher m = Pattern.compile("(\\(.+\\)|\\[.+]|\\|.+\\|)").matcher(tempCopy);
+        final Matcher m = Pattern.compile("(\\(.+\\)|\\[.+]|\\|.+\\|)").matcher(tempCopy);
         //ignore content of braces for all next operations
         while (m.find()) {
             final int start = m.start();
@@ -149,7 +149,7 @@ public class MathVariable extends Variable {
 
         private final char operator;
 
-        Operation(char operator) {
+        Operation(final char operator) {
             this.operator = operator;
         }
     }
@@ -163,20 +163,20 @@ public class MathVariable extends Variable {
 
         private final VariableNumber variable;
 
-        public ClaculableVariable(VariableNumber variable) {
+        public ClaculableVariable(final VariableNumber variable) {
             this.variable = variable;
         }
 
-        public ClaculableVariable(double d) {
+        public ClaculableVariable(final double d) {
             this(new VariableNumber(d));
         }
 
-        public ClaculableVariable(ConfigPackage pack, String variable) throws NumberFormatException {
+        public ClaculableVariable(final ConfigPackage pack, final String variable) throws NumberFormatException {
             this(new VariableNumber(pack.getName(), variable));
         }
 
         @Override
-        public double calculate(String playerId) throws QuestRuntimeException {
+        public double calculate(final String playerId) throws QuestRuntimeException {
             return variable.getDouble(playerId);
         }
 
@@ -190,7 +190,7 @@ public class MathVariable extends Variable {
 
         private final Calculable a;
 
-        public AbsoluteValue(Calculable a) {
+        public AbsoluteValue(final Calculable a) {
             this.a = a;
         }
 
@@ -200,7 +200,7 @@ public class MathVariable extends Variable {
         }
 
         @Override
-        public double calculate(String playerId) throws QuestRuntimeException {
+        public double calculate(final String playerId) throws QuestRuntimeException {
             return Math.abs(a.calculate(playerId));
         }
     }
@@ -211,14 +211,14 @@ public class MathVariable extends Variable {
         private final Calculable b;
         private final Operation operation;
 
-        private Calculation(Calculable a, Calculable b, Operation operation) {
+        private Calculation(final Calculable a, final Calculable b, final Operation operation) {
             this.a = a;
             this.b = b;
             this.operation = operation;
         }
 
         @Override
-        public double calculate(String playerId) throws QuestRuntimeException {
+        public double calculate(final String playerId) throws QuestRuntimeException {
             try {
                 switch (operation) {
                     case ADD:
@@ -241,9 +241,9 @@ public class MathVariable extends Variable {
 
         @Override
         public String toString() {
-            String a = ((this.a instanceof Calculation) || this.a.toString().startsWith("-"))
+            final String a = ((this.a instanceof Calculation) || this.a.toString().startsWith("-"))
                     ? ("(" + this.a.toString() + ")") : this.a.toString();
-            String b = ((this.b instanceof Calculation) || this.b.toString().startsWith("-"))
+            final String b = ((this.b instanceof Calculation) || this.b.toString().startsWith("-"))
                     ? ("(" + this.b.toString() + ")") : this.b.toString();
             return a + operation.operator + b;
         }

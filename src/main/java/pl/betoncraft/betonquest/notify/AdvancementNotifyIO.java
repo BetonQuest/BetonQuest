@@ -50,7 +50,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     // Variables
     private String frame;
 
-    public AdvancementNotifyIO(Map<String, String> data) {
+    public AdvancementNotifyIO(final Map<String, String> data) {
         super(data);
 
         frame = FrameType.DEFAULT.str;
@@ -71,8 +71,8 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
-        NamespacedKey id = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
+        final NamespacedKey id = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
 
         // Add the advancement. Pre 1.13 we have to catch some errors here
         try {
@@ -84,7 +84,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
 
         // Grant to players
-        for (Player player : players) {
+        for (final Player player : players) {
             grant(id, player);
         }
 
@@ -93,7 +93,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
             @Override
             public void run() {
-                for (Player player : players) {
+                for (final Player player : players) {
                     revoke(id, player);
                 }
                 remove(id);
@@ -104,43 +104,43 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @SuppressWarnings("deprecation")
-    private void add(NamespacedKey id, String message) {
+    private void add(final NamespacedKey id, final String message) {
         Bukkit.getUnsafe().loadAdvancement(id, generateJson(message));
     }
 
     @SuppressWarnings("deprecation")
-    private void remove(NamespacedKey id) {
+    private void remove(final NamespacedKey id) {
         Bukkit.getUnsafe().removeAdvancement(id);
     }
 
-    private void grant(NamespacedKey id, Player player) {
-        Advancement advancement = Bukkit.getAdvancement(id);
-        AdvancementProgress progress = player.getAdvancementProgress(advancement);
+    private void grant(final NamespacedKey id, final Player player) {
+        final Advancement advancement = Bukkit.getAdvancement(id);
+        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
         if (!progress.isDone()) {
-            for (String criteria : progress.getRemainingCriteria()) {
+            for (final String criteria : progress.getRemainingCriteria()) {
                 progress.awardCriteria(criteria);
             }
         }
     }
 
-    private void revoke(NamespacedKey id, Player player) {
-        Advancement advancement = Bukkit.getAdvancement(id);
-        AdvancementProgress progress = player.getAdvancementProgress(advancement);
+    private void revoke(final NamespacedKey id, final Player player) {
+        final Advancement advancement = Bukkit.getAdvancement(id);
+        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
         if (progress.isDone()) {
-            for (String criteria : progress.getRemainingCriteria()) {
+            for (final String criteria : progress.getRemainingCriteria()) {
                 progress.revokeCriteria(criteria);
             }
         }
     }
 
-    private String generateJson(String message) {
-        JsonObject json = new JsonObject();
+    private String generateJson(final String message) {
+        final JsonObject json = new JsonObject();
 
 
-        JsonObject icon = new JsonObject();
+        final JsonObject icon = new JsonObject();
         icon.addProperty("item", this.icon);
 
-        JsonObject display = new JsonObject();
+        final JsonObject display = new JsonObject();
         display.add("icon", icon);
         display.addProperty("title", message);
 
@@ -153,8 +153,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         display.addProperty("show_toast", true);
         display.addProperty("hidden", true);
 
-        JsonObject criteria = new JsonObject();
-        JsonObject trigger = new JsonObject();
+        final JsonObject criteria = new JsonObject();
+        final JsonObject trigger = new JsonObject();
 
         trigger.addProperty("trigger", "minecraft:impossible");
         criteria.add("impossible", trigger);
@@ -174,7 +174,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
         private String str;
 
-        FrameType(String str) {
+        FrameType(final String str) {
             this.str = str;
         }
 

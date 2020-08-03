@@ -35,15 +35,15 @@ public class BQEventSkript extends QuestEvent {
 
     private final String id;
 
-    public BQEventSkript(Instruction instruction) throws InstructionParseException {
+    public BQEventSkript(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         id = instruction.next();
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        CustomEventForSkript event = new CustomEventForSkript(player, id);
+    protected Void execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final CustomEventForSkript event = new CustomEventForSkript(player, id);
         Bukkit.getServer().getPluginManager().callEvent(event);
         return null;
     }
@@ -58,7 +58,7 @@ public class BQEventSkript extends QuestEvent {
         private static final HandlerList handlers = new HandlerList();
         private final String id;
 
-        public CustomEventForSkript(Player who, String id) {
+        public CustomEventForSkript(final Player who, final String id) {
             super(who);
             this.id = id;
         }

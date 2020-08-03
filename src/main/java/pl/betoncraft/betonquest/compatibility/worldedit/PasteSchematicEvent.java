@@ -55,15 +55,15 @@ public class PasteSchematicEvent extends QuestEvent {
     private LocationData loc;
     private boolean noAir;
 
-    public PasteSchematicEvent(Instruction instruction) throws InstructionParseException {
+    public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
         we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-        File folder = new File(we.getDataFolder(), "schematics");
+        final File folder = new File(we.getDataFolder(), "schematics");
         if (!folder.exists() || !folder.isDirectory()) {
             throw new InstructionParseException("Schematic folder does not exist");
         }
-        String schemName = instruction.next();
+        final String schemName = instruction.next();
         file = new File(folder, schemName + ".schematic");
         if (!file.exists()) {
             file = new File(folder, schemName);
@@ -76,22 +76,22 @@ public class PasteSchematicEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         try {
-            Location location = loc.getLocation(playerID);
-            ClipboardFormat format = ClipboardFormats.findByFile(file);
+            final Location location = loc.getLocation(playerID);
+            final ClipboardFormat format = ClipboardFormats.findByFile(file);
             if (format == null) {
                 throw new IOException("Unknown Schematic Format");
             }
 
-            Clipboard clipboard;
+            final Clipboard clipboard;
             try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
                 clipboard = reader.read();
             }
 
 
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), -1)) {
-                Operation operation = new ClipboardHolder(clipboard)
+                final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BukkitAdapter.asBlockVector(location))
                         .ignoreAirBlocks(noAir)

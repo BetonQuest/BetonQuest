@@ -7,7 +7,7 @@ public class MMOLibIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuest plugin = BetonQuest.getInstance();
         plugin.registerConditions("mmostat", MMOLibStatCondition.class);
     }
 

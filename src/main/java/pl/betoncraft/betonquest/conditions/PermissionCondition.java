@@ -31,13 +31,13 @@ public class PermissionCondition extends Condition {
 
     private final String permission;
 
-    public PermissionCondition(Instruction instruction) throws InstructionParseException {
+    public PermissionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         permission = instruction.next();
     }
 
     @Override
-    protected Boolean execute(String playerID) {
+    protected Boolean execute(final String playerID) {
         return PlayerConverter.getPlayer(playerID).hasPermission(permission);
     }
 

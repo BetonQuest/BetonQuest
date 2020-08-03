@@ -98,7 +98,7 @@ public class Compatibility implements Listener {
         integrators.put("Jobs", new JobsRebornIntegrator());
 
         // hook into already enabled plugins in case Bukkit messes up the loading order
-        for (Plugin hook : Bukkit.getPluginManager().getPlugins()) {
+        for (final Plugin hook : Bukkit.getPluginManager().getPlugins()) {
             hook(hook);
         }
 
@@ -114,11 +114,11 @@ public class Compatibility implements Listener {
             public void run() {
                 // log which plugins have been hooked
                 if (hooked.size() > 0) {
-                    StringBuilder string = new StringBuilder();
-                    for (String plugin : hooked) {
+                    final StringBuilder string = new StringBuilder();
+                    for (final String plugin : hooked) {
                         string.append(plugin + ", ");
                     }
-                    String plugins = string.substring(0, string.length() - 2);
+                    final String plugins = string.substring(0, string.length() - 2);
                     LogUtils.getLogger().log(Level.INFO, "Hooked into " + plugins + "!");
                 }
             }
@@ -134,18 +134,18 @@ public class Compatibility implements Listener {
     }
 
     public static void reload() {
-        for (String hooked : getHooked()) {
+        for (final String hooked : getHooked()) {
             instance.integrators.get(hooked).reload();
         }
     }
 
     public static void disable() {
-        for (String hooked : getHooked()) {
+        for (final String hooked : getHooked()) {
             instance.integrators.get(hooked).close();
         }
     }
 
-    private void hook(Plugin hook) {
+    private void hook(final Plugin hook) {
 
         // don't want to hook twice
         if (hooked.contains(hook.getName())) {
@@ -157,8 +157,8 @@ public class Compatibility implements Listener {
             return;
         }
 
-        String name = hook.getName();
-        Integrator integrator = integrators.get(name);
+        final String name = hook.getName();
+        final Integrator integrator = integrators.get(name);
 
         // this plugin is not an integration
         if (integrator == null) {
@@ -190,7 +190,7 @@ public class Compatibility implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPluginEnable(PluginEnableEvent event) {
+    public void onPluginEnable(final PluginEnableEvent event) {
         hook(event.getPlugin());
     }
 

@@ -33,13 +33,13 @@ public class ExperienceCondition extends Condition {
 
     private final VariableNumber experience;
 
-    public ExperienceCondition(Instruction instruction) throws InstructionParseException {
+    public ExperienceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         experience = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         return PlayerConverter.getPlayer(playerID).getLevel() >= experience.getInt(playerID);
     }
 

@@ -33,40 +33,40 @@ import java.util.logging.Level;
 
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
-    public CitizensInventoryConvIO(Conversation conv, String playerID) {
+    public CitizensInventoryConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
     }
 
     @Override
-    protected SkullMeta setSkullMeta(SkullMeta meta) {
+    protected SkullMeta setSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
-            CitizensConversation citizensConv = (CitizensConversation) conv;
+            final CitizensConversation citizensConv = (CitizensConversation) conv;
             // read the texture from the NPC
-            SkinTrait skinTrait = citizensConv.getNPC().getTrait(SkinTrait.class);
-            String texture = skinTrait.getTexture();
+            final SkinTrait skinTrait = citizensConv.getNPC().getTrait(SkinTrait.class);
+            final String texture = skinTrait.getTexture();
 
             if (texture != null) { // Can be null if not cached yet
                 try {
                     // prepare reflection magics
-                    Class<?> profileClass = Class.forName("com.mojang.authlib.GameProfile");
-                    Class<?> propertyClass = Class.forName("com.mojang.authlib.properties.Property");
-                    Class<?> propertyMapClass = Class.forName("com.google.common.collect.ForwardingMultimap");
+                    final Class<?> profileClass = Class.forName("com.mojang.authlib.GameProfile");
+                    final Class<?> propertyClass = Class.forName("com.mojang.authlib.properties.Property");
+                    final Class<?> propertyMapClass = Class.forName("com.google.common.collect.ForwardingMultimap");
 
                     // abracadabra
-                    Object profile = profileClass
+                    final Object profile = profileClass
                             .getConstructor(UUID.class, String.class)
                             .newInstance(UUID.randomUUID(), null);
-                    Object property = propertyClass
+                    final Object property = propertyClass
                             .getConstructor(String.class, String.class, String.class)
                             .newInstance("textures", texture, skinTrait.getSignature());
-                    Object propertyMap = profileClass
+                    final Object propertyMap = profileClass
                             .getMethod("getProperties")
                             .invoke(profile);
                     propertyMapClass
                             .getMethod("put", Object.class, Object.class)
                             .invoke(propertyMap, "textures", property);
-                    Field field = meta.getClass().getDeclaredField("profile");
+                    final Field field = meta.getClass().getDeclaredField("profile");
                     field.setAccessible(true);
                     field.set(meta, profile);
                     return meta;
@@ -82,7 +82,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public static class CitizensCombined extends CitizensInventoryConvIO {
 
-        public CitizensCombined(Conversation conv, String playerID) {
+        public CitizensCombined(final Conversation conv, final String playerID) {
             super(conv, playerID);
             super.printMessages = true;
         }

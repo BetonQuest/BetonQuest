@@ -39,14 +39,14 @@ public class FireworkHandler {
     }
 
     public List<FireworkEffect> getEffects() {
-        List<FireworkEffect> list = new LinkedList<>();
-        for (FireworkEffectHandler effect : effects) {
+        final List<FireworkEffect> list = new LinkedList<>();
+        for (final FireworkEffectHandler effect : effects) {
             list.add(effect.get());
         }
         return list;
     }
 
-    public void setEffects(String string) throws InstructionParseException {
+    public void setEffects(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Firework effects missing");
         }
@@ -55,9 +55,9 @@ public class FireworkHandler {
             return;
         }
         effectsE = Existence.REQUIRED;
-        String[] parts = string.split(",");
-        for (String part : parts) {
-            FireworkEffectHandler effect = new FireworkEffectHandler();
+        final String[] parts = string.split(",");
+        for (final String part : parts) {
+            final FireworkEffectHandler effect = new FireworkEffectHandler();
             effect.set(part);
             effects.add(effect);
         }
@@ -94,7 +94,7 @@ public class FireworkHandler {
         return effects.size();
     }
 
-    public boolean checkEffects(List<FireworkEffect> list) {
+    public boolean checkEffects(final List<FireworkEffect> list) {
         switch (effectsE) {
             case WHATEVER:
                 return true;
@@ -104,9 +104,9 @@ public class FireworkHandler {
                         return false;
                     }
                 }
-                for (FireworkEffectHandler checker : effects) {
+                for (final FireworkEffectHandler checker : effects) {
                     FireworkEffect effect = null;
-                    for (FireworkEffect e : list) {
+                    for (final FireworkEffect e : list) {
                         if (e.getType() == checker.getType()) {
                             effect = e;
                             break;
@@ -124,7 +124,7 @@ public class FireworkHandler {
         }
     }
 
-    public boolean checkSingleEffect(FireworkEffect single) {
+    public boolean checkSingleEffect(final FireworkEffect single) {
         switch (effectsE) {
             case WHATEVER:
                 return true;
@@ -137,7 +137,7 @@ public class FireworkHandler {
         }
     }
 
-    public boolean checkPower(int i) {
+    public boolean checkPower(final int i) {
         switch (powerN) {
             case WHATEVER:
                 return true;

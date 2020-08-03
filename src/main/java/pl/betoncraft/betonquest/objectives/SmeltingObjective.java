@@ -43,7 +43,7 @@ public class SmeltingObjective extends Objective implements Listener {
     private final Material material;
     private final int amount;
 
-    public SmeltingObjective(Instruction instruction) throws InstructionParseException {
+    public SmeltingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = SmeltData.class;
         material = instruction.getEnum(Material.class);
@@ -54,10 +54,10 @@ public class SmeltingObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onSmelting(FurnaceExtractEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onSmelting(final FurnaceExtractEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && event.getItemType().equals(material) && checkConditions(playerID)) {
-            SmeltData playerData = (SmeltData) dataMap.get(playerID);
+            final SmeltData playerData = (SmeltData) dataMap.get(playerID);
             playerData.subtract(event.getItemAmount());
             if (playerData.isZero()) {
                 completeObjective(playerID);
@@ -66,10 +66,10 @@ public class SmeltingObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onShiftSmelting(InventoryClickEvent event) {
+    public void onShiftSmelting(final InventoryClickEvent event) {
         if (event.getInventory().getType().equals(InventoryType.FURNACE) && event.getRawSlot() == 2
                 && event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+            final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
             if (containsPlayer(playerID))
                 event.setCancelled(true);
         }
@@ -91,7 +91,7 @@ public class SmeltingObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((SmeltData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -104,7 +104,7 @@ public class SmeltingObjective extends Objective implements Listener {
 
         private int amount;
 
-        public SmeltData(String instruction, String playerID, String objID) {
+        public SmeltData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
@@ -113,7 +113,7 @@ public class SmeltingObjective extends Objective implements Listener {
             return amount;
         }
 
-        private void subtract(int amount) {
+        private void subtract(final int amount) {
             this.amount -= amount;
             update();
         }

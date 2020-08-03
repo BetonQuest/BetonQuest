@@ -35,7 +35,7 @@ public class ConversationCondition extends Condition {
 
     private String conversationID;
 
-    public ConversationCondition(Instruction instruction) throws InstructionParseException {
+    public ConversationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
 
         if (instruction.next() == null) {
@@ -46,9 +46,9 @@ public class ConversationCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
 
-        ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
+        final ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
 
         if (conversation == null) {
             throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getName() + conversationID);

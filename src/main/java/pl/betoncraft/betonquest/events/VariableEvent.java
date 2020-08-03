@@ -37,7 +37,7 @@ public class VariableEvent extends QuestEvent {
     private String value;
     private ArrayList<String> valueVariables;
 
-    public VariableEvent(Instruction instruction) throws InstructionParseException {
+    public VariableEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         id = instruction.getObjective();
         key = instruction.next();
@@ -47,19 +47,19 @@ public class VariableEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Objective obj = BetonQuest.getInstance().getObjective(id);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Objective obj = BetonQuest.getInstance().getObjective(id);
         if (!(obj instanceof VariableObjective)) {
             throw new QuestRuntimeException(id.getFullID() + " is not a variable objective");
         }
-        VariableObjective objective = (VariableObjective) obj;
+        final VariableObjective objective = (VariableObjective) obj;
         String keyReplaced = key;
-        for (String v : keyVariables) {
+        for (final String v : keyVariables) {
             keyReplaced = keyReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
                     instruction.getPackage().getName(), v, playerID));
         }
         String valueReplaced = value;
-        for (String v : valueVariables) {
+        for (final String v : valueVariables) {
             valueReplaced = valueReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
                     instruction.getPackage().getName(), v, playerID));
         }

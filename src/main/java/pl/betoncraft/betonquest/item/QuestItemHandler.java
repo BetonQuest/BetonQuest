@@ -103,7 +103,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-        ItemStack item;
+        final ItemStack item;
         switch (event.getAction()) {
             case MOVE_TO_OTHER_INVENTORY:
                 item = event.getCurrentItem();

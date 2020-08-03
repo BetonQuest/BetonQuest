@@ -47,17 +47,17 @@ public class EntityCondition extends Condition {
     private String name;
     private String marked;
 
-    public EntityCondition(Instruction instruction) throws InstructionParseException {
+    public EntityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
-        String[] rawTypes = instruction.getArray();
+        final String[] rawTypes = instruction.getArray();
         types = new EntityType[rawTypes.length];
         amounts = new VariableNumber[rawTypes.length];
         for (int i = 0; i < rawTypes.length; i++) {
             try {
                 if (rawTypes[i].contains(":")) {
-                    String[] typeParts = rawTypes[i].split(":");
+                    final String[] typeParts = rawTypes[i].split(":");
                     if (typeParts.length == 0) {
                         throw new InstructionParseException("Type not defined");
                     } else if (typeParts.length < 2) {
@@ -89,15 +89,15 @@ public class EntityCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
-        int[] neededAmounts = new int[types.length];
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
+        final int[] neededAmounts = new int[types.length];
         for (int i = 0; i < neededAmounts.length; i++) {
             neededAmounts[i] = 0;
         }
-        Collection<Entity> entities = location.getWorld().getEntities();
+        final Collection<Entity> entities = location.getWorld().getEntities();
         loop:
-        for (Entity entity : entities) {
+        for (final Entity entity : entities) {
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }
@@ -108,16 +108,16 @@ public class EntityCondition extends Condition {
                 if (!entity.hasMetadata("betonquest-marked")) {
                     continue;
                 }
-                List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
-                for (MetadataValue m : meta) {
+                final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
+                for (final MetadataValue m : meta) {
                     if (!m.asString().equals(marked)) {
                         continue loop;
                     }
                 }
             }
-            double r = range.getDouble(playerID);
+            final double r = range.getDouble(playerID);
             if (entity.getLocation().distanceSquared(location) < r * r) {
-                EntityType theType = entity.getType();
+                final EntityType theType = entity.getType();
                 for (int i = 0; i < types.length; i++) {
                     if (theType == types[i]) {
                         neededAmounts[i]++;

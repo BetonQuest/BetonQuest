@@ -49,10 +49,10 @@ public class ConfigAccessor {
      *                 it does not have to match the file, so you can load from "x" and save to "y"
      * @param type     type of this accessor, useful for determining type of data stored inside
      */
-    public ConfigAccessor(File file, String fileName, AccessorType type) {
+    public ConfigAccessor(final File file, final String fileName, final AccessorType type) {
         plugin = BetonQuest.getInstance();
         this.fileName = fileName;
-        File dataFolder = plugin.getDataFolder();
+        final File dataFolder = plugin.getDataFolder();
         if (dataFolder == null)
             throw new IllegalStateException();
         this.configFile = file;
@@ -65,7 +65,7 @@ public class ConfigAccessor {
      */
     public void reloadConfig() {
         if (configFile == null) {
-            InputStream str = plugin.getResource(fileName);
+            final InputStream str = plugin.getResource(fileName);
             if (str == null) {
                 fileConfiguration = new YamlConfiguration();
             } else {
@@ -75,9 +75,9 @@ public class ConfigAccessor {
         } else {
             fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
             // Look for defaults in the jar
-            InputStream defConfigStream = plugin.getResource(fileName);
+            final InputStream defConfigStream = plugin.getResource(fileName);
             if (defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration
+                final YamlConfiguration defConfig = YamlConfiguration
                         .loadConfiguration(new InputStreamReader(defConfigStream));
                 fileConfiguration.setDefaults(defConfig);
             }
@@ -127,12 +127,12 @@ public class ConfigAccessor {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                InputStream in = plugin.getResource(fileName);
+                final InputStream in = plugin.getResource(fileName);
                 if (in == null) {
                     return;
                 }
-                OutputStream out = new FileOutputStream(configFile);
-                byte[] buffer = new byte[1024];
+                final OutputStream out = new FileOutputStream(configFile);
+                final byte[] buffer = new byte[1024];
                 int len = in.read(buffer);
                 while (len != -1) {
                     out.write(buffer, 0, len);

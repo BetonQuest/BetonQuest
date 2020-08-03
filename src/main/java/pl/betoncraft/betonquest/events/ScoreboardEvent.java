@@ -39,7 +39,7 @@ public class ScoreboardEvent extends QuestEvent {
     final boolean multi;
     final String objective;
 
-    public ScoreboardEvent(Instruction instruction) throws InstructionParseException {
+    public ScoreboardEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         persistent = true;
         objective = instruction.next();
@@ -58,13 +58,13 @@ public class ScoreboardEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws IllegalStateException, QuestRuntimeException {
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        Objective obj = board.getObjective(objective);
+    protected Void execute(final String playerID) throws IllegalStateException, QuestRuntimeException {
+        final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        final Objective obj = board.getObjective(objective);
         if (obj == null) {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
-        Score score = obj.getScore(PlayerConverter.getName(playerID));
+        final Score score = obj.getScore(PlayerConverter.getName(playerID));
         if (multi) {
             score.setScore((int) Math.floor(score.getScore() * count.getDouble(playerID)));
         } else {

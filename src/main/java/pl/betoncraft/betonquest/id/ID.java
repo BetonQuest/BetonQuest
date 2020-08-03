@@ -31,7 +31,7 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    public ID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
 
         // id must be specified
         if (id == null || id.length() == 0) {
@@ -41,12 +41,12 @@ public abstract class ID {
         // resolve package name
         if (id.contains(".")) {
             // id has specified a package, get it!
-            int dotIndex = id.indexOf('.');
-            String packName = id.substring(0, dotIndex);
+            final int dotIndex = id.indexOf('.');
+            final String packName = id.substring(0, dotIndex);
             if (pack != null && packName.startsWith(upStr + "-")) {
                 // resolve relative name if we have a supplied package
-                String[] root = pack.getName().split("-");
-                String[] path = packName.split("-");
+                final String[] root = pack.getName().split("-");
+                final String[] path = packName.split("-");
                 // count how many packages up we need to go
                 int stepsUp = 0;
                 while (stepsUp < path.length && path[stepsUp].equals(upStr)) {
@@ -58,14 +58,14 @@ public abstract class ID {
                             + upStr + "'s in ID " + id);
                 }
                 // construct the final absolute path
-                StringBuilder sb = new StringBuilder();
+                final StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < root.length - stepsUp; i++) {
                     sb.append(root[i] + '-');
                 }
                 for (int i = stepsUp; i < path.length; i++) {
                     sb.append(path[i] + '-');
                 }
-                String absolute = sb.substring(0, sb.length() - 1);
+                final String absolute = sb.substring(0, sb.length() - 1);
                 this.pack = Config.getPackages().get(absolute);
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
@@ -114,9 +114,9 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof ID) {
-            ID id = (ID) o;
+            final ID id = (ID) o;
             return id.id.equals(this.id) &&
                     id.pack.equals(this.pack);
         }

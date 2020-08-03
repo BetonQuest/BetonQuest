@@ -47,7 +47,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
     private final int amount;
     private final boolean notify;
 
-    public MythicMobKillObjective(Instruction instruction) throws InstructionParseException {
+    public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = MMData.class;
         Collections.addAll(names, instruction.getArray());
@@ -56,15 +56,15 @@ public class MythicMobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(MythicMobDeathEvent event) {
+    public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) return;
         if (!(event.getKiller() instanceof Player)) return;
 
-        String playerID = PlayerConverter.getID((Player) event.getKiller());
+        final String playerID = PlayerConverter.getID((Player) event.getKiller());
         if (!containsPlayer(playerID)) return;
         if (!checkConditions(playerID)) return;
 
-        MMData playerData = (MMData) dataMap.get(playerID);
+        final MMData playerData = (MMData) dataMap.get(playerID);
         playerData.kill();
 
         if (playerData.killed()) {
@@ -92,7 +92,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(((MMData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -105,7 +105,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
         private int amount;
 
-        public MMData(String instruction, String playerID, String objID) {
+        public MMData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

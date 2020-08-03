@@ -45,7 +45,7 @@ public class LocationObjective extends Objective implements Listener {
     private final LocationData loc;
     private final VariableNumber range;
 
-    public LocationObjective(Instruction instruction) throws InstructionParseException {
+    public LocationObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         loc = instruction.getLocation();
@@ -53,12 +53,12 @@ public class LocationObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent event) {
+    public void onMove(final PlayerMoveEvent event) {
         qreHandler.handle(() -> {
-            String playerID = PlayerConverter.getID(event.getPlayer());
-            Location location = loc.getLocation(playerID);
+            final String playerID = PlayerConverter.getID(event.getPlayer());
+            final Location location = loc.getLocation(playerID);
             if (containsPlayer(playerID) && event.getPlayer().getWorld().equals(location.getWorld())) {
-                double r = range.getDouble(playerID);
+                final double r = range.getDouble(playerID);
                 if (event.getTo().distanceSquared(location) <= r * r && super.checkConditions(playerID)) {
                     completeObjective(playerID);
                 }
@@ -82,9 +82,9 @@ public class LocationObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("location")) {
-            Location location;
+            final Location location;
             try {
                 location = loc.getLocation(playerID);
             } catch (QuestRuntimeException e) {

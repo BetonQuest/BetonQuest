@@ -29,21 +29,21 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
  */
 public class GlobalTagEvent extends TagEvent {
 
-    public GlobalTagEvent(Instruction instruction) throws InstructionParseException {
+    public GlobalTagEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         staticness = true;
         persistent = true;
     }
 
     @Override
-    protected Void execute(String playerID) {
-        GlobalData globalData = BetonQuest.getInstance().getGlobalData();
+    protected Void execute(final String playerID) {
+        final GlobalData globalData = BetonQuest.getInstance().getGlobalData();
         if (add) {
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 globalData.addTag(tag);
             }
         } else {
-            for (String tag : tags) {
+            for (final String tag : tags) {
                 globalData.removeTag(tag);
             }
         }

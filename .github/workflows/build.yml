@@ -115,7 +115,7 @@ jobs:
       - name: Build with Maven
         run: |
           mkdir -p build/output
-          mvn -B package
+          mvn -B verify
           cp target/betonquest*.jar build/output/
           cp target/BetonQuest.jar build/output/
 

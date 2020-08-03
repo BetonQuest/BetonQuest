@@ -15,7 +15,7 @@ public class MMOCoreProfessionLevelCondition extends Condition {
     int targetLevel;
     boolean mustBeEqual = false;
 
-    public MMOCoreProfessionLevelCondition(Instruction instruction) throws InstructionParseException {
+    public MMOCoreProfessionLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         professionName = instruction.next();
@@ -26,9 +26,9 @@ public class MMOCoreProfessionLevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         data = PlayerData.get(PlayerConverter.getPlayer(playerID));
-        int actualLevel = data.getCollectionSkills().getLevel(professionName);
+        final int actualLevel = data.getCollectionSkills().getLevel(professionName);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

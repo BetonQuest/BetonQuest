@@ -38,7 +38,7 @@ public abstract class NotifyIO {
 
     private final Map<String, String> data;
 
-    public NotifyIO(Map<String, String> data) {
+    public NotifyIO(final Map<String, String> data) {
         this.data = data;
     }
 
@@ -57,12 +57,12 @@ public abstract class NotifyIO {
      * @param value Data Value
      * @return ourself to allow chaining
      */
-    public NotifyIO set(String key, String value) {
+    public NotifyIO set(final String key, final String value) {
         data.put(key, value);
         return this;
     }
 
-    public void sendToAll(String message) {
+    public void sendToAll(final String message) {
         sendNotify(message, Bukkit.getServer().getOnlinePlayers());
     }
 
@@ -72,16 +72,16 @@ public abstract class NotifyIO {
      * @param players Players to show
      */
 
-    public void sendNotify(String message, Player... players) {
+    public void sendNotify(final String message, final Player... players) {
         sendNotify(message, Arrays.asList(players));
     }
 
     /**
      * Show a notify to a collection of players
      */
-    public void sendNotify(String message, Collection<? extends Player> players) {
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
         if (getData().containsKey("sound")) {
-            for (Player player : players) {
+            for (final Player player : players) {
                 try {
                     player.playSound(player.getLocation(), Sound.valueOf(getData().get("sound")), 1F, 1F);
                 } catch (IllegalArgumentException e) {

@@ -43,7 +43,7 @@ public class TagEvent extends QuestEvent {
     protected final String[] tags;
     protected final boolean add;
 
-    public TagEvent(Instruction instruction) throws InstructionParseException {
+    public TagEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         persistent = true;
         staticness = true;
@@ -58,9 +58,9 @@ public class TagEvent extends QuestEvent {
     protected Void execute(final String playerID) {
         if (playerID == null) {
             if (!add) {
-                for (String tag : tags) {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                for (final String tag : tags) {
+                    for (final Player p : Bukkit.getOnlinePlayers()) {
+                        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                         playerData.removeTag(tag);
                     }
                     BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_TAGS, new String[]{
@@ -69,13 +69,13 @@ public class TagEvent extends QuestEvent {
                 }
             }
         } else if (PlayerConverter.getPlayer(playerID) != null) {
-            PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             if (add) {
-                for (String tag : tags) {
+                for (final String tag : tags) {
                     playerData.addTag(tag);
                 }
             } else {
-                for (String tag : tags) {
+                for (final String tag : tags) {
                     playerData.removeTag(tag);
                 }
             }
@@ -83,13 +83,13 @@ public class TagEvent extends QuestEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
+                    final PlayerData playerData = new PlayerData(playerID);
                     if (add) {
-                        for (String tag : tags) {
+                        for (final String tag : tags) {
                             playerData.addTag(tag);
                         }
                     } else {
-                        for (String tag : tags) {
+                        for (final String tag : tags) {
                             playerData.removeTag(tag);
                         }
                     }

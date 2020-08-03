@@ -58,22 +58,22 @@ public class FolderEvent extends QuestEvent {
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();
         // choose randomly which events should be fired
-        int randomInt = random != null ? random.getInt(playerID) : 0;
+        final int randomInt = random != null ? random.getInt(playerID) : 0;
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifiable ArrayList
-            ArrayList<EventID> eventsList = new ArrayList<>();
-            for (EventID event : events) {
+            final ArrayList<EventID> eventsList = new ArrayList<>();
+            for (final EventID event : events) {
                 eventsList.add(event);
             }
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
-                int chosen = new Random().nextInt(eventsList.size());
+                final int chosen = new Random().nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {
             // add all events if it's not random
-            for (EventID event : events) {
+            for (final EventID event : events) {
                 chosenList.add(event);
             }
         }
@@ -88,7 +88,7 @@ public class FolderEvent extends QuestEvent {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (EventID event : chosenList) {
+                for (final EventID event : chosenList) {
                     BetonQuest.event(playerID, event);
                 }
             }

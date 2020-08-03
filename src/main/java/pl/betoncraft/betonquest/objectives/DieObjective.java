@@ -49,7 +49,7 @@ public class DieObjective extends Objective implements Listener {
     private final boolean cancel;
     private final LocationData location;
 
-    public DieObjective(Instruction instruction) throws InstructionParseException {
+    public DieObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         cancel = instruction.hasArgument("cancel");
@@ -57,12 +57,12 @@ public class DieObjective extends Objective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDeath(EntityDeathEvent event) {
+    public void onDeath(final EntityDeathEvent event) {
         if (cancel) {
             return;
         }
         if (event.getEntity() instanceof Player) {
-            String playerID = PlayerConverter.getID((Player) event.getEntity());
+            final String playerID = PlayerConverter.getID((Player) event.getEntity());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
             }
@@ -70,7 +70,7 @@ public class DieObjective extends Objective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onLastDamage(EntityDamageEvent event) {
+    public void onLastDamage(final EntityDamageEvent event) {
         if (!cancel) {
             return;
         }
@@ -84,7 +84,7 @@ public class DieObjective extends Objective implements Listener {
                 player.setFoodLevel(20);
                 player.setExhaustion(4);
                 player.setSaturation(20);
-                for (PotionEffect effect : player.getActivePotionEffects()) {
+                for (final PotionEffect effect : player.getActivePotionEffects()) {
                     player.removePotionEffect(effect.getType());
                 }
                 if (location != null) {

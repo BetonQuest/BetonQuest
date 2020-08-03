@@ -36,12 +36,12 @@ public class RandomCondition extends Condition {
     private final VariableNumber valueMax;
     private final VariableNumber rangeOfRandom;
 
-    public RandomCondition(Instruction instruction) throws InstructionParseException {
+    public RandomCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
         persistent = true;
-        String[] values = instruction.next().split("-");
-        String packName = instruction.getPackage().getName();
+        final String[] values = instruction.next().split("-");
+        final String packName = instruction.getPackage().getName();
         if (values.length != 2) {
             throw new InstructionParseException("Wrong randomness format");
         }
@@ -54,9 +54,9 @@ public class RandomCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Random generator = new Random();
-        int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Random generator = new Random();
+        final int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
         return temp <= valueMax.getInt(playerID);
     }
 

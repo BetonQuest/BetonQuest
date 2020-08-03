@@ -97,7 +97,7 @@ public class EntityHider implements Listener {
      * @param plugin - the plugin that controls this entity hider.
      * @param policy - the default visibility policy.
      */
-    public EntityHider(Plugin plugin, Policy policy) {
+    public EntityHider(final Plugin plugin, final Policy policy) {
         Preconditions.checkNotNull(plugin, "plugin cannot be NULL.");
 
         // Save policy
@@ -120,7 +120,7 @@ public class EntityHider implements Listener {
      * @return TRUE if the entity was visible before this method call, FALSE
      * otherwise.
      */
-    protected boolean setVisibility(Player observer, int entityID, boolean visible) {
+    protected boolean setVisibility(final Player observer, final int entityID, final boolean visible) {
         switch (policy) {
             case BLACKLIST:
                 // Non-membership means they are visible
@@ -141,7 +141,7 @@ public class EntityHider implements Listener {
      * @return TRUE if they already were present, FALSE otherwise.
      */
     // Helper method
-    protected boolean setMembership(Player observer, int entityID, boolean member) {
+    protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
         if (member) {
             return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
         } else {
@@ -156,7 +156,7 @@ public class EntityHider implements Listener {
      * @param entityID - ID of the entity.
      * @return TRUE if they are present, FALSE otherwise.
      */
-    protected boolean getMembership(Player observer, int entityID) {
+    protected boolean getMembership(final Player observer, final int entityID) {
         try {
             return observerEntityMap.contains(observer.getEntityId(), entityID);
         } catch (UnsupportedOperationException e) {
@@ -173,10 +173,10 @@ public class EntityHider implements Listener {
      * @param entityID - ID of the entity that we are testing for visibility.
      * @return TRUE if the entity is visible, FALSE otherwise.
      */
-    protected boolean isVisible(Player observer, int entityID) {
+    protected boolean isVisible(final Player observer, final int entityID) {
         // If we are using a whitelist, presence means visibility - if not, the opposite
         // is the case
-        boolean presence = getMembership(observer, entityID);
+        final boolean presence = getMembership(observer, entityID);
 
         return (policy == Policy.WHITELIST) == presence;
     }
@@ -187,11 +187,11 @@ public class EntityHider implements Listener {
      * @param entity    - the entity to remove.
      * @param destroyed - TRUE if the entity was killed, FALSE if it is merely unloading.
      */
-    protected void removeEntity(Entity entity, boolean destroyed) {
-        int entityID = entity.getEntityId();
+    protected void removeEntity(final Entity entity, final boolean destroyed) {
+        final int entityID = entity.getEntityId();
 
-        List<Map.Entry<Integer, Map<Integer, Boolean>>> list = new CopyOnWriteArrayList<>(observerEntityMap.rowMap().entrySet());
-        Iterator<Map.Entry<Integer, Map<Integer, Boolean>>> iterator = list.iterator();
+        final List<Map.Entry<Integer, Map<Integer, Boolean>>> list = new CopyOnWriteArrayList<>(observerEntityMap.rowMap().entrySet());
+        final Iterator<Map.Entry<Integer, Map<Integer, Boolean>>> iterator = list.iterator();
 
         while (iterator.hasNext()) {
             iterator.next().getValue().remove(entityID);
@@ -203,7 +203,7 @@ public class EntityHider implements Listener {
      *
      * @param player - the player that jused logged out.
      */
-    protected void removePlayer(Player player) {
+    protected void removePlayer(final Player player) {
         // Cleanup
         observerEntityMap.rowMap().remove(player.getEntityId());
     }
@@ -217,19 +217,19 @@ public class EntityHider implements Listener {
         return new Listener() {
 
             @EventHandler(ignoreCancelled = true)
-            public void onEntityDeath(EntityDeathEvent e) {
+            public void onEntityDeath(final EntityDeathEvent e) {
                 removeEntity(e.getEntity(), true);
             }
 
             @EventHandler(ignoreCancelled = true)
-            public void onChunkUnload(ChunkUnloadEvent e) {
-                for (Entity entity : e.getChunk().getEntities()) {
+            public void onChunkUnload(final ChunkUnloadEvent e) {
+                for (final Entity entity : e.getChunk().getEntities()) {
                     removeEntity(entity, false);
                 }
             }
 
             @EventHandler(ignoreCancelled = true)
-            public void onPlayerQuit(PlayerQuitEvent e) {
+            public void onPlayerQuit(final PlayerQuitEvent e) {
                 removePlayer(e.getPlayer());
             }
         };
@@ -242,14 +242,14 @@ public class EntityHider implements Listener {
      * @param plugin - the parent plugin.
      * @return The packet listener.
      */
-    private PacketAdapter constructProtocol(Plugin plugin) {
+    private PacketAdapter constructProtocol(final Plugin plugin) {
         return new PacketAdapter(plugin, ENTITY_PACKETS) {
 
             @Override
-            public void onPacketSending(PacketEvent event) {
-                int index = event.getPacketType() == COMBAT_EVENT ? 1 : 0;
+            public void onPacketSending(final PacketEvent event) {
+                final int index = event.getPacketType() == COMBAT_EVENT ? 1 : 0;
 
-                Integer entityID = event.getPacket().getIntegers().readSafely(index);
+                final Integer entityID = event.getPacket().getIntegers().readSafely(index);
                 if (entityID != null) {
                     if (!isVisible(event.getPlayer(), entityID)) {
                         event.setCancelled(true);
@@ -269,7 +269,7 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to toggle.
      * @return TRUE if the entity was visible before, FALSE otherwise.
      */
-    public final boolean toggleEntity(Player observer, Entity entity) {
+    public final boolean toggleEntity(final Player observer, final Entity entity) {
         if (isVisible(observer, entity.getEntityId())) {
             return hideEntity(observer, entity);
         } else {
@@ -284,9 +284,9 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to show.
      * @return TRUE if the entity was hidden before, FALSE otherwise.
      */
-    public final boolean showEntity(Player observer, Entity entity) {
+    public final boolean showEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
-        boolean hiddenBefore = !setVisibility(observer, entity.getEntityId(), true);
+        final boolean hiddenBefore = !setVisibility(observer, entity.getEntityId(), true);
 
         // Resend packets
         if (manager != null && hiddenBefore) {
@@ -302,12 +302,12 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to hide.
      * @return TRUE if the entity was previously visible, FALSE otherwise.
      */
-    public final boolean hideEntity(Player observer, Entity entity) {
+    public final boolean hideEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
-        boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
+        final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
 
         if (visibleBefore) {
-            PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
+            final PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
             destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
 
             // Make the entity disappear
@@ -332,14 +332,14 @@ public class EntityHider implements Listener {
      * @return TRUE if the player may see the entity, FALSE if the entity has been
      * hidden.
      */
-    public final boolean canSee(Player observer, Entity entity) {
+    public final boolean canSee(final Player observer, final Entity entity) {
         validate(observer, entity);
 
         return isVisible(observer, entity.getEntityId());
     }
 
     // For valdiating the input parameters
-    private void validate(Player observer, Entity entity) {
+    private void validate(final Player observer, final Entity entity) {
         Preconditions.checkNotNull(observer, "observer cannot be NULL.");
         Preconditions.checkNotNull(entity, "entity cannot be NULL.");
     }

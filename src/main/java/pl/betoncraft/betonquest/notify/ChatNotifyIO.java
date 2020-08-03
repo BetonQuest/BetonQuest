@@ -29,13 +29,13 @@ import java.util.Map;
  */
 public class ChatNotifyIO extends NotifyIO {
 
-    public ChatNotifyIO(Map<String, String> data) {
+    public ChatNotifyIO(final Map<String, String> data) {
         super(data);
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
-        for (Player player : players) {
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
+        for (final Player player : players) {
             player.sendMessage(Utils.format(message));
         }
 

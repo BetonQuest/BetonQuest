@@ -55,20 +55,20 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String textFormat;
     private String npcTextColor;
 
-    public ChatConvIO(Conversation conv, String playerID) {
+    public ChatConvIO(final Conversation conv, final String playerID) {
         this.options = new HashMap<>();
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("npc")) {
+        for (final ChatColor color : colors.get("npc")) {
             string.append(color);
         }
         string.append("%npc%" + ChatColor.RESET + ": ");
 
-        StringBuilder textColorBuilder = new StringBuilder();
-        for (ChatColor color : colors.get("text")) {
+        final StringBuilder textColorBuilder = new StringBuilder();
+        for (final ChatColor color : colors.get("text")) {
             textColorBuilder.append(color);
         }
         npcTextColor = textColorBuilder.toString();
@@ -76,11 +76,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         string.append(npcTextColor);
         textFormat = string.toString();
         string = new StringBuilder();
-        for (ChatColor color : colors.get("player")) {
+        for (final ChatColor color : colors.get("player")) {
             string.append(color);
         }
         string.append(name + ChatColor.RESET + ": ");
-        for (ChatColor color : colors.get("answer")) {
+        for (final ChatColor color : colors.get("answer")) {
             string.append(color);
         }
         answerFormat = string.toString();
@@ -88,7 +88,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onWalkAway(PlayerMoveEvent event) {
+    public void onWalkAway(final PlayerMoveEvent event) {
         // return if it's someone else
         if (!event.getPlayer().equals(player)) {
             return;
@@ -112,7 +112,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      *
      * @param event PlayerMoveEvent event, for extracting the necessary data
      */
-    private void moveBack(PlayerMoveEvent event) {
+    private void moveBack(final PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
@@ -121,13 +121,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         // if not, then calculate the vector
-        float yaw = event.getTo().getYaw();
-        float pitch = event.getTo().getPitch();
+        final float yaw = event.getTo().getYaw();
+        final float pitch = event.getTo().getPitch();
         Vector vector = new Vector(conv.getLocation().getX() - event.getTo().getX(),
                 conv.getLocation().getY() - event.getTo().getY(), conv.getLocation().getZ() - event.getTo().getZ());
         vector = vector.multiply(1 / vector.length());
         // and teleport him back using this vector
-        Location newLocation = event.getTo().clone();
+        final Location newLocation = event.getTo().clone();
         newLocation.add(vector);
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
@@ -138,11 +138,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onReply(AsyncPlayerChatEvent event) {
+    public void onReply(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().equals(player))
             return;
-        String message = event.getMessage().trim();
-        for (int i : options.keySet()) {
+        final String message = event.getMessage().trim();
+        for (final int i : options.keySet()) {
             if (message.equals(Integer.toString(i))) {
                 conv.sendMessage(answerFormat + options.get(i));
                 conv.passPlayerAnswer(i);
@@ -160,13 +160,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void setNpcResponse(String npcName, String response) {
+    public void setNpcResponse(final String npcName, final String response) {
         this.npcName = npcName;
         this.npcText = response;
     }
 
     @Override
-    public void addPlayerOption(String option) {
+    public void addPlayerOption(final String option) {
         i++;
         options.put(i, option);
     }
@@ -193,7 +193,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void print(String message) {
+    public void print(final String message) {
         if (message != null && message.length() > 0) {
             conv.sendMessage(message);
         }

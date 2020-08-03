@@ -35,7 +35,7 @@ public class PlayerConverter {
      * @param player - Player object from which playerID needs to be extracted
      * @return playerID of the player
      */
-    public static String getID(Player player) {
+    public static String getID(final Player player) {
         return player.getUniqueId().toString();
     }
 
@@ -46,7 +46,7 @@ public class PlayerConverter {
      * @return playerID of the player
      */
     @SuppressWarnings("deprecation")
-    public static String getID(String name) {
+    public static String getID(final String name) {
         return Bukkit.getOfflinePlayer(name).getUniqueId().toString();
     }
 
@@ -56,11 +56,11 @@ public class PlayerConverter {
      * @param ID - playerID
      * @return the Player object
      */
-    public static Player getPlayer(String ID) {
+    public static Player getPlayer(final String ID) {
         return Bukkit.getPlayer(UUID.fromString(ID));
     }
 
-    public static String getName(String playerID) {
+    public static String getName(final String playerID) {
         return playerID == null ? null : Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
     }
 

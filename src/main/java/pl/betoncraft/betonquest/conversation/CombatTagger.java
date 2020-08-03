@@ -58,9 +58,9 @@ public class CombatTagger implements Listener {
      * @param playerID ID of the player
      * @return true if the player is tagged, false otherwise
      */
-    public static boolean isTagged(String playerID) {
+    public static boolean isTagged(final String playerID) {
         boolean result = false;
-        Boolean state = tagged.get(playerID);
+        final Boolean state = tagged.get(playerID);
         if (state != null) {
             result = state;
         }
@@ -68,8 +68,8 @@ public class CombatTagger implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDamage(EntityDamageByEntityEvent event) {
-        ArrayList<String> IDs = new ArrayList<>();
+    public void onDamage(final EntityDamageByEntityEvent event) {
+        final ArrayList<String> IDs = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
             IDs.add(PlayerConverter.getID((Player) event.getEntity()));
         }
@@ -78,7 +78,7 @@ public class CombatTagger implements Listener {
         }
         for (final String playerID : IDs) {
             tagged.put(playerID, true);
-            BukkitRunnable run = untaggers.get(playerID);
+            final BukkitRunnable run = untaggers.get(playerID);
             if (run != null) {
                 run.cancel();
             }
@@ -93,10 +93,10 @@ public class CombatTagger implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDeath(PlayerDeathEvent event) {
-        String playerID = PlayerConverter.getID(event.getEntity());
+    public void onDeath(final PlayerDeathEvent event) {
+        final String playerID = PlayerConverter.getID(event.getEntity());
         tagged.remove(playerID);
-        BukkitRunnable runnable = untaggers.remove(playerID);
+        final BukkitRunnable runnable = untaggers.remove(playerID);
         if (runnable != null)
             runnable.cancel();
     }
