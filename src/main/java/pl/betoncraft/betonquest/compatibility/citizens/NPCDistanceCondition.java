@@ -41,7 +41,7 @@ public class NPCDistanceCondition extends Condition {
     private final int id;
     private final VariableNumber distance;
 
-    public NPCDistanceCondition(Instruction instruction) throws InstructionParseException {
+    public NPCDistanceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         id = instruction.getInt();
         if (id < 0) {
@@ -51,14 +51,14 @@ public class NPCDistanceCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-        double distance = this.distance.getDouble(playerID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final double distance = this.distance.getDouble(playerID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
-        Entity npcEntity = npc.getEntity();
+        final Entity npcEntity = npc.getEntity();
         if (npcEntity == null) return false;
         if (!npcEntity.getWorld().equals(player.getWorld())) return false;
         return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;

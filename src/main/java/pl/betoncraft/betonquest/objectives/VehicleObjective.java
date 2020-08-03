@@ -35,10 +35,10 @@ public class VehicleObjective extends Objective implements Listener {
     private EntityType vehicle;
     private boolean any;
 
-    public VehicleObjective(Instruction instruction) throws InstructionParseException {
+    public VehicleObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
-        String name = instruction.next();
+        final String name = instruction.next();
         if (name.equalsIgnoreCase("any")) {
             any = true;
         } else try {
@@ -49,10 +49,10 @@ public class VehicleObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onVehicleEnter(VehicleEnterEvent event) {
+    public void onVehicleEnter(final VehicleEnterEvent event) {
         if (!(event.getEntered() instanceof Player))
             return;
-        String playerID = PlayerConverter.getID((Player) event.getEntered());
+        final String playerID = PlayerConverter.getID((Player) event.getEntered());
         if (containsPlayer(playerID) && (any || event.getVehicle().getType() == vehicle) && checkConditions(playerID)) {
             completeObjective(playerID);
         }

@@ -42,7 +42,7 @@ public class VariableObjective extends Objective implements Listener {
 
     private final boolean noChat;
 
-    public VariableObjective(Instruction instruction) throws InstructionParseException {
+    public VariableObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = VariableData.class;
         noChat = instruction.hasArgument("no-chat");
@@ -63,17 +63,17 @@ public class VariableObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onChat(AsyncPlayerChatEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onChat(final AsyncPlayerChatEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {
             return;
         }
         if (event.getMessage().matches("[a-zA-Z]*: .*")) {
             event.setCancelled(true);
-            String message = event.getMessage();
-            int index = message.indexOf(':');
-            String key = message.substring(0, index).trim();
-            String value = message.substring(index + 1).trim();
+            final String message = event.getMessage();
+            final int index = message.indexOf(':');
+            final String key = message.substring(0, index).trim();
+            final String value = message.substring(index + 1).trim();
             ((VariableData) dataMap.get(playerID)).add(key, value);
             event.getPlayer().sendMessage("§2§l\u2713");
         }
@@ -88,8 +88,8 @@ public class VariableObjective extends Objective implements Listener {
      * @return true if it was stored, false if the player doesn't have this
      * objective
      */
-    public boolean store(String playerID, String key, String value) {
-        VariableData data = (VariableData) dataMap.get(playerID);
+    public boolean store(final String playerID, final String key, final String value) {
+        final VariableData data = (VariableData) dataMap.get(playerID);
         if (data == null) {
             return false;
         }
@@ -103,8 +103,8 @@ public class VariableObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
-        String value = ((VariableData) dataMap.get(playerID)).get(name);
+    public String getProperty(final String name, final String playerID) {
+        final String value = ((VariableData) dataMap.get(playerID)).get(name);
         return value == null ? "" : value;
     }
 
@@ -112,30 +112,30 @@ public class VariableObjective extends Objective implements Listener {
 
         private HashMap<String, String> variables = new HashMap<>();
 
-        public VariableData(String instruction, String playerID, String objID) {
+        public VariableData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
-            String[] rawVariables = instruction.split("\n");
-            for (String rawVariable : rawVariables) {
+            final String[] rawVariables = instruction.split("\n");
+            for (final String rawVariable : rawVariables) {
                 if (rawVariable.contains(":")) {
-                    String[] parts = rawVariable.split(":");
+                    final String[] parts = rawVariable.split(":");
                     variables.put(parts[0], parts[1]);
                 }
             }
         }
 
-        public String get(String key) {
+        public String get(final String key) {
             return variables.get(key.toLowerCase());
         }
 
-        public void add(String key, String value) {
+        public void add(final String key, final String value) {
             variables.put(key, value);
             update();
         }
 
         @Override
         public String toString() {
-            StringBuilder builder = new StringBuilder();
-            for (Entry<String, String> entry : variables.entrySet()) {
+            final StringBuilder builder = new StringBuilder();
+            for (final Entry<String, String> entry : variables.entrySet()) {
                 builder.append(entry.getKey() + ':' + entry.getValue() + '\n');
             }
             return builder.toString().trim();

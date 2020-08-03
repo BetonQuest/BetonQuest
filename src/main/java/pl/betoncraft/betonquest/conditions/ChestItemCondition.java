@@ -37,7 +37,7 @@ public class ChestItemCondition extends Condition {
     private final Item[] questItems;
     private final LocationData loc;
 
-    public ChestItemCondition(Instruction instruction) throws InstructionParseException {
+    public ChestItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -47,9 +47,9 @@ public class ChestItemCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Block block = loc.getLocation(playerID).getBlock();
-        InventoryHolder chest;
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Block block = loc.getLocation(playerID).getBlock();
+        final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
         } catch (ClassCastException e) {
@@ -57,10 +57,10 @@ public class ChestItemCondition extends Condition {
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
-        for (Item questItem : questItems) {
+        for (final Item questItem : questItems) {
             int amount = questItem.getAmount().getInt(playerID);
-            ItemStack[] inventoryItems = chest.getInventory().getContents();
-            for (ItemStack item : inventoryItems) {
+            final ItemStack[] inventoryItems = chest.getInventory().getContents();
+            for (final ItemStack item : inventoryItems) {
                 if (item == null) {
                     continue;
                 }

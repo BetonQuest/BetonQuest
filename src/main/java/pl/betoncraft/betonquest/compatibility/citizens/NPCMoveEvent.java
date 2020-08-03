@@ -59,7 +59,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private String currentPlayer;
     private boolean blockConversations;
 
-    public NPCMoveEvent(Instruction instruction) throws InstructionParseException {
+    public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         id = instruction.getInt();
         if (id < 0) {
@@ -81,11 +81,11 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * @return true if the NPC is moving because of 'move' event, false if it's
      * standing or moving because other reasons
      */
-    public static boolean isNPCMoving(NPC npc) {
+    public static boolean isNPCMoving(final NPC npc) {
         return movingNPCs.containsKey(npc.getId()) && movingNPCs.get(npc.getId()).currentPlayer != null;
     }
 
-    public static void stopNPCMoving(NPC npc) {
+    public static void stopNPCMoving(final NPC npc) {
         if (movingNPCs.containsKey(npc.getId())) {
             movingNPCs.get(npc.getId()).currentPlayer = null;
         }
@@ -97,25 +97,25 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * @param npc NPC to check
      * @return false if you can talk to the npc true if not
      */
-    public static boolean blocksTalking(NPC npc) {
+    public static boolean blocksTalking(final NPC npc) {
         if (!isNPCMoving(npc)) return false;
         return movingNPCs.get(npc.getId()).blockConversations;
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         // this event should not run if the player is offline
         if (PlayerConverter.getPlayer(playerID) == null) {
             currentPlayer = null;
             return null;
         }
         if (currentPlayer != null) {
-            for (EventID event : failEvents) {
+            for (final EventID event : failEvents) {
                 BetonQuest.event(playerID, event);
             }
             return null;
         }
-        NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
@@ -123,7 +123,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return null;
         }
         locationsIterator = locations.listIterator(0);
-        LocationData firstLocation = locationsIterator.next();
+        final LocationData firstLocation = locationsIterator.next();
         if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
             CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation.getLocation(playerID));
         } else {
@@ -149,8 +149,8 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         onContinue(event);
     }
 
-    public void onContinue(NavigationEvent event) {
-        NPC npc = event.getNPC();
+    public void onContinue(final NavigationEvent event) {
+        final NPC npc = event.getNPC();
         if (npc.getId() != id) {
             return;
         }
@@ -163,7 +163,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         }
         if (locationsIterator.hasNext()) {
             try {
-                Location next = locationsIterator.next().getLocation(currentPlayer);
+                final Location next = locationsIterator.next().getLocation(currentPlayer);
                 if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
                     CitizensWalkingListener.getInstance().setNewTargetLocation(npc, next);
                 } else {
@@ -186,7 +186,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             @Override
             public void run() {
                 npc.getNavigator().setPaused(false);
-                for (EventID event : doneEvents) {
+                for (final EventID event : doneEvents) {
                     BetonQuest.event(currentPlayer, event);
                 }
                 locationsIterator = null;

@@ -49,7 +49,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     private final LocationData loc;
     private final VariableNumber range;
 
-    public ArrowShootObjective(Instruction instruction) throws InstructionParseException {
+    public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         loc = instruction.getLocation();
@@ -57,7 +57,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onArrowHit(ProjectileHitEvent event) {
+    public void onArrowHit(final ProjectileHitEvent event) {
         // check if it's the arrow shot by the player with active objectve
         final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
@@ -78,12 +78,12 @@ public class ArrowShootObjective extends Objective implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Location arrowLocation = arrow.getLocation();
+                    final Location arrowLocation = arrow.getLocation();
                     if (arrowLocation == null) {
                         return;
                     }
                     try {
-                        double r = range.getDouble(playerID);
+                        final double r = range.getDouble(playerID);
                         if (arrowLocation.getWorld().equals(location.getWorld())
                                 && arrowLocation.distanceSquared(location) < r * r
                                 && checkConditions(playerID)) {

@@ -29,13 +29,13 @@ public class LoreHandler {
     private Existence e = Existence.WHATEVER;
     private boolean exact = true;
 
-    public void set(String lore) throws InstructionParseException {
+    public void set(final String lore) throws InstructionParseException {
         if (lore.equals("none")) {
             e = Existence.FORBIDDEN;
             return;
         }
         e = Existence.REQUIRED;
-        for (String line : lore.split(";")) {
+        for (final String line : lore.split(";")) {
             this.lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
         }
     }
@@ -48,7 +48,7 @@ public class LoreHandler {
         return lore;
     }
 
-    public boolean check(List<String> lore) {
+    public boolean check(final List<String> lore) {
         switch (e) {
             case WHATEVER:
                 return true;
@@ -66,9 +66,9 @@ public class LoreHandler {
                         }
                     }
                 } else {
-                    for (String line : this.lore) {
+                    for (final String line : this.lore) {
                         boolean has = false;
-                        for (String itemLine : lore) {
+                        for (final String itemLine : lore) {
                             if (itemLine.equals(line)) {
                                 has = true;
                                 break;

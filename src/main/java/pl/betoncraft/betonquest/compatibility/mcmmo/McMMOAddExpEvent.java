@@ -36,7 +36,7 @@ public class McMMOAddExpEvent extends QuestEvent {
     private final String skillType;
     private final VariableNumber exp;
 
-    public McMMOAddExpEvent(Instruction instruction) throws InstructionParseException {
+    public McMMOAddExpEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         skillType = instruction.next().toUpperCase();
         if (!SkillAPI.getSkills().contains(skillType)) {
@@ -46,7 +46,7 @@ public class McMMOAddExpEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         ExperienceAPI.addRawXP(PlayerConverter.getPlayer(playerID), skillType, exp.getInt(playerID), "UNKNOWN");
         return null;
     }

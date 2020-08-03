@@ -37,7 +37,7 @@ public class PointVariable extends Variable {
     protected Type type;
     protected int amount;
 
-    public PointVariable(Instruction instruction) throws InstructionParseException {
+    public PointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         category = instruction.next();
         if (category.contains("*")) {
@@ -61,13 +61,13 @@ public class PointVariable extends Variable {
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         return getValue(BetonQuest.getInstance().getPlayerData(playerID).getPoints());
     }
 
-    protected String getValue(List<Point> points) {
+    protected String getValue(final List<Point> points) {
         Point point = null;
-        for (Point p : points) {
+        for (final Point p : points) {
             if (p.getCategory().equalsIgnoreCase(category)) {
                 point = p;
                 break;

@@ -40,7 +40,7 @@ public class JournalCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("journal")) {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {

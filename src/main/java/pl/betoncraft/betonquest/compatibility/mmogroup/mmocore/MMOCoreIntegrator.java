@@ -8,7 +8,7 @@ public class MMOCoreIntegrator implements Integrator {
     @Override
     public void hook() {
         MMOCoreUtils.loadMMOCoreAttributeConfig();
-        BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuest plugin = BetonQuest.getInstance();
 
         plugin.registerConditions("mmoclass", MMOCoreClassCondition.class);
         plugin.registerConditions("mmoattribute", MMOCoreAttributeCondition.class);

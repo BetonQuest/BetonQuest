@@ -33,14 +33,14 @@ public class JournalCondition extends Condition {
 
     private final String targetPointer;
 
-    public JournalCondition(Instruction instruction) throws InstructionParseException {
+    public JournalCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         targetPointer = Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (Pointer pointer : BetonQuest.getInstance().getPlayerData(playerID).getJournal().getPointers()) {
+    protected Boolean execute(final String playerID) {
+        for (final Pointer pointer : BetonQuest.getInstance().getPlayerData(playerID).getJournal().getPointers()) {
             if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
                 return true;
             }

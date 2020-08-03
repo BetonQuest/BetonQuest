@@ -44,7 +44,7 @@ public class BlockObjective extends Objective implements Listener {
     private final int notifyInterval;
     private final BlockSelector selector;
 
-    public BlockObjective(Instruction instruction) throws InstructionParseException {
+    public BlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = BlockData.class;
         selector = instruction.getBlockSelector();
@@ -58,13 +58,13 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onBlockPlace(final BlockPlaceEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
         if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
             // add the block to the total amount
-            BlockData playerData = (BlockData) dataMap.get(playerID);
+            final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.add();
             // complete the objective
             if (playerData.getAmount() == neededAmount) {
@@ -85,13 +85,13 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onBlockBreak(final BlockBreakEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
         if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
             // remove the block from the total amount
-            BlockData playerData = (BlockData) dataMap.get(playerID);
+            final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.remove();
             // complete the objective
             if (playerData.getAmount() == neededAmount) {
@@ -127,7 +127,7 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(neededAmount - ((BlockData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -140,7 +140,7 @@ public class BlockObjective extends Objective implements Listener {
 
         private int amount;
 
-        public BlockData(String instruction, String playerID, String objID) {
+        public BlockData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

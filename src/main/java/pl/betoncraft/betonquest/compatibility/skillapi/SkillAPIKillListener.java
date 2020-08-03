@@ -38,11 +38,11 @@ public class SkillAPIKillListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onKill(SkillDamageEvent event) {
+    public void onKill(final SkillDamageEvent event) {
         if (!(event.getDamager() instanceof Player)) {
             return;
         }
-        Player player = (Player) event.getDamager();
+        final Player player = (Player) event.getDamager();
         if (event.getTarget().getHealth() > event.getDamage()) {
             return;
         }

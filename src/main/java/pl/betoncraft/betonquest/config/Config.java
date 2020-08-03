@@ -68,7 +68,7 @@ public class Config {
      *
      * @param verboose controls if this object should log it's actions to the file
      */
-    public Config(boolean verboose) {
+    public Config(final boolean verboose) {
 
         packages.clear();
         cancelers.clear();
@@ -89,7 +89,7 @@ public class Config {
         messages = new ConfigAccessor(new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
         messages.saveDefaultConfig();
         internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
-        for (String key : messages.getConfig().getKeys(false)) {
+        for (final String key : messages.getConfig().getKeys(false)) {
             if (!key.equals("global")) {
                 if (verboose)
                     LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
@@ -103,17 +103,17 @@ public class Config {
         createDefaultPackage(defaultPackage);
 
         // load packages
-        for (File file : plugin.getDataFolder().listFiles()) {
+        for (final File file : plugin.getDataFolder().listFiles()) {
             searchForPackages(file);
         }
 
         // load quest cancelers
-        for (ConfigPackage pack : packages.values()) {
-            ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
+        for (final ConfigPackage pack : packages.values()) {
+            final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
             if (s == null)
                 continue;
-            for (String key : s.getKeys(false)) {
-                String name = pack.getName() + "." + key;
+            for (final String key : s.getKeys(false)) {
+                final String name = pack.getName() + "." + key;
                 try {
                     cancelers.put(name, new QuestCanceler(name));
                 } catch (InstructionParseException e) {
@@ -130,8 +130,8 @@ public class Config {
      * @param packName name of the new package
      * @return true if the package was created, false if it already existed
      */
-    public static boolean createDefaultPackage(String packName) {
-        File def = new File(instance.root, packName.replace("-", File.separator));
+    public static boolean createDefaultPackage(final String packName) {
+        final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
             LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");
             def.mkdirs();
@@ -142,7 +142,7 @@ public class Config {
             saveResource(def, "default/items.yml", "items.yml");
             saveResource(def, "default/objectives.yml", "objectives.yml");
             saveResource(def, "default/custom.yml", "custom.yml");
-            File conversations = new File(def, "conversations");
+            final File conversations = new File(def, "conversations");
             conversations.mkdir();
             saveResource(conversations, "default/defaultConversation.yml", "innkeeper.yml");
             List<String> list = plugin.getConfig().getStringList("packages");
@@ -163,16 +163,16 @@ public class Config {
      * @param resource resource name
      * @param name     file name
      */
-    private static void saveResource(File root, String resource, String name) {
+    private static void saveResource(final File root, final String resource, final String name) {
         if (!root.isDirectory())
             return;
-        File file = new File(root, name);
+        final File file = new File(root, name);
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                InputStream in = plugin.getResource(resource);
-                OutputStream out = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
+                final InputStream in = plugin.getResource(resource);
+                final OutputStream out = new FileOutputStream(file);
+                final byte[] buffer = new byte[1024];
                 int len = in.read(buffer);
                 while (len != -1) {
                     out.write(buffer, 0, len);
@@ -212,7 +212,7 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(String lang, String message, String[] variables) {
+    public static String getMessage(final String lang, final String message, final String[] variables) {
         String result = messages.getConfig().getString(lang + "." + message);
         if (result == null) {
             result = messages.getConfig().getString(Config.getLanguage() + "." + message);
@@ -244,7 +244,7 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(String lang, String message) {
+    public static String getMessage(final String lang, final String message) {
         return getMessage(lang, message, null);
     }
 
@@ -263,19 +263,19 @@ public class Config {
      * @param address address of the string
      * @return the requested string
      */
-    public static String getString(String address) {
+    public static String getString(final String address) {
         if (address == null)
             return null;
-        String[] parts = address.split("\\.");
+        final String[] parts = address.split("\\.");
         if (parts.length < 2)
             return null;
-        String main = parts[0];
+        final String main = parts[0];
         if (main.equals("config")) {
             return plugin.getConfig().getString(address.substring(7));
         } else if (main.equals("messages")) {
             return messages.getConfig().getString(address.substring(9));
         } else {
-            ConfigPackage pack = packages.get(main);
+            final ConfigPackage pack = packages.get(main);
             if (pack == null)
                 return null;
             return pack.getRawString(address.substring(main.length() + 1));
@@ -289,13 +289,13 @@ public class Config {
      * @param value   value that needs to be set
      * @return true if it was set, false otherwise
      */
-    public static boolean setString(String address, String value) {
+    public static boolean setString(final String address, final String value) {
         if (address == null)
             return false;
-        String[] parts = address.split("\\.");
+        final String[] parts = address.split("\\.");
         if (parts.length < 2)
             return false;
-        String main = parts[0];
+        final String main = parts[0];
         if (main.equals("config")) {
             plugin.getConfig().set(address.substring(7), value);
             plugin.saveConfig();
@@ -305,7 +305,7 @@ public class Config {
             messages.saveConfig();
             return true;
         } else {
-            ConfigPackage pack = packages.get(main);
+            final ConfigPackage pack = packages.get(main);
             if (pack == null)
                 return false;
             return pack.setString(address.substring(main.length() + 1), value);
@@ -335,13 +335,13 @@ public class Config {
      * @return the ID of the conversation assigned to this NPC or null if there
      * isn't one
      */
-    public static String getNpc(String value) {
+    public static String getNpc(final String value) {
         // load npc assignments from all packages
-        for (String packName : packages.keySet()) {
-            ConfigPackage pack = packages.get(packName);
-            ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
+        for (final String packName : packages.keySet()) {
+            final ConfigPackage pack = packages.get(packName);
+            final ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
             if (assignments != null) {
-                for (String assignment : assignments.getKeys(false)) {
+                for (final String assignment : assignments.getKeys(false)) {
                     if (assignment.equalsIgnoreCase(value)) {
                         return packName + "." + assignments.getString(assignment);
                     }
@@ -358,7 +358,7 @@ public class Config {
      * @param playerID    ID of the player
      * @param messageName ID of the message
      */
-    public static void sendMessage(String playerID, String messageName) {
+    public static void sendMessage(final String playerID, final String messageName) {
         sendMessage(playerID, messageName, null, null, null, null);
     }
 
@@ -371,7 +371,7 @@ public class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(String playerID, String messageName, String[] variables) {
+    public static void sendMessage(final String playerID, final String messageName, final String[] variables) {
         sendMessage(playerID, messageName, variables, null, null, null);
     }
 
@@ -385,7 +385,7 @@ public class Config {
      * @param variables   array of variables which will be inserted into the string
      * @param soundName   name of the sound to play to the player
      */
-    public static void sendMessage(String playerID, String messageName, String[] variables, String soundName) {
+    public static void sendMessage(final String playerID, final String messageName, final String[] variables, final String soundName) {
         sendMessage(playerID, messageName, variables, soundName, null, null);
     }
 
@@ -401,36 +401,36 @@ public class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(String playerID, String messageName, String[] variables, String soundName,
-                                   String prefixName, String[] prefixVariables) {
-        String message = parseMessage(playerID, messageName, variables, prefixName, prefixVariables);
+    public static void sendMessage(final String playerID, final String messageName, final String[] variables, final String soundName,
+                                   final String prefixName, final String[] prefixVariables) {
+        final String message = parseMessage(playerID, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0)
             return;
 
-        Player player = PlayerConverter.getPlayer(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
         player.sendMessage(message);
         if (soundName != null) {
             playSound(playerID, soundName);
         }
     }
 
-    public static void sendNotify(String playerID, String messageName, String category) {
+    public static void sendNotify(final String playerID, final String messageName, final String category) {
         sendNotify(playerID, messageName, null, category);
     }
 
-    public static void sendNotify(Player player, String messageName, String category) {
+    public static void sendNotify(final Player player, final String messageName, final String category) {
         sendNotify(player, messageName, null, category);
     }
 
-    public static void sendNotify(String playerID, String messageName, String[] variables, String category) {
+    public static void sendNotify(final String playerID, final String messageName, final String[] variables, final String category) {
         sendNotify(playerID, messageName, variables, category, null);
     }
 
-    public static void sendNotify(Player player, String messageName, String[] variables, String category) {
+    public static void sendNotify(final Player player, final String messageName, final String[] variables, final String category) {
         sendNotify(player, messageName, variables, category, null);
     }
 
-    public static void sendNotify(String playerID, String messageName, String[] variables, String category, Map<String, String> data) {
+    public static void sendNotify(final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
         sendNotify(PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
     }
 
@@ -445,24 +445,24 @@ public class Config {
      * @param category    notification category
      * @param data        custom notifyIO data
      */
-    public static void sendNotify(Player player, String messageName, String[] variables, String category, Map<String, String> data) {
-        String message = parseMessage(player, messageName, variables);
+    public static void sendNotify(final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+        final String message = parseMessage(player, messageName, variables);
         if (message == null || message.length() == 0)
             return;
 
         Notify.get(category, data).sendNotify(message, player);
     }
 
-    public static String parseMessage(String playerID, String messageName, String[] variables) {
+    public static String parseMessage(final String playerID, final String messageName, final String[] variables) {
         return parseMessage(playerID, messageName, variables, null, null);
     }
 
-    public static String parseMessage(Player player, String messageName, String[] variables) {
+    public static String parseMessage(final Player player, final String messageName, final String[] variables) {
         return parseMessage(player, messageName, variables, null, null);
     }
 
-    public static String parseMessage(String playerID, String messageName, String[] variables, String prefixName,
-                                      String[] prefixVariables) {
+    public static String parseMessage(final String playerID, final String messageName, final String[] variables, final String prefixName,
+                                      final String[] prefixVariables) {
         return parseMessage(PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
     }
 
@@ -475,17 +475,17 @@ public class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static String parseMessage(Player player, String messageName, String[] variables, String prefixName,
-                                      String[] prefixVariables) {
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+    public static String parseMessage(final Player player, final String messageName, final String[] variables, final String prefixName,
+                                      final String[] prefixVariables) {
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
         if (playerData == null)
             return null;
-        String language = playerData.getLanguage();
+        final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
         if (message == null || message.length() == 0)
             return null;
         if (prefixName != null) {
-            String prefix = getMessage(language, prefixName, prefixVariables);
+            final String prefix = getMessage(language, prefixName, prefixVariables);
             if (prefix.length() > 0) {
                 message = prefix + message;
             }
@@ -499,10 +499,10 @@ public class Config {
      * @param playerID  the uuid of the player
      * @param soundName the name of the sound to play to the player
      */
-    public static void playSound(String playerID, String soundName) {
-        Player player = PlayerConverter.getPlayer(playerID);
+    public static void playSound(final String playerID, final String soundName) {
+        final Player player = PlayerConverter.getPlayer(playerID);
         if (player == null) return;
-        String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
+        final String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
         if (!rawSound.equalsIgnoreCase("false")) {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
@@ -527,23 +527,23 @@ public class Config {
         return getPackages().get(defaultPackage);
     }
 
-    private void searchForPackages(File file) {
+    private void searchForPackages(final File file) {
         if (file.isDirectory() && !utilDirNames.contains(file.getName())) {
-            File[] content = file.listFiles();
-            for (File subFile : content) {
+            final File[] content = file.listFiles();
+            for (final File subFile : content) {
                 if (subFile.getName().equals("main.yml")) {
                     // this is a package, add it and stop searching
-                    String packPath = BetonQuest.getInstance().getDataFolder()
+                    final String packPath = BetonQuest.getInstance().getDataFolder()
                             .toURI().relativize(file.toURI())
                             .toString().replace('/', ' ').trim().replace(' ', '-');
-                    ConfigPackage pack = new ConfigPackage(file, packPath);
+                    final ConfigPackage pack = new ConfigPackage(file, packPath);
                     if (pack.isEnabled()) {
                         packages.put(packPath, pack);
                     }
                     return;
                 }
             }
-            for (File subFile : content) {
+            for (final File subFile : content) {
                 searchForPackages(subFile);
             }
         }

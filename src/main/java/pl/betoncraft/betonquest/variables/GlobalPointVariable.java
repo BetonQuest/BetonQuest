@@ -33,12 +33,12 @@ public class GlobalPointVariable extends PointVariable {
     protected Type type;
     protected int amount;
 
-    public GlobalPointVariable(Instruction instruction) throws InstructionParseException {
+    public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
     }
 

@@ -34,12 +34,12 @@ public class Condition_JobLevel extends Condition {
     private int nMinLevel;
     private int nMaxLevel;
 
-    public Condition_JobLevel(Instruction instruction) throws InstructionParseException {
+    public Condition_JobLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        for (Job job : Jobs.getJobs()) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
                 sJobName = job.getName();
                 try {
@@ -55,11 +55,11 @@ public class Condition_JobLevel extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        Player oPlayer = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final String playerID) {
+        final Player oPlayer = PlayerConverter.getPlayer(playerID);
 
-        List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
-        for (JobProgression oJob : oJobs) {
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+        for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
                 if (oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel)

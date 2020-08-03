@@ -35,7 +35,7 @@ public class AnswerFilter implements Filter {
     }
 
     @Override
-    public Result filter(LogEvent record) {
+    public Result filter(final LogEvent record) {
         if (record != null && record.getMessage() != null && record.getMessage().getFormattedMessage() != null
                 && record.getMessage().getFormattedMessage().contains(" issued server command: /betonquestanswer ")) {
             return Result.DENY;
@@ -44,67 +44,67 @@ public class AnswerFilter implements Filter {
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object... objects) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object... objects) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7, Object o8) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7, final Object o8) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, String s, Object o, Object o1, Object o2, Object o3, Object o4, Object o5, Object o6, Object o7, Object o8, Object o9) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7, final Object o8, final Object o9) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, Object o, Throwable throwable) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final Object o, final Throwable throwable) {
         return null;
     }
 
     @Override
-    public Result filter(Logger logger, Level level, Marker marker, Message message, Throwable throwable) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final Message message, final Throwable throwable) {
         return null;
     }
 

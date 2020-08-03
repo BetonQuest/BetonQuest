@@ -45,31 +45,31 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("questlang")) {
             if (args.length < 1) {
                 sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
                 return true;
             }
             if (!Config.getLanguages().contains(args[0]) && !args[0].equalsIgnoreCase("default")) {
-                StringBuilder builder = new StringBuilder();
+                final StringBuilder builder = new StringBuilder();
                 builder.append("default (" + Config.getLanguage() + "), ");
-                for (String lang : Config.getLanguages()) {
+                for (final String lang : Config.getLanguages()) {
                     builder.append(lang + ", ");
                 }
                 if (builder.length() < 3) {
                     LogUtils.getLogger().log(Level.WARNING, "No translations loaded, somethings wrong!");
                     return false;
                 }
-                String finalMessage = builder.substring(0, builder.length() - 2) + ".";
+                final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
                 sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_not_exist") + finalMessage);
                 return true;
             }
             if (sender instanceof Player) {
-                String lang = args[0];
-                String playerID = PlayerConverter.getID((Player) sender);
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-                Journal journal = playerData.getJournal();
+                final String lang = args[0];
+                final String playerID = PlayerConverter.getID((Player) sender);
+                final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+                final Journal journal = playerData.getJournal();
                 int slot = -1;
                 if (Journal.hasJournal(playerID)) {
                     slot = journal.removeFromInv();
@@ -89,7 +89,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     @Override
-    public List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 1) {
             return Config.getLanguages();
         }

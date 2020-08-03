@@ -41,7 +41,7 @@ public class NPCLocationCondition extends Condition {
     private final LocationData location;
     private final VariableNumber radius;
 
-    public NPCLocationCondition(Instruction instruction) throws InstructionParseException {
+    public NPCLocationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
@@ -54,15 +54,15 @@ public class NPCLocationCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
-        Entity npcEntity = npc.getEntity();
+        final Entity npcEntity = npc.getEntity();
         if (npcEntity == null) return false;
-        double radius = this.radius.getDouble(playerID);
-        Location location = this.location.getLocation(playerID);
+        final double radius = this.radius.getDouble(playerID);
+        final Location location = this.location.getLocation(playerID);
         if (!location.getWorld().equals(npcEntity.getWorld())) return false;
         return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
     }

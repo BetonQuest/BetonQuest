@@ -42,7 +42,7 @@ public class PartyCondition extends Condition {
     private ConditionID[] anyone;
     private VariableNumber count;
 
-    public PartyCondition(Instruction instruction) throws InstructionParseException {
+    public PartyCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         range = instruction.getVarNum();
         conditions = instruction.getList(e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
@@ -52,12 +52,12 @@ public class PartyCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         // get the party
-        ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
+        final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions
-        for (ConditionID condition : everyone) {
-            for (String memberID : members) {
+        for (final ConditionID condition : everyone) {
+            for (final String memberID : members) {
                 // if this condition wasn't met by someone, return false
                 if (!BetonQuest.condition(memberID, condition)) {
                     return false;
@@ -65,9 +65,9 @@ public class PartyCondition extends Condition {
             }
         }
         // check every condition against every player - at least one of them must meet each of those
-        for (ConditionID condition : anyone) {
+        for (final ConditionID condition : anyone) {
             boolean met = false;
-            for (String memberID : members) {
+            for (final String memberID : members) {
                 if (BetonQuest.condition(memberID, condition)) {
                     met = true;
                     break;
@@ -80,7 +80,7 @@ public class PartyCondition extends Condition {
         }
         // if the count is more than 0, we need to check if there are more
         // players in the party than required minimum
-        int c = (count != null) ? count.getInt(playerID) : 0;
+        final int c = (count != null) ? count.getInt(playerID) : 0;
         return c <= 0 || members.size() >= c;
     }
 

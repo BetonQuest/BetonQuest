@@ -29,9 +29,9 @@ public class VehicleCondition extends Condition {
     private EntityType vehicle;
     private boolean any;
 
-    public VehicleCondition(Instruction instruction) throws InstructionParseException {
+    public VehicleCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String name = instruction.next();
+        final String name = instruction.next();
         if (name.equalsIgnoreCase("any")) {
             any = true;
         } else try {
@@ -42,8 +42,8 @@ public class VehicleCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        Entity entity = PlayerConverter.getPlayer(playerID).getVehicle();
+    protected Boolean execute(final String playerID) {
+        final Entity entity = PlayerConverter.getPlayer(playerID).getVehicle();
         return entity != null && (any || entity.getType() == vehicle);
     }
 

@@ -71,7 +71,7 @@ public class EntityInteractObjective extends Objective {
     private RightClickListener rightClickListener;
     private LeftClickListener leftClickListener;
 
-    public EntityInteractObjective(Instruction instruction) throws InstructionParseException {
+    public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
@@ -89,7 +89,7 @@ public class EntityInteractObjective extends Objective {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        String r = instruction.getOptional("range");
+        final String r = instruction.getOptional("range");
         range = instruction.getVarNum(r == null ? "1" : r);
     }
 
@@ -109,7 +109,7 @@ public class EntityInteractObjective extends Objective {
         }
     }
 
-    private boolean onInteract(Player player, Entity entity) {
+    private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {
             return false;
@@ -123,21 +123,21 @@ public class EntityInteractObjective extends Objective {
             if (!entity.hasMetadata("betonquest-marked")) {
                 return false;
             }
-            List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
-            for (MetadataValue m : meta) {
+            final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
+            for (final MetadataValue m : meta) {
                 if (!m.asString().equals(marked)) {
                     return false;
                 }
             }
         }
         // check if the player has this objective
-        String playerID = PlayerConverter.getID(player);
+        final String playerID = PlayerConverter.getID(player);
         if (containsPlayer(playerID) && checkConditions(playerID)) {
             // Check location matches
             if (loc != null) {
                 try {
-                    Location location = loc.getLocation(playerID);
-                    double r = range.getDouble(playerID);
+                    final Location location = loc.getLocation(playerID);
+                    final double r = range.getDouble(playerID);
                     if (!entity.getWorld().equals(location.getWorld())
                             || entity.getLocation().distance(location) > r) {
                         return false;
@@ -150,7 +150,7 @@ public class EntityInteractObjective extends Objective {
 
 
             // get data off the player
-            EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
+            final EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
             // check if player already interacted with entity
             if (playerData.containsEntity(entity))
                 return false;
@@ -183,7 +183,7 @@ public class EntityInteractObjective extends Objective {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(((EntityInteractData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -201,9 +201,9 @@ public class EntityInteractObjective extends Objective {
         private int amount;
         private Set<UUID> entitys;
 
-        public EntityInteractData(String instruction, String playerID, String objID) {
+        public EntityInteractData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
-            String[] args = instruction.split(" ");
+            final String[] args = instruction.split(" ");
             amount = Integer.parseInt(args[0].trim());
             entitys = new HashSet<>();
             for (int i = 1; i < args.length; i++) {
@@ -211,12 +211,12 @@ public class EntityInteractObjective extends Objective {
             }
         }
 
-        public void addEntity(Entity entity) {
+        public void addEntity(final Entity entity) {
             entitys.add(entity.getUniqueId());
             update();
         }
 
-        public boolean containsEntity(Entity entity) {
+        public boolean containsEntity(final Entity entity) {
             return entitys.contains(entity.getUniqueId());
         }
 
@@ -236,7 +236,7 @@ public class EntityInteractObjective extends Objective {
         @Override
         public String toString() {
             String string = Integer.toString(amount);
-            for (UUID uuid : entitys) {
+            for (final UUID uuid : entitys) {
                 string += " " + uuid.toString();
             }
             return string;
@@ -250,15 +250,15 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onDamage(EntityDamageByEntityEvent e) {
-            Player player;
+        public void onDamage(final EntityDamageByEntityEvent e) {
+            final Player player;
             // check if entity is damaged by a Player
             if (e.getDamager() instanceof Player) {
                 player = (Player) e.getDamager();
             } else {
                 return;
             }
-            boolean succes = onInteract(player, e.getEntity());
+            final boolean succes = onInteract(player, e.getEntity());
             if (succes && cancel) {
                 e.setCancelled(true);
             }
@@ -271,8 +271,8 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(PlayerInteractEntityEvent e) {
-            boolean success = onInteract(e.getPlayer(), e.getRightClicked());
+        public void onRightClick(final PlayerInteractEntityEvent e) {
+            final boolean success = onInteract(e.getPlayer(), e.getRightClicked());
             if (success && cancel) {
                 e.setCancelled(true);
             }

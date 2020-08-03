@@ -33,8 +33,8 @@ public class EnchantmentsHandler {
     private Existence checkersE = Existence.WHATEVER;
     private boolean exact = true;
 
-    public void set(String enchants) throws InstructionParseException {
-        String[] parts;
+    public void set(final String enchants) throws InstructionParseException {
+        final String[] parts;
         if (enchants == null || (parts = enchants.split(",")).length == 0) {
             throw new InstructionParseException("Missing value");
         }
@@ -43,8 +43,8 @@ public class EnchantmentsHandler {
             return;
         }
         checkers = new ArrayList<>(parts.length);
-        for (String part : parts) {
-            SingleEnchantmentHandler checker = new SingleEnchantmentHandler();
+        for (final String part : parts) {
+            final SingleEnchantmentHandler checker = new SingleEnchantmentHandler();
             checker.set(part);
             checkers.add(checker);
         }
@@ -56,11 +56,11 @@ public class EnchantmentsHandler {
     }
 
     public Map<Enchantment, Integer> get() {
-        Map<Enchantment, Integer> map = new HashMap<>();
+        final Map<Enchantment, Integer> map = new HashMap<>();
         if (checkersE == Existence.FORBIDDEN) {
             return map;
         }
-        for (SingleEnchantmentHandler checker : checkers) {
+        for (final SingleEnchantmentHandler checker : checkers) {
             if (checker.ex != Existence.FORBIDDEN) {
                 map.put(checker.type, checker.level);
             }
@@ -68,7 +68,7 @@ public class EnchantmentsHandler {
         return map;
     }
 
-    public boolean check(Map<Enchantment, Integer> map) {
+    public boolean check(final Map<Enchantment, Integer> map) {
         if (checkersE == Existence.WHATEVER) {
             return true;
         }
@@ -80,7 +80,7 @@ public class EnchantmentsHandler {
                 return false;
             }
         }
-        for (SingleEnchantmentHandler checker : checkers) {
+        for (final SingleEnchantmentHandler checker : checkers) {
             if (!checker.check(map.get(checker.type))) {
                 return false;
             }
@@ -96,8 +96,8 @@ public class EnchantmentsHandler {
         Number nr = Number.WHATEVER;
 
         @SuppressWarnings("deprecation")
-        void set(String enchant) throws InstructionParseException {
-            String[] parts;
+        void set(final String enchant) throws InstructionParseException {
+            final String[] parts;
             if (enchant == null || (parts = enchant.split(":")).length == 0) {
                 throw new InstructionParseException("Missing value");
             }
@@ -138,7 +138,7 @@ public class EnchantmentsHandler {
             }
         }
 
-        boolean check(Integer level) {
+        boolean check(final Integer level) {
             if (ex == Existence.WHATEVER) {
                 return true;
             }

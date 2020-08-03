@@ -34,13 +34,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class Objective_LeaveJob extends Objective implements Listener {
     private final String sJobName;
 
-    public Objective_LeaveJob(Instruction instructions) throws InstructionParseException {
+    public Objective_LeaveJob(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        for (Job job : Jobs.getJobs()) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
                 sJobName = job.getName();
                 return;
@@ -50,9 +50,9 @@ public class Objective_LeaveJob extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onJobsLeaveEvent(JobsLeaveEvent event) {
+    public void onJobsLeaveEvent(final JobsLeaveEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
-            String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
+            final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
             }

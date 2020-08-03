@@ -49,18 +49,18 @@ public class NotifyEvent extends QuestEvent {
      * @throws InstructionParseException
      */
 
-    public NotifyEvent(Instruction instruction) throws InstructionParseException {
+    public NotifyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         data = new HashMap<>();
-        StringJoiner messageBuilder = new StringJoiner(" ");
+        final StringJoiner messageBuilder = new StringJoiner(" ");
         for (int i = 0; i < instruction.size() - 1; i++) {
             instruction.next();
             if (!instruction.current().contains(":")) {
                 messageBuilder.add(instruction.current());
                 continue;
             }
-            String[] parts = instruction.current().split(":", 2);
+            final String[] parts = instruction.current().split(":", 2);
 
             if (parts[0].trim().equalsIgnoreCase("category")) {
                 category = parts[1].trim();
@@ -74,8 +74,8 @@ public class NotifyEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         Notify.get(category, data).sendNotify(message, player);
         return null;
     }

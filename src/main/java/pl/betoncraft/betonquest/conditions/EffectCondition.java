@@ -32,9 +32,9 @@ public class EffectCondition extends Condition {
 
     private final PotionEffectType type;
 
-    public EffectCondition(Instruction instruction) throws InstructionParseException {
+    public EffectCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
+        final String string = instruction.next();
         type = PotionEffectType.getByName(string);
         if (type == null) {
             throw new InstructionParseException("Effect " + string + " does not exist");
@@ -42,7 +42,7 @@ public class EffectCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) {
+    protected Boolean execute(final String playerID) {
         return PlayerConverter.getPlayer(playerID).hasPotionEffect(type);
     }
 

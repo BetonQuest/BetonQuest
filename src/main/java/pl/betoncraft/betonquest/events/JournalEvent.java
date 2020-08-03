@@ -44,10 +44,10 @@ public class JournalEvent extends QuestEvent {
     private final String name;
     private final boolean add;
 
-    public JournalEvent(Instruction instruction) throws InstructionParseException {
+    public JournalEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
-        String first = instruction.next();
+        final String first = instruction.next();
         if (first.equalsIgnoreCase("update")) {
             name = null;
             add = false;
@@ -58,11 +58,11 @@ public class JournalEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
+    protected Void execute(final String playerID) {
         if (playerID == null) {
             if (!add && name != null) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                for (final Player p : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                     playerData.getJournal().removePointer(name);
                 }
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, new String[]{
@@ -71,8 +71,8 @@ public class JournalEvent extends QuestEvent {
             }
         }
         else {
-            PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
-            Journal journal = playerData.getJournal();
+            final PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
+            final Journal journal = playerData.getJournal();
             if (add) {
                 journal.addPointer(new Pointer(name, new Date().getTime()));
                 Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");

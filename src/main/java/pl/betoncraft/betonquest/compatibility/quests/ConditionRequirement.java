@@ -42,11 +42,11 @@ public class ConditionRequirement extends CustomRequirement {
     }
 
     @Override
-    public boolean testRequirement(Player player, Map<String, Object> dataMap) {
-        String string = dataMap.get("Condition").toString();
+    public boolean testRequirement(final Player player, final Map<String, Object> dataMap) {
+        final String string = dataMap.get("Condition").toString();
         try {
-            String playerID = PlayerConverter.getID(player);
-            ConditionID condition = new ConditionID(null, string);
+            final String playerID = PlayerConverter.getID(player);
+            final ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(playerID, condition);
         } catch (ObjectNotFoundException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage());

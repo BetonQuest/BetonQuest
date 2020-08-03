@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 public abstract class ID extends pl.betoncraft.betonquest.id.ID {
 
-    public ID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
     }
 

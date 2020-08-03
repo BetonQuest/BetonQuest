@@ -47,18 +47,18 @@ public class TakeEvent extends QuestEvent {
 
     private int counter;
 
-    public TakeEvent(Instruction instruction) throws InstructionParseException {
+    public TakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (Item item : questItems) {
-            QuestItem questItem = item.getItem();
-            VariableNumber amount = item.getAmount();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        for (final Item item : questItems) {
+            final QuestItem questItem = item.getItem();
+            final VariableNumber amount = item.getAmount();
 
             // cache the amount
             counter = amount.getInt(playerID);
@@ -84,10 +84,10 @@ public class TakeEvent extends QuestEvent {
 
             // Remove Quest items from player's backpack
             if (counter > 0) {
-                List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+                final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
                 ItemStack[] array = new ItemStack[]{};
                 array = backpack.toArray(array);
-                LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
+                final LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
                 list.removeAll(Collections.singleton(null));
                 BetonQuest.getInstance().getPlayerData(playerID).setBackpack(list);
             }
@@ -95,9 +95,9 @@ public class TakeEvent extends QuestEvent {
         return null;
     }
 
-    private ItemStack[] removeItems(ItemStack[] items, QuestItem questItem) {
+    private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem) {
         for (int i = 0; i < items.length; i++) {
-            ItemStack item = items[i];
+            final ItemStack item = items[i];
             if (questItem.compare(item)) {
                 if (item.getAmount() - counter <= 0) {
                     counter -= item.getAmount();

@@ -58,7 +58,7 @@ public class ConfigPackage {
      * @param pack the directory containing this package
      * @param name the name of this package
      */
-    public ConfigPackage(File pack, String name) {
+    public ConfigPackage(final File pack, final String name) {
         if (!pack.isDirectory())
             return;
         folder = pack;
@@ -70,12 +70,12 @@ public class ConfigPackage {
         journal = new ConfigAccessor(new File(pack, "journal.yml"), "journal.yml", AccessorType.JOURNAL);
         items = new ConfigAccessor(new File(pack, "items.yml"), "items.yml", AccessorType.ITEMS);
         custom = new ConfigAccessor(new File(pack, "custom.yml"), "custom.yml", AccessorType.CUSTOM);
-        File convFile = new File(pack, "conversations");
+        final File convFile = new File(pack, "conversations");
         if (convFile.exists() && convFile.isDirectory()) {
-            for (File conv : convFile.listFiles()) {
-                String convName = conv.getName();
+            for (final File conv : convFile.listFiles()) {
+                final String convName = conv.getName();
                 if (convName.endsWith(".yml")) {
-                    ConfigAccessor convAccessor = new ConfigAccessor(conv, convName, AccessorType.CONVERSATION);
+                    final ConfigAccessor convAccessor = new ConfigAccessor(conv, convName, AccessorType.CONVERSATION);
                     conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
                 }
             }
@@ -96,14 +96,14 @@ public class ConfigPackage {
      * @param address address of the string
      * @return the raw string
      */
-    public String getRawString(String address) {
+    public String getRawString(final String address) {
         // prepare the address
-        String[] parts = address.split("\\.");
+        final String[] parts = address.split("\\.");
         if (parts.length < 2) {
             return null;
         }
         // get the right file
-        String file = parts[0];
+        final String file = parts[0];
         ConfigAccessor config = null;
         int startPath = 1;
         switch (file) {
@@ -141,7 +141,7 @@ public class ConfigPackage {
             return null;
         }
         // retrieve the string from the path
-        StringBuilder newPath = new StringBuilder();
+        final StringBuilder newPath = new StringBuilder();
         for (int i = startPath; i < parts.length; i++) {
             newPath.append(parts[i]);
             if (i < parts.length - 1) {
@@ -163,15 +163,15 @@ public class ConfigPackage {
         input = input.replace("$this$", name);
 
         // handle the rest
-        Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
+        final Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
-            Matcher matcher = global_variable_regex.matcher(input);
+            final Matcher matcher = global_variable_regex.matcher(input);
             if (!matcher.find())
                 break;
-            String varName = matcher.group(1);
-            String varVal;
+            final String varName = matcher.group(1);
+            final String varVal;
             try {
-                GlobalVariableID variableID = new GlobalVariableID(this, varName);
+                final GlobalVariableID variableID = new GlobalVariableID(this, varName);
                 varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
             } catch (ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, e.getMessage());
@@ -187,8 +187,8 @@ public class ConfigPackage {
                     .matches("^\\$[a-zA-Z0-9]+\\$->\\(\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*;\\-?\\d+\\.?\\d*\\)$")) {
                 // handle location variables
                 // parse the inner location
-                String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
-                String innerVarVal = main.getConfig().getString("variables." + innerVarName);
+                final String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
+                final String innerVarVal = main.getConfig().getString("variables." + innerVarName);
                 if (innerVarVal == null) {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Location variable %s is not defined, in variable %s, package %s.",
                             innerVarName, varName, name));
@@ -202,14 +202,16 @@ public class ConfigPackage {
                     return input;
                 }
 
-                double x1, y1, z1;
-                String rest;
+                final double x1;
+                double y1;
+                final double z1;
+                final String rest;
                 try {
-                    int i = innerVarVal.indexOf(';');
+                    final int i = innerVarVal.indexOf(';');
                     x1 = Double.parseDouble(innerVarVal.substring(0, i));
-                    int j = innerVarVal.indexOf(';', i + 1);
+                    final int j = innerVarVal.indexOf(';', i + 1);
                     y1 = Double.parseDouble(innerVarVal.substring(i + 1, j));
-                    int k = innerVarVal.indexOf(';', j + 1);
+                    final int k = innerVarVal.indexOf(';', j + 1);
                     z1 = Double.parseDouble(innerVarVal.substring(j + 1, k));
                     // rest is world + possible other arguments
                     rest = innerVarVal.substring(k);
@@ -221,12 +223,14 @@ public class ConfigPackage {
                     return input;
                 }
                 // parse the vector
-                double x2, y2, z2;
+                final double x2;
+                double y2;
+                final double z2;
                 try {
-                    int s = varVal.indexOf('(');
-                    int i = varVal.indexOf(';');
-                    int j = varVal.indexOf(';', i + 1);
-                    int e = varVal.indexOf(')');
+                    final int s = varVal.indexOf('(');
+                    final int i = varVal.indexOf(';');
+                    final int j = varVal.indexOf(';', i + 1);
+                    final int e = varVal.indexOf(')');
                     x2 = Double.parseDouble(varVal.substring(s + 1, i));
                     y2 = Double.parseDouble(varVal.substring(i + 1, j));
                     z2 = Double.parseDouble(varVal.substring(j + 1, e));
@@ -236,7 +240,9 @@ public class ConfigPackage {
                     LogUtils.logThrowable(e);
                     return input;
                 }
-                double x3 = x1 + x2, y3 = y1 + y2, z3 = z1 + z2;
+                final double x3 = x1 + x2;
+                final double y3 = y1 + y2;
+                final double z3 = z1 + z2;
                 input = input.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
             } else {
                 input = input.replace("$" + varName + "$", varVal);
@@ -252,7 +258,7 @@ public class ConfigPackage {
      * @param address address of the string
      * @return the string
      */
-    public String getString(String address) {
+    public String getString(final String address) {
         return getString(address, null);
     }
 
@@ -263,8 +269,8 @@ public class ConfigPackage {
      * @param def     default value if not found
      * @return the string
      */
-    public String getString(String address, String def) {
-        String value = getRawString(address);
+    public String getString(final String address, final String def) {
+        final String value = getRawString(address);
         if (value == null) {
             return def;
         }
@@ -281,18 +287,18 @@ public class ConfigPackage {
      * @param address
      * @return a fully formatted string
      */
-    public String getFormattedString(String address) {
+    public String getFormattedString(final String address) {
         return Utils.format(getString(address));
     }
 
-    public boolean setString(String address, String value) {
+    public boolean setString(final String address, final String value) {
         // prepare the address
-        String[] parts = address.split("\\.");
+        final String[] parts = address.split("\\.");
         if (parts.length < 2) {
             return false;
         }
         // get the right file
-        String file = parts[0];
+        final String file = parts[0];
         ConfigAccessor config = null;
         int startPath = 1;
         switch (file) {
@@ -330,7 +336,7 @@ public class ConfigPackage {
             return false;
         }
         // retrieve the string from the path
-        StringBuilder newPath = new StringBuilder();
+        final StringBuilder newPath = new StringBuilder();
         for (int i = startPath; i < parts.length; i++) {
             newPath.append(parts[i]);
             if (i < parts.length - 1) {
@@ -395,7 +401,7 @@ public class ConfigPackage {
      * @param name name of the conversation to search for
      * @return the conversation config
      */
-    public ConfigAccessor getConversation(String name) {
+    public ConfigAccessor getConversation(final String name) {
         return conversations.get(name);
     }
 

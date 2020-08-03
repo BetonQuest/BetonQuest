@@ -36,14 +36,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LogoutObjective extends Objective implements Listener {
 
-    public LogoutObjective(Instruction instruction) throws InstructionParseException {
+    public LogoutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onQuit(PlayerQuitEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onQuit(final PlayerQuitEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
             completeObjective(playerID);
         }

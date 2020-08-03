@@ -42,7 +42,7 @@ public class HeroesClassCondition extends Condition {
     private boolean mastered;
     private VariableNumber level;
 
-    public HeroesClassCondition(Instruction instruction) throws InstructionParseException {
+    public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         String string = instruction.next();
         primary = string.equalsIgnoreCase("primary");
@@ -60,13 +60,13 @@ public class HeroesClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
         if (hero == null)
             return false;
-        ArrayList<HeroClass> heroClasses = new ArrayList<>();
+        final ArrayList<HeroClass> heroClasses = new ArrayList<>();
         if (mastered) {
-            for (String heroClass : hero.getMasteredClasses()) {
+            for (final String heroClass : hero.getMasteredClasses()) {
                 heroClasses.add(Heroes.getInstance().getClassManager().getClass(heroClass));
             }
         } else if (primary) {
@@ -77,7 +77,7 @@ public class HeroesClassCondition extends Condition {
         if (heroClasses.isEmpty())
             return false;
         boolean matchingClass = true, matchingLevel = true;
-        int l = (level != null) ? level.getInt(playerID) : -1;
+        final int l = (level != null) ? level.getInt(playerID) : -1;
         if (!any) {
             matchingClass = heroClasses.contains(heroClass);
             if (l > 0) {

@@ -78,13 +78,13 @@ public abstract class Objective {
      *                    extract all required information from it
      * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(Instruction instruction) throws InstructionParseException {
+    public Objective(final Instruction instruction) throws InstructionParseException {
         this.instruction = instruction;
         // extract events and conditions
-        String[] tempEvents1 = instruction.getArray(instruction.getOptional("event")),
-                tempEvents2 = instruction.getArray(instruction.getOptional("events")),
-                tempConditions1 = instruction.getArray(instruction.getOptional("condition")),
-                tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
+        final String[] tempEvents1 = instruction.getArray(instruction.getOptional("event"));
+        final String[] tempEvents2 = instruction.getArray(instruction.getOptional("events"));
+        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
+        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
         persistent = instruction.hasArgument("persistent");
         global = instruction.hasArgument("global");
         if (global)
@@ -93,7 +93,7 @@ public abstract class Objective {
         int length = tempEvents1.length + tempEvents2.length;
         events = new EventID[length];
         for (int i = 0; i < length; i++) {
-            String event = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
+            final String event = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
             try {
                 events[i] = new EventID(instruction.getPackage(), event);
             } catch (ObjectNotFoundException e) {
@@ -103,7 +103,7 @@ public abstract class Objective {
         length = tempConditions1.length + tempConditions2.length;
         conditions = new ConditionID[length];
         for (int i = 0; i < length; i++) {
-            String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length]
+            final String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length]
                     : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
@@ -146,7 +146,7 @@ public abstract class Objective {
      * @param playerID ID of the player for whom the property is to be returned
      * @return the property with given name
      */
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         return "";
     }
 
@@ -170,7 +170,7 @@ public abstract class Objective {
                         + PlayerConverter.getName(playerID)
                         + ", firing events.");
         // fire all events
-        for (EventID event : events) {
+        for (final EventID event : events) {
             BetonQuest.event(playerID, event);
         }
         LogUtils.getLogger().log(Level.FINE,
@@ -190,7 +190,7 @@ public abstract class Objective {
     public final boolean checkConditions(final String playerID) {
         LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for player " + PlayerConverter.getName(playerID));
-        for (ConditionID condition : conditions) {
+        for (final ConditionID condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;
             }
@@ -205,8 +205,8 @@ public abstract class Objective {
      *
      * @param playerID ID of the player
      */
-    public final void newPlayer(String playerID) {
-        String def = getDefaultDataInstruction();
+    public final void newPlayer(final String playerID) {
+        final String def = getDefaultDataInstruction();
         addPlayer(playerID, def);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
     }
@@ -217,7 +217,7 @@ public abstract class Objective {
      * @param playerID    ID of the player
      * @param instruction instruction string for player's data
      */
-    public final synchronized void addPlayer(String playerID, String instruction) {
+    public final synchronized void addPlayer(final String playerID, final String instruction) {
         ObjectiveData data = null;
         try {
             data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
@@ -245,7 +245,7 @@ public abstract class Objective {
      *
      * @param playerID ID of the player
      */
-    public final synchronized void removePlayer(String playerID) {
+    public final synchronized void removePlayer(final String playerID) {
         dataMap.remove(playerID);
         if (dataMap.isEmpty()) {
             stop();
@@ -258,7 +258,7 @@ public abstract class Objective {
      * @param playerID ID of the player
      * @return true if the player has this objective
      */
-    public final boolean containsPlayer(String playerID) {
+    public final boolean containsPlayer(final String playerID) {
         return dataMap.containsKey(playerID);
     }
 
@@ -268,8 +268,8 @@ public abstract class Objective {
      * @param playerID ID of the player
      * @return the data string for this objective
      */
-    public final String getData(String playerID) {
-        ObjectiveData data = dataMap.get(playerID);
+    public final String getData(final String playerID) {
+        final ObjectiveData data = dataMap.get(playerID);
         if (data == null) {
             return null;
         }
@@ -292,7 +292,7 @@ public abstract class Objective {
      *
      * @param rename new ID of the objective
      */
-    public void setLabel(ObjectiveID rename) {
+    public void setLabel(final ObjectiveID rename) {
         instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
     }
 
@@ -303,7 +303,7 @@ public abstract class Objective {
      */
     public void close() {
         stop();
-        for (String playerID : dataMap.keySet()) {
+        for (final String playerID : dataMap.keySet()) {
             BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(),
                     dataMap.get(playerID).toString());
         }
@@ -346,7 +346,7 @@ public abstract class Objective {
          * @param objID       ID of the objective, used by BetonQuest to store this
          *                    ObjectiveData in the database
          */
-        public ObjectiveData(String instruction, String playerID, String objID) {
+        public ObjectiveData(final String instruction, final String playerID, final String objID) {
             this.instruction = instruction;
             this.playerID = playerID;
             this.objID = objID;
@@ -378,10 +378,10 @@ public abstract class Objective {
          * </p>
          */
         protected void update() {
-            Saver saver = BetonQuest.getInstance().getSaver();
+            final Saver saver = BetonQuest.getInstance().getSaver();
             saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objID}));
             saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, new String[]{playerID, objID, toString()}));
-            QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
+            final QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct
             // information
@@ -411,7 +411,7 @@ public abstract class Objective {
          *
          * @param qreThrowing a task that may throw a quest runtime exception
          */
-        public void handle(QREThrowing qreThrowing) {
+        public void handle(final QREThrowing qreThrowing) {
             try {
                 qreThrowing.run();
             } catch (QuestRuntimeException e) {

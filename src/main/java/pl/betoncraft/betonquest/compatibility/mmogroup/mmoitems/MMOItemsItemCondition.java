@@ -19,31 +19,31 @@ public class MMOItemsItemCondition extends Condition {
     private final String itemID;
     private int amount = 1;
 
-    public MMOItemsItemCondition(Instruction instruction) throws InstructionParseException {
+    public MMOItemsItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        TypeManager typeManager = MMOItems.plugin.getTypes();
+        final TypeManager typeManager = MMOItems.plugin.getTypes();
         itemType = typeManager.get(instruction.next());
         itemID = instruction.next();
 
-        ArrayList<Integer> potentialAmount = instruction.getAllNumbers();
+        final ArrayList<Integer> potentialAmount = instruction.getAllNumbers();
         if (!potentialAmount.isEmpty()) {
             amount = potentialAmount.get(0);
         }
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
 
         int counter = 0;
-        for (ItemStack item : inventoryItems) {
+        for (final ItemStack item : inventoryItems) {
             if (item == null) {
                 continue;
             }
-            NBTItem realItemNBT = NBTItem.get(item);
-            String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
-            String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
+            final NBTItem realItemNBT = NBTItem.get(item);
+            final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
+            final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
             if (realItemID.equalsIgnoreCase(itemID) && realItemType.equalsIgnoreCase(itemType.getId())) {
                 counter++;

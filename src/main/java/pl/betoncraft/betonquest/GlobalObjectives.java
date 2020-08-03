@@ -47,7 +47,7 @@ public class GlobalObjectives {
      * Adds a objective to the list of global objectives.
      * This method should only be called in the constructor of global objectives
      */
-    public static void add(ObjectiveID id) {
+    public static void add(final ObjectiveID id) {
         instance.globalObjectives.add(id);
     }
 
@@ -56,10 +56,10 @@ public class GlobalObjectives {
      *
      * @param playerID the id of the player
      */
-    public static void startAll(String playerID) {
-        PlayerData data = BetonQuest.getInstance().getPlayerData(playerID);
-        for (ObjectiveID id : instance.globalObjectives) {
-            Objective objective = BetonQuest.getInstance().getObjective(id);
+    public static void startAll(final String playerID) {
+        final PlayerData data = BetonQuest.getInstance().getPlayerData(playerID);
+        for (final ObjectiveID id : instance.globalObjectives) {
+            final Objective objective = BetonQuest.getInstance().getObjective(id);
 
             if (objective == null) {
                 continue;
@@ -79,7 +79,7 @@ public class GlobalObjectives {
      * @param id the id of a global objective
      * @return the tag which marks that the given global objective has already been started for the player
      */
-    public static String getTag(ObjectiveID id) {
+    public static String getTag(final ObjectiveID id) {
         return id.getPackage().getName() + ".global-" + id.getBaseID();
     }
 

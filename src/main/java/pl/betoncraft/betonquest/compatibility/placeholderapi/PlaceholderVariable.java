@@ -27,13 +27,13 @@ public class PlaceholderVariable extends Variable {
 
     private String placeholder;
 
-    public PlaceholderVariable(Instruction instruction) throws InstructionParseException {
+    public PlaceholderVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         placeholder = instruction.next();
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         return PlaceholderAPI.setPlaceholders(PlayerConverter.getPlayer(playerID), '%' + placeholder + '%');
     }
 

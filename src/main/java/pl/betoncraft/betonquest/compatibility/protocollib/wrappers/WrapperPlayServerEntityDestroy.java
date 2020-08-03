@@ -32,7 +32,7 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
         handle.getModifier().writeDefaults();
     }
 
-    public WrapperPlayServerEntityDestroy(PacketContainer packet) {
+    public WrapperPlayServerEntityDestroy(final PacketContainer packet) {
         super(packet, TYPE);
     }
 
@@ -48,14 +48,14 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     /**
      * Set the entities that will be destroyed.
      */
-    public void setEntities(List<Integer> entities) {
+    public void setEntities(final List<Integer> entities) {
         setEntities(Ints.toArray(entities));
     }
 
     /**
      * Set the entities that will be destroyed.
      */
-    public void setEntities(int[] entities) {
+    public void setEntities(final int[] entities) {
         handle.getIntegerArrays().write(0, entities);
     }
 }

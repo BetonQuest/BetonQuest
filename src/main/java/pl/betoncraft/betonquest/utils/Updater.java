@@ -29,7 +29,7 @@ public class Updater {
     private final ConfigValues config;
     private Pair<Version, String> latest;
 
-    public Updater(File file) {
+    public Updater(final File file) {
         this.plugin = BetonQuest.getInstance();
         this.fileName = file.getName();
         this.config = new ConfigValues();
@@ -79,11 +79,11 @@ public class Updater {
     }
 
     private void findRelease() throws Exception {
-        JSONArray json = new JSONArray(readStringFromURL(RELEASE_API_URL));
+        final JSONArray json = new JSONArray(readStringFromURL(RELEASE_API_URL));
         for (int i = 0; i < json.length(); i++) {
-            JSONObject release = json.getJSONObject(i);
-            Version version = new Version(release.getString("tag_name").substring(1));
-            String url = release.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
+            final JSONObject release = json.getJSONObject(i);
+            final Version version = new Version(release.getString("tag_name").substring(1));
+            final String url = release.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
             if (latest.getKey().isNewer(version, config.updateStrategy)) {
                 latest = Pair.of(version, url);
             }
@@ -91,13 +91,13 @@ public class Updater {
     }
 
     private void findDev() throws Exception {
-        JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
-        Iterator<String> keys = json.keys();
+        final JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
+        final Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
-            String key = keys.next();
-            String dev = json.getString(key);
-            Version version = new Version(key + "-DEV-" + dev);
-            String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
+            final String key = keys.next();
+            final String dev = json.getString(key);
+            final Version version = new Version(key + "-DEV-" + dev);
+            final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
             if (latest.getKey().isNewer(version, config.updateStrategy)) {
                 latest = Pair.of(version, url);
             }
@@ -114,13 +114,13 @@ public class Updater {
         }
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) The target version is '" + latest.getKey().getVersion() + "'...");
         try {
-            URL remoteFile = new URL(latest.getValue());
+            final URL remoteFile = new URL(latest.getValue());
             try (ReadableByteChannel rbc = Channels.newChannel(remoteFile.openStream())) {
-                File folder = Bukkit.getUpdateFolderFile();
+                final File folder = Bukkit.getUpdateFolderFile();
                 if (!folder.exists()) {
                     folder.mkdirs();
                 }
-                File file = new File(folder, fileName);
+                final File file = new File(folder, fileName);
                 if (!file.exists()) {
                     file.createNewFile();
                 }
@@ -135,12 +135,12 @@ public class Updater {
         }
     }
 
-    public void update(CommandSender sender) {
+    public void update(final CommandSender sender) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-                    String version = getUpdateVersion();
+                    final String version = getUpdateVersion();
                     downloadUpdate();
                     if (sender != null) {
                         sender.sendMessage("§2(Autoupdater) Download finished. Restart the server to update the plugin to version '" + version + "'.");
@@ -172,9 +172,9 @@ public class Updater {
         }
     }
 
-    private String readStringFromURL(String url) throws IOException {
+    private String readStringFromURL(final String url) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader br = new BufferedReader(reader)) {
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             int cp;
             while ((cp = br.read()) != -1) {
                 sb.append((char) cp);
@@ -252,7 +252,7 @@ public class Updater {
         private final Integer dev;
         private final boolean unofficial;
 
-        public Version(String version) {
+        public Version(final String version) {
             this.version = version;
             this.artifactVersion = new DefaultArtifactVersion(version);
 
@@ -267,20 +267,20 @@ public class Updater {
             this.unofficial = unofficial;
         }
 
-        public Version(Version v) {
+        public Version(final Version v) {
             this.version = v.version;
             this.artifactVersion = v.artifactVersion;
             this.dev = v.dev;
             this.unofficial = v.unofficial;
         }
 
-        public boolean isNewer(final Version v, UpdateStrategy updateStrategy) {
+        public boolean isNewer(final Version v, final UpdateStrategy updateStrategy) {
             if (v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
                 return false;
             }
-            int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
-            int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), v.artifactVersion.getMinorVersion());
-            int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), v.artifactVersion.getIncrementalVersion());
+            final int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
+            final int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), v.artifactVersion.getMinorVersion());
+            final int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), v.artifactVersion.getIncrementalVersion());
             switch (updateStrategy) {
                 case MAYOR:
                 case MAYOR_DEV:
@@ -306,8 +306,8 @@ public class Updater {
                         } else if (patchVersion < 0) {
                             return true;
                         } else {
-                            Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
-                            Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
+                            final Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
+                            final Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
                             if (thisDev == null || targetDev == null) {
                                 return thisDev != null;
                             } else {

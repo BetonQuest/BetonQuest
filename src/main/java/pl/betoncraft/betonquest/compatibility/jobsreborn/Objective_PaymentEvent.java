@@ -32,7 +32,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class Objective_PaymentEvent extends Objective implements Listener {
     private final double nAmount;
 
-    public Objective_PaymentEvent(Instruction instructions) throws InstructionParseException {
+    public Objective_PaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
         if (instructions.size() < 2) {
@@ -49,10 +49,10 @@ public class Objective_PaymentEvent extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onJobsPaymentEvent(JobsPaymentEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
+    public void onJobsPaymentEvent(final JobsPaymentEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
-            PaymentData playerData = (PaymentData) dataMap.get(playerID);
+            final PaymentData playerData = (PaymentData) dataMap.get(playerID);
             Bukkit.getServer().broadcastMessage("Amount: " + playerData.getAmount());
             playerData.subtract(event.getAmount());
 
@@ -77,7 +77,7 @@ public class Objective_PaymentEvent extends Objective implements Listener {
         return Double.toString(nAmount);
     }
 
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Double.toString(nAmount - ((PaymentData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -90,7 +90,7 @@ public class Objective_PaymentEvent extends Objective implements Listener {
 
         private Double amount;
 
-        public PaymentData(String instruction, String playerID, String objID) {
+        public PaymentData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Double.parseDouble(instruction);
         }
@@ -99,7 +99,7 @@ public class Objective_PaymentEvent extends Objective implements Listener {
             return amount;
         }
 
-        private void subtract(Double amount) {
+        private void subtract(final Double amount) {
             this.amount -= amount;
             update();
         }

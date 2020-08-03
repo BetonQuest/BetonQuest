@@ -36,19 +36,19 @@ public class ArmorRatingCondition extends Condition {
 
     private final VariableNumber required;
 
-    public ArmorRatingCondition(Instruction instruction) throws InstructionParseException {
+    public ArmorRatingCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         required = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
         int rating = 0;
-        ItemStack boots = inv.getBoots();
-        ItemStack helmet = inv.getHelmet();
-        ItemStack chest = inv.getChestplate();
-        ItemStack leggings = inv.getLeggings();
+        final ItemStack boots = inv.getBoots();
+        final ItemStack helmet = inv.getHelmet();
+        final ItemStack chest = inv.getChestplate();
+        final ItemStack leggings = inv.getLeggings();
         if (helmet != null) {
             if (helmet.getType() == Material.LEATHER_HELMET)
                 rating += 1;

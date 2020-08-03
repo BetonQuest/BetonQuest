@@ -32,14 +32,14 @@ public class PlayerNameVariable extends Variable {
 
     private boolean display = false;
 
-    public PlayerNameVariable(Instruction instruction) {
+    public PlayerNameVariable(final Instruction instruction) {
         super(instruction);
         display = instruction.hasArgument("display");
     }
 
     @Override
-    public String getValue(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
+    public String getValue(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
         return (display) ? player.getDisplayName() : player.getName();
     }
 

@@ -45,11 +45,11 @@ public interface ComponentBuilder {
 
     ComponentBuilder append(String text, ChatColor color);
 
-    default ComponentBuilder hover(String hoverText) {
+    default ComponentBuilder hover(final String hoverText) {
         return this;
     }
 
-    default ComponentBuilder click(ClickEvent event, String text) {
+    default ComponentBuilder click(final ClickEvent event, final String text) {
         return this;
     }
 
@@ -79,19 +79,19 @@ public interface ComponentBuilder {
         }
 
         @Override
-        public ComponentBuilder append(String text) {
+        public ComponentBuilder append(final String text) {
             stringBuilder.append(text);
             return this;
         }
 
         @Override
-        public ComponentBuilder append(String text, ChatColor color) {
+        public ComponentBuilder append(final String text, final ChatColor color) {
             stringBuilder.append(color).append(text);
             return this;
         }
 
         @Override
-        public void send(CommandSender sender) {
+        public void send(final CommandSender sender) {
             sender.sendMessage(toString());
         }
 
@@ -124,32 +124,32 @@ public interface ComponentBuilder {
         }
 
         @Override
-        public ComponentBuilder append(String text) {
+        public ComponentBuilder append(final String text) {
             builder.append(text);
             return this;
         }
 
         @Override
-        public ComponentBuilder append(String text, ChatColor color) {
+        public ComponentBuilder append(final String text, final ChatColor color) {
             builder.append(text, net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention.FORMATTING).color(color.asBungee());
             return this;
         }
 
         @Override
-        public ComponentBuilder hover(String hoverText) {
+        public ComponentBuilder hover(final String hoverText) {
             builder.event(new net.md_5.bungee.api.chat.HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
                     net.md_5.bungee.api.chat.TextComponent.fromLegacyText(hoverText)));
             return this;
         }
 
         @Override
-        public ComponentBuilder click(ClickEvent event, String text) {
+        public ComponentBuilder click(final ClickEvent event, final String text) {
             builder.event(new net.md_5.bungee.api.chat.ClickEvent(event.asBungee(), text));
             return this;
         }
 
         @Override
-        public void send(CommandSender sender) {
+        public void send(final CommandSender sender) {
             sender.spigot().sendMessage(builder.create());
         }
 

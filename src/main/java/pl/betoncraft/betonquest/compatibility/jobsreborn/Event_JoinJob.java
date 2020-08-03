@@ -29,13 +29,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class Event_JoinJob extends QuestEvent {
     private String sJobName;
 
-    public Event_JoinJob(Instruction instructions) throws InstructionParseException {
+    public Event_JoinJob(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
-        for (Job job : Jobs.getJobs()) {
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
                 sJobName = job.getName();
                 return;
@@ -45,9 +45,9 @@ public class Event_JoinJob extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player oPlayer = PlayerConverter.getPlayer(playerID);
-        for (Job job : Jobs.getJobs()) {
+    protected Void execute(final String playerID) {
+        final Player oPlayer = PlayerConverter.getPlayer(playerID);
+        for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 Jobs.getPlayerManager().getJobsPlayer(oPlayer).joinJob(job);
                 return null;

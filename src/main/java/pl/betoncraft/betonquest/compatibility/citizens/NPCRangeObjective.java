@@ -47,7 +47,7 @@ public class NPCRangeObjective extends Objective implements Listener {
     private final Trigger trigger;
     private final VariableNumber radius;
 
-    public NPCRangeObjective(Instruction instruction) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         super.template = ObjectiveData.class;
         id = instruction.getInt();
@@ -59,7 +59,7 @@ public class NPCRangeObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent event) {
+    public void onMove(final PlayerMoveEvent event) {
         qreHandler.handle(() -> {
             final Player player = event.getPlayer();
             final String playerID = PlayerConverter.getID(player);

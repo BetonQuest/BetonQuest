@@ -37,15 +37,15 @@ public class ActionBarNotifyIO extends NotifyIO {
 
     // Variables
 
-    public ActionBarNotifyIO(Map<String, String> data) {
+    public ActionBarNotifyIO(final Map<String, String> data) {
         super(data);
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
-        BaseComponent[] textMessage = TextComponent.fromLegacyText(Utils.format(message));
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
+        final BaseComponent[] textMessage = TextComponent.fromLegacyText(Utils.format(message));
 
-        for (Player player : players) {
+        for (final Player player : players) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
         }
 

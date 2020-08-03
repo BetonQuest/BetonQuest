@@ -28,14 +28,14 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
  */
 public class GlobalTagCondition extends TagCondition {
 
-    public GlobalTagCondition(Instruction instruction) throws InstructionParseException {
+    public GlobalTagCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         staticness = true;
         persistent = true;
     }
 
     @Override
-    protected Boolean execute(String playerID) {
+    protected Boolean execute(final String playerID) {
         return BetonQuest.getInstance().getGlobalData().hasTag(tag);
     }
 

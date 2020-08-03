@@ -86,7 +86,7 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(String playerID, String conversationID, Location location) {
+    public Conversation(final String playerID, final String conversationID, final Location location) {
         this(playerID, conversationID, location, null);
     }
 
@@ -130,7 +130,7 @@ public class Conversation implements Listener {
         // add the player to the list of active conversations
         list.put(playerID, conv);
 
-        String[] options;
+        final String[] options;
         if (option == null) {
             options = null;
         } else {
@@ -148,7 +148,7 @@ public class Conversation implements Listener {
      * @param playerID ID of the player
      * @return if the player is on the list of active conversations
      */
-    public static boolean containsPlayer(String playerID) {
+    public static boolean containsPlayer(final String playerID) {
         return list.containsKey(playerID);
     }
 
@@ -158,7 +158,7 @@ public class Conversation implements Listener {
      * @param playerID ID of the player
      * @return player's active conversation or null if there is no conversation
      */
-    public static Conversation getConversation(String playerID) {
+    public static Conversation getConversation(final String playerID) {
         return list.get(playerID);
     }
 
@@ -169,7 +169,7 @@ public class Conversation implements Listener {
      * @param force   setting it to true will force the first option, even if
      *                conditions are not met
      */
-    private void selectOption(String[] options, boolean force) {
+    private void selectOption(String[] options, final boolean force) {
 
         if (force) {
             options = new String[]{options[0]};
@@ -177,19 +177,20 @@ public class Conversation implements Listener {
         // get npc's text
         option = null;
         options:
-        for (String option : options) {
-            String convName, optionName;
+        for (final String option : options) {
+            final String convName;
+            final String optionName;
             if (option.contains(".")) {
-                String[] parts = option.split("\\.");
+                final String[] parts = option.split("\\.");
                 convName = parts[0];
                 optionName = parts[1];
             } else {
                 convName = data.getName();
                 optionName = option;
             }
-            ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
+            final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
             if (!force)
-                for (ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
+                for (final ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
                     if (!BetonQuest.condition(this.playerID, condition)) {
                         continue options;
                     }
@@ -214,7 +215,7 @@ public class Conversation implements Listener {
         }
         String text = data.getText(playerID, language, option, OptionType.NPC);
         // resolve variables
-        for (String variable : BetonQuest.resolveVariables(text)) {
+        for (final String variable : BetonQuest.resolveVariables(text)) {
             text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, playerID));
         }
         // print option to the player
@@ -228,7 +229,7 @@ public class Conversation implements Listener {
      *
      * @param number the message player has sent on chat
      */
-    public void passPlayerAnswer(int number) {
+    public void passPlayerAnswer(final int number) {
 
         inOut.clear();
 
@@ -243,12 +244,12 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
-    private void printOptions(String[] options) {
+    private void printOptions(final String[] options) {
         // i is for counting replies, like 1. something, 2. something else
         int i = 0;
         answers:
-        for (String option : options) {
-            for (ConditionID condition : data.getConditionIDs(option, OptionType.PLAYER)) {
+        for (final String option : options) {
+            for (final ConditionID condition : data.getConditionIDs(option, OptionType.PLAYER)) {
                 if (!BetonQuest.condition(playerID, condition)) {
                     continue answers;
                 }
@@ -258,7 +259,7 @@ public class Conversation implements Listener {
             current.put(Integer.valueOf(i), option);
             // replace variables with their values
             String text = data.getText(playerID, language, option, OptionType.PLAYER);
-            for (String variable : BetonQuest.resolveVariables(text)) {
+            for (final String variable : BetonQuest.resolveVariables(text)) {
                 text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, playerID));
             }
             inOut.addPlayerOption(text);
@@ -286,7 +287,7 @@ public class Conversation implements Listener {
         ended = true;
         inOut.end();
         // fire final events
-        for (EventID event : data.getFinalEvents()) {
+        for (final EventID event : data.getFinalEvents()) {
             BetonQuest.event(playerID, event);
         }
         //only display status messages if conversationIO allows it
@@ -325,7 +326,7 @@ public class Conversation implements Listener {
     /**
      * Send message to player, bypassing any message delaying if needed
      */
-    public void sendMessage(String message) {
+    public void sendMessage(final String message) {
         if (interceptor != null) {
             interceptor.sendMessage(message);
         } else {
@@ -333,7 +334,7 @@ public class Conversation implements Listener {
         }
     }
 
-    public void sendMessage(BaseComponent[] message) {
+    public void sendMessage(final BaseComponent[] message) {
         if (interceptor != null) {
             interceptor.sendMessage(message);
         } else {
@@ -351,13 +352,13 @@ public class Conversation implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCommand(PlayerCommandPreprocessEvent event) {
+    public void onCommand(final PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(player)) {
             return;
         }
         if (event.getMessage() == null)
             return;
-        String cmdName = event.getMessage().split(" ")[0].substring(1);
+        final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
 
@@ -366,7 +367,7 @@ public class Conversation implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onDamage(final EntityDamageByEntityEvent event) {
         // prevent damage to (or from) player while in conversation
         if ((event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(playerID))
                 || (event.getDamager() instanceof Player
@@ -376,7 +377,7 @@ public class Conversation implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(final PlayerQuitEvent event) {
         // if player quits, end conversation (why keep listeners running?)
         if (event.getPlayer().equals(player)) {
             if (isMovementBlock()) {
@@ -402,7 +403,7 @@ public class Conversation implements Listener {
         inOut.end();
 
         // save the conversation to the database
-        String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
+        final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
                 + location.getWorld().getName();
         plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
                 new String[]{convID + " " + option + " " + loc, playerID}));
@@ -474,13 +475,13 @@ public class Conversation implements Listener {
 
         private String[] options;
 
-        public Starter(String[] options) {
+        public Starter(final String[] options) {
             this.options = options;
         }
 
         public void run() {
             // the conversation start event must be run on next tick
-            PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
+            final PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
             new BukkitRunnable() {
 
                 @Override
@@ -498,8 +499,8 @@ public class Conversation implements Listener {
             // would leave it active while the conversation is not
             // started, causing it to display "null" all the time
             try {
-                String name = data.getConversationIO();
-                Class<? extends ConversationIO> c = plugin.getConvIO(name);
+                final String name = data.getConversationIO();
+                final Class<? extends ConversationIO> c = plugin.getConvIO(name);
                 conv.inOut = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -514,8 +515,8 @@ public class Conversation implements Listener {
             // start interceptor if needed
             if (messagesDelaying) {
                 try {
-                    String name = data.getInterceptor();
-                    Class<? extends Interceptor> c = plugin.getInterceptor(name);
+                    final String name = data.getInterceptor();
+                    final Class<? extends Interceptor> c = plugin.getInterceptor(name);
                     conv.interceptor = c.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -533,7 +534,7 @@ public class Conversation implements Listener {
                 selectOption(options, false);
 
                 // check whether to add a prefix
-                String prefix = data.getPrefix(language, option);
+                final String prefix = data.getPrefix(language, option);
                 String prefixName = null;
                 String[] prefixVariables = null;
                 if (prefix != null) {
@@ -557,7 +558,7 @@ public class Conversation implements Listener {
 
             // print NPC's text
             printNPCText();
-            ConversationOptionEvent e = new ConversationOptionEvent(player, conv, option, conv.option);
+            final ConversationOptionEvent e = new ConversationOptionEvent(player, conv, option, conv.option);
 
             new BukkitRunnable() {
 
@@ -579,7 +580,7 @@ public class Conversation implements Listener {
 
         private String option;
 
-        public NPCEventRunner(String option) {
+        public NPCEventRunner(final String option) {
             this.option = option;
         }
 
@@ -597,7 +598,7 @@ public class Conversation implements Listener {
 
         private String option;
 
-        public PlayerEventRunner(String option) {
+        public PlayerEventRunner(final String option) {
             this.option = option;
         }
 
@@ -615,7 +616,7 @@ public class Conversation implements Listener {
 
         private String option;
 
-        public ResponsePrinter(String option) {
+        public ResponsePrinter(final String option) {
             this.option = option;
         }
 
@@ -624,7 +625,7 @@ public class Conversation implements Listener {
             selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
             // print to player npc's answer
             printNPCText();
-            ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
+            final ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
 
             new BukkitRunnable() {
 
@@ -632,7 +633,7 @@ public class Conversation implements Listener {
                 public void run() {
                     Bukkit.getServer().getPluginManager().callEvent(event);
                     // fire events
-                    for (EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
+                    for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
                         BetonQuest.event(playerID, event);
                     }
                 }
@@ -649,13 +650,13 @@ public class Conversation implements Listener {
 
         private String option;
 
-        public OptionPrinter(String option) {
+        public OptionPrinter(final String option) {
             this.option = option;
         }
 
         public void run() {
             // fire events
-            for (EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
+            for (final EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
                 BetonQuest.event(playerID, event);
             }
 

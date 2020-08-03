@@ -33,9 +33,9 @@ public class TimeEvent extends QuestEvent {
     private final long amount;
     private final boolean add;
 
-    public TimeEvent(Instruction instruction) throws InstructionParseException {
+    public TimeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String time = instruction.next();
+        final String time = instruction.next();
         try {
             if (add = time.startsWith("+")) {
                 amount = Long.valueOf(time.substring(1)) * 1000;
@@ -48,8 +48,8 @@ public class TimeEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        World world = PlayerConverter.getPlayer(playerID).getWorld();
+    protected Void execute(final String playerID) {
+        final World world = PlayerConverter.getPlayer(playerID).getWorld();
         long time = amount;
         if (add) {
             time += world.getTime();

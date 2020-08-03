@@ -46,9 +46,9 @@ public class WandCondition extends Condition {
     private String name;
     private VariableNumber amount;
 
-    public WandCondition(Instruction instruction) throws InstructionParseException {
+    public WandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
+        final String string = instruction.next();
         switch (string) {
             case "hand":
                 type = CheckType.IN_HAND;
@@ -62,12 +62,12 @@ public class WandCondition extends Condition {
             default:
                 throw new InstructionParseException("Unknown check type '" + string + "'");
         }
-        String[] array = instruction.getArray(instruction.getOptional("spells"));
+        final String[] array = instruction.getArray(instruction.getOptional("spells"));
         if (array != null) {
             for (String spell : array) {
                 VariableNumber level = new VariableNumber(1);
                 if (spell.contains(":")) {
-                    String[] spellParts = spell.split(":");
+                    final String[] spellParts = spell.split(":");
                     spell = spellParts[0];
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
@@ -86,14 +86,14 @@ public class WandCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         int heldAmount;
 
         switch (type) {
             case IS_LOST:
-                for (LostWand lost : api.getLostWands()) {
-                    Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
+                for (final LostWand lost : api.getLostWands()) {
+                    final Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
                     if (owner == null)
                         continue;
                     if (owner.equals(player)) {
@@ -107,15 +107,15 @@ public class WandCondition extends Condition {
                 if (!api.isWand(wandItem)) {
                     return false;
                 }
-                Wand wand1 = api.getWand(wandItem);
+                final Wand wand1 = api.getWand(wandItem);
                 return checkWand(wand1, playerID);
             case IN_INVENTORY:
                 heldAmount = 0;
-                for (ItemStack item : player.getInventory().getContents()) {
+                for (final ItemStack item : player.getInventory().getContents()) {
                     if (item == null)
                         continue;
                     if (api.isWand(item)) {
-                        Wand wand2 = api.getWand(item);
+                        final Wand wand2 = api.getWand(item);
                         if (checkWand(wand2, playerID)) {
                             heldAmount += item.getAmount();
                             if (amount == null || heldAmount >= amount.getInt(playerID)) {
@@ -137,15 +137,15 @@ public class WandCondition extends Condition {
      * @return true if the wand meets the conditions, false otherwise
      * @throws QuestRuntimeException
      */
-    private boolean checkWand(Wand wand, String playerID) throws QuestRuntimeException {
+    private boolean checkWand(final Wand wand, final String playerID) throws QuestRuntimeException {
         if (name != null && !wand.getTemplateKey().equalsIgnoreCase(name)) {
             return false;
         }
         if (!spells.isEmpty()) {
             spell:
-            for (String spell : spells.keySet()) {
-                int level = spells.get(spell).getInt(playerID);
-                for (String wandSpell : wand.getSpells()) {
+            for (final String spell : spells.keySet()) {
+                final int level = spells.get(spell).getInt(playerID);
+                for (final String wandSpell : wand.getSpells()) {
                     if (wandSpell.toLowerCase().startsWith(spell.toLowerCase()) && wand.getSpellLevel(spell) >= level) {
                         continue spell;
                     }

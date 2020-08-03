@@ -42,7 +42,7 @@ public class EnchantObjective extends Objective implements Listener {
     private QuestItem item;
     private List<EnchantmentData> enchantments;
 
-    public EnchantObjective(Instruction instruction) throws InstructionParseException {
+    public EnchantObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         item = instruction.getQuestItem();
@@ -51,13 +51,13 @@ public class EnchantObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onEnchant(EnchantItemEvent event) {
-        String playerID = PlayerConverter.getID(event.getEnchanter());
+    public void onEnchant(final EnchantItemEvent event) {
+        final String playerID = PlayerConverter.getID(event.getEnchanter());
         if (!containsPlayer(playerID))
             return;
         if (!item.compare(event.getItem()))
             return;
-        for (EnchantmentData enchant : enchantments) {
+        for (final EnchantmentData enchant : enchantments) {
             if (!event.getEnchantsToAdd().keySet().contains(enchant.getEnchantment())
                     || event.getEnchantsToAdd().get(enchant.getEnchantment()) < enchant.getLevel()) {
                 return;
@@ -88,20 +88,20 @@ public class EnchantObjective extends Objective implements Listener {
         private final Enchantment enchantment;
         private final int level;
 
-        public EnchantmentData(Enchantment enchantment, int level) {
+        public EnchantmentData(final Enchantment enchantment, final int level) {
             this.enchantment = enchantment;
             this.level = level;
         }
 
         @SuppressWarnings("deprecation")
-        public static EnchantmentData convert(String string) throws InstructionParseException {
-            String[] parts = string.split(":");
+        public static EnchantmentData convert(final String string) throws InstructionParseException {
+            final String[] parts = string.split(":");
             if (parts.length != 2)
                 throw new InstructionParseException("Could not parse enchantment: " + string);
-            Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
+            final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
             if (enchantment == null)
                 throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
-            int level;
+            final int level;
             try {
                 level = Integer.parseInt(parts[1]);
             } catch (NumberFormatException e) {

@@ -61,28 +61,28 @@ public class HologramLoop {
      */
     public HologramLoop() {
         // get all holograms and their condition
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            String packName = pack.getName();
-            ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("holograms");
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getName();
+            final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("holograms");
             if (section == null)
                 continue;
-            for (String key : section.getKeys(false)) {
+            for (final String key : section.getKeys(false)) {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
                     LogUtils.getLogger().log(Level.WARNING, "Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
                     return;
                 }
-                List<String> lines = section.getStringList(key + ".lines");
-                String rawConditions = section.getString(key + ".conditions");
-                String rawLocation = section.getString(key + ".location");
-                int check_interval = section.getInt(key + ".check_interval", 0);
+                final List<String> lines = section.getStringList(key + ".lines");
+                final String rawConditions = section.getString(key + ".conditions");
+                final String rawLocation = section.getString(key + ".location");
+                final int check_interval = section.getInt(key + ".check_interval", 0);
                 if (rawLocation == null) {
                     LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
                     continue;
                 }
                 ConditionID[] conditions = new ConditionID[]{};
                 if (rawConditions != null) {
-                    String[] parts = rawConditions.split(",");
+                    final String[] parts = rawConditions.split(",");
                     conditions = new ConditionID[parts.length];
                     for (int i = 0; i < conditions.length; i++) {
                         try {
@@ -102,21 +102,21 @@ public class HologramLoop {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
+                final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
                 hologram.getVisibilityManager().setVisibleByDefault(false);
-                for (String line : lines) {
+                for (final String line : lines) {
                     // If line begins with 'item:', then we will assume its a
                     // floating item
                     if (line.startsWith("item:")) {
                         try {
-                            String args[] = line.substring(5).split(":");
-                            ItemID itemID = new ItemID(pack, args[0]);
+                            final String[] args = line.substring(5).split(":");
+                            final ItemID itemID = new ItemID(pack, args[0]);
                             int stackSize = 1;
                             try {
                                 stackSize = Integer.valueOf(args[1]);
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                             }
-                            ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                            final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                             hologram.appendItemLine(stack);
                         } catch (InstructionParseException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + key + " hologram: " + e.getMessage());
@@ -127,7 +127,7 @@ public class HologramLoop {
 
                             //TODO Remove this code in the version 1.13 or later
                             //This support the old implementation of Items
-                            Material material = Material.matchMaterial(line.substring(5));
+                            final Material material = Material.matchMaterial(line.substring(5));
                             if (material != null) {
                                 LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
                                         + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
@@ -143,13 +143,13 @@ public class HologramLoop {
                     holograms.put(hologram, conditions);
                 } else {
                     final ConditionID[] conditionsList = conditions;
-                    BukkitRunnable runnable = new BukkitRunnable() {
+                    final BukkitRunnable runnable = new BukkitRunnable() {
                         @Override
                         public void run() {
                             player:
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                String playerID = PlayerConverter.getID(player);
-                                for (ConditionID condition : conditionsList) {
+                            for (final Player player : Bukkit.getOnlinePlayers()) {
+                                final String playerID = PlayerConverter.getID(player);
+                                for (final ConditionID condition : conditionsList) {
                                     if (!BetonQuest.condition(playerID, condition)) {
                                         hologram.getVisibilityManager().hideTo(player);
                                         continue player;
@@ -168,11 +168,11 @@ public class HologramLoop {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerID = PlayerConverter.getID(player);
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final String playerID = PlayerConverter.getID(player);
                     holograms:
-                    for (Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
-                        for (ConditionID condition : entry.getValue()) {
+                    for (final Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
+                        for (final ConditionID condition : entry.getValue()) {
                             if (!BetonQuest.condition(playerID, condition)) {
                                 entry.getKey().getVisibilityManager().hideTo(player);
                                 continue holograms;
@@ -193,11 +193,11 @@ public class HologramLoop {
     public void cancel() {
         if (runnable != null) {
             runnable.cancel();
-            for (Hologram hologram : holograms.keySet()) {
+            for (final Hologram hologram : holograms.keySet()) {
                 hologram.delete();
             }
         }
-        for (Entry<Hologram, BukkitRunnable> h : runnables.entrySet()) {
+        for (final Entry<Hologram, BukkitRunnable> h : runnables.entrySet()) {
             h.getValue().cancel();
             h.getKey().delete();
         }

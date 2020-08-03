@@ -43,20 +43,20 @@ public class SkriptConditionBQ extends Condition {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean init(Expression<?>[] arg0, int arg1, Kleenean arg2, ParseResult arg3) {
+    public boolean init(final Expression<?>[] arg0, final int arg1, final Kleenean arg2, final ParseResult arg3) {
         player = (Expression<Player>) arg0[0];
         condition = (Expression<String>) arg0[1];
         return true;
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
+    public String toString(final Event e, final boolean debug) {
         return player.getSingle(e).getName() + " meets " + condition.toString();
     }
 
     @Override
-    public boolean check(Event event) {
-        String conditionID = condition.getSingle(event);
+    public boolean check(final Event event) {
+        final String conditionID = condition.getSingle(event);
         try {
             return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
         } catch (ObjectNotFoundException e) {

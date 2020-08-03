@@ -55,7 +55,7 @@ public class CitizensListener implements Listener {
             Config.sendNotify(playerID, "busy", "busy,error");
             return;
         }
-        String id = String.valueOf(event.getNPC().getId());
+        final String id = String.valueOf(event.getNPC().getId());
         String assignment = Config.getNpc(id);
         if (Config.getString("config.citizens_npcs_by_name").equalsIgnoreCase("true")) {
             if (assignment == null) assignment = Config.getNpc(event.getNPC().getName());

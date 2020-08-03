@@ -51,9 +51,9 @@ public class MagicIntegrator implements Integrator, Listener {
     }
 
     @EventHandler
-    public void onSpellInventoryEvent(SpellInventoryEvent event) {
+    public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {
-            String playerID = PlayerConverter.getID(event.getMage().getPlayer());
+            final String playerID = PlayerConverter.getID(event.getMage().getPlayer());
             BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();
         }
     }

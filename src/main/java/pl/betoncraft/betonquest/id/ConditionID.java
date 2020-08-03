@@ -24,7 +24,7 @@ public class ConditionID extends ID {
 
     private boolean inverted;
 
-    public ConditionID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ConditionID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(id));
         this.inverted = id.startsWith("!");
         rawInstruction = super.pack.getString("conditions." + super.id);

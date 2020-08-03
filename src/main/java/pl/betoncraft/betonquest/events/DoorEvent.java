@@ -38,12 +38,12 @@ public class DoorEvent extends QuestEvent {
     private LocationData loc;
     private ToggleType type;
 
-    public DoorEvent(Instruction instruction) throws InstructionParseException {
+    public DoorEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
-        String action = instruction.next();
+        final String action = instruction.next();
         try {
             type = ToggleType.valueOf(action.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -52,12 +52,12 @@ public class DoorEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Block block = loc.getLocation(playerID).getBlock();
-        BlockState state = block.getState();
-        MaterialData data = state.getData();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Block block = loc.getLocation(playerID).getBlock();
+        final BlockState state = block.getState();
+        final MaterialData data = state.getData();
         if (data instanceof Openable) {
-            Openable openable = (Openable) data;
+            final Openable openable = (Openable) data;
             switch (type) {
                 case ON:
                     openable.setOpen(true);

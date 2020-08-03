@@ -37,7 +37,7 @@ public class ExperienceObjective extends Objective implements Listener {
 
     private final int level;
 
-    public ExperienceObjective(Instruction instruction) throws InstructionParseException {
+    public ExperienceObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         level = instruction.getInt();
@@ -47,8 +47,8 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onLevelUp(PlayerLevelChangeEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onLevelUp(final PlayerLevelChangeEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {
             return;
         }

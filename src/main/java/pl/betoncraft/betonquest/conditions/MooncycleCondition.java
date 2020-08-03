@@ -36,16 +36,16 @@ public class MooncycleCondition extends Condition {
 
     private VariableNumber thisCycle;
 
-    public MooncycleCondition(Instruction instruction) throws InstructionParseException {
+    public MooncycleCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.thisCycle = instruction.getVarNum();
     }
 
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        int days = (int) player.getWorld().getFullTime() / 24000;
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final int days = (int) player.getWorld().getFullTime() / 24000;
         int phaseInt = days % 8;
         phaseInt += 1;
         return (phaseInt == thisCycle.getInt(playerID));

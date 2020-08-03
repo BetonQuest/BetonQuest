@@ -91,7 +91,7 @@ public class Backpack implements Listener {
      * @param playerID ID of the player
      * @param type     type of the display
      */
-    public Backpack(String playerID, DisplayType type) {
+    public Backpack(final String playerID, final DisplayType type) {
         // fill required fields
         this.playerID = playerID;
         lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
@@ -118,12 +118,12 @@ public class Backpack implements Listener {
      *
      * @param playerID ID of the player
      */
-    public Backpack(String playerID) {
+    public Backpack(final String playerID) {
         this(playerID, DisplayType.DEFAULT);
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onClick(InventoryClickEvent event) {
+    public void onClick(final InventoryClickEvent event) {
         if (event.getWhoClicked().equals(player)) {
             // if the player clicked, then cancel this event
             event.setCancelled(true);
@@ -137,7 +137,7 @@ public class Backpack implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClosing(InventoryCloseEvent event) {
+    public void onInventoryClosing(final InventoryCloseEvent event) {
         if (event.getPlayer().equals(player)) {
             HandlerList.unregisterAll(this);
         }
@@ -172,18 +172,18 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 0
          */
-        public Page(int page) {
+        public Page(final int page) {
             this.page = page;
-            List<ItemStack> backpackItems = playerData.getBackpack();
+            final List<ItemStack> backpackItems = playerData.getBackpack();
             // amount of pages, considering that the first contains 44
             // items and all others 45
-            int pages = (backpackItems.size() < 45 ? 1
+            final int pages = (backpackItems.size() < 45 ? 1
                     : (backpackItems.size() + 1 % 45 == 0 ? (backpackItems.size() + 1) / 45
                     : (int) Math.floor((backpackItems.size() + 1) / 45) + 1));
             // prepare the inventory
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
-            ItemStack[] content = new ItemStack[54];
+            final ItemStack[] content = new ItemStack[54];
             int i = 0;
             // insert the journal if the player doesn't have it in his inventory
             if (page == 0) {
@@ -197,7 +197,7 @@ public class Backpack implements Listener {
             }
             // set all the items
             while (i < 45 && i + (page * 45) <= backpackItems.size()) {
-                ItemStack item = backpackItems.get(i + (page * 45) - 1);
+                final ItemStack item = backpackItems.get(i + (page * 45) - 1);
                 content[i] = item;
                 i++;
             }
@@ -216,7 +216,7 @@ public class Backpack implements Listener {
                     player.closeInventory();
                     return;
                 }
-                ItemMeta meta = previous.getItemMeta();
+                final ItemMeta meta = previous.getItemMeta();
                 meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
                 previous.setItemMeta(meta);
                 content[48] = previous;
@@ -235,7 +235,7 @@ public class Backpack implements Listener {
                     player.closeInventory();
                     return;
                 }
-                ItemMeta meta = next.getItemMeta();
+                final ItemMeta meta = next.getItemMeta();
                 meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
                 next.setItemMeta(meta);
                 content[50] = next;
@@ -254,7 +254,7 @@ public class Backpack implements Listener {
                 player.closeInventory();
                 return;
             }
-            ItemMeta meta = cancel.getItemMeta();
+            final ItemMeta meta = cancel.getItemMeta();
             meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
             cancel.setItemMeta(meta);
             content[45] = cancel;
@@ -272,7 +272,7 @@ public class Backpack implements Listener {
                 player.closeInventory();
                 return;
             }
-            ItemMeta compassMeta = compassItem.getItemMeta();
+            final ItemMeta compassMeta = compassItem.getItemMeta();
             compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));
             compassItem.setItemMeta(compassMeta);
             content[46] = compassItem;
@@ -283,7 +283,7 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(int slot, int playerSlot, ClickType click) {
+        void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 0 && slot == 0) {
                 // first page on first slot should contain the journal
                 playerData.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
@@ -291,7 +291,7 @@ public class Backpack implements Listener {
             } else if (slot < 45) {
                 // raw slot lower than 45 is a quest item
                 // read the id of the item from clicked slot
-                int id = page * 45 + slot - 1;
+                final int id = page * 45 + slot - 1;
                 ItemStack item = null;
                 // get the item if it exists
                 if (playerData.getBackpack().size() > id) {
@@ -299,7 +299,7 @@ public class Backpack implements Listener {
                 }
                 if (item != null) {
                     // if the item exists, put it in player's inventory
-                    int backpackAmount = item.getAmount();
+                    final int backpackAmount = item.getAmount();
                     int getAmount = 0;
                     // left click is one item, right is the whole stack
                     switch (click) {
@@ -314,9 +314,9 @@ public class Backpack implements Listener {
                     }
                     if (getAmount != 0) {
                         // add desired amount of items to player's inventory
-                        ItemStack newItem = item.clone();
+                        final ItemStack newItem = item.clone();
                         newItem.setAmount(getAmount);
-                        ItemStack leftItems = player.getInventory().addItem(newItem).get(0);
+                        final ItemStack leftItems = player.getInventory().addItem(newItem).get(0);
                         // remove from backpack only those items that were
                         // actually added to player's inventory
                         int leftAmount = 0;
@@ -325,7 +325,7 @@ public class Backpack implements Listener {
                         }
                         item.setAmount(backpackAmount - getAmount + leftAmount);
                         if (backpackAmount - getAmount + leftAmount == 0) {
-                            List<ItemStack> backpackItems = playerData.getBackpack();
+                            final List<ItemStack> backpackItems = playerData.getBackpack();
                             backpackItems.remove(id);
                             playerData.setBackpack(backpackItems);
                         }
@@ -334,7 +334,7 @@ public class Backpack implements Listener {
                 }
             } else if (slot > 53) {
                 // slot above 53 is player's inventory, so handle item storing
-                ItemStack item = player.getInventory().getItem(playerSlot);
+                final ItemStack item = player.getInventory().getItem(playerSlot);
                 if (item != null) {
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
@@ -396,15 +396,15 @@ public class Backpack implements Listener {
          * Creates a page with quest cancelers and displays it to the player.
          */
         public Cancelers() {
-            HashMap<String, QuestCanceler> cancelers = new HashMap<>();
+            final HashMap<String, QuestCanceler> cancelers = new HashMap<>();
             // get all quest cancelers that can be shown to the player
-            for (String name : Config.getCancelers().keySet()) {
-                QuestCanceler canceler = Config.getCancelers().get(name);
+            for (final String name : Config.getCancelers().keySet()) {
+                final QuestCanceler canceler = Config.getCancelers().get(name);
                 if (canceler.show(playerID))
                     cancelers.put(name, canceler);
             }
             // generate the inventory view
-            int size = cancelers.size();
+            final int size = cancelers.size();
             int numberOfRows = ((size - size % 9) / 9) + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
@@ -412,10 +412,10 @@ public class Backpack implements Listener {
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
-            ItemStack[] content = new ItemStack[numberOfRows * 9];
+            final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int i = 0;
-            for (String name : cancelers.keySet()) {
-                QuestCanceler canceler = cancelers.get(name);
+            for (final String name : cancelers.keySet()) {
+                final QuestCanceler canceler = cancelers.get(name);
                 content[i] = canceler.getItem(playerID);
                 map.put(i, canceler);
                 i++;
@@ -426,8 +426,8 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(int slot, int playerSlot, ClickType click) {
-            QuestCanceler cancel = map.get(slot);
+        void click(final int slot, final int playerSlot, final ClickType click) {
+            final QuestCanceler cancel = map.get(slot);
             if (cancel == null) {
                 return;
             }
@@ -446,14 +446,14 @@ public class Backpack implements Listener {
         public Compass() {
             Integer counter = 0;
             // for every package
-            for (ConfigPackage pack : Config.getPackages().values()) {
-                String packName = pack.getName();
+            for (final ConfigPackage pack : Config.getPackages().values()) {
+                final String packName = pack.getName();
                 // loop all compass locations
-                ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
+                final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
                 if (s != null) {
-                    for (String key : s.getKeys(false)) {
-                        String location = pack.getString("main.compass." + key + ".location");
-                        String itemName = pack.getString("main.compass." + key + ".item");
+                    for (final String key : s.getKeys(false)) {
+                        final String location = pack.getString("main.compass." + key + ".location");
+                        final String itemName = pack.getString("main.compass." + key + ".item");
                         String name = null;
                         if (s.isConfigurationSection(key + ".name")) {
                             name = pack.getString("main.compass." + key + ".name." + lang);
@@ -478,18 +478,20 @@ public class Backpack implements Listener {
                             continue;
                         }
                         // if the tag is present, continue
-                        String[] parts = location.split(";");
+                        final String[] parts = location.split(";");
                         if (parts.length != 4) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not parse location in a compass pointer in " + packName + " package: "
                                     + key);
                             continue;
                         }
-                        World world = Bukkit.getWorld(parts[3]);
+                        final World world = Bukkit.getWorld(parts[3]);
                         if (world == null) {
                             LogUtils.getLogger().log(Level.WARNING,
                                     "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
-                        int x, y, z;
+                        final int x;
+                        int y;
+                        final int z;
                         try {
                             x = Integer.parseInt(parts[0]);
                             y = Integer.parseInt(parts[1]);
@@ -501,7 +503,7 @@ public class Backpack implements Listener {
                             player.closeInventory();
                             return;
                         }
-                        Location loc = new Location(world, x, y, z);
+                        final Location loc = new Location(world, x, y, z);
                         // put location with next number
                         locations.put(counter, loc);
                         names.put(counter, name);
@@ -512,7 +514,7 @@ public class Backpack implements Listener {
                 }
             }
             // solve number of needed rows
-            int size = locations.size();
+            final int size = locations.size();
             int numberOfRows = ((size - size % 9) / 9) + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
@@ -522,11 +524,11 @@ public class Backpack implements Listener {
                 return;
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
-            ItemStack[] content = new ItemStack[numberOfRows * 9];
+            final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int i = 0;
-            for (Integer slot : locations.keySet()) {
-                String name = names.get(slot);
-                String item = items.get(slot);
+            for (final Integer slot : locations.keySet()) {
+                final String name = names.get(slot);
+                final String item = items.get(slot);
                 ItemStack compass = null;
                 try {
                     compass = new QuestItem(new ItemID(Config.getDefaultPackage(), item)).generate(1);
@@ -550,7 +552,7 @@ public class Backpack implements Listener {
                     LogUtils.logThrowable(e);
                     compass = new ItemStack(Material.COMPASS);
                 }
-                ItemMeta meta = compass.getItemMeta();
+                final ItemMeta meta = compass.getItemMeta();
                 meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
                 compass.setItemMeta(meta);
                 content[i] = compass;
@@ -562,8 +564,8 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(int slot, int layerSlot, ClickType click) {
-            Location loc = locations.get(slot);
+        void click(final int slot, final int layerSlot, final ClickType click) {
+            final Location loc = locations.get(slot);
             if (loc == null) {
                 return;
             }

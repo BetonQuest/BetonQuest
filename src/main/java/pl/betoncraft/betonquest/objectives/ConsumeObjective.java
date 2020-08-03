@@ -38,15 +38,15 @@ public class ConsumeObjective extends Objective implements Listener {
 
     private QuestItem item;
 
-    public ConsumeObjective(Instruction instruction) throws InstructionParseException {
+    public ConsumeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         item = instruction.getQuestItem();
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onConsume(PlayerItemConsumeEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onConsume(final PlayerItemConsumeEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && item.compare(event.getItem()) && checkConditions(playerID)) {
             completeObjective(playerID);
         }

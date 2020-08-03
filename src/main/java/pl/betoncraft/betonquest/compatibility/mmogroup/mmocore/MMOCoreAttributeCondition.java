@@ -13,7 +13,7 @@ public class MMOCoreAttributeCondition extends Condition {
     int targetLevel;
     boolean mustBeEqual = false;
 
-    public MMOCoreAttributeCondition(Instruction instruction) throws InstructionParseException {
+    public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         attribute = instruction.next();
@@ -26,8 +26,8 @@ public class MMOCoreAttributeCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        int actualLevel = MMOCoreUtils.getMMOCoreAttribute(UUID.fromString(playerID), attribute);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(UUID.fromString(playerID), attribute);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

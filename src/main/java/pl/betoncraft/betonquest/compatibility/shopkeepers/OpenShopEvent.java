@@ -35,9 +35,9 @@ public class OpenShopEvent extends QuestEvent {
 
     private Shopkeeper shopkeeper;
 
-    public OpenShopEvent(Instruction instruction) throws InstructionParseException {
+    public OpenShopEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
+        final String string = instruction.next();
         try {
             shopkeeper = ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string));
         } catch (IllegalArgumentException e) {
@@ -49,7 +49,7 @@ public class OpenShopEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
+    protected Void execute(final String playerID) {
         shopkeeper.openTradingWindow(PlayerConverter.getPlayer(playerID));
         return null;
     }

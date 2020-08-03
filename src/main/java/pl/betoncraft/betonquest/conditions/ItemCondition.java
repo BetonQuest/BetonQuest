@@ -37,29 +37,29 @@ public class ItemCondition extends Condition {
 
     private final Item[] questItems;
 
-    public ItemCondition(Instruction instruction) throws InstructionParseException {
+    public ItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questItems = instruction.getItemList();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         int successfulChecks = 0; // Count of successful checks
 
-        for (Item questItem : questItems) {
+        for (final Item questItem : questItems) {
             int counter = 0; // Reset counter for each item
-            int amount = questItem.getAmount().getInt(playerID);
+            final int amount = questItem.getAmount().getInt(playerID);
 
-            ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
-            for (ItemStack item : inventoryItems) {
+            final ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+            for (final ItemStack item : inventoryItems) {
                 if (item == null || !questItem.isItemEqual(item)) {
                     continue;
                 }
                 counter += item.getAmount();
             }
 
-            List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-            for (ItemStack item : backpackItems) {
+            final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+            for (final ItemStack item : backpackItems) {
                 if (item == null || !questItem.isItemEqual(item)) {
                     continue;
                 }

@@ -45,7 +45,7 @@ public class DeletePointEvent extends QuestEvent {
 
     protected final String category;
 
-    public DeletePointEvent(Instruction instruction) throws InstructionParseException {
+    public DeletePointEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         persistent = true;
         staticness = true;
@@ -55,18 +55,18 @@ public class DeletePointEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+            for (final Player p : Bukkit.getOnlinePlayers()) {
+                final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                 playerData.removePointsCategory(category);
             }
             BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_POINTS, new String[]{
                     category
             }));
         } else if (PlayerConverter.getPlayer(playerID) == null) {
-            PlayerData playerData = new PlayerData(playerID);
+            final PlayerData playerData = new PlayerData(playerID);
             playerData.removePointsCategory(category);
         } else {
-            PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
             playerData.removePointsCategory(category);
         }
         return null;

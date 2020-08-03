@@ -40,7 +40,7 @@ public class PointCondition extends Condition {
     protected final VariableNumber count;
     protected final boolean equal;
 
-    public PointCondition(Instruction instruction) throws InstructionParseException {
+    public PointCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         category = Utils.addPackage(instruction.getPackage(), instruction.next());
         count = instruction.getVarNum();
@@ -48,13 +48,13 @@ public class PointCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         return check(playerID, BetonQuest.getInstance().getPlayerData(playerID).getPoints());
     }
 
-    protected boolean check(String playerID, List<Point> points) throws QuestRuntimeException {
-        int c = count.getInt(playerID);
-        for (Point point : points) {
+    protected boolean check(final String playerID, final List<Point> points) throws QuestRuntimeException {
+        final int c = count.getInt(playerID);
+        for (final Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 if (equal) {
                     return point.getCount() == c;

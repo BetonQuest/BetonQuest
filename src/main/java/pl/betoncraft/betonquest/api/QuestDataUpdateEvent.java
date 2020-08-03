@@ -33,7 +33,7 @@ public class QuestDataUpdateEvent extends Event {
     private String objID;
     private String data;
 
-    public QuestDataUpdateEvent(String playerID, String objID, String data) {
+    public QuestDataUpdateEvent(final String playerID, final String objID, final String data) {
         this.playerID = playerID;
         this.objID = objID;
         this.data = data;

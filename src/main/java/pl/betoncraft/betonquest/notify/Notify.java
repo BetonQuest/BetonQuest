@@ -41,11 +41,11 @@ import java.util.logging.Level;
  */
 public class Notify {
 
-    public static NotifyIO get(String category) {
+    public static NotifyIO get(final String category) {
         return get(category, new HashMap<>());
     }
 
-    public static NotifyIO get(Map<String, String> data) {
+    public static NotifyIO get(final Map<String, String> data) {
         return get(null, data);
     }
 
@@ -55,7 +55,7 @@ public class Notify {
      * @param category comma separated predefined categories
      * @param data     Data for IO
      */
-    public static NotifyIO get(String category, Map<String, String> data) {
+    public static NotifyIO get(final String category, final Map<String, String> data) {
 
         SortedSet<String> categories = new TreeSet<>();
         if (category != null) {
@@ -68,13 +68,13 @@ public class Notify {
 
         // Load from all packages
         ConfigurationSection selectedConfig = null;
-        for (String packName : Config.getPackages().keySet()) {
-            ConfigPackage pack = Config.getPackages().get(packName);
+        for (final String packName : Config.getPackages().keySet()) {
+            final ConfigPackage pack = Config.getPackages().get(packName);
 
             if (pack.getCustom().getConfig().contains("notifications")) {
-                ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("notifications");
+                final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("notifications");
 
-                SortedSet<String> intersect = new TreeSet<>(categories);
+                final SortedSet<String> intersect = new TreeSet<>(categories);
                 intersect.retainAll(section.getKeys(false));
 
                 // If we match on categories, find the first entry and prune away uninteresting in categories
@@ -92,22 +92,22 @@ public class Notify {
         }
 
         // Load settings from config if available
-        Map<String, String> ioData = new HashMap<>();
+        final Map<String, String> ioData = new HashMap<>();
         if (selectedConfig != null) {
-            for (String key : selectedConfig.getKeys(false)) {
+            for (final String key : selectedConfig.getKeys(false)) {
                 ioData.put(key.toLowerCase(), selectedConfig.getString(key));
             }
         }
 
         // Add data over the top
         if (data != null) {
-            for (String key : data.keySet()) {
+            for (final String key : data.keySet()) {
                 ioData.put(key.toLowerCase(), data.get(key));
             }
         }
 
         // NotifyIO's to use
-        List<String> ios = new ArrayList<>();
+        final List<String> ios = new ArrayList<>();
 
         // If data contains the key 'io' then we parse it as a comma separated list of io's to use.
         if (ioData.containsKey("io")) {
@@ -118,7 +118,7 @@ public class Notify {
         }
 
         // Add default IO, if one
-        String configuredIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
+        final String configuredIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
         if (configuredIO != null) {
             ios.add(configuredIO);
         }
@@ -128,8 +128,8 @@ public class Notify {
 
         // Load IO
         NotifyIO tio = null;
-        for (String name : ios) {
-            Class<? extends NotifyIO> c = BetonQuest.getNotifyIO(name);
+        for (final String name : ios) {
+            final Class<? extends NotifyIO> c = BetonQuest.getNotifyIO(name);
             if (c != null) {
                 try {
                     tio = c.getConstructor(Map.class).newInstance(ioData);
@@ -157,12 +157,12 @@ public class Notify {
     // Fallback dummy IO
     public static class DummyIO extends NotifyIO {
 
-        public DummyIO(Map<String, String> data) {
+        public DummyIO(final Map<String, String> data) {
             super(data);
         }
 
         @Override
-        public void sendNotify(String message, Collection<? extends Player> players) {
+        public void sendNotify(final String message, final Collection<? extends Player> players) {
         }
     }
 

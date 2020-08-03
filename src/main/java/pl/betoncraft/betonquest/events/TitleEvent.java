@@ -38,14 +38,14 @@ public class TitleEvent extends QuestEvent {
     protected List<String> variables = new ArrayList<>();
     protected int fadeIn, stay, fadeOut;
 
-    public TitleEvent(Instruction instruction) throws InstructionParseException {
+    public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         type = instruction.getEnum(TitleType.class);
-        String times = instruction.next();
+        final String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {
             throw new InstructionParseException("Could not parse title time.");
         }
-        String[] timeParts = times.split(";");
+        final String[] timeParts = times.split(";");
         try {
             fadeIn = Integer.parseInt(timeParts[0]);
             stay = Integer.parseInt(timeParts[1]);
@@ -53,11 +53,11 @@ public class TitleEvent extends QuestEvent {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse title time.", e);
         }
-        String[] parts = instruction.getInstruction().split(" ");
+        final String[] parts = instruction.getInstruction().split(" ");
         String currentLang = Config.getLanguage();
         StringBuilder string = new StringBuilder();
         for (int i = 3; i < parts.length; i++) {
-            String part = parts[i];
+            final String part = parts[i];
             if (part.startsWith("conditions:") || part.startsWith("condition:")) {
                 continue;
             } else if (part.matches("^\\{.+\\}$")) {
@@ -76,8 +76,8 @@ public class TitleEvent extends QuestEvent {
         if (messages.isEmpty()) {
             throw new InstructionParseException("Message missing");
         }
-        for (String message : messages.values()) {
-            for (String variable : BetonQuest.resolveVariables(message)) {
+        for (final String message : messages.values()) {
+            for (final String variable : BetonQuest.resolveVariables(message)) {
                 try {
                     BetonQuest.createVariable(instruction.getPackage(), variable);
                 } catch (InstructionParseException e) {
@@ -91,8 +91,8 @@ public class TitleEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
             message = messages.get(Config.getLanguage());
@@ -100,16 +100,16 @@ public class TitleEvent extends QuestEvent {
         if (message == null) {
             message = messages.values().iterator().next();
         }
-        for (String variable : variables) {
+        for (final String variable : variables) {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }
-        String name = PlayerConverter.getName(playerID);
+        final String name = PlayerConverter.getName(playerID);
         if ((fadeIn != 20 || stay != 100 || fadeOut != 20) && (fadeIn != 0 || stay != 0 || fadeOut != 0)) {
-            String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
+            final String times = String.format("title %s times %d %d %d", name, fadeIn, stay, fadeOut);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
         }
-        String title = String.format("title %s %s {\"text\":\"%s\"}",
+        final String title = String.format("title %s %s {\"text\":\"%s\"}",
                 name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
         return null;

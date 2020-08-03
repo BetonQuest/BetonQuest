@@ -40,7 +40,7 @@ public class PlayerPointsEvent extends QuestEvent {
     private boolean multi;
     private PlayerPointsAPI api;
 
-    public PlayerPointsEvent(Instruction instruction) throws InstructionParseException {
+    public PlayerPointsEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         String string = instruction.next();
         if (string.startsWith("*")) {
@@ -58,12 +58,12 @@ public class PlayerPointsEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final UUID uuid = PlayerConverter.getPlayer(playerID).getUniqueId();
         if (multi) {
             api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
         } else {
-            double i = count.getDouble(playerID);
+            final double i = count.getDouble(playerID);
             if (i < 0) {
                 api.take(uuid, (int) Math.floor(-i));
             } else {

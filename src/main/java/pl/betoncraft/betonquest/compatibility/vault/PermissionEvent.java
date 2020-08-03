@@ -36,7 +36,7 @@ public class PermissionEvent extends QuestEvent {
     private final String world, permission;
     private final boolean add, perm;
 
-    public PermissionEvent(Instruction instruction) throws InstructionParseException {
+    public PermissionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         add = instruction.next().equalsIgnoreCase("add");
         perm = instruction.next().equalsIgnoreCase("perm");
@@ -49,10 +49,10 @@ public class PermissionEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
+    protected Void execute(final String playerID) {
         // Run in Main Thread
-        Permission vault = VaultIntegrator.getPermission();
-        Player player = PlayerConverter.getPlayer(playerID);
+        final Permission vault = VaultIntegrator.getPermission();
+        final Player player = PlayerConverter.getPlayer(playerID);
         if (add) {
             if (perm) {
                 // world add perm

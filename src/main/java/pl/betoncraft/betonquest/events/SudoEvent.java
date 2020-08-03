@@ -34,10 +34,10 @@ public class SudoEvent extends QuestEvent {
 
     private final String[] commands;
 
-    public SudoEvent(Instruction instruction) throws InstructionParseException {
+    public SudoEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         try {
-            String string = instruction.getInstruction();
+            final String string = instruction.getInstruction();
             commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
         } catch (Exception e) {
             throw new InstructionParseException("Could not parse commands", e);
@@ -45,9 +45,9 @@ public class SudoEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (String command : commands) {
+    protected Void execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        for (final String command : commands) {
             player.performCommand(command.replace("%player%", player.getName()));
         }
         return null;

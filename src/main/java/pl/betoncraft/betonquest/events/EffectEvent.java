@@ -43,9 +43,9 @@ public class EffectEvent extends QuestEvent {
     private final boolean hidden;
     private final boolean icon;
 
-    public EffectEvent(Instruction instruction) throws InstructionParseException {
+    public EffectEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String type = instruction.next();
+        final String type = instruction.next();
         effect = PotionEffectType.getByName(type);
         if (effect == null) {
             throw new InstructionParseException("Effect type '" + type + "' does not exist");
@@ -69,7 +69,7 @@ public class EffectEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         PlayerConverter.getPlayer(playerID).addPotionEffect(
                 new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient, !hidden, icon));
         return null;

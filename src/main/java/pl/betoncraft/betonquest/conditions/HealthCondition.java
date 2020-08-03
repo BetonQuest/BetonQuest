@@ -33,13 +33,13 @@ public class HealthCondition extends Condition {
 
     private final VariableNumber health;
 
-    public HealthCondition(Instruction instruction) throws InstructionParseException {
+    public HealthCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         health = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         return PlayerConverter.getPlayer(playerID).getHealth() >= health.getDouble(playerID);
     }
 

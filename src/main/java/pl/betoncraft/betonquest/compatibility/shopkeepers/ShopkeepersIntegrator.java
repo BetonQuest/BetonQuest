@@ -34,7 +34,7 @@ public class ShopkeepersIntegrator implements Integrator {
 
     @Override
     public void hook() throws Exception {
-        Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
+        final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         if (shopkeepers.getDescription().getVersion().startsWith("1."))
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         plugin.registerEvents("shopkeeper", OpenShopEvent.class);

@@ -40,22 +40,22 @@ public class RegionCondition extends Condition {
 
     private final String name;
 
-    public RegionCondition(Instruction instruction) throws InstructionParseException {
+    public RegionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         name = instruction.next();
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+    protected Boolean execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
         if (manager == null) {
             return false;
         }
-        ProtectedRegion region = manager.getRegion(name);
-        ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
-        for (ProtectedRegion compare : set) {
+        final ProtectedRegion region = manager.getRegion(name);
+        final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+        for (final ProtectedRegion compare : set) {
             if (compare.equals(region))
                 return true;
         }

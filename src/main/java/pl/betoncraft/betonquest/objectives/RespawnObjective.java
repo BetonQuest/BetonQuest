@@ -38,15 +38,15 @@ public class RespawnObjective extends Objective implements Listener {
 
     private final LocationData location;
 
-    public RespawnObjective(Instruction instruction) throws InstructionParseException {
+    public RespawnObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         location = instruction.getLocation(instruction.getOptional("location"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onRespawn(PlayerRespawnEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onRespawn(final PlayerRespawnEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
 
             if (location != null) {

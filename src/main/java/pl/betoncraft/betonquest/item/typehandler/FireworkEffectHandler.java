@@ -39,11 +39,11 @@ public class FireworkEffectHandler {
     private Existence trail = Existence.WHATEVER;
     private Existence flicker = Existence.WHATEVER;
 
-    public void set(String string) throws InstructionParseException {
+    public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Effect is missing");
         }
-        String[] parts = string.split(":");
+        final String[] parts = string.split(":");
         // if "whatever" then all type checking is unnecessary
         if (!parts[0].equals("?")) {
             if (parts[0].toLowerCase().startsWith("none-")) {
@@ -69,9 +69,9 @@ public class FireworkEffectHandler {
             mainE = Existence.WHATEVER;
         } else {
             mainE = Existence.REQUIRED;
-            for (String color : parts[1].split(";")) {
-                Color regularColor = Utils.getColor(color);
-                DyeColor fireworkColor = DyeColor.getByColor(regularColor);
+            for (final String color : parts[1].split(";")) {
+                final Color regularColor = Utils.getColor(color);
+                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
                 mainColors.add(fireworkColor != null ? fireworkColor.getFireworkColor() : regularColor);
             }
         }
@@ -81,9 +81,9 @@ public class FireworkEffectHandler {
             fadeE = Existence.WHATEVER;
         } else {
             fadeE = Existence.REQUIRED;
-            for (String color : parts[2].split(";")) {
-                Color regularColor = Utils.getColor(color);
-                DyeColor fireworkColor = DyeColor.getByColor(regularColor);
+            for (final String color : parts[2].split(";")) {
+                final Color regularColor = Utils.getColor(color);
+                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
                 fadeColors.add(fireworkColor != null ? fireworkColor.getFireworkColor() : regularColor);
             }
         }
@@ -113,7 +113,7 @@ public class FireworkEffectHandler {
         return type;
     }
 
-    public boolean check(FireworkEffect effect) {
+    public boolean check(final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:
                 return true;
@@ -128,7 +128,7 @@ public class FireworkEffectHandler {
                         if (effect.getColors().size() != mainColors.size()) {
                             return false;
                         }
-                        for (Color c : effect.getColors()) {
+                        for (final Color c : effect.getColors()) {
                             if (!mainColors.contains(c)) {
                                 return false;
                             }
@@ -147,7 +147,7 @@ public class FireworkEffectHandler {
                         if (effect.getFadeColors().size() != fadeColors.size()) {
                             return false;
                         }
-                        for (Color c : effect.getFadeColors()) {
+                        for (final Color c : effect.getFadeColors()) {
                             if (!fadeColors.contains(c)) {
                                 return false;
                             }

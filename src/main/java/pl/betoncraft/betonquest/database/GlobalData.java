@@ -52,14 +52,14 @@ public class GlobalData {
     public void loadAllGlobalData() {
         try {
             // get connection to the database
-            Connector con = new Connector();
+            final Connector con = new Connector();
             // load global_tags
-            ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS, new String[0]);
+            final ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS, new String[0]);
             // put them into the list
             while (res2.next())
                 global_tags.add(res2.getString("tag"));
             // load global_points
-            ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new String[0]);
+            final ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new String[0]);
             // put them into the list
             while (res4.next())
                 global_points.add(new Point(res4.getString("category"), res4.getInt("count")));
@@ -88,7 +88,7 @@ public class GlobalData {
      * @param tag tag to check
      * @return true if the tag is set
      */
-    public boolean hasTag(String tag) {
+    public boolean hasTag(final String tag) {
         return global_tags.contains(tag);
     }
 
@@ -97,7 +97,7 @@ public class GlobalData {
      *
      * @param tag tag to add
      */
-    public void addTag(String tag) {
+    public void addTag(final String tag) {
         if (!global_tags.contains(tag)) {
             global_tags.add(tag);
             saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, new String[]{tag}));
@@ -110,7 +110,7 @@ public class GlobalData {
      *
      * @param tag tag to remove
      */
-    public void removeTag(String tag) {
+    public void removeTag(final String tag) {
         global_tags.remove(tag);
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, new String[]{tag}));
     }
@@ -131,8 +131,8 @@ public class GlobalData {
      * @param category name of the category
      * @return amount of global_points
      */
-    public int hasPointsFromCategory(String category) {
-        for (Point p : global_points) {
+    public int hasPointsFromCategory(final String category) {
+        for (final Point p : global_points) {
             if (p.getCategory().equals(category)) {
                 return p.getCount();
             }
@@ -147,10 +147,10 @@ public class GlobalData {
      * @param category global_points will be added to this category
      * @param count    how much global_points will be added (or subtracted if negative)
      */
-    public void modifyPoints(String category, int count) {
+    public void modifyPoints(final String category, final int count) {
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, new String[]{category}));
         // check if the category already exists
-        for (Point point : global_points) {
+        for (final Point point : global_points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 // if it does, add global_points to it
                 saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS,
@@ -169,9 +169,9 @@ public class GlobalData {
      *
      * @param category name of a point category
      */
-    public void removePointsCategory(String category) {
+    public void removePointsCategory(final String category) {
         Point pointToRemove = null;
-        for (Point point : global_points) {
+        for (final Point point : global_points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 pointToRemove = point;
             }

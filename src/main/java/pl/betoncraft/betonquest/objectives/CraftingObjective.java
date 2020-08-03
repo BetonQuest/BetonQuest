@@ -43,7 +43,7 @@ public class CraftingObjective extends Objective implements Listener {
     private final QuestItem item;
     private final int amount;
 
-    public CraftingObjective(Instruction instruction) throws InstructionParseException {
+    public CraftingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = CraftData.class;
         item = instruction.getQuestItem();
@@ -54,14 +54,14 @@ public class CraftingObjective extends Objective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCrafting(CraftItemEvent event) {
+    public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof Player) {
-            Player player = (Player) event.getWhoClicked();
-            String playerID = PlayerConverter.getID(player);
-            CraftData playerData = (CraftData) dataMap.get(playerID);
+            final Player player = (Player) event.getWhoClicked();
+            final String playerID = PlayerConverter.getID(player);
+            final CraftData playerData = (CraftData) dataMap.get(playerID);
             if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-                int absoluteCreations = countPossibleCrafts(event);
-                int remainingSpace = countRemainingSpace(player);
+                final int absoluteCreations = countPossibleCrafts(event);
+                final int remainingSpace = countRemainingSpace(player);
                 playerData.subtract(Math.min(remainingSpace, absoluteCreations));
                 if (playerData.isZero()) {
                     completeObjective(playerID);
@@ -71,11 +71,11 @@ public class CraftingObjective extends Objective implements Listener {
         }
     }
 
-    private int countPossibleCrafts(CraftItemEvent event) {
+    private int countPossibleCrafts(final CraftItemEvent event) {
         int possibleCreations = 1;
         if (event.isShiftClick()) {
             possibleCreations = Integer.MAX_VALUE;
-            for (ItemStack item : event.getInventory().getMatrix()) {
+            for (final ItemStack item : event.getInventory().getMatrix()) {
                 if (item != null && !item.getType().equals(Material.AIR)) {
                     possibleCreations = Math.min(possibleCreations, item.getAmount());
                 }
@@ -84,9 +84,9 @@ public class CraftingObjective extends Objective implements Listener {
         return possibleCreations * event.getRecipe().getResult().getAmount();
     }
 
-    private int countRemainingSpace(Player player) {
+    private int countRemainingSpace(final Player player) {
         int remainingSpace = 0;
-        for (ItemStack i : player.getInventory().getStorageContents()) {
+        for (final ItemStack i : player.getInventory().getStorageContents()) {
             if (i == null || i.getType().equals(Material.AIR)) {
                 remainingSpace += item.getMaterial().getMaxStackSize();
             } else if (i.equals(item.generate(i.getAmount()))) {
@@ -112,7 +112,7 @@ public class CraftingObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(amount - ((CraftData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -125,12 +125,12 @@ public class CraftingObjective extends Objective implements Listener {
 
         private int amount;
 
-        public CraftData(String instruction, String playerID, String objID) {
+        public CraftData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }
 
-        private void subtract(int amount) {
+        private void subtract(final int amount) {
             this.amount -= amount;
             update();
         }

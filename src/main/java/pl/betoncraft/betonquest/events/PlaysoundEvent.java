@@ -39,11 +39,11 @@ public class PlaysoundEvent extends QuestEvent {
     private final float volume;
     private final float pitch;
 
-    public PlaysoundEvent(Instruction instruction) throws InstructionParseException {
+    public PlaysoundEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         sound = instruction.next();
         location = instruction.getLocation(instruction.getOptional("location"));
-        String category = instruction.getOptional("category");
+        final String category = instruction.getOptional("category");
         if (category != null) {
             soundCategoty = instruction.getEnum(category, SoundCategory.class);
         } else {
@@ -54,8 +54,8 @@ public class PlaysoundEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         if (location != null) {
             player.playSound(location.getLocation(playerID), sound, soundCategoty, volume, pitch);
         } else {

@@ -56,12 +56,12 @@ public class SpawnMobEvent extends QuestEvent {
     private QuestItem offHand;
     private Item[] drops;
 
-    public SpawnMobEvent(Instruction instruction) throws InstructionParseException {
+    public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
-        String entity = instruction.next();
+        final String entity = instruction.next();
         try {
             type = EntityType.valueOf(entity.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -93,14 +93,14 @@ public class SpawnMobEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
-        int a = amount.getInt(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
+        final int a = amount.getInt(playerID);
         for (int i = 0; i < a; i++) {
-            Entity entity = location.getWorld().spawnEntity(location, type);
+            final Entity entity = location.getWorld().spawnEntity(location, type);
             if (entity instanceof LivingEntity) {
-                LivingEntity living = (LivingEntity) entity;
-                EntityEquipment eq = living.getEquipment();
+                final LivingEntity living = (LivingEntity) entity;
+                final EntityEquipment eq = living.getEquipment();
                 eq.setHelmet(helmet == null ? null : helmet.generate(1));
                 eq.setHelmetDropChance(0);
                 eq.setChestplate(chestplate == null ? null : chestplate.generate(1));
@@ -115,14 +115,14 @@ public class SpawnMobEvent extends QuestEvent {
                 eq.setItemInOffHandDropChance(0);
             }
             int j = 0;
-            for (Item item : drops) {
+            for (final Item item : drops) {
                 entity.setMetadata("betonquest-drops-" + j,
                         new FixedMetadataValue(BetonQuest.getInstance(), item.getID().getFullID() + ":"
                                 + item.getAmount().getInt(playerID)));
                 j++;
             }
             if (name != null && entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
+                final LivingEntity livingEntity = (LivingEntity) entity;
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {

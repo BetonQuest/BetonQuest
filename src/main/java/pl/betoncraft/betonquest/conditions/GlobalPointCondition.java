@@ -30,12 +30,12 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  */
 public class GlobalPointCondition extends PointCondition {
 
-    public GlobalPointCondition(Instruction instruction) throws InstructionParseException {
+    public GlobalPointCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
         return check(playerID, BetonQuest.getInstance().getGlobalData().getPoints());
     }
 

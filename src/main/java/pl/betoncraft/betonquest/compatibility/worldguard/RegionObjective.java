@@ -45,7 +45,7 @@ public class RegionObjective extends Objective implements Listener {
     private boolean entry;
     private boolean exit;
 
-    public RegionObjective(Instruction instruction) throws InstructionParseException {
+    public RegionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         name = instruction.next();
@@ -59,18 +59,18 @@ public class RegionObjective extends Objective implements Listener {
      * @param loc Location to Check
      * @return boolean True if in region
      */
-    private boolean isInsideRegion(Location loc) {
+    private boolean isInsideRegion(final Location loc) {
         if (loc == null || loc.getWorld() == null) {
             return false;
         }
 
-        WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
+        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
         if (manager == null) {
             return false;
         }
 
-        ProtectedRegion region = manager.getRegion(name);
+        final ProtectedRegion region = manager.getRegion(name);
         if (region == null) {
             return false;
         }
@@ -79,8 +79,8 @@ public class RegionObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onMove(final PlayerMoveEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {
             return;
         }

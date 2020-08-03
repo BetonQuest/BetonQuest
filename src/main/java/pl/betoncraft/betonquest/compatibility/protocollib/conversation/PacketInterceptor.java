@@ -50,7 +50,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     private ArrayList<WrapperPlayServerChat> messages = new ArrayList<>();
     private PacketAdapter packetAdapter;
 
-    public PacketInterceptor(Conversation conv, String playerID) {
+    public PacketInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
 
@@ -60,14 +60,14 @@ public class PacketInterceptor implements Interceptor, Listener {
 
         ) {
             @Override
-            public void onPacketSending(PacketEvent event) {
+            public void onPacketSending(final PacketEvent event) {
                 if (event.getPlayer() != player) {
                     return;
                 }
 
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
-                    PacketContainer packet = event.getPacket();
-                    BaseComponent[] bc = (BaseComponent[]) packet.getModifier().read(1);
+                    final PacketContainer packet = event.getPacket();
+                    final BaseComponent[] bc = (BaseComponent[]) packet.getModifier().read(1);
                     if (bc != null && bc.length > 0 && ((TextComponent) bc[0]).getText().contains("_bq_")) {
                         packet.getModifier().write(1, Arrays.copyOfRange(bc, 1, bc.length));
                         event.setPacket(packet);
@@ -75,7 +75,7 @@ public class PacketInterceptor implements Interceptor, Listener {
                     }
 
                     // Else save message to replay later
-                    WrapperPlayServerChat chat = new WrapperPlayServerChat(event.getPacket());
+                    final WrapperPlayServerChat chat = new WrapperPlayServerChat(event.getPacket());
                     event.setCancelled(true);
                     messages.add(chat);
                 }
@@ -89,14 +89,14 @@ public class PacketInterceptor implements Interceptor, Listener {
      * Send message, bypassing Interceptor
      */
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(final String message) {
         sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
-    public void sendMessage(BaseComponent... message) {
+    public void sendMessage(final BaseComponent... message) {
         // Tag the message. Is there a better way? Perhaps an invisible method is better
-        BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent("_bq_")}, message);
+        final BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent("_bq_")}, message);
         player.spigot().sendMessage(components);
     }
 
@@ -110,7 +110,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (WrapperPlayServerChat message : messages) {
+                for (final WrapperPlayServerChat message : messages) {
                     message.sendPacket(player);
                 }
             }

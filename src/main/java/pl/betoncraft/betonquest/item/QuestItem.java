@@ -78,7 +78,7 @@ public class QuestItem {
      * @param itemID ID of the item
      * @throws InstructionParseException when item parsing goes wrong
      */
-    public QuestItem(ItemID itemID) throws InstructionParseException {
+    public QuestItem(final ItemID itemID) throws InstructionParseException {
         this(itemID.generateInstruction());
     }
 
@@ -88,7 +88,7 @@ public class QuestItem {
      * @param instruction Instruction object
      * @throws InstructionParseException when item parsing goes wrong
      */
-    public QuestItem(Instruction instruction) throws InstructionParseException {
+    public QuestItem(final Instruction instruction) throws InstructionParseException {
         this(instruction.getInstruction());
     }
 
@@ -98,10 +98,10 @@ public class QuestItem {
      * @param instruction instruction String
      * @throws InstructionParseException when item parsing goes wrong
      */
-    public QuestItem(String instruction) throws InstructionParseException {
+    public QuestItem(final String instruction) throws InstructionParseException {
         if (instruction == null)
             throw new NullPointerException("Item instruction is null");
-        String[] parts = instruction.split(" ");
+        final String[] parts = instruction.split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");
         }
@@ -111,7 +111,7 @@ public class QuestItem {
             throw new InstructionParseException("Invalid selector: " + selector.toString());
         }
 
-        for (String part : parts) {
+        for (final String part : parts) {
             if (part.toLowerCase().startsWith("durability:")) {
                 durability.set(cut(part));
             } else if (part.toLowerCase().startsWith("enchants:")) {
@@ -162,7 +162,7 @@ public class QuestItem {
         }
     }
 
-    private static String cut(String uncut) {
+    private static String cut(final String uncut) {
         return uncut.substring(uncut.indexOf(':') + 1);
     }
 
@@ -173,7 +173,7 @@ public class QuestItem {
      * @return converted string
      */
     @SuppressWarnings("deprecation")
-    public static String itemToString(ItemStack item) {
+    public static String itemToString(final ItemStack item) {
         String name = "";
         String lore = "";
         String enchants = "";
@@ -185,20 +185,20 @@ public class QuestItem {
         String owner = "";
         String firework = "";
         String unbreakable = "";
-        ItemMeta meta = item.getItemMeta();
+        final ItemMeta meta = item.getItemMeta();
         if (meta.hasDisplayName()) {
             name = " name:" + meta.getDisplayName().replace(" ", "_");
         }
         if (meta.hasLore()) {
-            StringBuilder string = new StringBuilder();
-            for (String line : meta.getLore()) {
+            final StringBuilder string = new StringBuilder();
+            for (final String line : meta.getLore()) {
                 string.append(line + ";");
             }
             lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
         if (meta.hasEnchants()) {
-            StringBuilder string = new StringBuilder();
-            for (Enchantment enchant : meta.getEnchants().keySet()) {
+            final StringBuilder string = new StringBuilder();
+            for (final Enchantment enchant : meta.getEnchants().keySet()) {
                 string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
@@ -207,7 +207,7 @@ public class QuestItem {
             unbreakable = " unbreakable";
         }
         if (meta instanceof BookMeta) {
-            BookMeta bookMeta = (BookMeta) meta;
+            final BookMeta bookMeta = (BookMeta) meta;
             if (bookMeta.hasAuthor()) {
                 author = " author:" + bookMeta.getAuthor().replace(" ", "_");
             }
@@ -215,7 +215,7 @@ public class QuestItem {
                 title = " title:" + bookMeta.getTitle().replace(" ", "_");
             }
             if (bookMeta.hasPages()) {
-                StringBuilder strBldr = new StringBuilder();
+                final StringBuilder strBldr = new StringBuilder();
                 for (String page : bookMeta.getPages()) {
                     if (page.startsWith("\"") && page.endsWith("\"")) {
                         page = page.substring(1, page.length() - 1);
@@ -228,59 +228,59 @@ public class QuestItem {
             }
         }
         if (meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-            PotionData pData = potionMeta.getBasePotionData();
+            final PotionMeta potionMeta = (PotionMeta) meta;
+            final PotionData pData = potionMeta.getBasePotionData();
             effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
                     + (pData.isUpgraded() ? " upgraded" : "");
             if (potionMeta.hasCustomEffects()) {
-                StringBuilder string = new StringBuilder();
-                for (PotionEffect effect : potionMeta.getCustomEffects()) {
-                    int power = effect.getAmplifier() + 1;
-                    int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
+                final StringBuilder string = new StringBuilder();
+                for (final PotionEffect effect : potionMeta.getCustomEffects()) {
+                    final int power = effect.getAmplifier() + 1;
+                    final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
                     string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
                 }
                 effects += " effects:" + string.substring(0, string.length() - 1);
             }
         }
         if (meta instanceof LeatherArmorMeta) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
             if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-                DyeColor c = DyeColor.getByColor(armorMeta.getColor());
+                final DyeColor c = DyeColor.getByColor(armorMeta.getColor());
                 color = " color:" + (c == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : c.toString());
             }
         }
         if (meta instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
+            final EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
             if (storageMeta.hasStoredEnchants()) {
-                StringBuilder string = new StringBuilder();
-                for (Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                final StringBuilder string = new StringBuilder();
+                for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
                     string.append(enchant.getName() + ":" + storageMeta.getStoredEnchants().get(enchant) + ",");
                 }
                 enchants = " enchants:" + string.substring(0, string.length() - 1);
             }
         }
         if (meta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta) meta;
+            final SkullMeta skullMeta = (SkullMeta) meta;
             if (skullMeta.hasOwner()) {
                 owner = " owner:" + skullMeta.getOwner();
             }
         }
         if (meta instanceof FireworkMeta) {
-            FireworkMeta fireworkMeta = (FireworkMeta) meta;
+            final FireworkMeta fireworkMeta = (FireworkMeta) meta;
             if (fireworkMeta.hasEffects()) {
-                StringBuilder builder = new StringBuilder();
+                final StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
-                for (FireworkEffect effect : fireworkMeta.getEffects()) {
+                for (final FireworkEffect effect : fireworkMeta.getEffects()) {
                     builder.append(effect.getType() + ":");
-                    for (Color c : effect.getColors()) {
-                        DyeColor dye = DyeColor.getByFireworkColor(c);
+                    for (final Color c : effect.getColors()) {
+                        final DyeColor dye = DyeColor.getByFireworkColor(c);
                         builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                     }
                     // remove last semicolon
                     builder.setLength(Math.max(builder.length() - 1, 0));
                     builder.append(":");
-                    for (Color c : effect.getFadeColors()) {
-                        DyeColor dye = DyeColor.getByFireworkColor(c);
+                    for (final Color c : effect.getFadeColors()) {
+                        final DyeColor dye = DyeColor.getByFireworkColor(c);
                         builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                     }
                     builder.setLength(Math.max(builder.length() - 1, 0));
@@ -292,21 +292,21 @@ public class QuestItem {
             }
         }
         if (meta instanceof FireworkEffectMeta) {
-            FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
             if (fireworkMeta.hasEffect()) {
-                FireworkEffect effect = fireworkMeta.getEffect();
-                StringBuilder builder = new StringBuilder();
+                final FireworkEffect effect = fireworkMeta.getEffect();
+                final StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
                 builder.append(effect.getType() + ":");
-                for (Color c : effect.getColors()) {
-                    DyeColor dye = DyeColor.getByFireworkColor(c);
+                for (final Color c : effect.getColors()) {
+                    final DyeColor dye = DyeColor.getByFireworkColor(c);
                     builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                 }
                 // remove last semicolon
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(":");
-                for (Color c : effect.getFadeColors()) {
-                    DyeColor dye = DyeColor.getByFireworkColor(c);
+                for (final Color c : effect.getFadeColors()) {
+                    final DyeColor dye = DyeColor.getByFireworkColor(c);
                     builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
@@ -319,8 +319,8 @@ public class QuestItem {
     }
 
     @Override
-    public boolean equals(Object o) {
-        QuestItem item;
+    public boolean equals(final Object o) {
+        final QuestItem item;
         if (o instanceof QuestItem) {
             item = (QuestItem) o;
         } else {
@@ -366,7 +366,7 @@ public class QuestItem {
      * @return true if the item matches
      */
     @SuppressWarnings("deprecation")
-    public boolean compare(ItemStack item) {
+    public boolean compare(final ItemStack item) {
         // basic item checks
         if (item == null) {
             return false;
@@ -375,7 +375,7 @@ public class QuestItem {
             return false;
         }
         // basic meta checks
-        ItemMeta meta = item.getItemMeta();
+        final ItemMeta meta = item.getItemMeta();
         if (!durability.check(item.getDurability())) {
             return false;
         }
@@ -390,7 +390,7 @@ public class QuestItem {
         }
         // advanced meta checks
         if (meta instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
+            final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             if (!enchants.check(enchantMeta.getStoredEnchants())) {
                 return false;
             }
@@ -400,7 +400,7 @@ public class QuestItem {
             }
         }
         if (meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
+            final PotionMeta potionMeta = (PotionMeta) meta;
             if (!potion.checkBase(potionMeta.getBasePotionData())) {
                 return false;
             }
@@ -409,7 +409,7 @@ public class QuestItem {
             }
         }
         if (meta instanceof BookMeta) {
-            BookMeta bookMeta = (BookMeta) item.getItemMeta();
+            final BookMeta bookMeta = (BookMeta) item.getItemMeta();
             if (!book.checkTitle(bookMeta.getTitle())) {
                 return false;
             }
@@ -421,19 +421,19 @@ public class QuestItem {
             }
         }
         if (meta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+            final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
             if (!head.check(skullMeta.getOwner())) {
                 return false;
             }
         }
         if (meta instanceof LeatherArmorMeta) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
+            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
             if (!color.check(armorMeta.getColor())) {
                 return false;
             }
         }
         if (meta instanceof FireworkMeta) {
-            FireworkMeta fireworkMeta = (FireworkMeta) item.getItemMeta();
+            final FireworkMeta fireworkMeta = (FireworkMeta) item.getItemMeta();
             if (!firework.checkEffects(fireworkMeta.getEffects())) {
                 return false;
             }
@@ -442,7 +442,7 @@ public class QuestItem {
             }
         }
         if (meta instanceof FireworkEffectMeta) {
-            FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) item.getItemMeta();
+            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) item.getItemMeta();
             return firework.checkSingleEffect(fireworkMeta.getEffect());
         }
         return true;
@@ -455,60 +455,60 @@ public class QuestItem {
      * @return the ItemStack equal to this quest item
      */
     @SuppressWarnings("deprecation")
-    public ItemStack generate(int stackSize) {
+    public ItemStack generate(final int stackSize) {
         // Try resolve material directly
         Material material = selector.getMaterial();
         if (material == null) {
             material = Material.ARROW;
         }
 
-        ItemStack item = new ItemStack(material, stackSize);
-        ItemMeta meta = item.getItemMeta();
+        final ItemStack item = new ItemStack(material, stackSize);
+        final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.get());
         if (meta instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
+            final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             // why no bulk adding method?!
-            Map<Enchantment, Integer> map = enchants.get();
-            for (Entry<Enchantment, Integer> e : map.entrySet()) {
+            final Map<Enchantment, Integer> map = enchants.get();
+            for (final Entry<Enchantment, Integer> e : map.entrySet()) {
                 enchantMeta.addStoredEnchant(e.getKey(), e.getValue(), true);
             }
         } else {
-            Map<Enchantment, Integer> map = enchants.get();
-            for (Entry<Enchantment, Integer> e : map.entrySet()) {
+            final Map<Enchantment, Integer> map = enchants.get();
+            for (final Entry<Enchantment, Integer> e : map.entrySet()) {
                 meta.addEnchant(e.getKey(), e.getValue(), true);
             }
         }
         if (meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
+            final PotionMeta potionMeta = (PotionMeta) meta;
             potionMeta.setBasePotionData(potion.getBase());
-            for (PotionEffect effect : potion.getCustom()) {
+            for (final PotionEffect effect : potion.getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }
         }
         if (meta instanceof BookMeta) {
-            BookMeta bookMeta = (BookMeta) meta;
+            final BookMeta bookMeta = (BookMeta) meta;
             bookMeta.setTitle(book.getTitle());
             bookMeta.setAuthor(book.getAuthor());
             bookMeta.setPages(book.getText());
         }
         if (meta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta) meta;
+            final SkullMeta skullMeta = (SkullMeta) meta;
             skullMeta.setOwner(head.get());
         }
         if (meta instanceof LeatherArmorMeta) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
             armorMeta.setColor(color.get());
         }
         if (meta instanceof FireworkMeta) {
-            FireworkMeta fireworkMeta = (FireworkMeta) meta;
+            final FireworkMeta fireworkMeta = (FireworkMeta) meta;
             fireworkMeta.addEffects(firework.getEffects());
             fireworkMeta.setPower(firework.getPower());
         }
         if (meta instanceof FireworkEffectMeta) {
-            FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
-            List<FireworkEffect> list = firework.getEffects();
+            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+            final List<FireworkEffect> list = firework.getEffects();
             fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
         }
         item.setItemMeta(meta);
@@ -519,7 +519,7 @@ public class QuestItem {
      * @return the material
      */
     public Material getMaterial() {
-        Material material = selector.getMaterial();
+        final Material material = selector.getMaterial();
         return material != null ? material : Material.ARROW;
     }
 

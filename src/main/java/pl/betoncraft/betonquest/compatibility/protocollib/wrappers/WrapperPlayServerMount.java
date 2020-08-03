@@ -37,7 +37,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
         handle.getModifier().writeDefaults();
     }
 
-    public WrapperPlayServerMount(PacketContainer packet) {
+    public WrapperPlayServerMount(final PacketContainer packet) {
         super(packet, TYPE);
     }
 
@@ -57,7 +57,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setEntityID(int value) {
+    public void setEntityID(final int value) {
         handle.getIntegers().write(0, value);
     }
 
@@ -67,7 +67,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @param world - the current world of the entity.
      * @return The involved entity.
      */
-    public Entity getEntity(World world) {
+    public Entity getEntity(final World world) {
         return handle.getEntityModifier(world).read(0);
     }
 
@@ -77,7 +77,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @param event - the packet event.
      * @return The involved entity.
      */
-    public Entity getEntity(PacketEvent event) {
+    public Entity getEntity(final PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
     }
 
@@ -85,21 +85,21 @@ public class WrapperPlayServerMount extends AbstractPacket {
         return handle.getIntegerArrays().read(0);
     }
 
-    public void setPassengerIds(int[] value) {
+    public void setPassengerIds(final int[] value) {
         handle.getIntegerArrays().write(0, value);
     }
 
-    public List<Entity> getPassengers(PacketEvent event) {
+    public List<Entity> getPassengers(final PacketEvent event) {
         return getPassengers(event.getPlayer().getWorld());
     }
 
-    public List<Entity> getPassengers(World world) {
-        int[] ids = getPassengerIds();
-        List<Entity> passengers = new ArrayList<>();
-        ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+    public List<Entity> getPassengers(final World world) {
+        final int[] ids = getPassengerIds();
+        final List<Entity> passengers = new ArrayList<>();
+        final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
-        for (int id : ids) {
-            Entity entity = manager.getEntityFromID(world, id);
+        for (final int id : ids) {
+            final Entity entity = manager.getEntityFromID(world, id);
             if (entity != null) {
                 passengers.add(entity);
             }
@@ -108,8 +108,8 @@ public class WrapperPlayServerMount extends AbstractPacket {
         return passengers;
     }
 
-    public void setPassengers(List<Entity> value) {
-        int[] array = new int[value.size()];
+    public void setPassengers(final List<Entity> value) {
+        final int[] array = new int[value.size()];
         for (int i = 0; i < value.size(); i++) {
             array[i] = value.get(i).getEntityId();
         }

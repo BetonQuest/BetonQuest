@@ -21,14 +21,14 @@ public class MMOItemsHandCondition extends Condition {
     private int amount = 1;
     private final boolean offhand;
 
-    public MMOItemsHandCondition(Instruction instruction) throws InstructionParseException {
+    public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        TypeManager typeManager = MMOItems.plugin.getTypes();
+        final TypeManager typeManager = MMOItems.plugin.getTypes();
         itemType = typeManager.get(instruction.next());
         itemID = instruction.next();
 
-        ArrayList<Integer> potentialAmount = instruction.getAllNumbers();
+        final ArrayList<Integer> potentialAmount = instruction.getAllNumbers();
         if (!potentialAmount.isEmpty()) {
             amount = potentialAmount.get(0);
         }
@@ -37,13 +37,13 @@ public class MMOItemsHandCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
-        ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+        final ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
 
-        NBTItem realItemNBT = NBTItem.get(item);
-        String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
-        String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
+        final NBTItem realItemNBT = NBTItem.get(item);
+        final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
+        final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
         return realItemID.equalsIgnoreCase(itemID) && realItemType.equalsIgnoreCase(itemType.getId()) && item.getAmount() == amount;
     }

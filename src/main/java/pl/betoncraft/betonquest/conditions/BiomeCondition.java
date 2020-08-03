@@ -34,14 +34,14 @@ public class BiomeCondition extends Condition {
 
     private final Biome biome;
 
-    public BiomeCondition(Instruction instruction) throws InstructionParseException {
+    public BiomeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         biome = instruction.getEnum(Biome.class);
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         return (player.getLocation().getBlock().getBiome() == this.biome);
     }
 }

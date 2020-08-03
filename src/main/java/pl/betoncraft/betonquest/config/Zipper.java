@@ -34,7 +34,7 @@ public class Zipper {
     private String OUTPUT_ZIP_FILE;
     private String SOURCE_FOLDER;
 
-    public Zipper(String source, String output) {
+    public Zipper(final String source, final String output) {
         String modifiedOutput = output;
         int i = 1;
         while (new File(modifiedOutput + ".zip").exists()) {
@@ -52,21 +52,21 @@ public class Zipper {
      *
      * @param zipFile output ZIP file location
      */
-    public void zipIt(String zipFile) {
+    public void zipIt(final String zipFile) {
 
-        byte[] buffer = new byte[1024];
+        final byte[] buffer = new byte[1024];
 
         try {
 
-            FileOutputStream fos = new FileOutputStream(zipFile);
-            ZipOutputStream zos = new ZipOutputStream(fos);
+            final FileOutputStream fos = new FileOutputStream(zipFile);
+            final ZipOutputStream zos = new ZipOutputStream(fos);
 
-            for (String file : this.fileList) {
+            for (final String file : this.fileList) {
 
-                ZipEntry ze = new ZipEntry(file);
+                final ZipEntry ze = new ZipEntry(file);
                 zos.putNextEntry(ze);
 
-                FileInputStream in = new FileInputStream(SOURCE_FOLDER + File.separator + file);
+                final FileInputStream in = new FileInputStream(SOURCE_FOLDER + File.separator + file);
 
                 int len;
                 while ((len = in.read(buffer)) > 0) {
@@ -91,7 +91,7 @@ public class Zipper {
      *
      * @param node file or directory
      */
-    public void generateFileList(File node) {
+    public void generateFileList(final File node) {
 
         if (node.getName().matches("^backup.*") || node.getName().matches("^database\\.db$")
                 || node.getName().matches("^changelog\\.txt$") || node.getName().matches("^logs$")) {
@@ -104,8 +104,8 @@ public class Zipper {
         }
 
         if (node.isDirectory()) {
-            String[] subNote = node.list();
-            for (String filename : subNote) {
+            final String[] subNote = node.list();
+            for (final String filename : subNote) {
                 generateFileList(new File(node, filename));
             }
         }
@@ -117,7 +117,7 @@ public class Zipper {
      * @param file file path
      * @return Formatted file path
      */
-    private String generateZipEntry(String file) {
+    private String generateZipEntry(final String file) {
         return file.substring(SOURCE_FOLDER.length() + 1);
     }
 }

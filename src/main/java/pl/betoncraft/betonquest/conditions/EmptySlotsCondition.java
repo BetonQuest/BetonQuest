@@ -36,19 +36,19 @@ public class EmptySlotsCondition extends Condition {
     private final VariableNumber needed;
     private final boolean equal;
 
-    public EmptySlotsCondition(Instruction instruction) throws InstructionParseException {
+    public EmptySlotsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         needed = instruction.getVarNum();
         equal = instruction.hasArgument("equal");
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        ItemStack[] items = player.getInventory().getStorageContents();
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final ItemStack[] items = player.getInventory().getStorageContents();
 
         int empty = 0;
-        for (ItemStack item : items) {
+        for (final ItemStack item : items) {
             if (item == null)
                 empty++;
         }

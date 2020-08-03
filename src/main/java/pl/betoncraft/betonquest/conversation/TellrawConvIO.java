@@ -57,10 +57,10 @@ public class TellrawConvIO extends ChatConvIO {
         new UnknownCommandTellrawListener();
     }
 
-    public TellrawConvIO(Conversation conv, String playerID) {
+    public TellrawConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
         hashes = new HashMap<>();
-        for (ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.get("option")) {
             if (color == ChatColor.STRIKETHROUGH) {
                 strikethrough = true;
             } else if (color == ChatColor.MAGIC) {
@@ -75,8 +75,8 @@ public class TellrawConvIO extends ChatConvIO {
                 this.color = color;
             }
         }
-        StringBuilder string = new StringBuilder();
-        for (ChatColor color : colors.get("number")) {
+        final StringBuilder string = new StringBuilder();
+        for (final ChatColor color : colors.get("number")) {
             string.append(color);
         }
         string.append("%number%. ");
@@ -84,16 +84,16 @@ public class TellrawConvIO extends ChatConvIO {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCommandAnswer(PlayerCommandPreprocessEvent event) {
+    public void onCommandAnswer(final PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(player))
             return;
         if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer "))
             return;
         event.setCancelled(true);
-        String[] parts = event.getMessage().split(" ");
+        final String[] parts = event.getMessage().split(" ");
         if (parts.length != 2)
             return;
-        String hash = parts[1];
+        final String hash = parts[1];
         for (int j = 1; j <= hashes.size(); j++) {
             if (hashes.get(j).equals(hash)) {
                 conv.sendMessage(answerFormat + options.get(j));
@@ -108,17 +108,17 @@ public class TellrawConvIO extends ChatConvIO {
         super.display();
         for (int j = 1; j <= options.size(); j++) {
             // Build ColorString
-            TextComponent colorComponent = new TextComponent();
+            final TextComponent colorComponent = new TextComponent();
             colorComponent.setBold(bold);
             colorComponent.setStrikethrough(strikethrough);
             colorComponent.setObfuscated(magic);
             colorComponent.setColor(color.asBungee());
-            String colorString = colorComponent.toLegacyText();
+            final String colorString = colorComponent.toLegacyText();
 
             // We avoid ComponentBuilder as it's not available pre 1.9
-            List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
+            final List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
             parts.addAll(Arrays.asList(TextComponent.fromLegacyText(colorString + Utils.replaceReset(StringUtils.stripEnd(options.get(j), "\n"), colorString))));
-            for (BaseComponent component : parts) {
+            for (final BaseComponent component : parts) {
                 component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
             }
 
@@ -127,7 +127,7 @@ public class TellrawConvIO extends ChatConvIO {
     }
 
     @Override
-    public void addPlayerOption(String option) {
+    public void addPlayerOption(final String option) {
         super.addPlayerOption(option);
         count++;
         hashes.put(count, UUID.randomUUID().toString());
@@ -147,7 +147,7 @@ public class TellrawConvIO extends ChatConvIO {
         }
 
         @EventHandler(priority = EventPriority.HIGH)
-        public void onCommand(PlayerCommandPreprocessEvent event) {
+        public void onCommand(final PlayerCommandPreprocessEvent event) {
             if (event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
                 event.setCancelled(true);
             }

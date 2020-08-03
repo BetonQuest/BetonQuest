@@ -38,7 +38,7 @@ public class PlayerConversationEndEvent extends PlayerEvent {
      * @param who          player
      * @param conversation conversation which has been started
      */
-    public PlayerConversationEndEvent(Player who, Conversation conversation) {
+    public PlayerConversationEndEvent(final Player who, final Conversation conversation) {
         super(who);
         this.conversation = conversation;
     }

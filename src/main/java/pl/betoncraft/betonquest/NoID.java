@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 public class NoID extends pl.betoncraft.betonquest.id.NoID {
 
-    public NoID(ConfigPackage pack) throws ObjectNotFoundException {
+    public NoID(final ConfigPackage pack) throws ObjectNotFoundException {
         super(pack);
     }
 

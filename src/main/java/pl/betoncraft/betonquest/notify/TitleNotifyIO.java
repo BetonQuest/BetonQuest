@@ -44,7 +44,7 @@ public class TitleNotifyIO extends NotifyIO {
     private String subTitle;
 
 
-    public TitleNotifyIO(Map<String, String> data) {
+    public TitleNotifyIO(final Map<String, String> data) {
         super(data);
 
         fadeIn = Integer.valueOf(data.getOrDefault("fadein", "10"));
@@ -54,8 +54,8 @@ public class TitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    public void sendNotify(String message, Collection<? extends Player> players) {
-        for (Player player : players) {
+    public void sendNotify(final String message, final Collection<? extends Player> players) {
+        for (final Player player : players) {
             player.sendTitle(Utils.format(message), Utils.format(subTitle), fadeIn, stay, fadeOut);
         }
 

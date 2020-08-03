@@ -22,7 +22,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ItemID extends ID {
 
-    public ItemID(ConfigPackage pack, String id) throws ObjectNotFoundException {
+    public ItemID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
         super(pack, id);
         rawInstruction = super.pack.getString("items." + super.id);
         if (rawInstruction == null) {

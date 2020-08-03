@@ -22,7 +22,7 @@ public class MythicMobDistanceCondition extends Condition {
 
     private BukkitAPIHelper apiHelper;
 
-    public MythicMobDistanceCondition(Instruction instruction) throws InstructionParseException {
+    public MythicMobDistanceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         mythicMobInternalName = instruction.next();
@@ -36,12 +36,12 @@ public class MythicMobDistanceCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
-        double dist = distance.getDouble(playerID);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final double dist = distance.getDouble(playerID);
 
-        Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist);
-        for (Entity entity : entities) {
+        final Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist);
+        for (final Entity entity : entities) {
             if (entity == null) continue;
             if (!apiHelper.isMythicMob(entity)) continue;
             if (!apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName)) continue;

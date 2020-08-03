@@ -35,16 +35,16 @@ public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
     private String questName;
     private boolean override;
 
-    public QuestEvent(Instruction instruction) throws InstructionParseException {
+    public QuestEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questName = instruction.next();
         override = instruction.hasArgument("check-requirements");
     }
 
     @Override
-    protected Void execute(String playerID) {
+    protected Void execute(final String playerID) {
         Quest quest = null;
-        for (Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
+        for (final Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 quest = q;
                 break;

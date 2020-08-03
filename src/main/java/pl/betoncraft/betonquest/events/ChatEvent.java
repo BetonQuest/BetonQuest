@@ -32,10 +32,10 @@ public class ChatEvent extends QuestEvent {
 
     private final String[] messages;
 
-    public ChatEvent(Instruction instruction) throws InstructionParseException {
+    public ChatEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         try {
-            String string = instruction.getInstruction();
+            final String string = instruction.getInstruction();
             messages = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
         } catch (Exception e) {
             throw new InstructionParseException("Could not parse message", e);
@@ -43,9 +43,9 @@ public class ChatEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        Player player = PlayerConverter.getPlayer(playerID);
-        for (String message : messages)
+    protected Void execute(final String playerID) {
+        final Player player = PlayerConverter.getPlayer(playerID);
+        for (final String message : messages)
             player.chat(message.replace("%player%", player.getName()));
         return null;
     }

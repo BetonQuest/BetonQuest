@@ -27,13 +27,13 @@ import java.util.Locale;
 
 public class LocationVariable extends Variable {
 
-    public LocationVariable(Instruction instruction) {
+    public LocationVariable(final Instruction instruction) {
         super(instruction);
     }
 
     @Override
-    public String getValue(String playerID) {
-        Location loc = PlayerConverter.getPlayer(playerID).getLocation();
+    public String getValue(final String playerID) {
+        final Location loc = PlayerConverter.getPlayer(playerID).getLocation();
         return String.format(Locale.US, "%.2f;%.2f;%.2f;%s;%.2f;%.2f",
                 loc.getX(),
                 loc.getY(),

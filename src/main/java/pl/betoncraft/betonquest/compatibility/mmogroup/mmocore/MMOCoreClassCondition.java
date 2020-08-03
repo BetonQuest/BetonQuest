@@ -16,11 +16,11 @@ public class MMOCoreClassCondition extends Condition {
     private int targetClassLevel = -1;
     private boolean mustBeEqual;
 
-    public MMOCoreClassCondition(Instruction instruction) throws InstructionParseException {
+    public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         targetClassName = instruction.next();
 
-        ArrayList<Integer> potentialLevel = instruction.getAllNumbers();
+        final ArrayList<Integer> potentialLevel = instruction.getAllNumbers();
         if (!potentialLevel.isEmpty()) {
             targetClassLevel = potentialLevel.get(0);
         }
@@ -31,12 +31,12 @@ public class MMOCoreClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
-        PlayerData data = PlayerData.get(p);
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
+        final PlayerData data = PlayerData.get(p);
 
-        String actualClassName = data.getProfess().getName();
-        int actualClassLevel = data.getLevel();
+        final String actualClassName = data.getProfess().getName();
+        final int actualClassLevel = data.getLevel();
 
         if (actualClassName.equalsIgnoreCase(targetClassName)) {
             if (targetClassLevel == -1) {

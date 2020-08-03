@@ -42,7 +42,7 @@ public class VariableNumber {
      * @param packName the package in which the variable is defined
      * @param variable the string to parse
      */
-    public VariableNumber(String packName, String variable) throws NumberFormatException {
+    public VariableNumber(final String packName, final String variable) throws NumberFormatException {
         if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
             try {
                 this.variable = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
@@ -62,7 +62,7 @@ public class VariableNumber {
      *
      * @param number the number to use
      */
-    public VariableNumber(int number) {
+    public VariableNumber(final int number) {
         this.number = number;
     }
 
@@ -71,7 +71,7 @@ public class VariableNumber {
      *
      * @param number the number to use
      */
-    public VariableNumber(double number) {
+    public VariableNumber(final double number) {
         this.number = number;
     }
 
@@ -82,7 +82,7 @@ public class VariableNumber {
      * @param playerID ID of the player for whom the variable should be resolved
      * @return the integer represented by this variable number
      */
-    public int getInt(String playerID) {
+    public int getInt(final String playerID) {
         return (int) Math.floor(resolveVariable(playerID));
     }
 
@@ -93,17 +93,17 @@ public class VariableNumber {
      * @return the double represented by this variable number
      * @throws QuestRuntimeException when the variable does not resolve to a number
      */
-    public double getDouble(String playerID) throws QuestRuntimeException {
+    public double getDouble(final String playerID) throws QuestRuntimeException {
         return resolveVariable(playerID);
     }
 
-    private double resolveVariable(String playerID) {
+    private double resolveVariable(final String playerID) {
         if (variable == null) {
             return number;
         } else if (playerID == null) {
             return 0;
         } else {
-            String resolved = variable.getValue(playerID);
+            final String resolved = variable.getValue(playerID);
             double parsed = 0;
             try {
                 parsed = Double.parseDouble(resolved);

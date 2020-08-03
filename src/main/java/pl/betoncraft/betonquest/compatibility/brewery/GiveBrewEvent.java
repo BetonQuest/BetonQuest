@@ -36,7 +36,7 @@ public class GiveBrewEvent extends QuestEvent {
     private Integer quality;
     private BRecipe recipe;
 
-    public GiveBrewEvent(Instruction instruction) throws InstructionParseException {
+    public GiveBrewEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         amount = instruction.getInt();
@@ -47,10 +47,10 @@ public class GiveBrewEvent extends QuestEvent {
             throw new InstructionParseException("Brew quality must be between 0 and 10!");
         }
 
-        String name = instruction.next().replace("_", " ");
+        final String name = instruction.next().replace("_", " ");
 
         BRecipe recipe = null;
-        for (BRecipe r : BRecipe.getAllRecipes()) {
+        for (final BRecipe r : BRecipe.getAllRecipes()) {
             if (r.hasName(name)) {
                 recipe = r;
                 break;
@@ -65,17 +65,17 @@ public class GiveBrewEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
 
-        ItemStack[] brews = new ItemStack[amount];
+        final ItemStack[] brews = new ItemStack[amount];
         for (int i = 0; i < amount; i++) {
             brews[i] = recipe.create(quality);
         }
 
-        Collection<ItemStack> remaining = p.getInventory().addItem(brews).values();
+        final Collection<ItemStack> remaining = p.getInventory().addItem(brews).values();
 
-        for (ItemStack item : remaining) {
+        for (final ItemStack item : remaining) {
             p.getWorld().dropItem(p.getLocation(), item);
         }
         return null;

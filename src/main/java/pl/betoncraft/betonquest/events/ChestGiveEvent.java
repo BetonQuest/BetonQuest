@@ -40,7 +40,7 @@ public class ChestGiveEvent extends QuestEvent {
     private final Item[] questItems;
     private final LocationData loc;
 
-    public ChestGiveEvent(Instruction instruction) throws InstructionParseException {
+    public ChestGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -49,29 +49,29 @@ public class ChestGiveEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Block block = loc.getLocation(playerID).getBlock();
-        InventoryHolder chest;
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Block block = loc.getLocation(playerID).getBlock();
+        final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
         } catch (ClassCastException e) {
             throw new QuestRuntimeException("Trying to put items in chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
-        for (Item theItem : questItems) {
-            QuestItem questItem = theItem.getItem();
+        for (final Item theItem : questItems) {
+            final QuestItem questItem = theItem.getItem();
             int amount = theItem.getAmount().getInt(playerID);
             while (amount > 0) {
-                int stackSize;
+                final int stackSize;
                 if (amount > 64) {
                     stackSize = 64;
                 } else {
                     stackSize = amount;
                 }
-                ItemStack item = questItem.generate(stackSize);
-                HashMap<Integer, ItemStack> left = chest.getInventory().addItem(item);
-                for (Integer leftNumber : left.keySet()) {
-                    ItemStack itemStack = left.get(leftNumber);
+                final ItemStack item = questItem.generate(stackSize);
+                final HashMap<Integer, ItemStack> left = chest.getInventory().addItem(item);
+                for (final Integer leftNumber : left.keySet()) {
+                    final ItemStack itemStack = left.get(leftNumber);
                     block.getWorld().dropItem(block.getLocation(), itemStack);
                 }
                 amount = amount - stackSize;

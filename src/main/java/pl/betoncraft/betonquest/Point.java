@@ -39,7 +39,7 @@ public class Point {
      * @param category category of these points
      * @param count    amount of these points
      */
-    public Point(String category, int count) {
+    public Point(final String category, final int count) {
         this.category = category;
         this.count = count;
     }
@@ -67,7 +67,7 @@ public class Point {
      *
      * @param add amount of the points to add
      */
-    public void addPoints(int add) {
+    public void addPoints(final int add) {
         this.count = this.count + add;
     }
 }

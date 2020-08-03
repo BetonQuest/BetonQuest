@@ -41,11 +41,11 @@ public class CompassCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("compass")) {
             if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String playerID = PlayerConverter.getID(player);
+                final Player player = (Player) sender;
+                final String playerID = PlayerConverter.getID(player);
                 new Backpack(playerID, DisplayType.COMPASS);
             }
             return true;

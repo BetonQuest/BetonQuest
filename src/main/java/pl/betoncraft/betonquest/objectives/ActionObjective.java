@@ -53,7 +53,7 @@ public class ActionObjective extends Objective implements Listener {
     private VariableNumber range;
     private boolean cancel = false;
 
-    public ActionObjective(Instruction instruction) throws InstructionParseException {
+    public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         action = instruction.getEnum(Click.class);
@@ -63,7 +63,7 @@ public class ActionObjective extends Objective implements Listener {
             selector = instruction.getBlockSelector(instruction.current());
         }
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        String r = instruction.getOptional("range");
+        final String r = instruction.getOptional("range");
         range = instruction.getVarNum(r == null ? "1" : r);
         cancel = instruction.hasArgument("cancel");
 
@@ -73,12 +73,12 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInteract(PlayerInteractEvent event) {
+    public void onInteract(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
             return; // off hand packet, ignore.
         }
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)) {
             return;
         }
@@ -113,7 +113,7 @@ public class ActionObjective extends Objective implements Listener {
                     break;
             }
         } else {
-            Action actionEnum;
+            final Action actionEnum;
             switch (action) {
                 case RIGHT:
                     actionEnum = Action.RIGHT_CLICK_BLOCK;
@@ -133,8 +133,8 @@ public class ActionObjective extends Objective implements Listener {
                         && selector.match(event.getClickedBlock().getRelative(event.getBlockFace())))
                         || selector.match(event.getClickedBlock())))) {
                     if (loc != null) {
-                        Location location = loc.getLocation(playerID);
-                        double r = range.getDouble(playerID);
+                        final Location location = loc.getLocation(playerID);
+                        final double r = range.getDouble(playerID);
                         if (!event.getClickedBlock().getWorld().equals(location.getWorld())
                                 || event.getClickedBlock().getLocation().distance(location) > r) {
                             return;
@@ -170,12 +170,12 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("location")) {
             if (loc == null) {
                 return "";
             }
-            Location location;
+            final Location location;
             try {
                 location = loc.getLocation(playerID);
             } catch (QuestRuntimeException e) {

@@ -36,12 +36,12 @@ public class LeverEvent extends QuestEvent {
     private LocationData loc;
     private ToggleType type;
 
-    public LeverEvent(Instruction instruction) throws InstructionParseException {
+    public LeverEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
-        String action = instruction.next();
+        final String action = instruction.next();
         try {
             type = ToggleType.valueOf(action.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -50,13 +50,13 @@ public class LeverEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Block block = loc.getLocation(playerID).getBlock();
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Block block = loc.getLocation(playerID).getBlock();
         if (!block.getType().equals(Material.LEVER)) {
             return null;
         }
 
-        Powerable lever = (Powerable) block.getBlockData();
+        final Powerable lever = (Powerable) block.getBlockData();
 
         switch (type) {
             case ON:

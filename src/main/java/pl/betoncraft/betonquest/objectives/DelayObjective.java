@@ -42,7 +42,7 @@ public class DelayObjective extends Objective {
     private BukkitTask runnable;
     private int interval;
 
-    public DelayObjective(Instruction instruction) throws InstructionParseException {
+    public DelayObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = DelayData.class;
         if (instruction.hasArgument("ticks")) {
@@ -66,18 +66,18 @@ public class DelayObjective extends Objective {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                LinkedList<String> players = new LinkedList<>();
-                long time = new Date().getTime();
-                for (Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
-                    String playerID = entry.getKey();
-                    DelayData playerData = (DelayData) entry.getValue();
+                final LinkedList<String> players = new LinkedList<>();
+                final long time = new Date().getTime();
+                for (final Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
+                    final String playerID = entry.getKey();
+                    final DelayData playerData = (DelayData) entry.getValue();
                     if (time >= playerData.getTime() && checkConditions(playerID)) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
                         players.add(playerID);
                     }
                 }
-                for (String playerID : players) {
+                for (final String playerID : players) {
                     completeObjective(playerID);
                 }
             }
@@ -96,20 +96,20 @@ public class DelayObjective extends Objective {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
-            String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-            String daysWord = Config.getMessage(lang, "days");
-            String hoursWord = Config.getMessage(lang, "hours");
-            String minutesWord = Config.getMessage(lang, "minutes");
-            String secondsWord = Config.getMessage(lang, "seconds");
-            long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            long s = (timeLeft / (1000)) % 60;
-            long m = (timeLeft / (1000 * 60)) % 60;
-            long h = (timeLeft / (1000 * 60 * 60)) % 24;
-            long d = (timeLeft / (1000 * 60 * 60 * 24));
-            StringBuilder time = new StringBuilder();
-            String[] words = new String[3];
+            final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+            final String daysWord = Config.getMessage(lang, "days");
+            final String hoursWord = Config.getMessage(lang, "hours");
+            final String minutesWord = Config.getMessage(lang, "minutes");
+            final String secondsWord = Config.getMessage(lang, "seconds");
+            final long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+            final long s = (timeLeft / (1000)) % 60;
+            final long m = (timeLeft / (1000 * 60)) % 60;
+            final long h = (timeLeft / (1000 * 60 * 60)) % 24;
+            final long d = (timeLeft / (1000 * 60 * 60 * 24));
+            final StringBuilder time = new StringBuilder();
+            final String[] words = new String[3];
             if (d > 0)
                 words[0] = d + " " + daysWord;
             if (h > 0)
@@ -117,21 +117,21 @@ public class DelayObjective extends Objective {
             if (m > 0)
                 words[2] = m + " " + minutesWord;
             int count = 0;
-            for (String word : words) {
+            for (final String word : words) {
                 if (word != null)
                     count++;
             }
             if (count == 0) {
                 time.append(s + " " + secondsWord);
             } else if (count == 1) {
-                for (String word : words) {
+                for (final String word : words) {
                     if (word == null)
                         continue;
                     time.append(word);
                 }
             } else if (count == 2) {
                 boolean second = false;
-                for (String word : words) {
+                for (final String word : words) {
                     if (word == null)
                         continue;
                     if (second) {
@@ -156,7 +156,7 @@ public class DelayObjective extends Objective {
 
         private final long timestamp;
 
-        public DelayData(String instruction, String playerID, String objID) {
+        public DelayData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             timestamp = Long.parseLong(instruction);
         }

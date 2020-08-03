@@ -49,7 +49,7 @@ public class DataHandler {
         return data;
     }
 
-    public boolean check(int data) {
+    public boolean check(final int data) {
         switch (e) {
             case WHATEVER:
                 return true;

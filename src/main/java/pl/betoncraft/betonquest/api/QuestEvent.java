@@ -67,7 +67,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      */
     // TODO Delete in BQ 2.0.0
     @Deprecated
-    public QuestEvent(Instruction instruction) throws InstructionParseException {
+    public QuestEvent(final Instruction instruction) throws InstructionParseException {
         this(instruction, true);
     }
 
@@ -84,15 +84,15 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      *                    Otherwise it will just keep the current thread (which could also be the main thread!).
      * @throws InstructionParseException when the is an error in the syntax or argument parsing
      */
-    public QuestEvent(Instruction instruction, boolean forceSync) throws InstructionParseException {
+    public QuestEvent(final Instruction instruction, final boolean forceSync) throws InstructionParseException {
         super(forceSync);
         this.instruction = instruction;
-        String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
-        String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
-        int length = tempConditions1.length + tempConditions2.length;
+        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
+        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
+        final int length = tempConditions1.length + tempConditions2.length;
         conditions = new ConditionID[length];
         for (int i = 0; i < length; i++) {
-            String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+            final String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (ObjectNotFoundException e) {
@@ -120,15 +120,15 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * @param playerID ID of the player for whom the event will fire
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
-    public final void fire(String playerID) throws QuestRuntimeException {
+    public final void fire(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
             // handle static event
             if (!staticness) {
                 LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
                 players:
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String ID = PlayerConverter.getID(player);
-                    for (ConditionID condition : conditions) {
+                for (final Player player : Bukkit.getOnlinePlayers()) {
+                    final String ID = PlayerConverter.getID(player);
+                    for (final ConditionID condition : conditions) {
                         if (!BetonQuest.condition(ID, condition)) {
                             LogUtils.getLogger().log(Level.FINE, "  Event conditions were not met for player " + player.getName());
                             continue players;
@@ -149,7 +149,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             handle(playerID);
         } else {
             // handle standard event
-            for (ConditionID condition : conditions) {
+            for (final ConditionID condition : conditions) {
                 if (!BetonQuest.condition(playerID, condition)) {
                     LogUtils.getLogger().log(Level.FINE, "Event conditions were not met.");
                     return;

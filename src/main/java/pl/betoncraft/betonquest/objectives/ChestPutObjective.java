@@ -54,13 +54,13 @@ public class ChestPutObjective extends Objective implements Listener {
     private final QuestEvent chestTakeEvent;
     private final LocationData loc;
 
-    public ChestPutObjective(Instruction instruction) throws InstructionParseException {
+    public ChestPutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         // extract location
         loc = instruction.getLocation();
-        String location = instruction.current();
-        String items = instruction.next();
+        final String location = instruction.current();
+        final String items = instruction.next();
         try {
             chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
         } catch (InstructionParseException | ObjectNotFoundException e) {
@@ -79,15 +79,15 @@ public class ChestPutObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onChestClose(InventoryCloseEvent event) {
+    public void onChestClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player))
             return;
-        String playerID = PlayerConverter.getID((Player) event.getPlayer());
+        final String playerID = PlayerConverter.getID((Player) event.getPlayer());
         if (!containsPlayer(playerID))
             return;
         try {
-            Block block = loc.getLocation(playerID).getBlock();
-            InventoryHolder chest;
+            final Block block = loc.getLocation(playerID).getBlock();
+            final InventoryHolder chest;
             try {
                 chest = (InventoryHolder) block.getState();
             } catch (ClassCastException e) {

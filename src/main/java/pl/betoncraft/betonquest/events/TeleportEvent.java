@@ -35,18 +35,18 @@ public class TeleportEvent extends QuestEvent {
 
     private final LocationData loc;
 
-    public TeleportEvent(Instruction instruction) throws InstructionParseException {
+    public TeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
     }
 
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Conversation conv = Conversation.getConversation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Conversation conv = Conversation.getConversation(playerID);
         if (conv != null) {
             conv.endConversation();
         }
 
-        Location playerLocation = loc.getLocation(playerID);
+        final Location playerLocation = loc.getLocation(playerID);
         PlayerConverter.getPlayer(playerID).teleport(playerLocation);
         return null;
     }

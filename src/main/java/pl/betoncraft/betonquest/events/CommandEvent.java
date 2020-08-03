@@ -37,14 +37,14 @@ public class CommandEvent extends QuestEvent {
 
     private final Command[] commands;
 
-    public CommandEvent(Instruction instruction) throws InstructionParseException {
+    public CommandEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
         try {
-            String string = instruction.getInstruction();
+            final String string = instruction.getInstruction();
             // Split commands by | but allow one to use \| to represent a pipe character
-            String[] rawCommands = Arrays.stream(string.trim().substring(string.indexOf(" ") + 1).split("(?<!\\\\)\\|"))
+            final String[] rawCommands = Arrays.stream(string.trim().substring(string.indexOf(" ") + 1).split("(?<!\\\\)\\|"))
                     .map(s -> s.replace("\\|", "|"))
                     .map(String::trim)
                     .toArray(String[]::new);
@@ -58,24 +58,24 @@ public class CommandEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) {
-        for (Command command : commands) {
+    protected Void execute(final String playerID) {
+        for (final Command command : commands) {
             if (command.variables.isEmpty()) {
                 // if there are no variables, this is a global command
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command);
             } else {
                 if (playerID == null) {
                     // this is a static command, run for each player
-                    for (Player player : Bukkit.getOnlinePlayers()) {
+                    for (final Player player : Bukkit.getOnlinePlayers()) {
                         String com = command.command;
-                        for (String var : command.variables) {
+                        for (final String var : command.variables) {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
                                     instruction.getPackage().getName(), var, PlayerConverter.getID(player)));
                         }
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
                     }
                 } else {
-                    Player player = PlayerConverter.getPlayer(playerID);
+                    final Player player = PlayerConverter.getPlayer(playerID);
                     if (player == null) {
                         // the player is offline, cannot resolve variables, at least replace %player%
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command
@@ -83,11 +83,11 @@ public class CommandEvent extends QuestEvent {
                     } else {
                         // run the command for the single player
                         String com = command.command;
-                        for (String var : command.variables) {
+                        for (final String var : command.variables) {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
                                     instruction.getPackage().getName(), var, playerID));
                         }
-                        String finalCom = com;
+                        final String finalCom = com;
                         Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));
                     }
                 }
@@ -101,7 +101,7 @@ public class CommandEvent extends QuestEvent {
         String command;
         List<String> variables;
 
-        public Command(String command) {
+        public Command(final String command) {
             this.command = command;
             variables = BetonQuest.resolveVariables(command);
         }

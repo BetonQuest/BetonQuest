@@ -47,10 +47,10 @@ public class FishObjective extends Objective implements Listener {
     private final int notifyInterval;
     private Material fish;
 
-    public FishObjective(Instruction instruction) throws InstructionParseException {
+    public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = FishData.class;
-        String[] fishParts = instruction.next().split(":");
+        final String[] fishParts = instruction.next().split(":");
         fish = Material.matchMaterial(fishParts[0]);
         if (fish == null) {
             fish = Material.matchMaterial(fishParts[0], true);
@@ -77,8 +77,8 @@ public class FishObjective extends Objective implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
-    public void onFishCatch(PlayerFishEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onFishCatch(final PlayerFishEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (event.getState() != State.CAUGHT_FISH)
             return;
         if (!containsPlayer(playerID))
@@ -87,12 +87,12 @@ public class FishObjective extends Objective implements Listener {
             return;
         if (event.getCaught().getType() != EntityType.DROPPED_ITEM)
             return;
-        ItemStack item = ((Item) event.getCaught()).getItemStack();
+        final ItemStack item = ((Item) event.getCaught()).getItemStack();
         if (item.getType() != fish)
             return;
         if (data >= 0 && item.getData().getData() != data)
             return;
-        FishData data = (FishData) dataMap.get(playerID);
+        final FishData data = (FishData) dataMap.get(playerID);
         if (checkConditions(playerID))
             data.catchFish();
         if (data.getAmount() <= 0)
@@ -103,7 +103,7 @@ public class FishObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
         } else if (name.equalsIgnoreCase("amount")) {
@@ -131,7 +131,7 @@ public class FishObjective extends Objective implements Listener {
 
         private int amount;
 
-        public FishData(String instruction, String playerID, String objID) {
+        public FishData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

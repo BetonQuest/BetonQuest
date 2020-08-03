@@ -41,7 +41,7 @@ public class PotionHandler {
     private Existence customE = Existence.WHATEVER;
     private boolean exact = true;
 
-    public void setType(String type) throws InstructionParseException {
+    public void setType(final String type) throws InstructionParseException {
         typeE = Existence.REQUIRED;
         try {
             this.type = PotionType.valueOf(type.toUpperCase());
@@ -50,12 +50,12 @@ public class PotionHandler {
         }
     }
 
-    public void setExtended(String extended) {
+    public void setExtended(final String extended) {
         extendedE = Existence.REQUIRED;
         this.extended = Boolean.parseBoolean(extended);
     }
 
-    public void setUpgraded(String upgraded) {
+    public void setUpgraded(final String upgraded) {
         upgradedE = Existence.REQUIRED;
         this.upgraded = Boolean.parseBoolean(upgraded);
     }
@@ -69,11 +69,11 @@ public class PotionHandler {
     }
 
     public List<PotionEffect> getCustom() {
-        List<PotionEffect> effects = new LinkedList<>();
+        final List<PotionEffect> effects = new LinkedList<>();
         if (customE == Existence.FORBIDDEN) {
             return effects;
         }
-        for (CustomEffectHandler checker : custom) {
+        for (final CustomEffectHandler checker : custom) {
             if (checker.customTypeE != Existence.FORBIDDEN) {
                 effects.add(checker.get());
             }
@@ -81,8 +81,8 @@ public class PotionHandler {
         return effects;
     }
 
-    public void setCustom(String custom) throws InstructionParseException {
-        String[] parts;
+    public void setCustom(final String custom) throws InstructionParseException {
+        final String[] parts;
         if (custom == null || (parts = custom.split(",")).length == 0) {
             throw new InstructionParseException("Missing value");
         }
@@ -91,15 +91,15 @@ public class PotionHandler {
             return;
         }
         this.custom = new ArrayList<>(parts.length);
-        for (String part : parts) {
-            CustomEffectHandler checker = new CustomEffectHandler();
+        for (final String part : parts) {
+            final CustomEffectHandler checker = new CustomEffectHandler();
             checker.set(part);
             this.custom.add(checker);
         }
         customE = Existence.REQUIRED;
     }
 
-    public boolean checkBase(PotionData base) {
+    public boolean checkBase(final PotionData base) {
         switch (typeE) {
             case WHATEVER:
                 return true;
@@ -116,7 +116,7 @@ public class PotionHandler {
         }
     }
 
-    public boolean checkCustom(List<PotionEffect> custom) {
+    public boolean checkCustom(final List<PotionEffect> custom) {
         if (customE == Existence.WHATEVER) {
             return true;
         }
@@ -128,9 +128,9 @@ public class PotionHandler {
                 return false;
             }
         }
-        for (CustomEffectHandler checker : this.custom) {
+        for (final CustomEffectHandler checker : this.custom) {
             PotionEffect effect = null;
-            for (PotionEffect e : custom) {
+            for (final PotionEffect e : custom) {
                 if (e.getType().equals(checker.customType)) {
                     effect = e;
                     break;
@@ -152,8 +152,8 @@ public class PotionHandler {
         int power = 1;
         Number powerE = Number.WHATEVER;
 
-        void set(String custom) throws InstructionParseException {
-            String[] parts;
+        void set(final String custom) throws InstructionParseException {
+            final String[] parts;
             if (custom == null || (parts = custom.split(":")).length == 0) {
                 throw new InstructionParseException("Missing value");
             }
@@ -221,7 +221,7 @@ public class PotionHandler {
             return new PotionEffect(customType, duration, power);
         }
 
-        boolean check(PotionEffect effect) {
+        boolean check(final PotionEffect effect) {
             switch (customTypeE) {
                 case WHATEVER:
                     return true;

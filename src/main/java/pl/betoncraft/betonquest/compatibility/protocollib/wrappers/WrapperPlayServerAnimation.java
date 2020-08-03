@@ -31,7 +31,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
         handle.getModifier().writeDefaults();
     }
 
-    public WrapperPlayServerAnimation(PacketContainer packet) {
+    public WrapperPlayServerAnimation(final PacketContainer packet) {
         super(packet, TYPE);
     }
 
@@ -51,7 +51,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setEntityID(int value) {
+    public void setEntityID(final int value) {
         handle.getIntegers().write(0, value);
     }
 
@@ -61,7 +61,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @param world - the current world of the entity.
      * @return The spawned entity.
      */
-    public Entity getEntity(World world) {
+    public Entity getEntity(final World world) {
         return handle.getEntityModifier(world).read(0);
     }
 
@@ -71,7 +71,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @param event - the packet event.
      * @return The spawned entity.
      */
-    public Entity getEntity(PacketEvent event) {
+    public Entity getEntity(final PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
     }
 
@@ -91,7 +91,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      *
      * @param value - new value.
      */
-    public void setAnimation(int value) {
+    public void setAnimation(final int value) {
         handle.getIntegers().write(1, value);
     }
 

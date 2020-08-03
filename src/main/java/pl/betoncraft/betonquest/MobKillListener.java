@@ -37,9 +37,9 @@ public class MobKillListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onKill(EntityDeathEvent event) {
-        LivingEntity entity = event.getEntity();
-        Player killer = entity.getKiller();
+    public void onKill(final EntityDeathEvent event) {
+        final LivingEntity entity = event.getEntity();
+        final Player killer = entity.getKiller();
         if (killer != null) {
             MobKillNotifier.addKill(killer, entity);
         }

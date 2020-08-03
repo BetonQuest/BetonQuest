@@ -40,9 +40,9 @@ public class ParticleEvent extends QuestEvent {
     private LocationData loc;
     private boolean pr1vate;
 
-    public ParticleEvent(Instruction instruction) throws InstructionParseException {
+    public ParticleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
+        final String string = instruction.next();
         parameters = instruction.getPackage().getCustom().getConfig().getConfigurationSection("effects." + string);
         if (parameters == null) {
             throw new InstructionParseException("Effect '" + string + "' does not exist!");
@@ -57,12 +57,12 @@ public class ParticleEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player p = PlayerConverter.getPlayer(playerID);
-        Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player p = PlayerConverter.getPlayer(playerID);
+        final Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;
-        Player targetPlayer = pr1vate ? p : null;
+        final Player targetPlayer = pr1vate ? p : null;
         EffectLibIntegrator.getEffectManager().start(effectClass,
                 parameters,
                 new DynamicLocation(location, null),

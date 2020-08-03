@@ -33,14 +33,14 @@ public class ArmorCondition extends Condition {
 
     private final QuestItem item;
 
-    public ArmorCondition(Instruction instruction) throws InstructionParseException {
+    public ArmorCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         item = new QuestItem(instruction.getItem());
     }
 
     @Override
-    protected Boolean execute(String playerID) {
-        for (ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
+    protected Boolean execute(final String playerID) {
+        for (final ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
             if (item != null && item.compare(armor)) {
                 return true;
             }

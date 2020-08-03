@@ -39,7 +39,7 @@ public class Pointer {
      * @param pointer   the name of the journal entry
      * @param timestamp exact date this entry was added to journal
      */
-    public Pointer(String pointer, long timestamp) {
+    public Pointer(final String pointer, final long timestamp) {
         this.pointer = pointer;
         this.timestamp = timestamp;
     }

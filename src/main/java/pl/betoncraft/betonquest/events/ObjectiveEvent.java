@@ -45,7 +45,7 @@ public class ObjectiveEvent extends QuestEvent {
     private final ObjectiveID objective;
     private final String action;
 
-    public ObjectiveEvent(Instruction instruction) throws InstructionParseException {
+    public ObjectiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
         action = instruction.next();
@@ -64,8 +64,8 @@ public class ObjectiveEvent extends QuestEvent {
         }
         if (playerID == null) {
             if (action.toLowerCase().equals("delete") || action.toLowerCase().equals("remove")) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                for (final Player p : Bukkit.getOnlinePlayers()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                     playerData.removeRawObjective(objective);
                 }
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, new String[]{
@@ -76,7 +76,7 @@ public class ObjectiveEvent extends QuestEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    PlayerData playerData = new PlayerData(playerID);
+                    final PlayerData playerData = new PlayerData(playerID);
                     switch (action.toLowerCase()) {
                         case "start":
                         case "add":

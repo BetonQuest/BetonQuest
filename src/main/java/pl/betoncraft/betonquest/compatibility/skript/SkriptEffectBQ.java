@@ -44,14 +44,14 @@ public class SkriptEffectBQ extends Effect {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parseResult) {
         this.event = (Expression<String>) exprs[0];
         this.player = (Expression<Player>) exprs[1];
         return true;
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
+    public String toString(final Event e, final boolean debug) {
         return "fire " + event.toString() + " for " + player.getSingle(e).getName();
     }
 
@@ -59,7 +59,7 @@ public class SkriptEffectBQ extends Effect {
     protected void execute(final Event e) {
         new BukkitRunnable() {
             public void run() {
-                String eventID = event.getSingle(e);
+                final String eventID = event.getSingle(e);
                 try {
                     BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), new EventID(null, eventID));
                 } catch (ObjectNotFoundException e) {

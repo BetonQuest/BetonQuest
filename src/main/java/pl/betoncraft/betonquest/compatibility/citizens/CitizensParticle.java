@@ -64,11 +64,11 @@ public class CitizensParticle extends BukkitRunnable {
     public CitizensParticle() {
         instance = this;
         // loop across all packages
-        for (ConfigPackage pack : Config.getPackages().values()) {
+        for (final ConfigPackage pack : Config.getPackages().values()) {
 
             // load all NPC ids
             if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
-                for (String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
+                for (final String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
                     try {
                         npcs.add(Integer.parseInt(npcID));
                     } catch (NumberFormatException e) {
@@ -78,7 +78,7 @@ public class CitizensParticle extends BukkitRunnable {
             }
 
             // npc_effects contains all effects for NPCs
-            ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_effects");
+            final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_effects");
 
             // if it's not defined then we're not displaying effects
             if (section == null) {
@@ -98,15 +98,15 @@ public class CitizensParticle extends BukkitRunnable {
             }
 
             // loading all effects
-            for (String key : section.getKeys(false)) {
-                ConfigurationSection settings = section.getConfigurationSection(key);
+            for (final String key : section.getKeys(false)) {
+                final ConfigurationSection settings = section.getConfigurationSection(key);
 
                 // if the key is not a configuration section then it's not an effect
                 if (settings == null) {
                     continue;
                 }
 
-                Effect effect = new Effect();
+                final Effect effect = new Effect();
 
                 // the type of the effect, it's required
                 effect.name = settings.getString("class");
@@ -124,7 +124,7 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // load all NPCs for which this effect can be displayed
                 effect.npcs = new HashSet<>();
-                for (int id : settings.getIntegerList("npcs")) {
+                for (final int id : settings.getIntegerList("npcs")) {
                     effect.npcs.add(id);
                 }
 
@@ -135,7 +135,7 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // load all conditions
                 effect.conditions = new ArrayList<>();
-                for (String cond : settings.getStringList("conditions")) {
+                for (final String cond : settings.getStringList("conditions")) {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
                     } catch (ObjectNotFoundException e) {
@@ -186,27 +186,27 @@ public class CitizensParticle extends BukkitRunnable {
         players.clear();
 
         // every player needs to generate their assignment
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
 
             // wrap an assignment map
-            Map<Integer, Effect> assignments = new HashMap<>();
+            final Map<Integer, Effect> assignments = new HashMap<>();
 
             // handle all effects
             effects:
-            for (Effect effect : effects) {
+            for (final Effect effect : effects) {
 
                 // skip the effect if conditions are not met
-                for (ConditionID condition : effect.conditions) {
+                for (final ConditionID condition : effect.conditions) {
                     if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
                         continue effects;
                     }
                 }
 
                 // determine which NPCs should receive this effect
-                Collection<Integer> applicableNPCs = effect.def ? new HashSet<>(npcs) : effect.npcs;
+                final Collection<Integer> applicableNPCs = effect.def ? new HashSet<>(npcs) : effect.npcs;
 
                 // assign this effect to all NPCs which don't have already assigned effects
-                for (Integer npc : applicableNPCs) {
+                for (final Integer npc : applicableNPCs) {
                     if (!assignments.containsKey(npc)) {
                         assignments.put(npc, effect);
                     }
@@ -222,10 +222,10 @@ public class CitizensParticle extends BukkitRunnable {
     private void activateEffects() {
 
         // display effects for all players
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
 
             // get NPC-effect assignments for this player
-            Map<Integer, Effect> assignments = players.get(player.getUniqueId());
+            final Map<Integer, Effect> assignments = players.get(player.getUniqueId());
 
             // skip if there are no assignments for this player
             if (assignments == null) {
@@ -233,9 +233,9 @@ public class CitizensParticle extends BukkitRunnable {
             }
 
             // display effects on all NPCs
-            for (Entry<Integer, Effect> entry : assignments.entrySet()) {
-                Integer id = entry.getKey();
-                Effect effect = entry.getValue();
+            for (final Entry<Integer, Effect> entry : assignments.entrySet()) {
+                final Integer id = entry.getKey();
+                final Effect effect = entry.getValue();
 
                 // skip this effect if it's not its time
                 if (tick % effect.interval != 0) {
@@ -243,7 +243,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // get the NPC from its ID
-                NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
 
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||
@@ -252,7 +252,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // prepare effect location
-                Location loc = npc.getStoredLocation().clone();
+                final Location loc = npc.getStoredLocation().clone();
                 loc.setPitch(-90);
 
                 // fire the effect

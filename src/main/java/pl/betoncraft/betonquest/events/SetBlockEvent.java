@@ -35,7 +35,7 @@ public class SetBlockEvent extends QuestEvent {
     private final Material block;
     private final LocationData loc;
 
-    public SetBlockEvent(Instruction instruction) throws InstructionParseException {
+    public SetBlockEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
@@ -44,8 +44,8 @@ public class SetBlockEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Location location = loc.getLocation(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
         location.getBlock().setType(block);
         return null;
     }

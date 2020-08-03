@@ -39,7 +39,7 @@ public class NPCInteractObjective extends Objective implements Listener {
     private final int id;
     private final boolean cancel;
 
-    public NPCInteractObjective(Instruction instruction) throws InstructionParseException {
+    public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         id = instruction.getInt();
@@ -50,8 +50,8 @@ public class NPCInteractObjective extends Objective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onNPCClick(NPCRightClickEvent event) {
-        String playerID = PlayerConverter.getID(event.getClicker());
+    public void onNPCClick(final NPCRightClickEvent event) {
+        final String playerID = PlayerConverter.getID(event.getClicker());
         if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
             return;
         }

@@ -33,9 +33,9 @@ public class VersionVariable extends Variable {
 
     private final Plugin plugin;
 
-    public VersionVariable(Instruction instruction) throws InstructionParseException {
+    public VersionVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        String[] parts = instruction.getInstruction().split("\\.");
+        final String[] parts = instruction.getInstruction().split("\\.");
         if (parts.length > 1) {
             plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
             if (plugin == null)
@@ -46,7 +46,7 @@ public class VersionVariable extends Variable {
     }
 
     @Override
-    public String getValue(String playerID) {
+    public String getValue(final String playerID) {
         return plugin.getDescription().getVersion();
     }
 

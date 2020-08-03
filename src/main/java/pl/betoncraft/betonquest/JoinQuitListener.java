@@ -49,19 +49,19 @@ public class JoinQuitListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void playerPreLogin(AsyncPlayerPreLoginEvent event) {
+    public void playerPreLogin(final AsyncPlayerPreLoginEvent event) {
         // if player was kicked, don't load the data
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
-        String playerID = event.getUniqueId().toString();
-        BetonQuest plugin = BetonQuest.getInstance();
+        final String playerID = event.getUniqueId().toString();
+        final BetonQuest plugin = BetonQuest.getInstance();
         plugin.putPlayerData(playerID, new PlayerData(playerID));
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         // start objectives when the data is loaded
         PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
         // if the data still isn't loaded, force loading (this happens sometimes
@@ -87,9 +87,9 @@ public class JoinQuitListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        String playerID = PlayerConverter.getID(event.getPlayer());
-        for (Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        final String playerID = PlayerConverter.getID(event.getPlayer());
+        for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
             objective.removePlayer(playerID);
         }
         BetonQuest.getInstance().removePlayerData(playerID);

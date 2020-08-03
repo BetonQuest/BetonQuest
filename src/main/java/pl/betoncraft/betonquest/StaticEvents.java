@@ -53,26 +53,26 @@ public class StaticEvents {
         LogUtils.getLogger().log(Level.FINE, "Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
-        for (EventTimer eventTimer : timers) {
+        for (final EventTimer eventTimer : timers) {
             eventTimer.cancel();
             deleted = true;
         }
         if (deleted) {
             LogUtils.getLogger().log(Level.FINE, "Previous timers has been canceled");
         }
-        for (ConfigPackage pack : Config.getPackages().values()) {
-            String packName = pack.getName();
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getName();
             LogUtils.getLogger().log(Level.FINE, "Searching package " + packName);
             // get those hours and events
-            ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
+            final ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
             if (config == null) {
                 LogUtils.getLogger().log(Level.FINE, "There are no static events defined, skipping");
                 continue;
             }
             // for each hour, create an event timer
-            for (String key : config.getKeys(false)) {
-                String value = config.getString(key);
-                long timeStamp = getTimestamp(key);
+            for (final String key : config.getKeys(false)) {
+                final String value = config.getString(key);
+                final long timeStamp = getTimestamp(key);
                 if (timeStamp < 0) {
                     LogUtils.getLogger().log(Level.WARNING, "Incorrect time value in static event declaration (" + key + "), skipping this one");
                     continue;
@@ -96,7 +96,7 @@ public class StaticEvents {
      */
     public static void stop() {
         LogUtils.getLogger().log(Level.FINE, "Killing all timers on disable");
-        for (EventTimer timer : timers) {
+        for (final EventTimer timer : timers) {
             timer.cancel();
         }
     }
@@ -107,10 +107,10 @@ public class StaticEvents {
      * @param hour time of the day
      * @return timestamp representing next occurence of specified hour
      */
-    private long getTimestamp(String hour) {
+    private long getTimestamp(final String hour) {
         // get the current day and add the given hour to it
-        Date time = new Date();
-        String timeString = new SimpleDateFormat("dd.MM.yy").format(time) + " " + hour;
+        final Date time = new Date();
+        final String timeString = new SimpleDateFormat("dd.MM.yy").format(time) + " " + hour;
         // convert it into a timestamp
         long timeStamp = -1;
         try {
@@ -142,7 +142,7 @@ public class StaticEvents {
          * @param timeStamp
          * @param eventID
          */
-        public EventTimer(long timeStamp, EventID eventID) {
+        public EventTimer(final long timeStamp, final EventID eventID) {
             event = eventID;
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
         }
