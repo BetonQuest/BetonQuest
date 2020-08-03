@@ -31,7 +31,7 @@ fi
 echo "$0: Deploying documentation to gh-pages/versions/${VERSION_DIR}"
 rm -r "gh-pages/versions/${VERSION_DIR}"
 mkdir -p "gh-pages/versions/${VERSION_DIR}" || exit 4
-cp -r build/docs/* "gh-pages/versions/${VERSION_DIR}" || exit 5
+cp -r build/documentation/* "gh-pages/versions/${VERSION_DIR}" || exit 5
 
 # Build versions.json from english
 cat <<EOF > gh-pages/versions.json
