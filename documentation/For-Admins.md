@@ -19,22 +19,25 @@ Disadvantages:
 This is also true for the learning curve, your staff will need some time to learn BetonQuest.
 However, one of the goals of the further development of BetonQuest is to reduce the overhead that is needed for simple quests. 
 
-
+ 
 Feature[^1]               | BetonQuest         | Quests            | BeautyQuests          | QuestCreator             | MangoQuest          |  
 ------------------------- | ------------------ | ----------------- | --------------------- | ------------------------ | -----------         |
 Free                      | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
 OpenSource                | :white_check_mark: | :white_check_mark:| :white_check_mark:    | :x:                      | :white_check_mark:  |
-API                       | :white_check_mark: | :question:        | :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
+API                       | :white_check_mark: | :white_check_mark:| :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
 Version Support           | 1.13.2-1.15.2      | 1.7-1.15.2        | 1.11-1.15.2           | 1.7-1.15.2               | 1.13-1.15.2         | 
 Database Support          | SQL Lite & MySQL   | :x:               | :x:                   | MySQL                    | :question:          |
 Bungee Support            | :x:                | :x:               | :x:                   | :x:                      | :question:          |
 Per Player Language       | :white_check_mark: | :question:        | :x:                   | :x:                      | :question:          |
 Multi-Path Conversations  | :white_check_mark: | :question:        | :question:            | :white_check_mark:       | :question:          |
 Client Side NPCs          | :white_check_mark: | :question:        | :question:            | :white_check_mark:       | :question:          |
-Ingame Editor             | :x:                | :question:        | :question:            | :white_check_mark:       | :x:                 |
+Ingame Editor             | :x:                | :white_check_mark:| :question:            | :white_check_mark:       | :x:                 |
 External Editor           | :white_check_mark: | :question:        | :question:            | :x:                      | :white_check_mark:  |
 Organized File Structure  | :white_check_mark: | :x:               | :question:            | :white_check_mark:       | :white_check_mark:  |
-Integrated Plugins        | 20                 | 12                | 15                    | 23                       | 7                   |
+Integrated Plugins        | 27                 | 12                | 15                    | 23                       | 7                   |
+
+ProQuest, QuestWorld (2) and Quest by LMBishop have been classified as way to limited or unknown to appear in this table. They are simple task plugins,
+not plugins that are able to create story driven quests.
 
 [^1]: This table has been last updated on the 19th of June 2020. If there are any mistakes let us know!
-[^2]: This means that Open Source plugins cannot add support which is considered as an unfriendly policy.
+[^2]: This means that Open Source plugins cannot add support which is considered an unfriendly policy.
