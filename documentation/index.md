@@ -1,11 +1,9 @@
-<center>![logo](./media/design/logo.png)</center>
+<span class="centered">![logo](./media/design/logo.png)</span>
+
+**<div style="text-align: center;"><h2><span style="color: red; ">Docs rework in progress!</span></h2></div>**
+_<div style="text-align: center;">There may be some inconsistencies.</div>_
 
 
- <center><h2><font color="red">__**Docs rework in progress!**__ </font></h2></center>
-                              <center>_There may be some inconsistencies._</center>
- 
- 
- 
 BetonQuest is an advanced and powerful quest plugin. 
 It offers RPG-style conversations with NPCs and a very flexible quest system.
 The _**multi-path conversations**_ can be displayed in many ways ranging from basic clickable chat output, to all-new technologies.

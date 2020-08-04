@@ -12,6 +12,7 @@ extra_css:
   - 'webCode/css/mkpdf.css'
   - 'webCode/css/version_select.css'
   - 'webCode/css/superFences.css'
+  - 'webCode/css/centered.css'
 
 extra_javascript:
   - 'webCode/js/version_select.js'
