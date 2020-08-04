@@ -33,7 +33,7 @@ public class UnbreakableHandler {
         }
     }
 
-    public boolean get() {
+    public boolean isUnbreakable() {
         return unbreakable == Existence.REQUIRED;
     }
 

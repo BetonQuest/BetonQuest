@@ -490,7 +490,7 @@ public class Backpack implements Listener {
                                     "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
                         final int x;
-                        int y;
+                        final int y;
                         final int z;
                         try {
                             x = Integer.parseInt(parts[0]);
