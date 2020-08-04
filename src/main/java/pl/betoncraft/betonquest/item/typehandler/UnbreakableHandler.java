@@ -23,6 +23,8 @@ public class UnbreakableHandler {
 
     private Existence unbreakable = Existence.WHATEVER;
 
+    public UnbreakableHandler() {}
+
     public void set(final String string) {
         if (string.equalsIgnoreCase("true")) {
             unbreakable = Existence.REQUIRED;

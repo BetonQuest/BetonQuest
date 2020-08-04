@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdaterTest {
 
+    public UpdaterTest() {}
+
     @Test
     public void testVersionCompare() {
         final Updater.Version version1 = createAndCheckVersion("1.0.0", false, false);

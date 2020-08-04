@@ -153,9 +153,9 @@ public class Backpack implements Listener {
      * @author Jakub Sapalski
      */
     private abstract class Display {
+        private Display() {}
 
         abstract void click(int slot, int playerSlot, ClickType click);
-
     }
 
     /**

@@ -5,6 +5,8 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOLibIntegrator implements Integrator {
 
+    public MMOLibIntegrator() {}
+
     @Override
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();

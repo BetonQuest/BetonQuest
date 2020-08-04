@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Config.class, LogUtils.class, BetonQuest.class,})
 public class UtilsTest {
+
+    public UtilsTest() {}
+
     @Before
     public void setUp() {
         PowerMockito.mockStatic(BetonQuest.class);

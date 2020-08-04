@@ -33,6 +33,8 @@ public class BookHandler {
     private List<String> text = new ArrayList<>();
     private Existence textE = Existence.WHATEVER;
 
+    public BookHandler() {}
+
     public String getTitle() {
         return title;
     }

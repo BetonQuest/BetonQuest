@@ -5,6 +5,8 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOCoreIntegrator implements Integrator {
 
+    public MMOCoreIntegrator() {}
+
     @Override
     public void hook() {
         MMOCoreUtils.loadMMOCoreAttributeConfig();

@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
 
+    public BetonQuestPlaceholder() {}
     /**
      * Persist through reloads
      *

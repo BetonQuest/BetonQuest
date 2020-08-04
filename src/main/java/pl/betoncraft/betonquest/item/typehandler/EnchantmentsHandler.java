@@ -33,6 +33,8 @@ public class EnchantmentsHandler {
     private Existence checkersE = Existence.WHATEVER;
     private boolean exact = true;
 
+    public EnchantmentsHandler() {}
+
     public void set(final String enchants) throws InstructionParseException {
         final String[] parts;
         if (enchants == null || (parts = enchants.split(",")).length == 0) {
@@ -94,6 +96,8 @@ public class EnchantmentsHandler {
         Existence ex = Existence.WHATEVER;
         int level = 1;
         Number nr = Number.WHATEVER;
+
+        private SingleEnchantmentHandler() {}
 
         @SuppressWarnings("deprecation")
         void set(final String enchant) throws InstructionParseException {

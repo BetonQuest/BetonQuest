@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOItemsIntegrator implements Integrator {
 
+    public MMOItemsIntegrator() {}
     @Override
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();

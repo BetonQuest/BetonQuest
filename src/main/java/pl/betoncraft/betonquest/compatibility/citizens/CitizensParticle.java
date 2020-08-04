@@ -275,6 +275,8 @@ public class CitizensParticle extends BukkitRunnable {
         private Set<Integer> npcs;
         private List<ConditionID> conditions;
         private ConfigurationSection settings;
+
+        private Effect() {}
     }
 
 }

@@ -25,6 +25,8 @@ public class NameHandler {
     private String name = null;
     private Existence e = Existence.WHATEVER;
 
+    public NameHandler() {}
+
     public void set(final String name) throws InstructionParseException {
         if (name == null || name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");

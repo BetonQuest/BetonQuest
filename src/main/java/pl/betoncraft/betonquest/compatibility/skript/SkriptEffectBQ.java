@@ -42,6 +42,8 @@ public class SkriptEffectBQ extends Effect {
     private Expression<String> event;
     private Expression<Player> player;
 
+    private SkriptEffectBQ() {}
+
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parseResult) {

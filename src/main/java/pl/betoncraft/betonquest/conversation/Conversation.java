@@ -671,6 +671,8 @@ public class Conversation implements Listener {
      * @author Jakub Sapalski
      */
     private class ConversationEnder extends BukkitRunnable {
+        private ConversationEnder() {}
+
         public void run() {
             endConversation();
         }

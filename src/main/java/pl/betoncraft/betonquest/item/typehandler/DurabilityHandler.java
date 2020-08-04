@@ -25,6 +25,8 @@ public class DurabilityHandler {
     private short durability = 0;
     private Number e = Number.WHATEVER;
 
+    public DurabilityHandler() {}
+
     public void set(String durability) throws InstructionParseException {
         if (durability.endsWith("-")) {
             e = Number.LESS;
