@@ -1,4 +1,4 @@
-<span class="centered">![logo](./media/design/logo.png)</span>
+<span class="centered">![BetonQuest Logo](./media/design/logo.png)</span>
 
 **<div style="text-align: center;"><h2><span style="color: red; ">Docs rework in progress!</span></h2></div>**
 _<div style="text-align: center;">There may be some inconsistencies.</div>_
