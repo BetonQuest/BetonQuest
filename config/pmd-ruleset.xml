@@ -18,6 +18,5 @@
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
-  <rule ref="category/java/codestyle.xml/ForLoopsMustUseBraces" />
 
 </ruleset>
