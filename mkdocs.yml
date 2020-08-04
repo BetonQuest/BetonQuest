@@ -62,7 +62,7 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - toc:
-      permalink: true
+      permalink: 🔗
 
 # Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine. But be carefull not to commit that.
 plugins:
