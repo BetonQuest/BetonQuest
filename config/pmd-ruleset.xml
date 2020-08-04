@@ -10,6 +10,7 @@
   </description>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor" />
+  <rule ref="category/java/codestyle.xml/AvoidDollarSigns" />
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/ForLoopsMustUseBraces" />
