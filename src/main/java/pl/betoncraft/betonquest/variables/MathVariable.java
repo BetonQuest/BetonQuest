@@ -86,7 +86,9 @@ public class MathVariable extends Variable {
             final int end = m.end();
             final int length = end - start;
             String s = tempCopy.substring(0, start + 1);
-            for (int i = 0; i < length - 2; i++) s += " ";
+            for (int i = 0; i < length - 2; i++) {
+                s += " ";
+            }
             s += tempCopy.substring(end - 1);
             tempCopy = s;
         }

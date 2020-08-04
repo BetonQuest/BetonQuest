@@ -45,8 +45,9 @@ public class ChatEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
-        for (final String message : messages)
+        for (final String message : messages) {
             player.chat(message.replace("%player%", player.getName()));
+        }
         return null;
     }
 
