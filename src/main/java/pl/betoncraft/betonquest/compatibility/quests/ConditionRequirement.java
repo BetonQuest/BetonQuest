@@ -36,6 +36,7 @@ import java.util.logging.Level;
 public class ConditionRequirement extends CustomRequirement {
 
     public ConditionRequirement() {
+        super();
         setName("BetonQuest condition");
         setAuthor("Co0sh");
         addStringPrompt("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)", null);

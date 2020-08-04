@@ -143,6 +143,7 @@ public class StaticEvents {
          * @param eventID
          */
         public EventTimer(final long timeStamp, final EventID eventID) {
+            super();
             event = eventID;
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
         }

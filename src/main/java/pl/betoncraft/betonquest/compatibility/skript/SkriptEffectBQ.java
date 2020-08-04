@@ -42,7 +42,9 @@ public class SkriptEffectBQ extends Effect {
     private Expression<String> event;
     private Expression<Player> player;
 
-    private SkriptEffectBQ() {}
+    private SkriptEffectBQ() {
+        super();
+    }
 
     @SuppressWarnings("unchecked")
     @Override

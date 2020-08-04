@@ -173,6 +173,7 @@ public class Backpack implements Listener {
          * @param page number of the page to display, starting from 0
          */
         public Page(final int page) {
+            super();
             this.page = page;
             final List<ItemStack> backpackItems = playerData.getBackpack();
             // amount of pages, considering that the first contains 44
@@ -396,6 +397,7 @@ public class Backpack implements Listener {
          * Creates a page with quest cancelers and displays it to the player.
          */
         public Cancelers() {
+            super();
             final HashMap<String, QuestCanceler> cancelers = new HashMap<>();
             // get all quest cancelers that can be shown to the player
             for (final String name : Config.getCancelers().keySet()) {
@@ -444,6 +446,7 @@ public class Backpack implements Listener {
         private HashMap<Integer, String> items = new HashMap<>();
 
         public Compass() {
+            super();
             Integer counter = 0;
             // for every package
             for (final ConfigPackage pack : Config.getPackages().values()) {

@@ -62,6 +62,7 @@ public class CitizensParticle extends BukkitRunnable {
     private boolean enabled = false;
 
     public CitizensParticle() {
+        super();
         instance = this;
         // loop across all packages
         for (final ConfigPackage pack : Config.getPackages().values()) {

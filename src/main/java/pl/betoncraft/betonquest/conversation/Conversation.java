@@ -476,6 +476,7 @@ public class Conversation implements Listener {
         private String[] options;
 
         public Starter(final String[] options) {
+            super();
             this.options = options;
         }
 
@@ -581,6 +582,7 @@ public class Conversation implements Listener {
         private String option;
 
         public NPCEventRunner(final String option) {
+            super();
             this.option = option;
         }
 
@@ -599,6 +601,7 @@ public class Conversation implements Listener {
         private String option;
 
         public PlayerEventRunner(final String option) {
+            super();
             this.option = option;
         }
 
@@ -617,6 +620,7 @@ public class Conversation implements Listener {
         private String option;
 
         public ResponsePrinter(final String option) {
+            super();
             this.option = option;
         }
 
@@ -651,6 +655,7 @@ public class Conversation implements Listener {
         private String option;
 
         public OptionPrinter(final String option) {
+            super();
             this.option = option;
         }
 
@@ -671,7 +676,9 @@ public class Conversation implements Listener {
      * @author Jakub Sapalski
      */
     private class ConversationEnder extends BukkitRunnable {
-        private ConversationEnder() {}
+        private ConversationEnder() {
+            super();
+        }
 
         public void run() {
             endConversation();

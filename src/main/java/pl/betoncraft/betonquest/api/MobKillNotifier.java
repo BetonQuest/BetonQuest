@@ -79,6 +79,7 @@ public class MobKillNotifier {
         private Entity killed;
 
         public MobKilledEvent(final Player killer, final Entity killed) {
+            super();
             this.killer = killer;
             this.killed = killed;
         }

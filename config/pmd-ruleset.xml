@@ -15,6 +15,7 @@
   <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending" />
   <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
   <rule ref="category/java/codestyle.xml/BooleanGetMethodName" />
+  <rule ref="category/java/codestyle.xml/CallSuperInConstructor" />
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />

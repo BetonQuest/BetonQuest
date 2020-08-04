@@ -32,7 +32,9 @@ public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;
 
-    private SkriptEventBQ() {}
+    private SkriptEventBQ() {
+        super();
+    }
 
     @Override
     public String toString(final Event e, final boolean debug) {
