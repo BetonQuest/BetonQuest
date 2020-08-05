@@ -155,7 +155,7 @@ public class Backpack implements Listener {
     private abstract class Display {
         private Display() {}
 
-        abstract void click(int slot, int playerSlot, ClickType click);
+        protected abstract void click(int slot, int playerSlot, ClickType click);
     }
 
     /**
@@ -188,10 +188,10 @@ public class Backpack implements Listener {
             int i = 0;
             // insert the journal if the player doesn't have it in his inventory
             if (page == 0) {
-                if (!Journal.hasJournal(playerID)) {
-                    content[0] = playerData.getJournal().getAsItem();
-                } else {
+                if (Journal.hasJournal(playerID)) {
                     content[0] = null;
+                } else {
+                    content[0] = playerData.getJournal().getAsItem();
                 }
                 i++;
             } else {
@@ -284,7 +284,7 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(final int slot, final int playerSlot, final ClickType click) {
+        protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 0 && slot == 0) {
                 // first page on first slot should contain the journal
                 playerData.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
@@ -428,7 +428,7 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(final int slot, final int playerSlot, final ClickType click) {
+        protected void click(final int slot, final int playerSlot, final ClickType click) {
             final QuestCanceler cancel = map.get(slot);
             if (cancel == null) {
                 return;
@@ -567,7 +567,7 @@ public class Backpack implements Listener {
         }
 
         @Override
-        void click(final int slot, final int layerSlot, final ClickType click) {
+        protected void click(final int slot, final int layerSlot, final ClickType click) {
             final Location loc = locations.get(slot);
             if (loc == null) {
                 return;

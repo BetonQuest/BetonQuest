@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public class MMOCoreAttributeCondition extends Condition {
 
-    String attribute;
-    int targetLevel;
-    boolean mustBeEqual = false;
+    private String attribute;
+    private int targetLevel;
+    private boolean mustBeEqual = false;
 
     public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

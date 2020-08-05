@@ -20,19 +20,14 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobProgression;
-import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.List;
-
-public class Condition_HasJob extends Condition {
+public class ConditionJobFull extends Condition {
     private String sJobName;
 
-    public Condition_HasJob(final Instruction instruction) throws InstructionParseException {
+    public ConditionJobFull(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
@@ -48,13 +43,12 @@ public class Condition_HasJob extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) {
-        final Player oPlayer = PlayerConverter.getPlayer(playerID);
-
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
-        for (final JobProgression oJob : oJobs) {
-            if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
-                //User has the job, return true
-                return true;
+        for (final Job job : Jobs.getJobs()) {
+            if (job.getName().equalsIgnoreCase(sJobName)) {
+                if (job.getMaxSlots() == null)
+                    return false;
+                if (job.getTotalPlayers() >= job.getMaxSlots())
+                    return true;
             }
         }
         return false;

@@ -77,10 +77,10 @@ public class WrapperPlayServerChat extends AbstractPacket {
     @Deprecated
     public byte getPosition() {
         final Byte position = handle.getBytes().readSafely(0);
-        if (position != null) {
-            return position;
-        } else {
+        if (position == null) {
             return getChatType().getId();
+        } else {
+            return position;
         }
     }
 

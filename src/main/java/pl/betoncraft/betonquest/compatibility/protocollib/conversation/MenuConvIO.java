@@ -509,7 +509,7 @@ public class MenuConvIO extends ChatConvIO {
         // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less space for all options due to npc text
         final List<String> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption;
-        int currentDirection = selectedOption != oldSelectedOption ? selectedOption - oldSelectedOption : 1;
+        int currentDirection = selectedOption == oldSelectedOption ? 1 : selectedOption - oldSelectedOption;
         int topOption = options.size();
         for (int i = 0; i < options.size() && linesAvailable > (i < 2 ? 0 : 1); i++) {
             int optionIndex = currentOption + (i * currentDirection);
@@ -851,10 +851,4 @@ public class MenuConvIO extends ChatConvIO {
         MOVE,
         LEFT_CLICK
     }
-
-    public enum NAME_TYPE {
-        NONE,
-        CHAT
-    }
-
 }

@@ -68,18 +68,7 @@ public class TagEvent extends QuestEvent {
                     }));
                 }
             }
-        } else if (PlayerConverter.getPlayer(playerID) != null) {
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
-            if (add) {
-                for (final String tag : tags) {
-                    playerData.addTag(tag);
-                }
-            } else {
-                for (final String tag : tags) {
-                    playerData.removeTag(tag);
-                }
-            }
-        } else {
+        } else if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -95,6 +84,17 @@ public class TagEvent extends QuestEvent {
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
+        } else {
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            if (add) {
+                for (final String tag : tags) {
+                    playerData.addTag(tag);
+                }
+            } else {
+                for (final String tag : tags) {
+                    playerData.removeTag(tag);
+                }
+            }
         }
         return null;
     }

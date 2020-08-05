@@ -29,10 +29,12 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
-public class Condition_CanLevel extends Condition {
+public class ConditionJobLevel extends Condition {
     private String sJobName;
+    private int nMinLevel;
+    private int nMaxLevel;
 
-    public Condition_CanLevel(final Instruction instruction) throws InstructionParseException {
+    public ConditionJobLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
@@ -40,6 +42,12 @@ public class Condition_CanLevel extends Condition {
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
                 sJobName = job.getName();
+                try {
+                    this.nMinLevel = Integer.parseInt(instruction.getPart(2));
+                    this.nMaxLevel = Integer.parseInt(instruction.getPart(3));
+                } catch (Exception e) {
+                    throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level", e);
+                }
                 return;
             }
         }
@@ -54,7 +62,7 @@ public class Condition_CanLevel extends Condition {
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
-                if (oJob.canLevelUp())
+                if (oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel)
                     return true;
             }
         }

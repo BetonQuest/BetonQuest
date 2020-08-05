@@ -19,7 +19,7 @@
 package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.api.JobsJoinEvent;
+import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.Job;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -31,10 +31,10 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Objective_JoinJob extends Objective implements Listener {
+public class ObjectiveLevelUpEvent extends Objective implements Listener {
     private final String sJobName;
 
-    public Objective_JoinJob(final Instruction instructions) throws InstructionParseException {
+    public ObjectiveLevelUpEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
         if (instructions.size() < 2) {
@@ -50,8 +50,8 @@ public class Objective_JoinJob extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onJobsJoinEvent(final JobsJoinEvent event) {
-        if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
+    public void onJobsLevelUpEvent(final JobsLevelUpEvent event) {
+        if (event.getJobName().equalsIgnoreCase(this.sJobName)) {
             final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);

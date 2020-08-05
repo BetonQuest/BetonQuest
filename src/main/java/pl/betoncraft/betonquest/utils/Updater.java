@@ -65,14 +65,14 @@ public class Updater {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                     }
                 }
-                if (latest.getValue() != null) {
+                if (latest.getValue() == null) {
+                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
+                } else {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
                             + "'" + (config.automatic ? ", it will be downloaded and automatically installed on the next restart." : ", it will be installed, if you execute '/q update'!"));
                     if (config.automatic) {
                         update(Bukkit.getConsoleSender());
                     }
-                } else {
-                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
                 }
             }
         }.runTaskAsynchronously(BetonQuest.getInstance());

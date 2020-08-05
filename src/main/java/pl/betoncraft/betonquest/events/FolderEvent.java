@@ -58,7 +58,7 @@ public class FolderEvent extends QuestEvent {
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();
         // choose randomly which events should be fired
-        final int randomInt = random != null ? random.getInt(playerID) : 0;
+        final int randomInt = random == null ? 0 : random.getInt(playerID);
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifiable ArrayList
             final ArrayList<EventID> eventsList = new ArrayList<>();

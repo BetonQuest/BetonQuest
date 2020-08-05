@@ -97,7 +97,9 @@ public class QuestCanceler {
             item = Config.getString(packName + ".items.cancel_button");
         }
         // parse it to get the data
-        if (rawEvents != null) {
+        if (rawEvents == null) {
+            events = new EventID[0];
+        } else {
             final String[] arr = rawEvents.split(",");
             events = new EventID[arr.length];
             for (int i = 0; i < arr.length; i++) {
@@ -107,10 +109,10 @@ public class QuestCanceler {
                     throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
                 }
             }
-        } else {
-            events = new EventID[0];
         }
-        if (rawConditions != null) {
+        if (rawConditions == null) {
+            conditions = new ConditionID[0];
+        } else {
             final String[] arr = rawConditions.split(",");
             conditions = new ConditionID[arr.length];
             for (int i = 0; i < arr.length; i++) {
@@ -120,10 +122,10 @@ public class QuestCanceler {
                     throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
                 }
             }
-        } else {
-            conditions = new ConditionID[0];
         }
-        if (rawObjectives != null) {
+        if (rawObjectives == null) {
+            objectives = new ObjectiveID[0];
+        } else {
             final String[] arr = rawObjectives.split(",");
             objectives = new ObjectiveID[arr.length];
             for (int i = 0; i < arr.length; i++) {
@@ -133,13 +135,11 @@ public class QuestCanceler {
                     throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
                 }
             }
-        } else {
-            objectives = new ObjectiveID[0];
         }
-        tags = (rawTags != null) ? rawTags.split(",") : null;
-        points = (rawPoints != null) ? rawPoints.split(",") : null;
-        journal = (rawJournal != null) ? rawJournal.split(",") : null;
-        final String[] locParts = (rawLoc != null) ? rawLoc.split(";") : null;
+        tags = rawTags == null ? null : rawTags.split(",");
+        points = rawPoints == null ? null : rawPoints.split(",");
+        journal = rawJournal == null ? null : rawJournal.split(",");
+        final String[] locParts = rawLoc == null ? null : rawLoc.split(";");
         // get location
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
@@ -209,20 +209,20 @@ public class QuestCanceler {
         if (tags != null) {
             for (final String tag : tags) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing tag " + tag);
-                if (!tag.contains(".")) {
-                    playerData.removeTag(packName + "." + tag);
-                } else {
+                if (tag.contains(".")) {
                     playerData.removeTag(tag);
+                } else {
+                    playerData.removeTag(packName + "." + tag);
                 }
             }
         }
         if (points != null) {
             for (final String point : points) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing points " + point);
-                if (!point.contains(".")) {
-                    playerData.removePointsCategory(packName + "." + point);
-                } else {
+                if (point.contains(".")) {
                     playerData.removePointsCategory(point);
+                } else {
+                    playerData.removePointsCategory(packName + "." + point);
                 }
             }
         }

@@ -147,16 +147,16 @@ public class PotionHandler {
 
     private class CustomEffectHandler {
 
-        PotionEffectType customType;
-        Existence customTypeE = Existence.WHATEVER;
-        int duration = 60 * 20;
-        Number durationE = Number.WHATEVER;
-        int power = 1;
-        Number powerE = Number.WHATEVER;
+        private PotionEffectType customType;
+        private Existence customTypeE = Existence.WHATEVER;
+        private int duration = 60 * 20;
+        private Number durationE = Number.WHATEVER;
+        private int power = 1;
+        private Number powerE = Number.WHATEVER;
 
         private CustomEffectHandler() {}
 
-        void set(final String custom) throws InstructionParseException {
+        private void set(final String custom) throws InstructionParseException {
             final String[] parts;
             if (custom == null || (parts = custom.split(":")).length == 0) {
                 throw new InstructionParseException("Missing value");
@@ -221,11 +221,11 @@ public class PotionHandler {
             }
         }
 
-        PotionEffect get() {
+        private PotionEffect get() {
             return new PotionEffect(customType, duration, power);
         }
 
-        boolean check(final PotionEffect effect) {
+        private boolean check(final PotionEffect effect) {
             switch (customTypeE) {
                 case WHATEVER:
                     return true;

@@ -98,8 +98,8 @@ public class CommandEvent extends QuestEvent {
 
     private class Command {
 
-        String command;
-        List<String> variables;
+        private String command;
+        private List<String> variables;
 
         public Command(final String command) {
             this.command = command;

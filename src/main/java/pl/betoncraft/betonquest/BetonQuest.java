@@ -349,14 +349,13 @@ public class BetonQuest extends JavaPlugin {
                     getConfig().getString("mysql.pass"));
             con = database.getConnection();
         }
-        if (con != null) {
-            LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
-            isMySQLUsed = true;
-            // if it fails use SQLite
-        } else {
+        if (con == null) {
             this.database = new SQLite(this, "database.db");
             LogUtils.getLogger().log(Level.INFO, "Using SQLite for storing data!");
             isMySQLUsed = false;
+        } else {
+            LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
+            isMySQLUsed = true;
         }
 
         // create tables in the database

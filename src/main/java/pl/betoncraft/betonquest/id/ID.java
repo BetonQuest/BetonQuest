@@ -82,10 +82,10 @@ public abstract class ID {
             this.id = id.substring(dotIndex + 1);
         } else {
             // id does not specify package, use supplied package
-            if (pack != null) {
-                this.pack = pack;
-            } else {
+            if (pack == null) {
                 this.pack = Config.getDefaultPackage();
+            } else {
+                this.pack = pack;
             }
             this.id = id;
         }

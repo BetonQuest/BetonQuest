@@ -354,8 +354,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     }
 
     private class NPCHologram {
-        HologramConfig config;
-        Hologram hologram;
+        private HologramConfig config;
+        private Hologram hologram;
 
         private NPCHologram() {}
     }

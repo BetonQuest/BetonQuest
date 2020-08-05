@@ -74,7 +74,7 @@ public class FireworkEffectHandler {
             for (final String color : parts[1].split(";")) {
                 final Color regularColor = Utils.getColor(color);
                 final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
-                mainColors.add(fireworkColor != null ? fireworkColor.getFireworkColor() : regularColor);
+                mainColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
         if (parts[2].equalsIgnoreCase("none")) {
@@ -86,7 +86,7 @@ public class FireworkEffectHandler {
             for (final String color : parts[2].split(";")) {
                 final Color regularColor = Utils.getColor(color);
                 final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
-                fadeColors.add(fireworkColor != null ? fireworkColor.getFireworkColor() : regularColor);
+                fadeColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
         if (parts[3].equals("?")) {

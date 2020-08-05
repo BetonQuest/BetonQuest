@@ -29,27 +29,28 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
-public class Event_AddLevel extends QuestEvent {
+public class EventDelLevel extends QuestEvent {
     private String sJobName;
     private Integer nAddLevel;
 
-    public Event_AddLevel(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-        if (instruction.size() < 3) {
+    public EventDelLevel(final Instruction instructions) throws InstructionParseException {
+        super(instructions, true);
+
+        if (instructions.size() < 3) {
             throw new InstructionParseException("Not enough arguments");
         }
         for (final Job job : Jobs.getJobs()) {
-            if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
+            if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
                 sJobName = job.getName();
                 try {
-                    this.nAddLevel = Integer.parseInt(instruction.getPart(2));
+                    this.nAddLevel = Integer.parseInt(instructions.getPart(2));
                 } catch (Exception e) {
-                    throw new InstructionParseException("NUJobs_AddLevel: Unable to parse the level amount", e);
+                    throw new InstructionParseException("NUJobs_DelLevel: Unable to parse the level amount", e);
                 }
                 return;
             }
         }
-        throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
+        throw new InstructionParseException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
     }
 
     @Override
@@ -60,9 +61,9 @@ public class Event_AddLevel extends QuestEvent {
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
-                oJob.setLevel(this.nAddLevel + oJob.getLevel());
-                if (oJob.getLevel() > oJob.getJob().getMaxLevel())
-                    oJob.getJob().getMaxLevel();
+                oJob.setLevel(oJob.getLevel() - this.nAddLevel);
+                if (oJob.getLevel() < 1)
+                    oJob.setLevel(1);
             }
         }
         return null;

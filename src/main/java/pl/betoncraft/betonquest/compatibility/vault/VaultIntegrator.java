@@ -66,17 +66,17 @@ public class VaultIntegrator implements Integrator {
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
-        if (economy != null) {
+        if (economy == null) {
+            LogUtils.getLogger().log(Level.WARNING, "There is no economy plugin on the server!");
+        } else {
             plugin.registerEvents("money", MoneyEvent.class);
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
-        } else {
-            LogUtils.getLogger().log(Level.WARNING, "There is no economy plugin on the server!");
         }
-        if (permission != null) {
-            plugin.registerEvents("permission", PermissionEvent.class);
-        } else {
+        if (permission == null) {
             LogUtils.getLogger().log(Level.WARNING, "Could not get permission provider!");
+        } else {
+            plugin.registerEvents("permission", PermissionEvent.class);
         }
     }
 

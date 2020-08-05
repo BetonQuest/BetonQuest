@@ -30,7 +30,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zipper {
-    List<String> fileList = new ArrayList<>();
+    private List<String> fileList = new ArrayList<>();
     private String OUTPUT_ZIP_FILE;
     private String SOURCE_FOLDER;
 
