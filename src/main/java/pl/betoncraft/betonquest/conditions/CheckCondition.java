@@ -33,7 +33,7 @@ import java.util.ArrayList;
  */
 public class CheckCondition extends Condition {
 
-    ArrayList<Condition> internalConditions = new ArrayList<>();
+    private ArrayList<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

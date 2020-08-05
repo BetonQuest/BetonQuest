@@ -9,11 +9,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class MMOCoreProfessionLevelCondition extends Condition {
 
-    PlayerData data;
+    private PlayerData data;
 
-    String professionName;
-    int targetLevel;
-    boolean mustBeEqual = false;
+    private String professionName;
+    private int targetLevel;
+    private boolean mustBeEqual = false;
 
     public MMOCoreProfessionLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

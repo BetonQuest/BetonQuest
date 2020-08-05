@@ -33,10 +33,10 @@ import java.util.logging.Level;
  */
 public class Saver extends Thread implements Listener {
 
-    Connector con;
-    ConcurrentLinkedQueue<Record> queue;
-    boolean run;
-    boolean active;
+    private Connector con;
+    private ConcurrentLinkedQueue<Record> queue;
+    private boolean run;
+    private boolean active;
 
     /**
      * Creates new database saver thread

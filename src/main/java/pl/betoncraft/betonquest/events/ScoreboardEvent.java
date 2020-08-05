@@ -35,9 +35,9 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ScoreboardEvent extends QuestEvent {
 
-    final VariableNumber count;
-    final boolean multi;
-    final String objective;
+    private final VariableNumber count;
+    private final boolean multi;
+    private final String objective;
 
     public ScoreboardEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

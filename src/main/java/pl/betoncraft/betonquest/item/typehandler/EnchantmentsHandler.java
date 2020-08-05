@@ -92,15 +92,15 @@ public class EnchantmentsHandler {
 
     private class SingleEnchantmentHandler {
 
-        Enchantment type;
-        Existence ex = Existence.WHATEVER;
-        int level = 1;
-        Number nr = Number.WHATEVER;
+        private Enchantment type;
+        private Existence ex = Existence.WHATEVER;
+        private int level = 1;
+        private Number nr = Number.WHATEVER;
 
         private SingleEnchantmentHandler() {}
 
         @SuppressWarnings("deprecation")
-        void set(final String enchant) throws InstructionParseException {
+        private void set(final String enchant) throws InstructionParseException {
             final String[] parts;
             if (enchant == null || (parts = enchant.split(":")).length == 0) {
                 throw new InstructionParseException("Missing value");
@@ -142,7 +142,7 @@ public class EnchantmentsHandler {
             }
         }
 
-        boolean check(final Integer level) {
+        private boolean check(final Integer level) {
             if (ex == Existence.WHATEVER) {
                 return true;
             }

@@ -33,7 +33,7 @@ import java.util.ArrayList;
  */
 public class RunEvent extends QuestEvent {
 
-    ArrayList<QuestEvent> internalEvents = new ArrayList<>();
+    private ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
     public RunEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
