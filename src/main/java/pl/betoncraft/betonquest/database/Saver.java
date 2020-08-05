@@ -42,6 +42,7 @@ public class Saver extends Thread implements Listener {
      * Creates new database saver thread
      */
     public Saver() {
+        super();
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.run = true;

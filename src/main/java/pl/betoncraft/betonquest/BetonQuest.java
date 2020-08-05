@@ -88,6 +88,7 @@ public class BetonQuest extends JavaPlugin {
     private GlobalData globalData;
 
     public BetonQuest() {
+        super();
         instance = this;
     }
 

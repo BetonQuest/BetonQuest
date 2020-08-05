@@ -3,13 +3,21 @@
 <ruleset name="Custom Rules"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.github.io/ruleset_2_0_0.xsd">
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
   <description>
     BetonQuest custom rule configuration
   </description>
 
-  <rule ref="rulesets/java/optimizations.xml/LocalVariableCouldBeFinal"/>
-  <rule ref="rulesets/java/optimizations.xml/MethodArgumentCouldBeFinal"/>
+  <rule ref="category/java/codestyle.xml/AtLeastOneConstructor" />
+  <rule ref="category/java/codestyle.xml/AvoidDollarSigns" />
+  <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass" />
+  <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending" />
+  <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
+  <rule ref="category/java/codestyle.xml/BooleanGetMethodName" />
+  <rule ref="category/java/codestyle.xml/CallSuperInConstructor" />
+
+  <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
+  <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
 
 </ruleset>

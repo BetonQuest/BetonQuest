@@ -41,6 +41,8 @@ public class PotionHandler {
     private Existence customE = Existence.WHATEVER;
     private boolean exact = true;
 
+    public PotionHandler() {}
+
     public void setType(final String type) throws InstructionParseException {
         typeE = Existence.REQUIRED;
         try {
@@ -151,6 +153,8 @@ public class PotionHandler {
         Number durationE = Number.WHATEVER;
         int power = 1;
         Number powerE = Number.WHATEVER;
+
+        private CustomEffectHandler() {}
 
         void set(final String custom) throws InstructionParseException {
             final String[] parts;

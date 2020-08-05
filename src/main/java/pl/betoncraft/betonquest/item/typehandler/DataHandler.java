@@ -25,6 +25,8 @@ public class DataHandler {
     private short data = 0;
     private Number e = Number.WHATEVER;
 
+    private DataHandler() {}
+
     public void set(String data) throws InstructionParseException {
         if (data.endsWith("-")) {
             e = Number.LESS;

@@ -48,8 +48,9 @@ public class OpSudoEvent extends QuestEvent {
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            for (final String command : commands)
+            for (final String command : commands) {
                 player.performCommand(command.replace("%player%", player.getName()));
+            }
         } catch (Exception e) {
             LogUtils.getLogger().log(Level.WARNING, "Couldn't run OpSudoEvent.", e);
             LogUtils.logThrowable(e);

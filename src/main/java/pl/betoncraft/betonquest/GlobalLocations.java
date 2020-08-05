@@ -56,6 +56,7 @@ public class GlobalLocations extends BukkitRunnable {
      * Creates new instance of global locations handler.
      */
     public GlobalLocations() {
+        super();
         // cancel previous instance if it exists
         if (instance != null) {
             stop();

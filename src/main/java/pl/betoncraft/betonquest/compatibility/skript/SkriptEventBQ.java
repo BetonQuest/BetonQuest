@@ -32,6 +32,10 @@ public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;
 
+    private SkriptEventBQ() {
+        super();
+    }
+
     @Override
     public String toString(final Event e, final boolean debug) {
         return "on betonquest event";

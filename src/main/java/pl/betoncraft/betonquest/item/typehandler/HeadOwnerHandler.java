@@ -24,6 +24,8 @@ public class HeadOwnerHandler {
     private String owner = null;
     private Existence ownerE = Existence.WHATEVER;
 
+    public HeadOwnerHandler() {}
+
     public void set(final String string) {
         if (string.equalsIgnoreCase("none")) {
             ownerE = Existence.FORBIDDEN;

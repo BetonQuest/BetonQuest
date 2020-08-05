@@ -82,9 +82,10 @@ public class BrewObjective extends Objective implements Listener {
         final PotionData data = ((PotionData) dataMap.get(playerID));
         // this tracks how many potions there are in the stand before brewing
         int alreadyExistingTemp = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) {
             if (checkPotion(event.getContents().getItem(i)))
                 alreadyExistingTemp++;
+        }
         // making it final for the runnable
         final int alreadyExisting = alreadyExistingTemp;
         new BukkitRunnable() {

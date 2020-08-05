@@ -36,6 +36,7 @@ import java.util.logging.Level;
 public class EventReward extends CustomReward {
 
     public EventReward() {
+        super();
         setName("BetonQuest event");
         setAuthor("Co0sh");
         setRewardName("Event");

@@ -1161,12 +1161,13 @@ public class ConfigUpdater {
                         }
                         // replace tags
                         final String[] localTags = parts[2].split(",");
-                        for (int j = 0; j < localTags.length; j++)
+                        for (int j = 0; j < localTags.length; j++) {
                             if (globalTagList.contains(localTags[j])) {
                                 final String replaced = globalName + "." + localTags[j];
                                 LogUtils.getLogger().log(Level.FINE, "        Replacing '" + localTags[j] + "' with '" + replaced + "'");
                                 localTags[j] = replaced;
                             }
+                        }
                         pack.getEvents().getConfig().set(key,
                                 instruction.replace(parts[2], StringUtils.join(Arrays.asList(localTags), ',')));
                     } else if (instruction.startsWith("point ")) {
@@ -1193,12 +1194,13 @@ public class ConfigUpdater {
                             if (parts[j].equals("^tag") && j + 2 < parts.length) {
                                 LogUtils.getLogger().log(Level.FINE, "        There is a tag event, replacing tags");
                                 final String[] localTags = parts[j + 2].split(",");
-                                for (int k = 0; k < localTags.length; k++)
+                                for (int k = 0; k < localTags.length; k++) {
                                     if (globalTagList.contains(localTags[k])) {
                                         final String replaced = globalName + "." + localTags[k];
                                         LogUtils.getLogger().log(Level.FINE, "        Replacing '" + localTags[k] + "' with '" + replaced + "'");
                                         localTags[k] = replaced;
                                     }
+                                }
                                 parts[j + 2] = StringUtils.join(Arrays.asList(localTags), ',');
                             } else if (parts[j].equals("^point") && j + 1 < parts.length) {
                                 LogUtils.getLogger().log(Level.FINE, "        There is a point event, replacing points");

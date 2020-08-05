@@ -69,6 +69,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
 
     public CitizensHologram() {
+        super();
         instance = this;
 
         // Start this when all plugins loaded
@@ -355,6 +356,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     private class NPCHologram {
         HologramConfig config;
         Hologram hologram;
+
+        private NPCHologram() {}
     }
 
     private class HologramConfig {
@@ -362,5 +365,9 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private Vector vector;
         private ConfigurationSection settings;
         private ConfigPackage pack;
+
+        private  HologramConfig() {
+            super();
+        }
     }
 }

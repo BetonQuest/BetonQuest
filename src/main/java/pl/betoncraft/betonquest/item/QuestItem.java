@@ -466,7 +466,7 @@ public class QuestItem {
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
-        meta.setUnbreakable(unbreakable.get());
+        meta.setUnbreakable(unbreakable.isUnbreakable());
         if (meta instanceof EnchantmentStorageMeta) {
             final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             // why no bulk adding method?!
@@ -604,7 +604,7 @@ public class QuestItem {
      * @return if the item has "Unbreakable" tag
      */
     public boolean isUnbreakable() {
-        return unbreakable.get();
+        return unbreakable.isUnbreakable();
     }
 
     /**

@@ -29,6 +29,8 @@ public class LoreHandler {
     private Existence e = Existence.WHATEVER;
     private boolean exact = true;
 
+    public LoreHandler() {}
+
     public void set(final String lore) throws InstructionParseException {
         if (lore.equals("none")) {
             e = Existence.FORBIDDEN;

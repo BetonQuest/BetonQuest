@@ -188,6 +188,8 @@ public class Updater {
         private UpdateStrategy updateStrategy;
         private boolean automatic;
 
+        private ConfigValues() {}
+
         private void load() {
             // TODO Delete in BQ 2.0.0 getConfig().set("", null)
             plugin.getConfig().set("update.download_bugfixes", null);

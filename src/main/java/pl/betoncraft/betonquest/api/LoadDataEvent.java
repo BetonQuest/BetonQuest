@@ -33,7 +33,7 @@ public class LoadDataEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     public LoadDataEvent() {
-
+        super();
     }
 
     public static HandlerList getHandlerList() {

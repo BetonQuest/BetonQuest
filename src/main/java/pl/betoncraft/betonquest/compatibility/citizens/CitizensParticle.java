@@ -62,6 +62,7 @@ public class CitizensParticle extends BukkitRunnable {
     private boolean enabled = false;
 
     public CitizensParticle() {
+        super();
         instance = this;
         // loop across all packages
         for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -275,6 +276,8 @@ public class CitizensParticle extends BukkitRunnable {
         private Set<Integer> npcs;
         private List<ConditionID> conditions;
         private ConfigurationSection settings;
+
+        private Effect() {}
     }
 
 }
