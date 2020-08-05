@@ -47,6 +47,7 @@ jobs:
 
       - name: Build with mkdocs
         run: |
+          cd config
           mkdocs build --site-dir="build/documentation"
 
   alert:

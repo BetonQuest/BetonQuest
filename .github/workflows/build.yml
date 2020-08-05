@@ -160,7 +160,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -181,11 +181,12 @@ jobs:
 
       - name: Set documentation version
         run: |
-          sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./mkdocs.yml
+          sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./config/mkdocs.yml
           echo "Set the documentation version to '${POM_MAVEN_VERSION}'"
 
       - name: Build with mkdocs
         run: |
+          cd config
           mkdocs build --site-dir="build/documentation"
 
       - name: Upload documentation
