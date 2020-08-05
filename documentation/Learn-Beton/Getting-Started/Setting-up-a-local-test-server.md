@@ -17,7 +17,6 @@ change plugin configurations as you wish etc.
 Minecraft. We are going to install Paper (an improved version of Spigot) on your computer. 
 Head over to <a href="https://papermc.io/downloads" target="_blank">Papers download page</a> and click on the button you
 see in the image below (the numbers will not match up, ignore that).
-     
 <span class="centered">![PaperMCDownload](../../media/content/LearnBeton/papermc.png)</span>
 
 
