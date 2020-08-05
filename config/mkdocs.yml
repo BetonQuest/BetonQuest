@@ -2,7 +2,7 @@ site_name: BetonQuest - UNOFFICIAL
 site_author: Co0sh and contributors
 site_url: https://betonquest.pl
 site_dir: target/documentation
-docs_dir: ../documentation
+docs_dir: ./../documentation
 repo_name: BetonQuest on GitHub
 repo_url: https://github.com/BetonQuest/BetonQuest
 copyright: '© 2020  Jakub "Co0sh" Sapalski  & Contributers. GPLv3'
@@ -74,7 +74,7 @@ plugins:
       author: Co0sh and contributors
       toc_title: Table of contents
       output_path: pdf/BetonQuest.pdf
-      design: documentation/webCode/css/pdf.css
+      design: ../documentation/webCode/css/pdf.css
 
 
 extra:

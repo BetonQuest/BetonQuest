@@ -167,7 +167,7 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install -r ./requirements.txt
+          python3 -m pip install -r ./config/docs-requirements.txt
 
       - name: Set CHANGELOG.md version
         run: |
@@ -187,7 +187,7 @@ jobs:
       - name: Build with mkdocs
         run: |
           cd config
-          mkdocs build --site-dir="build/documentation"
+          mkdocs build --site-dir="../build/documentation"
 
       - name: Upload documentation
         uses: actions/upload-artifact@v1
