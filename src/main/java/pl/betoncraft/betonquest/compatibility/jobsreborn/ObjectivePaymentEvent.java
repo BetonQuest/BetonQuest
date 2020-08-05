@@ -29,10 +29,10 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Objective_PaymentEvent extends Objective implements Listener {
+public class ObjectivePaymentEvent extends Objective implements Listener {
     private final double nAmount;
 
-    public Objective_PaymentEvent(final Instruction instructions) throws InstructionParseException {
+    public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
         if (instructions.size() < 2) {

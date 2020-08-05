@@ -16,6 +16,12 @@
   <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
   <rule ref="category/java/codestyle.xml/BooleanGetMethodName" />
   <rule ref="category/java/codestyle.xml/CallSuperInConstructor" />
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+    <properties>
+      <!-- Remove  property-->
+      <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]*" />
+    </properties>
+  </rule>
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />

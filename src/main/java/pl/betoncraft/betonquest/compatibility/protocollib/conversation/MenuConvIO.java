@@ -851,10 +851,4 @@ public class MenuConvIO extends ChatConvIO {
         MOVE,
         LEFT_CLICK
     }
-
-    public enum NAME_TYPE {
-        NONE,
-        CHAT
-    }
-
 }

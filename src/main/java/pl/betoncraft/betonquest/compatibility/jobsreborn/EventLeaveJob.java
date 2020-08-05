@@ -26,10 +26,10 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Event_LeaveJob extends QuestEvent {
+public class EventLeaveJob extends QuestEvent {
     private String sJobName;
 
-    public Event_LeaveJob(final Instruction instructions) throws InstructionParseException {
+    public EventLeaveJob(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 
         if (instructions.size() < 2) {
