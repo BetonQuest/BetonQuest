@@ -22,7 +22,7 @@
         <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
       </a>
     <a href="https://patreon.com/BetonQuest" title="Donate to this project using Patreon!">
-         <img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" />
+         <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fbetonquest-patreon-badge.herokuapp.com%2Fbetonquest%2Fpledges&cacheSeconds=86400" alt="Patreon donate button" />
     </a>
 </p>
 
