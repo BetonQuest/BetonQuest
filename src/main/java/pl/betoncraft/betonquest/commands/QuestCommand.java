@@ -1247,20 +1247,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's objectives
         if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
             final List<String> tags;
-            if (!isOnline) {
-                // if player is offline then convert his raw objective strings
-                // to tags
-                tags = new ArrayList<>();
-                for (final String string : playerData.getRawObjectives().keySet()) {
-                    tags.add(string);
-                }
-            } else {
+            if (isOnline) {
                 // if the player is online then just retrieve tags from his
                 // active
                 // objectives
                 tags = new ArrayList<>();
                 for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
                     tags.add(objective.getLabel());
+                }
+            } else {
+                // if player is offline then convert his raw objective strings
+                // to tags
+                tags = new ArrayList<>();
+                for (final String string : playerData.getRawObjectives().keySet()) {
+                    tags.add(string);
                 }
             }
             // display objectives

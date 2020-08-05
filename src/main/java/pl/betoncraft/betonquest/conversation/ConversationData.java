@@ -135,7 +135,9 @@ public class ConversationData {
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
         }
-        if (rawFinalEvents != null && !rawFinalEvents.equals("")) {
+        if (rawFinalEvents == null || rawFinalEvents.equals("")) {
+            finalEvents = new EventID[0];
+        } else {
             final String[] array = rawFinalEvents.split(",");
             finalEvents = new EventID[array.length];
             for (int i = 0; i < array.length; i++) {
@@ -145,8 +147,6 @@ public class ConversationData {
                     throw new InstructionParseException("Error while loading final events: " + e.getMessage(), e);
                 }
             }
-        } else {
-            finalEvents = new EventID[0];
         }
         // load all NPC options
         final ConfigurationSection NPCSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");

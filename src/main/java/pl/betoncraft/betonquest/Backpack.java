@@ -188,10 +188,10 @@ public class Backpack implements Listener {
             int i = 0;
             // insert the journal if the player doesn't have it in his inventory
             if (page == 0) {
-                if (!Journal.hasJournal(playerID)) {
-                    content[0] = playerData.getJournal().getAsItem();
-                } else {
+                if (Journal.hasJournal(playerID)) {
                     content[0] = null;
+                } else {
+                    content[0] = playerData.getJournal().getAsItem();
                 }
                 i++;
             } else {

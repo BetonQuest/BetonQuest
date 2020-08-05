@@ -173,7 +173,18 @@ public class Utils {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
         for (final String bigPage : bigPages) {
-            if (Config.getString("config.journal.lines_per_page") != null) {
+            if (Config.getString("config.journal.lines_per_page") == null) {
+                final int chars_per_page = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
+                StringBuilder page = new StringBuilder();
+                for (final String word : bigPage.split(" ")) {
+                    if (page.length() + word.length() + 1 > chars_per_page) {
+                        pages.add(page.toString().trim());
+                        page = new StringBuilder();
+                    }
+                    page.append(word + " ");
+                }
+                pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
+            } else {
                 final int chars_per_line = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
                 final int lines_per_page = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
@@ -212,17 +223,6 @@ public class Utils {
                     page.append(line_builder.toString().trim()).append('\n');
                 }
                 if (page.length() != 0) pages.add(page.toString());
-            } else {
-                final int chars_per_page = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
-                StringBuilder page = new StringBuilder();
-                for (final String word : bigPage.split(" ")) {
-                    if (page.length() + word.length() + 1 > chars_per_page) {
-                        pages.add(page.toString().trim());
-                        page = new StringBuilder();
-                    }
-                    page.append(word + " ");
-                }
-                pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
             }
         }
         return pages;
@@ -493,10 +493,10 @@ public class Utils {
         final List<String> list = new ArrayList<>();
         final Matcher m = Pattern.compile("(?:(?:(\\S*)(?:\")([^\"]*?)(?:\"))|(\\S+))\\s*").matcher(string);
         while (m.find()) {
-            if (m.group(3) != null) {
-                list.add(m.group(3));
-            } else {
+            if (m.group(3) == null) {
                 list.add(m.group(1) + m.group(2));
+            } else {
+                list.add(m.group(3));
             }
         }
         return list.toArray(new String[0]);

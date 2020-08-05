@@ -327,18 +327,18 @@ public class Conversation implements Listener {
      * Send message to player, bypassing any message delaying if needed
      */
     public void sendMessage(final String message) {
-        if (interceptor != null) {
-            interceptor.sendMessage(message);
-        } else {
+        if (interceptor == null) {
             player.spigot().sendMessage(TextComponent.fromLegacyText(message));
+        } else {
+            interceptor.sendMessage(message);
         }
     }
 
     public void sendMessage(final BaseComponent[] message) {
-        if (interceptor != null) {
-            interceptor.sendMessage(message);
-        } else {
+        if (interceptor == null) {
             player.spigot().sendMessage(message);
+        } else {
+            interceptor.sendMessage(message);
         }
     }
 

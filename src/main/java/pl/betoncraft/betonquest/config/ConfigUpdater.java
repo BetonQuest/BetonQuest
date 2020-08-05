@@ -357,14 +357,14 @@ public class ConfigUpdater {
         for (final Iterator<ConfigPackage> iterator = Config.getPackages().values().iterator(); iterator.hasNext(); ) {
             final ConfigPackage pack = iterator.next();
             LogUtils.getLogger().log(Level.FINE, "  Looking at package " + pack.getName());
-            if (!enabledPackages.contains(pack.getName())) {
+            if (enabledPackages.contains(pack.getName())) {
+                pack.getMain().getConfig().set("enabled", true);
+                pack.getMain().saveConfig();
+            } else {
                 LogUtils.getLogger().log(Level.FINE, "    Package is not enabled, removing it from the list.");
                 pack.getMain().getConfig().set("enabled", false);
                 pack.getMain().saveConfig();
                 iterator.remove();
-            } else {
-                pack.getMain().getConfig().set("enabled", true);
-                pack.getMain().saveConfig();
             }
         }
         LogUtils.getLogger().log(Level.FINE, "All packages enabled/disabled, removing 'packages' section from config");
@@ -1517,12 +1517,7 @@ public class ConfigUpdater {
             // get npc message format
             final String npcFormat = config.getString("conversation.quester_line_format");
             final String[] npcParts = npcFormat.split("%quester%");
-            if (npcParts.length != 2) {
-                LogUtils.getLogger().log(Level.FINE, "Could not parse NPC text format, saving defaults");
-                npcColors.add(ChatColor.DARK_RED);
-                textColors.add(ChatColor.GREEN);
-                textColors.add(ChatColor.ITALIC);
-            } else {
+            if (npcParts.length == 2) {
                 try {
                     for (final String code : npcParts[0].split("&")) {
                         if (code.length() < 1)
@@ -1541,15 +1536,16 @@ public class ConfigUpdater {
                     textColors.add(ChatColor.GREEN);
                     textColors.add(ChatColor.ITALIC);
                 }
+            } else {
+                LogUtils.getLogger().log(Level.FINE, "Could not parse NPC text format, saving defaults");
+                npcColors.add(ChatColor.DARK_RED);
+                textColors.add(ChatColor.GREEN);
+                textColors.add(ChatColor.ITALIC);
             }
             // get player option format
             final String optionFormat = config.getString("conversation.quester_reply_format");
             final String[] optionParts = optionFormat.split("%number%");
-            if (optionParts.length != 2) {
-                LogUtils.getLogger().log(Level.FINE, "Could not parse player option format, saving defaults");
-                numberColors.add(ChatColor.YELLOW);
-                optionColors.add(ChatColor.AQUA);
-            } else {
+            if (optionParts.length == 2) {
                 try {
                     for (final String code : optionParts[0].split("&")) {
                         if (code.length() < 1)
@@ -1567,15 +1563,15 @@ public class ConfigUpdater {
                     numberColors.add(ChatColor.YELLOW);
                     optionColors.add(ChatColor.AQUA);
                 }
+            } else {
+                LogUtils.getLogger().log(Level.FINE, "Could not parse player option format, saving defaults");
+                numberColors.add(ChatColor.YELLOW);
+                optionColors.add(ChatColor.AQUA);
             }
             // get player answer format
             final String answerFormat = config.getString("conversation.player_reply_format");
             final String[] answerParts = answerFormat.split("%player%");
-            if (answerParts.length != 2) {
-                LogUtils.getLogger().log(Level.FINE, "Could not parse player answer format, saving defaults");
-                playerColors.add(ChatColor.DARK_GREEN);
-                answerColors.add(ChatColor.GRAY);
-            } else {
+            if (answerParts.length == 2) {
                 try {
                     for (final String code : answerParts[0].split("&")) {
                         if (code.length() < 1)
@@ -1593,6 +1589,10 @@ public class ConfigUpdater {
                     playerColors.add(ChatColor.DARK_GREEN);
                     answerColors.add(ChatColor.GRAY);
                 }
+            } else {
+                LogUtils.getLogger().log(Level.FINE, "Could not parse player answer format, saving defaults");
+                playerColors.add(ChatColor.DARK_GREEN);
+                answerColors.add(ChatColor.GRAY);
             }
             final StringBuilder npc = new StringBuilder();
             final StringBuilder text = new StringBuilder();
@@ -2264,11 +2264,11 @@ public class ConfigUpdater {
                                 item = part.substring(5);
                             }
                         }
-                        if (item != null) {
-                            newParts.add(item);
-                        } else {
+                        if (item == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no item defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(item);
                         }
                         break;
                     case "or":
@@ -2280,11 +2280,11 @@ public class ConfigUpdater {
                                 orAndConditions = part.substring(11);
                             }
                         }
-                        if (orAndConditions != null) {
-                            newParts.add(orAndConditions);
-                        } else {
+                        if (orAndConditions == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There are no conditions defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(orAndConditions);
                         }
                         break;
                     case "location":
@@ -2295,11 +2295,11 @@ public class ConfigUpdater {
                                 location = part.substring(4);
                             }
                         }
-                        if (location != null) {
-                            newParts.add(location);
-                        } else {
+                        if (location == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no location defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(location);
                         }
                         break;
                     case "health":
@@ -2310,11 +2310,11 @@ public class ConfigUpdater {
                                 health = part.substring(7);
                             }
                         }
-                        if (health != null) {
-                            newParts.add(health);
-                        } else {
+                        if (health == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no health amount defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(health);
                         }
                         break;
                     case "experience":
@@ -2325,11 +2325,11 @@ public class ConfigUpdater {
                                 exp = part.substring(4);
                             }
                         }
-                        if (exp != null) {
-                            newParts.add(exp);
-                        } else {
+                        if (exp == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no experience level defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(exp);
                         }
                         break;
                     case "permission":
@@ -2340,11 +2340,11 @@ public class ConfigUpdater {
                                 perm = part.substring(5);
                             }
                         }
-                        if (perm != null) {
-                            newParts.add(perm);
-                        } else {
+                        if (perm == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no permission defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(perm);
                         }
                         break;
                     case "point":
@@ -2358,12 +2358,12 @@ public class ConfigUpdater {
                                 amount = part.substring(6);
                             }
                         }
-                        if (category != null && amount != null) {
-                            newParts.add(category);
-                            newParts.add(amount);
-                        } else {
+                        if (category == null || amount == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no category/amount defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(category);
+                            newParts.add(amount);
                         }
                         break;
                     case "tag":
@@ -2374,11 +2374,11 @@ public class ConfigUpdater {
                                 tag = part.substring(4);
                             }
                         }
-                        if (tag != null) {
-                            newParts.add(tag);
-                        } else {
+                        if (tag == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no tag defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(tag);
                         }
                         break;
                     case "armor":
@@ -2397,7 +2397,10 @@ public class ConfigUpdater {
                                 enchants = part;
                             }
                         }
-                        if (material != null && type != null) {
+                        if (material == null || type == null) {
+                            LogUtils.getLogger().log(Level.FINE, "      There is no armor defined, skipping");
+                            continue conditions;
+                        } else {
                             Material armor = null;
                             try {
                                 armor = Material.matchMaterial(material + "_" + armorType);
@@ -2421,9 +2424,6 @@ public class ConfigUpdater {
                             itemsConfig.getConfig().set("armor" + i, itemInstruction);
                             itemsConfig.saveConfig();
                             newParts.add("armor" + i);
-                        } else {
-                            LogUtils.getLogger().log(Level.FINE, "      There is no armor defined, skipping");
-                            continue conditions;
                         }
                         break;
                     case "effect":
@@ -2434,11 +2434,11 @@ public class ConfigUpdater {
                                 effect = part.substring(5);
                             }
                         }
-                        if (effect != null) {
-                            newParts.add(effect);
-                        } else {
+                        if (effect == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no effect defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(effect);
                         }
                         break;
                     case "time":
@@ -2449,11 +2449,11 @@ public class ConfigUpdater {
                                 time = part.substring(5);
                             }
                         }
-                        if (time != null) {
-                            newParts.add(time);
-                        } else {
+                        if (time == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no time defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(time);
                         }
                         break;
                     case "weather":
@@ -2464,11 +2464,11 @@ public class ConfigUpdater {
                                 weather = part.substring(5);
                             }
                         }
-                        if (weather != null) {
-                            newParts.add(weather);
-                        } else {
+                        if (weather == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no weather defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(weather);
                         }
                         break;
                     case "height":
@@ -2479,11 +2479,11 @@ public class ConfigUpdater {
                                 height = part.substring(7);
                             }
                         }
-                        if (height != null) {
-                            newParts.add(height);
-                        } else {
+                        if (height == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no height defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(height);
                         }
                         break;
                     case "rating":
@@ -2494,11 +2494,11 @@ public class ConfigUpdater {
                                 rating = part.substring(7);
                             }
                         }
-                        if (rating != null) {
-                            newParts.add(rating);
-                        } else {
+                        if (rating == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no rating defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(rating);
                         }
                         break;
                     case "random":
@@ -2509,11 +2509,11 @@ public class ConfigUpdater {
                                 random = part.substring(7);
                             }
                         }
-                        if (random != null) {
-                            newParts.add(random);
-                        } else {
+                        if (random == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no random defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(random);
                         }
                         break;
                     case "money":
@@ -2524,11 +2524,11 @@ public class ConfigUpdater {
                                 money = part.substring(6);
                             }
                         }
-                        if (money != null) {
-                            newParts.add(money);
-                        } else {
+                        if (money == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no amount defined, skipping");
                             continue conditions;
+                        } else {
+                            newParts.add(money);
                         }
                         break;
                     default:
@@ -2574,7 +2574,10 @@ public class ConfigUpdater {
                                 random = part;
                             }
                         }
-                        if (events != null) {
+                        if (events == null) {
+                            LogUtils.getLogger().log(Level.FINE, "      There are no events defined, skipping");
+                            continue events;
+                        } else {
                             newParts.add(folderEvents);
                             if (delay != null) {
                                 newParts.add(delay);
@@ -2582,9 +2585,6 @@ public class ConfigUpdater {
                             if (random != null) {
                                 newParts.add(random);
                             }
-                        } else {
-                            LogUtils.getLogger().log(Level.FINE, "      There are no events defined, skipping");
-                            continue events;
                         }
                         break;
                     case "setblock":
@@ -2603,15 +2603,15 @@ public class ConfigUpdater {
                                 data = part;
                             }
                         }
-                        if (block != null && loc != null) {
+                        if (block == null || loc == null) {
+                            LogUtils.getLogger().log(Level.FINE, "      There is no block/location defined, skipping");
+                            continue events;
+                        } else {
                             newParts.add(block);
                             newParts.add(loc);
                             if (data != null) {
                                 newParts.add(data);
                             }
-                        } else {
-                            LogUtils.getLogger().log(Level.FINE, "      There is no block/location defined, skipping");
-                            continue events;
                         }
                         break;
                     default:
@@ -2742,7 +2742,7 @@ public class ConfigUpdater {
                         }
                     }
                     // generate new instruction
-                    final String newInstruction = parts[0] + " " + parts[1] + ((amount != 1) ? ":" + amount : "");
+                    final String newInstruction = parts[0] + " " + parts[1] + (amount == 1 ? "" : ":" + amount);
                     LogUtils.getLogger().log(Level.FINE, "    Saving instruction '" + newInstruction + "'");
                     // save it
                     eventsConfig.set(key, newInstruction);
@@ -2775,7 +2775,7 @@ public class ConfigUpdater {
                         }
                     }
                     // generate new instruction
-                    final String newInstruction = "item " + name + ((amount != 1) ? ":" + amount : "");
+                    final String newInstruction = "item " + name + (amount == 1 ? "" : ":" + amount);
                     LogUtils.getLogger().log(Level.FINE, "    Saving instruction '" + newInstruction + "'");
                     // save it
                     conditionsConfig.set(key, newInstruction);
@@ -2867,18 +2867,18 @@ public class ConfigUpdater {
                         duplicateName = normalName;
                     }
                 }
-                if (duplicateName != null) {
-                    // if it still exists in config, put it into map <old
-                    // name, new name> as duplicate and !original
-                    LogUtils.getLogger().log(Level.FINE, "    Inserting into name changing map, from " + invertedName + " to !" + duplicateName);
-                    nameChanging.put(invertedName, "!" + duplicateName);
-                } else {
+                if (duplicateName == null) {
                     // if it doesn't, put into a map as original and !original,
                     // and reinsert into config
                     LogUtils.getLogger().log(Level.FINE, "    Inserting into name changing map, from " + invertedName + " to !" + invertedName);
                     LogUtils.getLogger().log(Level.FINE, "    Readding to configuration!");
                     nameChanging.put(invertedName, "!" + invertedName);
                     conditionsConfig.set(invertedName, conditionsInverted.get(invertedName));
+                } else {
+                    // if it still exists in config, put it into map <old
+                    // name, new name> as duplicate and !original
+                    LogUtils.getLogger().log(Level.FINE, "    Inserting into name changing map, from " + invertedName + " to !" + duplicateName);
+                    nameChanging.put(invertedName, "!" + duplicateName);
                 }
             }
             LogUtils.getLogger().log(Level.FINE, "Starting conditions updating!");

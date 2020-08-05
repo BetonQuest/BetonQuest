@@ -274,14 +274,14 @@ public class QuestItem {
                     builder.append(effect.getType() + ":");
                     for (final Color c : effect.getColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+                        builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
                     }
                     // remove last semicolon
                     builder.setLength(Math.max(builder.length() - 1, 0));
                     builder.append(":");
                     for (final Color c : effect.getFadeColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+                        builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
                     }
                     builder.setLength(Math.max(builder.length() - 1, 0));
                     builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker() + ",");
@@ -300,14 +300,14 @@ public class QuestItem {
                 builder.append(effect.getType() + ":");
                 for (final Color c : effect.getColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+                    builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
                 }
                 // remove last semicolon
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(":");
                 for (final Color c : effect.getFadeColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append((dye != null ? dye : '#' + Integer.toHexString(c.asRGB())) + ";");
+                    builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker());
@@ -520,7 +520,7 @@ public class QuestItem {
      */
     public Material getMaterial() {
         final Material material = selector.getMaterial();
-        return material != null ? material : Material.ARROW;
+        return material == null ? Material.ARROW : material;
     }
 
     /**

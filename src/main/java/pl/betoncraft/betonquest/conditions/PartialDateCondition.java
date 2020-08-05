@@ -45,22 +45,22 @@ public class PartialDateCondition extends Condition {
         super.staticness = true;
         super.persistent = true;
         final String dayOfMonthString = instruction.getOptional("day");
-        if (dayOfMonthString != null) {
-            this.dayOfMonth = TimeInterval.parseFromString(dayOfMonthString, PartialDate.DAY);
-        } else {
+        if (dayOfMonthString == null) {
             this.dayOfMonth = null;
+        } else {
+            this.dayOfMonth = TimeInterval.parseFromString(dayOfMonthString, PartialDate.DAY);
         }
         final String monthString = instruction.getOptional("month");
-        if (monthString != null) {
-            this.month = TimeInterval.parseFromString(monthString, PartialDate.MONTH);
-        } else {
+        if (monthString == null) {
             this.month = null;
+        } else {
+            this.month = TimeInterval.parseFromString(monthString, PartialDate.MONTH);
         }
         final String yearString = instruction.getOptional("year");
-        if (yearString != null) {
-            this.year = TimeInterval.parseFromString(yearString, PartialDate.YEAR);
-        } else {
+        if (yearString == null) {
             this.year = null;
+        } else {
+            this.year = TimeInterval.parseFromString(yearString, PartialDate.YEAR);
         }
     }
 

@@ -39,7 +39,7 @@ public class MMOItemsHandCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
-        final ItemStack item = (!offhand) ? inv.getItemInMainHand() : inv.getItemInOffHand();
+        final ItemStack item = offhand ?  inv.getItemInOffHand() : inv.getItemInMainHand();
 
         final NBTItem realItemNBT = NBTItem.get(item);
         final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");

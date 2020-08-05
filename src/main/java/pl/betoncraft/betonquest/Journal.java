@@ -212,17 +212,20 @@ public class Journal {
             final String pointerName = parts[1];
             // resolve the text in player's language
             String text;
-            if (!pack.getJournal().getConfig().contains(pointerName)) {
-                LogUtils.getLogger().log(Level.WARNING, "No defined journal entry " + pointerName + " in package " + pack.getName());
-                text = "error";
-            } else if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
-                text = pack.getFormattedString("journal." + pointerName + "." + lang);
-                if (text == null) {
-                    text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
+            if (pack.getJournal().getConfig().contains(pointerName)) {
+                if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
+                    text = pack.getFormattedString("journal." + pointerName + "." + lang);
+                    if (text == null) {
+                        text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
+                    }
+                } else {
+                    text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                text = pack.getFormattedString("journal." + pointerName);
+                LogUtils.getLogger().log(Level.WARNING, "No defined journal entry " + pointerName + " in package " + pack.getName());
+                text = "error";
             }
+
             // handle case when the text isn't defined
             if (text == null) {
                 LogUtils.getLogger().log(Level.WARNING, "No text defined for journal entry " + pointerName + " in language " + lang);

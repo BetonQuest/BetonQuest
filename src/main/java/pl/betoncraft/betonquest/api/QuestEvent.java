@@ -123,7 +123,9 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     public final void fire(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
             // handle static event
-            if (!staticness) {
+            if (staticness) {
+                handle(null);
+            } else {
                 LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
                 players:
                 for (final Player player : Bukkit.getOnlinePlayers()) {
@@ -137,8 +139,6 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                     LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
                     handle(ID);
                 }
-            } else {
-                handle(null);
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             // handle persistent event

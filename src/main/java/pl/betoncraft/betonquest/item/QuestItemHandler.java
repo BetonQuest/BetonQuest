@@ -112,18 +112,18 @@ public class QuestItemHandler implements Listener {
             case PLACE_ONE:
             case PLACE_SOME:
             case SWAP_WITH_CURSOR:
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                    item = event.getCursor();
-                } else {
+                if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
                     item = null;
+                } else {
+                    item = event.getCursor();
                 }
                 break;
             case HOTBAR_MOVE_AND_READD:
             case HOTBAR_SWAP:
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                    item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
-                } else {
+                if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
                     item = null;
+                } else {
+                    item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
                 }
                 break;
             default:

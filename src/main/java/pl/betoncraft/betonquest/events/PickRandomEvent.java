@@ -69,7 +69,7 @@ public class PickRandomEvent extends QuestEvent {
             total += event.getChance().getDouble(playerID);
         }
         //pick as many events as given with pick optional (or 1 if amount wasn't specified)
-        int pick = (this.amount != null) ? this.amount.getInt(playerID) : 1;
+        int pick = this.amount == null ? 1 : this.amount.getInt(playerID);
         while (pick-- > 0 && !events.isEmpty()) {
             //choose a random number between 0 and the total amount of percentages
             final double found = Math.random() * total;
