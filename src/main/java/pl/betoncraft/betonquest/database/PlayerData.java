@@ -129,10 +129,9 @@ public class PlayerData {
                 LogUtils.getLogger().log(Level.FINE, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
                         + " items loaded for player " + PlayerConverter.getName(playerID));
-
             }
         } catch (final SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
             LogUtils.logThrowable(e);
         }
     }

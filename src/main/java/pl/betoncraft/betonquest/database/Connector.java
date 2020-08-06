@@ -313,7 +313,7 @@ public class Connector {
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
             LogUtils.logThrowable(e);
         }
     }

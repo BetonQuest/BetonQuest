@@ -50,7 +50,7 @@ public class SQLite extends Database {
             connection = DriverManager
                     .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
         } catch (ClassNotFoundException | SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
+            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
             LogUtils.logThrowable(e);
         }
         return connection;
