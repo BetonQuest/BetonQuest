@@ -54,7 +54,7 @@ Every time your objective accepts the player's action (for example killing the r
 
 `start()` and `stop()` methods must start objective's listeners and stop them accordingly. It's because the plugin turns the objective's listeners off if there are no players having it active. Here usually you will register/unregister listeners, but some objectives may be different. For example `delay` objective starts and cancels a runnable, instead of using listeners.
 
-If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method. At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable, BetonQuest will call that method with `theProperty` keyword as the first argument. Using it you should parse the data of the objective and return it as a String. If the supplied property name is incorrect or there was an error during getting the value, return an empty String and optionally log an error (`Debug.error(String message)`).
+If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method. At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable, BetonQuest will call that method with `theProperty` keyword as the first argument. Using it you should parse the data of the objective and return it as a String. If the supplied property name is incorrect or there was an error during getting the value, return an empty String and optionally log an error (`LogUtils.getLogger().log(...)`).
 
 Objectives are registered the same way as conditions and events, using `registerObjective(String name, Class<? extends Objective>)` method.
 
