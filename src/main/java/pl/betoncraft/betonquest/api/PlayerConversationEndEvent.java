@@ -29,7 +29,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class PlayerConversationEndEvent extends PlayerEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private Conversation conversation;
 
     /**
@@ -44,7 +44,7 @@ public class PlayerConversationEndEvent extends PlayerEvent {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     /**
@@ -55,7 +55,7 @@ public class PlayerConversationEndEvent extends PlayerEvent {
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
 }

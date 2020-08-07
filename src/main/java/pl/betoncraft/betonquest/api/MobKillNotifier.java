@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class MobKillNotifier {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     private static MobKillNotifier instance;
     private BukkitRunnable cleaner;
@@ -87,7 +87,7 @@ public class MobKillNotifier {
         }
 
         public static HandlerList getHandlerList() {
-            return handlers;
+            return HANDLERS;
         }
 
         /**
@@ -105,7 +105,7 @@ public class MobKillNotifier {
         }
 
         public HandlerList getHandlers() {
-            return handlers;
+            return HANDLERS;
         }
 
     }

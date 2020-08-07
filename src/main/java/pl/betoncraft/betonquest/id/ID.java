@@ -24,7 +24,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public abstract class ID {
 
-    public static final String upStr = "_"; // string used as "up the hierarchy" package
+    public static final String UP_STR = "_"; // string used as "up the hierarchy" package
 
     protected String id;
     protected ConfigPackage pack;
@@ -43,19 +43,19 @@ public abstract class ID {
             // id has specified a package, get it!
             final int dotIndex = id.indexOf('.');
             final String packName = id.substring(0, dotIndex);
-            if (pack != null && packName.startsWith(upStr + "-")) {
+            if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
                 final String[] root = pack.getName().split("-");
                 final String[] path = packName.split("-");
                 // count how many packages up we need to go
                 int stepsUp = 0;
-                while (stepsUp < path.length && path[stepsUp].equals(upStr)) {
+                while (stepsUp < path.length && path[stepsUp].equals(UP_STR)) {
                     stepsUp++;
                 }
                 // can't go out of BetonQuest folder of course
                 if (stepsUp > root.length) {
                     throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
-                            + upStr + "'s in ID " + id);
+                            + UP_STR + "'s in ID " + id);
                 }
                 // construct the final absolute path
                 final StringBuilder sb = new StringBuilder();

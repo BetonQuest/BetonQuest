@@ -27,7 +27,7 @@ import org.bukkit.event.HandlerList;
  */
 public class QuestDataUpdateEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     private String playerID;
     private String objID;
@@ -41,7 +41,7 @@ public class QuestDataUpdateEvent extends Event {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     public String getPlayerID() {
@@ -57,6 +57,6 @@ public class QuestDataUpdateEvent extends Event {
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 }

@@ -47,7 +47,7 @@ import java.util.logging.Level;
  */
 public class Config {
 
-    private final static List<String> utilDirNames = Arrays.asList("logs", "backups", "conversations");
+    private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
     private static BetonQuest plugin;
     private static Config instance;
     private static ConfigAccessor messages;
@@ -545,7 +545,7 @@ public class Config {
     }
 
     private void searchForPackages(final File file) {
-        if (file.isDirectory() && !utilDirNames.contains(file.getName())) {
+        if (file.isDirectory() && !UTIL_DIR_NAMES.contains(file.getName())) {
             final File[] content = file.listFiles();
             for (final File subFile : content) {
                 if (subFile.getName().equals("main.yml")) {

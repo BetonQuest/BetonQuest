@@ -57,7 +57,7 @@ public class ConversationData {
     private String convIO;
     private String interceptor;
 
-    private HashMap<String, Option> NPCOptions;
+    private HashMap<String, Option> npcOptions;
     private HashMap<String, Option> playerOptions;
 
     /**
@@ -155,9 +155,9 @@ public class ConversationData {
         if (NPCSection == null) {
             throw new InstructionParseException("NPC_options section not defined");
         }
-        NPCOptions = new HashMap<>();
+        npcOptions = new HashMap<>();
         for (final String key : NPCSection.getKeys(false)) {
-            NPCOptions.put(key, new NPCOption(key));
+            npcOptions.put(key, new NPCOption(key));
         }
         // check if all starting options point to existing NPC options
         startingOptions = rawStartingOptions.split(",");
@@ -170,7 +170,7 @@ public class ConversationData {
                 final String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
                         + startingOption;
                 externalPointers.add(entirePointer);
-            } else if (!NPCOptions.containsKey(startingOption)) {
+            } else if (!npcOptions.containsKey(startingOption)) {
                 throw new InstructionParseException("Starting option " + startingOption + " does not exist");
             }
         }
@@ -185,7 +185,7 @@ public class ConversationData {
         }
 
         // check if every pointer points to existing option.
-        for (final Option option : NPCOptions.values()) {
+        for (final Option option : npcOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (!playerOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
@@ -194,7 +194,7 @@ public class ConversationData {
                 }
             }
             for (final String extend : option.getExtends()) {
-                if (!NPCOptions.containsKey(extend)) {
+                if (!npcOptions.containsKey(extend)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s extends %s, but it does not exist",
                                     option.getName(), extend));
@@ -206,7 +206,7 @@ public class ConversationData {
                 if (pointer.contains(".")) {
                     final String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
                     externalPointers.add(entirePointer);
-                } else if (!NPCOptions.containsKey(pointer)) {
+                } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
                                     option.getName(), pointer));
@@ -222,7 +222,7 @@ public class ConversationData {
         }
 
         // done, everything will work
-        LogUtils.getLogger().log(Level.FINE, String.format("Conversation loaded: %d NPC options and %d player options", NPCOptions.size(),
+        LogUtils.getLogger().log(Level.FINE, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
                 playerOptions.size()));
     }
 
@@ -281,9 +281,9 @@ public class ConversationData {
     public String getPrefix(final String lang, final String option) {
         // get prefix from an option
         if (option != null) {
-            String pref = NPCOptions.get(option).getInlinePrefix(lang);
+            String pref = npcOptions.get(option).getInlinePrefix(lang);
             if (pref == null) {
-                pref = NPCOptions.get(option).getInlinePrefix(Config.getLanguage());
+                pref = npcOptions.get(option).getInlinePrefix(Config.getLanguage());
             }
             if (pref != null) {
                 return pref;
@@ -352,7 +352,7 @@ public class ConversationData {
     public String getText(final String playerID, final String lang, final String option, final OptionType type) {
         final Option o;
         if (type == OptionType.NPC) {
-            o = NPCOptions.get(option);
+            o = npcOptions.get(option);
         } else {
             o = playerOptions.get(option);
         }
@@ -372,7 +372,7 @@ public class ConversationData {
     public ConditionID[] getConditionIDs(final String option, final OptionType type) {
         final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
-            options = NPCOptions;
+            options = npcOptions;
         } else {
             options = playerOptions;
         }
@@ -382,7 +382,7 @@ public class ConversationData {
     public EventID[] getEventIDs(final String playerID, final String option, final OptionType type) {
         final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
-            options = NPCOptions;
+            options = npcOptions;
         } else {
             options = playerOptions;
         }
@@ -396,7 +396,7 @@ public class ConversationData {
     public String[] getPointers(final String playerID, final String option, final OptionType type) {
         final HashMap<String, Option> options;
         if (type == OptionType.NPC) {
-            options = NPCOptions;
+            options = npcOptions;
         } else {
             options = playerOptions;
         }
@@ -404,7 +404,7 @@ public class ConversationData {
     }
 
     public Option getOption(final String option, final OptionType type) {
-        return type == OptionType.NPC ? NPCOptions.get(option) : playerOptions.get(option);
+        return type == OptionType.NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
 
     /**

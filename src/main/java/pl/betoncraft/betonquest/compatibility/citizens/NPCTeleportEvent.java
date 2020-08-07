@@ -18,43 +18,28 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LocationData;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
 
 /**
  * Stop the NPC when he is walking and teleport hin to a given location
  */
 public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final LocationData location;
-    private int ID;
+    private int id;
 
     public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        ID = instruction.getInt();
-        if (ID < 0) {
+        id = instruction.getInt();
+        if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         location = instruction.getLocation();
@@ -62,9 +47,9 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         if (!npc.isSpawned()) {
             return null;

@@ -23,7 +23,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,7 +52,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Co0sh
  */
 public class QuestItemHandler implements Listener {
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     /**
      * Registers the quest item handler as Listener.
@@ -289,10 +288,10 @@ public class QuestItemHandler implements Listener {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 }

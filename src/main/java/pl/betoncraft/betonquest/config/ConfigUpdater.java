@@ -73,7 +73,7 @@ public class ConfigUpdater {
     /**
      * Error which should be displayed to the player when something goes wrong
      */
-    private final String ERROR = "There was an error during updating process! Please "
+    private final static String ERROR = "There was an error during updating process! Please "
             + "downgrade to the previous working version of the plugin and restore your "
             + "configuration from the backup. Don't forget to send this error to the developer"
             + ", so he can fix it! Sorry for inconvenience, here's the link:"

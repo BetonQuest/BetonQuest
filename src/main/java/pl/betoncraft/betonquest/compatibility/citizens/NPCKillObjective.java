@@ -37,14 +37,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCKillObjective extends Objective implements Listener {
 
-    private final int ID;
+    private final int id;
     private final int amount;
 
     public NPCKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = NPCData.class;
-        ID = instruction.getInt();
-        if (ID < 0) {
+        id = instruction.getInt();
+        if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
@@ -59,7 +59,7 @@ public class NPCKillObjective extends Objective implements Listener {
         if (npc == null) {
             return;
         }
-        if (npc.getId() != ID) {
+        if (npc.getId() != id) {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());

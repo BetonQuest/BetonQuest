@@ -29,7 +29,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,7 +51,7 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class InventoryConvIO implements Listener, ConversationIO {
-    private static final HashMap<String, ItemStack> skullCache = new HashMap<>();
+    private static final HashMap<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
     protected String response = null;
     protected HashMap<Integer, String> options = new HashMap<>();
@@ -159,8 +158,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
         final ItemStack npc;
-        if (skullCache.containsKey(npcName) && false) {
-            npc = skullCache.get(npcName);
+        if (SKULL_CACHE.containsKey(npcName) && false) {
+            npc = SKULL_CACHE.get(npcName);
         } else {
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
@@ -176,7 +175,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 try {
                     npc.setItemMeta(setSkullMeta((SkullMeta) npc.getItemMeta()));
                     Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                        skullCache.put(npcName, npc);
+                        SKULL_CACHE.put(npcName, npc);
                         inv.setItem(0, npc);
                     });
                 } catch (Exception e) {
