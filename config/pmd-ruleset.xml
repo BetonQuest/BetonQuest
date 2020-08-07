@@ -30,6 +30,7 @@
   <rule ref="category/java/codestyle.xml/DuplicateImports" />
   <rule ref="category/java/codestyle.xml/EmptyMethodInAbstractClassShouldBeAbstract" />
   <rule ref="category/java/codestyle.xml/ExtendsObject" />
+  <rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass" />
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
