@@ -24,12 +24,11 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.block.Campfire;
-import org.bukkit.block.Lectern;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -54,6 +53,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Co0sh
  */
 public class QuestItemHandler implements Listener {
+    private static final HandlerList handlers = new HandlerList();
 
     /**
      * Registers the quest item handler as Listener.
@@ -255,19 +255,41 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        // this prevents the journal from being placed inside of item frame
-        if (event.getClickedBlock() != null
-                && (event.getClickedBlock().getType().toString().equals("LECTERN")
-                || event.getClickedBlock().getType().toString().equals("CAMPFIRE")
-                || event.getClickedBlock().getType().toString().equals("COMPOSTER")
-                || event.getClickedBlock().getType().toString().equals("RESPAWN_ANCHOR"))) {
-            final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
-                    : event.getPlayer().getInventory().getItemInOffHand();
-
+        final ItemStack item = event.getItem();
+        if (event.getClickedBlock() != null || item.getType().toString().endsWith(Material.BUCKET.toString())) {
             final String playerID = PlayerConverter.getID(event.getPlayer());
             if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBucketFillEvent(final PlayerBucketFillEvent event) {
+        onBucketEvent(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBucketEmptyEvent(final PlayerBucketEmptyEvent event) {
+        onBucketEvent(event);
+    }
+
+    public void onBucketEvent(final PlayerBucketEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        final ItemStack itemMain = event.getPlayer().getInventory().getItemInMainHand();
+        final ItemStack itemOff = event.getPlayer().getInventory().getItemInOffHand();
+        if (Utils.isQuestItem(itemMain) || Utils.isQuestItem(itemOff)) {
+            event.setCancelled(true);
+        }
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
+    public HandlerList getHandlers() {
+        return handlers;
     }
 }
