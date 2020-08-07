@@ -32,6 +32,7 @@
   <rule ref="category/java/codestyle.xml/ExtendsObject" />
   <rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass" />
   <rule ref="category/java/codestyle.xml/FieldNamingConventions" />
+  <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop" />
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
