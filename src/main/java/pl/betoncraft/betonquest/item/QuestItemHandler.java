@@ -256,7 +256,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final ItemStack item = event.getItem();
-        if (event.getClickedBlock() != null || item.getType().toString().endsWith(Material.BUCKET.toString())) {
+        if (event.getClickedBlock() != null) {
             final String playerID = PlayerConverter.getID(event.getPlayer());
             if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
