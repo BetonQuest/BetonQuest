@@ -28,6 +28,7 @@
   <rule ref="category/java/codestyle.xml/DefaultPackage" />
   <rule ref="category/java/codestyle.xml/DontImportJavaLang" />
   <rule ref="category/java/codestyle.xml/DuplicateImports" />
+  <rule ref="category/java/codestyle.xml/EmptyMethodInAbstractClassShouldBeAbstract" />
 
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />

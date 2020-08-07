@@ -97,6 +97,11 @@ public class KillPlayerObjective extends Objective implements Listener {
         return String.valueOf(amount);
     }
 
+    @Override
+    public String getProperty(final String name, final String playerID) {
+        return "";
+    }
+
     public static class KillData extends ObjectiveData {
 
         private int amount;

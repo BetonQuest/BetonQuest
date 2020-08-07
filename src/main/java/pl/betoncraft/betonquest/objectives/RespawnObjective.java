@@ -75,4 +75,9 @@ public class RespawnObjective extends Objective implements Listener {
     public String getDefaultDataInstruction() {
         return "";
     }
+
+    @Override
+    public String getProperty(final String name, final String playerID) {
+        return "";
+    }
 }
