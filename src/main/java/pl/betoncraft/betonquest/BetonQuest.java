@@ -994,11 +994,11 @@ public class BetonQuest extends JavaPlugin {
      * Registers new notify input/output class.
      *
      * @param name    name of the IO type
-     * @param IOClass class object to register
+     * @param ioClass class object to register
      */
-    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> IOClass) {
+    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " notify IO type");
-        notifyIOTypes.put(name, IOClass);
+        notifyIOTypes.put(name, ioClass);
     }
 
     /**
