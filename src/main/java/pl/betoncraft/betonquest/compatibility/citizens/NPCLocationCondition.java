@@ -60,10 +60,14 @@ public class NPCLocationCondition extends Condition {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
+        if (npcEntity == null) {
+            return false;
+        }
         final double radius = this.radius.getDouble(playerID);
         final Location location = this.location.getLocation(playerID);
-        if (!location.getWorld().equals(npcEntity.getWorld())) return false;
+        if (!location.getWorld().equals(npcEntity.getWorld())) {
+            return false;
+        }
         return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
     }
 }

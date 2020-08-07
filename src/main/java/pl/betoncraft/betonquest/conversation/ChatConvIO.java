@@ -139,8 +139,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().equals(player))
+        if (!event.getPlayer().equals(player)) {
             return;
+        }
         final String message = event.getMessage().trim();
         for (final int i : options.keySet()) {
             if (message.equals(Integer.toString(i))) {

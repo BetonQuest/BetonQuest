@@ -45,8 +45,9 @@ public class PickRandomEvent extends QuestEvent {
         super.persistent = true;
         super.staticness = true;
         this.events = instruction.getList(string -> {
-            if (!string.matches("\\d+(\\.\\d+)?%[^%]*"))
+            if (!string.matches("\\d+(\\.\\d+)?%[^%]*")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
+            }
             final String[] parts = string.split("%");
             final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
             final EventID id;

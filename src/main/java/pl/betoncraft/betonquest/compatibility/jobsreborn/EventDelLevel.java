@@ -62,8 +62,9 @@ public class EventDelLevel extends QuestEvent {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
                 oJob.setLevel(oJob.getLevel() - this.nAddLevel);
-                if (oJob.getLevel() < 1)
+                if (oJob.getLevel() < 1) {
                     oJob.setLevel(1);
+                }
             }
         }
         return null;

@@ -176,8 +176,9 @@ public class ConfigUpdater {
         final String version = config.getString("version", null);
         // if the version is the same as destination, updating process is
         // finished
-        if (version == null || version.equals(destination))
+        if (version == null || version.equals(destination)) {
             return;
+        }
         try {
             // reload existing configuration
             new Config(false);
@@ -254,8 +255,12 @@ public class ConfigUpdater {
         for (final ConfigPackage pack : Config.getPackages().values()) {
             for (final String convName : pack.getConversationNames()) {
                 final String convIO = pack.getRawString("conversations." + convName + ".conversationIO");
-                if (convIO == null) continue;
-                if (!convIO.equalsIgnoreCase("chest")) continue;
+                if (convIO == null) {
+                    continue;
+                }
+                if (!convIO.equalsIgnoreCase("chest")) {
+                    continue;
+                }
                 LogUtils.getLogger().log(Level.INFO, "Renamed conversationIO in conversation " + pack.getName() + "." + convName + " to 'combined'");
                 pack.setString("conversations." + convName + ".conversationIO", "combined");
             }
@@ -839,8 +844,9 @@ public class ConfigUpdater {
                 final String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "Searching " + packName + " package");
                 final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
-                if (s == null)
+                if (s == null) {
                     continue;
+                }
                 for (final String key : s.getKeys(false)) {
                     final String instruction = s.getString(key);
                     LogUtils.getLogger().log(Level.FINE, "  Converting " + key + " canceler: " + instruction);
@@ -855,8 +861,9 @@ public class ConfigUpdater {
                             names.put(Config.getLanguage(), part.substring(5));
                         } else if (part.startsWith("name_")) {
                             final int colonIndex = part.indexOf(':');
-                            if (colonIndex < 0)
+                            if (colonIndex < 0) {
                                 continue;
+                            }
                             final String lang = part.substring(5, colonIndex);
                             LogUtils.getLogger().log(Level.FINE, "    Found " + lang + " name: " + part.substring(colonIndex));
                             names.put(lang, part.substring(colonIndex));
@@ -959,8 +966,9 @@ public class ConfigUpdater {
                 LogUtils.getLogger().log(Level.FINE, "  Checking '" + packName + "' package");
                 // skip packages that already use prefixes
                 final String prefixOption = pack.getString("main.tag_point_prefix");
-                if (prefixOption != null && prefixOption.equalsIgnoreCase("true"))
+                if (prefixOption != null && prefixOption.equalsIgnoreCase("true")) {
                     continue;
+                }
                 LogUtils.getLogger().log(Level.FINE, "  - It's outdated, extracting tags and points from events");
                 packages.add(pack);
                 // create array lists
@@ -1009,8 +1017,9 @@ public class ConfigUpdater {
                             // add tag to the list if it does not contain a
                             // package
                             for (final String tag : parts[2].split(",")) {
-                                if (!tag.contains("."))
+                                if (!tag.contains(".")) {
                                     tagList.add(tag);
+                                }
                             }
                         } else if (instruction.startsWith("point ")) {
                             LogUtils.getLogger().log(Level.FINE, "      Found point event, extracting points");
@@ -1022,8 +1031,9 @@ public class ConfigUpdater {
                             }
                             // add point to the list if it does not contain a
                             // package
-                            if (!parts[1].contains("."))
+                            if (!parts[1].contains(".")) {
                                 pointList.add(parts[1]);
+                            }
                         }
                     }
                     // done, all tags in events are extracted
@@ -1070,8 +1080,9 @@ public class ConfigUpdater {
                             }
                             // add tag to the list if it does not contain a
                             // package
-                            if (!parts[1].contains("."))
+                            if (!parts[1].contains(".")) {
                                 tagList.add(parts[1]);
+                            }
                         } else if (instruction.startsWith("point ")) {
                             LogUtils.getLogger().log(Level.FINE, "      Found point condition, extracting points");
                             final String[] parts = instruction.split(" ");
@@ -1082,8 +1093,9 @@ public class ConfigUpdater {
                             }
                             // add point to the list if it does not contain a
                             // package
-                            if (!parts[1].contains("."))
+                            if (!parts[1].contains(".")) {
                                 pointList.add(parts[1]);
+                            }
                         }
                     }
                     // done, all tags in conditions are extracted
@@ -1520,13 +1532,15 @@ public class ConfigUpdater {
             if (npcParts.length == 2) {
                 try {
                     for (final String code : npcParts[0].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         npcColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : npcParts[1].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         textColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
@@ -1548,13 +1562,15 @@ public class ConfigUpdater {
             if (optionParts.length == 2) {
                 try {
                     for (final String code : optionParts[0].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         numberColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : optionParts[1].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         optionColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
@@ -1574,13 +1590,15 @@ public class ConfigUpdater {
             if (answerParts.length == 2) {
                 try {
                     for (final String code : answerParts[0].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         playerColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : answerParts[1].split("&")) {
-                        if (code.length() < 1)
+                        if (code.length() < 1) {
                             continue;
+                        }
                         answerColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                 } catch (Exception e) {
@@ -1601,38 +1619,44 @@ public class ConfigUpdater {
             final StringBuilder player = new StringBuilder();
             final StringBuilder answer = new StringBuilder();
             for (final ChatColor color : npcColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 npc.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.npc", npc.substring(0, npc.length() - 1));
             for (final ChatColor color : textColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 text.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.text", text.substring(0, text.length() - 1));
             for (final ChatColor color : numberColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 number.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.number", number.substring(0, number.length() - 1));
             for (final ChatColor color : optionColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 option.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.option", option.substring(0, option.length() - 1));
             for (final ChatColor color : playerColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 player.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.player", player.substring(0, player.length() - 1));
             for (final ChatColor color : answerColors) {
-                if (color == null)
+                if (color == null) {
                     continue;
+                }
                 answer.append(color.name().toLowerCase() + ",");
             }
             config.set("conversation_colors.answer", answer.substring(0, answer.length() - 1));
@@ -1658,20 +1682,24 @@ public class ConfigUpdater {
             final FileConfiguration messages = Config.getMessages().getConfig();
             String message;
             message = messages.getString("global.quester_line_format");
-            if (message == null)
+            if (message == null) {
                 message = "&4%quester%&f: &a&o";
+            }
             config.set("conversation.quester_line_format", message);
             message = messages.getString("global.quester_reply_format");
-            if (message == null)
+            if (message == null) {
                 message = "&e%number%. &b";
+            }
             config.set("conversation.quester_reply_format", message);
             message = messages.getString("global.player_reply_format");
-            if (message == null)
+            if (message == null) {
                 message = "&2%player%&f: &7";
+            }
             config.set("conversation.player_reply_format", message);
             message = messages.getString("global.date_format");
-            if (message == null)
+            if (message == null) {
                 message = "dd.MM.yyyy HH:mm";
+            }
             config.set("date_format", message);
             final String cancel_color = messages.getString("global.cancel_color", "&2");
             messages.set("global", null);
@@ -1717,8 +1745,9 @@ public class ConfigUpdater {
             final ConfigAccessor confMessages = Config.getMessages();
             final FileConfiguration messages = confMessages.getConfig();
             for (final String lang : messages.getKeys(false)) {
-                if (lang.equalsIgnoreCase("global"))
+                if (lang.equalsIgnoreCase("global")) {
                     continue;
+                }
                 LogUtils.getLogger().log(Level.FINE, "Updating " + lang + " language");
                 try {
                     messages.set(lang + ".purged", messages.getString(lang + ".purged").replace("%player%", "{1}"));

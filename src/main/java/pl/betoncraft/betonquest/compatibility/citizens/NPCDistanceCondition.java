@@ -59,8 +59,12 @@ public class NPCDistanceCondition extends Condition {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
-        if (!npcEntity.getWorld().equals(player.getWorld())) return false;
+        if (npcEntity == null) {
+            return false;
+        }
+        if (!npcEntity.getWorld().equals(player.getWorld())) {
+            return false;
+        }
         return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;
     }
 }

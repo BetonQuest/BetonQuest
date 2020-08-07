@@ -74,8 +74,9 @@ public class PointVariable extends Variable {
             }
         }
         int count = 0;
-        if (point != null)
+        if (point != null) {
             count = point.getCount();
+        }
         switch (type) {
             case AMOUNT:
                 return Integer.toString(count);

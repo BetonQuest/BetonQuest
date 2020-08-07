@@ -378,10 +378,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "vec":
                 return completeVector(sender, args);
             case "purge":
-                if (args.length == 2)
+                if (args.length == 2) {
                     return null;
-                else
+                } else {
                     return new ArrayList<>();
+                }
             case "debug":
                 return completeDebug(sender, args);
             case "version":
@@ -424,8 +425,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } else {
             final String pack = last.substring(0, last.indexOf("."));
             final ConfigPackage configPack = Config.getPackages().get(pack);
-            if (configPack == null)
+            if (configPack == null) {
                 return new ArrayList<>();
+            }
             if (type == null) {
                 final List<String> completations = new ArrayList<>();
                 completations.add(pack + ".");
@@ -627,8 +629,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeConfig(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return Arrays.asList("set", "add", "read");
+        }
         return new ArrayList<>();
     }
 
@@ -723,12 +726,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeJournals(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return Arrays.asList("add", "list", "del");
-        if (args.length == 4)
+        }
+        if (args.length == 4) {
             return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+        }
         return new ArrayList<>();
     }
 
@@ -874,12 +880,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completePoints(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return Arrays.asList("add", "list", "del");
-        if (args.length == 4)
+        }
+        if (args.length == 4) {
             return completeId(sender, args, null);
+        }
         return new ArrayList<>();
     }
 
@@ -892,10 +901,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeGlobalPoints(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return Arrays.asList("add", "list", "del");
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return completeId(sender, args, null);
+        }
         return new ArrayList<>();
     }
 
@@ -965,8 +976,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeItems(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
+        }
         return new ArrayList<>();
     }
 
@@ -1013,10 +1025,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeEvents(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return completeId(sender, args, ConfigAccessor.AccessorType.EVENTS);
+        }
         return new ArrayList<>();
     }
 
@@ -1064,10 +1078,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeConditions(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
+        }
         return new ArrayList<>();
     }
 
@@ -1200,12 +1216,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeTags(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return Arrays.asList("list", "add", "del");
-        if (args.length == 4)
+        }
+        if (args.length == 4) {
             return completeId(sender, args, null);
+        }
         return new ArrayList<>();
     }
 
@@ -1218,10 +1237,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeGlobalTags(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return Arrays.asList("list", "add", "del");
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return completeId(sender, args, null);
+        }
         return new ArrayList<>();
     }
 
@@ -1348,12 +1369,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeObjectives(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return null;
-        if (args.length == 3)
+        }
+        if (args.length == 3) {
             return Arrays.asList("list", "add", "del", "complete");
-        if (args.length == 4)
+        }
+        if (args.length == 4) {
             return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+        }
         return new ArrayList<>();
     }
 
@@ -1364,8 +1388,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      */
     private void handleVector(final CommandSender sender, final String[] args) {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player)) {
             return;
+        }
         final Player player = ((Player) sender);
         if (args.length != 3) {
             player.sendMessage("§4ERROR");
@@ -1414,12 +1439,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             final String pack = args[1].substring(0, args[1].indexOf("."));
             final ConfigPackage configPack = Config.getPackages().get(pack);
-            if (configPack == null)
+            if (configPack == null) {
                 return new ArrayList<>();
+            }
             final ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
             final Collection<String> keys = section.getKeys(false);
-            if (keys.isEmpty())
+            if (keys.isEmpty()) {
                 return new ArrayList<>();
+            }
             return new ArrayList<>(keys);
         }
         return new ArrayList<>();
@@ -1531,10 +1558,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }
                     // skip the player if he does not have this objective
-                    if (found == false)
+                    if (found == false) {
                         continue;
-                    if (data == null)
+                    }
+                    if (data == null) {
                         data = "";
+                    }
                     BetonQuest.getInstance().getObjective(nameID).removePlayer(playerID);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
@@ -1558,8 +1587,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }
                     // skip the player if he does not have this entry
-                    if (p == null)
+                    if (p == null) {
                         continue;
+                    }
                     journal.removePointer(name);
                     journal.addPointer(new Pointer(rename, p.getTimestamp()));
                     journal.update();
@@ -1584,10 +1614,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeRenaming(final CommandSender sender, final String[] args) {
-        if (args.length <= 3)
+        if (args.length <= 3) {
             return completeDeleting(sender, args);
-        if (args.length == 4)
+        }
+        if (args.length == 4) {
             return completeId(sender, args, null);
+        }
         return new ArrayList<>();
     }
 
@@ -1677,8 +1709,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @return
      */
     private List<String> completeDeleting(final CommandSender sender, final String[] args) {
-        if (args.length == 2)
+        if (args.length == 2) {
             return Arrays.asList("tag", "point", "objective", "entry");
+        }
         if (args.length == 3) {
             switch (args[1].toLowerCase()) {
                 case "tags":
@@ -1729,8 +1762,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
         cmds.put("debug", "[true/false]");
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
+        }
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof Player) {
@@ -1781,8 +1815,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final TreeMap<String, String> hooked = new TreeMap<>();
         for (final String plugin : Compatibility.getHooked()) {
             final Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
-            if (pl != null)
+            if (pl != null) {
                 hooked.put(plugin, pl.getDescription().getVersion());
+            }
         }
         final StringJoiner hooked_raw = new StringJoiner(", ");
         for (final String key : hooked.navigableKeySet()) {
@@ -1807,9 +1842,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } else {
             boolean first = true;
             for (final String key : hooked.navigableKeySet()) {
-                if (first)
+                if (first) {
                     first = false;
-                else {
+                } else {
                     builder.append(", ", ChatColor.RESET).hover(click_to_copy)
                             .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
                 }

@@ -64,12 +64,14 @@ public class BrewObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onIngredientPut(final InventoryClickEvent event) {
-        if (event.getInventory().getType() != InventoryType.BREWING)
+        if (event.getInventory().getType() != InventoryType.BREWING) {
             return;
+        }
         if (event.getRawSlot() == 3 || event.getClick().equals(ClickType.SHIFT_LEFT)) {
             final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (!containsPlayer(playerID))
+            if (!containsPlayer(playerID)) {
                 return;
+            }
             locations.put(((BrewingStand) event.getInventory().getHolder()).getLocation(), playerID);
         }
     }
@@ -77,14 +79,16 @@ public class BrewObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final String playerID = locations.remove(event.getBlock().getLocation());
-        if (playerID == null)
+        if (playerID == null) {
             return;
+        }
         final PotionData data = ((PotionData) dataMap.get(playerID));
         // this tracks how many potions there are in the stand before brewing
         int alreadyExistingTemp = 0;
         for (int i = 0; i < 3; i++) {
-            if (checkPotion(event.getContents().getItem(i)))
+            if (checkPotion(event.getContents().getItem(i))) {
                 alreadyExistingTemp++;
+            }
         }
         // making it final for the runnable
         final int alreadyExisting = alreadyExistingTemp;
@@ -121,8 +125,9 @@ public class BrewObjective extends Objective implements Listener {
      * Checks if this ItemStack matches a potion defined in "effects" HashMap.
      */
     private boolean checkPotion(final ItemStack item) {
-        if (item == null)
+        if (item == null) {
             return false;
+        }
         return potion.compare(item);
     }
 

@@ -26,7 +26,8 @@ public class MMOCoreUtils {
     }
 
     public static void isMMOConfigValidForAttribute(final String attributeName) throws InstructionParseException {
-        if (!MMOCoreAttributeConfig.contains(attributeName))
+        if (!MMOCoreAttributeConfig.contains(attributeName)) {
             throw new InstructionParseException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
+        }
     }
 }

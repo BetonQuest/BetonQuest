@@ -87,16 +87,18 @@ public class ActionObjective extends Objective implements Listener {
                 case RIGHT:
                     if ((event.getAction().equals(Action.RIGHT_CLICK_AIR)
                             || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel)
+                        if (cancel) {
                             event.setCancelled(true);
+                        }
                         completeObjective(playerID);
                     }
                     break;
                 case LEFT:
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
                             || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel)
+                        if (cancel) {
                             event.setCancelled(true);
+                        }
                         completeObjective(playerID);
                     }
                     break;
@@ -106,8 +108,9 @@ public class ActionObjective extends Objective implements Listener {
                             || event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                             || event.getAction().equals(Action.RIGHT_CLICK_AIR)
                             || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel)
+                        if (cancel) {
                             event.setCancelled(true);
+                        }
                         completeObjective(playerID);
                     }
                     break;

@@ -54,8 +54,9 @@ public class ConditionCanLevel extends Condition {
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
-                if (oJob.canLevelUp())
+                if (oJob.canLevelUp()) {
                     return true;
+                }
             }
         }
         return false;

@@ -64,7 +64,9 @@ public class NPCRegionCondition extends Condition {
             throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
+        if (npcEntity == null) {
+            return false;
+        }
 
         final Player player = PlayerConverter.getPlayer(playerID);
         final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
@@ -75,8 +77,9 @@ public class NPCRegionCondition extends Condition {
         final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 
         for (final ProtectedRegion compare : set) {
-            if (compare.equals(region))
+            if (compare.equals(region)) {
                 return true;
+            }
         }
         return false;
     }

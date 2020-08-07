@@ -152,8 +152,9 @@ public class EntityInteractObjective extends Objective {
             // get data off the player
             final EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
             // check if player already interacted with entity
-            if (playerData.containsEntity(entity))
+            if (playerData.containsEntity(entity)) {
                 return false;
+            }
             // right mob is interacted with, handle data update
             playerData.subtract();
             playerData.addEntity(entity);
@@ -171,10 +172,12 @@ public class EntityInteractObjective extends Objective {
 
     @Override
     public void stop() {
-        if (rightClickListener != null)
+        if (rightClickListener != null) {
             HandlerList.unregisterAll(rightClickListener);
-        if (leftClickListener != null)
+        }
+        if (leftClickListener != null) {
             HandlerList.unregisterAll(leftClickListener);
+        }
     }
 
     @Override

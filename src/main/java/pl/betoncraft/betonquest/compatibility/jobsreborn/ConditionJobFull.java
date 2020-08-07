@@ -45,10 +45,12 @@ public class ConditionJobFull extends Condition {
     protected Boolean execute(final String playerID) {
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
-                if (job.getMaxSlots() == null)
+                if (job.getMaxSlots() == null) {
                     return false;
-                if (job.getTotalPlayers() >= job.getMaxSlots())
+                }
+                if (job.getTotalPlayers() >= job.getMaxSlots()) {
                     return true;
+                }
             }
         }
         return false;

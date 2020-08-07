@@ -97,7 +97,8 @@ public class CombatTagger implements Listener {
         final String playerID = PlayerConverter.getID(event.getEntity());
         tagged.remove(playerID);
         final BukkitRunnable runnable = untaggers.remove(playerID);
-        if (runnable != null)
+        if (runnable != null) {
             runnable.cancel();
+        }
     }
 }

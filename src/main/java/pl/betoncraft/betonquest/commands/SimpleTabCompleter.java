@@ -35,7 +35,9 @@ public interface SimpleTabCompleter extends TabCompleter {
     @Override
     default List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         final List<String> completations = this.simpleTabComplete(sender, command, alias, args);
-        if (completations == null) return null;
+        if (completations == null) {
+            return null;
+        }
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
         for (final String completation : completations) {

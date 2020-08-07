@@ -57,25 +57,30 @@ public class ShearObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onShear(final PlayerShearEntityEvent event) {
-        if (event.getEntity().getType() != EntityType.SHEEP)
+        if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
+        }
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID))
+        if (!containsPlayer(playerID)) {
             return;
-        if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name)))
+        }
+        if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name))) {
             return;
-        if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color))
+        }
+        if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color)) {
             return;
+        }
         final SheepData data = (SheepData) dataMap.get(playerID);
 
         if (checkConditions(playerID)) {
             data.shearSheep();
             // complete quest or notify
-            if (data.getAmount() <= 0)
+            if (data.getAmount() <= 0) {
                 completeObjective(playerID);
-            else if (notify && data.getAmount() % notifyInterval == 0)
+            } else if (notify && data.getAmount() % notifyInterval == 0) {
                 Config.sendNotify(playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())},
                         "sheep_to_shear,info");
+            }
         }
     }
 

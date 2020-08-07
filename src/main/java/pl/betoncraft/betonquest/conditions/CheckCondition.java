@@ -87,8 +87,9 @@ public class CheckCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         for (final Condition condition : internalConditions) {
-            if (!condition.handle(playerID))
+            if (!condition.handle(playerID)) {
                 return false;
+            }
         }
         return true;
     }

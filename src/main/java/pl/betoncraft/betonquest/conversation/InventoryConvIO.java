@@ -190,8 +190,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // now fill the slots
         for (int j = 0; j < 9 * rows; j++) {
             // skip first and second slots of each row
-            if (j % 9 == 0 || j % 9 == 1)
+            if (j % 9 == 0 || j % 9 == 1) {
                 continue;
+            }
             // count option numbers, starting with 1
             next++;
             // break if all options are set
@@ -265,8 +266,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             item.setItemMeta(meta);
             buttons[j] = item;
         }
-        if (printMessages)
+        if (printMessages) {
             conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -294,7 +296,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         event.setCancelled(true);
-        if (processingLastClick) return;
+        if (processingLastClick) {
+            return;
+        }
         final int slot = event.getRawSlot();
         // calculate the option number
         if (slot % 9 > 1) {
@@ -307,7 +311,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final String message = options.get(choosen);
             if (message != null) {
                 processingLastClick = true;
-                if (printMessages) conv.sendMessage(answerPrefix + message);
+                if (printMessages) {
+                    conv.sendMessage(answerPrefix + message);
+                }
                 conv.passPlayerAnswer(choosen);
             }
         }
@@ -367,8 +373,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected ArrayList<String> stringToLines(final String singleLine, final String color, String prefix) {
         final ArrayList<String> multiLine = new ArrayList<>();
         boolean firstLinePrefix = prefix != null;
-        if (prefix == null)
+        if (prefix == null) {
             prefix = "";
+        }
         final String[] lineBreaks = (prefix + singleLine).split("\n");
         for (final String brokenLine : lineBreaks) {
             final String[] arr = brokenLine.split(" ");

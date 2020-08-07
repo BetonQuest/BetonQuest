@@ -47,16 +47,20 @@ public class EnchantObjective extends Objective implements Listener {
         template = ObjectiveData.class;
         item = instruction.getQuestItem();
         enchantments = instruction.getList(EnchantmentData::convert);
-        if (enchantments.isEmpty()) throw new InstructionParseException("Not enough arguments");
+        if (enchantments.isEmpty()) {
+            throw new InstructionParseException("Not enough arguments");
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
         final String playerID = PlayerConverter.getID(event.getEnchanter());
-        if (!containsPlayer(playerID))
+        if (!containsPlayer(playerID)) {
             return;
-        if (!item.compare(event.getItem()))
+        }
+        if (!item.compare(event.getItem())) {
             return;
+        }
         for (final EnchantmentData enchant : enchantments) {
             if (!event.getEnchantsToAdd().keySet().contains(enchant.getEnchantment())
                     || event.getEnchantsToAdd().get(enchant.getEnchantment()) < enchant.getLevel()) {
@@ -96,11 +100,13 @@ public class EnchantObjective extends Objective implements Listener {
         @SuppressWarnings("deprecation")
         public static EnchantmentData convert(final String string) throws InstructionParseException {
             final String[] parts = string.split(":");
-            if (parts.length != 2)
+            if (parts.length != 2) {
                 throw new InstructionParseException("Could not parse enchantment: " + string);
+            }
             final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
-            if (enchantment == null)
+            if (enchantment == null) {
                 throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
+            }
             final int level;
             try {
                 level = Integer.parseInt(parts[1]);

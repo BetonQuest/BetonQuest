@@ -42,9 +42,15 @@ public class MythicMobDistanceCondition extends Condition {
 
         final Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist);
         for (final Entity entity : entities) {
-            if (entity == null) continue;
-            if (!apiHelper.isMythicMob(entity)) continue;
-            if (!apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName)) continue;
+            if (entity == null) {
+                continue;
+            }
+            if (!apiHelper.isMythicMob(entity)) {
+                continue;
+            }
+            if (!apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName)) {
+                continue;
+            }
             return true;
         }
 

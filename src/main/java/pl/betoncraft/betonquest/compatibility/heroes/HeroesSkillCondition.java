@@ -41,8 +41,9 @@ public class HeroesSkillCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null)
+        if (hero == null) {
             return false;
+        }
         return hero.canUseSkill(skillName);
     }
 

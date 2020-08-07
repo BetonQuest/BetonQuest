@@ -56,8 +56,9 @@ public class NPCInteractObjective extends Objective implements Listener {
             return;
         }
         if (checkConditions(playerID)) {
-            if (cancel)
+            if (cancel) {
                 event.setCancelled(true);
+            }
             completeObjective(playerID);
         }
     }

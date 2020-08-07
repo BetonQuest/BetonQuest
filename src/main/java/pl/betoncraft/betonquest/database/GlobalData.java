@@ -56,13 +56,15 @@ public class GlobalData {
             // load global_tags
             final ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS, new String[0]);
             // put them into the list
-            while (res2.next())
+            while (res2.next()) {
                 global_tags.add(res2.getString("tag"));
+            }
             // load global_points
             final ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new String[0]);
             // put them into the list
-            while (res4.next())
+            while (res4.next()) {
                 global_points.add(new Point(res4.getString("category"), res4.getInt("count")));
+            }
             // log data to debugger
             LogUtils.getLogger().log(Level.FINE, "There are " + global_tags.size() + " global_tags and " + global_points.size()
                     + " global_points loaded");

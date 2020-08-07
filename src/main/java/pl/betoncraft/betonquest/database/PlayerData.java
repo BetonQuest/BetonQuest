@@ -93,8 +93,9 @@ public class PlayerData {
             // load tags
             final ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[]{playerID});
             // put them into the list
-            while (res2.next())
+            while (res2.next()) {
                 tags.add(res2.getString("tag"));
+            }
 
             // load journals
             final ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[]{playerID});
@@ -106,8 +107,9 @@ public class PlayerData {
             // load points
             final ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[]{playerID});
             // put them into the list
-            while (res4.next())
+            while (res4.next()) {
                 points.add(new Point(res4.getString("category"), res4.getInt("count")));
+            }
 
             // load backpack
             final ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, new String[]{playerID});
@@ -315,8 +317,9 @@ public class PlayerData {
             return;
         }
         final String data = obj.getDefaultDataInstruction();
-        if (addRawObjective(objectiveID.toString(), data))
+        if (addRawObjective(objectiveID.toString(), data)) {
             saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID.toString(), data}));
+        }
     }
 
     /**
@@ -457,8 +460,9 @@ public class PlayerData {
      */
     public void cancelQuest(final String name) {
         final QuestCanceler canceler = Config.getCancelers().get(name);
-        if (canceler != null)
+        if (canceler != null) {
             canceler.cancel(playerID);
+        }
     }
 
     /**

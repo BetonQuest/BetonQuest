@@ -79,27 +79,35 @@ public class FishObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onFishCatch(final PlayerFishEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (event.getState() != State.CAUGHT_FISH)
+        if (event.getState() != State.CAUGHT_FISH) {
             return;
-        if (!containsPlayer(playerID))
+        }
+        if (!containsPlayer(playerID)) {
             return;
-        if (event.getCaught() == null)
+        }
+        if (event.getCaught() == null) {
             return;
-        if (event.getCaught().getType() != EntityType.DROPPED_ITEM)
+        }
+        if (event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
+        }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (item.getType() != fish)
+        if (item.getType() != fish) {
             return;
-        if (data >= 0 && item.getData().getData() != data)
+        }
+        if (data >= 0 && item.getData().getData() != data) {
             return;
+        }
         final FishData data = (FishData) dataMap.get(playerID);
-        if (checkConditions(playerID))
+        if (checkConditions(playerID)) {
             data.catchFish();
-        if (data.getAmount() <= 0)
+        }
+        if (data.getAmount() <= 0) {
             completeObjective(playerID);
-        else if (notify && data.getAmount() % notifyInterval == 0)
+        } else if (notify && data.getAmount() % notifyInterval == 0) {
             Config.sendNotify(playerID, "fish_to_catch", new String[]{String.valueOf(data.getAmount())},
                     "fish_to_catch,info");
+        }
     }
 
     @Override

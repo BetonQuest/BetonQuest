@@ -46,15 +46,25 @@ public class FacingCondition extends Condition {
         float rotation = p.getLocation().getYaw();
         final float pitch = p.getLocation().getPitch();
         final Direction facing;
-        if (pitch > 60) facing = Direction.DOWN;
-        else if (pitch < -60) facing = Direction.UP;
-        else {
-            if (rotation < 0) rotation += 360;
-            if (rotation < 45) facing = Direction.SOUTH;
-            else if (rotation < 135) facing = Direction.WEST;
-            else if (rotation < 225) facing = Direction.NORTH;
-            else if (rotation < 325) facing = Direction.EAST;
-            else facing = Direction.SOUTH;
+        if (pitch > 60) {
+            facing = Direction.DOWN;
+        } else if (pitch < -60) {
+            facing = Direction.UP;
+        } else {
+            if (rotation < 0) {
+                rotation += 360;
+            }
+            if (rotation < 45) {
+                facing = Direction.SOUTH;
+            } else if (rotation < 135) {
+                facing = Direction.WEST;
+            } else if (rotation < 225) {
+                facing = Direction.NORTH;
+            } else if (rotation < 325) {
+                facing = Direction.EAST;
+            } else {
+                facing = Direction.SOUTH;
+            }
         }
         return facing == direction;
     }

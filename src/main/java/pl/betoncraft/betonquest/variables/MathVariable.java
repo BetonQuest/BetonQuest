@@ -42,7 +42,9 @@ public class MathVariable extends Variable {
     public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         final String instruction_string = instruction.getInstruction();
-        if (!instruction_string.matches("math\\.calc:.+")) throw new InstructionParseException("invalid format");
+        if (!instruction_string.matches("math\\.calc:.+")) {
+            throw new InstructionParseException("invalid format");
+        }
         this.calculation = this.parse(instruction_string.substring("math.calc:".length()));
     }
 
@@ -50,8 +52,9 @@ public class MathVariable extends Variable {
     public String getValue(final String playerID) {
         try {
             final double value = this.calculation.calculate(playerID);
-            if (value % 1 == 0)
+            if (value % 1 == 0) {
                 return String.format(Locale.US, "%.0f", value);
+            }
             return String.valueOf(value);
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
@@ -69,15 +72,21 @@ public class MathVariable extends Variable {
      */
     private Calculable parse(final String string) throws InstructionParseException {
         //clarify error messages for invalid calculations
-        if (string.matches(".*[+\\-*/^]{2}.*"))
+        if (string.matches(".*[+\\-*/^]{2}.*")) {
             throw new InstructionParseException("invalid calculation (operations doubled)");
+        }
         if (string.matches(".*(\\([^)]*|\\[[^]]*)")
-                || string.matches("([^(]*\\)|[^\\[]*]).*"))
+                || string.matches("([^(]*\\)|[^\\[]*]).*")) {
             throw new InstructionParseException("invalid calculation (uneven braces)");
+        }
         //calculate braces
-        if (string.matches("(\\(.+\\)|\\[.+])")) return this.parse(string.substring(1, string.length() - 1));
+        if (string.matches("(\\(.+\\)|\\[.+])")) {
+            return this.parse(string.substring(1, string.length() - 1));
+        }
         //calculate the absolute value
-        if (string.matches("\\|.+\\|")) return new AbsoluteValue(this.parse(string.substring(1, string.length() - 1)));
+        if (string.matches("\\|.+\\|")) {
+            return new AbsoluteValue(this.parse(string.substring(1, string.length() - 1)));
+        }
         String tempCopy = string;
         final Matcher m = Pattern.compile("(\\(.+\\)|\\[.+]|\\|.+\\|)").matcher(tempCopy);
         //ignore content of braces for all next operations
@@ -96,15 +105,17 @@ public class MathVariable extends Variable {
         int i = tempCopy.lastIndexOf("+");
         int j = tempCopy.lastIndexOf("-");
         if (i > j) {
-            if (i == 0)
+            if (i == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.ADD);
+            }
             //'+' comes after '-'
             return new Calculation(this.parse(string.substring(0, i)),
                     this.parse(string.substring(i + 1)),
                     Operation.ADD);
         } else if (j > i) {
-            if (j == 0)
+            if (j == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.SUBTRACT);
+            }
             //'-' comes after '+'
             return new Calculation(this.parse(string.substring(0, j)),
                     this.parse(string.substring(j + 1)),
@@ -132,8 +143,9 @@ public class MathVariable extends Variable {
                     Operation.POW);
         }
         //if string matches a number
-        if (string.matches("\\d+(\\.\\d+)?"))
+        if (string.matches("\\d+(\\.\\d+)?")) {
             return new ClaculableVariable(Double.parseDouble(string));
+        }
         //if a variable is specified
         try {
             return new ClaculableVariable(super.instruction.getPackage(), "%" + string + "%");

@@ -91,8 +91,9 @@ public class Config {
         internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!key.equals("global")) {
-                if (verboose)
+                if (verboose) {
                     LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
+                }
                 languages.add(key);
             }
         }
@@ -110,8 +111,9 @@ public class Config {
         // load quest cancelers
         for (final ConfigPackage pack : packages.values()) {
             final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
-            if (s == null)
+            if (s == null) {
                 continue;
+            }
             for (final String key : s.getKeys(false)) {
                 final String name = pack.getName() + "." + key;
                 try {
@@ -146,8 +148,9 @@ public class Config {
             conversations.mkdir();
             saveResource(conversations, "default/defaultConversation.yml", "innkeeper.yml");
             List<String> list = plugin.getConfig().getStringList("packages");
-            if (list == null)
+            if (list == null) {
                 list = new ArrayList<>();
+            }
             list.add(packName);
             plugin.getConfig().set("packages", list);
             plugin.saveConfig();
@@ -164,8 +167,9 @@ public class Config {
      * @param name     file name
      */
     private static void saveResource(final File root, final String resource, final String name) {
-        if (!root.isDirectory())
+        if (!root.isDirectory()) {
             return;
+        }
         final File file = new File(root, name);
         if (!file.exists()) {
             try {
@@ -227,10 +231,11 @@ public class Config {
             result = internal.getConfig().getString("en." + message);
         }
         if (result != null) {
-            if (variables != null)
+            if (variables != null) {
                 for (int i = 0; i < variables.length; i++) {
                     result = result.replace("{" + (i + 1) + "}", variables[i]);
                 }
+            }
             result = result.replace('&', '§');
         }
         return result;
@@ -264,11 +269,13 @@ public class Config {
      * @return the requested string
      */
     public static String getString(final String address) {
-        if (address == null)
+        if (address == null) {
             return null;
+        }
         final String[] parts = address.split("\\.");
-        if (parts.length < 2)
+        if (parts.length < 2) {
             return null;
+        }
         final String main = parts[0];
         if (main.equals("config")) {
             return plugin.getConfig().getString(address.substring(7));
@@ -276,8 +283,9 @@ public class Config {
             return messages.getConfig().getString(address.substring(9));
         } else {
             final ConfigPackage pack = packages.get(main);
-            if (pack == null)
+            if (pack == null) {
                 return null;
+            }
             return pack.getRawString(address.substring(main.length() + 1));
         }
     }
@@ -290,11 +298,13 @@ public class Config {
      * @return true if it was set, false otherwise
      */
     public static boolean setString(final String address, final String value) {
-        if (address == null)
+        if (address == null) {
             return false;
+        }
         final String[] parts = address.split("\\.");
-        if (parts.length < 2)
+        if (parts.length < 2) {
             return false;
+        }
         final String main = parts[0];
         if (main.equals("config")) {
             plugin.getConfig().set(address.substring(7), value);
@@ -306,8 +316,9 @@ public class Config {
             return true;
         } else {
             final ConfigPackage pack = packages.get(main);
-            if (pack == null)
+            if (pack == null) {
                 return false;
+            }
             return pack.setString(address.substring(main.length() + 1), value);
         }
     }
@@ -404,8 +415,9 @@ public class Config {
     public static void sendMessage(final String playerID, final String messageName, final String[] variables, final String soundName,
                                    final String prefixName, final String[] prefixVariables) {
         final String message = parseMessage(playerID, messageName, variables, prefixName, prefixVariables);
-        if (message == null || message.length() == 0)
+        if (message == null || message.length() == 0) {
             return;
+        }
 
         final Player player = PlayerConverter.getPlayer(playerID);
         player.sendMessage(message);
@@ -447,8 +459,9 @@ public class Config {
      */
     public static void sendNotify(final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
         final String message = parseMessage(player, messageName, variables);
-        if (message == null || message.length() == 0)
+        if (message == null || message.length() == 0) {
             return;
+        }
 
         Notify.get(category, data).sendNotify(message, player);
     }
@@ -478,12 +491,14 @@ public class Config {
     public static String parseMessage(final Player player, final String messageName, final String[] variables, final String prefixName,
                                       final String[] prefixVariables) {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
-        if (playerData == null)
+        if (playerData == null) {
             return null;
+        }
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
-        if (message == null || message.length() == 0)
+        if (message == null || message.length() == 0) {
             return null;
+        }
         if (prefixName != null) {
             final String prefix = getMessage(language, prefixName, prefixVariables);
             if (prefix.length() > 0) {
@@ -501,7 +516,9 @@ public class Config {
      */
     public static void playSound(final String playerID, final String soundName) {
         final Player player = PlayerConverter.getPlayer(playerID);
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         final String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
         if (!rawSound.equalsIgnoreCase("false")) {
             try {

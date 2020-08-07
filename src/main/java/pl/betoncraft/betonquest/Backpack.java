@@ -402,8 +402,9 @@ public class Backpack implements Listener {
             // get all quest cancelers that can be shown to the player
             for (final String name : Config.getCancelers().keySet()) {
                 final QuestCanceler canceler = Config.getCancelers().get(name);
-                if (canceler.show(playerID))
+                if (canceler.show(playerID)) {
                     cancelers.put(name, canceler);
+                }
             }
             // generate the inventory view
             final int size = cancelers.size();
@@ -460,10 +461,12 @@ public class Backpack implements Listener {
                         String name = null;
                         if (s.isConfigurationSection(key + ".name")) {
                             name = pack.getString("main.compass." + key + ".name." + lang);
-                            if (name == null)
+                            if (name == null) {
                                 name = pack.getString("main.compass." + key + ".name." + Config.getLanguage());
-                            if (name == null)
+                            }
+                            if (name == null) {
                                 name = pack.getString("main.compass." + key + ".name.en");
+                            }
                         } else {
                             name = pack.getString("main.compass." + key + ".name");
                         }
@@ -510,8 +513,9 @@ public class Backpack implements Listener {
                         // put location with next number
                         locations.put(counter, loc);
                         names.put(counter, name);
-                        if (itemName != null)
+                        if (itemName != null) {
                             items.put(counter, packName + "." + itemName);
+                        }
                         counter++;
                     }
                 }

@@ -45,8 +45,9 @@ public class ObjectivePropertyVariable extends Variable {
         final Objective objective = BetonQuest.getInstance().getObjective(this.objective);
         // existence of an objective is checked now because it may not exist yet
         // when variable is created (in case of "message" event)
-        if (objective == null)
+        if (objective == null) {
             return "";
+        }
         return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
     }
 

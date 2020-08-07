@@ -87,8 +87,9 @@ public abstract class Objective {
         final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
         persistent = instruction.hasArgument("persistent");
         global = instruction.hasArgument("global");
-        if (global)
+        if (global) {
             GlobalObjectives.add((ObjectiveID) instruction.getID());
+        }
         // make them final
         int length = tempEvents1.length + tempEvents2.length;
         events = new EventID[length];
@@ -416,8 +417,9 @@ public abstract class Objective {
             try {
                 qreThrowing.run();
             } catch (QuestRuntimeException e) {
-                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS)
+                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) {
                     return;
+                }
                 last = System.currentTimeMillis();
                 LogUtils.getLogger().log(Level.WARNING,
                         "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());

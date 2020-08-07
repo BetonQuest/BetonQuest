@@ -53,8 +53,9 @@ public class ConfigAccessor {
         plugin = BetonQuest.getInstance();
         this.fileName = fileName;
         final File dataFolder = plugin.getDataFolder();
-        if (dataFolder == null)
+        if (dataFolder == null) {
             throw new IllegalStateException();
+        }
         this.configFile = file;
         this.type = type;
     }
@@ -122,8 +123,9 @@ public class ConfigAccessor {
      * Saves the default configuration to a file. It won't do anything if the file is null.
      */
     public void saveDefaultConfig() {
-        if (configFile == null)
+        if (configFile == null) {
             return;
+        }
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();

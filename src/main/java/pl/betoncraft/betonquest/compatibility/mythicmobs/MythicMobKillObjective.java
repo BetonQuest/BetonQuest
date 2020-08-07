@@ -57,12 +57,20 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
-        if (!names.contains(event.getMobType().getInternalName())) return;
-        if (!(event.getKiller() instanceof Player)) return;
+        if (!names.contains(event.getMobType().getInternalName())) {
+            return;
+        }
+        if (!(event.getKiller() instanceof Player)) {
+            return;
+        }
 
         final String playerID = PlayerConverter.getID((Player) event.getKiller());
-        if (!containsPlayer(playerID)) return;
-        if (!checkConditions(playerID)) return;
+        if (!containsPlayer(playerID)) {
+            return;
+        }
+        if (!checkConditions(playerID)) {
+            return;
+        }
 
         final MMData playerData = (MMData) dataMap.get(playerID);
         playerData.kill();

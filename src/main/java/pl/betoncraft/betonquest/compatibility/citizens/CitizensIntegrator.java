@@ -38,8 +38,9 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         new CitizensListener();
         new CitizensWalkingListener();
-        if (Compatibility.getHooked().contains("EffectLib"))
+        if (Compatibility.getHooked().contains("EffectLib")) {
             new CitizensParticle();
+        }
 
         // if HolographicAPI is hooked, start CitizensHologram
         if (Compatibility.getHooked().contains("HolographicDisplays")) {

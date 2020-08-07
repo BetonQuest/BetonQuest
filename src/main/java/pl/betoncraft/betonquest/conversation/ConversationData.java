@@ -130,7 +130,9 @@ public class ConversationData {
             throw new InstructionParseException("Quester's name is not defined");
         }
         for (final String value : quester.values()) {
-            if (value == null) throw new InstructionParseException("Quester's name is not defined");
+            if (value == null) {
+                throw new InstructionParseException("Quester's name is not defined");
+            }
         }
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
@@ -283,8 +285,9 @@ public class ConversationData {
             if (pref == null) {
                 pref = NPCOptions.get(option).getInlinePrefix(Config.getLanguage());
             }
-            if (pref != null)
+            if (pref != null) {
                 return pref;
+            }
         }
 
         // otherwise return global prefix
@@ -353,8 +356,9 @@ public class ConversationData {
         } else {
             o = playerOptions.get(option);
         }
-        if (o == null)
+        if (o == null) {
             return null;
+        }
         return o.getText(playerID, lang);
     }
 
@@ -499,14 +503,16 @@ public class ConversationData {
 
                 final ArrayList<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
-                    if (theText == null || theText.equals(""))
+                    if (theText == null || theText.equals("")) {
                         throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
+                    }
                     // variables are possibly duplicated because there probably is
                     // the same variable in every language
                     final ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
                     for (final String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
-                        if (variables.contains(possiblyDuplicatedVariable))
+                        if (variables.contains(possiblyDuplicatedVariable)) {
                             continue;
+                        }
                         variables.add(possiblyDuplicatedVariable);
                     }
                 }

@@ -168,8 +168,9 @@ public class QuestItemHandler implements Listener {
         }
         final String playerID = PlayerConverter.getID(event.getEntity());
         // check if there is data for this player; NPCs don't have data
-        if (BetonQuest.getInstance().getPlayerData(playerID) == null)
+        if (BetonQuest.getInstance().getPlayerData(playerID) == null) {
             return;
+        }
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
         final List<ItemStack> drops = event.getDrops();
@@ -189,14 +190,16 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (Config.getString("config.remove_items_after_respawn").equals("false"))
+        if (Config.getString("config.remove_items_after_respawn").equals("false")) {
             return;
+        }
         // some plugins block item dropping after death and add those
         // items after respawning, so the player doesn't loose his
         // inventory after death; this aims to force removing quest
         // items, as they have been added to the backpack already
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
+        }
         final Inventory inv = event.getPlayer().getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
             if (Utils.isQuestItem(inv.getItem(i))) {
