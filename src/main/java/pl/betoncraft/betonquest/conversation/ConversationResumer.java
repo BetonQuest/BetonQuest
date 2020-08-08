@@ -53,8 +53,9 @@ public class ConversationResumer implements Listener {
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];
-        if (option.equalsIgnoreCase("null"))
+        if (option.equalsIgnoreCase("null")) {
             return;
+        }
         final String[] locParts = parts[2].split(";");
         this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
                 Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));

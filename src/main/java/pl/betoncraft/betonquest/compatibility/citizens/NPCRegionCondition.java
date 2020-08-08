@@ -43,15 +43,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCRegionCondition extends Condition {
 
-    private final int ID;
+    private final int id;
     private final String region;
 
     public NPCRegionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        ID = instruction.getInt();
-        if (ID < 0) {
+        id = instruction.getInt();
+        if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         region = instruction.next();
@@ -59,12 +59,14 @@ public class NPCRegionCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
+        if (npcEntity == null) {
+            return false;
+        }
 
         final Player player = PlayerConverter.getPlayer(playerID);
         final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
@@ -75,8 +77,9 @@ public class NPCRegionCondition extends Condition {
         final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 
         for (final ProtectedRegion compare : set) {
-            if (compare.equals(region))
+            if (compare.equals(region)) {
                 return true;
+            }
         }
         return false;
     }

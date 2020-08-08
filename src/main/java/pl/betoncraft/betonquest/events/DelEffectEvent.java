@@ -49,8 +49,11 @@ public class DelEffectEvent extends QuestEvent {
             any = false;
             effects = instruction.getList(next, (type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase());
-                if (effect == null) throw new InstructionParseException("Effect type '" + type + "' does not exist");
-                else return effect;
+                if (effect == null) {
+                    throw new InstructionParseException("Effect type '" + type + "' does not exist");
+                } else {
+                    return effect;
+                }
             }));
         }
     }

@@ -79,12 +79,16 @@ public class KillMobEvent extends QuestEvent {
                 .filter(entity -> entity.getLocation().distanceSquared(location) <= radius_squared)
                 //only entities with given name
                 .filter(entity -> {
-                    if (name == null) return true;
+                    if (name == null) {
+                        return true;
+                    }
                     return name.equals(entity.getName());
                 })
                 //only entities marked
                 .filter(entity -> {
-                    if (marked == null) return true;
+                    if (marked == null) {
+                        return true;
+                    }
                     return entity
                             .getMetadata("betonquest-marked")
                             .stream()

@@ -66,7 +66,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         locations = instruction.getList(instruction::getLocation);
-        if (locations.isEmpty()) throw new InstructionParseException("Not enough arguments");
+        if (locations.isEmpty()) {
+            throw new InstructionParseException("Not enough arguments");
+        }
         waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
         doneEvents = instruction.getList(instruction.getOptional("done"), instruction::getEvent).toArray(new EventID[0]);
         failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
@@ -98,7 +100,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * @return false if you can talk to the npc true if not
      */
     public static boolean blocksTalking(final NPC npc) {
-        if (!isNPCMoving(npc)) return false;
+        if (!isNPCMoving(npc)) {
+            return false;
+        }
         return movingNPCs.get(npc.getId()).blockConversations;
     }
 

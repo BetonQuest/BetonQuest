@@ -56,8 +56,9 @@ public class NPCInteractObjective extends Objective implements Listener {
             return;
         }
         if (checkConditions(playerID)) {
-            if (cancel)
+            if (cancel) {
                 event.setCancelled(true);
+            }
             completeObjective(playerID);
         }
     }
@@ -74,6 +75,11 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction() {
+        return "";
+    }
+
+    @Override
+    public String getProperty(final String name, final String playerID) {
         return "";
     }
 

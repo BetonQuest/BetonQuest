@@ -45,15 +45,18 @@ public class HeroesExperienceEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null)
+        if (hero == null) {
             return null;
+        }
         if (primary) {
-            if (hero.getHeroClass() == null)
+            if (hero.getHeroClass() == null) {
                 return null;
+            }
             hero.addExp(amount.getInt(playerID), hero.getHeroClass(), hero.getPlayer().getLocation());
         } else {
-            if (hero.getSecondClass() == null)
+            if (hero.getSecondClass() == null) {
                 return null;
+            }
             hero.addExp(amount.getInt(playerID), hero.getSecondClass(), hero.getPlayer().getLocation());
         }
         return null;

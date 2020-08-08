@@ -316,8 +316,9 @@ public class BetonQuest extends JavaPlugin {
         final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
         while (matcher.find()) {
             final String variable = matcher.group();
-            if (!variables.contains(variable))
+            if (!variables.contains(variable)) {
                 variables.add(variable);
+            }
         }
         return variables;
     }
@@ -584,8 +585,9 @@ public class BetonQuest extends JavaPlugin {
                     playerDataMap.put(playerID, playerData);
                     playerData.startObjectives();
                     playerData.getJournal().update();
-                    if (playerData.getConversation() != null)
+                    if (playerData.getConversation() != null) {
                         new ConversationResumer(playerID, playerData.getConversation());
+                    }
                 }
             }
         });
@@ -848,8 +850,9 @@ public class BetonQuest extends JavaPlugin {
         // suspend all conversations
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
-            if (conv != null)
+            if (conv != null) {
                 conv.suspend();
+            }
             player.closeInventory();
         }
         // cancel database saver
@@ -991,11 +994,11 @@ public class BetonQuest extends JavaPlugin {
      * Registers new notify input/output class.
      *
      * @param name    name of the IO type
-     * @param IOClass class object to register
+     * @param ioClass class object to register
      */
-    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> IOClass) {
+    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " notify IO type");
-        notifyIOTypes.put(name, IOClass);
+        notifyIOTypes.put(name, ioClass);
     }
 
     /**
@@ -1084,8 +1087,9 @@ public class BetonQuest extends JavaPlugin {
     public String getVariableValue(final String packName, final String name, final String playerID) {
         try {
             final Variable var = createVariable(Config.getPackages().get(packName), name);
-            if (var == null)
+            if (var == null) {
                 return "could not resolve variable";
+            }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not create variable: " + e.getMessage());

@@ -84,8 +84,9 @@ public class TitleEvent extends QuestEvent {
                     throw new InstructionParseException("Could not create '" + variable + "' variable: "
                             + e.getMessage(), e);
                 }
-                if (!variables.contains(variable))
+                if (!variables.contains(variable)) {
                     variables.add(variable);
+                }
             }
         }
     }

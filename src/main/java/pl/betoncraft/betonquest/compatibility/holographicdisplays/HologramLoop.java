@@ -64,8 +64,9 @@ public class HologramLoop {
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
             final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("holograms");
-            if (section == null)
+            if (section == null) {
                 continue;
+            }
             for (final String key : section.getKeys(false)) {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
                     LogUtils.getLogger().log(Level.WARNING, "Holograms won't be able to hide from players without ProtocolLib plugin! "

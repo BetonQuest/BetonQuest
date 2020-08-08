@@ -63,19 +63,28 @@ public class NPCRangeObjective extends Objective implements Listener {
         qreHandler.handle(() -> {
             final Player player = event.getPlayer();
             final String playerID = PlayerConverter.getID(player);
-            if (!containsPlayer(playerID)) return;
+            if (!containsPlayer(playerID)) {
+                return;
+            }
             final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-            if (npc == null)
+            if (npc == null) {
                 throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            }
             final double radius = this.radius.getDouble(playerID);
             final Entity npcEntity = npc.getEntity();
-            if (npcEntity == null) return;
-            if (!npcEntity.getWorld().equals(event.getTo().getWorld())) return;
+            if (npcEntity == null) {
+                return;
+            }
+            if (!npcEntity.getWorld().equals(event.getTo().getWorld())) {
+                return;
+            }
             final double distanceSqrd = npcEntity.getLocation().distanceSquared(event.getTo());
             final double radiusSqrd = radius * radius;
             if ((trigger == Trigger.ENTER && distanceSqrd <= radiusSqrd)
                     || (trigger == Trigger.LEAVE && distanceSqrd >= radiusSqrd)) {
-                if (checkConditions(playerID)) completeObjective(playerID);
+                if (checkConditions(playerID)) {
+                    completeObjective(playerID);
+                }
             }
         });
     }
@@ -92,6 +101,11 @@ public class NPCRangeObjective extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction() {
+        return "";
+    }
+
+    @Override
+    public String getProperty(final String name, final String playerID) {
         return "";
     }
 

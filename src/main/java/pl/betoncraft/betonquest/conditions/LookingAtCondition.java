@@ -44,8 +44,9 @@ public class LookingAtCondition extends Condition {
         super(instruction, true);
         loc = instruction.getLocation(instruction.getOptional("loc"));
         selector = instruction.getBlockSelector(instruction.getOptional("type"));
-        if (loc == null && selector == null)
+        if (loc == null && selector == null) {
             throw new InstructionParseException("You must define either 'loc:' or 'type:' optional");
+        }
 
         if (selector != null && !selector.isValid()) {
             throw new InstructionParseException("Invalid selector: " + selector.toString());
@@ -61,7 +62,9 @@ public class LookingAtCondition extends Condition {
             final Location to = lookingAt.getLocation();
             if (location.getBlockX() != to.getBlockX()
                     || location.getBlockY() != to.getBlockY()
-                    || location.getBlockZ() != to.getBlockZ()) return false;
+                    || location.getBlockZ() != to.getBlockZ()) {
+                return false;
+            }
         }
         if (selector != null) {
             return selector.match(lookingAt);

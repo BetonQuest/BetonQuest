@@ -41,8 +41,9 @@ public class MoneyCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         double a = amount.getDouble(playerID);
-        if (a < 0)
+        if (a < 0) {
             a = -a;
+        }
         return VaultIntegrator.getEconomy().has(PlayerConverter.getPlayer(playerID), a);
     }
 

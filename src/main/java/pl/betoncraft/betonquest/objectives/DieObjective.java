@@ -122,4 +122,9 @@ public class DieObjective extends Objective implements Listener {
         return "";
     }
 
+    @Override
+    public String getProperty(final String name, final String playerID) {
+        return "";
+    }
+
 }

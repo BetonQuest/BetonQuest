@@ -62,8 +62,9 @@ public class HeroesClassCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        if (hero == null)
+        if (hero == null) {
             return false;
+        }
         final ArrayList<HeroClass> heroClasses = new ArrayList<>();
         if (mastered) {
             for (final String heroClass : hero.getMasteredClasses()) {
@@ -74,8 +75,9 @@ public class HeroesClassCondition extends Condition {
         } else {
             heroClasses.add(hero.getSecondClass());
         }
-        if (heroClasses.isEmpty())
+        if (heroClasses.isEmpty()) {
             return false;
+        }
         boolean matchingClass = true, matchingLevel = true;
         final int l = (level == null) ?  -1 : level.getInt(playerID);
         if (any) {

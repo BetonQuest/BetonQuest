@@ -23,7 +23,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,7 +52,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * @author Co0sh
  */
 public class QuestItemHandler implements Listener {
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     /**
      * Registers the quest item handler as Listener.
@@ -168,8 +167,9 @@ public class QuestItemHandler implements Listener {
         }
         final String playerID = PlayerConverter.getID(event.getEntity());
         // check if there is data for this player; NPCs don't have data
-        if (BetonQuest.getInstance().getPlayerData(playerID) == null)
+        if (BetonQuest.getInstance().getPlayerData(playerID) == null) {
             return;
+        }
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
         final List<ItemStack> drops = event.getDrops();
@@ -189,14 +189,16 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (Config.getString("config.remove_items_after_respawn").equals("false"))
+        if (Config.getString("config.remove_items_after_respawn").equals("false")) {
             return;
+        }
         // some plugins block item dropping after death and add those
         // items after respawning, so the player doesn't loose his
         // inventory after death; this aims to force removing quest
         // items, as they have been added to the backpack already
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
+        }
         final Inventory inv = event.getPlayer().getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
             if (Utils.isQuestItem(inv.getItem(i))) {
@@ -286,10 +288,10 @@ public class QuestItemHandler implements Listener {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 }

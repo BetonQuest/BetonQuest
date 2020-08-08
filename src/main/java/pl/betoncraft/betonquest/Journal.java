@@ -103,8 +103,9 @@ public class Journal {
      */
     public static boolean hasJournal(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
-        if (player == null)
+        if (player == null) {
             return false;
+        }
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(playerID, item)) {
                 return true;
@@ -261,8 +262,9 @@ public class Journal {
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
             final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
-            if (s == null)
+            if (s == null) {
                 continue;
+            }
             // handle every entry
             keys:
             for (final String key : s.getKeys(false)) {
@@ -290,10 +292,12 @@ public class Journal {
                     String text;
                     if (s.isConfigurationSection(key + ".text")) {
                         text = s.getString(key + ".text." + lang);
-                        if (text == null)
+                        if (text == null) {
                             text = s.getString(key + ".text." + Config.getLanguage());
-                        if (text == null)
+                        }
+                        if (text == null) {
                             text = s.getString(key + ".text.en");
+                        }
                     } else {
                         text = s.getString(key + ".text");
                     }
@@ -330,8 +334,9 @@ public class Journal {
                 }
             }
         }
-        if (numbers.isEmpty())
+        if (numbers.isEmpty()) {
             return null;
+        }
         // now all lines from all packages are extracted, sort numbers
         Integer[] sorted = new Integer[numbers.size()];
         sorted = numbers.toArray(sorted);

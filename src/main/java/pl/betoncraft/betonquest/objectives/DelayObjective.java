@@ -86,8 +86,9 @@ public class DelayObjective extends Objective {
 
     @Override
     public void stop() {
-        if (runnable != null)
+        if (runnable != null) {
             runnable.cancel();
+        }
     }
 
     @Override
@@ -110,30 +111,36 @@ public class DelayObjective extends Objective {
             final long d = (timeLeft / (1000 * 60 * 60 * 24));
             final StringBuilder time = new StringBuilder();
             final String[] words = new String[3];
-            if (d > 0)
+            if (d > 0) {
                 words[0] = d + " " + daysWord;
-            if (h > 0)
+            }
+            if (h > 0) {
                 words[1] = h + " " + hoursWord;
-            if (m > 0)
+            }
+            if (m > 0) {
                 words[2] = m + " " + minutesWord;
+            }
             int count = 0;
             for (final String word : words) {
-                if (word != null)
+                if (word != null) {
                     count++;
+                }
             }
             if (count == 0) {
                 time.append(s + " " + secondsWord);
             } else if (count == 1) {
                 for (final String word : words) {
-                    if (word == null)
+                    if (word == null) {
                         continue;
+                    }
                     time.append(word);
                 }
             } else if (count == 2) {
                 boolean second = false;
                 for (final String word : words) {
-                    if (word == null)
+                    if (word == null) {
                         continue;
+                    }
                     if (second) {
                         time.append(" " + word);
                     } else {

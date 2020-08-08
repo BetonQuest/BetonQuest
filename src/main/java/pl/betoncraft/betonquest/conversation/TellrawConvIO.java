@@ -85,14 +85,17 @@ public class TellrawConvIO extends ChatConvIO {
 
     @EventHandler(ignoreCancelled = true)
     public void onCommandAnswer(final PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().equals(player))
+        if (!event.getPlayer().equals(player)) {
             return;
-        if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer "))
+        }
+        if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
             return;
+        }
         event.setCancelled(true);
         final String[] parts = event.getMessage().split(" ");
-        if (parts.length != 2)
+        if (parts.length != 2) {
             return;
+        }
         final String hash = parts[1];
         for (int j = 1; j <= hashes.size(); j++) {
             if (hashes.get(j).equals(hash)) {

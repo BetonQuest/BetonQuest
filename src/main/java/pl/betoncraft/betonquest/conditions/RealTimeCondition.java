@@ -58,12 +58,21 @@ public class RealTimeCondition extends Condition {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse time", e);
         }
-        if (hoursMax < 0 || hoursMax > 23) throw new InstructionParseException("Could not parse time");
-        if (hoursMin < 0 || hoursMin > 23) throw new InstructionParseException("Could not parse time");
-        if (minutesMax < 0 || minutesMax > 59) throw new InstructionParseException("Could not parse time");
-        if (minutesMin < 0 || minutesMin > 59) throw new InstructionParseException("Could not parse time");
-        if (hoursMin == hoursMax && minutesMin == minutesMax)
+        if (hoursMax < 0 || hoursMax > 23) {
+            throw new InstructionParseException("Could not parse time");
+        }
+        if (hoursMin < 0 || hoursMin > 23) {
+            throw new InstructionParseException("Could not parse time");
+        }
+        if (minutesMax < 0 || minutesMax > 59) {
+            throw new InstructionParseException("Could not parse time");
+        }
+        if (minutesMin < 0 || minutesMin > 59) {
+            throw new InstructionParseException("Could not parse time");
+        }
+        if (hoursMin == hoursMax && minutesMin == minutesMax) {
             throw new InstructionParseException("min and max time must be different");
+        }
     }
 
 

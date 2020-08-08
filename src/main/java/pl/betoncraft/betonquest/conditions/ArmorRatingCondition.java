@@ -50,52 +50,56 @@ public class ArmorRatingCondition extends Condition {
         final ItemStack chest = inv.getChestplate();
         final ItemStack leggings = inv.getLeggings();
         if (helmet != null) {
-            if (helmet.getType() == Material.LEATHER_HELMET)
+            if (helmet.getType() == Material.LEATHER_HELMET) {
                 rating += 1;
-            else if (helmet.getType() == Material.GOLDEN_HELMET)
+            } else if (helmet.getType() == Material.GOLDEN_HELMET) {
                 rating += 2;
-            else if (helmet.getType() == Material.CHAINMAIL_HELMET)
+            } else if (helmet.getType() == Material.CHAINMAIL_HELMET) {
                 rating += 2;
-            else if (helmet.getType() == Material.IRON_HELMET)
+            } else if (helmet.getType() == Material.IRON_HELMET) {
                 rating += 2;
-            else if (helmet.getType() == Material.DIAMOND_HELMET)
+            } else if (helmet.getType() == Material.DIAMOND_HELMET) {
                 rating += 3;
+            }
         }
         if (boots != null) {
-            if (boots.getType() == Material.LEATHER_BOOTS)
+            if (boots.getType() == Material.LEATHER_BOOTS) {
                 rating += 1;
-            else if (boots.getType() == Material.GOLDEN_BOOTS)
+            } else if (boots.getType() == Material.GOLDEN_BOOTS) {
                 rating += 1;
-            else if (boots.getType() == Material.CHAINMAIL_BOOTS)
+            } else if (boots.getType() == Material.CHAINMAIL_BOOTS) {
                 rating += 1;
-            else if (boots.getType() == Material.IRON_BOOTS)
+            } else if (boots.getType() == Material.IRON_BOOTS) {
                 rating += 2;
-            else if (boots.getType() == Material.DIAMOND_BOOTS)
+            } else if (boots.getType() == Material.DIAMOND_BOOTS) {
                 rating += 3;
+            }
         }
         if (leggings != null) {
-            if (leggings.getType() == Material.LEATHER_LEGGINGS)
+            if (leggings.getType() == Material.LEATHER_LEGGINGS) {
                 rating += 2;
-            else if (leggings.getType() == Material.GOLDEN_LEGGINGS)
+            } else if (leggings.getType() == Material.GOLDEN_LEGGINGS) {
                 rating += 3;
-            else if (leggings.getType() == Material.CHAINMAIL_LEGGINGS)
+            } else if (leggings.getType() == Material.CHAINMAIL_LEGGINGS) {
                 rating += 4;
-            else if (leggings.getType() == Material.IRON_LEGGINGS)
+            } else if (leggings.getType() == Material.IRON_LEGGINGS) {
                 rating += 5;
-            else if (leggings.getType() == Material.DIAMOND_LEGGINGS)
+            } else if (leggings.getType() == Material.DIAMOND_LEGGINGS) {
                 rating += 6;
+            }
         }
         if (chest != null) {
-            if (chest.getType() == Material.LEATHER_CHESTPLATE)
+            if (chest.getType() == Material.LEATHER_CHESTPLATE) {
                 rating += 3;
-            else if (chest.getType() == Material.GOLDEN_CHESTPLATE)
+            } else if (chest.getType() == Material.GOLDEN_CHESTPLATE) {
                 rating += 5;
-            else if (chest.getType() == Material.CHAINMAIL_CHESTPLATE)
+            } else if (chest.getType() == Material.CHAINMAIL_CHESTPLATE) {
                 rating += 5;
-            else if (chest.getType() == Material.IRON_CHESTPLATE)
+            } else if (chest.getType() == Material.IRON_CHESTPLATE) {
                 rating += 6;
-            else if (chest.getType() == Material.DIAMOND_CHESTPLATE)
+            } else if (chest.getType() == Material.DIAMOND_CHESTPLATE) {
                 rating += 8;
+            }
         }
         return rating >= required.getInt(playerID);
     }

@@ -134,8 +134,9 @@ public class Conversation implements Listener {
         if (option == null) {
             options = null;
         } else {
-            if (!option.contains("."))
+            if (!option.contains(".")) {
                 option = conversationID.substring(conversationID.indexOf('.') + 1) + "." + option;
+            }
             options = new String[]{option};
         }
 
@@ -189,12 +190,13 @@ public class Conversation implements Listener {
                 optionName = option;
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
-            if (!force)
+            if (!force) {
                 for (final ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
                     if (!BetonQuest.condition(this.playerID, condition)) {
                         continue options;
                     }
                 }
+            }
             this.option = optionName;
             data = currentData;
             break;
@@ -282,8 +284,9 @@ public class Conversation implements Listener {
      * active conversations
      */
     public void endConversation() {
-        if (ended)
+        if (ended) {
             return;
+        }
         ended = true;
         inOut.end();
         // fire final events
@@ -356,8 +359,9 @@ public class Conversation implements Listener {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (event.getMessage() == null)
+        if (event.getMessage() == null) {
             return;
+        }
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
@@ -492,8 +496,9 @@ public class Conversation implements Listener {
             }.runTask(BetonQuest.getInstance());
 
             // stop the conversation if it's canceled
-            if (event.isCancelled())
+            if (event.isCancelled()) {
                 return;
+            }
 
             // now the conversation should start no matter what;
             // the inOut can be safely instantiated; doing it before

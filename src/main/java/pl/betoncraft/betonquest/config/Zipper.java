@@ -31,8 +31,8 @@ import java.util.zip.ZipOutputStream;
 
 public class Zipper {
     private List<String> fileList = new ArrayList<>();
-    private String OUTPUT_ZIP_FILE;
-    private String SOURCE_FOLDER;
+    private String outputZipFile;
+    private String sourceFolder;
 
     public Zipper(final String source, final String output) {
         String modifiedOutput = output;
@@ -41,10 +41,10 @@ public class Zipper {
             i++;
             modifiedOutput = output + "-" + i;
         }
-        OUTPUT_ZIP_FILE = modifiedOutput + ".zip";
-        SOURCE_FOLDER = source;
-        generateFileList(new File(SOURCE_FOLDER));
-        zipIt(OUTPUT_ZIP_FILE);
+        outputZipFile = modifiedOutput + ".zip";
+        sourceFolder = source;
+        generateFileList(new File(sourceFolder));
+        zipIt(outputZipFile);
     }
 
     /**
@@ -66,7 +66,7 @@ public class Zipper {
                 final ZipEntry ze = new ZipEntry(file);
                 zos.putNextEntry(ze);
 
-                final FileInputStream in = new FileInputStream(SOURCE_FOLDER + File.separator + file);
+                final FileInputStream in = new FileInputStream(sourceFolder + File.separator + file);
 
                 int len;
                 while ((len = in.read(buffer)) > 0) {
@@ -118,6 +118,6 @@ public class Zipper {
      * @return Formatted file path
      */
     private String generateZipEntry(final String file) {
-        return file.substring(SOURCE_FOLDER.length() + 1);
+        return file.substring(sourceFolder.length() + 1);
     }
 }

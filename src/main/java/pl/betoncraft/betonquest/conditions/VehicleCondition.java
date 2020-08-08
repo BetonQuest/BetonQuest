@@ -34,10 +34,12 @@ public class VehicleCondition extends Condition {
         final String name = instruction.next();
         if (name.equalsIgnoreCase("any")) {
             any = true;
-        } else try {
-            vehicle = EntityType.valueOf(name.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Entity type " + name + " does not exist.", e);
+        } else {
+            try {
+                vehicle = EntityType.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new InstructionParseException("Entity type " + name + " does not exist.", e);
+            }
         }
     }
 

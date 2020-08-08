@@ -222,7 +222,9 @@ public class Utils {
                     }
                     page.append(line_builder.toString().trim()).append('\n');
                 }
-                if (page.length() != 0) pages.add(page.toString());
+                if (page.length() != 0) {
+                    pages.add(page.toString());
+                }
             }
         }
         return pages;
@@ -281,52 +283,58 @@ public class Utils {
             database.createTables(instance.isMySQLUsed());
             // load objectives
             final ConfigurationSection objectives = config.getConfigurationSection("objectives");
-            if (objectives != null)
+            if (objectives != null) {
                 for (final String key : objectives.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_OBJECTIVE,
                             new String[]{objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
                                     objectives.getString(key + ".objective"),
                                     objectives.getString(key + ".instructions"),});
                 }
+            }
             // load tags
             final ConfigurationSection tags = config.getConfigurationSection("tags");
-            if (tags != null)
+            if (tags != null) {
                 for (final String key : tags.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_TAG, new String[]{tags.getString(key + ".id"),
                             tags.getString(key + ".playerID"), tags.getString(key + ".tag"),});
                 }
+            }
             // load points
             final ConfigurationSection points = config.getConfigurationSection("points");
-            if (points != null)
+            if (points != null) {
                 for (final String key : points.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_POINT,
                             new String[]{points.getString(key + ".id"), points.getString(key + ".playerID"),
                                     points.getString(key + ".category"), points.getString(key + ".count"),});
                 }
+            }
             // load journals
             final ConfigurationSection journals = config.getConfigurationSection("journals");
-            if (journals != null)
+            if (journals != null) {
                 for (final String key : journals.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_JOURNAL,
                             new String[]{journals.getString(key + ".id"), journals.getString(key + ".playerID"),
                                     journals.getString(key + ".pointer"), journals.getString(key + ".date"),});
                 }
+            }
             // load backpack
             final ConfigurationSection backpack = config.getConfigurationSection("backpack");
-            if (backpack != null)
+            if (backpack != null) {
                 for (final String key : backpack.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_BACKPACK,
                             new String[]{backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
                                     backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"),});
                 }
+            }
             // load player
             final ConfigurationSection player = config.getConfigurationSection("player");
-            if (player != null)
+            if (player != null) {
                 for (final String key : player.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_PLAYER,
                             new String[]{player.getString(key + ".id"), player.getString(key + ".playerID"),
                                     player.getString(key + ".language"), player.getString(key + ".conversation")});
                 }
+            }
             // delete backup file so it doesn't get loaded again
             file.delete();
         } catch (Exception e) {
@@ -471,8 +479,12 @@ public class Utils {
      * @return a formatted version of the input string
      */
     public static String format(String string, final boolean colorCodes, final boolean lineBreaks) {
-        if (colorCodes) string = string.replaceAll("&(?=[A-Ra-r0-9])", "§");
-        if (lineBreaks) string = string.replaceAll("(?<!\\\\)\\\\n", "\n");
+        if (colorCodes) {
+            string = string.replaceAll("&(?=[A-Ra-r0-9])", "§");
+        }
+        if (lineBreaks) {
+            string = string.replaceAll("(?<!\\\\)\\\\n", "\n");
+        }
         return string;
     }
 

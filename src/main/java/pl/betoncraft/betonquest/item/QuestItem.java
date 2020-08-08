@@ -99,8 +99,9 @@ public class QuestItem {
      * @throws InstructionParseException when item parsing goes wrong
      */
     public QuestItem(final String instruction) throws InstructionParseException {
-        if (instruction == null)
+        if (instruction == null) {
             throw new NullPointerException("Item instruction is null");
+        }
         final String[] parts = instruction.split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");

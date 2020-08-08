@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class MobKillNotifier {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     private static MobKillNotifier instance;
     private BukkitRunnable cleaner;
@@ -61,10 +61,12 @@ public class MobKillNotifier {
      * @param killed the mob that was killed
      */
     public static void addKill(final Player killer, final Entity killed) {
-        if (instance == null)
+        if (instance == null) {
             new MobKillNotifier();
-        if (instance.entities.contains(killed))
+        }
+        if (instance.entities.contains(killed)) {
             return;
+        }
         instance.entities.add(killed);
         final MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
@@ -85,7 +87,7 @@ public class MobKillNotifier {
         }
 
         public static HandlerList getHandlerList() {
-            return handlers;
+            return HANDLERS;
         }
 
         /**
@@ -103,7 +105,7 @@ public class MobKillNotifier {
         }
 
         public HandlerList getHandlers() {
-            return handlers;
+            return HANDLERS;
         }
 
     }

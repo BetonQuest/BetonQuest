@@ -66,8 +66,9 @@ public class GlobalObjectives {
             }
 
             //if player already has the tag skip
-            if (data.hasTag(GlobalObjectives.getTag(id)))
+            if (data.hasTag(GlobalObjectives.getTag(id))) {
                 continue;
+            }
             //start the objective
             objective.newPlayer(playerID);
             //add the tag

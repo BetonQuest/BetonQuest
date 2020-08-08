@@ -80,11 +80,13 @@ public class ChestPutObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChestClose(final InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player))
+        if (!(event.getPlayer() instanceof Player)) {
             return;
+        }
         final String playerID = PlayerConverter.getID((Player) event.getPlayer());
-        if (!containsPlayer(playerID))
+        if (!containsPlayer(playerID)) {
             return;
+        }
         try {
             final Block block = loc.getLocation(playerID).getBlock();
             final InventoryHolder chest;
@@ -95,14 +97,17 @@ public class ChestPutObjective extends Objective implements Listener {
                 LogUtils.logThrowable(e);
                 return;
             }
-            if (event.getInventory() == null || event.getInventory().getHolder() == null)
+            if (event.getInventory() == null || event.getInventory().getHolder() == null) {
                 return;
-            if (!event.getInventory().getHolder().equals(chest))
+            }
+            if (!event.getInventory().getHolder().equals(chest)) {
                 return;
+            }
             if (chestItemCondition.handle(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
-                if (chestTakeEvent != null)
+                if (chestTakeEvent != null) {
                     chestTakeEvent.handle(playerID);
+                }
             }
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
@@ -122,6 +127,11 @@ public class ChestPutObjective extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction() {
+        return "";
+    }
+
+    @Override
+    public String getProperty(final String name, final String playerID) {
         return "";
     }
 

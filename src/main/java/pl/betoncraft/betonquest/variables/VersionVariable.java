@@ -38,8 +38,9 @@ public class VersionVariable extends Variable {
         final String[] parts = instruction.getInstruction().split("\\.");
         if (parts.length > 1) {
             plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
-            if (plugin == null)
+            if (plugin == null) {
                 throw new InstructionParseException("Plugin " + parts[1] + "does not exist!");
+            }
         } else {
             plugin = BetonQuest.getInstance();
         }

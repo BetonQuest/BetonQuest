@@ -70,8 +70,9 @@ public class SmeltingObjective extends Objective implements Listener {
         if (event.getInventory().getType().equals(InventoryType.FURNACE) && event.getRawSlot() == 2
                 && event.getClick().equals(ClickType.SHIFT_LEFT) && event.getWhoClicked() instanceof Player) {
             final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (containsPlayer(playerID))
+            if (containsPlayer(playerID)) {
                 event.setCancelled(true);
+            }
         }
     }
 

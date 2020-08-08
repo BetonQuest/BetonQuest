@@ -87,8 +87,9 @@ public abstract class Objective {
         final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
         persistent = instruction.hasArgument("persistent");
         global = instruction.hasArgument("global");
-        if (global)
+        if (global) {
             GlobalObjectives.add((ObjectiveID) instruction.getID());
+        }
         // make them final
         int length = tempEvents1.length + tempEvents2.length;
         events = new EventID[length];
@@ -146,9 +147,7 @@ public abstract class Objective {
      * @param playerID ID of the player for whom the property is to be returned
      * @return the property with given name
      */
-    public String getProperty(final String name, final String playerID) {
-        return "";
-    }
+    abstract public String getProperty(final String name, final String playerID);
 
     /**
      * This method fires events for the objective and removes it from player's
@@ -416,8 +415,9 @@ public abstract class Objective {
             try {
                 qreThrowing.run();
             } catch (QuestRuntimeException e) {
-                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS)
+                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) {
                     return;
+                }
                 last = System.currentTimeMillis();
                 LogUtils.getLogger().log(Level.WARNING,
                         "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());

@@ -37,7 +37,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class NPCLocationCondition extends Condition {
 
-    private final int ID;
+    private final int id;
     private final LocationData location;
     private final VariableNumber radius;
 
@@ -45,8 +45,8 @@ public class NPCLocationCondition extends Condition {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        ID = instruction.getInt();
-        if (ID < 0) {
+        id = instruction.getInt();
+        if (id < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         location = instruction.getLocation();
@@ -55,15 +55,19 @@ public class NPCLocationCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(ID);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + ID + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) return false;
+        if (npcEntity == null) {
+            return false;
+        }
         final double radius = this.radius.getDouble(playerID);
         final Location location = this.location.getLocation(playerID);
-        if (!location.getWorld().equals(npcEntity.getWorld())) return false;
+        if (!location.getWorld().equals(npcEntity.getWorld())) {
+            return false;
+        }
         return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
     }
 }

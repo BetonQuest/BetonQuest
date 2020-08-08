@@ -69,13 +69,17 @@ public class PartialDateCondition extends Condition {
         final Calendar current = Calendar.getInstance();
         if (dayOfMonth != null) {
             final int day = current.get(Calendar.DAY_OF_MONTH);
-            if (!this.dayOfMonth.stream().anyMatch(interval -> interval.isWithin(day))) return false;
+            if (!this.dayOfMonth.stream().anyMatch(interval -> interval.isWithin(day))) {
+                return false;
+            }
             //if day is not one of the given ones return false
         }
         if (month != null) {
             final int month = current.get(Calendar.MONTH) + 1;
             //Dont ask why +1: java.util.Calendar is a complete mess (january is 0, december is 11,...)
-            if (!this.month.stream().anyMatch(interval -> interval.isWithin(month))) return false;
+            if (!this.month.stream().anyMatch(interval -> interval.isWithin(month))) {
+                return false;
+            }
             //if month is not one of the given ones return false
         }
         if (year != null) {
@@ -117,9 +121,15 @@ public class PartialDateCondition extends Condition {
         public TimeInterval(final int start, final int end, final PartialDate type) throws IllegalArgumentException {
             this.start = start;
             this.end = end;
-            if (end < start) throw new IllegalArgumentException(type + " " + end + " is before " + start);
-            if (!type.isValid(start)) throw new IllegalArgumentException(start + " is not a valid " + type);
-            if (!type.isValid(end)) throw new IllegalArgumentException(end + " is not a valid " + type);
+            if (end < start) {
+                throw new IllegalArgumentException(type + " " + end + " is before " + start);
+            }
+            if (!type.isValid(start)) {
+                throw new IllegalArgumentException(start + " is not a valid " + type);
+            }
+            if (!type.isValid(end)) {
+                throw new IllegalArgumentException(end + " is not a valid " + type);
+            }
         }
 
         public TimeInterval(final int value, final PartialDate type) throws IllegalArgumentException {
@@ -129,8 +139,9 @@ public class PartialDateCondition extends Condition {
         public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws InstructionParseException {
             final List<TimeInterval> intervals = new ArrayList<>();
             // check if the given string is valid (example: 1,3-4,7)
-            if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*"))
+            if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*")) {
                 throw new InstructionParseException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
+            }
             final String[] args = string.split(",");
             //Add each interval (or single one) to the list
             for (final String arg : args) {
@@ -166,8 +177,12 @@ public class PartialDateCondition extends Condition {
 
         @Override
         public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             final TimeInterval interval = (TimeInterval) o;
             return start == interval.start &&
                     end == interval.end;

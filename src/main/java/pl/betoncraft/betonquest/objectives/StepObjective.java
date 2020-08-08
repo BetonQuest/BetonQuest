@@ -78,8 +78,9 @@ public class StepObjective extends Objective implements Listener {
                 return;
             }
             // player stepped on the pressure plate
-            if (checkConditions(playerID))
+            if (checkConditions(playerID)) {
                 completeObjective(playerID);
+            }
         } catch (QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
             LogUtils.logThrowable(e);

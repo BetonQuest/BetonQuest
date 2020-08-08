@@ -49,8 +49,9 @@ public class EmptySlotsCondition extends Condition {
 
         int empty = 0;
         for (final ItemStack item : items) {
-            if (item == null)
+            if (item == null) {
                 empty++;
+            }
         }
         return equal ? empty == needed.getInt(playerID) : empty >= needed.getInt(playerID);
     }

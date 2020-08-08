@@ -94,8 +94,9 @@ public class WandCondition extends Condition {
             case IS_LOST:
                 for (final LostWand lost : api.getLostWands()) {
                     final Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
-                    if (owner == null)
+                    if (owner == null) {
                         continue;
+                    }
                     if (owner.equals(player)) {
                         return true;
                     }
@@ -112,8 +113,9 @@ public class WandCondition extends Condition {
             case IN_INVENTORY:
                 heldAmount = 0;
                 for (final ItemStack item : player.getInventory().getContents()) {
-                    if (item == null)
+                    if (item == null) {
                         continue;
+                    }
                     if (api.isWand(item)) {
                         final Wand wand2 = api.getWand(item);
                         if (checkWand(wand2, playerID)) {

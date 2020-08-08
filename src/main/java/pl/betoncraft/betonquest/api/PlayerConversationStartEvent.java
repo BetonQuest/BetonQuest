@@ -30,7 +30,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class PlayerConversationStartEvent extends PlayerEvent implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private Conversation conversation;
     private boolean canceled = false;
 
@@ -46,7 +46,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     /**
@@ -57,7 +57,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
     @Override

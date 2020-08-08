@@ -29,7 +29,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,7 +51,7 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class InventoryConvIO implements Listener, ConversationIO {
-    private static final HashMap<String, ItemStack> skullCache = new HashMap<>();
+    private static final HashMap<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
     protected String response = null;
     protected HashMap<Integer, String> options = new HashMap<>();
@@ -159,8 +158,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
         final ItemStack npc;
-        if (skullCache.containsKey(npcName) && false) {
-            npc = skullCache.get(npcName);
+        if (SKULL_CACHE.containsKey(npcName) && false) {
+            npc = SKULL_CACHE.get(npcName);
         } else {
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
@@ -176,7 +175,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 try {
                     npc.setItemMeta(setSkullMeta((SkullMeta) npc.getItemMeta()));
                     Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                        skullCache.put(npcName, npc);
+                        SKULL_CACHE.put(npcName, npc);
                         inv.setItem(0, npc);
                     });
                 } catch (Exception e) {
@@ -190,8 +189,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // now fill the slots
         for (int j = 0; j < 9 * rows; j++) {
             // skip first and second slots of each row
-            if (j % 9 == 0 || j % 9 == 1)
+            if (j % 9 == 0 || j % 9 == 1) {
                 continue;
+            }
             // count option numbers, starting with 1
             next++;
             // break if all options are set
@@ -265,8 +265,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             item.setItemMeta(meta);
             buttons[j] = item;
         }
-        if (printMessages)
+        if (printMessages) {
             conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -294,7 +295,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         event.setCancelled(true);
-        if (processingLastClick) return;
+        if (processingLastClick) {
+            return;
+        }
         final int slot = event.getRawSlot();
         // calculate the option number
         if (slot % 9 > 1) {
@@ -307,7 +310,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final String message = options.get(choosen);
             if (message != null) {
                 processingLastClick = true;
-                if (printMessages) conv.sendMessage(answerPrefix + message);
+                if (printMessages) {
+                    conv.sendMessage(answerPrefix + message);
+                }
                 conv.passPlayerAnswer(choosen);
             }
         }
@@ -367,8 +372,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected ArrayList<String> stringToLines(final String singleLine, final String color, String prefix) {
         final ArrayList<String> multiLine = new ArrayList<>();
         boolean firstLinePrefix = prefix != null;
-        if (prefix == null)
+        if (prefix == null) {
             prefix = "";
+        }
         final String[] lineBreaks = (prefix + singleLine).split("\n");
         for (final String brokenLine : lineBreaks) {
             final String[] arr = brokenLine.split(" ");

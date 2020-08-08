@@ -64,17 +64,20 @@ public class QuestCanceler {
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
     public QuestCanceler(final String cancelerID) throws InstructionParseException {
-        if (cancelerID == null)
+        if (cancelerID == null) {
             throw new InstructionParseException("Name is null");
+        }
         // get the instruction
         final String[] parts = cancelerID.split("\\.");
-        if (parts.length != 2)
+        if (parts.length != 2) {
             throw new InstructionParseException("ID is incorrect");
+        }
         packName = parts[0];
         cancelerName = parts[1];
         final ConfigPackage pack = Config.getPackages().get(packName);
-        if (pack == null)
+        if (pack == null) {
             throw new InstructionParseException("Package does not exist");
+        }
         final String rawEvents = pack.getString("main.cancel." + cancelerName + ".events");
         final String rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions");
         final String rawTags = pack.getString("main.cancel." + cancelerName + ".tags");
@@ -187,8 +190,9 @@ public class QuestCanceler {
      * @return true if all conditions are met, false otherwise
      */
     public boolean show(final String playerID) {
-        if (conditions == null)
+        if (conditions == null) {
             return true;
+        }
         for (final ConditionID condition : conditions) {
             if (!BetonQuest.condition(playerID, condition)) {
                 return false;
@@ -272,10 +276,12 @@ public class QuestCanceler {
      */
     public String getName(final String playerID) {
         String questName = name.get(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
-        if (questName == null)
+        if (questName == null) {
             questName = name.get(Config.getLanguage());
-        if (questName == null)
+        }
+        if (questName == null) {
             questName = name.get("en");
+        }
         if (questName == null) {
             LogUtils.getLogger().log(Level.WARNING, "Default quest name not defined in canceler " + packName + "." + cancelerName);
             questName = "Quest";

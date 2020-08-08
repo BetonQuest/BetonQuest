@@ -60,10 +60,11 @@ public class MoneyEvent extends QuestEvent {
         // get the difference between target money and current money
         final double current = VaultIntegrator.getEconomy().getBalance(player);
         final double target;
-        if (multi)
+        if (multi) {
             target = current * amount.getDouble(playerID);
-        else
+        } else {
             target = current + amount.getDouble(playerID);
+        }
 
         final double difference = target - current;
         final DecimalFormat df = new DecimalFormat("#.00");

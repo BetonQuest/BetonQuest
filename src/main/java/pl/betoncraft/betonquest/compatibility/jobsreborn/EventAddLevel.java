@@ -61,8 +61,9 @@ public class EventAddLevel extends QuestEvent {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
                 oJob.setLevel(this.nAddLevel + oJob.getLevel());
-                if (oJob.getLevel() > oJob.getJob().getMaxLevel())
+                if (oJob.getLevel() > oJob.getJob().getMaxLevel()) {
                     oJob.getJob().getMaxLevel();
+                }
             }
         }
         return null;

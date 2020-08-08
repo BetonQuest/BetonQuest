@@ -59,8 +59,9 @@ public class ConfigPackage {
      * @param name the name of this package
      */
     public ConfigPackage(final File pack, final String name) {
-        if (!pack.isDirectory())
+        if (!pack.isDirectory()) {
             return;
+        }
         folder = pack;
         this.name = name;
         main = new ConfigAccessor(new File(pack, "main.yml"), "main.yml", AccessorType.MAIN);
@@ -166,8 +167,9 @@ public class ConfigPackage {
         final Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
             final Matcher matcher = global_variable_regex.matcher(input);
-            if (!matcher.find())
+            if (!matcher.find()) {
                 break;
+            }
             final String varName = matcher.group(1);
             final String varVal;
             try {
