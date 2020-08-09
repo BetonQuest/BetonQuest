@@ -163,6 +163,7 @@ public class Backpack implements Listener {
      *
      * @author Jakub Sapalski
      */
+    @SuppressWarnings("PMD.ShortClassName")
     private class Page extends Display {
 
         private final int page;

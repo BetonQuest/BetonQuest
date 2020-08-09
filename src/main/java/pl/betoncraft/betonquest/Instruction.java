@@ -515,6 +515,7 @@ public class Instruction {
         T convert(String string) throws InstructionParseException;
     }
 
+    @SuppressWarnings("PMD.ShortClassName")
     public class Item {
 
         private ItemID itemID;
