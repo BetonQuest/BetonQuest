@@ -45,4 +45,5 @@
   <rule ref="category/java/codestyle.xml/RemoteInterfaceNamingConvention" />
   <rule ref="category/java/codestyle.xml/RemoteSessionInterfaceNamingConvention" />
   <rule ref="category/java/codestyle.xml/ShortClassName" />
+  <rule ref="category/java/codestyle.xml/ShortMethodName" />
 </ruleset>
