@@ -457,7 +457,6 @@ public class Backpack implements Listener {
                 if (s != null) {
                     for (final String key : s.getKeys(false)) {
                         final String location = pack.getString("main.compass." + key + ".location");
-                        final String itemName = pack.getString("main.compass." + key + ".item");
                         String name = null;
                         if (s.isConfigurationSection(key + ".name")) {
                             name = pack.getString("main.compass." + key + ".name." + lang);
@@ -513,6 +512,7 @@ public class Backpack implements Listener {
                         // put location with next number
                         locations.put(counter, loc);
                         names.put(counter, name);
+                        final String itemName = pack.getString("main.compass." + key + ".item");
                         if (itemName != null) {
                             items.put(counter, packName + "." + itemName);
                         }
@@ -534,7 +534,6 @@ public class Backpack implements Listener {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int i = 0;
             for (final Integer slot : locations.keySet()) {
-                final String name = names.get(slot);
                 final String item = items.get(slot);
                 ItemStack compass = null;
                 try {
@@ -560,6 +559,7 @@ public class Backpack implements Listener {
                     compass = new ItemStack(Material.COMPASS);
                 }
                 final ItemMeta meta = compass.getItemMeta();
+                final String name = names.get(slot);
                 meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
                 compass.setItemMeta(meta);
                 content[i] = compass;

@@ -98,12 +98,9 @@ public class ConversationData {
                 prefix.put(Config.getLanguage(), pref);
             }
         }
-        final String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
-        final String rawStartingOptions = pack.getString("conversations." + name + ".first");
         final String stop = pack.getString("conversations." + name + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
         final String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
-        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
 
         // check if all data is valid (or at least exist)
         for (final String s : rawConvIO.split(",")) {
@@ -116,6 +113,7 @@ public class ConversationData {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
         }
 
+        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
         for (final String s : rawInterceptor.split(",")) {
             if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
@@ -134,9 +132,11 @@ public class ConversationData {
                 throw new InstructionParseException("Quester's name is not defined");
             }
         }
+        final String rawStartingOptions = pack.getString("conversations." + name + ".first");
         if (rawStartingOptions == null || rawStartingOptions.equals("")) {
             throw new InstructionParseException("Starting options are not defined");
         }
+        final String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
         if (rawFinalEvents == null || rawFinalEvents.equals("")) {
             finalEvents = new EventID[0];
         } else {
@@ -457,13 +457,13 @@ public class ConversationData {
         public Option(final String name, final String type, final String visibleType) throws InstructionParseException {
             this.name = name;
             this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
-            final String defaultLang = Config.getLanguage();
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
             if (conv == null) {
                 return;
             }
 
+            final String defaultLang = Config.getLanguage();
             // Prefix
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {

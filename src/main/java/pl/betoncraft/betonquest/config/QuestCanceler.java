@@ -79,12 +79,6 @@ public class QuestCanceler {
             throw new InstructionParseException("Package does not exist");
         }
         final String rawEvents = pack.getString("main.cancel." + cancelerName + ".events");
-        final String rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions");
-        final String rawTags = pack.getString("main.cancel." + cancelerName + ".tags");
-        final String rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives");
-        final String rawPoints = pack.getString("main.cancel." + cancelerName + ".points");
-        final String rawJournal = pack.getString("main.cancel." + cancelerName + ".journal");
-        final String rawLoc = pack.getString("main.cancel." + cancelerName + ".loc");
         // get the name
         if (pack.getMain().getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
             for (final String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
@@ -113,6 +107,7 @@ public class QuestCanceler {
                 }
             }
         }
+        final String rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions");
         if (rawConditions == null) {
             conditions = new ConditionID[0];
         } else {
@@ -126,6 +121,7 @@ public class QuestCanceler {
                 }
             }
         }
+        final String rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives");
         if (rawObjectives == null) {
             objectives = new ObjectiveID[0];
         } else {
@@ -139,6 +135,10 @@ public class QuestCanceler {
                 }
             }
         }
+        final String rawTags = pack.getString("main.cancel." + cancelerName + ".tags");
+        final String rawPoints = pack.getString("main.cancel." + cancelerName + ".points");
+        final String rawJournal = pack.getString("main.cancel." + cancelerName + ".journal");
+        final String rawLoc = pack.getString("main.cancel." + cancelerName + ".loc");
         tags = rawTags == null ? null : rawTags.split(",");
         points = rawPoints == null ? null : rawPoints.split(",");
         journal = rawJournal == null ? null : rawJournal.split(",");

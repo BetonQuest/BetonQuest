@@ -992,7 +992,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return;
         }
-        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Event's ID is missing");
             sendMessage(sender, "specify_event");
@@ -1010,6 +1009,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         BetonQuest.event(playerID, eventID);
         sendMessage(sender, "player_event", new String[]{
                 eventID.generateInstruction().getInstruction()
@@ -1044,7 +1044,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return;
         }
-        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         // the condition ID
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Condition's ID is missing");
@@ -1063,6 +1062,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         sendMessage(sender, "player_condition", new String[]{
                 (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))

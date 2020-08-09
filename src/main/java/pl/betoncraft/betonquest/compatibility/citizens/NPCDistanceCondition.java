@@ -52,9 +52,7 @@ public class NPCDistanceCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
         final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-        final double distance = this.distance.getDouble(playerID);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
         }
@@ -62,9 +60,11 @@ public class NPCDistanceCondition extends Condition {
         if (npcEntity == null) {
             return false;
         }
+        final Player player = PlayerConverter.getPlayer(playerID);
         if (!npcEntity.getWorld().equals(player.getWorld())) {
             return false;
         }
+        final double distance = this.distance.getDouble(playerID);
         return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;
     }
 }

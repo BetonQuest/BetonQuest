@@ -83,8 +83,6 @@ public abstract class Objective {
         // extract events and conditions
         final String[] tempEvents1 = instruction.getArray(instruction.getOptional("event"));
         final String[] tempEvents2 = instruction.getArray(instruction.getOptional("events"));
-        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
-        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
         persistent = instruction.hasArgument("persistent");
         global = instruction.hasArgument("global");
         if (global) {
@@ -101,6 +99,8 @@ public abstract class Objective {
                 throw new InstructionParseException("Error while parsing objective events: " + e.getMessage(), e);
             }
         }
+        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
+        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
         length = tempConditions1.length + tempConditions2.length;
         conditions = new ConditionID[length];
         for (int i = 0; i < length; i++) {

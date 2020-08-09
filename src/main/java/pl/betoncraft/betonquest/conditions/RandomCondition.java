@@ -41,10 +41,10 @@ public class RandomCondition extends Condition {
         staticness = true;
         persistent = true;
         final String[] values = instruction.next().split("-");
-        final String packName = instruction.getPackage().getName();
         if (values.length != 2) {
             throw new InstructionParseException("Wrong randomness format");
         }
+        final String packName = instruction.getPackage().getName();
         try {
             valueMax = new VariableNumber(packName, values[0]);
             rangeOfRandom = new VariableNumber(packName, values[1]);

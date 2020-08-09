@@ -42,10 +42,10 @@ public class SkillAPIKillListener implements Listener {
         if (!(event.getDamager() instanceof Player)) {
             return;
         }
-        final Player player = (Player) event.getDamager();
         if (event.getTarget().getHealth() > event.getDamage()) {
             return;
         }
+        final Player player = (Player) event.getDamager();
         MobKillNotifier.addKill(player, event.getTarget());
     }
 

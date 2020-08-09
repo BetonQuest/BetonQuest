@@ -44,11 +44,11 @@ public class DenizenTaskScriptEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
         final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
+        final Player player = PlayerConverter.getPlayer(playerID);
         final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
         script.run(data, null);
         return null;

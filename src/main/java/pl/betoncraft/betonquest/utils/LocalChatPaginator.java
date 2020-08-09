@@ -110,12 +110,13 @@ public class LocalChatPaginator extends ChatPaginator {
      * @return An array of word-wrapped lines.
      */
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
-        final int maxWidth = lineLength * defaultCharWidth;
 
         // A null string is a single line
         if (rawString == null) {
             return new String[]{""};
         }
+
+        final int maxWidth = lineLength * defaultCharWidth;
 
         // A string shorter than the lineWidth is a single line
         if (getWidth(rawString) <= maxWidth && !rawString.contains("\n")) {
