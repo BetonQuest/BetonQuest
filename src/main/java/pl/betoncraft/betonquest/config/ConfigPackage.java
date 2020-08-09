@@ -293,6 +293,7 @@ public class ConfigPackage {
         return Utils.format(getString(address));
     }
 
+    @SuppressWarnings("PMD.LinguisticNaming")
     public boolean setString(final String address, final String value) {
         // prepare the address
         final String[] parts = address.split("\\.");

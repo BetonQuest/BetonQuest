@@ -120,13 +120,13 @@ public class EntityHider implements Listener {
      * @return TRUE if the entity was visible before this method call, FALSE
      * otherwise.
      */
-    protected boolean setVisibility(final Player observer, final int entityID, final boolean visible) {
+    protected boolean updateVisibility(final Player observer, final int entityID, final boolean visible) {
         switch (policy) {
             case BLACKLIST:
                 // Non-membership means they are visible
-                return !setMembership(observer, entityID, !visible);
+                return !updateMembership(observer, entityID, !visible);
             case WHITELIST:
-                return setMembership(observer, entityID, visible);
+                return updateMembership(observer, entityID, visible);
             default:
                 throw new IllegalArgumentException("Unknown policy: " + policy);
         }
@@ -141,7 +141,7 @@ public class EntityHider implements Listener {
      * @return TRUE if they already were present, FALSE otherwise.
      */
     // Helper method
-    protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
+    protected boolean updateMembership(final Player observer, final int entityID, final boolean member) {
         if (member) {
             return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
         } else {
@@ -286,7 +286,7 @@ public class EntityHider implements Listener {
      */
     public final boolean showEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
-        final boolean hiddenBefore = !setVisibility(observer, entity.getEntityId(), true);
+        final boolean hiddenBefore = !updateVisibility(observer, entity.getEntityId(), true);
 
         // Resend packets
         if (manager != null && hiddenBefore) {
@@ -304,7 +304,7 @@ public class EntityHider implements Listener {
      */
     public final boolean hideEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
-        final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
+        final boolean visibleBefore = updateVisibility(observer, entity.getEntityId(), false);
 
         if (visibleBefore) {
             final PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);

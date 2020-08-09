@@ -39,6 +39,7 @@ import java.util.logging.Level;
 /**
  * Create a short message
  */
+@SuppressWarnings("PMD.ClassNamingConventions")
 public class Notify {
 
     public static NotifyIO get(final String category) {

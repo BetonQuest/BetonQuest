@@ -57,6 +57,7 @@ import java.util.regex.Pattern;
  *
  * @author Jakub Sapalski
  */
+@SuppressWarnings("PMD.ClassNamingConventions")
 public class Utils {
 
     /**

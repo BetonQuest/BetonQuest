@@ -297,6 +297,7 @@ public class Config {
      * @param value   value that needs to be set
      * @return true if it was set, false otherwise
      */
+    @SuppressWarnings("PMD.LinguisticNaming")
     public static boolean setString(final String address, final String value) {
         if (address == null) {
             return false;

@@ -27,6 +27,7 @@ import java.util.UUID;
  *
  * @author Jakub Sapalski
  */
+@SuppressWarnings("PMD.ClassNamingConventions")
 public class PlayerConverter {
 
     /**

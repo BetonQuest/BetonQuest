@@ -29,6 +29,7 @@ import java.util.logging.Level;
  *
  * @author Jakub Sapalski
  */
+@SuppressWarnings("PMD.ClassNamingConventions")
 public class ConversationColors {
 
     private static ChatColor[] npcColors;

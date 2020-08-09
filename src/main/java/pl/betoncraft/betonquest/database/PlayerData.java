@@ -215,6 +215,7 @@ public class PlayerData {
      * @param category name of the category
      * @return amount of points
      */
+    @SuppressWarnings("PMD.LinguisticNaming")
     public int hasPointsFromCategory(final String category) {
         for (final Point p : points) {
             if (p.getCategory().equals(category)) {

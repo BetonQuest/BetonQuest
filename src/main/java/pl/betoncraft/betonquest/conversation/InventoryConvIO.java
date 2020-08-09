@@ -173,7 +173,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             npc.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
                 try {
-                    npc.setItemMeta(setSkullMeta((SkullMeta) npc.getItemMeta()));
+                    npc.setItemMeta(updateSkullMeta((SkullMeta) npc.getItemMeta()));
                     Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
                         SKULL_CACHE.put(npcName, npc);
                         inv.setItem(0, npc);
@@ -281,7 +281,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings("deprecation")
-    protected SkullMeta setSkullMeta(final SkullMeta meta) {
+    protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         meta.setOwner(npcName);
         return meta;
     }
