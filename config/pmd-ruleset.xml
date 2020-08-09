@@ -39,5 +39,6 @@
   <rule ref="category/java/codestyle.xml/MDBAndSessionBeanNamingConvention" />
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
   <rule ref="category/java/codestyle.xml/MethodNamingConventions" />
+  <rule ref="category/java/codestyle.xml/NoPackage" />
 
 </ruleset>
