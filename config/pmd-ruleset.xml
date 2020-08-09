@@ -34,8 +34,9 @@
   <rule ref="category/java/codestyle.xml/LinguisticNaming" />
   <rule ref="category/java/codestyle.xml/LocalHomeNamingConvention" />
   <rule ref="category/java/codestyle.xml/LocalInterfaceSessionNamingConvention" />
-
   <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
+  <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" />
+
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
 
 </ruleset>

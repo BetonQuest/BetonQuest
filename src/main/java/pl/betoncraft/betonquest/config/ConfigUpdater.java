@@ -1701,7 +1701,7 @@ public class ConfigUpdater {
                 message = "dd.MM.yyyy HH:mm";
             }
             config.set("date_format", message);
-            final String cancel_color = messages.getString("global.cancel_color", "&2");
+            final String cancelColor = messages.getString("global.cancel_color", "&2");
             messages.set("global", null);
             LogUtils.getLogger().log(Level.INFO, "Moved 'global' messages to main config.");
             Config.getMessages().saveConfig();
@@ -1714,7 +1714,7 @@ public class ConfigUpdater {
                     final StringBuilder string = new StringBuilder();
                     for (final String part : canceler.split(" ")) {
                         if (part.startsWith("name")) {
-                            string.append(part.replace(":", ":" + cancel_color) + " ");
+                            string.append(part.replace(":", ":" + cancelColor) + " ");
                         } else {
                             string.append(part + " ");
                         }

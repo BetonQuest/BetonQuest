@@ -41,11 +41,11 @@ public class MathVariable extends Variable {
 
     public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        final String instruction_string = instruction.getInstruction();
-        if (!instruction_string.matches("math\\.calc:.+")) {
+        final String instructionString = instruction.getInstruction();
+        if (!instructionString.matches("math\\.calc:.+")) {
             throw new InstructionParseException("invalid format");
         }
-        this.calculation = this.parse(instruction_string.substring("math.calc:".length()));
+        this.calculation = this.parse(instructionString.substring("math.calc:".length()));
     }
 
     @Override

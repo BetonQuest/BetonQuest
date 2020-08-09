@@ -69,14 +69,14 @@ public class CombatTagger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        final ArrayList<String> IDs = new ArrayList<>();
+        final ArrayList<String> ids = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
-            IDs.add(PlayerConverter.getID((Player) event.getEntity()));
+            ids.add(PlayerConverter.getID((Player) event.getEntity()));
         }
         if (event.getDamager() instanceof Player) {
-            IDs.add(PlayerConverter.getID((Player) event.getDamager()));
+            ids.add(PlayerConverter.getID((Player) event.getDamager()));
         }
-        for (final String playerID : IDs) {
+        for (final String playerID : ids) {
             tagged.put(playerID, true);
             final BukkitRunnable run = untaggers.get(playerID);
             if (run != null) {

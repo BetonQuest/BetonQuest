@@ -151,12 +151,12 @@ public class ConversationData {
             }
         }
         // load all NPC options
-        final ConfigurationSection NPCSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");
-        if (NPCSection == null) {
+        final ConfigurationSection npcSection = pack.getConversation(name).getConfig().getConfigurationSection("NPC_options");
+        if (npcSection == null) {
             throw new InstructionParseException("NPC_options section not defined");
         }
         npcOptions = new HashMap<>();
-        for (final String key : NPCSection.getKeys(false)) {
+        for (final String key : npcSection.getKeys(false)) {
             npcOptions.put(key, new NPCOption(key));
         }
         // check if all starting options point to existing NPC options
