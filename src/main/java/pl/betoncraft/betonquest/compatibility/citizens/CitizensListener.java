@@ -70,7 +70,7 @@ public class CitizensListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void CitizensReload(final CitizensReloadEvent event) {
+    public void onCitizensReload(final CitizensReloadEvent event) {
         CitizensHologram.reload();
     }
 }
