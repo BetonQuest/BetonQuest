@@ -69,6 +69,7 @@ public class LeverEvent extends QuestEvent {
                 lever.setPowered(!lever.isPowered());
                 break;
         }
+        block.setBlockData(lever);
         return null;
     }
 
