@@ -42,7 +42,7 @@ public class SkriptEffectBQ extends Effect {
     private Expression<String> event;
     private Expression<Player> player;
 
-    private SkriptEffectBQ() {
+    public SkriptEffectBQ() {
         super();
     }
 

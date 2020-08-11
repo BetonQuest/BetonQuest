@@ -41,7 +41,7 @@ public class SkriptConditionBQ extends Condition {
     private Expression<Player> player;
     private Expression<String> condition;
 
-    private SkriptConditionBQ() {
+    public SkriptConditionBQ() {
         super();
     }
 

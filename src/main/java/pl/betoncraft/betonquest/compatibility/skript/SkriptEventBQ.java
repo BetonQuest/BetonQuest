@@ -32,7 +32,7 @@ public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;
 
-    private SkriptEventBQ() {
+    public SkriptEventBQ() {
         super();
     }
 
