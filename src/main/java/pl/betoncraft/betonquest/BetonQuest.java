@@ -503,7 +503,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("language", LanguageEvent.class);
         registerEvents("playsound", PlaysoundEvent.class);
         registerEvents("pickrandom", PickRandomEvent.class);
-        registerEvents("xp", EXPEvent.class);
+        registerEvents("experience", ExperienceEvent.class);
         registerEvents("notify", NotifyEvent.class);
         registerEvents("chat", ChatEvent.class);
 

@@ -112,11 +112,11 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 ## Experience: `experience`
 
-This condition is met when the player has a specified level (default minecraft experience). It is measured by full levels, not experience points. The instruction string must contain an integer argument.
+This condition is met when the player has a specified amount of experience points. If you want to check for whole levels for a player add the `level` argument.
 
 !!! example
     ```YAML
-    experience 30
+    experience 30 level
     ```
 
 ## Facing direction: `facing`

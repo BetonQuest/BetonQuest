@@ -17,6 +17,7 @@
  */
 package pl.betoncraft.betonquest.conditions;
 
+import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
@@ -31,16 +32,24 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ExperienceCondition extends Condition {
 
-    private final VariableNumber experience;
+    private final VariableNumber amount;
+    private final boolean checkForLevel;
 
     public ExperienceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        experience = instruction.getVarNum();
+        amount = instruction.getVarNum();
+        this.checkForLevel = instruction.hasArgument("level") || instruction.hasArgument("l");
     }
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return PlayerConverter.getPlayer(playerID).getLevel() >= experience.getInt(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final int amount = this.amount.getInt(playerID);
+        if (checkForLevel) {
+            return player.getLevel() >= amount;
+        } else {
+            return player.getTotalExperience() >= amount;
+        }
     }
 
 }
