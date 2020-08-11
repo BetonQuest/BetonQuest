@@ -133,6 +133,7 @@ public class GlobalData {
      * @param category name of the category
      * @return amount of global_points
      */
+    @SuppressWarnings("PMD.LinguisticNaming")
     public int hasPointsFromCategory(final String category) {
         for (final Point p : globalPoints) {
             if (p.getCategory().equals(category)) {

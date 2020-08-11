@@ -63,11 +63,11 @@ public class NPCLocationCondition extends Condition {
         if (npcEntity == null) {
             return false;
         }
-        final double radius = this.radius.getDouble(playerID);
         final Location location = this.location.getLocation(playerID);
         if (!location.getWorld().equals(npcEntity.getWorld())) {
             return false;
         }
+        final double radius = this.radius.getDouble(playerID);
         return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
     }
 }

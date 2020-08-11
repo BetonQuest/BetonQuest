@@ -992,7 +992,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return;
         }
-        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Event's ID is missing");
             sendMessage(sender, "specify_event");
@@ -1010,6 +1009,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         BetonQuest.event(playerID, eventID);
         sendMessage(sender, "player_event", new String[]{
                 eventID.generateInstruction().getInstruction()
@@ -1044,7 +1044,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return;
         }
-        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         // the condition ID
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "Condition's ID is missing");
@@ -1063,6 +1062,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
+        final String playerID = (args[1].equals("-")) ? null : PlayerConverter.getID(args[1]);
         sendMessage(sender, "player_condition", new String[]{
                 (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))
@@ -1792,23 +1792,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
 
         // get versions
-        final String betonquest_version = BetonQuest.getInstance().getDescription().getVersion();
-        final String spigot_version = Bukkit.getServer().getVersion();
+        final String betonquestVersion = BetonQuest.getInstance().getDescription().getVersion();
+        final String spigotVersion = Bukkit.getServer().getVersion();
 
         // get internal messages
         final String lang = (sender instanceof Player)
                 ? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
                 : Config.getLanguage();
-        final String click_to_download = "§b" + Config.getMessage(lang, "click_to_download");
-        final String click_to_copy = "§b" + Config.getMessage(lang, "click_to_copy");
+        final String clickToDownload = "§b" + Config.getMessage(lang, "click_to_download");
+        final String clickToCopy = "§b" + Config.getMessage(lang, "click_to_copy");
 
         // get available updates
         final Updater updater = BetonQuest.getInstance().getUpdater();
-        String updates_string = "";
-        String updates_command = null;
+        String updatesString = "";
+        String updatesCommand = null;
         if (updater.isUpdateAvailable()) {
-            updates_command = "/q update";
-            updates_string = " (version '" + updater.getUpdateVersion() + "' is " + "avialable!)";
+            updatesCommand = "/q update";
+            updatesString = " (version '" + updater.getUpdateVersion() + "' is " + "avialable!)";
         }
 
         // get hooked Plugins
@@ -1819,23 +1819,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 hooked.put(plugin, pl.getDescription().getVersion());
             }
         }
-        final StringJoiner hooked_raw = new StringJoiner(", ");
+        final StringJoiner hookedRaw = new StringJoiner(", ");
         for (final String key : hooked.navigableKeySet()) {
-            hooked_raw.add(key + " (" + hooked.get(key) + ")");
+            hookedRaw.add(key + " (" + hooked.get(key) + ")");
         }
 
         // build version info message
         builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
-        builder.append("BetonQuest version: ", ChatColor.AQUA).append(betonquest_version, ChatColor.GRAY)
-                .hover(click_to_copy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquest_version);
-        if (updates_command != null) {
-            builder.append("\n        " + updates_string, ChatColor.YELLOW).hover(click_to_download)
-                    .click(ComponentBuilder.ClickEvent.RUN_COMMAND, updates_command);
+        builder.append("BetonQuest version: ", ChatColor.AQUA).append(betonquestVersion, ChatColor.GRAY)
+                .hover(clickToCopy).click(
+                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquestVersion);
+        if (updatesCommand != null) {
+            builder.append("\n        " + updatesString, ChatColor.YELLOW).hover(clickToDownload)
+                    .click(ComponentBuilder.ClickEvent.RUN_COMMAND, updatesCommand);
         }
         builder.append("\n", ChatColor.RESET).append("Server version: ", ChatColor.GOLD)
-                .append(spigot_version, ChatColor.GRAY).hover(click_to_copy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigot_version)
+                .append(spigotVersion, ChatColor.GRAY).hover(clickToCopy).click(
+                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigotVersion)
                 .append("\n\n", ChatColor.RESET).append("Hooked into:\n", ChatColor.GREEN);
         if (hooked.isEmpty()) {
             builder.append("  ---", ChatColor.GRAY);
@@ -1845,13 +1845,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 if (first) {
                     first = false;
                 } else {
-                    builder.append(", ", ChatColor.RESET).hover(click_to_copy)
-                            .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+                    builder.append(", ", ChatColor.RESET).hover(clickToCopy)
+                            .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString());
                 }
-                builder.append(key, ChatColor.RESET).hover(click_to_copy)
-                        .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString()).append(" (" + hooked
+                builder.append(key, ChatColor.RESET).hover(clickToCopy)
+                        .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString()).append(" (" + hooked
                         .get(key) + ")", ChatColor.GRAY)
-                        .hover(click_to_copy).click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hooked_raw.toString());
+                        .hover(clickToCopy).click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString());
 
             }
         }

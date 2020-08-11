@@ -70,7 +70,6 @@ public class NPCRangeObjective extends Objective implements Listener {
             if (npc == null) {
                 throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
             }
-            final double radius = this.radius.getDouble(playerID);
             final Entity npcEntity = npc.getEntity();
             if (npcEntity == null) {
                 return;
@@ -78,6 +77,7 @@ public class NPCRangeObjective extends Objective implements Listener {
             if (!npcEntity.getWorld().equals(event.getTo().getWorld())) {
                 return;
             }
+            final double radius = this.radius.getDouble(playerID);
             final double distanceSqrd = npcEntity.getLocation().distanceSquared(event.getTo());
             final double radiusSqrd = radius * radius;
             if ((trigger == Trigger.ENTER && distanceSqrd <= radiusSqrd)

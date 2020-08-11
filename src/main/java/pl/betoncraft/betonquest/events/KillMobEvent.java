@@ -70,13 +70,13 @@ public class KillMobEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);
-        final double radius_squared = this.radius.getDouble(playerID) * this.radius.getDouble(playerID);
+        final double radiusSquared = this.radius.getDouble(playerID) * this.radius.getDouble(playerID);
         location
                 .getWorld()
                 .getEntitiesByClass(type.getEntityClass())
                 .stream()
                 //get only nearby entities
-                .filter(entity -> entity.getLocation().distanceSquared(location) <= radius_squared)
+                .filter(entity -> entity.getLocation().distanceSquared(location) <= radiusSquared)
                 //only entities with given name
                 .filter(entity -> {
                     if (name == null) {

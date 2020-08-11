@@ -226,8 +226,8 @@ public class Instruction {
             if (enchParts.length != 2) {
                 throw new PartParseException("Wrong enchantment format: " + enchant);
             }
-            final Enchantment ID = Enchantment.getByName(enchParts[0]);
-            if (ID == null) {
+            final Enchantment id = Enchantment.getByName(enchParts[0]);
+            if (id == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
             final Integer level;
@@ -236,7 +236,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }
-            enchants.put(ID, level);
+            enchants.put(id, level);
         }
         return enchants;
     }
@@ -253,8 +253,8 @@ public class Instruction {
         final String[] array = getArray(string);
         for (final String effect : array) {
             final String[] effParts = effect.split(":");
-            final PotionEffectType ID = PotionEffectType.getByName(effParts[0]);
-            if (ID == null) {
+            final PotionEffectType id = PotionEffectType.getByName(effParts[0]);
+            if (id == null) {
                 throw new PartParseException("Unknown potion effect" + effParts[0]);
             }
             final int power;
@@ -265,7 +265,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse potion power/duration: " + effect, e);
             }
-            effects.add(new PotionEffect(ID, duration, power));
+            effects.add(new PotionEffect(id, duration, power));
         }
         return effects;
     }
@@ -515,6 +515,7 @@ public class Instruction {
         T convert(String string) throws InstructionParseException;
     }
 
+    @SuppressWarnings("PMD.ShortClassName")
     public class Item {
 
         private ItemID itemID;

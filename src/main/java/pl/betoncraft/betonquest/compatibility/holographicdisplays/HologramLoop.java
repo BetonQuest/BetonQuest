@@ -76,7 +76,7 @@ public class HologramLoop {
                 final List<String> lines = section.getStringList(key + ".lines");
                 final String rawConditions = section.getString(key + ".conditions");
                 final String rawLocation = section.getString(key + ".location");
-                final int check_interval = section.getInt(key + ".check_interval", 0);
+                final int checkInterval = section.getInt(key + ".check_interval", 0);
                 if (rawLocation == null) {
                     LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
                     continue;
@@ -140,7 +140,7 @@ public class HologramLoop {
                         hologram.appendTextLine(line.replace('&', '§'));
                     }
                 }
-                if (check_interval == 0) {
+                if (checkInterval == 0) {
                     holograms.put(hologram, conditions);
                 } else {
                     final ConditionID[] conditionsList = conditions;
@@ -160,7 +160,7 @@ public class HologramLoop {
                             }
                         }
                     };
-                    runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, check_interval);
+                    runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, checkInterval);
                     runnables.put(hologram, runnable);
                 }
             }

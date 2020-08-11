@@ -17,10 +17,7 @@
  */
 package pl.betoncraft.betonquest.compatibility.citizens;
 
-import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
@@ -29,7 +26,6 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
@@ -38,7 +34,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     }
 
     @Override
-    protected SkullMeta setSkullMeta(final SkullMeta meta) {
+    protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
             final CitizensConversation citizensConv = (CitizensConversation) conv;
@@ -77,7 +73,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 }
             }
         }
-        return super.setSkullMeta(meta);
+        return super.updateSkullMeta(meta);
     }
 
     public static class CitizensCombined extends CitizensInventoryConvIO {

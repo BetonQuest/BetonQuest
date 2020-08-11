@@ -164,9 +164,9 @@ public class ConfigPackage {
         input = input.replace("$this$", name);
 
         // handle the rest
-        final Pattern global_variable_regex = Pattern.compile("\\$([^ $\\s]+)\\$");
+        final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
-            final Matcher matcher = global_variable_regex.matcher(input);
+            final Matcher matcher = globalVariableRegex.matcher(input);
             if (!matcher.find()) {
                 break;
             }
@@ -293,6 +293,7 @@ public class ConfigPackage {
         return Utils.format(getString(address));
     }
 
+    @SuppressWarnings("PMD.LinguisticNaming")
     public boolean setString(final String address, final String value) {
         // prepare the address
         final String[] parts = address.split("\\.");

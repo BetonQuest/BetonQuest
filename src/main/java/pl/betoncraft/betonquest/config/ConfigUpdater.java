@@ -130,21 +130,21 @@ public class ConfigUpdater {
         // if the version is null the plugin is updated from pre-1.4 version
         // (which can be 1.0, 1.1 or 1.2)
         if (version == null || version.equals("1.4")) {
-            updateTo1_4_1();
+            updateTo1dot4dot1();
         } else if (version.equals("1.4.1")) {
-            updateTo1_4_2();
+            updateTo1dot4dot2();
         } else if (version.equals("1.4.2")) {
-            updateTo1_4_3();
+            updateTo1dot4dot3();
         } else if (version.equals("1.4.3")) {
-            updateTo1_5();
+            updateTo1dot5();
         } else if (version.equals("1.5")) {
-            updateTo1_5_1();
+            updateTo1dot5dot1();
         } else if (version.equals("1.5.1")) {
-            updateTo1_5_2();
+            updateTo1dot5dot2();
         } else if (version.equals("1.5.2")) {
-            updateTo1_5_3();
+            updateTo1dot5dot3();
         } else if (version.equals("1.5.3") || version.equals("1.5.4") || version.equals("1.6")) {
-            updateTo1_6();
+            updateTo1dot6();
         } else if (version.matches("^v\\d+$")) {
             performUpdate();
         } else {
@@ -173,18 +173,19 @@ public class ConfigUpdater {
      * repeats itself until everything is converted.
      */
     private void update() {
-        final String version = config.getString("version", null);
+        final String configVersion = config.getString("version", null);
         // if the version is the same as destination, updating process is
         // finished
-        if (version == null || version.equals(destination)) {
+        if (configVersion == null || configVersion.equals(destination)) {
             return;
         }
+        final String version = configVersion.toUpperCase();
         try {
             // reload existing configuration
             new Config(false);
             config = instance.getConfig();
             // call the right updating method
-            final Method method = this.getClass().getDeclaredMethod("update_from_" + version);
+            final Method method = this.getClass().getDeclaredMethod("updateFrom" + version);
             method.setAccessible(true);
             LogUtils.getLogger().log(Level.FINE, "Starting update from " + version + "!");
             method.invoke(this);
@@ -200,7 +201,7 @@ public class ConfigUpdater {
         update();
     }
 
-    private void update_from_v60() {
+    private void updateFromV60() {
         LogUtils.getLogger().log(Level.INFO, "Renaming 'monsters' condition to 'entities'");
         for (final ConfigPackage pack : Config.getPackages().values()) {
             LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
@@ -219,7 +220,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v59() {
+    private void updateFromV59() {
         LogUtils.getLogger().log(Level.INFO, "Rename Objective potion to brew");
         for (final ConfigPackage pack : Config.getPackages().values()) {
             LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
@@ -238,7 +239,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v58() {
+    private void updateFromV58() {
         config.set("config.journal.chars_per_line", 19);
         config.set("config.journal.lines_per_page", 13);
         LogUtils.getLogger().log(Level.INFO, "Added config options chars_per_line and lines_per_page for the journal!");
@@ -247,7 +248,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v57() {
+    private void updateFromV57() {
         if (config.contains("default_conversation_IO") && config.getString("default_conversation_IO").equalsIgnoreCase("chest")) {
             LogUtils.getLogger().log(Level.INFO, "Renamed default ConversationIO to 'combined'");
             config.set("default_conversation_IO", "combined");
@@ -270,7 +271,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v56() {
+    private void updateFromV56() {
         config.set("citizens_npcs_by_name", "false");
         LogUtils.getLogger().log(Level.INFO, "Added option to allow identifying citizens npcs by name");
         config.set("version", "v57");
@@ -278,7 +279,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v55() {
+    private void updateFromV55() {
         config.set("hook.brewery", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Brewery");
         config.set("version", "v56");
@@ -286,7 +287,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v54() {
+    private void updateFromV54() {
         config.set("hook.protocollib", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with ProtocolLib");
         config.set("version", "v55");
@@ -294,7 +295,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v53() {
+    private void updateFromV53() {
         final ConfigurationSection section = config.getConfigurationSection("effectlib_npc_effect");
         if (section != null) {
             final ConfigAccessor custom = Config.getDefaultPackage().getCustom();
@@ -311,7 +312,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v52() {
+    private void updateFromV52() {
         config.set("hook.bountifulapi", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with BountifulAPI");
         config.set("version", "v53");
@@ -319,7 +320,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v51() {
+    private void updateFromV51() {
         config.set("hook.betonlangapi", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with BetonLangAPI");
         config.set("version", "v52");
@@ -327,7 +328,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v50() {
+    private void updateFromV50() {
         LogUtils.getLogger().log(Level.FINE, "Moving custom settings from main.yml to custom.yml");
         final List<String> coreSettings = Arrays.asList("npcs", "variables", "static", "global_locations",
                 "cancel", "journal_main_page", "compass", "enabled");
@@ -356,7 +357,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v49() {
+    private void updateFromV49() {
         final Set<String> enabledPackages = new HashSet<>(config.getStringList("packages"));
         LogUtils.getLogger().log(Level.FINE, "Disabling packages not listed in the config");
         for (final Iterator<ConfigPackage> iterator = Config.getPackages().values().iterator(); iterator.hasNext(); ) {
@@ -380,7 +381,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v48() {
+    private void updateFromV48() {
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
             final List<ConfigAccessor> sections = new ArrayList<>();
@@ -485,7 +486,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v47() {
+    private void updateFromV47() {
         config.set("quest_items_unbreakable", "true");
         LogUtils.getLogger().log(Level.INFO, "Added option to disable quest item unbreakability");
         config.set("version", "v48");
@@ -493,7 +494,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v46() {
+    private void updateFromV46() {
         config.set("journal.full_main_page", "false");
         LogUtils.getLogger().log(Level.INFO, "Added 'full_main_page' option to config");
         config.set("version", "v47");
@@ -501,7 +502,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v45() {
+    private void updateFromV45() {
         config.set("hook.legendquest", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with LegendQuest");
         config.set("hook.worldedit", "true");
@@ -511,7 +512,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v44() {
+    private void updateFromV44() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Translating items in 'potion' objectives");
             for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -585,7 +586,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v43() {
+    private void updateFromV43() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Translating potion instructions");
 
@@ -633,7 +634,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v42() {
+    private void updateFromV42() {
         config.set("hook.holographicdisplays", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with HolographicDisplays");
         config.set("version", "v43");
@@ -641,7 +642,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v41() {
+    private void updateFromV41() {
         try {
             // change raw material names in craft objectives to items from items.yml
             for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -724,7 +725,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v40() {
+    private void updateFromV40() {
         config.set("hook.placeholderapi", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with PlaceholderAPI");
         config.set("version", "v41");
@@ -732,7 +733,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v39() {
+    private void updateFromV39() {
         config.set("hook.shopkeepers", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Shopkeepers");
         config.set("version", "v40");
@@ -740,7 +741,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v38() {
+    private void updateFromV38() {
         final boolean enabled = config.getString("autoupdate").equalsIgnoreCase("true");
         config.set("autoupdate", null);
         config.set("update.enabled", enabled);
@@ -752,7 +753,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v37() {
+    private void updateFromV37() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating global location tags in the database");
             LogUtils.getLogger().log(Level.FINE, "    oiienwfiu wenfiu nweiufn weiunf iuwenf iuw");
@@ -779,7 +780,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v36() {
+    private void updateFromV36() {
         config.set("hook.quests", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Quests");
         config.set("version", "v37");
@@ -787,7 +788,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v35() {
+    private void updateFromV35() {
         config.set("hook.denizen", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Denizen");
         config.set("hook.skillapi", "true");
@@ -797,7 +798,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v34() {
+    private void updateFromV34() {
         config.set("hook.magic", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Magic");
         config.set("version", "v35");
@@ -805,7 +806,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v33() {
+    private void updateFromV33() {
         config.set("hook.heroes", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with Heroes");
         config.set("version", "v34");
@@ -813,7 +814,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v32() {
+    private void updateFromV32() {
         config.set("hook.playerpoints", "true");
         LogUtils.getLogger().log(Level.INFO, "Added compatibility with PlayerPoints");
         config.set("version", "v33");
@@ -821,7 +822,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v31() {
+    private void updateFromV31() {
         config.set("hook.effectlib", "true");
         config.set("effectlib_npc_effect.class", "VortexEffect");
         config.set("effectlib_npc_effect.iterations", 20);
@@ -837,7 +838,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v30() {
+    private void updateFromV30() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Converting cancelers to a new format");
             for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -915,7 +916,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v29() {
+    private void updateFromV29() {
         try {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
@@ -939,7 +940,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v28() {
+    private void updateFromV28() {
         String globalName = "global";
         try {
             final HashMap<String, ArrayList<String>> tags = new HashMap<>();
@@ -1365,7 +1366,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v27() {
+    private void updateFromV27() {
         try {
             config.set("journal.chars_per_page", "245");
             config.set("journal.one_entry_per_page", "false");
@@ -1381,7 +1382,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v26() {
+    private void updateFromV26() {
         try {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
@@ -1434,7 +1435,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v25() {
+    private void updateFromV25() {
         try {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
@@ -1457,14 +1458,14 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v24() {
+    private void updateFromV24() {
         LogUtils.getLogger().log(Level.INFO, "Added prefix to language files");
         config.set("version", "v25");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v23() {
+    private void updateFromV23() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Adding option to disable mcMMO hooking to the config");
             config.set("hook.mcmmo", "true");
@@ -1478,14 +1479,14 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v22() {
+    private void updateFromV22() {
         LogUtils.getLogger().log(Level.INFO, "Added Dutch translation");
         config.set("version", "v23");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v21() {
+    private void updateFromV21() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating the database");
             final Connection con = instance.getDB().getConnection();
@@ -1518,7 +1519,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v20() {
+    private void updateFromV20() {
         try {
             final ArrayList<ChatColor> npcColors = new ArrayList<>();
             final ArrayList<ChatColor> textColors = new ArrayList<>();
@@ -1671,7 +1672,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v19() {
+    private void updateFromV19() {
         try {
             if (config.getString("tellraw").equalsIgnoreCase("true")) {
                 config.set("default_conversation_IO", "tellraw");
@@ -1701,7 +1702,7 @@ public class ConfigUpdater {
                 message = "dd.MM.yyyy HH:mm";
             }
             config.set("date_format", message);
-            final String cancel_color = messages.getString("global.cancel_color", "&2");
+            final String cancelColor = messages.getString("global.cancel_color", "&2");
             messages.set("global", null);
             LogUtils.getLogger().log(Level.INFO, "Moved 'global' messages to main config.");
             Config.getMessages().saveConfig();
@@ -1714,7 +1715,7 @@ public class ConfigUpdater {
                     final StringBuilder string = new StringBuilder();
                     for (final String part : canceler.split(" ")) {
                         if (part.startsWith("name")) {
-                            string.append(part.replace(":", ":" + cancel_color) + " ");
+                            string.append(part.replace(":", ":" + cancelColor) + " ");
                         } else {
                             string.append(part + " ");
                         }
@@ -1740,7 +1741,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v18() {
+    private void updateFromV18() {
         try {
             final ConfigAccessor confMessages = Config.getMessages();
             final FileConfiguration messages = confMessages.getConfig();
@@ -1789,7 +1790,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v17() {
+    private void updateFromV17() {
         try {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
@@ -1807,7 +1808,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v16() {
+    private void updateFromV16() {
         try {
             // move objectives from events.yml to objectives.yml
             LogUtils.getLogger().log(Level.FINE, "Moving objectives to objectives.yml");
@@ -1984,7 +1985,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v15() {
+    private void updateFromV15() {
         try {
             config.set("remove_items_after_respawn", "true");
         } catch (Exception e) {
@@ -1996,7 +1997,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v14() {
+    private void updateFromV14() {
         try {
             if (config.getString("uuid").equals("false")) {
                 convertNamesToUUID();
@@ -2021,7 +2022,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v13() {
+    private void updateFromV13() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Removing empty lines in conversation files");
             for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -2049,7 +2050,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v12() {
+    private void updateFromV12() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Moving all configuration to \"default\" package");
             // clear the default package, which contains only default quest
@@ -2170,7 +2171,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v11() {
+    private void updateFromV11() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating objectives in configuration");
             final ConfigAccessor events = ch.getConfigs().get("events");
@@ -2271,7 +2272,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v10() {
+    private void updateFromV10() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating instruction strings");
             LogUtils.getLogger().log(Level.FINE, "  Updating conditions");
@@ -2669,7 +2670,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v9() {
+    private void updateFromV9() {
         config.set("combat_delay", "10");
         config.set("notify_pullback", "false");
         LogUtils.getLogger().log(Level.INFO, "Added combat delay and pullback notify options!");
@@ -2678,13 +2679,13 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v8() {
+    private void updateFromV8() {
         config.set("version", "v9");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v7() {
+    private void updateFromV7() {
         final ConfigAccessor messages = ch.getConfigs().get("messages");
         messages.getConfig().set("global.date_format", "dd.MM.yyyy HH:mm");
         messages.saveConfig();
@@ -2694,14 +2695,14 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v6() {
+    private void updateFromV6() {
         LogUtils.getLogger().log(Level.INFO, "Added backpacks to the database!");
         config.set("version", "v7");
         instance.saveConfig();
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v5() {
+    private void updateFromV5() {
         try {
             // delete isused column from tables objectives and tags
             final Database database = instance.getDB();
@@ -2747,7 +2748,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v4() {
+    private void updateFromV4() {
         try {
             // update all give/take events and item condition to match new
             // parser
@@ -2822,7 +2823,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v3() {
+    private void updateFromV3() {
         config.set("mysql.prefix", "");
         LogUtils.getLogger().log(Level.INFO, "Added prefix option to MySQL settings!");
         config.set("version", "v4");
@@ -2830,7 +2831,7 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v2() {
+    private void updateFromV2() {
         try {
             // start time counting, because why not?
             final long time = new Date().getTime();
@@ -3127,38 +3128,38 @@ public class ConfigUpdater {
     }
 
     @SuppressWarnings("unused")
-    private void update_from_v1() {
+    private void updateFromV1() {
         config.set("debug", "false");
         LogUtils.getLogger().log(Level.INFO, "Added debug option to configuration!");
         config.set("version", "v2");
         instance.saveConfig();
     }
 
-    private void updateTo1_6() {
+    private void updateTo1dot6() {
         config.set("version", "v1");
         instance.saveConfig();
         performUpdate();
     }
 
-    private void updateTo1_5_3() {
+    private void updateTo1dot5dot3() {
         // nothing to update
         config.set("version", "1.5.3");
-        updateTo1_6();
+        updateTo1dot6();
     }
 
-    private void updateTo1_5_2() {
+    private void updateTo1dot5dot2() {
         // nothing to update
         config.set("version", "1.5.2");
-        updateTo1_5_3();
+        updateTo1dot5dot3();
     }
 
-    private void updateTo1_5_1() {
+    private void updateTo1dot5dot1() {
         // nothing to update
         config.set("version", "1.5.1");
-        updateTo1_5_2();
+        updateTo1dot5dot2();
     }
 
-    private void updateTo1_5() {
+    private void updateTo1dot5() {
         LogUtils.getLogger().log(Level.INFO, "Started converting configuration files from v1.4 to v1.5!");
         // add sound settings
         final String[] array1 = new String[]{"start", "end", "journal", "update", "full"};
@@ -3264,25 +3265,25 @@ public class ConfigUpdater {
         // end of update
         config.set("version", "1.5");
         LogUtils.getLogger().log(Level.INFO, "Conversion to v1.5 finished.");
-        updateTo1_5_1();
+        updateTo1dot5dot1();
     }
 
-    private void updateTo1_4_3() {
+    private void updateTo1dot4dot3() {
         // nothing to update
         config.set("version", "1.4.3");
-        updateTo1_5();
+        updateTo1dot5();
     }
 
-    private void updateTo1_4_2() {
+    private void updateTo1dot4dot2() {
         // nothing to update
         config.set("version", "1.4.2");
-        updateTo1_4_3();
+        updateTo1dot4dot3();
     }
 
-    private void updateTo1_4_1() {
+    private void updateTo1dot4dot1() {
         // nothing to update
         config.set("version", "1.4.1");
-        updateTo1_4_2();
+        updateTo1dot4dot2();
     }
 
     /**

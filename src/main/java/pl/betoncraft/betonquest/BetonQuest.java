@@ -263,21 +263,21 @@ public class BetonQuest extends JavaPlugin {
      */
     public static Variable createVariable(final ConfigPackage pack, final String instruction)
             throws InstructionParseException {
-        final VariableID ID;
+        final VariableID id;
         try {
-            ID = new VariableID(pack, instruction);
+            id = new VariableID(pack, instruction);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
         for (final Entry<VariableID, Variable> e : variables.entrySet()) {
-            if (e.getKey().equals(ID)) {
+            if (e.getKey().equals(id)) {
                 return e.getValue();
             }
         }
         final String[] parts = instruction.replace("%", "").split("\\.");
         if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments in variable " + ID);
+            throw new InstructionParseException("Not enough arguments in variable " + id);
         }
         final Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
         // if it's null then there is no such type registered, log an error
@@ -287,12 +287,12 @@ public class BetonQuest extends JavaPlugin {
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(pack, null, instruction));
-            variables.put(ID, variable);
-            LogUtils.getLogger().log(Level.FINE, "Variable " + ID + " loaded");
+            variables.put(id, variable);
+            LogUtils.getLogger().log(Level.FINE, "Variable " + id + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in " + ID + " variable: " + e.getCause().getMessage(), e);
+                throw new InstructionParseException("Error in " + id + " variable: " + e.getCause().getMessage(), e);
             } else {
                 LogUtils.logThrowableReport(e);
             }
@@ -637,9 +637,9 @@ public class BetonQuest extends JavaPlugin {
                             "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                final EventID ID;
+                final EventID id;
                 try {
-                    ID = new EventID(pack, key);
+                    id = new EventID(pack, key);
                 } catch (final ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading event '" + packName + "." + key + "': " + e.getMessage());
@@ -648,7 +648,7 @@ public class BetonQuest extends JavaPlugin {
                 }
                 final String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = id.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Objective type not defined in '" + packName + "." + key + "'");
@@ -660,18 +660,18 @@ public class BetonQuest extends JavaPlugin {
                     // if it's null then there is no such type registered, log
                     // an error
                     LogUtils.getLogger().log(Level.WARNING, "Event type " + type + " is not registered, check if it's"
-                            + " spelled correctly in '" + ID + "' event.");
+                            + " spelled correctly in '" + id + "' event.");
                     continue;
                 }
                 try {
                     final QuestEvent event = eventClass.getConstructor(Instruction.class)
-                            .newInstance(ID.generateInstruction());
-                    events.put(ID, event);
-                    LogUtils.getLogger().log(Level.FINE, "  Event '" + ID + "' loaded");
+                            .newInstance(id.generateInstruction());
+                    events.put(id, event);
+                    LogUtils.getLogger().log(Level.FINE, "  Event '" + id + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
-                                "Error in '" + ID + "' event (" + type + "): " + e.getCause().getMessage());
+                                "Error in '" + id + "' event (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);
@@ -687,9 +687,9 @@ public class BetonQuest extends JavaPlugin {
                             "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                final ConditionID ID;
+                final ConditionID id;
                 try {
-                    ID = new ConditionID(pack, key);
+                    id = new ConditionID(pack, key);
                 } catch (final ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading condition '" + packName + "." + key + "': " + e.getMessage());
@@ -698,7 +698,7 @@ public class BetonQuest extends JavaPlugin {
                 }
                 final String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = id.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Condition type not defined in '" + packName + "." + key + "'");
@@ -710,18 +710,18 @@ public class BetonQuest extends JavaPlugin {
                 // error
                 if (conditionClass == null) {
                     LogUtils.getLogger().log(Level.WARNING, "Condition type " + type + " is not registered,"
-                            + " check if it's spelled correctly in '" + ID + "' condition.");
+                            + " check if it's spelled correctly in '" + id + "' condition.");
                     continue;
                 }
                 try {
                     final Condition condition = conditionClass.getConstructor(Instruction.class)
-                            .newInstance(ID.generateInstruction());
-                    conditions.put(ID, condition);
-                    LogUtils.getLogger().log(Level.FINE, "  Condition '" + ID + "' loaded");
+                            .newInstance(id.generateInstruction());
+                    conditions.put(id, condition);
+                    LogUtils.getLogger().log(Level.FINE, "  Condition '" + id + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
-                                "Error in '" + ID + "' condition (" + type + "): " + e.getCause().getMessage());
+                                "Error in '" + id + "' condition (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);
@@ -737,9 +737,9 @@ public class BetonQuest extends JavaPlugin {
                             "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
-                final ObjectiveID ID;
+                final ObjectiveID id;
                 try {
-                    ID = new ObjectiveID(pack, key);
+                    id = new ObjectiveID(pack, key);
                 } catch (final ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error while loading objective '" + packName + "." + key + "': " + e.getMessage());
@@ -748,7 +748,7 @@ public class BetonQuest extends JavaPlugin {
                 }
                 final String type;
                 try {
-                    type = ID.generateInstruction().getPart(0);
+                    type = id.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Objective type not defined in '" + packName + "." + key + "'");
@@ -761,18 +761,18 @@ public class BetonQuest extends JavaPlugin {
                 if (objectiveClass == null) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Objective type " + type + " is not registered, check if it's"
-                                    + " spelled correctly in '" + ID + "' objective.");
+                                    + " spelled correctly in '" + id + "' objective.");
                     continue;
                 }
                 try {
                     final Objective objective = objectiveClass.getConstructor(Instruction.class)
-                            .newInstance(ID.generateInstruction());
-                    objectives.put(ID, objective);
-                    LogUtils.getLogger().log(Level.FINE, "  Objective '" + ID + "' loaded");
+                            .newInstance(id.generateInstruction());
+                    objectives.put(id, objective);
+                    LogUtils.getLogger().log(Level.FINE, "  Objective '" + id + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
                         LogUtils.getLogger().log(Level.WARNING,
-                                "Error in '" + ID + "' objective (" + type + "): " + e.getCause().getMessage());
+                                "Error in '" + id + "' objective (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
                         LogUtils.logThrowableReport(e);

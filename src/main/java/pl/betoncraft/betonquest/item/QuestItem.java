@@ -376,10 +376,10 @@ public class QuestItem {
             return false;
         }
         // basic meta checks
-        final ItemMeta meta = item.getItemMeta();
         if (!durability.check(item.getDurability())) {
             return false;
         }
+        final ItemMeta meta = item.getItemMeta();
         if (!name.check(meta.getDisplayName())) {
             return false;
         }

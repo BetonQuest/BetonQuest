@@ -57,6 +57,7 @@ import java.util.regex.Pattern;
  *
  * @author Jakub Sapalski
  */
+@SuppressWarnings("PMD.ClassNamingConventions")
 public class Utils {
 
     /**
@@ -174,10 +175,10 @@ public class Utils {
         final String[] bigPages = string.split("\\|");
         for (final String bigPage : bigPages) {
             if (Config.getString("config.journal.lines_per_page") == null) {
-                final int chars_per_page = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
+                final int charsPerPage = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
                 for (final String word : bigPage.split(" ")) {
-                    if (page.length() + word.length() + 1 > chars_per_page) {
+                    if (page.length() + word.length() + 1 > charsPerPage) {
                         pages.add(page.toString().trim());
                         page = new StringBuilder();
                     }
@@ -185,15 +186,15 @@ public class Utils {
                 }
                 pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {
-                final int chars_per_line = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
-                final int lines_per_page = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
+                final int charsPerLine = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
+                final int linesPerPage = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
                 int lines = 0;
                 for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
-                    StringBuilder line_builder = new StringBuilder();
-                    final int line__length = getStringLength(line);
-                    if (line__length <= chars_per_line) {
-                        if (++lines > lines_per_page) {
+                    StringBuilder lineBuilder = new StringBuilder();
+                    final int lineLength = getStringLength(line);
+                    if (lineLength <= charsPerLine) {
+                        if (++lines > linesPerPage) {
                             pages.add(page.toString());
                             lines = 1;
                             page = new StringBuilder();
@@ -202,25 +203,25 @@ public class Utils {
                         continue;
                     }
                     for (final String word : line.split(" ")) {
-                        final int word_length = getStringLength(word);
-                        final int line_builder_length = getStringLength(line_builder.toString());
-                        if (line_builder_length + word_length > chars_per_line) {
-                            if (++lines > lines_per_page) {
+                        final int stringLength = getStringLength(word);
+                        final int lineBuilderLength = getStringLength(lineBuilder.toString());
+                        if (lineBuilderLength + stringLength > charsPerLine) {
+                            if (++lines > linesPerPage) {
                                 pages.add(page.toString());
                                 lines = 1;
                                 page = new StringBuilder();
                             }
-                            page.append(line_builder.toString().trim()).append("\n");
-                            line_builder = new StringBuilder();
+                            page.append(lineBuilder.toString().trim()).append("\n");
+                            lineBuilder = new StringBuilder();
                         }
-                        line_builder.append(word).append(' ');
+                        lineBuilder.append(word).append(' ');
                     }
-                    if (++lines > lines_per_page) {
+                    if (++lines > linesPerPage) {
                         pages.add(page.toString());
                         lines = 1;
                         page = new StringBuilder();
                     }
-                    page.append(line_builder.toString().trim()).append('\n');
+                    page.append(lineBuilder.toString().trim()).append('\n');
                 }
                 if (page.length() != 0) {
                     pages.add(page.toString());

@@ -48,8 +48,8 @@ public class DayOfWeekCondition extends Condition {
             LogUtils.logThrowableIgnore(e);
             try {
                 d = DayOfWeek.valueOf(dayString.toUpperCase());
-            } catch (IllegalArgumentException IAE) {
-                throw new InstructionParseException(dayString + " is not a valid day of a week", IAE);
+            } catch (IllegalArgumentException iae) {
+                throw new InstructionParseException(dayString + " is not a valid day of a week", iae);
             }
         }
         this.day = d;

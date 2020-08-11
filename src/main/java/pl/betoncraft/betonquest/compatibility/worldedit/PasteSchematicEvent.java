@@ -78,7 +78,6 @@ public class PasteSchematicEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         try {
-            final Location location = loc.getLocation(playerID);
             final ClipboardFormat format = ClipboardFormats.findByFile(file);
             if (format == null) {
                 throw new IOException("Unknown Schematic Format");
@@ -89,7 +88,7 @@ public class PasteSchematicEvent extends QuestEvent {
                 clipboard = reader.read();
             }
 
-
+            final Location location = loc.getLocation(playerID);
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), -1)) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)

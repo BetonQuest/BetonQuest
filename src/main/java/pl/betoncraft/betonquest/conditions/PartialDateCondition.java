@@ -137,11 +137,11 @@ public class PartialDateCondition extends Condition {
         }
 
         public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws InstructionParseException {
-            final List<TimeInterval> intervals = new ArrayList<>();
             // check if the given string is valid (example: 1,3-4,7)
             if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*")) {
                 throw new InstructionParseException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
             }
+            final List<TimeInterval> intervals = new ArrayList<>();
             final String[] args = string.split(",");
             //Add each interval (or single one) to the list
             for (final String arg : args) {
