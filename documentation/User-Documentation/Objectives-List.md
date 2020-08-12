@@ -82,7 +82,7 @@ This objectie is completed when the player enchants specified item with specifie
 
 ## Experience: `experience`
 
-This objective can by completed by reaching specified amount of experience points. If you want to check for whole levels for a player add the `level` argument. The conditions are checked when the player levels up, so if they are not met the first time, the player will have to meet them and levelup again.
+This objective can by completed by reaching specified amount of experience points. If you want to check for whole levels for a player add the `level` argument or `l` for short. The conditions are checked when the player levels up, so if they are not met the first time, the player will have to meet them and levelup again.
 
 !!! example
     ```YAML

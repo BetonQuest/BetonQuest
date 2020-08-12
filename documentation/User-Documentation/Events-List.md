@@ -518,7 +518,7 @@ Sets weather. The argument is `sun`, `rain` or `storm`.
     
 ## Give experience: `experience`
 
-Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument.
+Gives the specified amount of experience points to the player. If you want to give whole levels to a player add the `level` argument or `l` for short.
 
 !!! example
     ```YAML

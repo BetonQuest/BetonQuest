@@ -112,7 +112,7 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 ## Experience: `experience`
 
-This condition is met when the player has a specified amount of experience points. If you want to check for whole levels for a player add the `level` argument.
+This condition is met when the player has a specified amount of experience points. If you want to check for whole levels for a player add the `level` argument or `l` for short.
 
 !!! example
     ```YAML
