@@ -82,7 +82,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v61";
+    private final String destination = "v62";
     /**
      * BetonQuest's instance
      */
@@ -199,6 +199,42 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    private void updateFromV61() {
+        LogUtils.getLogger().log(Level.INFO, "Renaming 'xp' event to 'experience'");
+        LogUtils.getLogger().log(Level.INFO, "Adding 'level' argument to 'experience' condition and objective");
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            LogUtils.getLogger().log(Level.FINE, "  Replacing in '" + pack.getName() + "' package");
+            for (final String key : pack.getEvents().getConfig().getKeys(false)) {
+                final String instruction = pack.getEvents().getConfig().getString(key);
+                if (instruction.startsWith("xp ")) {
+                    LogUtils.getLogger().log(Level.FINE, "    Replacing xp in '" + key + "' event");
+                    pack.getEvents().getConfig().set(key, instruction.replaceFirst("xp ", "experience "));
+                }
+            }
+            for (final String key : pack.getConditions().getConfig().getKeys(false)) {
+                final String instruction = pack.getConditions().getConfig().getString(key);
+                if (instruction.startsWith("experience ")) {
+                    LogUtils.getLogger().log(Level.FINE, "    Adding level argument in '" + key + "' condition");
+                    pack.getConditions().getConfig().set(key, instruction + " level");
+                }
+            }
+            for (final String key : pack.getObjectives().getConfig().getKeys(false)) {
+                final String instruction = pack.getObjectives().getConfig().getString(key);
+                if (instruction.startsWith("experience ")) {
+                    LogUtils.getLogger().log(Level.FINE, "    Adding level argument in '" + key + "' objectives");
+                    pack.getObjectives().getConfig().set(key, instruction + " level");
+                }
+            }
+            pack.getEvents().saveConfig();
+            pack.getConditions().saveConfig();
+            pack.getObjectives().saveConfig();
+        }
+        LogUtils.getLogger().log(Level.INFO, "Successfully renamed 'xp' event to 'experience'");
+        LogUtils.getLogger().log(Level.INFO, "Successfully added 'level' argument to 'experience' conditions and objectives");
+        config.set("version", "v62");
+        instance.saveConfig();
     }
 
     private void updateFromV60() {

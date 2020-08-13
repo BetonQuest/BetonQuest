@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added option check_interval for holograms in custom.yml andd added GlobalVariable support
 - Added deletepoint event to delete player points
 - Added mythicmobdistance condition that will check if a specific MythicMobs entity is near the player
+- added level argument to 'experience' objective and condition
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AchievementCondition is replaced with AdvancementCondition
 - Renamed objective Potion to Brew
 - Renamed 'monsters' condition to 'entities'
+- Renamed 'xp' event to 'experience'
 - new config option mysql.enabled
     - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
 ### Deprecated

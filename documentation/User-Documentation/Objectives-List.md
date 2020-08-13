@@ -82,11 +82,11 @@ This objectie is completed when the player enchants specified item with specifie
 
 ## Experience: `experience`
 
-This objective can by completed by reaching specified level (default Minecraft experience, whole levels). The conditions are checked when the player levels up, so if they are not met the first time, the player will have to meet them and levelup again. Instruction string consists only from integer - level to reach.
+This objective can by completed by reaching specified amount of experience points. You can check for whole levels by adding the `level` argument. The conditions are checked when the player levels up, so if they are not met the first time, the player will have to meet them and levelup again.
 
 !!! example
     ```YAML
-    experience 25 events:reward
+    experience 25 level events:reward
     ```
 
 ## Delay: `delay`

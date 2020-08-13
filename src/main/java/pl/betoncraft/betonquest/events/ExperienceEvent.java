@@ -30,22 +30,22 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  *
  * @author Jonas Blocher
  */
-public class EXPEvent extends QuestEvent {
+public class ExperienceEvent extends QuestEvent {
 
     private final VariableNumber amount;
-    private final boolean level;
+    private final boolean checkForLevel;
 
-    public EXPEvent(final Instruction instruction) throws InstructionParseException {
+    public ExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.amount = instruction.getVarNum();
-        this.level = instruction.hasArgument("level") || instruction.hasArgument("l");
+        this.checkForLevel = instruction.hasArgument("level");
     }
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         final int amount = this.amount.getInt(playerID);
-        if (level) {
+        if (checkForLevel) {
             player.giveExpLevels(amount);
         } else {
             player.giveExp(amount);
