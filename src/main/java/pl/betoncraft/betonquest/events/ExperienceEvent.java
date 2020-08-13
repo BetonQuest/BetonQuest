@@ -38,7 +38,7 @@ public class ExperienceEvent extends QuestEvent {
     public ExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.amount = instruction.getVarNum();
-        this.checkForLevel = instruction.hasArgument("level") || instruction.hasArgument("l");
+        this.checkForLevel = instruction.hasArgument("level");
     }
 
     @Override

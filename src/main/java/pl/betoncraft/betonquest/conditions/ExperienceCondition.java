@@ -37,8 +37,8 @@ public class ExperienceCondition extends Condition {
 
     public ExperienceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        amount = instruction.getVarNum();
-        this.checkForLevel = instruction.hasArgument("level") || instruction.hasArgument("l");
+        this.amount = instruction.getVarNum();
+        this.checkForLevel = instruction.hasArgument("level");
     }
 
     @Override

@@ -46,7 +46,7 @@ public class ExperienceObjective extends Objective implements Listener {
         if (amount < 1) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
-        this.checkForLevel = instruction.hasArgument("level") || instruction.hasArgument("l");
+        this.checkForLevel = instruction.hasArgument("level");
     }
 
     @EventHandler(ignoreCancelled = true)
