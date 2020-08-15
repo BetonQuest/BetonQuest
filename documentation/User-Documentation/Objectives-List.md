@@ -163,13 +163,13 @@ To complete this objective the player simply needs to leave the server. Keep in 
 This objective requires the player to write a certain "password" in chat. The password consits of a prefix and the actual secret word:
 Solution: The Cake is a lie!     
 ^prefix   ^secret word(s)       
-All attempts of a player will be hidden from plublic chat.
+All attempts of a player will be hidden from public chat.
 The prefix can also be disabled:      
 The Cake is a lie!   <- This would be correct     
 The only downside of this is that all wrong attemtps will be shown in the global chat. 
 
 The objective's instruction string is defined as follows:
-The first argument is the password. All `_` characters are replaced with spaces. Next follows the prefix. If none is set BetonQuest will look up a translatable version from the messages.yml config. To completely disable the prefix an empty prefix is required (password:bla prefix: events:...).
+The first argument is the password. All `_` characters are replaced with spaces. Next follows the prefix. If no custom prefix is set BetonQuest will look up a translatable version from the *messages.yml* config. To completely disable the prefix an empty prefix is required (password:bla prefix: events:...).
 You can also add the `ignoreCase` argument if you want a passwords capitalization ignored. This is especially important for regex matching.
 
 !!! example
