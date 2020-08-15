@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added deletepoint event to delete player points
 - Added mythicmobdistance condition that will check if a specific MythicMobs entity is near the player
 - added level argument to 'experience' objective and condition
+- added prefix argument in password objective
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
