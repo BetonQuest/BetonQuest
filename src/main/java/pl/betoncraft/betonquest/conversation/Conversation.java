@@ -630,6 +630,10 @@ public class Conversation implements Listener {
         }
 
         public void run() {
+            // fire events
+            for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
+                BetonQuest.event(playerID, event);
+            }
             // don't forget to select the option prior to printing its text
             selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
             // print to player npc's answer
@@ -641,10 +645,6 @@ public class Conversation implements Listener {
                 @Override
                 public void run() {
                     Bukkit.getServer().getPluginManager().callEvent(event);
-                    // fire events
-                    for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
-                        BetonQuest.event(playerID, event);
-                    }
                 }
             }.runTask(BetonQuest.getInstance());
         }

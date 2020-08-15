@@ -42,12 +42,15 @@ public class PasswordObjective extends Objective implements Listener {
 
     private final String regex;
     private final boolean ignoreCase;
+    private final String passwordPrefix;
 
     public PasswordObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         regex = instruction.next().replace('_', ' ');
         ignoreCase = instruction.hasArgument("ignoreCase");
+        final String prefix = instruction.getOptional("prefix");
+        passwordPrefix = prefix.isEmpty() ? prefix : prefix + ": ";
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -67,9 +70,9 @@ public class PasswordObjective extends Objective implements Listener {
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
         final String playerID = PlayerConverter.getID(player);
         if (containsPlayer(playerID)) {
-            final String prefix = Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),
-                    "password");
-            if (message.startsWith(prefix)) {
+            final String prefix = passwordPrefix == null ?
+                    Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),"password") : passwordPrefix;
+            if (prefix.isEmpty() || message.startsWith(prefix)) {
                 final String password = message.substring(prefix.length());
                 if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
                     new BukkitRunnable() {
@@ -78,8 +81,14 @@ public class PasswordObjective extends Objective implements Listener {
                             completeObjective(playerID);
                         }
                     }.runTask(BetonQuest.getInstance());
+
+                    if (fromCommand) {
+                        return !prefix.isEmpty();
+                    } else {
+                      return true;
+                    }
                 }
-                return !(fromCommand && prefix.isEmpty());
+                return !prefix.isEmpty();
             }
         }
         return false;

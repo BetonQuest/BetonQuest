@@ -160,11 +160,21 @@ To complete this objective the player simply needs to leave the server. Keep in 
 
 ## Password: `password`
 
-This objective requires the player to type the password in the chat. The first argument is the password. All `_` characters are replaced with spaces. It's checked with [regular expressions](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html) (if your password will be `^beton.*beton$` the objective will accept all passwords that starts and ends with `beton` word (`^` represents beginning of a string, `.` represents any character, `*` allows the previous character (in this case any) repeat any number of times, and `$` means end of the string), but you can also use something like `beton` - it will work). If you want the objective to ignore case of the letters you can add optional `ignoreCase` argument. For this to work your regular expression needs to use lower case letters. To answer, the player needs to type (in his language, configurable in _messages.yml_) `password: here goes player's guess`. If he fails, the message will not be displayed in the chat.
+This objective requires the player to type the password in the chat. The first argument is the password. All `_` characters are replaced with spaces.
+It's checked with [regular expressions](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html)
+(if your password will be `^beton.*beton$` the objective will accept all passwords that starts and ends with `beton` word
+(`^` represents beginning of a string, `.` represents any character, `*` allows the previous character (in this case any) repeat any number of times,
+and `$` means end of the string), but you can also use something like `beton` - it will work).
+If you want the objective to ignore case of the letters you can add optional `ignoreCase` argument.
+For this to work your regular expression needs to use lower case letters.
+To answer, the player needs to type (in his language, configurable in _messages.yml_) `password: here goes player's guess`.
+If he fails, the message will not be displayed in the chat.
+With the `prefix` argument you can change the word before the password so if you write `prefix:secret` the player has to write `secret: here goes player's guess`.
+If the `prefix` is empty the player can write it in the chat without the prefix but if the password is wrong it will be displayed in the chat.
 
 !!! example
     ```YAML
-    password beton ignoreCase events:message,reward
+    password beton ignoreCase prefix:secret events:message,reward
     ```
 
 ## Mob Kill: `mobkill`
