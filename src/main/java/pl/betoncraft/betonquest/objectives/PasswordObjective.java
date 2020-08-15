@@ -72,7 +72,7 @@ public class PasswordObjective extends Objective implements Listener {
         if (containsPlayer(playerID)) {
             final String prefix = passwordPrefix == null ?
                     Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),"password") : passwordPrefix;
-            if (prefix.isEmpty() || message.startsWith(prefix)) {
+            if (prefix.isEmpty() || message.toLowerCase().startsWith(prefix.toLowerCase())) {
                 final String password = message.substring(prefix.length());
                 if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
                     new BukkitRunnable() {
