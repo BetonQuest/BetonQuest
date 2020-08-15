@@ -160,22 +160,25 @@ To complete this objective the player simply needs to leave the server. Keep in 
 
 ## Password: `password`
 
-This objective requires the player to type the password in the chat. The first argument is the password. All `_` characters are replaced with spaces.
-It's checked with [regular expressions](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html)
-(if your password will be `^beton.*beton$` the objective will accept all passwords that starts and ends with `beton` word
-(`^` represents beginning of a string, `.` represents any character, `*` allows the previous character (in this case any) repeat any number of times,
-and `$` means end of the string), but you can also use something like `beton` - it will work).
-If you want the objective to ignore case of the letters you can add optional `ignoreCase` argument.
-For this to work your regular expression needs to use lower case letters.
-To answer, the player needs to type (in his language, configurable in _messages.yml_) `password: here goes player's guess`.
-If he fails, the message will not be displayed in the chat.
-With the `prefix` argument you can change the word before the password so if you write `prefix:secret` the player has to write `secret: here goes player's guess`.
-If the `prefix` is empty the player can write it in the chat without the prefix but if the password is wrong it will be displayed in the chat.
+This objective requires the player to write a certain "password" in chat. The password consits of a prefix and the actual secret word:
+Solution: The Cake is a lie!     
+^prefix   ^secret word(s)       
+All attempts of a player will be hidden from plublic chat.
+The prefix can also be disabled:      
+The Cake is a lie!   <- This would be correct     
+The only downside of this is that all wrong attemtps will be shown in the global chat. 
+
+The objective's instruction string is defined as follows:
+The first argument is the password. All `_` characters are replaced with spaces. Next follows the prefix. If none is set BetonQuest will look up a translatable version from the messages.yml config. To completely disable the prefix an empty prefix is required (password:bla prefix: events:...).
+You can also add the `ignoreCase` argument if you want a passwords capitalization ignored. This is especially important for regex matching.
 
 !!! example
     ```YAML
     password beton ignoreCase prefix:secret events:message,reward
     ```
+    
+The correctness of the given password is validated using a popular system called 
+[regular expressions](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285). This is a little complicated and only worth the effort for experts. If you just want your players to input the exact string you defined as a password you do not need to do anything!
 
 ## Mob Kill: `mobkill`
 
