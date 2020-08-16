@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.effectlib.EffectLibIntegrator;
+import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
@@ -247,7 +248,7 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||
-                        (CitizensHider.getInstance() != null && CitizensHider.getInstance().isInvisible(player, npc))) {
+                        (NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc))) {
                     continue;
                 }
 

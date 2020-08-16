@@ -20,6 +20,8 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEvent;
 
 import java.util.Arrays;
 
@@ -45,9 +47,11 @@ public class CitizensIntegrator implements Integrator {
             new CitizensHologram();
         }
 
-        CitizensHider.start();
-        plugin.registerEvents("updatevisibility", NPCUpdateVisibilityEvent.class);
-
+        // if ProtocolLib is hooked, start NPCHider
+        if (Compatibility.getHooked().contains("ProtocolLib")) {
+            NPCHider.start();
+            plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+        }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
         plugin.registerObjectives("npcrange", NPCRangeObjective.class);
@@ -73,8 +77,6 @@ public class CitizensIntegrator implements Integrator {
         if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "HolographicDisplays"))) {
             CitizensHologram.reload();
         }
-
-        CitizensHider.start();
     }
 
     @Override

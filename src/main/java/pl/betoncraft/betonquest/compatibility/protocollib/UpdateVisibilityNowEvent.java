@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility.citizens;
+package pl.betoncraft.betonquest.compatibility.protocollib;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -23,15 +23,15 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class NPCUpdateVisibilityEvent extends QuestEvent {
+public class UpdateVisibilityNowEvent extends QuestEvent {
 
-    public NPCUpdateVisibilityEvent(final Instruction instruction) throws InstructionParseException {
+    public UpdateVisibilityNowEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
     }
 
     @Override
     protected Void execute(final String id) throws QuestRuntimeException {
-        CitizensHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
+        NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
         return null;
     }
 }

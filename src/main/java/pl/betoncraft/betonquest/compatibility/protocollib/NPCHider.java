@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.betoncraft.betonquest.compatibility.citizens;
+package pl.betoncraft.betonquest.compatibility.protocollib;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
@@ -47,35 +47,38 @@ import java.util.logging.Level;
  * @author Namnodorel
  * @author Jakub Sapalski
  */
-public class CitizensHider extends BukkitRunnable implements Listener {
+public class NPCHider extends BukkitRunnable implements Listener {
 
-    private static CitizensHider instance = null;
+    private static NPCHider instance = null;
 
-    final private Map<Integer, Set<ConditionID>> npcs;
+    private EntityHider hider;
+    private Map<Integer, Set<ConditionID>> npcs;
+    private Integer updateInterval;
 
-    private CitizensHider() {
+    private NPCHider() {
         super();
         npcs = new HashMap<>();
-        final int updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+        updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
         loadFromConfig();
         runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     /**
-     * Starts (or restarts) the CitizensHider. It loads the current configuration for hidden NPCs
+     * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
      */
     public static void start() {
         if (instance != null) {
             instance.stop();
         }
-        instance = new CitizensHider();
+        instance = new NPCHider();
     }
 
     /**
-     * @return the currently used CitizensHider instance
+     * @return the currently used NPCHider instance
      */
-    public static CitizensHider getInstance() {
+    public static NPCHider getInstance() {
         return instance;
     }
 
@@ -95,10 +98,10 @@ public class CitizensHider extends BukkitRunnable implements Listener {
                 final int id;
                 try {
                     id = Integer.parseInt(npcID);
-                } catch (final NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
                     LogUtils.logThrowable(e);
-                    continue;
+                    continue npcs;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
                 final String conditionsString = section.getString(npcID);
@@ -106,7 +109,7 @@ public class CitizensHider extends BukkitRunnable implements Listener {
                 for (final String condition : conditionsString.split(",")) {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
-                    } catch (final ObjectNotFoundException e) {
+                    } catch (ObjectNotFoundException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
                                 "' does not exist, in custom.yml hide_npcs with ID " + npcID);
                         LogUtils.logThrowable(e);
@@ -130,9 +133,10 @@ public class CitizensHider extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Stops the CitizensHider, cleaning up all listeners, runnables etc.
+     * Stops the NPCHider, cleaning up all listeners, runnables etc.
      */
     public void stop() {
+        hider.close();
         cancel();
         HandlerList.unregisterAll(this);
     }
@@ -159,15 +163,14 @@ public class CitizensHider extends BukkitRunnable implements Listener {
 
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
-            LogUtils.getLogger().log(Level.WARNING, "CitizensHider could not update visibility for npc " + npcID + ": No npc with this id found!");
+            LogUtils.getLogger().log(Level.WARNING, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
         }
         if (npc.isSpawned()) {
-            final Player playerNPC = (Player)npc.getEntity();
             if (hidden) {
-                player.hidePlayer(BetonQuest.getInstance(), playerNPC);
+                hider.hideEntity(player, npc.getEntity());
             } else {
-                player.showPlayer(BetonQuest.getInstance(), playerNPC);
+                hider.showEntity(player, npc.getEntity());
             }
         }
     }
@@ -217,7 +220,7 @@ public class CitizensHider extends BukkitRunnable implements Listener {
      * @return true if the NPC is visible to that player, false otherwise
      */
     public boolean isInvisible(final Player player, final NPC npc) {
-        return player.canSee((Player)npc.getEntity());
+        return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
 
     @EventHandler(ignoreCancelled = true)
