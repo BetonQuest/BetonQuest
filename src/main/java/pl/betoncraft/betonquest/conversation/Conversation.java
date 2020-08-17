@@ -630,10 +630,7 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            // don't forget to select the option prior to printing its text
-            selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
-            // print to player npc's answer
-            printNPCText();
+
             final ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
 
             new BukkitRunnable() {
@@ -647,6 +644,11 @@ public class Conversation implements Listener {
                     }
                 }
             }.runTask(BetonQuest.getInstance());
+
+            // don't forget to select the option prior to printing its text
+            selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
+            // print to player npc's answer
+            printNPCText();
         }
     }
 
