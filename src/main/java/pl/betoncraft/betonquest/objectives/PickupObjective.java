@@ -24,7 +24,7 @@ public class PickupObjective extends Objective implements Listener {
 
     private final boolean notify;
 
-    public PickupObjective(Instruction instruction) throws InstructionParseException {
+    public PickupObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
         template = PickupData.class;
@@ -36,17 +36,19 @@ public class PickupObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPickup(EntityPickupItemEvent event) {
-        if (!isValidItem(event.getItem().getItemStack())) return;
-        if (!(event.getEntity() instanceof Player)) return;
+    public void onPickup(final EntityPickupItemEvent event) {
+        if (!isValidItem(event.getItem().getItemStack()) || !(event.getEntity() instanceof Player)) {
+            return;
+        }
 
-        Player player = (Player) event.getEntity();
-        String playerID = PlayerConverter.getID(player);
+        final Player player = (Player) event.getEntity();
+        final String playerID = PlayerConverter.getID(player);
 
-        if (!containsPlayer(playerID)) return;
-        if (!checkConditions(playerID)) return;
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+            return;
+        }
 
-        PickupObjective.PickupData playerData = (PickupObjective.PickupData) dataMap.get(playerID);
+        final PickupObjective.PickupData playerData = (PickupObjective.PickupData) dataMap.get(playerID);
         playerData.pickup();
 
         if (playerData.isFinished()) {
@@ -59,9 +61,11 @@ public class PickupObjective extends Objective implements Listener {
         }
     }
 
-    private boolean isValidItem(ItemStack itemStack) {
-        for (Item item : pickupItems) {
-            if (item.isItemEqual(itemStack)) return true;
+    private boolean isValidItem(final ItemStack itemStack) {
+        for (final Item item : pickupItems) {
+            if (item.isItemEqual(itemStack)) {
+                return true;
+            }
         }
         return false;
     }
@@ -82,7 +86,7 @@ public class PickupObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(String name, String playerID) {
+    public String getProperty(final String name, final String playerID) {
         switch (name.toLowerCase()) {
             case "left":
                 return Integer.toString(((PickupObjective.PickupData) dataMap.get(playerID)).getAmount());
@@ -97,7 +101,7 @@ public class PickupObjective extends Objective implements Listener {
 
         private int amount;
 
-        public PickupData(String instruction, String playerID, String objID) {
+        public PickupData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Integer.parseInt(instruction);
         }

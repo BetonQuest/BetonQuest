@@ -188,15 +188,16 @@ The objective's instruction string is defined as follows:
 
 [Java's regular expression documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum)
 
-## Pickup: `pickup`
+## Pickup item: `pickup`
 
 To complete this objective you need to pickup specified amount of items. 
-The first argument must be the internal name of items defined in `items.yml`. 
+The first argument must be the internal name of items defined in `items.yml`. This could be a list of multiple items.
 You can optionally add `amount:` argument to specify how many of these items the player needs to pickup. 
 You can also add 'notify' keyword if you want to display to players the amount of items left to pickup.
 !!! example
     ```YAML
     pickup emerald amount:3 events:reward notify
+    pickup emerald,diamond amount:6 events:reward notify
     ```
 
 ## Mob Kill: `mobkill`
