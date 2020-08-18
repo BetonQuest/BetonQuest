@@ -188,6 +188,17 @@ The objective's instruction string is defined as follows:
 
 [Java's regular expression documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum)
 
+## Pickup: `pickup`
+
+To complete this objective you need to pickup specified amount of items. 
+The first argument must be the internal name of items defined in `items.yml`. 
+You can optionally add `amount:` argument to specify how many of these items the player needs to pickup. 
+You can also add 'notify' keyword if you want to display to players the amount of items left to pickup.
+!!! example
+    ```YAML
+    pickup emerald amount:3 events:reward notify
+    ```
+
 ## Mob Kill: `mobkill`
 
 The player must kill specified amount of mobs You must specify mob type first and then amount. You can find possible mob types here: [mob types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Additionally you can specify names for mobs with `name:Uber_Zombie`, so only killing properly named mobs counts. All `_` are replaced with spaces, so in this example you would have to kill 5 zombies with "Uber Zombie" above their heads. You can also specify `notify` keyword to display messages to the player each time he kills a mob, optionally with the notification interval after colon. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the keyword used in that event.

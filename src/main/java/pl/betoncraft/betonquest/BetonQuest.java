@@ -522,6 +522,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("step", StepObjective.class);
         registerObjectives("logout", LogoutObjective.class);
         registerObjectives("password", PasswordObjective.class);
+        registerObjectives("pickup", PickupObjective.class);
         registerObjectives("fish", FishObjective.class);
         registerObjectives("enchant", EnchantObjective.class);
         registerObjectives("shear", ShearObjective.class);
