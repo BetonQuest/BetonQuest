@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed 'xp' event to 'experience'
 - new config option mysql.enabled
     - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
+- events in conversation options are now executed before npc or player responses are printed
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions

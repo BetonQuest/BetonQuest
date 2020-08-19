@@ -592,6 +592,10 @@ public class Conversation implements Listener {
         }
 
         public void run() {
+            // fire events
+            for (final EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
+                BetonQuest.event(playerID, event);
+            }
             new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
         }
     }
@@ -611,6 +615,10 @@ public class Conversation implements Listener {
         }
 
         public void run() {
+            // fire events
+            for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
+                BetonQuest.event(playerID, event);
+            }
             new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
         }
     }
@@ -637,14 +645,9 @@ public class Conversation implements Listener {
             final ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
 
             new BukkitRunnable() {
-
                 @Override
                 public void run() {
                     Bukkit.getServer().getPluginManager().callEvent(event);
-                    // fire events
-                    for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
-                        BetonQuest.event(playerID, event);
-                    }
                 }
             }.runTask(BetonQuest.getInstance());
         }
@@ -665,11 +668,6 @@ public class Conversation implements Listener {
         }
 
         public void run() {
-            // fire events
-            for (final EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
-                BetonQuest.event(playerID, event);
-            }
-
             // print options
             printOptions(data.getPointers(playerID, option, OptionType.NPC));
         }
