@@ -466,12 +466,12 @@ public class Instruction {
     }
 
     public ArrayList<Integer> getAllNumbers() {
-        final Pattern p = Pattern.compile("-?\\d+");
+        final Pattern p = Pattern.compile("\\b[\\d]+\\b");
         final Matcher m = p.matcher(instruction);
 
         final ArrayList<Integer> result = new ArrayList<>();
         while (m.find()) {
-            result.add(Integer.parseInt(m.group()));
+            result.add(Integer.parseInt(m.group().replaceAll(" ","")));
         }
         return result;
     }
