@@ -31,6 +31,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -43,6 +44,7 @@ public class PasswordObjective extends Objective implements Listener {
     private final String regex;
     private final boolean ignoreCase;
     private final String passwordPrefix;
+    private final EventID[] failEvents;
 
     public PasswordObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -51,6 +53,7 @@ public class PasswordObjective extends Objective implements Listener {
         ignoreCase = instruction.hasArgument("ignoreCase");
         final String prefix = instruction.getOptional("prefix");
         passwordPrefix = prefix.isEmpty() ? prefix : prefix + ": ";
+        failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -74,18 +77,24 @@ public class PasswordObjective extends Objective implements Listener {
                     Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(),"password") : passwordPrefix;
             if (prefix.isEmpty() || message.toLowerCase().startsWith(prefix.toLowerCase())) {
                 final String password = message.substring(prefix.length());
-                if ((ignoreCase ? password.toLowerCase() : password).matches(regex) && checkConditions(playerID)) {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            completeObjective(playerID);
-                        }
-                    }.runTask(BetonQuest.getInstance());
+                if (checkConditions(playerID)) {
+                    if ((ignoreCase ? password.toLowerCase() : password).matches(regex)) {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                completeObjective(playerID);
+                            }
+                        }.runTask(BetonQuest.getInstance());
 
-                    if (fromCommand) {
-                        return !prefix.isEmpty();
+                        if (fromCommand) {
+                            return !prefix.isEmpty();
+                        } else {
+                            return true;
+                        }
                     } else {
-                      return true;
+                        for (final EventID event : failEvents) {
+                            BetonQuest.event(playerID, event);
+                        }
                     }
                 }
                 return !prefix.isEmpty();
