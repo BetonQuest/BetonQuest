@@ -201,7 +201,7 @@ You can also add the `notify` keyword to display how many items are left to pick
     pickup emerald amount:3 events:reward notify
     pickup emerald,diamond amount:6 events:reward notify
     ```
-This objective has two variable properties: `amount` and `left`.
+This objective has two variable properties: `amount` (shows how much the player already collected) and `left` (displays how much is left to pickup).
 
 ## Mob Kill: `mobkill`
 
