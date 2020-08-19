@@ -190,15 +190,18 @@ The objective's instruction string is defined as follows:
 
 ## Pickup item: `pickup`
 
-To complete this objective you need to pickup specified amount of items. 
-The first argument must be the internal name of items defined in `items.yml`. This could be a list of multiple items.
-You can optionally add `amount:` argument to specify how many of these items the player needs to pickup. 
-You can also add 'notify' keyword if you want to display to players the amount of items left to pickup.
+To complete this objective you need to pickup the specified amount of items. 
+The first argument must be the internal name of an item defined in `items.yml`. This can also be a list of multiple items.
+You can optionally add the `amount:` argument to specify how many of these items the player needs to pickup. 
+The amount is a total amount! Not an amount per specified item.
+You can also add the `notify` keyword to display how many items are left to pickup.
+
 !!! example
     ```YAML
     pickup emerald amount:3 events:reward notify
     pickup emerald,diamond amount:6 events:reward notify
     ```
+This objective has two variable properties: `amount` and `left`.
 
 ## Mob Kill: `mobkill`
 
