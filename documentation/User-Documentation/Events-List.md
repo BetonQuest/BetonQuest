@@ -367,7 +367,10 @@ This event will play a specified sound for the player. The only required argumen
 
 **persistent**
 
-Gives the player a specified amount of points in a specified category. Amount can be negative if you want to subtract points. You can also use an asterisk to do multiplication (or division, if you use a fraction). First argument after the event name must be a category, and the second one - amount of points to give/take/multiply.
+Gives the player a specified amount of points in a specified category. Amount can be negative if you want to subtract points.
+You can also use an asterisk to do multiplication (or division, if you use a fraction).
+First argument after the event name must be a category, and the second one - amount of points to give/take/multiply.
+This event also supports an optional `notify` argument that will display information about the change using the notification system.
 
 !!! example
     ```YAML

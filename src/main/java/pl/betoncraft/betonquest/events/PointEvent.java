@@ -23,6 +23,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Point;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
@@ -38,15 +39,17 @@ import java.util.logging.Level;
  * @author Jakub Sapalski
  */
 public class PointEvent extends QuestEvent {
-
     protected final VariableNumber count;
     protected final boolean multi;
+    private final boolean notify;
+    protected final String categoryName;
     protected final String category;
 
     public PointEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         persistent = true;
-        category = Utils.addPackage(instruction.getPackage(), instruction.next());
+        categoryName = instruction.next();
+        category = Utils.addPackage(instruction.getPackage(), categoryName);
         String number = instruction.next();
         if (number.startsWith("*")) {
             multi = true;
@@ -56,9 +59,11 @@ public class PointEvent extends QuestEvent {
         }
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }
+        notify = instruction.hasArgument("notify");
     }
 
     @Override
@@ -85,15 +90,25 @@ public class PointEvent extends QuestEvent {
     }
 
     private void addPoints(final String playerID, final PlayerData playerData) throws QuestRuntimeException {
+        final int intCount = count.getInt(playerID);
         if (multi) {
             for (final Point p : playerData.getPoints()) {
                 if (p.getCategory().equalsIgnoreCase(category)) {
-                    playerData.modifyPoints(category,
-                            (int) Math.floor((p.getCount() * count.getDouble(playerID)) - p.getCount()));
+                    playerData.modifyPoints(category, (int)Math.floor(p.getCount() * count.getDouble(playerID) - p.getCount()));
+                    if (notify) {
+                        Config.sendNotify(playerID, "point_multiplied", new String[] { String.valueOf(intCount), categoryName }, "point_multiplied,info");
+                    }
                 }
             }
-        } else {
-            playerData.modifyPoints(category, (int) Math.floor(count.getDouble(playerID)));
+        }
+        else {
+            playerData.modifyPoints(category, (int)Math.floor(count.getDouble(playerID)));
+            if (notify && intCount > 0) {
+                Config.sendNotify(playerID, "point_given", new String[] { String.valueOf(intCount), categoryName }, "point_given,info");
+
+            } else if (notify) {
+                Config.sendNotify(playerID, "point_taken", new String[] { String.valueOf(Math.abs(intCount)), categoryName }, "point_taken,info");
+            }
         }
     }
 }
