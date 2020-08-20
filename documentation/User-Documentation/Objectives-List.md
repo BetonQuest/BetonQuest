@@ -171,11 +171,11 @@ The only downside of this is that all wrong attemtps will be shown in the global
 The objective's instruction string is defined as follows:
 The first argument is the password. All `_` characters are replaced with spaces. Next follows the prefix. If no custom prefix is set BetonQuest will look up a translatable version from the *messages.yml* config. To completely disable the prefix an empty prefix is required (password:bla prefix: events:...).
 You can also add the `ignoreCase` argument if you want a passwords capitalization ignored. This is especially important for regex matching.
-If you want to trigger event when the player failed to guess the password you can use the argument `fail` with a list of events.
+If you want to trigger event when the player failed to guess the password you can use the argument `fail` with a list of events (comma separated).
 
 !!! example
     ```YAML
-    password beton ignoreCase prefix:secret fail:notifyFail events:message,reward
+    password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward
     ```
     
 The correctness of the given password is validated using a popular system called 
