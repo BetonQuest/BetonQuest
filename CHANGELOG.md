@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed outdated Brewery dependency
 - fixed message dublication when using the packet interceptor
 - fixed Journal interaction with Lectern
+- fixed QuestItems ignoring durabilty
 - fixed QuestItem interaction with Lectern, Campfire and Composter
 - fixed journal update after magic inventory is closed
 - fixed lever event not toggling the lever
