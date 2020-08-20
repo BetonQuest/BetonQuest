@@ -1,17 +1,19 @@
 # Description
-Your description here.
+<!-- Your description here. -->
 
 ## Related Issues
 Closes #XXXX <- Issue number if existing
 
-## Checklist:
+## Checklists
+### Did you...
 <!-- Check these things before posting the pull request: -->
-- [ ]  Did you test the code?
-- [ ]  Was the Changelog Updated?
-- [ ]  Was the Documentation updated?
-- [ ]  Was the ConfigUpdater adjusted for syntax changes?
-- [ ]  Does the commit history make sense?
+- [ ]  ... test your changes?
+- [ ]  ... update the changelog?
+- [ ]  ... update the documentation?
+- [ ]  ... adjust the ConfigUpdater?
+- [ ]  ... clean the commit history?
 
 
-- [ ]  No TODOs left?
-- [ ]  No commented out code?
+- [ ]  ... solve all TODOs?
+- [ ]  ... remove any commented out code?
+- [ ]  Did the build pipeline succeed?
