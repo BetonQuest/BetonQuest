@@ -191,9 +191,10 @@ The objective's instruction string is defined as follows:
 ## Pickup item: `pickup`
 
 To complete this objective you need to pickup the specified amount of items. 
-The first argument must be the internal name of an item defined in `items.yml`. This can also be a list of multiple items.
+The first argument must be the internal name of an item defined in `items.yml`. This can also be a comma-separated list of multiple items.
 You can optionally add the `amount:` argument to specify how many of these items the player needs to pickup. 
-The amount is a total amount! Not an amount per specified item.
+This amount is a total amount though, it does not count per each individual item. 
+
 You can also add the `notify` keyword to display how many items are left to pickup.
 
 !!! example

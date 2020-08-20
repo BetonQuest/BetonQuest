@@ -37,7 +37,7 @@ public class PickupObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
-        if (!isValidItem(event.getItem().getItemStack()) || !(event.getEntity() instanceof Player)) {
+        if (isInvalidItem(event.getItem().getItemStack()) || !(event.getEntity() instanceof Player)) {
             return;
         }
 
@@ -48,7 +48,7 @@ public class PickupObjective extends Objective implements Listener {
             return;
         }
 
-        final PickupObjective.PickupData playerData = (PickupObjective.PickupData) dataMap.get(playerID);
+        final PickupData playerData = getPickupData(playerID);
         playerData.pickup();
 
         if (playerData.isFinished()) {
@@ -61,13 +61,13 @@ public class PickupObjective extends Objective implements Listener {
         }
     }
 
-    private boolean isValidItem(final ItemStack itemStack) {
+    private boolean isInvalidItem(final ItemStack itemStack) {
         for (final Item item : pickupItems) {
             if (item.isItemEqual(itemStack)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -89,9 +89,9 @@ public class PickupObjective extends Objective implements Listener {
     public String getProperty(final String name, final String playerID) {
         switch (name.toLowerCase()) {
             case "left":
-                return Integer.toString(((PickupObjective.PickupData) dataMap.get(playerID)).getAmount());
+                return Integer.toString(getPickupData(playerID).getAmount());
             case "amount":
-                return Integer.toString(amount - ((PickupObjective.PickupData) dataMap.get(playerID)).getAmount());
+                return Integer.toString(amount - getPickupData(playerID).getAmount());
             default:
                 return "";
         }
@@ -126,4 +126,7 @@ public class PickupObjective extends Objective implements Listener {
 
     }
 
+    private PickupData getPickupData(String playerID) {
+        return (PickupData) dataMap.get(playerID);
+    }
 }
