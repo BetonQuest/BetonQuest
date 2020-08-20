@@ -126,7 +126,7 @@ public class PickupObjective extends Objective implements Listener {
 
     }
 
-    private PickupData getPickupData(String playerID) {
+    private PickupData getPickupData(final String playerID) {
         return (PickupData) dataMap.get(playerID);
     }
 }
