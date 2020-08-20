@@ -471,7 +471,7 @@ public class Instruction {
 
         final ArrayList<Integer> result = new ArrayList<>();
         while (m.find()) {
-            result.add(Integer.parseInt(m.group().replaceAll(" ","")));
+            result.add(Integer.parseInt(m.group()));
         }
         return result;
     }
