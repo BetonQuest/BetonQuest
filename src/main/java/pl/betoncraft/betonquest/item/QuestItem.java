@@ -17,36 +17,16 @@
  */
 package pl.betoncraft.betonquest.item;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.FireworkEffectMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.id.ItemID;
-import pl.betoncraft.betonquest.item.typehandler.BookHandler;
-import pl.betoncraft.betonquest.item.typehandler.ColorHandler;
-import pl.betoncraft.betonquest.item.typehandler.DurabilityHandler;
-import pl.betoncraft.betonquest.item.typehandler.EnchantmentsHandler;
-import pl.betoncraft.betonquest.item.typehandler.FireworkHandler;
-import pl.betoncraft.betonquest.item.typehandler.HeadOwnerHandler;
-import pl.betoncraft.betonquest.item.typehandler.LoreHandler;
-import pl.betoncraft.betonquest.item.typehandler.NameHandler;
-import pl.betoncraft.betonquest.item.typehandler.PotionHandler;
-import pl.betoncraft.betonquest.item.typehandler.UnbreakableHandler;
+import pl.betoncraft.betonquest.item.typehandler.*;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 
 import java.util.List;
@@ -511,6 +491,10 @@ public class QuestItem {
             final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
             final List<FireworkEffect> list = firework.getEffects();
             fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
+        }
+        if (meta instanceof Damageable) {
+            final Damageable damageableMeta = (Damageable) meta;
+            damageableMeta.setDamage(getDurability());
         }
         item.setItemMeta(meta);
         return item;
