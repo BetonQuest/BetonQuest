@@ -176,7 +176,7 @@ The objective's instruction string is defined as follows:
    Documentation for regular expression in Java [here](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum).
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
-   Note that every custom prefix is suffixed with `: `, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
+   Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
    To disable the prefix use an empty `prefix:` declaration, e.g. `password myfancypassword prefix: events:success`.
    Be aware of these side effects that come with disabling the prefix:
     
