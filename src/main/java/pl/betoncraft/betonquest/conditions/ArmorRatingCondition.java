@@ -60,6 +60,8 @@ public class ArmorRatingCondition extends Condition {
                 rating += 2;
             } else if (helmet.getType() == Material.DIAMOND_HELMET) {
                 rating += 3;
+            } else if (helmet.getType().toString().equals("NETHERITE_HELMET")) {
+                rating += 3;
             }
         }
         if (boots != null) {
@@ -73,7 +75,10 @@ public class ArmorRatingCondition extends Condition {
                 rating += 2;
             } else if (boots.getType() == Material.DIAMOND_BOOTS) {
                 rating += 3;
+            } else if (boots.getType().toString().equals("NETHERITE_BOOTS")) {
+                rating += 3;
             }
+
         }
         if (leggings != null) {
             if (leggings.getType() == Material.LEATHER_LEGGINGS) {
@@ -85,6 +90,8 @@ public class ArmorRatingCondition extends Condition {
             } else if (leggings.getType() == Material.IRON_LEGGINGS) {
                 rating += 5;
             } else if (leggings.getType() == Material.DIAMOND_LEGGINGS) {
+                rating += 6;
+            } else if (leggings.getType().toString().equals("NETHERITE_LEGGINGS")) {
                 rating += 6;
             }
         }
@@ -98,6 +105,8 @@ public class ArmorRatingCondition extends Condition {
             } else if (chest.getType() == Material.IRON_CHESTPLATE) {
                 rating += 6;
             } else if (chest.getType() == Material.DIAMOND_CHESTPLATE) {
+                rating += 8;
+            } else if (chest.getType().toString().equals("NETHERITE_CHESTPLATE")) {
                 rating += 8;
             }
         }
