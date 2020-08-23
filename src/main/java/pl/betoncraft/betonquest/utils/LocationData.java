@@ -43,7 +43,7 @@ public class LocationData {
      * This is a regex, that matches the format of a location
      */
     public final static String REGEX_LOCATION = REGEX_DOUBLE + ";" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ";"
-            + "(\\w+\\.?)*+" + "(;" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ")?";
+            + "((\\w|-)+\\.?)+" + "(;" + REGEX_DOUBLE + ";" + REGEX_DOUBLE + ")?";
     /**
      * This is a regex, that matches the format of a vector
      */
