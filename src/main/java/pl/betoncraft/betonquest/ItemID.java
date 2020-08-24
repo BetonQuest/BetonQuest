@@ -9,8 +9,8 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 public class ItemID extends pl.betoncraft.betonquest.id.ItemID {
 
-    public ItemID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, id);
+    public ItemID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, identifier);
     }
 
 }

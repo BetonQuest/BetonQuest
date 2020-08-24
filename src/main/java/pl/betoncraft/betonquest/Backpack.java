@@ -186,7 +186,7 @@ public class Backpack implements Listener {
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[54];
-            int i = 0;
+            int index = 0;
             // insert the journal if the player doesn't have it in his inventory
             if (page == 0) {
                 if (Journal.hasJournal(playerID)) {
@@ -194,14 +194,14 @@ public class Backpack implements Listener {
                 } else {
                     content[0] = playerData.getJournal().getAsItem();
                 }
-                i++;
+                index++;
             } else {
             }
             // set all the items
-            while (i < 45 && i + (page * 45) <= backpackItems.size()) {
-                final ItemStack item = backpackItems.get(i + (page * 45) - 1);
-                content[i] = item;
-                i++;
+            while (index < 45 && index + (page * 45) <= backpackItems.size()) {
+                final ItemStack item = backpackItems.get(index + (page * 45) - 1);
+                content[index] = item;
+                index++;
             }
             // if there are other pages, place the buttons
             if (page > 0) {
@@ -293,11 +293,11 @@ public class Backpack implements Listener {
             } else if (slot < 45) {
                 // raw slot lower than 45 is a quest item
                 // read the id of the item from clicked slot
-                final int id = page * 45 + slot - 1;
+                final int identifier = page * 45 + slot - 1;
                 ItemStack item = null;
                 // get the item if it exists
-                if (playerData.getBackpack().size() > id) {
-                    item = playerData.getBackpack().get(id);
+                if (playerData.getBackpack().size() > identifier) {
+                    item = playerData.getBackpack().get(identifier);
                 }
                 if (item != null) {
                     // if the item exists, put it in player's inventory
@@ -328,7 +328,7 @@ public class Backpack implements Listener {
                         item.setAmount(backpackAmount - getAmount + leftAmount);
                         if (backpackAmount - getAmount + leftAmount == 0) {
                             final List<ItemStack> backpackItems = playerData.getBackpack();
-                            backpackItems.remove(id);
+                            backpackItems.remove(identifier);
                             playerData.setBackpack(backpackItems);
                         }
                     }
@@ -417,12 +417,12 @@ public class Backpack implements Listener {
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
-            int i = 0;
+            int index = 0;
             for (final String name : cancelers.keySet()) {
                 final QuestCanceler canceler = cancelers.get(name);
-                content[i] = canceler.getItem(playerID);
-                map.put(i, canceler);
-                i++;
+                content[index] = canceler.getItem(playerID);
+                map.put(index, canceler);
+                index++;
             }
             inv.setContents(content);
             player.openInventory(inv);
@@ -454,12 +454,12 @@ public class Backpack implements Listener {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
                 // loop all compass locations
-                final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
-                if (s != null) {
-                    for (final String key : s.getKeys(false)) {
+                final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("compass");
+                if (section != null) {
+                    for (final String key : section.getKeys(false)) {
                         final String location = pack.getString("main.compass." + key + ".location");
                         String name = null;
-                        if (s.isConfigurationSection(key + ".name")) {
+                        if (section.isConfigurationSection(key + ".name")) {
                             name = pack.getString("main.compass." + key + ".name." + lang);
                             if (name == null) {
                                 name = pack.getString("main.compass." + key + ".name." + Config.getLanguage());
@@ -495,13 +495,13 @@ public class Backpack implements Listener {
                             LogUtils.getLogger().log(Level.WARNING,
                                     "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
-                        final int x;
-                        final int y;
-                        final int z;
+                        final int locX;
+                        final int locY;
+                        final int locZ;
                         try {
-                            x = Integer.parseInt(parts[0]);
-                            y = Integer.parseInt(parts[1]);
-                            z = Integer.parseInt(parts[2]);
+                            locX = Integer.parseInt(parts[0]);
+                            locY = Integer.parseInt(parts[1]);
+                            locZ = Integer.parseInt(parts[2]);
                         } catch (NumberFormatException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not parse location coordinates in a compass pointer in " + packName
                                     + " package: " + key);
@@ -509,7 +509,7 @@ public class Backpack implements Listener {
                             player.closeInventory();
                             return;
                         }
-                        final Location loc = new Location(world, x, y, z);
+                        final Location loc = new Location(world, locX, locY, locZ);
                         // put location with next number
                         locations.put(counter, loc);
                         names.put(counter, name);
@@ -533,7 +533,7 @@ public class Backpack implements Listener {
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
-            int i = 0;
+            int index = 0;
             for (final Integer slot : locations.keySet()) {
                 final String item = items.get(slot);
                 ItemStack compass = null;
@@ -563,8 +563,8 @@ public class Backpack implements Listener {
                 final String name = names.get(slot);
                 meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
                 compass.setItemMeta(meta);
-                content[i] = compass;
-                i++;
+                content[index] = compass;
+                index++;
             }
             inv.setContents(content);
             player.openInventory(inv);

@@ -173,15 +173,15 @@ public class LocationData {
         if (world == null) {
             throw new InstructionParseException("World " + parts[3] + " does not exists.");
         }
-        final double x;
-        final double y;
-        final double z;
+        final double locX;
+        final double locY;
+        final double locZ;
         float yaw = 0;
         float pitch = 0;
         try {
-            x = Double.parseDouble(parts[0]);
-            y = Double.parseDouble(parts[1]);
-            z = Double.parseDouble(parts[2]);
+            locX = Double.parseDouble(parts[0]);
+            locY = Double.parseDouble(parts[1]);
+            locZ = Double.parseDouble(parts[2]);
             if (parts.length == 6) {
                 yaw = Float.parseFloat(parts[4]);
                 pitch = Float.parseFloat(parts[5]);
@@ -189,7 +189,7 @@ public class LocationData {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse a number in the location.", e);
         }
-        return new Location(world, x, y, z, yaw, pitch);
+        return new Location(world, locX, locY, locZ, yaw, pitch);
     }
 
     /**
@@ -207,16 +207,16 @@ public class LocationData {
                     "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
         }
         final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
-        final double x;
-        final double y;
-        final double z;
+        final double locX;
+        final double locY;
+        final double locZ;
         try {
-            x = Double.parseDouble(parts[0]);
-            y = Double.parseDouble(parts[1]);
-            z = Double.parseDouble(parts[2]);
+            locX = Double.parseDouble(parts[0]);
+            locY = Double.parseDouble(parts[1]);
+            locZ = Double.parseDouble(parts[2]);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse a number in the vector.", e);
         }
-        return new Vector(x, y, z);
+        return new Vector(locX, locY, locZ);
     }
 }

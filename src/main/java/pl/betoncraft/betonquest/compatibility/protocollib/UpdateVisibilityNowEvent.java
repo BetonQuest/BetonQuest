@@ -30,8 +30,8 @@ public class UpdateVisibilityNowEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String id) throws QuestRuntimeException {
-        NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(id));
+    protected Void execute(final String identifier) throws QuestRuntimeException {
+        NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(identifier));
         return null;
     }
 }

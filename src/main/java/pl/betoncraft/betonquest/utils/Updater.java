@@ -173,13 +173,13 @@ public class Updater {
     }
 
     private String readStringFromURL(final String url) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader br = new BufferedReader(reader)) {
-            final StringBuilder sb = new StringBuilder();
-            int cp;
-            while ((cp = br.read()) != -1) {
-                sb.append((char) cp);
+        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader bufferedReader = new BufferedReader(reader)) {
+            final StringBuilder builder = new StringBuilder();
+            int singleChar;
+            while ((singleChar = bufferedReader.read()) != -1) {
+                builder.append((char) singleChar);
             }
-            return sb.toString();
+            return builder.toString();
         }
     }
 
@@ -269,20 +269,20 @@ public class Updater {
             this.unofficial = unofficial;
         }
 
-        public Version(final Version v) {
-            this.version = v.version;
-            this.artifactVersion = v.artifactVersion;
-            this.dev = v.dev;
-            this.unofficial = v.unofficial;
+        public Version(final Version version) {
+            this.version = version.version;
+            this.artifactVersion = version.artifactVersion;
+            this.dev = version.dev;
+            this.unofficial = version.unofficial;
         }
 
-        public boolean isNewer(final Version v, final UpdateStrategy updateStrategy) {
-            if (v.isUnofficial() || !updateStrategy.isDev && v.isDev()) {
+        public boolean isNewer(final Version version, final UpdateStrategy updateStrategy) {
+            if (version.isUnofficial() || !updateStrategy.isDev && version.isDev()) {
                 return false;
             }
-            final int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), v.artifactVersion.getMajorVersion());
-            final int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), v.artifactVersion.getMinorVersion());
-            final int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), v.artifactVersion.getIncrementalVersion());
+            final int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), version.artifactVersion.getMajorVersion());
+            final int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), version.artifactVersion.getMinorVersion());
+            final int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), version.artifactVersion.getIncrementalVersion());
             switch (updateStrategy) {
                 case MAYOR:
                 case MAYOR_DEV:
@@ -309,7 +309,7 @@ public class Updater {
                             return true;
                         } else {
                             final Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
-                            final Integer targetDev = v.isDev() ? v.dev : v.isUnofficial() ? 0 : null;
+                            final Integer targetDev = version.isDev() ? version.dev : version.isUnofficial() ? 0 : null;
                             if (thisDev == null || targetDev == null) {
                                 return thisDev != null;
                             } else {

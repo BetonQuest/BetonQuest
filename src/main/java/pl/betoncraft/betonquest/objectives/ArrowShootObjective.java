@@ -83,9 +83,9 @@ public class ArrowShootObjective extends Objective implements Listener {
                         return;
                     }
                     try {
-                        final double r = range.getDouble(playerID);
+                        final double pRange = range.getDouble(playerID);
                         if (arrowLocation.getWorld().equals(location.getWorld())
-                                && arrowLocation.distanceSquared(location) < r * r
+                                && arrowLocation.distanceSquared(location) < pRange * pRange
                                 && checkConditions(playerID)) {
                             completeObjective(playerID);
                         }

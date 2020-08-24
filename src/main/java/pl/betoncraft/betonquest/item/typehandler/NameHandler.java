@@ -23,7 +23,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Existence;
 public class NameHandler {
 
     private String name = null;
-    private Existence e = Existence.WHATEVER;
+    private Existence existence = Existence.WHATEVER;
 
     public NameHandler() {}
 
@@ -32,10 +32,10 @@ public class NameHandler {
             throw new InstructionParseException("Name cannot be empty");
         }
         if (name.equalsIgnoreCase("none")) {
-            e = Existence.FORBIDDEN;
+            existence = Existence.FORBIDDEN;
         } else {
             this.name = name.replace('_', ' ').replace('&', '§');
-            e = Existence.REQUIRED;
+            existence = Existence.REQUIRED;
         }
     }
 
@@ -44,7 +44,7 @@ public class NameHandler {
     }
 
     public boolean check(final String name) {
-        switch (e) {
+        switch (existence) {
             case WHATEVER:
                 return true;
             case REQUIRED:

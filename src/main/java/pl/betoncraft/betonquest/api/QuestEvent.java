@@ -129,15 +129,15 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                 LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
                 players:
                 for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String id = PlayerConverter.getID(player);
+                    final String identifier = PlayerConverter.getID(player);
                     for (final ConditionID condition : conditions) {
-                        if (!BetonQuest.condition(id, condition)) {
+                        if (!BetonQuest.condition(identifier, condition)) {
                             LogUtils.getLogger().log(Level.FINE, "  Event conditions were not met for player " + player.getName());
                             continue players;
                         }
                     }
                     LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
-                    handle(id);
+                    handle(identifier);
                 }
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {

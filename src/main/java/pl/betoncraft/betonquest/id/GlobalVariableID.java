@@ -24,13 +24,13 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class GlobalVariableID extends ID {
-    public GlobalVariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, id);
+    public GlobalVariableID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, identifier);
     }
 
     @Override
     public Instruction generateInstruction() {
-        return new VariableInstruction(pack, this, id);
+        return new VariableInstruction(pack, this, identifier);
     }
 
     @Override

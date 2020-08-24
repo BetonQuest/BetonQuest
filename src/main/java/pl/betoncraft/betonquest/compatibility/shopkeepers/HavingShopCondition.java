@@ -44,8 +44,8 @@ public class HavingShopCondition extends Condition {
         int count = amount.getInt(playerID);
         for (final Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
             if (s instanceof PlayerShopkeeper) {
-                final PlayerShopkeeper ps = (PlayerShopkeeper) s;
-                if (ps.getOwnerUUID() != null && ps.getOwnerUUID().toString().equals(playerID)) {
+                final PlayerShopkeeper shopkeeper = (PlayerShopkeeper) s;
+                if (shopkeeper.getOwnerUUID() != null && shopkeeper.getOwnerUUID().toString().equals(playerID)) {
                     count--;
                     if (count == 0) {
                         return true;

@@ -103,8 +103,8 @@ public class PartialDateCondition extends Condition {
         }
 
 
-        public boolean isValid(final int i) {
-            return i > 0 && (maxValue == -1 || i <= maxValue);
+        public boolean isValid(final int max) {
+            return max > 0 && (maxValue == -1 || max <= maxValue);
         }
 
         @Override
@@ -147,9 +147,9 @@ public class PartialDateCondition extends Condition {
             for (final String arg : args) {
                 try {
                     if (arg.contains("-")) {
-                        final int i = arg.indexOf("-");
-                        intervals.add(new TimeInterval(Integer.parseInt(arg.substring(0, i)),
-                                Integer.parseInt(arg.substring(i + 1)),
+                        final int index = arg.indexOf("-");
+                        intervals.add(new TimeInterval(Integer.parseInt(arg.substring(0, index)),
+                                Integer.parseInt(arg.substring(index + 1)),
                                 type));
                     } else {
                         intervals.add(new TimeInterval(Integer.parseInt(arg), type));
@@ -176,14 +176,14 @@ public class PartialDateCondition extends Condition {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) {
+        public boolean equals(final Object obj) {
+            if (this == obj) {
                 return true;
             }
-            if (o == null || getClass() != o.getClass()) {
+            if (obj == null || getClass() != obj.getClass()) {
                 return false;
             }
-            final TimeInterval interval = (TimeInterval) o;
+            final TimeInterval interval = (TimeInterval) obj;
             return start == interval.start &&
                     end == interval.end;
         }

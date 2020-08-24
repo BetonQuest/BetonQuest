@@ -18,7 +18,6 @@
 
 package pl.betoncraft.betonquest.compatibility.brewery;
 
-import com.dre.brewery.BIngredients;
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
 import org.bukkit.entity.Player;
@@ -62,16 +61,16 @@ public class TakeBrewEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
 
-        final Player p = PlayerConverter.getPlayer(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;
 
-        for (int i = 0; i < p.getInventory().getSize(); i++) {
-            final ItemStack item = p.getInventory().getItem(i);
+        for (int i = 0; i < player.getInventory().getSize(); i++) {
+            final ItemStack item = player.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
                 if (item.getAmount() - remaining <= 0) {
                     remaining -= item.getAmount();
-                    p.getInventory().setItem(i, null);
+                    player.getInventory().setItem(i, null);
                 } else {
                     item.setAmount(item.getAmount() - remaining);
                     remaining = 0;
@@ -81,7 +80,7 @@ public class TakeBrewEvent extends QuestEvent {
                 }
             }
         }
-        p.updateInventory();
+        player.updateInventory();
         return null;
     }
 }

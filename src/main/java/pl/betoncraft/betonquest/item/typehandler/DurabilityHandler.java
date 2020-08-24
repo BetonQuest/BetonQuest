@@ -23,19 +23,19 @@ import pl.betoncraft.betonquest.item.QuestItem.Number;
 public class DurabilityHandler {
 
     private short durability = 0;
-    private Number e = Number.WHATEVER;
+    private Number number = Number.WHATEVER;
 
     public DurabilityHandler() {}
 
     public void set(String durability) throws InstructionParseException {
         if (durability.endsWith("-")) {
-            e = Number.LESS;
+            number = Number.LESS;
             durability = durability.substring(0, durability.length() - 1);
         } else if (durability.endsWith("+")) {
-            e = Number.MORE;
+            number = Number.MORE;
             durability = durability.substring(0, durability.length() - 1);
         } else {
-            e = Number.EQUAL;
+            number = Number.EQUAL;
         }
         try {
             this.durability = Short.valueOf(durability);
@@ -49,7 +49,7 @@ public class DurabilityHandler {
     }
 
     public boolean check(final int durability) {
-        switch (e) {
+        switch (number) {
             case WHATEVER:
                 return true;
             case EQUAL:
@@ -67,7 +67,7 @@ public class DurabilityHandler {
      * @return checks if the state of this type handler should be ignored
      */
     public boolean whatever() {
-        return e == Number.WHATEVER;
+        return number == Number.WHATEVER;
     }
 
 }

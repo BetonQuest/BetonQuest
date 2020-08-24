@@ -28,11 +28,11 @@ import pl.betoncraft.betonquest.conversation.Conversation;
  */
 public class CitizensConversation extends Conversation {
 
-    private final NPC n;
+    private final NPC npc;
 
     public CitizensConversation(final String playerID, final String conversationID, final Location location, final NPC npc) {
         super(playerID, conversationID, location);
-        this.n = npc;
+        this.npc = npc;
     }
 
     /**
@@ -43,7 +43,7 @@ public class CitizensConversation extends Conversation {
      * @return the NPC or null if it's too early
      */
     public NPC getNPC() {
-        return n;
+        return npc;
     }
 
 }

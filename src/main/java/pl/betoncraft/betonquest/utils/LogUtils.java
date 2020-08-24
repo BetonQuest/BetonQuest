@@ -10,12 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Filter;
-import java.util.logging.Formatter;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Setup the log for the plugin.
@@ -220,22 +215,22 @@ public final class LogUtils {
         private static int index;
 
         private static synchronized void writeHistory() {
-            int i = index;
-            boolean hashistory = false;
+            int currentIndex = index;
+            boolean hasHistory = false;
             do {
-                if (RECORDS[i] != null) {
-                    if (!hashistory) {
+                if (RECORDS[currentIndex] != null) {
+                    if (!hasHistory) {
                         fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-                        hashistory = true;
+                        hasHistory = true;
                     }
-                    fileHandler.publish(RECORDS[i]);
+                    fileHandler.publish(RECORDS[currentIndex]);
                 }
-                i++;
-                if (i == SIZE) {
-                    i = 0;
+                currentIndex++;
+                if (currentIndex == SIZE) {
+                    currentIndex = 0;
                 }
-            } while (i != index);
-            if (hashistory) {
+            } while (currentIndex != index);
+            if (hasHistory) {
                 fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
             }
             Arrays.fill(RECORDS, null);
@@ -277,12 +272,12 @@ public final class LogUtils {
         private String formatThrowable(final LogRecord record) {
             String throwable = "";
             if (record.getThrown() != null) {
-                final StringWriter sw = new StringWriter();
-                final PrintWriter pw = new PrintWriter(sw);
-                pw.println();
-                record.getThrown().printStackTrace(pw);
-                pw.close();
-                throwable = sw.toString();
+                final StringWriter sWriter = new StringWriter();
+                final PrintWriter pWriter = new PrintWriter(sWriter);
+                pWriter.println();
+                record.getThrown().printStackTrace(pWriter);
+                pWriter.close();
+                throwable = sWriter.toString();
             }
             return throwable;
         }

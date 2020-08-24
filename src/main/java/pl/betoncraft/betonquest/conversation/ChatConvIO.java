@@ -47,7 +47,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected final String name;
     protected final Player player;
     protected final HashMap<String, ChatColor[]> colors;
-    protected int i; // counts options
+    protected int optionsCount;
     protected HashMap<Integer, String> options;
     protected String npcText;
     protected String npcName;
@@ -168,8 +168,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @Override
     public void addPlayerOption(final String option) {
-        i++;
-        options.put(i, option);
+        optionsCount++;
+        options.put(optionsCount, option);
     }
 
     @Override
@@ -183,7 +183,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @Override
     public void clear() {
-        i = 0;
+        optionsCount = 0;
         options.clear();
         npcText = null;
     }

@@ -10,8 +10,8 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 @SuppressWarnings("PMD.ShortClassName")
 public abstract class ID extends pl.betoncraft.betonquest.id.ID {
 
-    public ID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, id);
+    public ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, identifier);
     }
 
 }

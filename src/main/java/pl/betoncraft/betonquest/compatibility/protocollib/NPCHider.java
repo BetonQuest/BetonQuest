@@ -95,9 +95,9 @@ public class NPCHider extends BukkitRunnable implements Listener {
             }
             npcs:
             for (final String npcID : section.getKeys(false)) {
-                final int id;
+                final int identifier;
                 try {
-                    id = Integer.parseInt(npcID);
+                    identifier = Integer.parseInt(npcID);
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
                     LogUtils.logThrowable(e);
@@ -117,10 +117,10 @@ public class NPCHider extends BukkitRunnable implements Listener {
                     }
                 }
 
-                if (npcs.containsKey(id)) {
-                    npcs.get(id).addAll(conditions);
+                if (npcs.containsKey(identifier)) {
+                    npcs.get(identifier).addAll(conditions);
                 } else {
-                    npcs.put(id, conditions);
+                    npcs.put(identifier, conditions);
                 }
             }
         }

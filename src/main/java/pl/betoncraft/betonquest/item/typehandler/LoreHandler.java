@@ -26,17 +26,17 @@ import java.util.List;
 public class LoreHandler {
 
     private List<String> lore = new LinkedList<>();
-    private Existence e = Existence.WHATEVER;
+    private Existence existence = Existence.WHATEVER;
     private boolean exact = true;
 
     public LoreHandler() {}
 
     public void set(final String lore) throws InstructionParseException {
         if (lore.equals("none")) {
-            e = Existence.FORBIDDEN;
+            existence = Existence.FORBIDDEN;
             return;
         }
-        e = Existence.REQUIRED;
+        existence = Existence.REQUIRED;
         for (final String line : lore.split(";")) {
             this.lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
         }
@@ -51,7 +51,7 @@ public class LoreHandler {
     }
 
     public boolean check(final List<String> lore) {
-        switch (e) {
+        switch (existence) {
             case WHATEVER:
                 return true;
             case REQUIRED:

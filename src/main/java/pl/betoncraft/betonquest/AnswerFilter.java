@@ -44,62 +44,62 @@ public class AnswerFilter implements Filter {
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object... objects) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object... objects) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7, final Object o8) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7, final Object obj8) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final String s, final Object o, final Object o1, final Object o2, final Object o3, final Object o4, final Object o5, final Object o6, final Object o7, final Object o8, final Object o9) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7, final Object obj8, final Object obj9) {
         return null;
     }
 
     @Override
-    public Result filter(final Logger logger, final Level level, final Marker marker, final Object o, final Throwable throwable) {
+    public Result filter(final Logger logger, final Level level, final Marker marker, final Object obj, final Throwable throwable) {
         return null;
     }
 

@@ -64,12 +64,12 @@ public class ConversationResumer implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMove(final PlayerMoveEvent e) {
-        if (!e.getPlayer().equals(player)) {
+    public void onMove(final PlayerMoveEvent event) {
+        if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (e.getTo().getWorld().equals(loc.getWorld())) {
-            if (e.getTo().distanceSquared(loc) < distance * distance) {
+        if (event.getTo().getWorld().equals(loc.getWorld())) {
+            if (event.getTo().distanceSquared(loc) < distance * distance) {
                 HandlerList.unregisterAll(this);
                 BetonQuest.getInstance().getSaver()
                         .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
@@ -79,8 +79,8 @@ public class ConversationResumer implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onQuit(final PlayerQuitEvent e) {
-        if (!e.getPlayer().equals(player)) {
+    public void onQuit(final PlayerQuitEvent event) {
+        if (!event.getPlayer().equals(player)) {
             return;
         }
         HandlerList.unregisterAll(this);

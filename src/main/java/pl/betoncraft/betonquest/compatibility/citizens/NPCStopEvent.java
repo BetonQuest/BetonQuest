@@ -29,23 +29,23 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  * Stop the NPC when he is walking
  */
 public class NPCStopEvent extends QuestEvent implements Listener {
-    private int id;
+    private int identifier;
 
     public NPCStopEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        id = instruction.getInt();
-        if (id < 0) {
+        identifier = instruction.getInt();
+        if (identifier < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
     }
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(identifier);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + identifier + " does not exist");
         }
         if (!npc.isSpawned()) {
             return null;

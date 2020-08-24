@@ -60,11 +60,11 @@ public class DelEffectEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
         if (any) {
-            p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
+            player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
         } else {
-            effects.forEach(p::removePotionEffect);
+            effects.forEach(player::removePotionEffect);
         }
         return null;
     }

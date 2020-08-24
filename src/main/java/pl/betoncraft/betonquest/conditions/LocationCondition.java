@@ -50,8 +50,8 @@ public class LocationCondition extends Condition {
         if (!location.getWorld().equals(player.getWorld())) {
             return false;
         }
-        final double r = range.getDouble(playerID);
-        return player.getLocation().distanceSquared(location) <= r * r;
+        final double pRange = range.getDouble(playerID);
+        return player.getLocation().distanceSquared(location) <= pRange * pRange;
     }
 
 }

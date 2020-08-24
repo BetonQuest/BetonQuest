@@ -29,11 +29,7 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -350,16 +346,16 @@ public class ConversationData {
     }
 
     public String getText(final String playerID, final String lang, final String option, final OptionType type) {
-        final Option o;
+        final Option opt;
         if (type == OptionType.NPC) {
-            o = npcOptions.get(option);
+            opt = npcOptions.get(option);
         } else {
-            o = playerOptions.get(option);
+            opt = playerOptions.get(option);
         }
-        if (o == null) {
+        if (opt == null) {
             return null;
         }
-        return o.getText(playerID, lang);
+        return opt.getText(playerID, lang);
     }
 
     /**

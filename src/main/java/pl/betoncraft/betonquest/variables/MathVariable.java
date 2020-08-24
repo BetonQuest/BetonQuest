@@ -88,58 +88,58 @@ public class MathVariable extends Variable {
             return new AbsoluteValue(this.parse(string.substring(1, string.length() - 1)));
         }
         String tempCopy = string;
-        final Matcher m = Pattern.compile("(\\(.+\\)|\\[.+]|\\|.+\\|)").matcher(tempCopy);
+        final Matcher matcher = Pattern.compile("(\\(.+\\)|\\[.+]|\\|.+\\|)").matcher(tempCopy);
         //ignore content of braces for all next operations
-        while (m.find()) {
-            final int start = m.start();
-            final int end = m.end();
+        while (matcher.find()) {
+            final int start = matcher.start();
+            final int end = matcher.end();
             final int length = end - start;
-            String s = tempCopy.substring(0, start + 1);
+            String substring = tempCopy.substring(0, start + 1);
             for (int i = 0; i < length - 2; i++) {
-                s += " ";
+                substring += " ";
             }
-            s += tempCopy.substring(end - 1);
-            tempCopy = s;
+            substring += tempCopy.substring(end - 1);
+            tempCopy = substring;
         }
         // ADDITION and SUBTRACTION
-        int i = tempCopy.lastIndexOf("+");
-        int j = tempCopy.lastIndexOf("-");
-        if (i > j) {
-            if (i == 0) {
+        int indexPlus = tempCopy.lastIndexOf("+");
+        int indexMinus = tempCopy.lastIndexOf("-");
+        if (indexPlus > indexMinus) {
+            if (indexPlus == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.ADD);
             }
             //'+' comes after '-'
-            return new Calculation(this.parse(string.substring(0, i)),
-                    this.parse(string.substring(i + 1)),
+            return new Calculation(this.parse(string.substring(0, indexPlus)),
+                    this.parse(string.substring(indexPlus + 1)),
                     Operation.ADD);
-        } else if (j > i) {
-            if (j == 0) {
+        } else if (indexMinus > indexPlus) {
+            if (indexMinus == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.SUBTRACT);
             }
             //'-' comes after '+'
-            return new Calculation(this.parse(string.substring(0, j)),
-                    this.parse(string.substring(j + 1)),
+            return new Calculation(this.parse(string.substring(0, indexMinus)),
+                    this.parse(string.substring(indexMinus + 1)),
                     Operation.SUBTRACT);
         }
         //MULTIPLY and DIVIDE
-        i = tempCopy.lastIndexOf("*");
-        j = tempCopy.lastIndexOf("/");
-        if (i > j) {
+        indexPlus = tempCopy.lastIndexOf("*");
+        indexMinus = tempCopy.lastIndexOf("/");
+        if (indexPlus > indexMinus) {
             //'*' comes after '/'
-            return new Calculation(this.parse(string.substring(0, i)),
-                    this.parse(string.substring(i + 1)),
+            return new Calculation(this.parse(string.substring(0, indexPlus)),
+                    this.parse(string.substring(indexPlus + 1)),
                     Operation.MULTIPLY);
-        } else if (j > i) {
+        } else if (indexMinus > indexPlus) {
             //'/' comes after '*'
-            return new Calculation(this.parse(string.substring(0, j)),
-                    this.parse(string.substring(j + 1)),
+            return new Calculation(this.parse(string.substring(0, indexMinus)),
+                    this.parse(string.substring(indexMinus + 1)),
                     Operation.DIVIDE);
         }
         //POW
-        i = tempCopy.lastIndexOf("^");
-        if (i != -1) {
-            return new Calculation(this.parse(string.substring(0, i)),
-                    this.parse(string.substring(i + 1)),
+        indexPlus = tempCopy.lastIndexOf("^");
+        if (indexPlus != -1) {
+            return new Calculation(this.parse(string.substring(0, indexPlus)),
+                    this.parse(string.substring(indexPlus + 1)),
                     Operation.POW);
         }
         //if string matches a number
@@ -181,8 +181,8 @@ public class MathVariable extends Variable {
             this.variable = variable;
         }
 
-        public ClaculableVariable(final double d) {
-            this(new VariableNumber(d));
+        public ClaculableVariable(final double number) {
+            this(new VariableNumber(number));
         }
 
         public ClaculableVariable(final ConfigPackage pack, final String variable) throws NumberFormatException {
@@ -202,32 +202,32 @@ public class MathVariable extends Variable {
 
     private static class AbsoluteValue implements Calculable {
 
-        private final Calculable a;
+        private final Calculable number;
 
-        public AbsoluteValue(final Calculable a) {
-            this.a = a;
+        public AbsoluteValue(final Calculable number) {
+            this.number = number;
         }
 
         @Override
         public String toString() {
-            return "|" + a + "|";
+            return "|" + number + "|";
         }
 
         @Override
         public double calculate(final String playerId) throws QuestRuntimeException {
-            return Math.abs(a.calculate(playerId));
+            return Math.abs(number.calculate(playerId));
         }
     }
 
     private static class Calculation implements Calculable {
 
-        private final Calculable a;
-        private final Calculable b;
+        private final Calculable numberA;
+        private final Calculable numberB;
         private final Operation operation;
 
-        private Calculation(final Calculable a, final Calculable b, final Operation operation) {
-            this.a = a;
-            this.b = b;
+        private Calculation(final Calculable numberA, final Calculable numberB, final Operation operation) {
+            this.numberA = numberA;
+            this.numberB = numberB;
             this.operation = operation;
         }
 
@@ -236,15 +236,15 @@ public class MathVariable extends Variable {
             try {
                 switch (operation) {
                     case ADD:
-                        return a.calculate(playerId) + b.calculate(playerId);
+                        return numberA.calculate(playerId) + numberB.calculate(playerId);
                     case SUBTRACT:
-                        return a.calculate(playerId) - b.calculate(playerId);
+                        return numberA.calculate(playerId) - numberB.calculate(playerId);
                     case MULTIPLY:
-                        return a.calculate(playerId) * b.calculate(playerId);
+                        return numberA.calculate(playerId) * numberB.calculate(playerId);
                     case DIVIDE:
-                        return a.calculate(playerId) / b.calculate(playerId);
+                        return numberA.calculate(playerId) / numberB.calculate(playerId);
                     case POW:
-                        return Math.pow(a.calculate(playerId), b.calculate(playerId));
+                        return Math.pow(numberA.calculate(playerId), numberB.calculate(playerId));
                     default:
                         throw new QuestRuntimeException("unsupported operation: " + operation);
                 }
@@ -255,11 +255,11 @@ public class MathVariable extends Variable {
 
         @Override
         public String toString() {
-            final String a = ((this.a instanceof Calculation) || this.a.toString().startsWith("-"))
-                    ? ("(" + this.a.toString() + ")") : this.a.toString();
-            final String b = ((this.b instanceof Calculation) || this.b.toString().startsWith("-"))
-                    ? ("(" + this.b.toString() + ")") : this.b.toString();
-            return a + operation.operator + b;
+            final String numberA = ((this.numberA instanceof Calculation) || this.numberA.toString().startsWith("-"))
+                    ? ("(" + this.numberA.toString() + ")") : this.numberA.toString();
+            final String numberB = ((this.numberB instanceof Calculation) || this.numberB.toString().startsWith("-"))
+                    ? ("(" + this.numberB.toString() + ")") : this.numberB.toString();
+            return numberA + operation.operator + numberB;
         }
     }
 }

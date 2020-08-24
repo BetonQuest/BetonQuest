@@ -42,9 +42,9 @@ public class FacingCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
-        float rotation = p.getLocation().getYaw();
-        final float pitch = p.getLocation().getPitch();
+        final Player player = PlayerConverter.getPlayer(playerID);
+        float rotation = player.getLocation().getYaw();
+        final float pitch = player.getLocation().getPitch();
         final Direction facing;
         if (pitch > 60) {
             facing = Direction.DOWN;

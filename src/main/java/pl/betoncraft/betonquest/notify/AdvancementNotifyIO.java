@@ -72,11 +72,11 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     @Override
     public void sendNotify(final String message, final Collection<? extends Player> players) {
-        final NamespacedKey id = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
+        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
 
         // Add the advancement. Pre 1.13 we have to catch some errors here
         try {
-            add(id, Utils.format(message));
+            add(key, Utils.format(message));
         } catch (JsonSyntaxException e) {
             LogUtils.getLogger().log(Level.WARNING, "Failed to create notification. Check your syntax and make sure your icon is lowercase with its vanilla name (IE: minecraft:map)");
             LogUtils.logThrowable(e);
@@ -85,7 +85,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
         // Grant to players
         for (final Player player : players) {
-            grant(id, player);
+            grant(key, player);
         }
 
         // Remove after 10 ticks
@@ -94,9 +94,9 @@ public class AdvancementNotifyIO extends NotifyIO {
             @Override
             public void run() {
                 for (final Player player : players) {
-                    revoke(id, player);
+                    revoke(key, player);
                 }
-                remove(id);
+                remove(key);
             }
         }.runTaskLater(BetonQuest.getInstance(), 10);
 
@@ -104,17 +104,17 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @SuppressWarnings("deprecation")
-    private void add(final NamespacedKey id, final String message) {
-        Bukkit.getUnsafe().loadAdvancement(id, generateJson(message));
+    private void add(final NamespacedKey key, final String message) {
+        Bukkit.getUnsafe().loadAdvancement(key, generateJson(message));
     }
 
     @SuppressWarnings("deprecation")
-    private void remove(final NamespacedKey id) {
-        Bukkit.getUnsafe().removeAdvancement(id);
+    private void remove(final NamespacedKey key) {
+        Bukkit.getUnsafe().removeAdvancement(key);
     }
 
-    private void grant(final NamespacedKey id, final Player player) {
-        final Advancement advancement = Bukkit.getAdvancement(id);
+    private void grant(final NamespacedKey key, final Player player) {
+        final Advancement advancement = Bukkit.getAdvancement(key);
         final AdvancementProgress progress = player.getAdvancementProgress(advancement);
         if (!progress.isDone()) {
             for (final String criteria : progress.getRemainingCriteria()) {
@@ -123,8 +123,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private void revoke(final NamespacedKey id, final Player player) {
-        final Advancement advancement = Bukkit.getAdvancement(id);
+    private void revoke(final NamespacedKey key, final Player player) {
+        final Advancement advancement = Bukkit.getAdvancement(key);
         final AdvancementProgress progress = player.getAdvancementProgress(advancement);
         if (progress.isDone()) {
             for (final String criteria : progress.getRemainingCriteria()) {

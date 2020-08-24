@@ -38,14 +38,14 @@ public class AdvancementCondition extends Condition {
     @SuppressWarnings("deprecation")
     public AdvancementCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        final String i = instruction.next();
-        if (!i.contains(":")) {
-            throw new InstructionParseException("The advancement '" + i + "' is missing a namespace!");
+        final String next = instruction.next();
+        if (!next.contains(":")) {
+            throw new InstructionParseException("The advancement '" + next + "' is missing a namespace!");
         }
-        final String[] split = i.split(":");
+        final String[] split = next.split(":");
         advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
         if (advancement == null) {
-            throw new InstructionParseException("No such advancement: " + i);
+            throw new InstructionParseException("No such advancement: " + next);
         }
     }
 

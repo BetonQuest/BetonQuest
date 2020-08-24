@@ -37,7 +37,7 @@ public class SkriptEventBQ extends SkriptEvent {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
+    public String toString(final Event event, final boolean debug) {
         return "on betonquest event";
     }
 
@@ -48,15 +48,15 @@ public class SkriptEventBQ extends SkriptEvent {
     }
 
     @Override
-    public boolean check(final Event e) {
-        if (e instanceof BQEventSkript.CustomEventForSkript) {
-            final BQEventSkript.CustomEventForSkript event = (BQEventSkript.CustomEventForSkript) e;
-            return literal.check(e, new Checker<Object>() {
+    public boolean check(final Event event) {
+        if (event instanceof BQEventSkript.CustomEventForSkript) {
+            final BQEventSkript.CustomEventForSkript scriptEvent = (BQEventSkript.CustomEventForSkript) event;
+            return literal.check(event, new Checker<Object>() {
                 @Override
-                public boolean check(final Object o) {
-                    if (o instanceof String) {
-                        final String id = (String) o;
-                        return (event.getID().equals(id));
+                public boolean check(final Object obj) {
+                    if (obj instanceof String) {
+                        final String identifier = (String) obj;
+                        return (scriptEvent.getID().equals(identifier));
                     }
                     return false;
                 }

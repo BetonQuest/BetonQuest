@@ -63,7 +63,7 @@ public class EnchantmentsHandler {
             return map;
         }
         for (final SingleEnchantmentHandler checker : checkers) {
-            if (checker.ex != Existence.FORBIDDEN) {
+            if (checker.existence != Existence.FORBIDDEN) {
                 map.put(checker.type, checker.level);
             }
         }
@@ -93,9 +93,9 @@ public class EnchantmentsHandler {
     private class SingleEnchantmentHandler {
 
         private Enchantment type;
-        private Existence ex = Existence.WHATEVER;
+        private Existence existence = Existence.WHATEVER;
         private int level = 1;
-        private Number nr = Number.WHATEVER;
+        private Number number = Number.WHATEVER;
 
         private SingleEnchantmentHandler() {}
 
@@ -106,31 +106,31 @@ public class EnchantmentsHandler {
                 throw new InstructionParseException("Missing value");
             }
             if (parts[0].startsWith("none-")) {
-                ex = Existence.FORBIDDEN;
+                existence = Existence.FORBIDDEN;
                 parts[0] = parts[0].substring(5);
             }
             type = Enchantment.getByName(parts[0].toUpperCase());
             if (type == null) {
                 throw new InstructionParseException("Unknown enchantment type: " + parts[0]);
             }
-            if (ex == Existence.FORBIDDEN) {
+            if (existence == Existence.FORBIDDEN) {
                 return;
             }
-            ex = Existence.REQUIRED;
+            existence = Existence.REQUIRED;
             if (parts.length != 2) {
                 throw new InstructionParseException("Wrong enchantment format");
             }
             if (parts[1].equals("?")) {
-                nr = Number.WHATEVER;
+                number = Number.WHATEVER;
                 parts[1] = "1";
             } else if (parts[1].endsWith("-")) {
-                nr = Number.LESS;
+                number = Number.LESS;
                 parts[1] = parts[1].substring(0, parts[1].length() - 1);
             } else if (parts[1].endsWith("+")) {
-                nr = Number.MORE;
+                number = Number.MORE;
                 parts[1] = parts[1].substring(0, parts[1].length() - 1);
             } else {
-                nr = Number.EQUAL;
+                number = Number.EQUAL;
             }
             try {
                 level = Integer.parseInt(parts[1]);
@@ -143,13 +143,13 @@ public class EnchantmentsHandler {
         }
 
         private boolean check(final Integer level) {
-            if (ex == Existence.WHATEVER) {
+            if (existence == Existence.WHATEVER) {
                 return true;
             }
             if (level == null) {
-                return ex == Existence.FORBIDDEN;
+                return existence == Existence.FORBIDDEN;
             }
-            switch (nr) {
+            switch (number) {
                 case EQUAL:
                     return this.level == level;
                 case MORE:

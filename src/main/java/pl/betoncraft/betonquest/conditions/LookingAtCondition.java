@@ -55,14 +55,14 @@ public class LookingAtCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
-        final Block lookingAt = p.getTargetBlock(null, 6);
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final Block lookingAt = player.getTargetBlock(null, 6);
         if (loc != null) {
             final Location location = loc.getLocation(playerID);
-            final Location to = lookingAt.getLocation();
-            if (location.getBlockX() != to.getBlockX()
-                    || location.getBlockY() != to.getBlockY()
-                    || location.getBlockZ() != to.getBlockZ()) {
+            final Location locationAt = lookingAt.getLocation();
+            if (location.getBlockX() != locationAt.getBlockX()
+                    || location.getBlockY() != locationAt.getBlockY()
+                    || location.getBlockZ() != locationAt.getBlockZ()) {
                 return false;
             }
         }

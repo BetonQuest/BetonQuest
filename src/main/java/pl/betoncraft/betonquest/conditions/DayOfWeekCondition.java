@@ -39,20 +39,20 @@ public class DayOfWeekCondition extends Condition {
         super.staticness = true;
         super.persistent = true;
         final String dayString = instruction.next();
-        DayOfWeek d;
+        DayOfWeek dayOfWeek;
         try {
-            d = DayOfWeek.of(Integer.parseInt(dayString));
+            dayOfWeek = DayOfWeek.of(Integer.parseInt(dayString));
         } catch (DateTimeException e) {
             throw new InstructionParseException(dayString + " is not a valid day of a week", e);
         } catch (NumberFormatException e) {
             LogUtils.logThrowableIgnore(e);
             try {
-                d = DayOfWeek.valueOf(dayString.toUpperCase());
+                dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase());
             } catch (IllegalArgumentException iae) {
                 throw new InstructionParseException(dayString + " is not a valid day of a week", iae);
             }
         }
-        this.day = d;
+        this.day = dayOfWeek;
     }
 
     @Override

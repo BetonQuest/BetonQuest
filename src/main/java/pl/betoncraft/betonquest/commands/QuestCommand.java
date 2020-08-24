@@ -17,19 +17,6 @@
  */
 package pl.betoncraft.betonquest.commands;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringJoiner;
-import java.util.TreeMap;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import pl.betoncraft.betonquest.*;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
@@ -60,15 +46,14 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
-import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.ComponentBuilder;
-import pl.betoncraft.betonquest.utils.LocationData;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Updater;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Main admin command for quest editing.
@@ -1580,18 +1565,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
-                    Pointer p = null;
+                    Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.getPointer().equals(name)) {
-                            p = pointer;
+                            journalPointer = pointer;
                         }
                     }
                     // skip the player if he does not have this entry
-                    if (p == null) {
+                    if (journalPointer == null) {
                         continue;
                     }
                     journal.removePointer(name);
-                    journal.addPointer(new Pointer(rename, p.getTimestamp()));
+                    journal.addPointer(new Pointer(rename, journalPointer.getTimestamp()));
                     journal.update();
                 }
                 break;
@@ -1814,9 +1799,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // get hooked Plugins
         final TreeMap<String, String> hooked = new TreeMap<>();
         for (final String plugin : Compatibility.getHooked()) {
-            final Plugin pl = Bukkit.getPluginManager().getPlugin(plugin);
-            if (pl != null) {
-                hooked.put(plugin, pl.getDescription().getVersion());
+            final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
+            if (plug != null) {
+                hooked.put(plugin, plug.getDescription().getVersion());
             }
         }
         final StringJoiner hookedRaw = new StringJoiner(", ");
