@@ -172,8 +172,10 @@ The objective's instruction string is defined as follows:
 1. The first argument is the password, use underscore characters (`_`) instead of spaces.
    The password is a [regular expression](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
    They are a little complicated but worth the effort if you want more control over what exactly matches. 
-   You can try it on pages like [regex101.com](https://regex101.com/).
-   Documentation for regular expression in Java [here](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum).
+   Websites like [regex101.com](https://regex101.com/) help with that complexity though.
+   The offical [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
+   in Java might also help you.
+   If you don't want to get into them just write down the password but keep in mind that the players answer needs to be an exact match! 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
    Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
