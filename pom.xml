@@ -340,13 +340,13 @@
         <dependency>
           <groupId>com.github.PikaMug</groupId>
           <artifactId>Quests</artifactId>
-          <version>0265e09</version>
+          <version>39a1c3edc7</version>
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.github.Zrips</groupId>
           <artifactId>Jobs</artifactId>
-          <version>2873a7f</version>
+          <version>d08dbedb56</version>
           <scope>provided</scope>
         </dependency>
       </dependencies>
