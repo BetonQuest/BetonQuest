@@ -63,7 +63,9 @@ public class JournalEvent extends QuestEvent {
             if (!add && name != null) {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
-                    playerData.getJournal().removePointer(name);
+                    final Journal journal = playerData.getJournal();
+                    journal.removePointer(name);
+                    journal.update();
                 }
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, new String[]{
                         name
