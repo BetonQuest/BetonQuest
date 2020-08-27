@@ -545,6 +545,7 @@ public class BetonQuest extends JavaPlugin {
 
         // register interceptor types
         registerInterceptor("simple", SimpleInterceptor.class);
+        registerInterceptor("none", NonInterceptingInterceptor.class);
 
         // register notify IO types
         registerNotifyIO("suppress", SuppressNotifyIO.class);
