@@ -115,17 +115,23 @@ NPC_options:
 In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.
 
 ## Chat Interceptors
-While engaged in a conversation, it can be distracting when messages from other players or system message interfere with the dialogue. A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.
+While engaged in a conversation, it can be distracting when messages from other players or system message interfere with the dialogue.
+A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.
 
-You can specify the default chat interceptor can setting `default_interceptor` inside the `config.yml`. Additionally you can overwrite the default for each conversation by setting the `interceptor` key inside your conversation file.
+You can specify the default chat interceptor can setting `default_interceptor` inside the `config.yml`.
+Additionally, you can overwrite the default for each conversation by setting the `interceptor` key inside your conversation file.
 
 The default configuration of BetonQuest sets the `default_interceptor` option to `packet,simple`.
-This means that it first tries to use the `packet`interceptor. If that fails it falls back to using the `simple` interceptor.
+This means that it first tries to use the `packet`interceptor.
+If that fails it falls back to using the `simple` interceptor.
 
 BetonQuest adds following interceptors: `simple`, `packet` and `none`:
   
-The `simple` interceptor works with every Spigot server but only supports very basic functionality and may not work with plugins like Herochat.
+The `simple` interceptor works with every Spigot server but only supports very basic functionality
+and may not work with plugins like Herochat.
 
 The `packet` interceptor requires the ProtocolLib plugin to be installed. It will work well in any kind of situation.
 
-The `none` interceptor is an interceptor that won't intercept messages. That sounds useless until you have a conversation that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.
+The `none` interceptor is an interceptor that won't intercept messages.
+That sounds useless until you have a conversation that you want to be excluded from interception.
+In this case you can just set `interceptor: none` inside your conversation file.
