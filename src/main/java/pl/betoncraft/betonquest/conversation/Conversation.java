@@ -471,6 +471,13 @@ public class Conversation implements Listener {
     }
 
     /**
+     * @return the interceptor of the conversation
+     */
+    public Interceptor getInterceptor() {
+        return interceptor;
+    }
+
+    /**
      * Starts the conversation, should be called asynchronously.
      *
      * @author Jakub Sapalski

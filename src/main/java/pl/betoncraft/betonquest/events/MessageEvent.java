@@ -21,6 +21,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -99,7 +100,12 @@ public class MessageEvent extends QuestEvent {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }
-        PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        final Conversation conv = Conversation.getConversation(playerID);
+        if(conv == null || conv.getInterceptor() == null) {
+            PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        } else {
+            conv.getInterceptor().sendMessage(Utils.format(message));
+        }
         return null;
     }
 
