@@ -105,7 +105,7 @@ public class MessageEvent extends QuestEvent {
         if(conversation == null || conversation.getInterceptor() == null) {
             PlayerConverter.getPlayer(playerID).sendMessage(formattedMessage);
         } else {
-            conv.getInterceptor().sendMessage(formattedMessage);
+            conversation.getInterceptor().sendMessage(formattedMessage);
         }
         return null;
     }
