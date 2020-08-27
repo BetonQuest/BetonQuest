@@ -100,11 +100,12 @@ public class MessageEvent extends QuestEvent {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
         }
-        final Conversation conv = Conversation.getConversation(playerID);
-        if(conv == null || conv.getInterceptor() == null) {
-            PlayerConverter.getPlayer(playerID).sendMessage(Utils.format(message));
+        final String formattedMessage = Utils.format(message);
+        final Conversation conversation = Conversation.getConversation(playerID);
+        if(conversation == null || conversation.getInterceptor() == null) {
+            PlayerConverter.getPlayer(playerID).sendMessage(formattedMessage);
         } else {
-            conv.getInterceptor().sendMessage(Utils.format(message));
+            conv.getInterceptor().sendMessage(formattedMessage);
         }
         return null;
     }
