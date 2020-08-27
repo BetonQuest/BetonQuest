@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added prefix argument in password objective
 - Added fail argument in password objective
 - Added notify option to point event
+- Added an interceptor that does not intercept: 'none'
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
