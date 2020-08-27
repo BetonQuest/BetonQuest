@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - new config option mysql.enabled
     - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
 - events in conversation options are now executed before npc or player responses are printed
-- message event now ignored a chat interceptor from a conversation
+- message event now ignores chat interceptors during conversation
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
