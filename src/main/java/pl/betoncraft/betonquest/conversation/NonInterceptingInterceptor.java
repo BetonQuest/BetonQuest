@@ -16,12 +16,12 @@ public class NonInterceptingInterceptor implements Interceptor {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(final String message) {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
-    public void sendMessage(BaseComponent... message) {
+    public void sendMessage(final BaseComponent... message) {
         player.spigot().sendMessage(message);
     }
 
