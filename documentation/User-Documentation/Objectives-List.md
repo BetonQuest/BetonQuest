@@ -274,7 +274,8 @@ Step objective contains one property, `location`. It's a string formatted like `
 
 ## Taming: `tame`
 
-To complete this objective player must tame some amount of mobs. valid mob types are: WOLF, OCELOT and HORSE First argument is type, next is amount.
+To complete this objective player must tame some amount of mobs. First argument is type, second is amount.
+The mob must be tameable for the objective to be valid, e.g. on 1.16.1: `CAT`, `DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`
 
 Taming has the same properties as mob kill objective.
 

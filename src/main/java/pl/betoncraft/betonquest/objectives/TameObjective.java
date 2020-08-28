@@ -18,9 +18,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -38,18 +36,18 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class TameObjective extends Objective implements Listener {
 
-    private final TamableMobs type;
+    private final EntityType type;
     private final int amount;
 
     public TameObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+
         template = TameData.class;
-        final String string = instruction.next();
-        try {
-            type = TamableMobs.valueOf(string.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Unknown type: " + string, e);
+        type = instruction.getEntity();
+        if (type.getEntityClass() == null || !Tameable.class.isAssignableFrom(type.getEntityClass())) {
+            throw new InstructionParseException("Entity cannot be tamed: " + type.toString());
         }
+
         amount = instruction.getInt();
         if (amount < 1) {
             throw new InstructionParseException("Amount cannot be less than 1");
@@ -65,25 +63,11 @@ public class TameObjective extends Objective implements Listener {
             }
             final LivingEntity entity = event.getEntity();
             final TameData playerData = (TameData) dataMap.get(playerID);
-            switch (type) {
-                case WOLF:
-                    if (entity.getType().equals(EntityType.WOLF) && checkConditions(playerID)) {
-                        playerData.subtract();
-                    }
-                    break;
-                case OCELOT:
-                    if (entity.getType().equals(EntityType.OCELOT) && checkConditions(playerID)) {
-                        playerData.subtract();
-                    }
-                    break;
-                case HORSE:
-                    if (entity.getType().equals(EntityType.HORSE) && checkConditions(playerID)) {
-                        playerData.subtract();
-                    }
-                    break;
-                default:
-                    break;
+
+            if (type.equals(entity.getType()) && checkConditions(playerID)) {
+                playerData.subtract();
             }
+
             if (playerData.isZero()) {
                 completeObjective(playerID);
             }
@@ -113,10 +97,6 @@ public class TameObjective extends Objective implements Listener {
             return Integer.toString(((TameData) dataMap.get(playerID)).getAmount());
         }
         return "";
-    }
-
-    private enum TamableMobs {
-        WOLF, OCELOT, HORSE
     }
 
     public static class TameData extends ObjectiveData {
