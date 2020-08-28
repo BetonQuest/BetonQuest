@@ -43,14 +43,9 @@ public class TameObjective extends Objective implements Listener {
         super(instruction);
 
         template = TameData.class;
-        final String string = instruction.next();
-        try {
-            type = EntityType.valueOf(string.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new InstructionParseException("Unknown type: " + string, e);
-        }
+        type = instruction.getEntity();
         if (type.getEntityClass() == null || !Tameable.class.isAssignableFrom(type.getEntityClass())) {
-            throw new InstructionParseException("Type cannot be tamed: " + type.toString());
+            throw new InstructionParseException("Entity cannot be tamed: " + type.toString());
         }
 
         amount = instruction.getInt();
