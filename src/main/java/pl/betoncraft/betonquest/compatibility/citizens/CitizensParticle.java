@@ -228,7 +228,7 @@ public class CitizensParticle extends BukkitRunnable {
 
             // display effects on all NPCs
             for (final Entry<Integer, Effect> entry : assignments.entrySet()) {
-                final Integer identifier = entry.getKey();
+                final Integer npcId = entry.getKey();
                 final Effect effect = entry.getValue();
 
                 // skip this effect if it's not its time
@@ -237,7 +237,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // get the NPC from its ID
-                final NPC npc = CitizensAPI.getNPCRegistry().getById(identifier);
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||

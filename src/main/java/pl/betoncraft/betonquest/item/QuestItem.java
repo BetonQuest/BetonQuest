@@ -300,10 +300,10 @@ public class QuestItem {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(final Object other) {
         final QuestItem item;
-        if (obj instanceof QuestItem) {
-            item = (QuestItem) obj;
+        if (other instanceof QuestItem) {
+            item = (QuestItem) other;
         } else {
             return false;
         }

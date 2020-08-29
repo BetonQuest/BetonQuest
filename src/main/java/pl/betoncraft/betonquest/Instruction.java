@@ -47,6 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Instruction {
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
 
     protected String instruction;
     protected String[] parts;
@@ -226,8 +227,8 @@ public class Instruction {
             if (enchParts.length != 2) {
                 throw new PartParseException("Wrong enchantment format: " + enchant);
             }
-            final Enchantment identifier = Enchantment.getByName(enchParts[0]);
-            if (identifier == null) {
+            final Enchantment enchantment = Enchantment.getByName(enchParts[0]);
+            if (enchantment == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
             final Integer level;
@@ -236,7 +237,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }
-            enchants.put(identifier, level);
+            enchants.put(enchantment, level);
         }
         return enchants;
     }
@@ -253,8 +254,8 @@ public class Instruction {
         final String[] array = getArray(string);
         for (final String effect : array) {
             final String[] effParts = effect.split(":");
-            final PotionEffectType identifier = PotionEffectType.getByName(effParts[0]);
-            if (identifier == null) {
+            final PotionEffectType potionEffectType = PotionEffectType.getByName(effParts[0]);
+            if (potionEffectType == null) {
                 throw new PartParseException("Unknown potion effect" + effParts[0]);
             }
             final int power;
@@ -265,7 +266,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse potion power/duration: " + effect, e);
             }
-            effects.add(new PotionEffect(identifier, duration, power));
+            effects.add(new PotionEffect(potionEffectType, duration, power));
         }
         return effects;
     }
@@ -466,8 +467,7 @@ public class Instruction {
     }
 
     public ArrayList<Integer> getAllNumbers() {
-        final Pattern pattern = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
-        final Matcher matcher = pattern.matcher(instruction);
+        final Matcher matcher = NUMBER_PATTERN.matcher(instruction);
 
         final ArrayList<Integer> result = new ArrayList<>();
         while (matcher.find()) {

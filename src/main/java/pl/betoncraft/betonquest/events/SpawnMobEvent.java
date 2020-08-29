@@ -114,12 +114,12 @@ public class SpawnMobEvent extends QuestEvent {
                 equipment.setItemInOffHand(offHand == null ? null : offHand.generate(1));
                 equipment.setItemInOffHandDropChance(0);
             }
-            int count = 0;
+            int dropIndex = 0;
             for (final Item item : drops) {
-                entity.setMetadata("betonquest-drops-" + count,
+                entity.setMetadata("betonquest-drops-" + dropIndex,
                         new FixedMetadataValue(BetonQuest.getInstance(), item.getID().getFullID() + ":"
                                 + item.getAmount().getInt(playerID)));
-                count++;
+                dropIndex++;
             }
             if (name != null && entity instanceof LivingEntity) {
                 final LivingEntity livingEntity = (LivingEntity) entity;

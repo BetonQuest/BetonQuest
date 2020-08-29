@@ -176,14 +176,14 @@ public class PartialDateCondition extends Condition {
         }
 
         @Override
-        public boolean equals(final Object obj) {
-            if (this == obj) {
+        public boolean equals(final Object other) {
+            if (this == other) {
                 return true;
             }
-            if (obj == null || getClass() != obj.getClass()) {
+            if (other == null || getClass() != other.getClass()) {
                 return false;
             }
-            final TimeInterval interval = (TimeInterval) obj;
+            final TimeInterval interval = (TimeInterval) other;
             return start == interval.start &&
                     end == interval.end;
         }

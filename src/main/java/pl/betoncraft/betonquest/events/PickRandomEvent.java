@@ -49,14 +49,14 @@ public class PickRandomEvent extends QuestEvent {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
             }
             final String[] parts = string.split("%");
-            final EventID identifier;
+            final EventID eventID;
             try {
-                identifier = new EventID(instruction.getPackage(), parts[1]);
+                eventID = new EventID(instruction.getPackage(), parts[1]);
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
             }
             final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
-            return new RandomEvent(identifier, chance);
+            return new RandomEvent(eventID, chance);
         });
         this.amount = instruction.getVarNum(instruction.getOptional("amount"));
     }

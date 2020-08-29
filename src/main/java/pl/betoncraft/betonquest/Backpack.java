@@ -293,11 +293,11 @@ public class Backpack implements Listener {
             } else if (slot < 45) {
                 // raw slot lower than 45 is a quest item
                 // read the id of the item from clicked slot
-                final int identifier = page * 45 + slot - 1;
+                final int slotId = page * 45 + slot - 1;
                 ItemStack item = null;
                 // get the item if it exists
-                if (playerData.getBackpack().size() > identifier) {
-                    item = playerData.getBackpack().get(identifier);
+                if (playerData.getBackpack().size() > slotId) {
+                    item = playerData.getBackpack().get(slotId);
                 }
                 if (item != null) {
                     // if the item exists, put it in player's inventory
@@ -328,7 +328,7 @@ public class Backpack implements Listener {
                         item.setAmount(backpackAmount - getAmount + leftAmount);
                         if (backpackAmount - getAmount + leftAmount == 0) {
                             final List<ItemStack> backpackItems = playerData.getBackpack();
-                            backpackItems.remove(identifier);
+                            backpackItems.remove(slotId);
                             playerData.setBackpack(backpackItems);
                         }
                     }

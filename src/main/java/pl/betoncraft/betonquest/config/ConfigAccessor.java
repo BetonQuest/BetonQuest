@@ -130,10 +130,10 @@ public class ConfigAccessor {
                 }
                 final OutputStream out = new FileOutputStream(configFile);
                 final byte[] buffer = new byte[1024];
-                int len = input.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = input.read(buffer);
+                int length = input.read(buffer);
+                while (length != -1) {
+                    out.write(buffer, 0, length);
+                    length = input.read(buffer);
                 }
                 out.close();
             } catch (IOException e) {

@@ -263,21 +263,21 @@ public class BetonQuest extends JavaPlugin {
      */
     public static Variable createVariable(final ConfigPackage pack, final String instruction)
             throws InstructionParseException {
-        final VariableID identifier;
+        final VariableID variableID;
         try {
-            identifier = new VariableID(pack, instruction);
+            variableID = new VariableID(pack, instruction);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
         for (final Entry<VariableID, Variable> e : variables.entrySet()) {
-            if (e.getKey().equals(identifier)) {
+            if (e.getKey().equals(variableID)) {
                 return e.getValue();
             }
         }
         final String[] parts = instruction.replace("%", "").split("\\.");
         if (parts.length < 1) {
-            throw new InstructionParseException("Not enough arguments in variable " + identifier);
+            throw new InstructionParseException("Not enough arguments in variable " + variableID);
         }
         final Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
         // if it's null then there is no such type registered, log an error
@@ -287,12 +287,12 @@ public class BetonQuest extends JavaPlugin {
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(pack, null, instruction));
-            variables.put(identifier, variable);
-            LogUtils.getLogger().log(Level.FINE, "Variable " + identifier + " loaded");
+            variables.put(variableID, variable);
+            LogUtils.getLogger().log(Level.FINE, "Variable " + variableID + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in " + identifier + " variable: " + e.getCause().getMessage(), e);
+                throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
             } else {
                 LogUtils.logThrowableReport(e);
             }

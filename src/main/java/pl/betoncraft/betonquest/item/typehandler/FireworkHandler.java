@@ -139,16 +139,16 @@ public class FireworkHandler {
         }
     }
 
-    public boolean checkPower(final int powerNumber) {
+    public boolean checkPower(final int powerLevel) {
         switch (powerN) {
             case WHATEVER:
                 return true;
             case EQUAL:
-                return powerNumber == power;
+                return powerLevel == power;
             case MORE:
-                return powerNumber >= power;
+                return powerLevel >= power;
             case LESS:
-                return powerNumber <= power;
+                return powerLevel <= power;
             default:
                 return false;
         }

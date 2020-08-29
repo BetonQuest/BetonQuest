@@ -37,21 +37,21 @@ public class CustomDropListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(final EntityDeathEvent event) {
-        int index = 0;
-        while (event.getEntity().hasMetadata("betonquest-drops-" + index)) {
+        int dropIndex = 0;
+        while (event.getEntity().hasMetadata("betonquest-drops-" + dropIndex)) {
             try {
-                final List<MetadataValue> metadata = event.getEntity().getMetadata("betonquest-drops-" + index);
+                final List<MetadataValue> metadata = event.getEntity().getMetadata("betonquest-drops-" + dropIndex);
                 for (final MetadataValue m : metadata) {
                     final String item = m.asString();
-                    final int indexOf = item.indexOf(':');
-                    event.getDrops().add(new QuestItem(new ItemID(null, item.substring(0, indexOf)))
-                            .generate(Integer.valueOf(item.substring(indexOf + 1))));
+                    final int separatorIndex = item.indexOf(':');
+                    event.getDrops().add(new QuestItem(new ItemID(null, item.substring(0, separatorIndex)))
+                            .generate(Integer.valueOf(item.substring(separatorIndex + 1))));
                 }
             } catch (Exception e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error when dropping custom item from entity: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
-            index++;
+            dropIndex++;
         }
     }
 

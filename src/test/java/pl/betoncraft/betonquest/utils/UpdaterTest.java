@@ -221,17 +221,17 @@ public class UpdaterTest {
         }
     }
 
-    private void assertBooleanMulti(final Updater.UpdateStrategy strategy, final boolean expected, final Updater.Version version, final Updater.Version... versions) {
-        for (final Updater.Version vers : versions) {
-            assertEquals(expected, version.isNewer(vers, strategy), "UpdateStrategy: '" + strategy + "', Version: '" + version.getVersion() + "', with Version: '" + vers.getVersion() + "', expected: '" + expected + "'!");
+    private void assertBooleanMulti(final Updater.UpdateStrategy strategy, final boolean expected, final Updater.Version currentVersion, final Updater.Version... targetVersions) {
+        for (final Updater.Version targetVersion : targetVersions) {
+            assertEquals(expected, currentVersion.isNewer(targetVersion, strategy), "UpdateStrategy: '" + strategy + "', Version: '" + currentVersion.getVersion() + "', with Version: '" + targetVersion.getVersion() + "', expected: '" + expected + "'!");
         }
     }
 
     private Updater.Version createAndCheckVersion(final String version, final boolean isDev, final boolean isUnofficial) {
-        final Updater.Version vers = new Updater.Version(version);
-        assertEquals(version, vers.getVersion(), "Check Version on " + version);
-        assertEquals(isDev, vers.isDev(), "Check Dev on " + version);
-        assertEquals(isUnofficial, vers.isUnofficial(), "Check Unofficial on " + version);
-        return vers;
+        final Updater.Version expectedVersion = new Updater.Version(version);
+        assertEquals(version, expectedVersion.getVersion(), "Check Version on " + version);
+        assertEquals(isDev, expectedVersion.isDev(), "Check Dev on " + version);
+        assertEquals(isUnofficial, expectedVersion.isUnofficial(), "Check Unofficial on " + version);
+        return expectedVersion;
     }
 }

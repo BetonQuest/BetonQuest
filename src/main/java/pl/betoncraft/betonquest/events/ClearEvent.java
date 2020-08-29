@@ -93,8 +93,8 @@ public class ClearEvent extends QuestEvent {
                     }
                 }
             }
-            final double pRange = range.getDouble(playerID);
-            if (entity.getLocation().distanceSquared(location) < pRange * pRange) {
+            final double range = this.range.getDouble(playerID);
+            if (entity.getLocation().distanceSquared(location) < range * range) {
                 final EntityType entityType = entity.getType();
                 for (final EntityType allowedType : types) {
                     if (entityType == allowedType) {

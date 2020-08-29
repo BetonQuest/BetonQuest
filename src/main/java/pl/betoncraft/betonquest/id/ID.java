@@ -115,9 +115,9 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof ID) {
-            final ID identifier = (ID) obj;
+    public boolean equals(final Object other) {
+        if (other instanceof ID) {
+            final ID identifier = (ID) other;
             return identifier.identifier.equals(this.identifier) &&
                     identifier.pack.equals(this.pack);
         }

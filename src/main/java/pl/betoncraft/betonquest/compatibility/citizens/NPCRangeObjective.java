@@ -43,15 +43,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCRangeObjective extends Objective implements Listener {
 
-    private final int identifier;
+    private final int npcId;
     private final Trigger trigger;
     private final VariableNumber radius;
 
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         super.template = ObjectiveData.class;
-        identifier = instruction.getInt();
-        if (identifier < 0) {
+        npcId = instruction.getInt();
+        if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         trigger = instruction.getEnum(Trigger.class);
@@ -66,9 +66,9 @@ public class NPCRangeObjective extends Objective implements Listener {
             if (!containsPlayer(playerID)) {
                 return;
             }
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(identifier);
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
-                throw new QuestRuntimeException("NPC with ID " + identifier + " does not exist");
+                throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
             }
             final Entity npcEntity = npc.getEntity();
             if (npcEntity == null) {

@@ -58,11 +58,11 @@ public class LookingAtCondition extends Condition {
         final Player player = PlayerConverter.getPlayer(playerID);
         final Block lookingAt = player.getTargetBlock(null, 6);
         if (loc != null) {
-            final Location location = loc.getLocation(playerID);
-            final Location locationAt = lookingAt.getLocation();
-            if (location.getBlockX() != locationAt.getBlockX()
-                    || location.getBlockY() != locationAt.getBlockY()
-                    || location.getBlockZ() != locationAt.getBlockZ()) {
+            final Location targetLocation = loc.getLocation(playerID);
+            final Location actualLocation = lookingAt.getLocation();
+            if (targetLocation.getBlockX() != actualLocation.getBlockX()
+                    || targetLocation.getBlockY() != actualLocation.getBlockY()
+                    || targetLocation.getBlockZ() != actualLocation.getBlockZ()) {
                 return false;
             }
         }

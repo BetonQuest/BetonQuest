@@ -226,7 +226,7 @@ public class ConfigPackage {
                 }
                 // parse the vector
                 final double vecLocX;
-                double vecLocY;
+                final double vecLocY;
                 final double vecLocZ;
                 try {
                     final int offset1 = varVal.indexOf('(');

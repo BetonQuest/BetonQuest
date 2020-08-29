@@ -53,9 +53,9 @@ public class SkriptEventBQ extends SkriptEvent {
             final BQEventSkript.CustomEventForSkript scriptEvent = (BQEventSkript.CustomEventForSkript) event;
             return literal.check(event, new Checker<Object>() {
                 @Override
-                public boolean check(final Object obj) {
-                    if (obj instanceof String) {
-                        final String identifier = (String) obj;
+                public boolean check(final Object other) {
+                    if (other instanceof String) {
+                        final String identifier = (String) other;
                         return (scriptEvent.getID().equals(identifier));
                     }
                     return false;
