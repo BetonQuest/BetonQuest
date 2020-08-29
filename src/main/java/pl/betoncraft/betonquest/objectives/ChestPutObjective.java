@@ -41,7 +41,6 @@ import pl.betoncraft.betonquest.id.NoID;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.logging.Level;
 
@@ -95,14 +94,13 @@ public class ChestPutObjective extends Objective implements Listener {
             final Block block = targetChestLocation.getBlock();
             if (!(block instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
-                final String worldName = world == null ? "null" : world.getName();
                 LogUtils.getLogger().log(Level.WARNING,
                         String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                                 instruction.getID().getFullID(),
                                 targetChestLocation.getBlockX(),
                                 targetChestLocation.getBlockY(),
                                 targetChestLocation.getBlockZ(),
-                                worldName));
+                                world == null ? "null" : world.getName()));
                 return;
             }
             final InventoryHolder chest = (InventoryHolder) block.getState();
