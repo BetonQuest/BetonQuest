@@ -37,10 +37,12 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 /**
@@ -54,12 +56,12 @@ public class PlayerData {
 
     private String playerID;
 
-    private List<String> tags = new ArrayList<>();
-    private List<Pointer> entries = new ArrayList<>();
-    private List<Point> points = new ArrayList<>();
-    private HashMap<String, String> objectives = new HashMap<>(); // not active ones
+    private List<String> tags = new CopyOnWriteArrayList<>();
+    private List<Pointer> entries = new CopyOnWriteArrayList<>();
+    private List<Point> points = new CopyOnWriteArrayList<>();
+    private Map<String, String> objectives = new ConcurrentHashMap<>();
     private Journal journal;
-    private List<ItemStack> backpack = new ArrayList<>();
+    private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
     private String conv;
 
     private String lang; // the player's language
@@ -302,7 +304,7 @@ public class PlayerData {
      * @return the map containing objective IDs and their objective data; these
      * are not initialized yet
      */
-    public HashMap<String, String> getRawObjectives() {
+    public Map<String, String> getRawObjectives() {
         return objectives;
     }
 
