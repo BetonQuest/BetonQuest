@@ -139,12 +139,6 @@ public class Config {
             final File conversations = new File(def, "conversations");
             conversations.mkdir();
             saveResource(conversations, "default/defaultConversation.yml", "innkeeper.yml");
-            List<String> list = plugin.getConfig().getStringList("packages");
-            if (list == null) {
-                list = new ArrayList<>();
-            }
-            list.add(packName);
-            plugin.getConfig().set("packages", list);
             plugin.saveConfig();
             return true;
         }
