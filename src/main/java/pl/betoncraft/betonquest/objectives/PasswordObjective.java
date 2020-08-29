@@ -52,7 +52,7 @@ public class PasswordObjective extends Objective implements Listener {
         regex = instruction.next().replace('_', ' ');
         ignoreCase = instruction.hasArgument("ignoreCase");
         final String prefix = instruction.getOptional("prefix");
-        passwordPrefix = prefix.isEmpty() ? prefix : prefix + ": ";
+        passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
         failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
     }
 
