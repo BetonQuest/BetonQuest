@@ -32,8 +32,8 @@ public class MMOCoreClassCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
-        final PlayerData data = PlayerData.get(p);
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final PlayerData data = PlayerData.get(player);
 
         final String actualClassName = data.getProfess().getName();
         final int actualClassLevel = data.getLevel();

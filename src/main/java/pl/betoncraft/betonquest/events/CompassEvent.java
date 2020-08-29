@@ -53,10 +53,10 @@ public class CompassEvent extends QuestEvent {
 
         // Check if compass is valid
         for (final ConfigPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("compass");
-            if (s != null) {
-                if (s.contains(compass)) {
-                    compassSection = s.getConfigurationSection(compass);
+            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("compass");
+            if (section != null) {
+                if (section.contains(compass)) {
+                    compassSection = section.getConfigurationSection(compass);
                     compassPackage = pack;
                     break;
                 }

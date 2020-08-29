@@ -35,15 +35,8 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -235,7 +228,7 @@ public class CitizensParticle extends BukkitRunnable {
 
             // display effects on all NPCs
             for (final Entry<Integer, Effect> entry : assignments.entrySet()) {
-                final Integer id = entry.getKey();
+                final Integer npcId = entry.getKey();
                 final Effect effect = entry.getValue();
 
                 // skip this effect if it's not its time
@@ -244,7 +237,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // get the NPC from its ID
-                final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
                 if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||

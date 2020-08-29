@@ -36,10 +36,10 @@ public class Zipper {
 
     public Zipper(final String source, final String output) {
         String modifiedOutput = output;
-        int i = 1;
+        int counter = 1;
         while (new File(modifiedOutput + ".zip").exists()) {
-            i++;
-            modifiedOutput = output + "-" + i;
+            counter++;
+            modifiedOutput = output + "-" + counter;
         }
         outputZipFile = modifiedOutput + ".zip";
         sourceFolder = source;
@@ -63,17 +63,17 @@ public class Zipper {
 
             for (final String file : this.fileList) {
 
-                final ZipEntry ze = new ZipEntry(file);
-                zos.putNextEntry(ze);
+                final ZipEntry zipEntry = new ZipEntry(file);
+                zos.putNextEntry(zipEntry);
 
-                final FileInputStream in = new FileInputStream(sourceFolder + File.separator + file);
+                final FileInputStream input = new FileInputStream(sourceFolder + File.separator + file);
 
                 int len;
-                while ((len = in.read(buffer)) > 0) {
+                while ((len = input.read(buffer)) > 0) {
                     zos.write(buffer, 0, len);
                 }
 
-                in.close();
+                input.close();
             }
 
             zos.closeEntry();

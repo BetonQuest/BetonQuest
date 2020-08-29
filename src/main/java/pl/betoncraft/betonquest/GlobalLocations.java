@@ -72,8 +72,8 @@ public class GlobalLocations extends BukkitRunnable {
             for (final String objective : parts) {
                 try {
                     final ObjectiveID objectiveID = new ObjectiveID(pack, objective);
-                    final GlobalLocation gL = new GlobalLocation(objectiveID);
-                    locations.add(gL);
+                    final GlobalLocation location = new GlobalLocation(objectiveID);
+                    locations.add(location);
                 } catch (ObjectNotFoundException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error while parsing global location objective '" + objective + "': " + e.getMessage());
                     LogUtils.logThrowable(e);

@@ -22,12 +22,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.logging.Level;
 
 public class ConfigAccessor {
@@ -129,16 +124,16 @@ public class ConfigAccessor {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                final InputStream in = plugin.getResource(fileName);
-                if (in == null) {
+                final InputStream input = plugin.getResource(fileName);
+                if (input == null) {
                     return;
                 }
                 final OutputStream out = new FileOutputStream(configFile);
                 final byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
+                int length = input.read(buffer);
+                while (length != -1) {
+                    out.write(buffer, 0, length);
+                    length = input.read(buffer);
                 }
                 out.close();
             } catch (IOException e) {

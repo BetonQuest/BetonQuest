@@ -49,14 +49,14 @@ public class PickRandomEvent extends QuestEvent {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
             }
             final String[] parts = string.split("%");
-            final EventID id;
+            final EventID eventID;
             try {
-                id = new EventID(instruction.getPackage(), parts[1]);
+                eventID = new EventID(instruction.getPackage(), parts[1]);
             } catch (ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
             }
             final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
-            return new RandomEvent(id, chance);
+            return new RandomEvent(eventID, chance);
         });
         this.amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
@@ -82,7 +82,7 @@ public class PickRandomEvent extends QuestEvent {
                 current += event.getChance().getDouble(playerID);
                 if (current >= found) {
                     //run the event
-                    BetonQuest.event(playerID, event.getId());
+                    BetonQuest.event(playerID, event.getIdentifier());
                     //remove the event from the list so that it's not picked again
                     events.remove(i);
                     total -= event.getChance().getDouble(playerID);
@@ -95,16 +95,16 @@ public class PickRandomEvent extends QuestEvent {
 
     private class RandomEvent {
 
-        private final EventID id;
+        private final EventID identifier;
         private final VariableNumber chance;
 
-        public RandomEvent(final EventID id, final VariableNumber chance) {
-            this.id = id;
+        public RandomEvent(final EventID identifier, final VariableNumber chance) {
+            this.identifier = identifier;
             this.chance = chance;
         }
 
-        public EventID getId() {
-            return id;
+        public EventID getIdentifier() {
+            return identifier;
         }
 
         public VariableNumber getChance() {

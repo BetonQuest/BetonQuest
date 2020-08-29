@@ -37,13 +37,13 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
  */
 public class CitizensVariable extends Variable {
 
-    private int id;
+    private int npcId;
     private TYPE key;
 
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
-        id = instruction.getInt();
+        npcId = instruction.getInt();
         try {
             key = TYPE.valueOf(instruction.next().toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -53,7 +53,7 @@ public class CitizensVariable extends Variable {
 
     @Override
     public String getValue(final String playerID) {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             return "";
         }

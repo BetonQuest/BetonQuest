@@ -53,13 +53,13 @@ public class PointCondition extends Condition {
     }
 
     protected boolean check(final String playerID, final List<Point> points) throws QuestRuntimeException {
-        final int c = count.getInt(playerID);
+        final int pCount = count.getInt(playerID);
         for (final Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 if (equal) {
-                    return point.getCount() == c;
+                    return point.getCount() == pCount;
                 } else {
-                    return point.getCount() >= c;
+                    return point.getCount() >= pCount;
                 }
             }
         }

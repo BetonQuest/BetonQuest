@@ -149,13 +149,13 @@ public class QuestCanceler {
                 LogUtils.getLogger().log(Level.WARNING, "Wrong location format in quest canceler " + name);
                 return;
             }
-            final double x;
-            double y;
-            final double z;
+            final double locX;
+            final double locY;
+            final double locZ;
             try {
-                x = Double.parseDouble(locParts[0]);
-                y = Double.parseDouble(locParts[1]);
-                z = Double.parseDouble(locParts[2]);
+                locX = Double.parseDouble(locParts[0]);
+                locY = Double.parseDouble(locParts[1]);
+                locZ = Double.parseDouble(locParts[2]);
             } catch (NumberFormatException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not parse location in quest canceler " + name);
                 LogUtils.logThrowable(e);
@@ -178,7 +178,7 @@ public class QuestCanceler {
                     pitch = 0;
                 }
             }
-            loc = new Location(world, x, y, z, yaw, pitch);
+            loc = new Location(world, locX, locY, locZ, yaw, pitch);
         }
     }
 
@@ -238,16 +238,16 @@ public class QuestCanceler {
             }
         }
         if (journal != null) {
-            final Journal j = playerData.getJournal();
-            for (final String entry : journal) {
+            final Journal journal = playerData.getJournal();
+            for (final String entry : this.journal) {
                 LogUtils.getLogger().log(Level.FINE, "  Removing entry " + entry);
                 if (entry.contains(".")) {
-                    j.removePointer(entry);
+                    journal.removePointer(entry);
                 } else {
-                    j.removePointer(packName + "." + entry);
+                    journal.removePointer(packName + "." + entry);
                 }
             }
-            j.update();
+            journal.update();
         }
         // teleport player to the location
         if (loc != null) {

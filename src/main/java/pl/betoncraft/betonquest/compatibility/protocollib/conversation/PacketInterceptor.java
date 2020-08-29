@@ -32,7 +32,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerChat;
-import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.Interceptor;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -67,9 +66,9 @@ public class PacketInterceptor implements Interceptor, Listener {
 
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
                     final PacketContainer packet = event.getPacket();
-                    final BaseComponent[] bc = (BaseComponent[]) packet.getModifier().read(1);
-                    if (bc != null && bc.length > 0 && ((TextComponent) bc[0]).getText().contains("_bq_")) {
-                        packet.getModifier().write(1, Arrays.copyOfRange(bc, 1, bc.length));
+                    final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(1);
+                    if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains("_bq_")) {
+                        packet.getModifier().write(1, Arrays.copyOfRange(components, 1, components.length));
                         event.setPacket(packet);
                         return;
                     }

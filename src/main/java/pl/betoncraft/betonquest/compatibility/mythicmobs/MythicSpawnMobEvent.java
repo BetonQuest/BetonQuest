@@ -53,12 +53,12 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final int a = amount.getInt(playerID);
-        final int l = level.getInt(playerID);
+        final int pAmount = amount.getInt(playerID);
+        final int level = this.level.getInt(playerID);
         final Location location = loc.getLocation(playerID);
-        for (int i = 0; i < a; i++) {
+        for (int i = 0; i < pAmount; i++) {
             try {
-                new BukkitAPIHelper().spawnMythicMob(mob, location, l);
+                new BukkitAPIHelper().spawnMythicMob(mob, location, level);
             } catch (InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
             }

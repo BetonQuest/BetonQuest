@@ -63,11 +63,11 @@ public class PlayerPointsEvent extends QuestEvent {
         if (multi) {
             api.set(uuid, (int) Math.floor(api.look(uuid) * count.getDouble(playerID)));
         } else {
-            final double i = count.getDouble(playerID);
-            if (i < 0) {
-                api.take(uuid, (int) Math.floor(-i));
+            final double amount = count.getDouble(playerID);
+            if (amount < 0) {
+                api.take(uuid, (int) Math.floor(-amount));
             } else {
-                api.give(uuid, (int) Math.floor(i));
+                api.give(uuid, (int) Math.floor(amount));
             }
         }
         return null;

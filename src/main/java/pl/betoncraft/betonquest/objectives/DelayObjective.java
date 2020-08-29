@@ -105,20 +105,20 @@ public class DelayObjective extends Objective {
             final String minutesWord = Config.getMessage(lang, "minutes");
             final String secondsWord = Config.getMessage(lang, "seconds");
             final long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            final long s = (timeLeft / (1000)) % 60;
-            final long m = (timeLeft / (1000 * 60)) % 60;
-            final long h = (timeLeft / (1000 * 60 * 60)) % 24;
-            final long d = (timeLeft / (1000 * 60 * 60 * 24));
+            final long seconds = (timeLeft / (1000)) % 60;
+            final long minutes = (timeLeft / (1000 * 60)) % 60;
+            final long hours = (timeLeft / (1000 * 60 * 60)) % 24;
+            final long days = (timeLeft / (1000 * 60 * 60 * 24));
             final StringBuilder time = new StringBuilder();
             final String[] words = new String[3];
-            if (d > 0) {
-                words[0] = d + " " + daysWord;
+            if (days > 0) {
+                words[0] = days + " " + daysWord;
             }
-            if (h > 0) {
-                words[1] = h + " " + hoursWord;
+            if (hours > 0) {
+                words[1] = hours + " " + hoursWord;
             }
-            if (m > 0) {
-                words[2] = m + " " + minutesWord;
+            if (minutes > 0) {
+                words[2] = minutes + " " + minutesWord;
             }
             int count = 0;
             for (final String word : words) {
@@ -127,7 +127,7 @@ public class DelayObjective extends Objective {
                 }
             }
             if (count == 0) {
-                time.append(s + " " + secondsWord);
+                time.append(seconds + " " + secondsWord);
             } else if (count == 1) {
                 for (final String word : words) {
                     if (word == null) {

@@ -27,23 +27,23 @@ public abstract class ID {
 
     public static final String UP_STR = "_"; // string used as "up the hierarchy" package
 
-    protected String id;
+    protected String identifier;
     protected ConfigPackage pack;
     protected Instruction instruction;
     protected String rawInstruction;
 
-    public ID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
+    public ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
 
         // id must be specified
-        if (id == null || id.length() == 0) {
+        if (identifier == null || identifier.length() == 0) {
             throw new ObjectNotFoundException("ID is null");
         }
 
         // resolve package name
-        if (id.contains(".")) {
+        if (identifier.contains(".")) {
             // id has specified a package, get it!
-            final int dotIndex = id.indexOf('.');
-            final String packName = id.substring(0, dotIndex);
+            final int dotIndex = identifier.indexOf('.');
+            final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
                 final String[] root = pack.getName().split("-");
@@ -56,31 +56,31 @@ public abstract class ID {
                 // can't go out of BetonQuest folder of course
                 if (stepsUp > root.length) {
                     throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
-                            + UP_STR + "'s in ID " + id);
+                            + UP_STR + "'s in ID " + identifier);
                 }
                 // construct the final absolute path
-                final StringBuilder sb = new StringBuilder();
+                final StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < root.length - stepsUp; i++) {
-                    sb.append(root[i] + '-');
+                    builder.append(root[i] + '-');
                 }
                 for (int i = stepsUp; i < path.length; i++) {
-                    sb.append(path[i] + '-');
+                    builder.append(path[i] + '-');
                 }
-                final String absolute = sb.substring(0, sb.length() - 1);
+                final String absolute = builder.substring(0, builder.length() - 1);
                 this.pack = Config.getPackages().get(absolute);
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
-                    throw new ObjectNotFoundException("Relative path in ID '" + id + "' resolved to '" + absolute +
+                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + absolute +
                             "', but this package does not exist");
                 }
             } else {
                 // use package name as absolute path if no relative path is available
                 this.pack = Config.getPackages().get(packName);
             }
-            if (id.length() == dotIndex + 1) {
+            if (identifier.length() == dotIndex + 1) {
                 throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
             }
-            this.id = id.substring(dotIndex + 1);
+            this.identifier = identifier.substring(dotIndex + 1);
         } else {
             // id does not specify package, use supplied package
             if (pack == null) {
@@ -88,12 +88,12 @@ public abstract class ID {
             } else {
                 this.pack = pack;
             }
-            this.id = id;
+            this.identifier = identifier;
         }
 
         // no package yet? this is an error
         if (this.pack == null) {
-            throw new ObjectNotFoundException("Package in ID '" + id + "' does not exist");
+            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class ID {
     }
 
     public String getBaseID() {
-        return id;
+        return identifier;
     }
 
     public String getFullID() {
@@ -115,11 +115,11 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o instanceof ID) {
-            final ID id = (ID) o;
-            return id.id.equals(this.id) &&
-                    id.pack.equals(this.pack);
+    public boolean equals(final Object other) {
+        if (other instanceof ID) {
+            final ID identifier = (ID) other;
+            return identifier.identifier.equals(this.identifier) &&
+                    identifier.pack.equals(this.pack);
         }
         return false;
     }

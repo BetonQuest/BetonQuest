@@ -32,14 +32,14 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final LocationData location;
-    private int id;
+    private int npcId;
 
     public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        id = instruction.getInt();
-        if (id < 0) {
+        npcId = instruction.getInt();
+        if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         location = instruction.getLocation();
@@ -47,9 +47,9 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         if (!npc.isSpawned()) {
             return null;

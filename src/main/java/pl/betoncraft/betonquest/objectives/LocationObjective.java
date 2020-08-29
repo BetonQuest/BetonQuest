@@ -58,8 +58,8 @@ public class LocationObjective extends Objective implements Listener {
             final String playerID = PlayerConverter.getID(event.getPlayer());
             final Location location = loc.getLocation(playerID);
             if (containsPlayer(playerID) && event.getPlayer().getWorld().equals(location.getWorld())) {
-                final double r = range.getDouble(playerID);
-                if (event.getTo().distanceSquared(location) <= r * r && super.checkConditions(playerID)) {
+                final double pRange = range.getDouble(playerID);
+                if (event.getTo().distanceSquared(location) <= pRange * pRange && super.checkConditions(playerID)) {
                     completeObjective(playerID);
                 }
             }

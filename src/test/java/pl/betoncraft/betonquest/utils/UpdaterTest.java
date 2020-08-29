@@ -2,7 +2,7 @@ package pl.betoncraft.betonquest.utils;
 
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UpdaterTest {
 
@@ -221,17 +221,17 @@ public class UpdaterTest {
         }
     }
 
-    private void assertBooleanMulti(final Updater.UpdateStrategy strategy, final boolean expected, final Updater.Version v, final Updater.Version... versions) {
-        for (final Updater.Version version : versions) {
-            assertEquals(expected, v.isNewer(version, strategy), "UpdateStrategy: '" + strategy + "', Version: '" + v.getVersion() + "', with Version: '" + version.getVersion() + "', expected: '" + expected + "'!");
+    private void assertBooleanMulti(final Updater.UpdateStrategy strategy, final boolean expected, final Updater.Version currentVersion, final Updater.Version... targetVersions) {
+        for (final Updater.Version targetVersion : targetVersions) {
+            assertEquals(expected, currentVersion.isNewer(targetVersion, strategy), "UpdateStrategy: '" + strategy + "', Version: '" + currentVersion.getVersion() + "', with Version: '" + targetVersion.getVersion() + "', expected: '" + expected + "'!");
         }
     }
 
-    private Updater.Version createAndCheckVersion(final String v, final boolean isDev, final boolean isUnofficial) {
-        final Updater.Version version = new Updater.Version(v);
-        assertEquals(v, version.getVersion(), "Check Version on " + v);
-        assertEquals(isDev, version.isDev(), "Check Dev on " + v);
-        assertEquals(isUnofficial, version.isUnofficial(), "Check Unofficial on " + v);
-        return version;
+    private Updater.Version createAndCheckVersion(final String version, final boolean isDev, final boolean isUnofficial) {
+        final Updater.Version expectedVersion = new Updater.Version(version);
+        assertEquals(version, expectedVersion.getVersion(), "Check Version on " + version);
+        assertEquals(isDev, expectedVersion.isDev(), "Check Dev on " + version);
+        assertEquals(isUnofficial, expectedVersion.isUnofficial(), "Check Unofficial on " + version);
+        return expectedVersion;
     }
 }

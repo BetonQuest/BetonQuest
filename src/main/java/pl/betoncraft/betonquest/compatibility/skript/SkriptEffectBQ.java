@@ -55,17 +55,17 @@ public class SkriptEffectBQ extends Effect {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
-        return "fire " + event.toString() + " for " + player.getSingle(e).getName();
+    public String toString(final Event event, final boolean debug) {
+        return "fire " + this.event.toString() + " for " + player.getSingle(event).getName();
     }
 
     @Override
-    protected void execute(final Event e) {
+    protected void execute(final Event event) {
         new BukkitRunnable() {
             public void run() {
-                final String eventID = event.getSingle(e);
+                final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
-                    BetonQuest.event(PlayerConverter.getID(player.getSingle(e)), new EventID(null, eventID));
+                    BetonQuest.event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage());
                     LogUtils.logThrowable(e);

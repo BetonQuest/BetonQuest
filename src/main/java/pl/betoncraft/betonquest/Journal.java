@@ -37,13 +37,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -261,18 +255,18 @@ public class Journal {
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
-            final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
-            if (s == null) {
+            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
+            if (section == null) {
                 continue;
             }
             // handle every entry
             keys:
-            for (final String key : s.getKeys(false)) {
-                final int i = s.getInt(key + ".priority", -1);
+            for (final String key : section.getKeys(false)) {
+                final int number = section.getInt(key + ".priority", -1);
                 // only add entry if the priority is set and not doubled
-                if (i >= 0) {
+                if (number >= 0) {
                     // check conditions and continue loop if not met
-                    final String rawConditions = s.getString(key + ".conditions");
+                    final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && rawConditions.length() > 0) {
                         for (final String condition : rawConditions.split(",")) {
                             try {
@@ -290,16 +284,16 @@ public class Journal {
                     }
                     // here conditions are met, get the text in player's language
                     String text;
-                    if (s.isConfigurationSection(key + ".text")) {
-                        text = s.getString(key + ".text." + lang);
+                    if (section.isConfigurationSection(key + ".text")) {
+                        text = section.getString(key + ".text." + lang);
                         if (text == null) {
-                            text = s.getString(key + ".text." + Config.getLanguage());
+                            text = section.getString(key + ".text." + Config.getLanguage());
                         }
                         if (text == null) {
-                            text = s.getString(key + ".text.en");
+                            text = section.getString(key + ".text.en");
                         }
                     } else {
-                        text = s.getString(key + ".text");
+                        text = section.getString(key + ".text");
                     }
                     if (text == null || text.length() <= 0) {
                         continue;
@@ -318,13 +312,13 @@ public class Journal {
                     }
                     text = pack.subst(text);
                     // add the text to HashMap
-                    numbers.add(i);
+                    numbers.add(number);
                     final ArrayList<String> linesOrder;
-                    if (lines.containsKey(i)) {
-                        linesOrder = lines.get(i);
+                    if (lines.containsKey(number)) {
+                        linesOrder = lines.get(number);
                     } else {
                         linesOrder = new ArrayList<String>();
-                        lines.put(i, linesOrder);
+                        lines.put(number, linesOrder);
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {

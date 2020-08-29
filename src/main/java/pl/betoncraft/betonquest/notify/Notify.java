@@ -26,14 +26,7 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -130,10 +123,10 @@ public class Notify {
         // Load IO
         NotifyIO tio = null;
         for (final String name : ios) {
-            final Class<? extends NotifyIO> c = BetonQuest.getNotifyIO(name);
-            if (c != null) {
+            final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
+            if (clazz != null) {
                 try {
-                    tio = c.getConstructor(Map.class).newInstance(ioData);
+                    tio = clazz.getConstructor(Map.class).newInstance(ioData);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
                     LogUtils.logThrowable(e);

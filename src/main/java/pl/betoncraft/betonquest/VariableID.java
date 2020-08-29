@@ -9,8 +9,8 @@ public class VariableID extends pl.betoncraft.betonquest.id.VariableID {
      * @deprecated Use the {@link pl.betoncraft.betonquest.id.VariableID} this
      * will be removed in 13 release or later
      */
-    public VariableID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, id);
+    public VariableID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, identifier);
     }
 
 }

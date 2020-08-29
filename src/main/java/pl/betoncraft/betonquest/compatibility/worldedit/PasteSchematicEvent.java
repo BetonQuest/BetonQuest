@@ -50,7 +50,7 @@ import java.util.logging.Level;
  */
 public class PasteSchematicEvent extends QuestEvent {
 
-    private WorldEditPlugin we;
+    private WorldEditPlugin worldEdit;
     private File file;
     private LocationData loc;
     private boolean noAir;
@@ -58,8 +58,8 @@ public class PasteSchematicEvent extends QuestEvent {
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
-        we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-        final File folder = new File(we.getDataFolder(), "schematics");
+        worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        final File folder = new File(worldEdit.getDataFolder(), "schematics");
         if (!folder.exists() || !folder.isDirectory()) {
             throw new InstructionParseException("Schematic folder does not exist");
         }

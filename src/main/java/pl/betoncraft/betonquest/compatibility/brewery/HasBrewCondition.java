@@ -18,7 +18,6 @@
 
 package pl.betoncraft.betonquest.compatibility.brewery;
 
-import com.dre.brewery.BIngredients;
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
 import org.bukkit.entity.Player;
@@ -61,12 +60,12 @@ public class HasBrewCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
 
         int remaining = count;
 
-        for (int i = 0; i < p.getInventory().getSize(); i++) {
-            final ItemStack item = p.getInventory().getItem(i);
+        for (int i = 0; i < player.getInventory().getSize(); i++) {
+            final ItemStack item = player.getInventory().getItem(i);
             if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
 
                 remaining -= item.getAmount();

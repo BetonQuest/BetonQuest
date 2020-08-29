@@ -66,8 +66,8 @@ public class LocalChatPaginator extends ChatPaginator {
         for (int index = length - 1; index > -1; --index) {
             final char section = input.charAt(index);
             if (section == 167 && index < length - 1) {
-                final char c = input.charAt(index + 1);
-                final ChatColor color = ChatColor.getByChar(c);
+                final char colorChar = input.charAt(index + 1);
+                final ChatColor color = ChatColor.getByChar(colorChar);
 
                 if (color != null) {
                     if (color.equals(ChatColor.RESET)) {
@@ -134,18 +134,18 @@ public class LocalChatPaginator extends ChatPaginator {
         int lineWidth = 0;
 
         for (int i = 0; i < rawChars.length; i++) {
-            final char c = rawChars[i];
+            final char singleChar = rawChars[i];
 
             // skip chat color modifiers
-            if (c == ChatColor.COLOR_CHAR) {
+            if (singleChar == ChatColor.COLOR_CHAR) {
                 word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase()));
                 i++; // Eat the next character as we have already processed it
                 continue;
             }
 
-            final int width = getWidth(c);
+            final int width = getWidth(singleChar);
 
-            if (c != ' ' && c != '\n') {
+            if (singleChar != ' ' && singleChar != '\n') {
                 // Extremely long word begins a line, break the word up
                 if (line.length() == 0 && wordWidth + width >= (lines.size() == 0 ? maxWidth : maxWrapWidth)) {
                     lines.add(word.toString());
@@ -160,12 +160,12 @@ public class LocalChatPaginator extends ChatPaginator {
                     lineWidth = 0;
                 }
 
-                word.append(c);
+                word.append(singleChar);
                 wordWidth += width;
                 continue;
             }
 
-            if (c == '\n') {
+            if (singleChar == '\n') {
                 // NewLine forces a new line
                 line.append(' ');
                 line.append(word);
@@ -222,8 +222,8 @@ public class LocalChatPaginator extends ChatPaginator {
         return ret;
     }
 
-    public static int getWidth(final Character c) {
-        return fontSizes.containsKey(c) ? fontSizes.get(c) : defaultCharWidth;
+    public static int getWidth(final Character character) {
+        return fontSizes.containsKey(character) ? fontSizes.get(character) : defaultCharWidth;
     }
 
     /**
@@ -249,9 +249,9 @@ public class LocalChatPaginator extends ChatPaginator {
         final char[] rawChars = input.toCharArray();
         int count = 0;
         for (int i = 0; i < rawChars.length; i++) {
-            final char c = rawChars[i];
+            final char colorChar = rawChars[i];
 
-            if (c == ChatColor.COLOR_CHAR) {
+            if (colorChar == ChatColor.COLOR_CHAR) {
                 count += 2;
                 i++;
             }

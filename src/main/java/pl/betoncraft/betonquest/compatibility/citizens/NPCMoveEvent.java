@@ -18,12 +18,14 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.ai.event.*;
+import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
+import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
+import net.citizensnpcs.api.ai.event.NavigationEvent;
+import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -51,7 +53,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private static HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
 
     private final List<LocationData> locations;
-    private int id;
+    private int npcId;
     private ListIterator<LocationData> locationsIterator;
     private int waitTicks;
     private EventID[] doneEvents;
@@ -61,8 +63,8 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        id = instruction.getInt();
-        if (id < 0) {
+        npcId = instruction.getInt();
+        if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         locations = instruction.getList(instruction::getLocation);
@@ -119,9 +121,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             }
             return null;
         }
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         if (!npc.isSpawned()) {
             return null;
@@ -155,7 +157,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     public void onContinue(final NavigationEvent event) {
         final NPC npc = event.getNPC();
-        if (npc.getId() != id) {
+        if (npc.getId() != npcId) {
             return;
         }
         if (currentPlayer == null || locationsIterator == null) {

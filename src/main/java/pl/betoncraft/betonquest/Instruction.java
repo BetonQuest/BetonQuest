@@ -47,19 +47,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Instruction {
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
 
     protected String instruction;
     protected String[] parts;
     private ConfigPackage pack;
-    private ID id;
+    private ID identifier;
     private int next = 1;
     private int current = 1;
     private String lastOptional = null;
 
-    public Instruction(final ConfigPackage pack, final ID id, final String instruction) {
+    public Instruction(final ConfigPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;
         try {
-            this.id = id == null ? new NoID(pack) : id;
+            this.identifier = identifier == null ? new NoID(pack) : identifier;
         } catch (ObjectNotFoundException e) {
             LogUtils.getLogger().log(Level.WARNING, "Could not find instruction: " + e.getMessage());
             LogUtils.logThrowable(e);
@@ -86,7 +87,7 @@ public class Instruction {
     }
 
     public ID getID() {
-        return id;
+        return identifier;
     }
 
     /////////////////////
@@ -226,8 +227,8 @@ public class Instruction {
             if (enchParts.length != 2) {
                 throw new PartParseException("Wrong enchantment format: " + enchant);
             }
-            final Enchantment id = Enchantment.getByName(enchParts[0]);
-            if (id == null) {
+            final Enchantment enchantment = Enchantment.getByName(enchParts[0]);
+            if (enchantment == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
             final Integer level;
@@ -236,7 +237,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }
-            enchants.put(id, level);
+            enchants.put(enchantment, level);
         }
         return enchants;
     }
@@ -253,8 +254,8 @@ public class Instruction {
         final String[] array = getArray(string);
         for (final String effect : array) {
             final String[] effParts = effect.split(":");
-            final PotionEffectType id = PotionEffectType.getByName(effParts[0]);
-            if (id == null) {
+            final PotionEffectType potionEffectType = PotionEffectType.getByName(effParts[0]);
+            if (potionEffectType == null) {
                 throw new PartParseException("Unknown potion effect" + effParts[0]);
             }
             final int power;
@@ -265,7 +266,7 @@ public class Instruction {
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse potion power/duration: " + effect, e);
             }
-            effects.add(new PotionEffect(id, duration, power));
+            effects.add(new PotionEffect(potionEffectType, duration, power));
         }
         return effects;
     }
@@ -413,11 +414,11 @@ public class Instruction {
     }
 
     public int getPositive(final String string, final int def) throws InstructionParseException {
-        final int i = getInt(string, def);
-        if (i < 1) {
+        final int number = getInt(string, def);
+        if (number < 1) {
             throw new InstructionParseException("Number cannot be less than 1");
         }
-        return i;
+        return number;
     }
 
     public int getInt() throws InstructionParseException {
@@ -466,12 +467,11 @@ public class Instruction {
     }
 
     public ArrayList<Integer> getAllNumbers() {
-        final Pattern p = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
-        final Matcher m = p.matcher(instruction);
+        final Matcher matcher = NUMBER_PATTERN.matcher(instruction);
 
         final ArrayList<Integer> result = new ArrayList<>();
-        while (m.find()) {
-            result.add(Integer.parseInt(m.group(1)));
+        while (matcher.find()) {
+            result.add(Integer.parseInt(matcher.group(1)));
         }
         return result;
     }

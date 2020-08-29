@@ -75,9 +75,9 @@ public class BlockSelector {
                 states = new HashMap<>();
                 for (final String raw : string.substring(0, string.indexOf("]")).split(",")) {
                     if (raw.contains("=")) {
-                        final String[] kv = raw.split("=", 2);
+                        final String[] keyValue = raw.split("=", 2);
 
-                        states.put(kv[0].toLowerCase().trim(), kv[1].toLowerCase().trim());
+                        states.put(keyValue[0].toLowerCase().trim(), keyValue[1].toLowerCase().trim());
                     }
                 }
             }
@@ -164,8 +164,8 @@ public class BlockSelector {
             blockType = blockString.substring(blockString.indexOf(":") + 1, blockString.indexOf("["));
             blockStates = new HashMap<>();
             for (final String raw : blockString.substring(blockString.indexOf("[") + 1, blockString.indexOf("]")).split(",")) {
-                final String[] kv = raw.split("=", 2);
-                blockStates.put(kv[0].trim(), kv[1].trim());
+                final String[] keyValue = raw.split("=", 2);
+                blockStates.put(keyValue[0].trim(), keyValue[1].trim());
             }
         } else {
             blockType = blockString.substring(blockString.indexOf(":") + 1);

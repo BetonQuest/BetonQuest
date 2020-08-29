@@ -54,11 +54,11 @@ public class PlayerConverter {
     /**
      * Returns the Player object described by passed playerID.
      *
-     * @param id - playerID
+     * @param playerID - playerID
      * @return the Player object
      */
-    public static Player getPlayer(final String id) {
-        return Bukkit.getPlayer(UUID.fromString(id));
+    public static Player getPlayer(final String playerID) {
+        return Bukkit.getPlayer(UUID.fromString(playerID));
     }
 
     public static String getName(final String playerID) {

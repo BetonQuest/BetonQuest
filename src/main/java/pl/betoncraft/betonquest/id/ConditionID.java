@@ -24,20 +24,20 @@ public class ConditionID extends ID {
 
     private boolean inverted;
 
-    public ConditionID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, removeExclamationMark(id));
-        this.inverted = id.startsWith("!");
-        rawInstruction = super.pack.getString("conditions." + super.id);
+    public ConditionID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, removeExclamationMark(identifier));
+        this.inverted = identifier.startsWith("!");
+        rawInstruction = super.pack.getString("conditions." + super.identifier);
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined");
         }
     }
 
-    private static String removeExclamationMark(String id) {
-        if (id.startsWith("!")) {
-            id = id.substring(1);
+    private static String removeExclamationMark(String identifier) {
+        if (identifier.startsWith("!")) {
+            identifier = identifier.substring(1);
         }
-        return id;
+        return identifier;
     }
 
     public boolean inverted() {

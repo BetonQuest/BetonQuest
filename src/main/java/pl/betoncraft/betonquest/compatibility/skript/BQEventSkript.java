@@ -33,17 +33,17 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class BQEventSkript extends QuestEvent {
 
-    private final String id;
+    private final String identifier;
 
     public BQEventSkript(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        id = instruction.next();
+        identifier = instruction.next();
     }
 
     @Override
     protected Void execute(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
-        final CustomEventForSkript event = new CustomEventForSkript(player, id);
+        final CustomEventForSkript event = new CustomEventForSkript(player, identifier);
         Bukkit.getServer().getPluginManager().callEvent(event);
         return null;
     }
@@ -56,11 +56,11 @@ public class BQEventSkript extends QuestEvent {
     public static class CustomEventForSkript extends PlayerEvent {
 
         private static final HandlerList HANDLERS = new HandlerList();
-        private final String id;
+        private final String identifier;
 
-        public CustomEventForSkript(final Player who, final String id) {
+        public CustomEventForSkript(final Player who, final String identifier) {
             super(who);
-            this.id = id;
+            this.identifier = identifier;
         }
 
         public static HandlerList getHandlerList() {
@@ -68,7 +68,7 @@ public class BQEventSkript extends QuestEvent {
         }
 
         public String getID() {
-            return id;
+            return identifier;
         }
 
         public HandlerList getHandlers() {

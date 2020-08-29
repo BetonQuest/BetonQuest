@@ -35,7 +35,7 @@ public class Connector {
 
     private BetonQuest plugin;
     private String prefix;
-    private Database db;
+    private Database database;
     private Connection connection;
 
     /**
@@ -44,8 +44,8 @@ public class Connector {
     public Connector() {
         plugin = BetonQuest.getInstance();
         prefix = plugin.getConfig().getString("mysql.prefix", "");
-        db = plugin.getDB();
-        connection = db.getConnection();
+        database = plugin.getDB();
+        connection = database.getConnection();
         refresh();
     }
 
@@ -58,8 +58,8 @@ public class Connector {
         } catch (SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "Reconnecting to the database");
             LogUtils.logThrowable(e);
-            db.closeConnection();
-            connection = db.getConnection();
+            database.closeConnection();
+            connection = database.getConnection();
         }
     }
 

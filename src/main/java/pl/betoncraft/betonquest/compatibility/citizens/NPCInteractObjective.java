@@ -36,14 +36,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCInteractObjective extends Objective implements Listener {
 
-    private final int id;
+    private final int npcId;
     private final boolean cancel;
 
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
-        id = instruction.getInt();
-        if (id < 0) {
+        npcId = instruction.getInt();
+        if (npcId < 0) {
             throw new InstructionParseException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
@@ -52,7 +52,7 @@ public class NPCInteractObjective extends Objective implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
         final String playerID = PlayerConverter.getID(event.getClicker());
-        if (event.getNPC().getId() != id || !containsPlayer(playerID)) {
+        if (event.getNPC().getId() != npcId || !containsPlayer(playerID)) {
             return;
         }
         if (checkConditions(playerID)) {

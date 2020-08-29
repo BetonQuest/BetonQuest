@@ -23,19 +23,19 @@ import pl.betoncraft.betonquest.item.QuestItem.Number;
 public class DataHandler {
 
     private short data = 0;
-    private Number e = Number.WHATEVER;
+    private Number number = Number.WHATEVER;
 
     private DataHandler() {}
 
     public void set(String data) throws InstructionParseException {
         if (data.endsWith("-")) {
-            e = Number.LESS;
+            number = Number.LESS;
             data = data.substring(0, data.length() - 1);
         } else if (data.endsWith("+")) {
-            e = Number.MORE;
+            number = Number.MORE;
             data = data.substring(0, data.length() - 1);
         } else {
-            e = Number.EQUAL;
+            number = Number.EQUAL;
         }
         try {
             this.data = Short.valueOf(data);
@@ -52,7 +52,7 @@ public class DataHandler {
     }
 
     public boolean check(final int data) {
-        switch (e) {
+        switch (number) {
             case WHATEVER:
                 return true;
             case EQUAL:

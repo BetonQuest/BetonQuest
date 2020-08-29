@@ -67,20 +67,20 @@ public class MoneyEvent extends QuestEvent {
         }
 
         final double difference = target - current;
-        final DecimalFormat df = new DecimalFormat("#.00");
+        final DecimalFormat decimalFormat = new DecimalFormat("#.00");
         final String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
 
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
                 Config.sendNotify(playerID, "money_given",
-                        new String[]{df.format(difference), currencyName}, "money_given,info");
+                        new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
             }
         } else if (difference < 0) {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
                 Config.sendNotify(playerID, "money_taken",
-                        new String[]{df.format(difference), currencyName}, "money_taken,info");
+                        new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
             }
         }
         return null;

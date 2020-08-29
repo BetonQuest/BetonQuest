@@ -98,9 +98,9 @@ public class CitizensWalkingListener implements Listener {
                 public void run() {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
-                    Integer i = npcs.get(npc);
-                    i--;
-                    if (i == 0) {
+                    Integer npcId = npcs.get(npc);
+                    npcId--;
+                    if (npcId == 0) {
                         npcs.remove(npc);
                         if (npc.isSpawned()) {
                             final Navigator nav = npc.getNavigator();
@@ -108,7 +108,7 @@ public class CitizensWalkingListener implements Listener {
                             nav.setTarget(locs.remove(npc));
                         }
                     } else {
-                        npcs.put(npc, i);
+                        npcs.put(npc, npcId);
                     }
                 }
             }.runTask(BetonQuest.getInstance());

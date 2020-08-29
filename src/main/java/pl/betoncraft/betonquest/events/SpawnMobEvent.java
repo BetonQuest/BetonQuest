@@ -95,31 +95,31 @@ public class SpawnMobEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);
-        final int a = amount.getInt(playerID);
-        for (int i = 0; i < a; i++) {
+        final int pAmount = amount.getInt(playerID);
+        for (int i = 0; i < pAmount; i++) {
             final Entity entity = location.getWorld().spawnEntity(location, type);
             if (entity instanceof LivingEntity) {
                 final LivingEntity living = (LivingEntity) entity;
-                final EntityEquipment eq = living.getEquipment();
-                eq.setHelmet(helmet == null ? null : helmet.generate(1));
-                eq.setHelmetDropChance(0);
-                eq.setChestplate(chestplate == null ? null : chestplate.generate(1));
-                eq.setChestplateDropChance(0);
-                eq.setLeggings(leggings == null ? null : leggings.generate(1));
-                eq.setLeggingsDropChance(0);
-                eq.setBoots(boots == null ? null : boots.generate(1));
-                eq.setBootsDropChance(0);
-                eq.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
-                eq.setItemInMainHandDropChance(0);
-                eq.setItemInOffHand(offHand == null ? null : offHand.generate(1));
-                eq.setItemInOffHandDropChance(0);
+                final EntityEquipment equipment = living.getEquipment();
+                equipment.setHelmet(helmet == null ? null : helmet.generate(1));
+                equipment.setHelmetDropChance(0);
+                equipment.setChestplate(chestplate == null ? null : chestplate.generate(1));
+                equipment.setChestplateDropChance(0);
+                equipment.setLeggings(leggings == null ? null : leggings.generate(1));
+                equipment.setLeggingsDropChance(0);
+                equipment.setBoots(boots == null ? null : boots.generate(1));
+                equipment.setBootsDropChance(0);
+                equipment.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
+                equipment.setItemInMainHandDropChance(0);
+                equipment.setItemInOffHand(offHand == null ? null : offHand.generate(1));
+                equipment.setItemInOffHandDropChance(0);
             }
-            int j = 0;
+            int dropIndex = 0;
             for (final Item item : drops) {
-                entity.setMetadata("betonquest-drops-" + j,
+                entity.setMetadata("betonquest-drops-" + dropIndex,
                         new FixedMetadataValue(BetonQuest.getInstance(), item.getID().getFullID() + ":"
                                 + item.getAmount().getInt(playerID)));
-                j++;
+                dropIndex++;
             }
             if (name != null && entity instanceof LivingEntity) {
                 final LivingEntity livingEntity = (LivingEntity) entity;

@@ -43,15 +43,15 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class NPCRegionCondition extends Condition {
 
-    private final int id;
+    private final int npcId;
     private final String region;
 
     public NPCRegionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         super.persistent = true;
         super.staticness = true;
-        id = instruction.getInt();
-        if (id < 0) {
+        npcId = instruction.getInt();
+        if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         region = instruction.next();
@@ -59,9 +59,9 @@ public class NPCRegionCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + id + " does not exist");
+            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         final Entity npcEntity = npc.getEntity();
         if (npcEntity == null) {

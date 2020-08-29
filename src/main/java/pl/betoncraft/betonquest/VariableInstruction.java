@@ -22,8 +22,8 @@ import pl.betoncraft.betonquest.id.ID;
 
 public class VariableInstruction extends Instruction {
 
-    public VariableInstruction(final ConfigPackage pack, final ID id, final String instruction) {
-        super(pack, id, instruction);
+    public VariableInstruction(final ConfigPackage pack, final ID variableIdentifier, final String instruction) {
+        super(pack, variableIdentifier, instruction);
         if (!instruction.startsWith("%") && !instruction.endsWith("%")) {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
         }

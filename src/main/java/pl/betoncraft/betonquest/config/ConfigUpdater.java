@@ -18,11 +18,7 @@
 package pl.betoncraft.betonquest.config;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,15 +46,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -94,7 +82,7 @@ public class ConfigUpdater {
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
-    private ConfigHandler ch;
+    private ConfigHandler configHandler;
 
     public ConfigUpdater() {
         final String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -126,7 +114,7 @@ public class ConfigUpdater {
             Utils.backup();
         }
         // instantiate old configuration handler
-        ch = new ConfigHandler();
+        configHandler = new ConfigHandler();
         // if the version is null the plugin is updated from pre-1.4 version
         // (which can be 1.0, 1.1 or 1.2)
         if (version == null || version.equals("1.4")) {
@@ -432,11 +420,11 @@ public class ConfigUpdater {
                 final ConfigurationSection sec = acc.getConfig();
                 for (final String key : sec.getKeys(false)) {
                     final String value = sec.getString(key);
-                    final int i = value.indexOf(' ');
-                    if (i < 0) {
+                    final int indexOf = value.indexOf(' ');
+                    if (indexOf < 0) {
                         continue;
                     }
-                    final String object = value.substring(0, i).toLowerCase();
+                    final String object = value.substring(0, indexOf).toLowerCase();
                     int index = -1;
                     switch (type) {
                         case CONDITIONS:
@@ -469,12 +457,12 @@ public class ConfigUpdater {
                                         }
                                     }
                                     if (loc != null) {
-                                        final int j = loc.lastIndexOf(';');
-                                        if (j < 0 || j >= loc.length() - 1) {
+                                        final int lastIndexOf = loc.lastIndexOf(';');
+                                        if (lastIndexOf < 0 || lastIndexOf >= loc.length() - 1) {
                                             continue;
                                         }
-                                        final String front = loc.substring(0, j);
-                                        final String back = loc.substring(j + 1);
+                                        final String front = loc.substring(0, lastIndexOf);
+                                        final String back = loc.substring(lastIndexOf + 1);
                                         final String newLoc = front + " range:" + back;
                                         sec.set(key, value.replace(loc, newLoc));
                                     }
@@ -880,12 +868,12 @@ public class ConfigUpdater {
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
                 LogUtils.getLogger().log(Level.FINE, "Searching " + packName + " package");
-                final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
-                if (s == null) {
+                final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("cancel");
+                if (section == null) {
                     continue;
                 }
-                for (final String key : s.getKeys(false)) {
-                    final String instruction = s.getString(key);
+                for (final String key : section.getKeys(false)) {
+                    final String instruction = section.getString(key);
                     LogUtils.getLogger().log(Level.FINE, "  Converting " + key + " canceler: " + instruction);
                     final String[] parts = instruction.split(" ");
                     final HashMap<String, String> names = new HashMap<>();
@@ -928,17 +916,17 @@ public class ConfigUpdater {
                         }
                     }
                     LogUtils.getLogger().log(Level.FINE, "  - Setting the values");
-                    s.set(key, null);
+                    section.set(key, null);
                     for (final String lang : names.keySet()) {
-                        s.set(key + ".name." + lang, names.get(lang));
+                        section.set(key + ".name." + lang, names.get(lang));
                     }
-                    s.set(key + ".events", events);
-                    s.set(key + ".conditions", conditions);
-                    s.set(key + ".tags", tags);
-                    s.set(key + ".points", points);
-                    s.set(key + ".objectives", objectives);
-                    s.set(key + ".journal", journal);
-                    s.set(key + ".loc", loc);
+                    section.set(key + ".events", events);
+                    section.set(key + ".conditions", conditions);
+                    section.set(key + ".tags", tags);
+                    section.set(key + ".points", points);
+                    section.set(key + ".objectives", objectives);
+                    section.set(key + ".journal", journal);
+                    section.set(key + ".loc", loc);
                     pack.getMain().saveConfig();
                 }
             }
@@ -983,10 +971,10 @@ public class ConfigUpdater {
             final HashMap<String, ArrayList<String>> points = new HashMap<>();
             // this will ensure that there is no "global" package already
             // defined
-            int i = 1;
+            int index = 1;
             while (Config.getPackages().get(globalName) != null) {
-                i++;
-                globalName = "global-" + i;
+                index++;
+                globalName = "global-" + index;
             }
             LogUtils.getLogger().log(Level.FINE, "Global package will be called '" + globalName + "'");
             // create lists for tags/points that are duplicated across multiple
@@ -1856,7 +1844,7 @@ public class ConfigUpdater {
                 final ConfigAccessor main = pack.getMain();
                 for (final String event : events.getConfig().getKeys(false)) {
                     // extract label and build the new instruction
-                    int i = 0; // counts unnamed objectives
+                    int index = 0; // counts unnamed objectives
                     final String instruction = events.getConfig().getString(event);
                     if (instruction.startsWith("objective ")) {
                         LogUtils.getLogger().log(Level.FINE, "    Starting event " + event);
@@ -1881,8 +1869,8 @@ public class ConfigUpdater {
                         // if label is not present, skip this one
                         if (label == null) {
                             LogUtils.getLogger().log(Level.FINE, "      There is no label, generating one");
-                            label = "objective" + i;
-                            i++;
+                            label = "objective" + index;
+                            index++;
                         }
                         LogUtils.getLogger().log(Level.FINE, "      Saving the objective as " + label + ", instruction: " + newInstruction);
                         // save objective and generate label
@@ -2118,7 +2106,7 @@ public class ConfigUpdater {
             // copy the data
             final String globalLocations = config.getString("global_locations");
             final ConfigurationSection staticEvents = config.getConfigurationSection("static");
-            final ConfigurationSection npcs = ch.getConfigs().get("npcs").getConfig().getRoot();
+            final ConfigurationSection npcs = configHandler.getConfigs().get("npcs").getConfig().getRoot();
             main.set("global_locations", globalLocations);
             if (staticEvents != null) {
                 for (final String key : staticEvents.getKeys(false)) {
@@ -2210,7 +2198,7 @@ public class ConfigUpdater {
     private void updateFromV11() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating objectives in configuration");
-            final ConfigAccessor events = ch.getConfigs().get("events");
+            final ConfigAccessor events = configHandler.getConfigs().get("events");
             final ArrayList<String> labels = new ArrayList<>();
             boolean notified = false;
             // for every event check if it's objective
@@ -2312,7 +2300,7 @@ public class ConfigUpdater {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating instruction strings");
             LogUtils.getLogger().log(Level.FINE, "  Updating conditions");
-            final ConfigAccessor conditions = ch.getConfigs().get("conditions");
+            final ConfigAccessor conditions = configHandler.getConfigs().get("conditions");
             conditions:
             for (final String key : conditions.getConfig().getKeys(false)) {
                 LogUtils.getLogger().log(Level.FINE, "    Processing " + key + " condition");
@@ -2482,14 +2470,14 @@ public class ConfigUpdater {
                             if (enchants != null) {
                                 itemInstruction = itemInstruction + " " + enchants;
                             }
-                            final ConfigAccessor itemsConfig = ch.getConfigs().get("items");
-                            int i = 0;
-                            while (itemsConfig.getConfig().contains("armor" + i)) {
-                                i++;
+                            final ConfigAccessor itemsConfig = configHandler.getConfigs().get("items");
+                            int index = 0;
+                            while (itemsConfig.getConfig().contains("armor" + index)) {
+                                index++;
                             }
-                            itemsConfig.getConfig().set("armor" + i, itemInstruction);
+                            itemsConfig.getConfig().set("armor" + index, itemInstruction);
                             itemsConfig.saveConfig();
-                            newParts.add("armor" + i);
+                            newParts.add("armor" + index);
                         }
                         break;
                     case "effect":
@@ -2614,7 +2602,7 @@ public class ConfigUpdater {
             conditions.saveConfig();
 
             LogUtils.getLogger().log(Level.FINE, "  Updating events");
-            final ConfigAccessor events = ch.getConfigs().get("events");
+            final ConfigAccessor events = configHandler.getConfigs().get("events");
             events:
             for (final String key : events.getConfig().getKeys(false)) {
                 LogUtils.getLogger().log(Level.FINE, "    Processing " + key + " event");
@@ -2722,7 +2710,7 @@ public class ConfigUpdater {
 
     @SuppressWarnings("unused")
     private void updateFromV7() {
-        final ConfigAccessor messages = ch.getConfigs().get("messages");
+        final ConfigAccessor messages = configHandler.getConfigs().get("messages");
         messages.getConfig().set("global.date_format", "dd.MM.yyyy HH:mm");
         messages.saveConfig();
         LogUtils.getLogger().log(Level.INFO, "Added date format line to messages.yml");
@@ -2788,7 +2776,7 @@ public class ConfigUpdater {
         try {
             // update all give/take events and item condition to match new
             // parser
-            final ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
+            final ConfigAccessor eventsAccessor = configHandler.getConfigs().get("events");
             final FileConfiguration eventsConfig = eventsAccessor.getConfig();
             LogUtils.getLogger().log(Level.FINE, "Updating events!");
             // check every event in configuration
@@ -2817,7 +2805,7 @@ public class ConfigUpdater {
             // when all events are converted, save the file
             eventsAccessor.saveConfig();
             // update all item conditions
-            final ConfigAccessor conditionsAccessor = ch.getConfigs().get("conditions");
+            final ConfigAccessor conditionsAccessor = configHandler.getConfigs().get("conditions");
             final FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
             LogUtils.getLogger().log(Level.FINE, "Updatng conditions!");
             // check every condition in configuration
@@ -2874,7 +2862,7 @@ public class ConfigUpdater {
             // Get all conditions with --inverted tag into the map
             // <name,instruction> without --inverted tag and remove them form
             // config
-            final ConfigAccessor conditionsAccessor = ch.getConfigs().get("conditions");
+            final ConfigAccessor conditionsAccessor = configHandler.getConfigs().get("conditions");
             final FileConfiguration conditionsConfig = conditionsAccessor.getConfig();
             // at the beginning trim all conditions, so they won't get
             // confused later on
@@ -2888,12 +2876,12 @@ public class ConfigUpdater {
                 // get instruction
                 String condition = conditionsConfig.getString(name);
                 boolean wasInverted = false;
-                int i = 1;
+                int index = 1;
                 LogUtils.getLogger().log(Level.FINE, "  Checking condition " + name);
                 // if it is --inverted
                 while (condition.contains("--inverted")) {
-                    LogUtils.getLogger().log(Level.FINE, "    Loop " + i);
-                    i++;
+                    LogUtils.getLogger().log(Level.FINE, "    Loop " + index);
+                    index++;
                     LogUtils.getLogger().log(Level.FINE, "      Instruction: '" + condition + "'");
                     // get starting index of --inverted
                     final int startingIndex = condition.indexOf(" --inverted");
@@ -2991,7 +2979,7 @@ public class ConfigUpdater {
             // player option, replace old names from the map with new names
             LogUtils.getLogger().log(Level.FINE, "Starting conversation updating");
             // get every conversation accessor
-            final HashMap<String, ConfigAccessor> conversations = ch.getConversations();
+            final HashMap<String, ConfigAccessor> conversations = configHandler.getConversations();
             for (final String conversationName : conversations.keySet()) {
                 LogUtils.getLogger().log(Level.FINE, "  Processing conversation " + conversationName);
                 final ConfigAccessor conversation = conversations.get(conversationName);
@@ -3060,7 +3048,7 @@ public class ConfigUpdater {
             // for each event_conditions: and conditions: in events.yml, replace
             // old names from the map with new names
             LogUtils.getLogger().log(Level.FINE, "Starting events updating");
-            final ConfigAccessor eventsAccessor = ch.getConfigs().get("events");
+            final ConfigAccessor eventsAccessor = configHandler.getConfigs().get("events");
             for (final String eventName : eventsAccessor.getConfig().getKeys(false)) {
                 LogUtils.getLogger().log(Level.FINE, "  Processing event " + eventName);
                 // extract event's instruction
@@ -3211,7 +3199,7 @@ public class ConfigUpdater {
         LogUtils.getLogger().log(Level.INFO, "Added new journal color options!");
         // convert conditions in events to event_condition: format
         LogUtils.getLogger().log(Level.FINE, "Starting updating 'conditions:' argument to 'event_conditions:' in events.yml");
-        final ConfigAccessor events = ch.getConfigs().get("events");
+        final ConfigAccessor events = configHandler.getConfigs().get("events");
         for (final String key : events.getConfig().getKeys(false)) {
             LogUtils.getLogger().log(Level.FINE, "  Processing event " + key);
             if (events.getConfig().getString(key).contains("conditions:")) {
@@ -3230,7 +3218,7 @@ public class ConfigUpdater {
         LogUtils.getLogger().log(Level.INFO, "Events now use 'event_conditions:' for conditioning.");
         // convert objectives to new format
         LogUtils.getLogger().log(Level.FINE, "Converting objectives to new format...");
-        final ConfigAccessor objectives = ch.getConfigs().get("objectives");
+        final ConfigAccessor objectives = configHandler.getConfigs().get("objectives");
         for (final String key : events.getConfig().getKeys(false)) {
             LogUtils.getLogger().log(Level.FINE, "  Processing objective " + key);
             if (events.getConfig().getString(key).split(" ")[0].equalsIgnoreCase("objective")) {
@@ -3245,23 +3233,23 @@ public class ConfigUpdater {
         if (globalLocations != null && !globalLocations.equals("")) {
             final StringBuilder configGlobalLocs = new StringBuilder();
             LogUtils.getLogger().log(Level.INFO, "Converting global locations to use events...");
-            int i = 0;
+            int index = 0;
             for (final String globalLoc : config.getString("global_locations").split(",")) {
-                i++;
-                events.getConfig().set("global_location_" + i,
+                index++;
+                events.getConfig().set("global_location_" + index,
                         "objective " + objectives.getConfig().getString(globalLoc));
-                configGlobalLocs.append("global_location_" + i + ",");
+                configGlobalLocs.append("global_location_" + index + ",");
                 LogUtils.getLogger().log(Level.INFO, "Converted " + globalLoc + " objective.");
             }
             config.set("global_locations", configGlobalLocs.substring(0, configGlobalLocs.length() - 1));
-            LogUtils.getLogger().log(Level.INFO, "All " + i + " global locations have been converted.");
+            LogUtils.getLogger().log(Level.INFO, "All " + index + " global locations have been converted.");
         }
         events.saveConfig();
         LogUtils.getLogger().log(Level.INFO, "Removing old file.");
         new File(instance.getDataFolder(), "objectives.yml").delete();
         // convert books to new format
         LogUtils.getLogger().log(Level.INFO, "Converting books to new format!");
-        final ConfigAccessor items = ch.getConfigs().get("items");
+        final ConfigAccessor items = configHandler.getConfigs().get("items");
         for (final String key : items.getConfig().getKeys(false)) {
             final String string = items.getConfig().getString(key);
             if (string.split(" ")[0].equalsIgnoreCase("WRITTEN_BOOK")) {

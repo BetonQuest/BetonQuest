@@ -115,8 +115,8 @@ public class EntityCondition extends Condition {
                     }
                 }
             }
-            final double r = range.getDouble(playerID);
-            if (entity.getLocation().distanceSquared(location) < r * r) {
+            final double pRange = range.getDouble(playerID);
+            if (entity.getLocation().distanceSquared(location) < pRange * pRange) {
                 final EntityType theType = entity.getType();
                 for (int i = 0; i < types.length; i++) {
                     if (theType == types[i]) {

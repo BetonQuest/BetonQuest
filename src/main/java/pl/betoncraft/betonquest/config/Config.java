@@ -28,16 +28,8 @@ import pl.betoncraft.betonquest.notify.Notify;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -110,11 +102,11 @@ public class Config {
 
         // load quest cancelers
         for (final ConfigPackage pack : packages.values()) {
-            final ConfigurationSection s = pack.getMain().getConfig().getConfigurationSection("cancel");
-            if (s == null) {
+            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("cancel");
+            if (section == null) {
                 continue;
             }
-            for (final String key : s.getKeys(false)) {
+            for (final String key : section.getKeys(false)) {
                 final String name = pack.getName() + "." + key;
                 try {
                     cancelers.put(name, new QuestCanceler(name));
@@ -174,15 +166,15 @@ public class Config {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                final InputStream in = plugin.getResource(resource);
-                final OutputStream out = new FileOutputStream(file);
+                final InputStream input = plugin.getResource(resource);
+                final OutputStream output = new FileOutputStream(file);
                 final byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
+                int len = input.read(buffer);
                 while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
+                    output.write(buffer, 0, len);
+                    len = input.read(buffer);
                 }
-                out.close();
+                output.close();
             } catch (IOException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not save resource: " + e.getMessage());
                 LogUtils.logThrowable(e);

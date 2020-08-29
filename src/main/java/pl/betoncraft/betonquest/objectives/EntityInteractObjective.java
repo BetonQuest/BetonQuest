@@ -89,8 +89,8 @@ public class EntityInteractObjective extends Objective {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        final String r = instruction.getOptional("range");
-        range = instruction.getVarNum(r == null ? "1" : r);
+        final String stringRange = instruction.getOptional("range");
+        range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
     }
 
     @Override
@@ -137,9 +137,9 @@ public class EntityInteractObjective extends Objective {
             if (loc != null) {
                 try {
                     final Location location = loc.getLocation(playerID);
-                    final double r = range.getDouble(playerID);
+                    final double pRange = range.getDouble(playerID);
                     if (!entity.getWorld().equals(location.getWorld())
-                            || entity.getLocation().distance(location) > r) {
+                            || entity.getLocation().distance(location) > pRange) {
                         return false;
                     }
                 } catch (QuestRuntimeException e) {
@@ -253,17 +253,17 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onDamage(final EntityDamageByEntityEvent e) {
+        public void onDamage(final EntityDamageByEntityEvent event) {
             final Player player;
             // check if entity is damaged by a Player
-            if (e.getDamager() instanceof Player) {
-                player = (Player) e.getDamager();
+            if (event.getDamager() instanceof Player) {
+                player = (Player) event.getDamager();
             } else {
                 return;
             }
-            final boolean succes = onInteract(player, e.getEntity());
+            final boolean succes = onInteract(player, event.getEntity());
             if (succes && cancel) {
-                e.setCancelled(true);
+                event.setCancelled(true);
             }
         }
     }
@@ -274,10 +274,10 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractEntityEvent e) {
-            final boolean success = onInteract(e.getPlayer(), e.getRightClicked());
+        public void onRightClick(final PlayerInteractEntityEvent event) {
+            final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
             if (success && cancel) {
-                e.setCancelled(true);
+                event.setCancelled(true);
             }
         }
     }

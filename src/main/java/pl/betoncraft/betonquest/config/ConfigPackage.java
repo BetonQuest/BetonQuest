@@ -204,19 +204,19 @@ public class ConfigPackage {
                     return input;
                 }
 
-                final double x1;
-                double y1;
-                final double z1;
+                final double locX;
+                final double locY;
+                final double locZ;
                 final String rest;
                 try {
-                    final int i = innerVarVal.indexOf(';');
-                    x1 = Double.parseDouble(innerVarVal.substring(0, i));
-                    final int j = innerVarVal.indexOf(';', i + 1);
-                    y1 = Double.parseDouble(innerVarVal.substring(i + 1, j));
-                    final int k = innerVarVal.indexOf(';', j + 1);
-                    z1 = Double.parseDouble(innerVarVal.substring(j + 1, k));
+                    final int offset1 = innerVarVal.indexOf(';');
+                    locX = Double.parseDouble(innerVarVal.substring(0, offset1));
+                    final int offset2 = innerVarVal.indexOf(';', offset1 + 1);
+                    locY = Double.parseDouble(innerVarVal.substring(offset1 + 1, offset2));
+                    final int offset3 = innerVarVal.indexOf(';', offset2 + 1);
+                    locZ = Double.parseDouble(innerVarVal.substring(offset2 + 1, offset3));
                     // rest is world + possible other arguments
-                    rest = innerVarVal.substring(k);
+                    rest = innerVarVal.substring(offset3);
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, String.format(
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
@@ -225,27 +225,27 @@ public class ConfigPackage {
                     return input;
                 }
                 // parse the vector
-                final double x2;
-                double y2;
-                final double z2;
+                final double vecLocX;
+                final double vecLocY;
+                final double vecLocZ;
                 try {
-                    final int s = varVal.indexOf('(');
-                    final int i = varVal.indexOf(';');
-                    final int j = varVal.indexOf(';', i + 1);
-                    final int e = varVal.indexOf(')');
-                    x2 = Double.parseDouble(varVal.substring(s + 1, i));
-                    y2 = Double.parseDouble(varVal.substring(i + 1, j));
-                    z2 = Double.parseDouble(varVal.substring(j + 1, e));
+                    final int offset1 = varVal.indexOf('(');
+                    final int offset2 = varVal.indexOf(';');
+                    final int offset3 = varVal.indexOf(';', offset2 + 1);
+                    final int offset4 = varVal.indexOf(')');
+                    vecLocX = Double.parseDouble(varVal.substring(offset1 + 1, offset2));
+                    vecLocY = Double.parseDouble(varVal.substring(offset2 + 1, offset3));
+                    vecLocZ = Double.parseDouble(varVal.substring(offset3 + 1, offset4));
                 } catch (NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Could not parse vector inlocation variable %s in package %s",
                             varName, name));
                     LogUtils.logThrowable(e);
                     return input;
                 }
-                final double x3 = x1 + x2;
-                final double y3 = y1 + y2;
-                final double z3 = z1 + z2;
-                input = input.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", x3, y3, z3, rest));
+                final double locationX = locX + vecLocX;
+                final double locationY = locY + vecLocY;
+                final double locationZ = locZ + vecLocZ;
+                input = input.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", locationX, locationY, locationZ, rest));
             } else {
                 input = input.replace("$" + varName + "$", varVal);
             }

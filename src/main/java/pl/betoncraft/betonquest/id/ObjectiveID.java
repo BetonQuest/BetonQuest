@@ -22,9 +22,9 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ObjectiveID extends ID {
 
-    public ObjectiveID(final ConfigPackage pack, final String id) throws ObjectNotFoundException {
-        super(pack, id);
-        rawInstruction = super.pack.getString("objectives." + super.id);
+    public ObjectiveID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+        super(pack, identifier);
+        rawInstruction = super.pack.getString("objectives." + super.identifier);
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Objective '" + getFullID() + "' is not defined");
         }

@@ -94,33 +94,33 @@ public class NPCHider extends BukkitRunnable implements Listener {
                 continue;
             }
             npcs:
-            for (final String npcID : section.getKeys(false)) {
-                final int id;
+            for (final String npcIds : section.getKeys(false)) {
+                final int npcId;
                 try {
-                    id = Integer.parseInt(npcID);
+                    npcId = Integer.parseInt(npcIds);
                 } catch (NumberFormatException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcID + "' is not a valid number, in custom.yml hide_npcs");
+                    LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcIds + "' is not a valid number, in custom.yml hide_npcs");
                     LogUtils.logThrowable(e);
                     continue npcs;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
-                final String conditionsString = section.getString(npcID);
+                final String conditionsString = section.getString(npcIds);
 
                 for (final String condition : conditionsString.split(",")) {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
                     } catch (ObjectNotFoundException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
-                                "' does not exist, in custom.yml hide_npcs with ID " + npcID);
+                                "' does not exist, in custom.yml hide_npcs with ID " + npcIds);
                         LogUtils.logThrowable(e);
                         continue npcs;
                     }
                 }
 
-                if (npcs.containsKey(id)) {
-                    npcs.get(id).addAll(conditions);
+                if (npcs.containsKey(npcId)) {
+                    npcs.get(npcId).addAll(conditions);
                 } else {
-                    npcs.put(id, conditions);
+                    npcs.put(npcId, conditions);
                 }
             }
         }

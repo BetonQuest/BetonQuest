@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class VariableEvent extends QuestEvent {
 
-    private ObjectiveID id;
+    private ObjectiveID objectiveID;
     private String key;
     private ArrayList<String> keyVariables;
     private String value;
@@ -39,7 +39,7 @@ public class VariableEvent extends QuestEvent {
 
     public VariableEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        id = instruction.getObjective();
+        objectiveID = instruction.getObjective();
         key = instruction.next();
         keyVariables = BetonQuest.resolveVariables(key);
         value = instruction.next();
@@ -48,9 +48,9 @@ public class VariableEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Objective obj = BetonQuest.getInstance().getObjective(id);
+        final Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
         if (!(obj instanceof VariableObjective)) {
-            throw new QuestRuntimeException(id.getFullID() + " is not a variable objective");
+            throw new QuestRuntimeException(objectiveID.getFullID() + " is not a variable objective");
         }
         final VariableObjective objective = (VariableObjective) obj;
         String keyReplaced = key;
@@ -65,7 +65,7 @@ public class VariableEvent extends QuestEvent {
         }
         if (!objective.store(playerID, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
             throw new QuestRuntimeException("Player " + PlayerConverter.getName(playerID) + " does not have '" +
-                    id.getFullID() + "' objective, cannot store a variable.");
+                    objectiveID.getFullID() + "' objective, cannot store a variable.");
         }
         return null;
     }

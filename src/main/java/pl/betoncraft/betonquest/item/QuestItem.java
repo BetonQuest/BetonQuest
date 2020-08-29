@@ -226,8 +226,8 @@ public class QuestItem {
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
             if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-                final DyeColor c = DyeColor.getByColor(armorMeta.getColor());
-                color = " color:" + (c == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : c.toString());
+                final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
+                color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
             }
         }
         if (meta instanceof EnchantmentStorageMeta) {
@@ -300,10 +300,10 @@ public class QuestItem {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final Object other) {
         final QuestItem item;
-        if (o instanceof QuestItem) {
-            item = (QuestItem) o;
+        if (other instanceof QuestItem) {
+            item = (QuestItem) other;
         } else {
             return false;
         }

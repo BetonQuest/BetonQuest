@@ -58,11 +58,11 @@ public class ParticleEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player p = PlayerConverter.getPlayer(playerID);
-        final Location location = (loc == null) ? p.getLocation() : loc.getLocation(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
+        final Location location = (loc == null) ? player.getLocation() : loc.getLocation(playerID);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;
-        final Player targetPlayer = pr1vate ? p : null;
+        final Player targetPlayer = pr1vate ? player : null;
         EffectLibIntegrator.getEffectManager().start(effectClass,
                 parameters,
                 new DynamicLocation(location, null),

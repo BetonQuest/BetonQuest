@@ -54,8 +54,8 @@ public class SkriptConditionBQ extends Condition {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
-        return player.getSingle(e).getName() + " meets " + condition.toString();
+    public String toString(final Event event, final boolean debug) {
+        return player.getSingle(event).getName() + " meets " + condition.toString();
     }
 
     @Override
