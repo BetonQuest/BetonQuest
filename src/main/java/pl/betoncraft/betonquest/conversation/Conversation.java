@@ -256,8 +256,9 @@ public class Conversation implements Listener {
                     continue answers;
                 }
             }
+            optionsCount++;
             // print reply and put it to the hashmap
-            current.put(optionsCount++, option);
+            current.put(optionsCount, option);
             // replace variables with their values
             String text = data.getText(playerID, language, option, OptionType.PLAYER);
             for (final String variable : BetonQuest.resolveVariables(text)) {
