@@ -147,7 +147,7 @@ public class Journal {
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
                         .add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID, pointer.getPointer(), date}));
-                iterator.remove();
+                pointers.remove(pointer);
                 break;
             }
         }
