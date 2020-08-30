@@ -56,4 +56,5 @@
   <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
   <rule ref="category/java/codestyle.xml/UselessParentheses" />
   <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
+  <rule ref="category/java/codestyle.xml/UseShortArrayInitializer"/>
 </ruleset>

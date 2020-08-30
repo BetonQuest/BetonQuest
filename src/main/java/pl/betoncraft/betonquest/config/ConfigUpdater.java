@@ -2085,7 +2085,7 @@ public class ConfigUpdater {
             }
             // move files that can be moved without modifications
             final File root = instance.getDataFolder();
-            final String[] filesToMove = new String[]{"events", "conditions", "items", "journal"};
+            final String[] filesToMove = {"events", "conditions", "items", "journal"};
             for (final String fileToMove : filesToMove) {
                 LogUtils.getLogger().log(Level.FINE, "  Moving " + fileToMove + ".yml file");
                 new File(root, fileToMove + ".yml").renameTo(new File(defPkg, fileToMove + ".yml"));
@@ -2731,7 +2731,7 @@ public class ConfigUpdater {
             // delete isused column from tables objectives and tags
             final Database database = instance.getDB();
             final Connection connection = database.getConnection();
-            final String[] tables = new String[]{"objectives", "tags"};
+            final String[] tables = {"objectives", "tags"};
             final String prefix = instance.getConfig().getString("mysql.prefix", "");
             if (instance.isMySQLUsed()) {
                 connection.prepareStatement("ALTER TABLE " + prefix + "objectives DROP COLUMN isused;").executeUpdate();
@@ -3186,13 +3186,13 @@ public class ConfigUpdater {
     private void updateTo1dot5() {
         LogUtils.getLogger().log(Level.INFO, "Started converting configuration files from v1.4 to v1.5!");
         // add sound settings
-        final String[] array1 = new String[]{"start", "end", "journal", "update", "full"};
+        final String[] array1 = {"start", "end", "journal", "update", "full"};
         for (final String string : array1) {
             config.set("sounds." + string, config.getDefaults().getString("sounds." + string));
         }
         LogUtils.getLogger().log(Level.INFO, "Added new sound options!");
         // add colors for journal
-        final String[] array2 = new String[]{"date.day", "date.hour", "line", "text"};
+        final String[] array2 = {"date.day", "date.hour", "line", "text"};
         for (final String string : array2) {
             config.set("journal_colors." + string, config.getDefaults().getString("journal_colors." + string));
         }
@@ -3355,7 +3355,7 @@ public class ConfigUpdater {
         LogUtils.getLogger().log(Level.INFO, "Converting names to UUID...");
         // loop all tables
         final HashMap<String, String> list = new HashMap<>();
-        final String[] tables = new String[]{"OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK"};
+        final String[] tables = {"OBJECTIVES", "TAGS", "POINTS", "JOURNAL", "BACKPACK"};
         final Connector con = new Connector();
         for (final String table : tables) {
             final ResultSet res = con.querySQL(QueryType.valueOf("SELECT_PLAYERS_" + table), new String[]{});
