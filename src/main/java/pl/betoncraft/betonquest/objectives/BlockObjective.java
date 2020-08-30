@@ -19,6 +19,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -57,7 +58,7 @@ public class BlockObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
@@ -84,7 +85,7 @@ public class BlockObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
