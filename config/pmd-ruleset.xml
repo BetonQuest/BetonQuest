@@ -47,4 +47,5 @@
   <rule ref="category/java/codestyle.xml/ShortClassName" />
   <rule ref="category/java/codestyle.xml/ShortMethodName" />
   <rule ref="category/java/codestyle.xml/ShortVariable"/>
+  <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
 </ruleset>
