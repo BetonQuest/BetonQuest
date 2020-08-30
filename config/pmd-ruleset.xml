@@ -55,4 +55,5 @@
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn" />
   <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
   <rule ref="category/java/codestyle.xml/UselessParentheses" />
+  <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
 </ruleset>
