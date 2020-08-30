@@ -51,4 +51,5 @@
   <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement" />
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
   <rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryModifier" />
 </ruleset>

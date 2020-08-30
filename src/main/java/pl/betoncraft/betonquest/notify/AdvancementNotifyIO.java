@@ -166,7 +166,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
 
-    public static enum FrameType {
+    public enum FrameType {
         CHALLENGE("challenge"),
         GOAL("goal"),
         TASK("task"),
