@@ -50,4 +50,5 @@
   <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
   <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement" />
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn" />
 </ruleset>
