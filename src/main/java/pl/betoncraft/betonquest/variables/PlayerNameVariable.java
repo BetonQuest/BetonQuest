@@ -40,7 +40,7 @@ public class PlayerNameVariable extends Variable {
     @Override
     public String getValue(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
-        return (display) ? player.getDisplayName() : player.getName();
+        return display ? player.getDisplayName() : player.getName();
     }
 
 }

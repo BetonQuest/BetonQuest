@@ -80,8 +80,8 @@ public class NPCRangeObjective extends Objective implements Listener {
             final double radius = this.radius.getDouble(playerID);
             final double distanceSqrd = npcEntity.getLocation().distanceSquared(event.getTo());
             final double radiusSqrd = radius * radius;
-            if ((trigger == Trigger.ENTER && distanceSqrd <= radiusSqrd)
-                    || (trigger == Trigger.LEAVE && distanceSqrd >= radiusSqrd)) {
+            if (trigger == Trigger.ENTER && distanceSqrd <= radiusSqrd
+                    || trigger == Trigger.LEAVE && distanceSqrd >= radiusSqrd) {
                 if (checkConditions(playerID)) {
                     completeObjective(playerID);
                 }

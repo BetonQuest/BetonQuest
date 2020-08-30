@@ -130,11 +130,11 @@ public class ActionObjective extends Objective implements Listener {
                     break;
             }
             try {
-                if (((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                        || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) || event.getAction().equals(actionEnum))
-                        && (event.getClickedBlock() != null && (((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
-                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace())))
-                        || selector.match(event.getClickedBlock())))) {
+                if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                        || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
+                        && event.getClickedBlock() != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
+                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()))
+                        || selector.match(event.getClickedBlock()))) {
                     if (loc != null) {
                         final Location location = loc.getLocation(playerID);
                         final double pRange = range.getDouble(playerID);

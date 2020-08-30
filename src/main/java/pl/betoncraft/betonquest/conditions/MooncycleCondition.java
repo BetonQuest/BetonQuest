@@ -48,7 +48,7 @@ public class MooncycleCondition extends Condition {
         final int days = (int) player.getWorld().getFullTime() / 24000;
         int phaseInt = days % 8;
         phaseInt += 1;
-        return (phaseInt == thisCycle.getInt(playerID));
+        return phaseInt == thisCycle.getInt(playerID);
     }
 
 }

@@ -255,10 +255,10 @@ public class MathVariable extends Variable {
 
         @Override
         public String toString() {
-            final String numberA = ((this.numberA instanceof Calculation) || this.numberA.toString().startsWith("-"))
-                    ? ("(" + this.numberA.toString() + ")") : this.numberA.toString();
-            final String numberB = ((this.numberB instanceof Calculation) || this.numberB.toString().startsWith("-"))
-                    ? ("(" + this.numberB.toString() + ")") : this.numberB.toString();
+            final String numberA = this.numberA instanceof Calculation || this.numberA.toString().startsWith("-")
+                    ? "(" + this.numberA.toString() + ")" : this.numberA.toString();
+            final String numberB = this.numberB instanceof Calculation || this.numberB.toString().startsWith("-")
+                    ? "(" + this.numberB.toString() + ")" : this.numberB.toString();
             return numberA + operation.operator + numberB;
         }
     }

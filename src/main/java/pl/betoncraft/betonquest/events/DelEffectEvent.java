@@ -47,14 +47,14 @@ public class DelEffectEvent extends QuestEvent {
             effects = Collections.emptyList();
         } else {
             any = false;
-            effects = instruction.getList(next, (type -> {
+            effects = instruction.getList(next, type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase());
                 if (effect == null) {
                     throw new InstructionParseException("Effect type '" + type + "' does not exist");
                 } else {
                     return effect;
                 }
-            }));
+            });
         }
     }
 

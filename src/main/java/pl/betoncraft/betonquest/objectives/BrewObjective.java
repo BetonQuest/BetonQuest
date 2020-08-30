@@ -82,7 +82,7 @@ public class BrewObjective extends Objective implements Listener {
         if (playerID == null) {
             return;
         }
-        final PotionData data = ((PotionData) dataMap.get(playerID));
+        final PotionData data = (PotionData) dataMap.get(playerID);
         // this tracks how many potions there are in the stand before brewing
         int alreadyExistingTemp = 0;
         for (int i = 0; i < 3; i++) {

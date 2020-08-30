@@ -81,7 +81,7 @@ public class FolderEvent extends QuestEvent {
         if (ticks) {
             // do nothing
         } else if (minutes) {
-            time *= (20 * 60);
+            time *= 20 * 60;
         } else {
             time *= 20;
         }

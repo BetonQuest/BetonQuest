@@ -108,7 +108,7 @@ public class DelayObjective extends Objective {
             final long seconds = (timeLeft / (1000)) % 60;
             final long minutes = (timeLeft / (1000 * 60)) % 60;
             final long hours = (timeLeft / (1000 * 60 * 60)) % 24;
-            final long days = (timeLeft / (1000 * 60 * 60 * 24));
+            final long days = timeLeft / (1000 * 60 * 60 * 24);
             final StringBuilder time = new StringBuilder();
             final String[] words = new String[3];
             if (days > 0) {

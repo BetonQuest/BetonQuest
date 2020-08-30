@@ -42,6 +42,6 @@ public class BiomeCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-        return (player.getLocation().getBlock().getBiome() == this.biome);
+        return player.getLocation().getBlock().getBiome() == this.biome;
     }
 }

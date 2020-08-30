@@ -195,7 +195,7 @@ public class PartialDateCondition extends Condition {
 
         @Override
         public String toString() {
-            return start == end ? String.valueOf(start) : (start + "-" + end);
+            return start == end ? String.valueOf(start) : start + "-" + end;
         }
 
     }

@@ -585,7 +585,7 @@ public class MenuConvIO extends ChatConvIO {
                     break;
                 case "center":
                 case "middle":
-                    for (int i = 0; i < Math.max(0, (configLineLength / 2) - npcName.length() / 2); i++) {
+                    for (int i = 0; i < Math.max(0, configLineLength / 2 - npcName.length() / 2); i++) {
                         displayBuilder.append(" ");
                     }
                     break;
@@ -777,7 +777,7 @@ public class MenuConvIO extends ChatConvIO {
             // Cheat and assume the closest distance between previous and new slots is the direction scrolled
             final int slotDistance = event.getPreviousSlot() - event.getNewSlot();
 
-            if (slotDistance > 5 || (slotDistance < 0 && slotDistance >= -5)) {
+            if (slotDistance > 5 || slotDistance < 0 && slotDistance >= -5) {
                 // Scrolled down
                 if (selectedOption < options.size() - 1) {
                     oldSelectedOption = selectedOption;

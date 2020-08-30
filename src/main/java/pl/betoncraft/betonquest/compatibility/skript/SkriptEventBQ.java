@@ -56,7 +56,7 @@ public class SkriptEventBQ extends SkriptEvent {
                 public boolean check(final Object other) {
                     if (other instanceof String) {
                         final String identifier = (String) other;
-                        return (scriptEvent.getID().equals(identifier));
+                        return scriptEvent.getID().equals(identifier);
                     }
                     return false;
                 }
