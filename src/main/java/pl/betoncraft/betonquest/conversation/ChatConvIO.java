@@ -103,7 +103,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
                 conv.endConversation();
             }
         }
-        return;
     }
 
     /**
