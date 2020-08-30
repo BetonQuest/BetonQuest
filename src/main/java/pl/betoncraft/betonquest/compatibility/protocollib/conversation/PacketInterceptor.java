@@ -44,6 +44,13 @@ import java.util.Arrays;
  */
 public class PacketInterceptor implements Interceptor, Listener {
 
+    /**
+     * A prefix that marks messages to be ignored by this interceptor.
+     * To be invisible if the interceptor was closed before the message was sent the tag is a color code.
+     * The actual tags colors are the hex-representation of the ASCII representing the string '_bq_'.
+     */
+    private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
+
     protected final Conversation conv;
     protected final Player player;
     private ArrayList<WrapperPlayServerChat> messages = new ArrayList<>();
@@ -67,7 +74,7 @@ public class PacketInterceptor implements Interceptor, Listener {
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
                     final PacketContainer packet = event.getPacket();
                     final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(1);
-                    if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains("_bq_")) {
+                    if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains(MESSAGE_PASSTHROUGH_TAG)) {
                         packet.getModifier().write(1, Arrays.copyOfRange(components, 1, components.length));
                         event.setPacket(packet);
                         return;
@@ -95,7 +102,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     @Override
     public void sendMessage(final BaseComponent... message) {
         // Tag the message. Is there a better way? Perhaps an invisible method is better
-        final BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent("_bq_")}, message);
+        final BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
         player.spigot().sendMessage(components);
     }
 
