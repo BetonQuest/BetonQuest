@@ -50,7 +50,7 @@ public class GlobalLocations extends BukkitRunnable {
 
     private static GlobalLocations instance;
     private final List<GlobalLocation> finalLocations;
-    private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
+    private List<GlobalLocation> locations = new ArrayList<>();
 
     /**
      * Creates new instance of global locations handler.

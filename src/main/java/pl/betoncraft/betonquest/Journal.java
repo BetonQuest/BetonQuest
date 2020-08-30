@@ -317,7 +317,7 @@ public class Journal {
                     if (lines.containsKey(number)) {
                         linesOrder = lines.get(number);
                     } else {
-                        linesOrder = new ArrayList<String>();
+                        linesOrder = new ArrayList<>();
                         lines.put(number, linesOrder);
                     }
                     linesOrder.add(text + "§r"); // reset the formatting

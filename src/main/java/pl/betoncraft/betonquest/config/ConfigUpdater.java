@@ -3254,7 +3254,7 @@ public class ConfigUpdater {
             final String string = items.getConfig().getString(key);
             if (string.split(" ")[0].equalsIgnoreCase("WRITTEN_BOOK")) {
                 String text = null;
-                final LinkedList<String> parts = new LinkedList<String>(Arrays.asList(string.split(" ")));
+                final LinkedList<String> parts = new LinkedList<>(Arrays.asList(string.split(" ")));
                 for (final Iterator<String> iterator = parts.iterator(); iterator.hasNext(); ) {
                     final String part = iterator.next();
                     if (part.startsWith("text:")) {
