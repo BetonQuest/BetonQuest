@@ -57,12 +57,12 @@ public class VaultIntegrator implements Integrator {
     @Override
     public void hook() {
         final RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.permission.Permission.class);
+                .getRegistration(Permission.class);
         if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
         }
         final RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.economy.Economy.class);
+                .getRegistration(Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }

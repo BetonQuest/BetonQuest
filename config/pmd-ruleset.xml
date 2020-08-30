@@ -49,4 +49,5 @@
   <rule ref="category/java/codestyle.xml/ShortVariable"/>
   <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
   <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
 </ruleset>
