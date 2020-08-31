@@ -146,7 +146,7 @@ public class BetonQuest extends JavaPlugin {
             LogUtils.logThrowable(e);
             return false;
         }
-        final boolean isMet = outcome && !conditionID.inverted() || !outcome && conditionID.inverted();
+        final boolean isMet = outcome != conditionID.inverted();
         LogUtils.getLogger().log(Level.FINE,
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
                         + conditionID + " for player " + PlayerConverter.getName(playerID));
