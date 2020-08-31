@@ -9,15 +9,17 @@
     BetonQuest custom rule configuration
   </description>
 
-  <rule ref="category/java/codestyle.xml/AtLeastOneConstructor" />
-  <rule ref="category/java/codestyle.xml/AvoidDollarSigns" />
-  <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass" />
-  <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending" />
-  <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
-  <rule ref="category/java/codestyle.xml/BooleanGetMethodName" />
-  <rule ref="category/java/codestyle.xml/CallSuperInConstructor" />
-  <rule ref="category/java/codestyle.xml/ClassNamingConventions" />
-  <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier" />
+  <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod"/>
+
+  <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
+  <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
+  <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass"/>
+  <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending"/>
+  <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode"/>
+  <rule ref="category/java/codestyle.xml/BooleanGetMethodName"/>
+  <rule ref="category/java/codestyle.xml/CallSuperInConstructor"/>
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier"/>
   <rule ref="category/java/codestyle.xml/ConfusingTernary" />
   <rule ref="category/java/codestyle.xml/ControlStatementBraces" />
   <rule ref="category/java/codestyle.xml/DefaultPackage" />

@@ -419,7 +419,7 @@ public class ConversationData {
     /**
      * Represents an option
      */
-    private abstract class Option {
+    private class Option {
 
         private String name;
         private OptionType type;
@@ -431,7 +431,7 @@ public class ConversationData {
         private List<String> pointers;
         private List<String> extendLinks;
 
-        public Option(final String name, final String type, final String visibleType) throws InstructionParseException {
+        protected Option(final String name, final String type, final String visibleType) throws InstructionParseException {
             this.name = name;
             this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);

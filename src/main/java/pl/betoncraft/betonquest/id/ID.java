@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 @SuppressWarnings("PMD.ShortClassName")
-public abstract class ID {
+public class ID {
 
     public static final String UP_STR = "_"; // string used as "up the hierarchy" package
 
@@ -15,7 +15,7 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    public ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
 
         // id must be specified
         if (identifier == null || identifier.length() == 0) {

@@ -17,15 +17,15 @@ import java.util.logging.Level;
  * Data Valuues:
  * * sound: {sound_name} - What sound to play
  */
-public abstract class NotifyIO {
+public class NotifyIO {
 
     private final Map<String, String> data;
 
-    public NotifyIO(final Map<String, String> data) {
+    protected NotifyIO(final Map<String, String> data) {
         this.data = data;
     }
 
-    public NotifyIO() {
+    protected NotifyIO() {
         this.data = new HashMap<>();
     }
 
