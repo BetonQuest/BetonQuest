@@ -129,7 +129,7 @@ public class BookHandler {
                 }
                 return true;
             case FORBIDDEN:
-                return list == null || list.isEmpty() || (list.size() == 1 && list.get(0).isEmpty());
+                return list == null || list.isEmpty() || list.size() == 1 && list.get(0).isEmpty();
         }
         return true;
     }

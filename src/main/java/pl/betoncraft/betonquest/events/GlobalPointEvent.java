@@ -49,7 +49,7 @@ public class GlobalPointEvent extends PointEvent {
             for (final Point p : globalData.getPoints()) {
                 if (p.getCategory().equalsIgnoreCase(category)) {
                     globalData.modifyPoints(category,
-                            (int) Math.floor((p.getCount() * count.getDouble(playerId)) - p.getCount()));
+                            (int) Math.floor(p.getCount() * count.getDouble(playerId) - p.getCount()));
                 }
             }
         } else {

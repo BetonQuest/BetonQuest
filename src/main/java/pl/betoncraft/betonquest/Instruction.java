@@ -298,8 +298,7 @@ public class Instruction {
         if (string == null) {
             return null;
         }
-        final Material material = Material.matchMaterial(string);
-        return material;
+        return Material.matchMaterial(string);
     }
 
     public BlockSelector getBlockSelector() throws InstructionParseException {

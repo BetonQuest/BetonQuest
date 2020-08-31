@@ -82,10 +82,10 @@ public class Journal {
         // get language
         final String playerLang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         // check all properties of the item and return the result
-        return (item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
+        return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
                 && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
                 && item.getItemMeta().hasLore()
-                && item.getItemMeta().getLore().contains(Config.getMessage(playerLang, "journal_lore")));
+                && item.getItemMeta().getLore().contains(Config.getMessage(playerLang, "journal_lore"));
     }
 
     /**
@@ -126,7 +126,7 @@ public class Journal {
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
-        final String date = (BetonQuest.getInstance().isMySQLUsed())
+        final String date = BetonQuest.getInstance().isMySQLUsed()
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
         BetonQuest.getInstance().getSaver()
@@ -142,7 +142,7 @@ public class Journal {
         for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
             final Pointer pointer = iterator.next();
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
-                final String date = (BetonQuest.getInstance().isMySQLUsed())
+                final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
@@ -317,7 +317,7 @@ public class Journal {
                     if (lines.containsKey(number)) {
                         linesOrder = lines.get(number);
                     } else {
-                        linesOrder = new ArrayList<String>();
+                        linesOrder = new ArrayList<>();
                         lines.put(number, linesOrder);
                     }
                     linesOrder.add(text + "§r"); // reset the formatting

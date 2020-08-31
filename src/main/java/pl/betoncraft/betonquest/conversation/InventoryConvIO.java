@@ -304,9 +304,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final int row = (int) Math.floor(slot / 9);
             // raw column number minus two columns (npc head an empty space)
             // and plus one (because options are indexed starting with 1)
-            final int col = (slot % 9) - 2 + 1;
+            final int col = slot % 9 - 2 + 1;
             // each row can have 7 options, add column number to get an option
-            final int choosen = (row * 7) + col;
+            final int choosen = row * 7 + col;
             final String message = options.get(choosen);
             if (message != null) {
                 processingLastClick = true;

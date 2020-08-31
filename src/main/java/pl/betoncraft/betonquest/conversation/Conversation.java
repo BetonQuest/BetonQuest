@@ -373,9 +373,9 @@ public class Conversation implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
         // prevent damage to (or from) player while in conversation
-        if ((event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(playerID))
-                || (event.getDamager() instanceof Player
-                && PlayerConverter.getID((Player) event.getDamager()).equals(playerID))) {
+        if (event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(playerID)
+                || event.getDamager() instanceof Player
+                && PlayerConverter.getID((Player) event.getDamager()).equals(playerID)) {
             event.setCancelled(true);
         }
     }

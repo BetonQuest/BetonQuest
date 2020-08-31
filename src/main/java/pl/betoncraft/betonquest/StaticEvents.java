@@ -121,7 +121,7 @@ public class StaticEvents {
         }
         // if the timestamp is too old, add one day to it
         if (timeStamp < new Date().getTime()) {
-            timeStamp += (24 * 60 * 60 * 1000);
+            timeStamp += 24 * 60 * 60 * 1000;
         }
         return timeStamp;
     }

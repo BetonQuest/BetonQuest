@@ -81,7 +81,7 @@ public class HologramLoop {
                     LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
                     continue;
                 }
-                ConditionID[] conditions = new ConditionID[]{};
+                ConditionID[] conditions = {};
                 if (rawConditions != null) {
                     final String[] parts = rawConditions.split(",");
                     conditions = new ConditionID[parts.length];

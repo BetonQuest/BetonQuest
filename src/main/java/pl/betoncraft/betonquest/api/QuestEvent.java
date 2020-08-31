@@ -92,7 +92,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         final int length = tempConditions1.length + tempConditions2.length;
         conditions = new ConditionID[length];
         for (int i = 0; i < length; i++) {
-            final String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+            final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (ObjectNotFoundException e) {

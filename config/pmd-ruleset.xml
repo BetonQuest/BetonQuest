@@ -47,4 +47,14 @@
   <rule ref="category/java/codestyle.xml/ShortClassName" />
   <rule ref="category/java/codestyle.xml/ShortMethodName" />
   <rule ref="category/java/codestyle.xml/ShortVariable"/>
+  <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryModifier" />
+  <rule ref="category/java/codestyle.xml/UnnecessaryReturn" />
+  <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
+  <rule ref="category/java/codestyle.xml/UselessParentheses" />
+  <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
+  <rule ref="category/java/codestyle.xml/UseShortArrayInitializer"/>
 </ruleset>

@@ -179,9 +179,9 @@ public class Backpack implements Listener {
             final List<ItemStack> backpackItems = playerData.getBackpack();
             // amount of pages, considering that the first contains 44
             // items and all others 45
-            final int pages = (backpackItems.size() < 45 ? 1
-                    : (backpackItems.size() + 1 % 45 == 0 ? (backpackItems.size() + 1) / 45
-                    : (int) Math.floor((backpackItems.size() + 1) / 45) + 1));
+            final int pages = backpackItems.size() < 45 ? 1
+                    : backpackItems.size() + 1 % 45 == 0 ? (backpackItems.size() + 1) / 45
+                    : (int) Math.floor((backpackItems.size() + 1) / 45) + 1;
             // prepare the inventory
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
@@ -409,7 +409,7 @@ public class Backpack implements Listener {
             }
             // generate the inventory view
             final int size = cancelers.size();
-            int numberOfRows = ((size - size % 9) / 9) + 1;
+            int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
                 LogUtils.getLogger().log(Level.WARNING, "Player " + player.getName() + " has too many active quests, please"
@@ -523,7 +523,7 @@ public class Backpack implements Listener {
             }
             // solve number of needed rows
             final int size = locations.size();
-            int numberOfRows = ((size - size % 9) / 9) + 1;
+            int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
                 LogUtils.getLogger().log(Level.WARNING, "Player " + player.getName() + " has too many compass pointers, please"

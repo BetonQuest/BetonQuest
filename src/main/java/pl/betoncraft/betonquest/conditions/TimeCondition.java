@@ -53,11 +53,11 @@ public class TimeCondition extends Condition {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours
             // from it makes sure that hour is correct in normal-time
-            time = (time / 1000) - 18;
+            time = time / 1000 - 18;
         } else {
             // if it's less than 18000, then normal-time is in current
             // minecraft-time cycle, but 6 hours behind, so add 6 hours
-            time = (time / 1000) + 6;
+            time = time / 1000 + 6;
         }
         return time >= timeMin && time <= timeMax;
     }

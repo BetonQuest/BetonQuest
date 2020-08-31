@@ -101,7 +101,7 @@ public class Utils {
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
             final HashMap<String, ResultSet> map = new HashMap<>();
-            final String[] tables = new String[]{"objectives", "tags", "points", "journals", "player"};
+            final String[] tables = {"objectives", "tags", "points", "journals", "player"};
             // open database connection
             final Connector database = new Connector();
             // load resultsets into the map

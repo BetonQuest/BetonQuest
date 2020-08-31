@@ -48,7 +48,7 @@ public class ObjectivePropertyVariable extends Variable {
         if (objective == null) {
             return "";
         }
-        return (objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "");
+        return objective.containsPlayer(playerID) ? objective.getProperty(propertyName, playerID) : "";
     }
 
 }

@@ -50,7 +50,7 @@ public class GlobalLocations extends BukkitRunnable {
 
     private static GlobalLocations instance;
     private final List<GlobalLocation> finalLocations;
-    private List<GlobalLocation> locations = new ArrayList<GlobalLocation>();
+    private List<GlobalLocation> locations = new ArrayList<>();
 
     /**
      * Creates new instance of global locations handler.
@@ -181,7 +181,7 @@ public class GlobalLocations extends BukkitRunnable {
             int length = tempConditions1.length + tempConditions2.length;
             conditions = new ConditionID[length];
             for (int i = 0; i < length; i++) {
-                final String condition = (i >= tempConditions1.length) ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+                final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
                 try {
                     conditions[i] = new ConditionID(instruction.getPackage(), condition);
                 } catch (ObjectNotFoundException e) {
@@ -193,7 +193,7 @@ public class GlobalLocations extends BukkitRunnable {
             length = tempEvents1.length + tempEvents2.length;
             events = new EventID[length];
             for (int i = 0; i < length; i++) {
-                final String event = (i >= tempEvents1.length) ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
+                final String event = i >= tempEvents1.length ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
                 try {
                     events[i] = new EventID(instruction.getPackage(), event);
                 } catch (ObjectNotFoundException e) {
