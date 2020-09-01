@@ -92,7 +92,7 @@ public class ChestPutObjective extends Objective implements Listener {
         try {
             final Location targetChestLocation = loc.getLocation(playerID);
             final Block block = targetChestLocation.getBlock();
-            if (!(block instanceof InventoryHolder)) {
+            if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
                 LogUtils.getLogger().log(Level.WARNING,
                         String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
