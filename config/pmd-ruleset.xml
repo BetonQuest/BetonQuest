@@ -10,6 +10,7 @@
   </description>
 
   <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod"/>
+  <rule ref="category/java/bestpractices.xml/AccessorClassGeneration"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>

@@ -189,7 +189,8 @@ public class Updater {
         private UpdateStrategy updateStrategy;
         private boolean automatic;
 
-        private ConfigValues() {}
+        public ConfigValues() {
+        }
 
         private void load() {
             // TODO Delete in BQ 2.0.0 getConfig().set("", null)

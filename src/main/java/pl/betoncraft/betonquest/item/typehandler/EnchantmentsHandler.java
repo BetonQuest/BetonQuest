@@ -77,7 +77,8 @@ public class EnchantmentsHandler {
         private int level = 1;
         private Number number = Number.WHATEVER;
 
-        private SingleEnchantmentHandler() {}
+        public SingleEnchantmentHandler() {
+        }
 
         @SuppressWarnings("deprecation")
         private void set(final String enchant) throws InstructionParseException {

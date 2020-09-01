@@ -340,7 +340,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private HologramConfig config;
         private Hologram hologram;
 
-        private NPCHologram() {}
+        public NPCHologram() {
+        }
     }
 
     private class HologramConfig {
@@ -349,7 +350,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private ConfigurationSection settings;
         private ConfigPackage pack;
 
-        private  HologramConfig() {
+        public HologramConfig() {
             super();
         }
     }

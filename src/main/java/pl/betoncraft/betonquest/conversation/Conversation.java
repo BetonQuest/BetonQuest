@@ -655,7 +655,7 @@ public class Conversation implements Listener {
      * Ends the conversation. Should be called in the main thread.
      */
     private class ConversationEnder extends BukkitRunnable {
-        private ConversationEnder() {
+        public ConversationEnder() {
             super();
         }
 
