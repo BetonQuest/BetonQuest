@@ -233,27 +233,6 @@
     </profile>
 
     <profile>
-      <id>from-shopkeepers</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>shopkeepers-repo</id>
-          <url>https://nexus.lichtspiele.org/repository/maven-public/</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>com.nisovin.shopkeepers</groupId>
-          <artifactId>ShopkeepersAPI</artifactId>
-          <version>2.10.0</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
       <id>from-dakanilabs</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -350,6 +329,12 @@
           <groupId>com.github.Zrips</groupId>
           <artifactId>Jobs</artifactId>
           <version>d08dbedb56</version>
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.github.Shopkeepers</groupId>
+          <artifactId>Shopkeepers</artifactId>
+          <version>d05e051348</version>
           <scope>provided</scope>
         </dependency>
       </dependencies>
