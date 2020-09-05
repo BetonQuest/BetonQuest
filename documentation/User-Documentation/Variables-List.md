@@ -20,10 +20,30 @@ With this variable you can display amount of specific items in player's inventor
 
 ## Location: `location`
 
-This variable resolves to player's current location, formatted as an absolute location format (more about it in the _Reference_ chapter). The location will contain yaw and pitch. You can use it instead of coordinates as location arguments in events, conditions and objectives.
+This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
+There are also modes for Betons [Unified Location Formatting](Reference.md#unified-location-formating) (ULF from now on)
+which means that this variable can also be used in events, conditions etc.
+If you just specify `%location%` the variables will resolve to a ULF with yaw and pitch.
+You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
+the variable will resolve. 
 
 !!! example
-    `%location%`
+    ```YAML
+    %location%           # -> 325;121;814;myWorldName;12;6
+    %location.xyz%       # -> 325 121 814 
+    %location.x%         # -> 325
+    %location.y%         # -> 121
+    %location.z%         # -> 814
+    %location.yaw%       # -> 12
+    %location.pitch%     # -> 6
+    %location.world%     # -> myWorldName
+    %location.ulfShort%  # -> 325;121;814;myWorldName
+    %location.ulfLong%   # -> 325;121;814;myWorldName;12;6
+    
+    %location.x.2%       # -> 325.16
+    %location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
+    ```
+    
     
 ## Calculate mathematical expression: `math.calc`
 

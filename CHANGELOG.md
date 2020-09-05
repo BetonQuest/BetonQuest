@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - message event now ignores chat interceptors during conversation
 - tame objective now works with all tamable mobs, including possible future ones
 - improved chestput waring for locations without a chest
+- reworked location variable: %location.(xyz|x|y|z|yaw|pitch|world|ulfShort|ulfLong)(.NUMBER)%
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
