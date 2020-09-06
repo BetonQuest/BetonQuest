@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed BoutifulAPI support
 - Removed the CLAY NPC
 - removed legacy material support
+- removed BetonLangAPI support
 ### Fixes
 - event priority for block objective
 - linebreaks in strings

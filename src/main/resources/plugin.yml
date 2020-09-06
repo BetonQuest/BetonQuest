@@ -26,7 +26,6 @@ softdepend:
   - Quests
   - PlaceholderAPI
   - HolographicDisplays
-  - BetonLangAPI
   - ProtocolLib
   - Brewery
   - Jobs

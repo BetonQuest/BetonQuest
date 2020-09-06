@@ -24,7 +24,6 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.compatibility.betonlangapi.BetonLangAPIIntegrator;
 import pl.betoncraft.betonquest.compatibility.brewery.BreweryIntegrator;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensIntegrator;
 import pl.betoncraft.betonquest.compatibility.denizen.DenizenIntegrator;
@@ -92,7 +91,6 @@ public class Compatibility implements Listener {
         integrators.put("Shopkeepers", new ShopkeepersIntegrator());
         integrators.put("PlaceholderAPI", new PlaceholderAPIIntegrator());
         integrators.put("HolographicDisplays", new HolographicDisplaysIntegrator());
-        integrators.put("BetonLangAPI", new BetonLangAPIIntegrator());
         integrators.put("ProtocolLib", new ProtocolLibIntegrator());
         integrators.put("Brewery", new BreweryIntegrator());
         integrators.put("Jobs", new JobsRebornIntegrator());
