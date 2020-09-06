@@ -89,6 +89,9 @@ A list of categories used by BetonQuest are as follows:
 | Fish to catch | fish_to_catch,info |
 | Players to kill | players_to_kill,info |
 | Potions to brew | potions_to_brew,info |
+| Points given | point_given,info |
+| Points taken | point_taken,info |
+| Points multiplied | point_multiplied,info |
 | Sheep to shear | sheep_to_shear,info |
 
 
