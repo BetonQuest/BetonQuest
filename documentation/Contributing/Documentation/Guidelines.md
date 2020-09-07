@@ -15,9 +15,9 @@ Result: Click the [highlighted words](../Contributing.md).
 Links to external sites must be opened in new tabs using this html code:
 
 ``` HTML linenums="1"
-<a href="https://betonquest.pl/" target="_blank">Clickable text that opens a new tab</a>
+<a href="https://betonquest.org/old/" target="_blank">Clickable text that opens a new tab</a>
 ```
-Result: <a href="https://betonquest.pl/" target="_blank">Clickable text that opens a new tab</a>
+Result: <a href="https://betonquest.org/old/" target="_blank">Clickable text that opens a new tab</a>
 
 
 

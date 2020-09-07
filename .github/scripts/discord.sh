@@ -43,8 +43,8 @@ if [ "$RELEASE" = "release" ]; then
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
 else
   RELEASE_NAME="Dev-Build"
-  RELEASE_DOWNLOAD_URL="https://betonquest.pl"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.pl/api/v1/builds/download/$VERSION/$VERSION_NUMBER/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL="https://betonquest.org/old"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.org/old/api/v1/builds/download/$VERSION/$VERSION_NUMBER/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
 fi
 case "$JOB_STATUS" in

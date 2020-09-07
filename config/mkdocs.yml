@@ -1,6 +1,6 @@
 site_name: BetonQuest - UNOFFICIAL
 site_author: Co0sh and contributors
-site_url: https://betonquest.pl
+site_url: https://betonquest.org/old
 site_dir: target/documentation
 docs_dir: ./../documentation
 repo_name: BetonQuest on GitHub
@@ -87,7 +87,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: fontawesome/solid/archive
-      link: https://betonquest.pl
+      link: https://betonquest.org/old
 
 nav:
   - 'Home':
