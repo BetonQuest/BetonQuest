@@ -96,13 +96,13 @@
     </profile>
 
     <profile>
-      <id>Heroes</id>
+      <id>from-heroes</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <repositories>
         <repository>
-          <id>Heroes-repo</id>
+          <id>heroes-repo</id>
           <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
       </repositories>
