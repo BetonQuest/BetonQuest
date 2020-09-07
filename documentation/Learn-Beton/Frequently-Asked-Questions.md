@@ -42,4 +42,4 @@ If you have any questions please read it first. It's very likely that it has bee
 
 **Q**: _Could you add some feature?_
 
-**A**: Check if it wasn't already added in [DEV-builds](https://betonquest.pl). You can see all changes in [the changelog](https://github.com/BetonQuest/BetonQuest/blob/master/CHANGELOG.md).
+**A**: Check if it wasn't already added in [DEV-builds](https://betonquest.org/old). You can see all changes in [the changelog](https://github.com/BetonQuest/BetonQuest/blob/master/CHANGELOG.md).

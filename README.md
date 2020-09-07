@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://betonquest.github.io/BetonQuest/"><img src="https://betonquest.pl/assets/logo.png" alt="BetonQuest
+  <a href="https://betonquest.github.io/BetonQuest/"><img src="https://betonquest.org/old/assets/logo.png" alt="BetonQuest
   "></a>
 </p>
 
