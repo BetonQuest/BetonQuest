@@ -34,7 +34,7 @@ Client Side NPCs          | :white_check_mark: | :question:        | :question: 
 Ingame Editor             | :x:                | :white_check_mark:| :question:            | :white_check_mark:       | :x:                 |
 External Editor           | :white_check_mark: | :question:        | :question:            | :x:                      | :white_check_mark:  |
 Organized File Structure  | :white_check_mark: | :x:               | :question:            | :white_check_mark:       | :white_check_mark:  |
-Integrated Plugins        | 27                 | 12                | 15                    | 23                       | 7                   |
+Integrated Plugins        | 28                 | 12                | 15                    | 23                       | 7                   |
 
 ProQuest, QuestWorld (2) and Quest by LMBishop have been classified as way to limited or unknown to appear in this table. They are simple task plugins,
 not plugins that are able to create story driven quests.

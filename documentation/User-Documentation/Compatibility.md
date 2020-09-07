@@ -1,5 +1,5 @@
 # Compatibility
-In total 26 plugins have dedicated support for BetonQuest.
+In total 28 plugins have dedicated support for BetonQuest.
 
 BetonQuest can hook into other plugins to extend its functionality. Currently, 23 plugins are supported:  
 Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
@@ -9,9 +9,10 @@ Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [nuNPCDestinations](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
 [RPGMenu](https://www.spigotmc.org/resources/rpgmenu.55170/),
+[CalebCompass](https://www.spigotmc.org/resources/caleb-compass.82674/)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:
-[BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin)
+[BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
 [NGVexJournal](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
 
 
