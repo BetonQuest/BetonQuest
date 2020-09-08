@@ -44,10 +44,7 @@ import pl.betoncraft.betonquest.id.VariableID;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
 import pl.betoncraft.betonquest.notify.*;
 import pl.betoncraft.betonquest.objectives.*;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Updater;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.*;
 import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -605,7 +602,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new Metrics(this, 551);
+        new BStatsMetrics(this);
 
         // updater
         updater = new Updater(this.getFile());
