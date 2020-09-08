@@ -598,7 +598,7 @@ hide_npcs:
 
 ### Conversation IO: `menu`
 
-ProtocolLib also enables a conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](https://www.youtube.com/watch?v=Qtn7Dpdf4jw).
+ProtocolLib also enables a conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](../media/content/Home/MenuConvIO.mp4).
 
 Customize how it looks by adding the following lines to custom.yml:
 
