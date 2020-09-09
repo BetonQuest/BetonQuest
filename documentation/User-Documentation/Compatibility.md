@@ -1,20 +1,20 @@
 # Compatibility
 **In total 28 plugins have dedicated support for BetonQuest.**
 
-BetonQuest hooks into other plugins by itself to extend its functionality.    
+BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
 23 plugins are supported right now:    
-Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
+_Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
 mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests,
-Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
+Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
-[nuNPCDestinations](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
-[RPGMenu](https://www.spigotmc.org/resources/rpgmenu.55170/),
-[CalebCompass](https://www.spigotmc.org/resources/caleb-compass.82674/)
+[_nuNPCDestinations_](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
+[_RPGMenu_](https://www.spigotmc.org/resources/rpgmenu.55170/),
+[_CalebCompass_](https://www.spigotmc.org/resources/caleb-compass.82674/)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
-[BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
-[NGVexJournal](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
+[_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
+[_NGVexJournal_](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
 
 
 ## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
