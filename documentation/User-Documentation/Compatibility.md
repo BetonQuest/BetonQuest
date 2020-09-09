@@ -449,7 +449,8 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
-## MMOGroup ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+
 
 ### Conditions
 
@@ -501,6 +502,122 @@ You can disable this behaviour by adding the `equal` argument.
 ```YAML linenums="1"
 mmostat DAMAGE_REDUCTION 3
 ```
+
+
+###Objectives
+
+####Break Special Blocks: `mmocorebreakblock`
+This objective requires the player to break 
+<a href="https://git.lumine.io/mythiccraft/mmocore/-/wikis/Mining%20and%20Block%20Regen" target="_blank">special blocks from MMOCore</a>.
+All three different block types and an amount can be defined. You can also send notifications to the player by appending the `notify` keyword.
+```YAML linenums="1"
+mmocorebreakblock 5 block:1      #A custom block's block ID
+mmocorebreakblock 64 block:STONE  #vanilla material
+mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
+```
+
+####Profession levelup: `mmoprofessionlevelup`
+This objective requires the player to level the given profession to the specified level.
+```YAML linenums="1"
+mmoprofessionlevelup MINING 10
+```
+
+####Craft item: `mmoitemcraft`
+This objective requires the player to craft the item with the given type and id. To count items that were crafted in 
+crafting stations add the `recipeID:` argument as the last option in the instruction. 
+An amount can also be set if it shall differ from the default (which is one).
+```YAML linenums="1"
+mmoitemcraft STEEL_SWORD_RECIPE
+mmoitemcraft HEALTH_POTION_RECIPE 5
+mmoitemcraft DAGGER STEEL_DAGGER 3 recipeID:steel-dagger
+```
+####Upgrade Item: `mmoitemupgrade`
+This objective tracks if a player upgrades the given item with an upgrade consumable.  
+```YAML linenums="1"
+mmoitemupgrade SWORD FALCON_BLADE
+```
+
+####Apply gemstone: `mmoitemapplygem`
+This objective is completed when the player applies the gemstone with the given gemstoneID to an item with the given
+itemType and itemID.
+```YAML linenums="1"
+mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY
+```
+
+####Cast item ability: `mmoitemcastability`
+This objective requires the player to cast an ability using an item. The only argument is the abilityID.
+```YAML linenums="1"
+mmoitemcastability LIFE_ENDER
+```
+
+####Cast class skill: `mmocorecastskill`
+This objective requires the player to cast a class skill. The only argument is the abilityID.
+```YAML linenums="1"
+mmoitemcastskill BACKSTAB
+```
+
+
+###Events
+
+####Give class experience: `mmoclassexperience`
+Adds experience to the players class. The amount can be a variable or a number. The `level` argument
+is optional and would convert the amount to levels instead of XP points.
+```YAML linenums="1"
+mmoclassexperience 150
+mmoclassexperience 1 level
+```
+
+####Give profession experience: `mmoprofessionexperience`
+Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
+is optional and would convert the amount to levels instead of XP points.
+```YAML linenums="1"
+mmoprofessionexperience 100
+mmoprofessionexperience 1 level
+```
+
+####Give class points: `mmocoreclasspoints`
+Gives the player class points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreclasspoints 1
+```
+
+####Give skill points: `mmocoreskillpoints`
+Gives the player skill points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreskillpoints 10
+```
+
+####Give attribute points: `mmocoreattributepoints`
+Gives the player attribute points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreattributepoints 2
+```
+
+####Give attribute reallocation points: `mmocoreattributereallocationpoints`
+Gives the player attribute reallocation points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreattributereallocationpoints 1
+```
+
+####Give MMOItem: `mmoitemgive`
+Gives the player predefined item. Default amount is one and can be set manually to a higher amount or a variable.
+The item can be adjusted to the players level by adding the `scale` option. If you want all items to be stacked together 
+the `singleStack` option can be set. If the player doesn't have required space in the inventory, the items will be dropped on the ground.
+You can also specify the `notify` keyword to display a message to the player about what items have been received.
+```YAML linenums="1"
+mmoitemgive CONSUMABLE MANA_POTION
+```
+
+####Take MMOItem: `mmoitemtake`
+Removes the specified item from the players inventory. Optional arguments are an amount and `notify` to send a notification
+to the player.
+Amount can be a variable.
+```YAML linenums="1"
+mmoitemtake SWORD STEEL_SWORD
+mmoitemtake SWORD STEEL_SWORD notify
+mmoitemtake CONSUMABLE HEALTH_POTION 5
+```
+
 
 ## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 

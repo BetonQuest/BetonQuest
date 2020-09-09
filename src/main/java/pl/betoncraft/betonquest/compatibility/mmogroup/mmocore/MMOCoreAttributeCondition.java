@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmocore;
 
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
@@ -9,8 +10,8 @@ import java.util.UUID;
 
 public class MMOCoreAttributeCondition extends Condition {
 
-    private String attribute;
-    private int targetLevel;
+    private final String attribute;
+    private final VariableNumber targetLevelVar;
     private boolean mustBeEqual = false;
 
     public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {
@@ -19,7 +20,7 @@ public class MMOCoreAttributeCondition extends Condition {
         attribute = instruction.next();
         MMOCoreUtils.isMMOConfigValidForAttribute(attribute);
 
-        targetLevel = instruction.getInt();
+        targetLevelVar = instruction.getVarNum();
         if (instruction.hasArgument("equal")) {
             mustBeEqual = true;
         }
@@ -27,6 +28,7 @@ public class MMOCoreAttributeCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final int targetLevel = targetLevelVar.getInt(playerID);
         final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(UUID.fromString(playerID), attribute);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;

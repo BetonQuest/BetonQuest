@@ -5,16 +5,30 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOCoreIntegrator implements Integrator {
 
-    public MMOCoreIntegrator() {}
+    private final BetonQuest plugin;
+
+    public MMOCoreIntegrator() {
+        plugin = BetonQuest.getInstance();
+    }
 
     @Override
     public void hook() {
         MMOCoreUtils.loadMMOCoreAttributeConfig();
-        final BetonQuest plugin = BetonQuest.getInstance();
 
         plugin.registerConditions("mmoclass", MMOCoreClassCondition.class);
         plugin.registerConditions("mmoattribute", MMOCoreAttributeCondition.class);
         plugin.registerConditions("mmoprofession", MMOCoreProfessionLevelCondition.class);
+
+        plugin.registerObjectives("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
+        plugin.registerObjectives("mmocorecastskill", MMOCoreCastSkillObjective.class);
+        plugin.registerObjectives("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
+
+        plugin.registerEvents("mmoclassexperience", MMOCoreClassExperienceEvent.class);
+        plugin.registerEvents("mmoprofessionexperience", MMOCoreProfessionExperienceEvent.class);
+        plugin.registerEvents("mmocoreclasspoints", MMOCoreClassPointsEvent.class);
+        plugin.registerEvents("mmocoreattributepoints", MMOCoreAttributePointsEvent.class);
+        plugin.registerEvents("mmocoreattributereallocationpoints", MMOCoreAttributeReallocationPointsEvent.class);
+        plugin.registerEvents("mmocoreskillpoints", MMOCoreSkillPointsEvent.class);
     }
 
     @Override
