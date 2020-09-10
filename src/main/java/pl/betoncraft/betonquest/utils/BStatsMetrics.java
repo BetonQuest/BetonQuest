@@ -56,16 +56,18 @@ public class BStatsMetrics {
     }
 
     private <T> void listUsage(final String bStatsId, final HashMap<? extends ID, ? extends T> objects, final HashMap<String, Class<? extends T>> types) {
-        metrics.addCustomChart(new Metrics.DrilldownPie(bStatsId, () -> {
-            final HashMap<String, Integer> usageList = countUsageClasses(objects.values(), types);
-            final Map<String, Map<String, Integer>> map = new HashMap<>();
-            for (final Map.Entry<String, Integer> usage : usageList.entrySet()) {
-                final HashMap<String, Integer> usageValue = new HashMap<>();
-                usageValue.put(usage.getKey(), usage.getValue());
-                map.put(usage.getKey(), usageValue);
+        metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Count", () -> countUsageClasses(objects.values(), types)));
+        metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Enabled", () -> {
+            final HashMap<String, Integer> enabled = new HashMap<>();
+            final HashMap<String, Integer> usage = countUsageClasses(objects.values(), types);
+
+            for (final Map.Entry<String, Integer> use : usage.entrySet()) {
+                enabled.put(use.getKey(), 1);
             }
-            return map;
-        }));
+
+            return enabled;
+        }
+        ));
     }
 
     private <T> HashMap<String, Integer> countUsageClasses(final Collection<? extends T> objects, final HashMap<String, Class<? extends T>> types) {
@@ -78,7 +80,9 @@ public class BStatsMetrics {
                     count++;
                 }
             }
-            countList.put(type.getKey(), count);
+            if (count > 0) {
+                countList.put(type.getKey(), count);
+            }
         }
 
         return countList;
