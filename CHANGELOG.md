@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
-- Added ConditionVariable. It returns true or false based on whether a player meets a condition. 
 - Tags and Objectives can now be removed with a static event for all players, even if they are not online
   * deletepoint event can now also be called to delete all points for all players
   * journal del event can now also be called as static
@@ -54,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added fail argument in password objective
 - Added notify option to point event
 - Added an interceptor that does not intercept: 'none'
+- Added ConditionVariable. It returns true or false based on whether a player meets a condition. 
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
