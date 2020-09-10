@@ -40,6 +40,8 @@ pl:
   seconds: 'sekund'
   and: 'i'
   password: 'haslo: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1}&b started!&e===='
@@ -88,6 +90,8 @@ en:
   seconds: 'seconds'
   and: 'and'
   password: 'password: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 de:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGespraech mit {1}&b begonnen!&e===='
@@ -132,6 +136,8 @@ de:
   seconds: 'Sekunden'
   and: 'und'
   password: 'Passwort: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 fr:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversation avec {1}&b est engagee!&e===='
@@ -174,6 +180,8 @@ fr:
   seconds: 'secondes'
   and: 'et'
   password: 'mot de passe : '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}&b\u5bf9\u8bdd\u4e2d&e===="
@@ -215,6 +223,8 @@ cn:
   seconds: "\u79d2"
   and: "\u548c"
   password: "\u5bc6\u7801: "
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 es:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversacion con {1}&b ha comenzado.&e===='
@@ -256,6 +266,8 @@ es:
   seconds: 'segundos'
   and: 'y'
   password: 'clave: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1}&b begonnen!&e===='
@@ -297,6 +309,8 @@ nl:
   seconds: 'seconden'
   and: 'en'
   password: 'wachtwoord: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 it:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversazione con {1}&b iniziata!&e===='
@@ -339,6 +353,8 @@ it:
   seconds: secondi
   and: e
   password: 'password: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
 hu:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bBeszélgetés a következővel {1}&b elkezdve!&e===='
@@ -380,3 +396,5 @@ hu:
   seconds: 'másodperc'
   and: 'és'
   password: 'jelszó: '
+  condition_variable_met: 'yes'
+  condition_variable_not_met: 'no'
