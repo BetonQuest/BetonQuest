@@ -4,6 +4,18 @@
 
 It is possible to save multiple custom strings per player. This works by using the [`variable`](Objectives-List.md#variable-variable) objective and the [`variable`](Events-List.md#variable-variable) event. 
 
+## Expose conditions to 3rd party plugins: `condition`
+
+You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` variable together with the 
+[PAPI support](Compatibility.md#placeholderapi).
+The variable will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
+You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met`in 
+the *messages.yml* config.
+```
+%condition.myCondition%
+%condition.myCondition.papiMode%
+``` 
+
 ## Global point: `globalpoint`
 
 Works the same as normal point variable but instead of displaying points from a players category it displays points in a global, player independent category.
