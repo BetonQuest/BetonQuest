@@ -5,12 +5,24 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOItemsIntegrator implements Integrator {
 
-    public MMOItemsIntegrator() {}
+    private final BetonQuest plugin;
+
+    public MMOItemsIntegrator() {
+        plugin = BetonQuest.getInstance();
+    }
+
     @Override
     public void hook() {
-        final BetonQuest plugin = BetonQuest.getInstance();
         plugin.registerConditions("mmoitem", MMOItemsItemCondition.class);
         plugin.registerConditions("mmohand", MMOItemsHandCondition.class);
+
+        plugin.registerObjectives("mmoitemcraft", MMOItemsCraftObjective.class);
+        plugin.registerObjectives("mmoitemupgrade", MMOItemsUpgradeObjective.class);
+        plugin.registerObjectives("mmoitemapplygem", MMOItemsApplyGemObjective.class);
+        plugin.registerObjectives("mmoitemcastability", MMOItemsCastAbilityObjective.class);
+
+        plugin.registerEvents("mmoitemgive", MMOItemsGiveEvent.class);
+        plugin.registerEvents("mmoitemtake", MMOItemsTakeEvent.class);
     }
 
     @Override

@@ -10,13 +10,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tags and Objectives can now be removed with a static event for all players, even if they are not online
   * deletepoint event can now also be called to delete all points for all players
   * journal del event can now also be called as static
-- Added integration for MMOGroup plugins (MMOCore, MMOItems, MMOLib)
-  * MMOClass condition (type & class)
-  * MMOProfession condition
-  * MMOAttribute condition
-  * MMOItems item condition (item in inventory)
-  * MMOItems hand condition (item in main/offhand)
-  * MMOLib stats condition  (a ton of stats from Core and Items combined)
+- Added integration for TeamRequiem plugins (MMOCore, MMOItems, MMOLib)
+  * Conditions:
+    - MMOClass condition (type & class)
+    - MMOProfession condition
+    - MMOAttribute condition
+    - MMOItems item condition (item in inventory)
+    - MMOItems hand condition (item in main/offhand)
+    - MMOLib stats condition  (a ton of stats from Core and Items combined)
+  * Objectives:
+    - Level X Profession to X Level
+    - Craft / Upgrade X Item within Inventory
+    - Craft X item
+    - Apply Gem Stone to Item
+    - Upgrade Item via Consumable
+    - Cast Item ability
+    - Cast Class ability
+    - Mine MMOBlock
+  * Events:
+    - Add mmo class level or exp
+    -️ Add mmo professional level or exp
+    -️️ Add Skill points
+    -️️ Add attribute points
+    -️️ Add attribute reallocation points
+    -️️ Add class points
+    -️️ Give Item ️
+    -️ Take Item
 - equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
@@ -34,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added fail argument in password objective
 - Added notify option to point event
 - Added an interceptor that does not intercept: 'none'
+- Added ConditionVariable. It returns true or false based on whether a player meets a condition. 
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml

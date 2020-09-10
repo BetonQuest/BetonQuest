@@ -1,19 +1,20 @@
 # Compatibility
-In total 28 plugins have dedicated support for BetonQuest.
+**In total 28 plugins have dedicated support for BetonQuest.**
 
-BetonQuest can hook into other plugins to extend its functionality. Currently, 23 plugins are supported:  
-Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
+BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
+23 plugins are supported right now:    
+_Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
 mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests,
-Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard.
+Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
-[nuNPCDestinations](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
-[RPGMenu](https://www.spigotmc.org/resources/rpgmenu.55170/),
-[CalebCompass](https://www.spigotmc.org/resources/caleb-compass.82674/)
+[_nuNPCDestinations_](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
+[_RPGMenu_](https://www.spigotmc.org/resources/rpgmenu.55170/),
+[_CalebCompass_](https://www.spigotmc.org/resources/caleb-compass.82674/)
 
-There are also plugins that hook into BetonQuest that require a clientside mod:
-[BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
-[NGVexJournal](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
+There are also plugins that hook into BetonQuest that require a clientside mod:  
+[_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
+[_NGVexJournal_](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
 
 
 ## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
@@ -449,7 +450,8 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
-## MMOGroup ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+
 
 ### Conditions
 
@@ -502,6 +504,122 @@ You can disable this behaviour by adding the `equal` argument.
 mmostat DAMAGE_REDUCTION 3
 ```
 
+
+###Objectives
+
+####Break Special Blocks: `mmocorebreakblock`
+This objective requires the player to break 
+<a href="https://git.lumine.io/mythiccraft/mmocore/-/wikis/Mining%20and%20Block%20Regen" target="_blank">special blocks from MMOCore</a>.
+All three different block types and an amount can be defined. You can also send notifications to the player by appending the `notify` keyword.
+```YAML linenums="1"
+mmocorebreakblock 5 block:1      #A custom block's block ID
+mmocorebreakblock 64 block:STONE  #vanilla material
+mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
+```
+
+####Profession levelup: `mmoprofessionlevelup`
+This objective requires the player to level the given profession to the specified level.
+```YAML linenums="1"
+mmoprofessionlevelup MINING 10
+```
+
+####Craft item: `mmoitemcraft`
+This objective requires the player to craft the item with the given type and id. To count items that were crafted in 
+crafting stations add the `recipeID:` argument as the last option in the instruction. 
+An amount can also be set if it shall differ from the default (which is one).
+```YAML linenums="1"
+mmoitemcraft STEEL_SWORD_RECIPE
+mmoitemcraft HEALTH_POTION_RECIPE 5
+mmoitemcraft DAGGER STEEL_DAGGER 3 recipeID:steel-dagger
+```
+####Upgrade Item: `mmoitemupgrade`
+This objective tracks if a player upgrades the given item with an upgrade consumable.  
+```YAML linenums="1"
+mmoitemupgrade SWORD FALCON_BLADE
+```
+
+####Apply gemstone: `mmoitemapplygem`
+This objective is completed when the player applies the gemstone with the given gemstoneID to an item with the given
+itemType and itemID.
+```YAML linenums="1"
+mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY
+```
+
+####Cast item ability: `mmoitemcastability`
+This objective requires the player to cast an ability using an item. The only argument is the abilityID.
+```YAML linenums="1"
+mmoitemcastability LIFE_ENDER
+```
+
+####Cast class skill: `mmocorecastskill`
+This objective requires the player to cast a class skill. The only argument is the abilityID.
+```YAML linenums="1"
+mmoitemcastskill BACKSTAB
+```
+
+
+###Events
+
+####Give class experience: `mmoclassexperience`
+Adds experience to the players class. The amount can be a variable or a number. The `level` argument
+is optional and would convert the amount to levels instead of XP points.
+```YAML linenums="1"
+mmoclassexperience 150
+mmoclassexperience 1 level
+```
+
+####Give profession experience: `mmoprofessionexperience`
+Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
+is optional and would convert the amount to levels instead of XP points.
+```YAML linenums="1"
+mmoprofessionexperience 100
+mmoprofessionexperience 1 level
+```
+
+####Give class points: `mmocoreclasspoints`
+Gives the player class points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreclasspoints 1
+```
+
+####Give skill points: `mmocoreskillpoints`
+Gives the player skill points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreskillpoints 10
+```
+
+####Give attribute points: `mmocoreattributepoints`
+Gives the player attribute points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreattributepoints 2
+```
+
+####Give attribute reallocation points: `mmocoreattributereallocationpoints`
+Gives the player attribute reallocation points. The amount can be a variable or a number.
+```YAML linenums="1"
+mmocoreattributereallocationpoints 1
+```
+
+####Give MMOItem: `mmoitemgive`
+Gives the player predefined item. Default amount is one and can be set manually to a higher amount or a variable.
+The item can be adjusted to the players level by adding the `scale` option. If you want all items to be stacked together 
+the `singleStack` option can be set. If the player doesn't have required space in the inventory, the items will be dropped on the ground.
+You can also specify the `notify` keyword to display a message to the player about what items have been received.
+```YAML linenums="1"
+mmoitemgive CONSUMABLE MANA_POTION
+```
+
+####Take MMOItem: `mmoitemtake`
+Removes the specified item from the players inventory. Optional arguments are an amount and `notify` to send a notification
+to the player.
+Amount can be a variable.
+```YAML linenums="1"
+mmoitemtake SWORD STEEL_SWORD
+mmoitemtake SWORD STEEL_SWORD notify
+mmoitemtake CONSUMABLE HEALTH_POTION 5
+```
+
+
 ## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 
 Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
@@ -545,13 +663,18 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it an
 
 ### Placeholder: `betonquest`
 
-In any other plugin which uses PlaceholderAPI you can use BetonQuest variables with `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package. If you skip this, the plugin will assume you're using that variable in `default` package. The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
+You can use all BetonQuest variables in any other plugin that supports PlaceholderAPI.
+You can even use BetonQuests conditions using the [condition variable](Variables-List.md#expose-conditions-to-3rd-party-plugins-condition)!    
+This works using the `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package.
+If you don't specify this, the plugin will assume you're using that variable in `default` package.
+The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
 
-!!! example
-    ```YAML
-    %betonquest_someGreatQuest:objective.killZombies.left%
-    ```
-
+Testing your placeholder is easy using this command:    
+`/papi parse <PlayerName> %betonquest_<PackageName>:<VariableType>.<Property>%`
+```YAML linenums="1"
+%betonquest_someGreatQuest:objective.killZombies.left%
+```
+    
 ### Variable: `ph`
 
 You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.

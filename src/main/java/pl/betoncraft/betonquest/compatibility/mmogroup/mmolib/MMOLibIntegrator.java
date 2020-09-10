@@ -5,11 +5,14 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MMOLibIntegrator implements Integrator {
 
-    public MMOLibIntegrator() {}
+    private final BetonQuest plugin;
+
+    public MMOLibIntegrator() {
+        plugin = BetonQuest.getInstance();
+    }
 
     @Override
     public void hook() {
-        final BetonQuest plugin = BetonQuest.getInstance();
         plugin.registerConditions("mmostat", MMOLibStatCondition.class);
     }
 

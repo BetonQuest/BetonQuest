@@ -554,6 +554,7 @@ public class BetonQuest extends JavaPlugin {
         registerNotifyIO("subtitle", SubTitleNotifyIO.class);
 
         // register variable types
+        registerVariable("condition", ConditionVariable.class);
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
         registerVariable("objective", ObjectivePropertyVariable.class);
@@ -1084,16 +1085,20 @@ public class BetonQuest extends JavaPlugin {
      * @return the value of this variable for given player
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
+        if (!Config.getPackages().containsKey(packName)) {
+            LogUtils.logThrowableIgnore(new QuestRuntimeException("A variable contains the non-existent package '" + packName + "' !"));
+            return "&cCould not resolve variable because the package '" + packName + "' is invalid.";
+        }
         try {
             final Variable var = createVariable(Config.getPackages().get(packName), name);
             if (var == null) {
-                return "could not resolve variable";
+                return "&cCould not resolve variable.";
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Could not create variable: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "&cCould not create variable: " + e.getMessage());
             LogUtils.logThrowable(e);
-            return "could not resolve variable";
+            return "&cCould not resolve variable. The variable type or the object seems to be invalid.";
         }
     }
 

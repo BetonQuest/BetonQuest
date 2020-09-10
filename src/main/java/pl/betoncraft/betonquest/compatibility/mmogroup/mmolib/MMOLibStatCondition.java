@@ -1,7 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmolib;
 
 
-import net.mmogroup.mmolib.api.player.MMOData;
+import net.mmogroup.mmolib.api.player.MMOPlayerData;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
@@ -28,7 +28,7 @@ public class MMOLibStatCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-        final MMOData data = MMOData.get(player);
+        final MMOPlayerData data = MMOPlayerData.get(player);
         final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
