@@ -603,7 +603,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new BStatsMetrics(this);
+        new BStatsMetrics(this, conditions, events, objectives, variables, conditionTypes, eventTypes, objectiveTypes, variableTypes);
 
         // updater
         updater = new Updater(this.getFile());
