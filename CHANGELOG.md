@@ -54,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added notify option to point event
 - Added an interceptor that does not intercept: 'none'
 - Added ConditionVariable. It returns true or false based on whether a player meets a condition.
-- Improoved bStats 
+- Improved bStats
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
