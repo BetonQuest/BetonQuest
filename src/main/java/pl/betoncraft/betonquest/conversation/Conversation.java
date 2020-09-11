@@ -1,20 +1,3 @@
-/*
- * BetonQuest - advanced quests for Bukkit
- * Copyright (C) 2016  Jakub "Co0sh" Sapalski
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package pl.betoncraft.betonquest.conversation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -52,8 +35,6 @@ import java.util.logging.Level;
 
 /**
  * Represents a conversation between player and NPC
- *
- * @author Jakub Sapalski
  */
 public class Conversation implements Listener {
 
@@ -479,8 +460,6 @@ public class Conversation implements Listener {
 
     /**
      * Starts the conversation, should be called asynchronously.
-     *
-     * @author Jakub Sapalski
      */
     private class Starter extends BukkitRunnable {
 
@@ -586,8 +565,6 @@ public class Conversation implements Listener {
 
     /**
      * Fires events from the option. Should be called in the main thread.
-     *
-     * @author Jakub Sapalski
      */
     private class NPCEventRunner extends BukkitRunnable {
 
@@ -609,8 +586,6 @@ public class Conversation implements Listener {
 
     /**
      * Fires events from the option. Should be called in the main thread.
-     *
-     * @author Jakub Sapalski
      */
     private class PlayerEventRunner extends BukkitRunnable {
 
@@ -632,8 +607,6 @@ public class Conversation implements Listener {
 
     /**
      * Prints the NPC response to the player. Should be called asynchronously.
-     *
-     * @author Jakub Sapalski
      */
     private class ResponsePrinter extends BukkitRunnable {
 
@@ -662,8 +635,6 @@ public class Conversation implements Listener {
 
     /**
      * Prints the options to the player. Should be called asynchronously.
-     *
-     * @author Jakub Sapalski
      */
     private class OptionPrinter extends BukkitRunnable {
 
@@ -682,8 +653,6 @@ public class Conversation implements Listener {
 
     /**
      * Ends the conversation. Should be called in the main thread.
-     *
-     * @author Jakub Sapalski
      */
     private class ConversationEnder extends BukkitRunnable {
         private ConversationEnder() {
