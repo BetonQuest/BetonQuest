@@ -639,14 +639,14 @@ To complete this objective you need to kill specified amount of MythicMobs. The 
 
 #### MythicMob distance: `mythicmobdistance`
 
-### Events
-
 Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.
 
 !!! example
     ```YAML
     mythicmobdistance SkeletalKnight 7
     ```
+    
+### Events
 
 #### SpawnMob: `mspawnmob`
 

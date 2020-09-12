@@ -201,8 +201,6 @@ These are arguments that can be applied to every item:
 
 - `lore` - text under the item's name. Default styling of lore is purple and italic. All underscores will be replaced with spaces and you can use `&` color codes. To make a new line use `;` character. If you require the item not to have lore at all, use `none` keyword. By default lore will match only if all lines are exactly the same. If you want to accept all items which contain specified lines (and/or more lines), add `lore-containing` argument to the instruction string.
 
-- `data` - data value of the item. An example of this would be different wool colors or damage of a pickaxe. You can require an exact value by specifying a number, or a value greater/less (and equal) than specified by adding `+`/`-` character at the end of the number.
-
 - `enchants` - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
     - level (a positive number)
@@ -223,8 +221,6 @@ name:none
 lore:&cOnly_this_sword_can_kill_the_Lord_Ruler
 lore:&2Quest_Item lore-containing
 lore:none
-data:5
-data:500-
 enchants:damage_all:3+,none-knockback
 enchants:power:? enchants-containing
 enchants:none
@@ -374,26 +370,8 @@ Now, it means that all players that: are in radius of 50 blocks around the playe
 
 ## Block Selectors
 
-When specifying a way of matching a block, a `block selector` is used. This differs a little depending if your Minecraft version is older than 1.13 or newer.
+When specifying a way of matching a block, a `block selector` is used.
 
-### Pre 1.13 Minecraft
-
-The format of a block selector is: `material:data`
-
-Where:
-
-  - `material` - What material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html).
-
-  - `data` - (optional) A number representing the data of the block. If left out then the selector will match all data types.
-
-Examples:
-
-  - `LOG` - Matches all LOGS
-  
-  - `LOG:1` - Matches SPRUCE LOGS
-
-
-### 1.13 and above
 The format of a block selector is: `prefix:material[state=value,...]`
 
 Where:

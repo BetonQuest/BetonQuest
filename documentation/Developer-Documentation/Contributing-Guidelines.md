@@ -13,12 +13,6 @@ The Build-Pipeline will not accept commits that fail to respect the guidelines.*
 
 ### Setup
 
-The first thing you should do is to clone the project from our GitHub repository:
-
-```
-git clone https://github.com/BetonQuest/BetonQuest.git
-```
-
 **Make sure to set this git config setting in your project before cloning or touching any code:**
 
 Windows:
@@ -30,6 +24,11 @@ MacOS & Linux:
 git config --global core.autocrlf input
 ```
 
+Now you can clone the project from our GitHub repository:
+
+```
+git clone https://github.com/BetonQuest/BetonQuest.git
+```
 
 ### Get ready to create a Pull Request!
 
