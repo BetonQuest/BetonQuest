@@ -243,7 +243,7 @@ Adds or deletes an entry to/from player’s journal. Entries are defined in `jou
     
 !!! example
     ```YAML
-    journal update`
+    journal update
     ```
 
 ## Kill: `kill`
