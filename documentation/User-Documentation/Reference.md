@@ -168,20 +168,22 @@ Points are like tags, but with amount. You can earn them for doing quest, talkin
 
 ## NPCs
 
-Conversations can be assigned to NPCs. You do it in the _main.yml_ file inside a package, in "npcs" section:
+Conversations can be assigned to NPCs created with Citizens. You do it in the _main.yml_ file inside a package, in `npcs` section:
 
 ```YAML
 npcs:
   '0': innkeeper
-  'Innkeeper': innkeeper
+  '4': woodcutter
 ```
 
-The first string is the name of the NPC, second one is the corresponding conversation name. In case you use Citizens, name is the ID of an NPC (_don't try to put Citizens NPC's name here, it must be the ID_). To acquire it just select the NPC and type `/npc`. If you don't want to use Citizens, you can also build NPCs as any other building in Minecraft:
+The first string is the ID of the NPC (_don't try to put Citizens NPC's name here, it must be the ID_), second one is
+the corresponding conversation file name (_without `.yml` at the end_). To acquire the NPCs ID select the NPC and type
+`/npc` or `/npc id`.
 
-Place somewhere a block of stained clay, no matter the color. Then place a head on top of it (type doesn't matter, it must be head). Now place a sign on the side of the clay block (it can be on it's back) and type in the first line `[NPC]`, and on the second line the ID of the NPC (in case of the above code example, the ID would be `Innkeeper`). You need to have permission `betonquest.createnpc` for that. Congratulations, you have created the NPC. Now you can add levers (hands) to it and maybe even a fence gate (legs). Conversation is started by right clicking it's head.
+You can assign the same conversation to multiple NPCs.
 
 !!! note
-    When using Citizens ID's they must be enclosed in quotes.
+    The Citizens ID must be enclosed in quotes.
 
 ## Items
 
