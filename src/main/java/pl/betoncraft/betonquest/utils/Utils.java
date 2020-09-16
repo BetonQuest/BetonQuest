@@ -88,7 +88,7 @@ public class Utils {
             // load resultsets into the map
             for (final String table : tables) {
                 LogUtils.getLogger().log(Level.FINE, "Loading " + table);
-                final String enumName = ("LOAD_ALL_" + table).toUpperCase();
+                final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
