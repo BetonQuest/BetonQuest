@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Number;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class PotionHandler {
 
@@ -29,7 +30,7 @@ public class PotionHandler {
     public void setType(final String type) throws InstructionParseException {
         typeE = Existence.REQUIRED;
         try {
-            this.type = PotionType.valueOf(type.toUpperCase());
+            this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new InstructionParseException("No such potion type: " + type, e);
         }

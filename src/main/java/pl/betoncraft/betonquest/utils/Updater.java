@@ -16,6 +16,7 @@ import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.logging.Level;
 
 public class Updater {
@@ -198,7 +199,7 @@ public class Updater {
 
             enabled = plugin.getConfig().getBoolean("update.enabled");
             if (plugin.getConfig().isSet("update.strategy")) {
-                updateStrategy = UpdateStrategy.valueOf(plugin.getConfig().getString("update.strategy").toUpperCase());
+                updateStrategy = UpdateStrategy.valueOf(plugin.getConfig().getString("update.strategy").toUpperCase(Locale.ROOT));
             } else {
                 updateStrategy = UpdateStrategy.MINOR;
                 plugin.getConfig().set("update.strategy", updateStrategy.toString());

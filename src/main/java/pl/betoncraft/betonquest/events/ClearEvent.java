@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Clears all specified monsters in a certain location
@@ -36,7 +37,7 @@ public class ClearEvent extends QuestEvent {
         types = new EntityType[entities.length];
         for (int i = 0; i < types.length; i++) {
             try {
-                types[i] = EntityType.valueOf(entities[i].toUpperCase());
+                types[i] = EntityType.valueOf(entities[i].toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Entity type '" + entities[i] + "' does not exist", e);
             }

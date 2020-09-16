@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Removes potion effects from the player
@@ -29,7 +30,7 @@ public class DelEffectEvent extends QuestEvent {
         } else {
             any = false;
             effects = instruction.getList(next, type -> {
-                final PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase());
+                final PotionEffectType effect = PotionEffectType.getByName(type.toUpperCase(Locale.ROOT));
                 if (effect == null) {
                     throw new InstructionParseException("Effect type '" + type + "' does not exist");
                 } else {

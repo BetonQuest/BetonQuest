@@ -406,7 +406,7 @@ public class Utils {
                 LogUtils.logThrowableIgnore(e2);
                 // string is not a hexadecimal number, try dye color
                 try {
-                    return DyeColor.valueOf(string.trim().toUpperCase().replace(' ', '_')).getColor();
+                    return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();
                 } catch (IllegalArgumentException e3) {
                     // this was not a dye color name
                     throw new InstructionParseException("Dye color does not exist: " + string, e3);

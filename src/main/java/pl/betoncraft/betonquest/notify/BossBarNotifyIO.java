@@ -11,10 +11,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -45,7 +42,7 @@ public class BossBarNotifyIO extends NotifyIO {
             barFlags = new ArrayList<>();
             for (final String flag : getData().get("barflags").split(",")) {
                 try {
-                    barFlags.add(BarFlag.valueOf(flag.toUpperCase()));
+                    barFlags.add(BarFlag.valueOf(flag.toUpperCase(Locale.ROOT)));
                 } catch (IllegalArgumentException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar barFlag: " + flag);
                     LogUtils.logThrowable(e);
@@ -55,7 +52,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         if (getData().containsKey("barcolor")) {
             try {
-                barColor = BarColor.valueOf(getData().get("barcolor").toUpperCase());
+                barColor = BarColor.valueOf(getData().get("barcolor").toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar color: " + getData().get("barcolor"));
                 LogUtils.logThrowable(e);
@@ -73,7 +70,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         if (getData().containsKey("style")) {
             try {
-                style = BarStyle.valueOf(getData().get("style").toUpperCase());
+                style = BarStyle.valueOf(getData().get("style").toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar style: " + getData().get("style"));
                 LogUtils.logThrowable(e);

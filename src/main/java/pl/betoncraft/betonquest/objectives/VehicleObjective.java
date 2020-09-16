@@ -13,6 +13,8 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 public class VehicleObjective extends Objective implements Listener {
 
     private EntityType vehicle;
@@ -26,7 +28,7 @@ public class VehicleObjective extends Objective implements Listener {
             any = true;
         } else {
             try {
-                vehicle = EntityType.valueOf(name.toUpperCase());
+                vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Entity type " + name + " does not exist.", e);
             }

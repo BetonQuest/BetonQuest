@@ -5,10 +5,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import pl.betoncraft.betonquest.item.QuestItem.Number;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnchantmentsHandler {
 
@@ -92,7 +89,7 @@ public class EnchantmentsHandler {
                 existence = Existence.FORBIDDEN;
                 parts[0] = parts[0].substring(5);
             }
-            type = Enchantment.getByName(parts[0].toUpperCase());
+            type = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
             if (type == null) {
                 throw new InstructionParseException("Unknown enchantment type: " + parts[0]);
             }

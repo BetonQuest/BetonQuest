@@ -7,6 +7,8 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 public class VehicleCondition extends Condition {
 
     private EntityType vehicle;
@@ -19,7 +21,7 @@ public class VehicleCondition extends Condition {
             any = true;
         } else {
             try {
-                vehicle = EntityType.valueOf(name.toUpperCase());
+                vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Entity type " + name + " does not exist.", e);
             }

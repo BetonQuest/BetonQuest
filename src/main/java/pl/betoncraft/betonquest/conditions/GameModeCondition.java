@@ -6,13 +6,15 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 public class GameModeCondition extends Condition {
 
     private GameMode gameMode;
 
     public GameModeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        final String string = instruction.next().toUpperCase();
+        final String string = instruction.next().toUpperCase(Locale.ROOT);
         try {
             gameMode = GameMode.valueOf(string);
         } catch (IllegalArgumentException e) {

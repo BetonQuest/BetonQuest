@@ -148,7 +148,7 @@ public class ConfigUpdater {
         if (configVersion == null || configVersion.equals(destination)) {
             return;
         }
-        final String version = configVersion.toUpperCase();
+        final String version = configVersion.toUpperCase(Locale.ROOT);
         try {
             // reload existing configuration
             new Config(false);

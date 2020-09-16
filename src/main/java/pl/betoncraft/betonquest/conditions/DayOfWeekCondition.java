@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Jonas Blocher on 27.11.2017.
@@ -30,7 +31,7 @@ public class DayOfWeekCondition extends Condition {
         } catch (NumberFormatException e) {
             LogUtils.logThrowableIgnore(e);
             try {
-                dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase());
+                dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException iae) {
                 throw new InstructionParseException(dayString + " is not a valid day of a week", iae);
             }

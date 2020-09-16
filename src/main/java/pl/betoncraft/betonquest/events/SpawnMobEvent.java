@@ -18,6 +18,8 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LocationData;
 import pl.betoncraft.betonquest.utils.Utils;
 
+import java.util.Locale;
+
 /**
  * Spawns mobs at given location
  */
@@ -44,7 +46,7 @@ public class SpawnMobEvent extends QuestEvent {
         loc = instruction.getLocation();
         final String entity = instruction.next();
         try {
-            type = EntityType.valueOf(entity.toUpperCase());
+            type = EntityType.valueOf(entity.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new InstructionParseException("Entity type '" + entity + "' does not exist", e);
         }

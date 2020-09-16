@@ -9,6 +9,8 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LocationData;
 
+import java.util.Locale;
+
 /**
  * This event turns on, of or toggles levers.
  */
@@ -24,7 +26,7 @@ public class LeverEvent extends QuestEvent {
         loc = instruction.getLocation();
         final String action = instruction.next();
         try {
-            type = ToggleType.valueOf(action.toUpperCase());
+            type = ToggleType.valueOf(action.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle", e);
         }

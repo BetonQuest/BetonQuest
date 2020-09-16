@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         frame = FrameType.DEFAULT.str;
         if (getData().containsKey("frame")) {
             try {
-                frame = FrameType.valueOf(getData().get("frame").toUpperCase()).str;
+                frame = FrameType.valueOf(getData().get("frame").toUpperCase(Locale.ROOT)).str;
             } catch (IllegalArgumentException e) {
                 LogUtils.logThrowableIgnore(e);
             }

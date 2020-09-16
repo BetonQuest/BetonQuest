@@ -9,6 +9,8 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 /**
  * Adds experience in specified skill.
  */
@@ -19,7 +21,7 @@ public class McMMOAddExpEvent extends QuestEvent {
 
     public McMMOAddExpEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        skillType = instruction.next().toUpperCase();
+        skillType = instruction.next().toUpperCase(Locale.ROOT);
         if (!SkillAPI.getSkills().contains(skillType)) {
             throw new InstructionParseException("Invalid skill name");
         }

@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -267,7 +268,7 @@ public class Instruction {
             return null;
         }
         try {
-            return Enum.valueOf(clazz, string.toUpperCase());
+            return Enum.valueOf(clazz, string.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new PartParseException("There is no such " + clazz.getSimpleName() + ": " + string, e);
         }

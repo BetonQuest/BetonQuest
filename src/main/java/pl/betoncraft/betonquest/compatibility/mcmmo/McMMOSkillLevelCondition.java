@@ -10,6 +10,8 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 /**
  * Checks if the player has specified level in an mcMMO skill.
  */
@@ -20,7 +22,7 @@ public class McMMOSkillLevelCondition extends Condition {
 
     public McMMOSkillLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        skillType = instruction.next().toUpperCase();
+        skillType = instruction.next().toUpperCase(Locale.ROOT);
         if (!SkillAPI.getSkills().contains(skillType)) {
             throw new InstructionParseException("Invalid skill name");
         }
@@ -29,7 +31,7 @@ public class McMMOSkillLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), PrimarySkillType.valueOf(skillType.toUpperCase())) >= level.getInt(playerID);
+        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(playerID);
     }
 
 }

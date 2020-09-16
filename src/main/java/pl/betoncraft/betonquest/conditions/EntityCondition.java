@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Checks if there are specified entities in the area
@@ -42,10 +43,10 @@ public class EntityCondition extends Condition {
                     if (typeParts.length == 0) {
                         throw new InstructionParseException("Type not defined");
                     } else if (typeParts.length < 2) {
-                        types[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+                        types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
                         amounts[i] = new VariableNumber(1);
                     } else {
-                        types[i] = EntityType.valueOf(typeParts[0].toUpperCase());
+                        types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
                         try {
                             amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
                         } catch (NumberFormatException e) {
@@ -53,7 +54,7 @@ public class EntityCondition extends Condition {
                         }
                     }
                 } else {
-                    types[i] = EntityType.valueOf(rawTypes[i].toUpperCase());
+                    types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
                     amounts[i] = new VariableNumber(1);
                 }
             } catch (IllegalArgumentException e) {

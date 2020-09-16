@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class FireworkEffectHandler {
 
@@ -36,7 +37,7 @@ public class FireworkEffectHandler {
                 typeE = Existence.FORBIDDEN;
             }
             try {
-                type = Type.valueOf(parts[0].toUpperCase());
+                type = Type.valueOf(parts[0].toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown firework effect type: " + parts[0], e);
             }

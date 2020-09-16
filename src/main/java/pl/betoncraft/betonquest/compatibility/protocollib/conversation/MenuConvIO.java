@@ -34,11 +34,7 @@ import pl.betoncraft.betonquest.utils.LocalChatPaginator;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -120,7 +116,7 @@ public class MenuConvIO extends ChatConvIO {
         // Sort out Controls
         try {
             for (final CONTROL control : Arrays.stream(configControlCancel.split(","))
-                    .map(String::toUpperCase)
+                    .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
                 if (!controls.containsKey(control)) {
@@ -133,7 +129,7 @@ public class MenuConvIO extends ChatConvIO {
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlSelect.split(","))
-                    .map(String::toUpperCase)
+                    .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
 
@@ -147,7 +143,7 @@ public class MenuConvIO extends ChatConvIO {
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlMove.split(","))
-                    .map(String::toUpperCase)
+                    .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf)
                     .collect(Collectors.toList())) {
                 if (!controls.containsKey(control)) {

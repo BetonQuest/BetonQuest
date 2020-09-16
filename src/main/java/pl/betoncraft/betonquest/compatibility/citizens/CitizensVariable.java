@@ -7,6 +7,8 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
+import java.util.Locale;
+
 /**
  * Provides information about a citizen npc.
  * <p>
@@ -28,7 +30,7 @@ public class CitizensVariable extends Variable {
 
         npcId = instruction.getInt();
         try {
-            key = TYPE.valueOf(instruction.next().toUpperCase());
+            key = TYPE.valueOf(instruction.next().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new InstructionParseException("Invalid Type: " + instruction.current(), e);
         }

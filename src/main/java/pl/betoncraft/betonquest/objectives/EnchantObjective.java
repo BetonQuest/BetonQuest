@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Requires the player to enchant an item.
@@ -89,7 +90,7 @@ public class EnchantObjective extends Objective implements Listener {
             if (parts.length != 2) {
                 throw new InstructionParseException("Could not parse enchantment: " + string);
             }
-            final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
+            final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
             if (enchantment == null) {
                 throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
             }
