@@ -30,6 +30,7 @@ public class ActionObjective extends Objective implements Listener {
 
     private Click action;
     private BlockSelector selector;
+    private final boolean exactMatch;
     private LocationData loc;
     private VariableNumber range;
     private boolean cancel = false;
@@ -43,14 +44,11 @@ public class ActionObjective extends Objective implements Listener {
         } else {
             selector = instruction.getBlockSelector(instruction.current());
         }
+        exactMatch = instruction.hasArgument("exactMatch");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
         range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
         cancel = instruction.hasArgument("cancel");
-
-        if (selector != null && !selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
-        }
     }
 
     @EventHandler
@@ -114,8 +112,8 @@ public class ActionObjective extends Objective implements Listener {
                 if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                         || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
                         && event.getClickedBlock() != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
-                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()))
-                        || selector.match(event.getClickedBlock()))) {
+                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()), exactMatch)
+                        || selector.match(event.getClickedBlock(), exactMatch))) {
                     if (loc != null) {
                         final Location location = loc.getLocation(playerID);
                         final double pRange = range.getDouble(playerID);

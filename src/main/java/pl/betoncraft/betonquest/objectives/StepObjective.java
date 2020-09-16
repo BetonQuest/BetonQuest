@@ -24,8 +24,18 @@ import java.util.logging.Level;
  * The player must step on the pressure plate
  */
 public class StepObjective extends Objective implements Listener {
+    private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
     private final LocationData loc;
+
+    private static BlockSelector getPressurePlateSelector() {
+        try {
+            return new BlockSelector("*_PRESSURE_PLATE");
+        } catch (InstructionParseException exception) {
+            LogUtils.logThrowableReport(exception);
+        }
+        return null;
+    }
 
     public StepObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -52,7 +62,7 @@ public class StepObjective extends Objective implements Listener {
                 return;
             }
 
-            if (!new BlockSelector("*_PRESSURE_PLATE").match(block)) {
+            if (PRESSURE_PLATE_SELECTOR == null || !PRESSURE_PLATE_SELECTOR.match(block.getBlockData().getMaterial())) {
                 return;
             }
             if (!containsPlayer(playerID)) {

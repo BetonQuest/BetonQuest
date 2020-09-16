@@ -25,18 +25,16 @@ public class BlockObjective extends Objective implements Listener {
     private final boolean notify;
     private final int notifyInterval;
     private final BlockSelector selector;
+    private final boolean exactMatch;
 
     public BlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = BlockData.class;
         selector = instruction.getBlockSelector();
+        exactMatch = instruction.hasArgument("exactMatch");
         neededAmount = instruction.getInt();
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
-
-        if (selector != null && !selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
-        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -44,7 +42,7 @@ public class BlockObjective extends Objective implements Listener {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
-        if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             // add the block to the total amount
             final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.add();
@@ -71,7 +69,7 @@ public class BlockObjective extends Objective implements Listener {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         // if the player has this objective, the event isn't canceled,
         // the block is correct and conditions are met
-        if (containsPlayer(playerID) && selector.match(event.getBlock()) && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             // remove the block from the total amount
             final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.remove();

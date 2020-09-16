@@ -3,9 +3,9 @@ package pl.betoncraft.betonquest.utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,98 +32,38 @@ import java.util.regex.Pattern;
  * - redstone_wird[power=5] - Tests for all redstone_wire of power 5, irregardless of direction
  */
 public class BlockSelector {
+    private final List<Material> materials;
+    private final Map<String, String> states;
 
-    private String prefix;
-    private String string;
-    private Map<String, String> states;
-    private Pattern typePattern;
+    public BlockSelector(final String block) throws InstructionParseException {
+        final String[] selectorParts = getSelectorParts(block);
+        materials = getMaterials(selectorParts[0], selectorParts[1]);
+        states = getStates(selectorParts[2]);
 
-    public BlockSelector(String string) {
-        this.string = string;
-        if (string.contains(":")) {
-            prefix = string.substring(0, string.indexOf(":")).toLowerCase().trim();
-            string = string.substring(string.indexOf(":") + 1);
-        } else {
-            prefix = "minecraft";
+        if (materials.isEmpty()) {
+            throw new InstructionParseException("Invalid selector, no material found for '" + block + "'!");
         }
-
-        String type;
-        if (string.contains("[")) {
-            type = string.substring(0, string.indexOf("[")).toLowerCase();
-
-            string = string.substring(string.indexOf("[") + 1);
-
-            if (string.contains("]")) {
-                states = new HashMap<>();
-                for (final String raw : string.substring(0, string.indexOf("]")).split(",")) {
-                    if (raw.contains("=")) {
-                        final String[] keyValue = raw.split("=", 2);
-
-                        states.put(keyValue[0].toLowerCase().trim(), keyValue[1].toLowerCase().trim());
-                    }
-                }
-            }
-        } else {
-            type = string.toLowerCase().trim();
-        }
-
-        // Create typePattern from type. We replace '*' with a non-greedy regex match. We also strip
-        // out invalid characters just in case.
-        type = type.replaceAll("[^a-z0-9_*?]", "");
-
-        typePattern = Pattern.compile("^" + type.replace("*", ".*?").replace("?", ".") + "$");
     }
 
+    public BlockSelector(final Block block) throws InstructionParseException {
+        this(block.getBlockData().getAsString());
+    }
+
+    @Override
     public String toString() {
-        return string;
+        return materials.toString() + (states == null ? "" : "[" + states.toString() + "]");
     }
 
-    /**
-     * Return true if the selector matches at least one valid block
-     */
-    public boolean isValid() {
-        for (final Material m : Material.values()) {
-            if (match(m)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Return material
-     * <p>
-     * If we match multiple materials we will return the first match
-     */
-    public Material getMaterial() {
-        for (final Material m : Material.values()) {
-            if (match(m)) {
-                return m;
-            }
-        }
-        return null;
+    private Material getRandomMaterial() {
+        final Random random = new Random();
+        return materials.get(random.nextInt(materials.size()));
     }
 
     /**
      * Return true if material matches our selector. State is ignored
      */
     public boolean match(final Material material) {
-        final NamespacedKey materialKey;
-        try {
-            materialKey = material.getKey();
-        } catch (IllegalArgumentException e) {
-            LogUtils.logThrowableIgnore(e);
-            return false;
-        }
-
-        // Starts with our prefix?
-        if (!materialKey.getNamespace().equalsIgnoreCase(prefix)) {
-            return false;
-        }
-
-        final Matcher matcher = typePattern.matcher(materialKey.getKey());
-
-        return matcher.find();
+        return materials.contains(material);
     }
 
     /**
@@ -132,50 +72,102 @@ public class BlockSelector {
      * @param block Block to test
      * @return boolean True if a match occurred
      */
-    public boolean match(final Block block) {
-        final String blockString = block.getBlockData().getAsString().toLowerCase();
-
-        // Starts with our prefix?
-        if (!blockString.startsWith(prefix + ":")) {
+    public boolean match(final Block block, final boolean exactMatch) {
+        if (!match(block.getBlockData().getMaterial())) {
             return false;
         }
 
-        final String blockType;
-        Map<String, String> blockStates = null;
-        if (blockString.contains("[")) {
-            blockType = blockString.substring(blockString.indexOf(":") + 1, blockString.indexOf("["));
-            blockStates = new HashMap<>();
-            for (final String raw : blockString.substring(blockString.indexOf("[") + 1, blockString.indexOf("]")).split(",")) {
-                final String[] keyValue = raw.split("=", 2);
-                blockStates.put(keyValue[0].trim(), keyValue[1].trim());
-            }
-        } else {
-            blockType = blockString.substring(blockString.indexOf(":") + 1);
+        final Map<String, String> blockStates = getStates(getSelectorParts(block.getBlockData().getAsString())[2]);
+        if (states == null && blockStates == null) {
+            return true;
         }
-
-        final Matcher matcher = typePattern.matcher(blockType);
-
-        if (!matcher.find()) {
+        if (states == null || blockStates == null) {
+            return false;
+        }
+        if (exactMatch && states.size() != blockStates.size()) {
             return false;
         }
 
-        if (states != null) {
-            if (blockStates == null) {
+        for (final String singleState : states.keySet()) {
+            if (!blockStates.containsKey(singleState)) {
                 return false;
             }
 
-            for (final String state : states.keySet()) {
-                if (!blockStates.containsKey(state)) {
-                    return false;
-                }
-
-                if (!blockStates.get(state).equals(states.get(state))) {
+            final String blockState = blockStates.get(singleState);
+            final String state = states.get(singleState);
+            if (!blockState.equals(state)) {
+                final Pattern statePattern = Pattern.compile("^" + state + "$");
+                final Matcher stateMatcher = statePattern.matcher(blockState);
+                if (!stateMatcher.find()) {
                     return false;
                 }
             }
         }
-
         return true;
     }
 
+    private String[] getSelectorParts(final String selector) {
+        final String[] selectorParts = new String[3];
+        String restSelector = selector;
+
+        if (restSelector.contains("[") && restSelector.endsWith("]")) {
+            final int index = restSelector.lastIndexOf("[");
+            selectorParts[2] = restSelector.substring(index + 1, restSelector.length() - 1).toLowerCase();
+            restSelector = restSelector.substring(0, index);
+        }
+
+        if (restSelector.contains(":")) {
+            final String[] parts = restSelector.split(":");
+            selectorParts[0] = parts[0].toLowerCase();
+            selectorParts[1] = parts[1].toLowerCase();
+        } else {
+            selectorParts[0] = "minecraft";
+            selectorParts[1] = restSelector.toLowerCase();
+        }
+
+        return selectorParts;
+    }
+
+    private List<Material> getMaterials(final String namespaceString, final String keyString) {
+        final List<Material> materials = new ArrayList<>();
+        final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
+        if (fullMatch != null) {
+            materials.add(fullMatch);
+            return materials;
+        }
+
+        final Pattern namespacePattern = Pattern.compile("^" + namespaceString + "$");
+        final Pattern keyPattern = Pattern.compile("^" + keyString + "$");
+        for (final Material m : Material.values()) {
+            final NamespacedKey namespacedKey;
+            try {
+                namespacedKey = m.getKey();
+            } catch (final IllegalArgumentException e) {
+                continue;
+            }
+            final Matcher namespaceMatcher = namespacePattern.matcher(namespacedKey.getNamespace());
+            if (!namespaceMatcher.find()) {
+                continue;
+            }
+            final Matcher keyMatcher = keyPattern.matcher(namespacedKey.getKey());
+            if (!keyMatcher.find()) {
+                continue;
+            }
+            materials.add(m);
+        }
+
+        return materials;
+    }
+
+    private Map<String, String> getStates(final String statesString) {
+        if (statesString == null || statesString.isEmpty()) {
+            return null;
+        }
+        final Map<String, String> states = new HashMap<>();
+        for (final String state : statesString.split(",")) {
+            final String[] parts = state.split("=", 2);
+            states.put(parts[0].trim(), parts[1].trim());
+        }
+        return states;
+    }
 }

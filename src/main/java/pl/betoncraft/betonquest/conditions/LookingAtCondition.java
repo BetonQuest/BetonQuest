@@ -20,17 +20,15 @@ public class LookingAtCondition extends Condition {
 
     private final LocationData loc;
     private final BlockSelector selector;
+    private final boolean exactMatch;
 
     public LookingAtCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation(instruction.getOptional("loc"));
         selector = instruction.getBlockSelector(instruction.getOptional("type"));
+        exactMatch = instruction.hasArgument("exactMatch");
         if (loc == null && selector == null) {
             throw new InstructionParseException("You must define either 'loc:' or 'type:' optional");
-        }
-
-        if (selector != null && !selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
         }
     }
 
@@ -48,7 +46,7 @@ public class LookingAtCondition extends Condition {
             }
         }
         if (selector != null) {
-            return selector.match(lookingAt);
+            return selector.match(lookingAt, exactMatch);
         }
         return true;
     }

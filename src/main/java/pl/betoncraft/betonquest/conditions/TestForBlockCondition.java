@@ -15,24 +15,22 @@ public class TestForBlockCondition extends Condition {
 
     private final LocationData loc;
     private final BlockSelector selector;
+    private final boolean exactMatch;
 
     public TestForBlockCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
-        selector = new BlockSelector(instruction.next());
-
-        if (!selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
-        }
+        selector = instruction.getBlockSelector();
+        exactMatch = instruction.hasArgument("exactMatch");
     }
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Block block = loc.getLocation(playerID).getBlock();
 
-        return selector.match(block);
+        return selector.match(block, exactMatch);
     }
 
 }

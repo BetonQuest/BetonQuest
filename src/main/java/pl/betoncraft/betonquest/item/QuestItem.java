@@ -21,7 +21,7 @@ import java.util.Map.Entry;
  */
 public class QuestItem {
 
-    private BlockSelector selector;
+    private Material material;
     private DurabilityHandler durability = new DurabilityHandler();
     private NameHandler name = new NameHandler();
     private LoreHandler lore = new LoreHandler();
@@ -68,9 +68,9 @@ public class QuestItem {
             throw new InstructionParseException("Not enough arguments");
         }
 
-        selector = new BlockSelector(parts[0]);
-        if (!selector.isValid()) {
-            throw new InstructionParseException("Invalid selector: " + selector.toString());
+        material = Material.getMaterial(parts[0]);
+        if (material == null) {
+            throw new InstructionParseException("Material '" + parts[0] + "' not exist!");
         }
 
         for (final String part : parts) {
@@ -288,7 +288,7 @@ public class QuestItem {
         } else {
             return false;
         }
-        if (item.selector != selector) {
+        if (item.material != material) {
             return false;
         }
         if (!item.durability.equals(durability)) {
@@ -333,7 +333,7 @@ public class QuestItem {
         if (item == null) {
             return false;
         }
-        if (!selector.match(item.getType())) {
+        if (material != item.getType()) {
             return false;
         }
         // basic meta checks
@@ -418,12 +418,6 @@ public class QuestItem {
      */
     @SuppressWarnings("deprecation")
     public ItemStack generate(final int stackSize) {
-        // Try resolve material directly
-        Material material = selector.getMaterial();
-        if (material == null) {
-            material = Material.ARROW;
-        }
-
         final ItemStack item = new ItemStack(material, stackSize);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
@@ -485,8 +479,7 @@ public class QuestItem {
      * @return the material
      */
     public Material getMaterial() {
-        final Material material = selector.getMaterial();
-        return material == null ? Material.ARROW : material;
+        return material;
     }
 
     /**
