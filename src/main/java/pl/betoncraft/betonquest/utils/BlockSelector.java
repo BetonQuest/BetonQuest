@@ -1,11 +1,14 @@
 package pl.betoncraft.betonquest.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,6 +62,36 @@ public class BlockSelector {
         return materials.get(random.nextInt(materials.size()));
     }
 
+    private String getStateAsString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("[");
+
+        for (final Map.Entry<String, String> entry : states.entrySet()) {
+            builder.append(entry.getKey()).append("=").append(entry.getValue()).append(",");
+        }
+
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append("]");
+
+        return builder.toString();
+    }
+
+    public void setToBlock(final Block block, final boolean applyPhysics) {
+        final BlockState state = block.getState();
+
+        if (states == null) {
+            state.setType(getRandomMaterial());
+        } else {
+            try {
+                state.setBlockData(Bukkit.createBlockData(getRandomMaterial(), getStateAsString()));
+            } catch (IllegalArgumentException exception) {
+                LogUtils.getLogger().log(Level.SEVERE, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
+            }
+        }
+
+        state.update(true, applyPhysics);
+    }
+
     /**
      * Return true if material matches our selector. State is ignored
      */
@@ -78,11 +111,8 @@ public class BlockSelector {
         }
 
         final Map<String, String> blockStates = getStates(getSelectorParts(block.getBlockData().getAsString())[2]);
-        if (states == null && blockStates == null) {
+        if (states == null && (!exactMatch || blockStates == null)) {
             return true;
-        }
-        if (states == null || blockStates == null) {
-            return false;
         }
         if (exactMatch && states.size() != blockStates.size()) {
             return false;
