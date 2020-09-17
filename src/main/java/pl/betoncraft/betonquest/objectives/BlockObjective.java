@@ -40,17 +40,12 @@ public class BlockObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        // if the player has this objective, the event isn't canceled,
-        // the block is correct and conditions are met
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
-            // add the block to the total amount
             final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.add();
-            // complete the objective
             if (playerData.getAmount() == neededAmount) {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
-                // or maybe display a notification
                 if (playerData.getAmount() > neededAmount) {
                     Config.sendNotify(playerID, "blocks_to_break",
                             new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
@@ -67,17 +62,12 @@ public class BlockObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        // if the player has this objective, the event isn't canceled,
-        // the block is correct and conditions are met
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
-            // remove the block from the total amount
             final BlockData playerData = (BlockData) dataMap.get(playerID);
             playerData.remove();
-            // complete the objective
             if (playerData.getAmount() == neededAmount) {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
-                // or maybe display a notification
                 if (playerData.getAmount() > neededAmount) {
                     Config.sendNotify(playerID, "blocks_to_break",
                             new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
