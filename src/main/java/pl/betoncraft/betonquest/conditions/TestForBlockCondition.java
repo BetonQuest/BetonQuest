@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
- * Checks block at specified location against specified Material
+ * Checks block at specified location against specified {@link BlockSelector}
  */
 public class TestForBlockCondition extends Condition {
 
@@ -29,7 +29,6 @@ public class TestForBlockCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Block block = loc.getLocation(playerID).getBlock();
-
         return selector.match(block, exactMatch);
     }
 

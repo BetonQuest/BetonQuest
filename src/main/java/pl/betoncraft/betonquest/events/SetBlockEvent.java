@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -10,7 +9,7 @@ import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LocationData;
 
 /**
- * Sets the block at specified location
+ * Sets a block specified as {@link BlockSelector} at specified location
  */
 public class SetBlockEvent extends QuestEvent {
 
