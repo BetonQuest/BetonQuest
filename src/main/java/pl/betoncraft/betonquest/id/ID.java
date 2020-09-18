@@ -44,10 +44,10 @@ public abstract class ID {
                 // construct the final absolute path
                 final StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < root.length - stepsUp; i++) {
-                    builder.append(root[i] + '-');
+                    builder.append(root[i]).append('-');
                 }
                 for (int i = stepsUp; i < path.length; i++) {
-                    builder.append(path[i] + '-');
+                    builder.append(path[i]).append('-');
                 }
                 final String absolute = builder.substring(0, builder.length() - 1);
                 this.pack = Config.getPackages().get(absolute);

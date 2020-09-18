@@ -154,14 +154,14 @@ public class QuestItem {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
             for (final String line : meta.getLore()) {
-                string.append(line + ";");
+                string.append(line).append(";");
             }
             lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
         if (meta.hasEnchants()) {
             final StringBuilder string = new StringBuilder();
             for (final Enchantment enchant : meta.getEnchants().keySet()) {
-                string.append(enchant.getName() + ":" + meta.getEnchants().get(enchant) + ",");
+                string.append(enchant.getName()).append(":").append(meta.getEnchants().get(enchant)).append(",");
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
@@ -184,7 +184,7 @@ public class QuestItem {
                     }
                     // this will remove black color code between lines
                     // Bukkit is adding it for some reason (probably to mess people's code)
-                    strBldr.append(page.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n") + "|");
+                    strBldr.append(page.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append("|");
                 }
                 text = " text:" + strBldr.substring(0, strBldr.length() - 1);
             }
@@ -199,7 +199,7 @@ public class QuestItem {
                 for (final PotionEffect effect : potionMeta.getCustomEffects()) {
                     final int power = effect.getAmplifier() + 1;
                     final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-                    string.append(effect.getType().getName() + ":" + power + ":" + duration + ",");
+                    string.append(effect.getType().getName()).append(":").append(power).append(":").append(duration).append(",");
                 }
                 effects += " effects:" + string.substring(0, string.length() - 1);
             }
@@ -216,7 +216,7 @@ public class QuestItem {
             if (storageMeta.hasStoredEnchants()) {
                 final StringBuilder string = new StringBuilder();
                 for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                    string.append(enchant.getName() + ":" + storageMeta.getStoredEnchants().get(enchant) + ",");
+                    string.append(enchant.getName()).append(":").append(storageMeta.getStoredEnchants().get(enchant)).append(",");
                 }
                 enchants = " enchants:" + string.substring(0, string.length() - 1);
             }
@@ -233,23 +233,23 @@ public class QuestItem {
                 final StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
                 for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                    builder.append(effect.getType() + ":");
+                    builder.append(effect.getType()).append(":");
                     for (final Color c : effect.getColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
+                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
                     }
                     // remove last semicolon
                     builder.setLength(Math.max(builder.length() - 1, 0));
                     builder.append(":");
                     for (final Color c : effect.getFadeColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
+                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
                     }
                     builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker() + ",");
+                    builder.append(":").append(effect.hasTrail()).append(":").append(effect.hasFlicker()).append(",");
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(" power:" + fireworkMeta.getPower());
+                builder.append(" power:").append(fireworkMeta.getPower());
                 firework = builder.toString();
             }
         }
@@ -259,20 +259,20 @@ public class QuestItem {
                 final FireworkEffect effect = fireworkMeta.getEffect();
                 final StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
-                builder.append(effect.getType() + ":");
+                builder.append(effect.getType()).append(":");
                 for (final Color c : effect.getColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
+                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
                 }
                 // remove last semicolon
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(":");
                 for (final Color c : effect.getFadeColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append((dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye) + ";");
+                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(":" + effect.hasTrail() + ":" + effect.hasFlicker());
+                builder.append(":").append(effect.hasTrail()).append(":").append(effect.hasFlicker());
             }
         }
         // put it all together in a single string

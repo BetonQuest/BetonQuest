@@ -85,7 +85,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         for (final ChatColor color : colors.get("player")) {
             string.append(color);
         }
-        string.append(player.getName() + ChatColor.RESET + ": ");
+        string.append(player.getName()).append(ChatColor.RESET).append(": ");
         for (final ChatColor color : colors.get("answer")) {
             string.append(color);
         }
@@ -372,7 +372,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     }
                     line = new StringBuilder();
                 }
-                line.append(arr[i] + " ");
+                line.append(arr[i]).append(" ");
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;

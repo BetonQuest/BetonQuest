@@ -95,7 +95,7 @@ public class Compatibility implements Listener {
                 if (hooked.size() > 0) {
                     final StringBuilder string = new StringBuilder();
                     for (final String plugin : hooked) {
-                        string.append(plugin + ", ");
+                        string.append(plugin).append(", ");
                     }
                     final String plugins = string.substring(0, string.length() - 2);
                     LogUtils.getLogger().log(Level.INFO, "Hooked into " + plugins + "!");

@@ -46,7 +46,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         for (final ChatColor color : colors.get("npc")) {
             string.append(color);
         }
-        string.append("%npc%" + ChatColor.RESET + ": ");
+        string.append("%npc%").append(ChatColor.RESET).append(": ");
 
         final StringBuilder textColorBuilder = new StringBuilder();
         for (final ChatColor color : colors.get("text")) {
@@ -60,7 +60,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         for (final ChatColor color : colors.get("player")) {
             string.append(color);
         }
-        string.append(name + ChatColor.RESET + ": ");
+        string.append(name).append(ChatColor.RESET).append(": ");
         for (final ChatColor color : colors.get("answer")) {
             string.append(color);
         }

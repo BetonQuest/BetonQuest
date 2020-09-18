@@ -117,7 +117,7 @@ public class VariableObjective extends Objective implements Listener {
         public String toString() {
             final StringBuilder builder = new StringBuilder();
             for (final Entry<String, String> entry : variables.entrySet()) {
-                builder.append(entry.getKey() + ':' + entry.getValue() + '\n');
+                builder.append(entry.getKey()).append(':').append(entry.getValue()).append('\n');
             }
             return builder.toString().trim();
         }
