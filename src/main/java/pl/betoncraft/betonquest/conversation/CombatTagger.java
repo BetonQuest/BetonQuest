@@ -21,8 +21,8 @@ import java.util.HashMap;
  */
 public class CombatTagger implements Listener {
 
-    private static final HashMap<String, Boolean> tagged = new HashMap<>();
-    private static final HashMap<String, BukkitRunnable> untaggers = new HashMap<>();
+    private static final HashMap<String, Boolean> TAGGED = new HashMap<>();
+    private static final HashMap<String, BukkitRunnable> UNTAGGERS = new HashMap<>();
     private int delay = 10;
 
     /**
@@ -41,7 +41,7 @@ public class CombatTagger implements Listener {
      */
     public static boolean isTagged(final String playerID) {
         boolean result = false;
-        final Boolean state = tagged.get(playerID);
+        final Boolean state = TAGGED.get(playerID);
         if (state != null) {
             result = state;
         }
@@ -58,26 +58,26 @@ public class CombatTagger implements Listener {
             ids.add(PlayerConverter.getID((Player) event.getDamager()));
         }
         for (final String playerID : ids) {
-            tagged.put(playerID, true);
-            final BukkitRunnable run = untaggers.get(playerID);
+            TAGGED.put(playerID, true);
+            final BukkitRunnable run = UNTAGGERS.get(playerID);
             if (run != null) {
                 run.cancel();
             }
-            untaggers.put(playerID, new BukkitRunnable() {
+            UNTAGGERS.put(playerID, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    tagged.put(playerID, false);
+                    TAGGED.put(playerID, false);
                 }
             });
-            untaggers.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
+            UNTAGGERS.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
         final String playerID = PlayerConverter.getID(event.getEntity());
-        tagged.remove(playerID);
-        final BukkitRunnable runnable = untaggers.remove(playerID);
+        TAGGED.remove(playerID);
+        final BukkitRunnable runnable = UNTAGGERS.remove(playerID);
         if (runnable != null) {
             runnable.cancel();
         }

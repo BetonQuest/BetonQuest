@@ -24,7 +24,7 @@ public class StaticEvents {
     /**
      * Contains pointers to timers, so they can be canceled if needed
      */
-    private static final ArrayList<EventTimer> timers = new ArrayList<>();
+    private static final ArrayList<EventTimer> TIMERS = new ArrayList<>();
 
     /**
      * Creates new instance of a StaticEvents object, scheduling static events
@@ -34,7 +34,7 @@ public class StaticEvents {
         LogUtils.getLogger().log(Level.FINE, "Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
-        for (final EventTimer eventTimer : timers) {
+        for (final EventTimer eventTimer : TIMERS) {
             eventTimer.cancel();
             deleted = true;
         }
@@ -62,7 +62,7 @@ public class StaticEvents {
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
                 // add the timer to static list, so it can be canceled if needed
                 try {
-                    timers.add(new EventTimer(timeStamp, new EventID(pack, value)));
+                    TIMERS.add(new EventTimer(timeStamp, new EventID(pack, value)));
                 } catch (ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
@@ -77,7 +77,7 @@ public class StaticEvents {
      */
     public static void stop() {
         LogUtils.getLogger().log(Level.FINE, "Killing all timers on disable");
-        for (final EventTimer timer : timers) {
+        for (final EventTimer timer : TIMERS) {
             timer.cancel();
         }
     }

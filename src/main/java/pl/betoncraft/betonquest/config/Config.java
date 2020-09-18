@@ -25,10 +25,10 @@ public class Config {
     private static Config instance;
     private static ConfigAccessor messages;
     private static ConfigAccessor internal;
-    private static final HashMap<String, ConfigPackage> packages = new HashMap<>();
-    private static final HashMap<String, QuestCanceler> cancelers = new HashMap<>();
+    private static final HashMap<String, ConfigPackage> PACKAGES = new HashMap<>();
+    private static final HashMap<String, QuestCanceler> CANCELERS = new HashMap<>();
     private static String lang;
-    private static final ArrayList<String> languages = new ArrayList<>();
+    private static final ArrayList<String> LANGUAGES = new ArrayList<>();
     private final File root;
     private static String defaultPackage = "default";
 
@@ -43,9 +43,9 @@ public class Config {
      */
     public Config(final boolean verboose) {
 
-        packages.clear();
-        cancelers.clear();
-        languages.clear();
+        PACKAGES.clear();
+        CANCELERS.clear();
+        LANGUAGES.clear();
 
         instance = this;
         plugin = BetonQuest.getInstance();
@@ -67,7 +67,7 @@ public class Config {
                 if (verboose) {
                     LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
                 }
-                languages.add(key);
+                LANGUAGES.add(key);
             }
         }
 
@@ -82,7 +82,7 @@ public class Config {
         }
 
         // load quest cancelers
-        for (final ConfigPackage pack : packages.values()) {
+        for (final ConfigPackage pack : PACKAGES.values()) {
             final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("cancel");
             if (section == null) {
                 continue;
@@ -90,7 +90,7 @@ public class Config {
             for (final String key : section.getKeys(false)) {
                 final String name = pack.getName() + "." + key;
                 try {
-                    cancelers.put(name, new QuestCanceler(name));
+                    CANCELERS.put(name, new QuestCanceler(name));
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load '" + name + "' quest canceler: " + e.getMessage());
                     LogUtils.logThrowable(e);
@@ -170,7 +170,7 @@ public class Config {
      * @return the map with quest cancelers
      */
     public static HashMap<String, QuestCanceler> getCancelers() {
-        return cancelers;
+        return CANCELERS;
     }
 
     /**
@@ -224,7 +224,7 @@ public class Config {
      * @return the map of packages and their names
      */
     public static Map<String, ConfigPackage> getPackages() {
-        return packages;
+        return PACKAGES;
     }
 
     /**
@@ -249,7 +249,7 @@ public class Config {
         } else if (main.equals("messages")) {
             return messages.getConfig().getString(address.substring(9));
         } else {
-            final ConfigPackage pack = packages.get(main);
+            final ConfigPackage pack = PACKAGES.get(main);
             if (pack == null) {
                 return null;
             }
@@ -283,7 +283,7 @@ public class Config {
             messages.saveConfig();
             return true;
         } else {
-            final ConfigPackage pack = packages.get(main);
+            final ConfigPackage pack = PACKAGES.get(main);
             if (pack == null) {
                 return false;
             }
@@ -316,8 +316,8 @@ public class Config {
      */
     public static String getNpc(final String value) {
         // load npc assignments from all packages
-        for (final String packName : packages.keySet()) {
-            final ConfigPackage pack = packages.get(packName);
+        for (final String packName : PACKAGES.keySet()) {
+            final ConfigPackage pack = PACKAGES.get(packName);
             final ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
             if (assignments != null) {
                 for (final String assignment : assignments.getKeys(false)) {
@@ -502,7 +502,7 @@ public class Config {
      * @return the languages defined for this plugin
      */
     public static ArrayList<String> getLanguages() {
-        return languages;
+        return LANGUAGES;
     }
 
     /**
@@ -524,7 +524,7 @@ public class Config {
                                 .toString().replace('/', ' ').trim().replace(' ', '-');
                         final ConfigPackage pack = new ConfigPackage(file, packPath);
                         if (pack.isEnabled()) {
-                            packages.put(packPath, pack);
+                            PACKAGES.put(packPath, pack);
                         }
                         return;
                     }

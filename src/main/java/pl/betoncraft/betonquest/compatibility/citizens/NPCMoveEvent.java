@@ -31,7 +31,7 @@ import java.util.logging.Level;
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
-    private static final HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
+    private static final HashMap<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
     private final List<LocationData> locations;
     private final int npcId;
@@ -67,12 +67,12 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * standing or moving because other reasons
      */
     public static boolean isNPCMoving(final NPC npc) {
-        return movingNPCs.containsKey(npc.getId()) && movingNPCs.get(npc.getId()).currentPlayer != null;
+        return MOVING_NPCS.containsKey(npc.getId()) && MOVING_NPCS.get(npc.getId()).currentPlayer != null;
     }
 
     public static void stopNPCMoving(final NPC npc) {
-        if (movingNPCs.containsKey(npc.getId())) {
-            movingNPCs.get(npc.getId()).currentPlayer = null;
+        if (MOVING_NPCS.containsKey(npc.getId())) {
+            MOVING_NPCS.get(npc.getId()).currentPlayer = null;
         }
     }
 
@@ -86,7 +86,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (!isNPCMoving(npc)) {
             return false;
         }
-        return movingNPCs.get(npc.getId()).blockConversations;
+        return MOVING_NPCS.get(npc.getId()).blockConversations;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             npc.getNavigator().setTarget(firstLocation.getLocation(playerID));
         }
         currentPlayer = playerID;
-        movingNPCs.put(npc.getId(), this);
+        MOVING_NPCS.put(npc.getId(), this);
         return null;
     }
 

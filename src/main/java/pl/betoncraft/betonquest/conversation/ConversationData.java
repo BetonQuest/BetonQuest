@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class ConversationData {
 
-    private static final ArrayList<String> externalPointers = new ArrayList<>();
+    private static final ArrayList<String> EXTERNAL_POINTERS = new ArrayList<>();
 
     private final ConfigPackage pack;
     private final String convName;
@@ -146,7 +146,7 @@ public class ConversationData {
             if (startingOption.contains(".")) {
                 final String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
                         + startingOption;
-                externalPointers.add(entirePointer);
+                EXTERNAL_POINTERS.add(entirePointer);
             } else if (!npcOptions.containsKey(startingOption)) {
                 throw new InstructionParseException("Starting option " + startingOption + " does not exist");
             }
@@ -182,7 +182,7 @@ public class ConversationData {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
                     final String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
-                    externalPointers.add(entirePointer);
+                    EXTERNAL_POINTERS.add(entirePointer);
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
@@ -212,7 +212,7 @@ public class ConversationData {
      * not throw any exceptions, just display errors in the console.
      */
     public static void postEnableCheck() {
-        for (final String externalPointer : externalPointers) {
+        for (final String externalPointer : EXTERNAL_POINTERS) {
             final String[] parts = externalPointer.split("\\.");
             final String packName = parts[0];
             final String sourceConv = parts[1];
@@ -236,7 +236,7 @@ public class ConversationData {
                         + "' conversation, but it does not exist.");
             }
         }
-        externalPointers.clear();
+        EXTERNAL_POINTERS.clear();
     }
 
     /**
