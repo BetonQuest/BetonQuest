@@ -134,7 +134,7 @@ public class ConversationData {
         }
         npcOptions = new HashMap<>();
         for (final String key : npcSection.getKeys(false)) {
-            npcOptions.put(key, new NPCOption(key));
+            npcOptions.put(key, new Option(key, OptionType.NPC));
         }
         // check if all starting options point to existing NPC options
         startingOptions = rawStartingOptions.split(",");
@@ -157,7 +157,7 @@ public class ConversationData {
         playerOptions = new HashMap<>();
         if (playerSection != null) {
             for (final String key : playerSection.getKeys(false)) {
-                playerOptions.put(key, new PlayerOption(key));
+                playerOptions.put(key, new Option(key, OptionType.PLAYER));
             }
         }
 
@@ -413,7 +413,25 @@ public class ConversationData {
     }
 
     public enum OptionType {
-        NPC, PLAYER
+        NPC("NPC_options", "NPC option"),
+        PLAYER("player_options", "player option"),
+        ;
+
+        private final String identifier;
+        private final String readable;
+
+        OptionType(final String identifier, final String readable) {
+            this.identifier = identifier;
+            this.readable = readable;
+        }
+
+        public String getIdentifier() {
+            return identifier;
+        }
+
+        public String getReadable() {
+            return readable;
+        }
     }
 
     /**
@@ -431,9 +449,9 @@ public class ConversationData {
         private List<String> pointers;
         private List<String> extendLinks;
 
-        protected Option(final String name, final String type, final String visibleType) throws InstructionParseException {
+        protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
-            this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
+            this.type = type;
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
             if (conv == null) {
@@ -452,7 +470,7 @@ public class ConversationData {
                         }
                     }
                     if (!inlinePrefix.containsKey(defaultLang)) {
-                        throw new InstructionParseException("No default language for " + name + " " + visibleType
+                        throw new InstructionParseException("No default language for " + name + " " + type.getReadable()
                                 + " prefix");
                     }
                 } else {
@@ -472,7 +490,7 @@ public class ConversationData {
                                 + lang));
                     }
                     if (!text.containsKey(defaultLang)) {
-                        throw new InstructionParseException("No default language for " + name + " " + visibleType);
+                        throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
                     }
                 } else {
                     text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
@@ -481,7 +499,7 @@ public class ConversationData {
                 final ArrayList<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
                     if (theText == null || theText.equals("")) {
-                        throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
+                        throw new InstructionParseException("Text not defined in " + type.getReadable() + " " + name);
                     }
                     // variables are possibly duplicated because there probably is
                     // the same variable in every language
@@ -511,7 +529,7 @@ public class ConversationData {
                     }
                 }
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
                         + e.getMessage(), e);
             }
 
@@ -523,7 +541,7 @@ public class ConversationData {
                     }
                 }
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's events: "
                         + e.getMessage(), e);
             }
 
@@ -659,24 +677,6 @@ public class ConversationData {
 
         public String[] getExtends() {
             return extendLinks.toArray(new String[0]);
-        }
-    }
-
-    /**
-     * Represents an option which can be choosen by the Player
-     */
-    private class PlayerOption extends Option {
-        public PlayerOption(final String name) throws InstructionParseException {
-            super(name, "player_options", "player option");
-        }
-    }
-
-    /**
-     * Represents an option which can be choosen by the NPC
-     */
-    private class NPCOption extends Option {
-        public NPCOption(final String name) throws InstructionParseException {
-            super(name, "NPC_options", "NPC option");
         }
     }
 }
