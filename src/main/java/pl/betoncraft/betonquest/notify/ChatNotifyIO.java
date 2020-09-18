@@ -21,6 +21,6 @@ public class ChatNotifyIO extends NotifyIO {
             player.sendMessage(Utils.format(message));
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

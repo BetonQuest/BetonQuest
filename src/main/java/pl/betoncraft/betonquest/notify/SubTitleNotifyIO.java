@@ -38,6 +38,6 @@ public class SubTitleNotifyIO extends NotifyIO {
             player.sendTitle("", Utils.format(message), fadeIn, stay, fadeOut);
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

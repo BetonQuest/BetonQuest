@@ -31,6 +31,6 @@ public class ActionBarNotifyIO extends NotifyIO {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

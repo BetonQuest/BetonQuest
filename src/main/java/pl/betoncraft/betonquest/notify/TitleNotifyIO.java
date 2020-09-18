@@ -41,6 +41,6 @@ public class TitleNotifyIO extends NotifyIO {
             player.sendTitle(Utils.format(message), Utils.format(subTitle), fadeIn, stay, fadeOut);
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

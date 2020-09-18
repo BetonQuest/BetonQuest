@@ -17,7 +17,7 @@ import java.util.logging.Level;
  * Data Valuues:
  * * sound: {sound_name} - What sound to play
  */
-public class NotifyIO {
+public abstract class NotifyIO {
 
     private final Map<String, String> data;
 
@@ -62,7 +62,9 @@ public class NotifyIO {
     /**
      * Show a notify to a collection of players
      */
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
+    public abstract void sendNotify(final String message, final Collection<? extends Player> players);
+
+    protected void sendNotificationSound(final Collection<? extends Player> players) {
         if (getData().containsKey("sound")) {
             for (final Player player : players) {
                 try {

@@ -83,7 +83,7 @@ public class AdvancementNotifyIO extends NotifyIO {
             }
         }.runTaskLater(BetonQuest.getInstance(), 10);
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 
     @SuppressWarnings("deprecation")
