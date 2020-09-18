@@ -84,7 +84,7 @@ public class BlockSelector {
         } else {
             try {
                 state.setBlockData(Bukkit.createBlockData(getRandomMaterial(), getStateAsString()));
-            } catch (IllegalArgumentException exception) {
+            } catch (final IllegalArgumentException exception) {
                 LogUtils.getLogger().log(Level.SEVERE, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
             }
         }
@@ -140,8 +140,8 @@ public class BlockSelector {
         final String[] selectorParts = new String[3];
         String restSelector = selector;
 
-        if (restSelector.contains("[") && restSelector.endsWith("]")) {
-            final int index = restSelector.lastIndexOf("[");
+        if (restSelector.endsWith("]")) {
+            final int index = getBracketIndex(restSelector, 0);
             selectorParts[2] = restSelector.substring(index + 1, restSelector.length() - 1).toLowerCase();
             restSelector = restSelector.substring(0, index);
         }
@@ -156,6 +156,24 @@ public class BlockSelector {
         }
 
         return selectorParts;
+    }
+
+    private int getBracketIndex(final String text, final int openedBrackets) {
+        final int indexOpen = text.lastIndexOf("[");
+        final int indexClose = text.lastIndexOf("]");
+        if (indexOpen == -1 && indexClose == -1) {
+            return -1;
+        }
+        if (indexOpen > indexClose) {
+            if (openedBrackets == 1) {
+                return indexOpen;
+            }
+            return getBracketIndex(text.substring(0, indexOpen), openedBrackets - 1);
+        }
+        if (indexClose > indexOpen) {
+            return getBracketIndex(text.substring(0, indexClose), openedBrackets + 1);
+        }
+        return -1;
     }
 
     private List<Material> getMaterials(final String namespaceString, final String keyString) {
