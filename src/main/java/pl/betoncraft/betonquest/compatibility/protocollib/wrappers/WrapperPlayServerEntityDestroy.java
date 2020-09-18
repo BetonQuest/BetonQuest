@@ -6,16 +6,23 @@ import com.google.common.primitives.Ints;
 
 import java.util.List;
 
-public class WrapperPlayServerEntityDestroy extends AbstractPacket {
+public class WrapperPlayServerEntityDestroy extends PacketHandlerDecorator {
+
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_DESTROY;
 
     public WrapperPlayServerEntityDestroy() {
-        super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this(new DefaultPacketHandler(TYPE));
     }
 
     public WrapperPlayServerEntityDestroy(final PacketContainer packet) {
-        super(packet, TYPE);
+        this(new DefaultPacketHandler(packet, TYPE));
+    }
+
+    public WrapperPlayServerEntityDestroy(final PacketHandler packetHandler) {
+        super(packetHandler);
+        if (getPacketHandler().getType() != TYPE) {
+            throw new IllegalArgumentException(getPacketHandler().getType() + " is not a packet of type " + TYPE);
+        }
     }
 
     /**
@@ -24,7 +31,7 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
      * @return The current entities.
      */
     public List<Integer> getEntities() {
-        return Ints.asList(handle.getIntegerArrays().read(0));
+        return Ints.asList(getHandle().getIntegerArrays().read(0));
     }
 
     /**
@@ -38,7 +45,7 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
      * Set the entities that will be destroyed.
      */
     public void setEntities(final int[] entities) {
-        handle.getIntegerArrays().write(0, entities);
+        getHandle().getIntegerArrays().write(0, entities);
     }
 }
 

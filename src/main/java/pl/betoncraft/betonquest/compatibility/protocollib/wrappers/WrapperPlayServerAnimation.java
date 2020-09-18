@@ -6,16 +6,23 @@ import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-public class WrapperPlayServerAnimation extends AbstractPacket {
+public class WrapperPlayServerAnimation extends PacketHandlerDecorator {
+
     public static final PacketType TYPE = PacketType.Play.Server.ANIMATION;
 
     public WrapperPlayServerAnimation() {
-        super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this(new DefaultPacketHandler(TYPE));
     }
 
     public WrapperPlayServerAnimation(final PacketContainer packet) {
-        super(packet, TYPE);
+        this(new DefaultPacketHandler(packet, TYPE));
+    }
+
+    public WrapperPlayServerAnimation(final PacketHandler packetHandler) {
+        super(packetHandler);
+        if (getPacketHandler().getType() != TYPE) {
+            throw new IllegalArgumentException(getPacketHandler().getType() + " is not a packet of type " + TYPE);
+        }
     }
 
     /**
@@ -26,7 +33,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @return The current Entity ID
      */
     public int getEntityID() {
-        return handle.getIntegers().read(0);
+        return getHandle().getIntegers().read(0);
     }
 
     /**
@@ -35,7 +42,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @param value - new value.
      */
     public void setEntityID(final int value) {
-        handle.getIntegers().write(0, value);
+        getHandle().getIntegers().write(0, value);
     }
 
     /**
@@ -45,7 +52,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @return The spawned entity.
      */
     public Entity getEntity(final World world) {
-        return handle.getEntityModifier(world).read(0);
+        return getHandle().getEntityModifier(world).read(0);
     }
 
     /**
@@ -66,7 +73,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @return The current Animation
      */
     public int getAnimation() {
-        return handle.getIntegers().read(1);
+        return getHandle().getIntegers().read(1);
     }
 
     /**
@@ -75,7 +82,7 @@ public class WrapperPlayServerAnimation extends AbstractPacket {
      * @param value - new value.
      */
     public void setAnimation(final int value) {
-        handle.getIntegers().write(1, value);
+        getHandle().getIntegers().write(1, value);
     }
 
 }

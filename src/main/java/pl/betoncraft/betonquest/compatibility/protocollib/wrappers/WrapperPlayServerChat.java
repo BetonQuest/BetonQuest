@@ -8,16 +8,23 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 import java.util.Arrays;
 
-public class WrapperPlayServerChat extends AbstractPacket {
+public class WrapperPlayServerChat extends PacketHandlerDecorator {
+
     public static final PacketType TYPE = PacketType.Play.Server.CHAT;
 
     public WrapperPlayServerChat() {
-        super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this(new DefaultPacketHandler(TYPE));
     }
 
     public WrapperPlayServerChat(final PacketContainer packet) {
-        super(packet, TYPE);
+        this(new DefaultPacketHandler(packet, TYPE));
+    }
+
+    public WrapperPlayServerChat(final PacketHandler packetHandler) {
+        super(packetHandler);
+        if (getPacketHandler().getType() != TYPE) {
+            throw new IllegalArgumentException(getPacketHandler().getType() + " is not a packet of type " + TYPE);
+        }
     }
 
     /**
@@ -28,7 +35,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
      * @return The current message
      */
     public WrappedChatComponent getMessage() {
-        return handle.getChatComponents().read(0);
+        return getHandle().getChatComponents().read(0);
     }
 
     /**
@@ -37,15 +44,15 @@ public class WrapperPlayServerChat extends AbstractPacket {
      * @param value - new value.
      */
     public void setMessage(final WrappedChatComponent value) {
-        handle.getChatComponents().write(0, value);
+        getHandle().getChatComponents().write(0, value);
     }
 
     public ChatType getChatType() {
-        return handle.getChatTypes().read(0);
+        return getHandle().getChatTypes().read(0);
     }
 
     public void setChatType(final ChatType type) {
-        handle.getChatTypes().write(0, type);
+        getHandle().getChatTypes().write(0, type);
     }
 
     /**
@@ -59,7 +66,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
      */
     @Deprecated
     public byte getPosition() {
-        final Byte position = handle.getBytes().readSafely(0);
+        final Byte position = getHandle().getBytes().readSafely(0);
         if (position == null) {
             return getChatType().getId();
         } else {
@@ -75,11 +82,11 @@ public class WrapperPlayServerChat extends AbstractPacket {
      */
     @Deprecated
     public void setPosition(final byte value) {
-        handle.getBytes().writeSafely(0, value);
+        getHandle().getBytes().writeSafely(0, value);
 
         if (EnumWrappers.getChatTypeClass() != null) {
             Arrays.stream(ChatType.values()).filter(t -> t.getId() == value).findAny()
-                    .ifPresent(t -> handle.getChatTypes().writeSafely(0, t));
+                    .ifPresent(t -> getHandle().getChatTypes().writeSafely(0, t));
         }
     }
 }
