@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 public class McMMOIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public McMMOIntegrator() {
         plugin = BetonQuest.getInstance();

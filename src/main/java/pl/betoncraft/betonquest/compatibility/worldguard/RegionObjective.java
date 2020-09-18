@@ -23,8 +23,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class RegionObjective extends Objective implements Listener {
 
     private final String name;
-    private boolean entry;
-    private boolean exit;
+    private final boolean entry;
+    private final boolean exit;
 
     public RegionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

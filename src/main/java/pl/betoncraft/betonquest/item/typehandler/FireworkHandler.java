@@ -13,7 +13,7 @@ public class FireworkHandler {
 
     private int power = 0;
     private Number powerN = Number.WHATEVER;
-    private List<FireworkEffectHandler> effects = new ArrayList<>();
+    private final List<FireworkEffectHandler> effects = new ArrayList<>();
     private Existence effectsE = Existence.WHATEVER;
     private boolean exact = true;
 

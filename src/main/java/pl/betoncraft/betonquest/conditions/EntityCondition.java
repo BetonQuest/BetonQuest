@@ -22,11 +22,11 @@ import java.util.Locale;
  */
 public class EntityCondition extends Condition {
 
-    private EntityType[] types;
-    private VariableNumber[] amounts;
-    private LocationData loc;
-    private VariableNumber range;
-    private String name;
+    private final EntityType[] types;
+    private final VariableNumber[] amounts;
+    private final LocationData loc;
+    private final VariableNumber range;
+    private final String name;
     private String marked;
 
     public EntityCondition(final Instruction instruction) throws InstructionParseException {

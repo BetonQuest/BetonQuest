@@ -34,7 +34,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String npcName;
     protected String answerFormat;
     protected String textFormat;
-    private String npcTextColor;
+    private final String npcTextColor;
 
     public ChatConvIO(final Conversation conv, final String playerID) {
         this.options = new HashMap<>();

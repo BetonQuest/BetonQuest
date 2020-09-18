@@ -79,8 +79,8 @@ public class CommandEvent extends QuestEvent {
 
     private class Command {
 
-        private String command;
-        private List<String> variables;
+        private final String command;
+        private final List<String> variables;
 
         public Command(final String command) {
             this.command = command;

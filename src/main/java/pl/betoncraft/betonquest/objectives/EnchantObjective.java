@@ -21,8 +21,8 @@ import java.util.Locale;
  */
 public class EnchantObjective extends Objective implements Listener {
 
-    private QuestItem item;
-    private List<EnchantmentData> enchantments;
+    private final QuestItem item;
+    private final List<EnchantmentData> enchantments;
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

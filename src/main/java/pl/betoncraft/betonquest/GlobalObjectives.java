@@ -16,7 +16,7 @@ public class GlobalObjectives {
 
     private static GlobalObjectives instance;
 
-    private Set<ObjectiveID> globalObjectives;
+    private final Set<ObjectiveID> globalObjectives;
 
     public GlobalObjectives() {
         instance = this;

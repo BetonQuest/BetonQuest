@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
 public class ConditionID extends ID {
 
-    private boolean inverted;
+    private final boolean inverted;
 
     public ConditionID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(identifier));

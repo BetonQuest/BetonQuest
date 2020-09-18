@@ -21,7 +21,7 @@ public class DelayObjective extends Objective {
 
     private final double delay;
     private BukkitTask runnable;
-    private int interval;
+    private final int interval;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

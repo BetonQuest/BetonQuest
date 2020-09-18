@@ -10,9 +10,9 @@ public class QuestDataUpdateEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private String playerID;
-    private String objID;
-    private String data;
+    private final String playerID;
+    private final String objID;
+    private final String data;
 
     public QuestDataUpdateEvent(final String playerID, final String objID, final String data) {
         super();

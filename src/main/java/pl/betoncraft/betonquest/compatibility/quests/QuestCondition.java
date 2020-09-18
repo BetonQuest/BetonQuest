@@ -10,7 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class QuestCondition extends Condition {
 
-    private String questName;
+    private final String questName;
 
     public QuestCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -15,7 +15,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final LocationData location;
-    private int npcId;
+    private final int npcId;
 
     public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

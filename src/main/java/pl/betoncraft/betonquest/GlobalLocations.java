@@ -31,7 +31,7 @@ public class GlobalLocations extends BukkitRunnable {
 
     private static GlobalLocations instance;
     private final List<GlobalLocation> finalLocations;
-    private List<GlobalLocation> locations = new ArrayList<>();
+    private final List<GlobalLocation> locations = new ArrayList<>();
 
     /**
      * Creates new instance of global locations handler.
@@ -134,12 +134,12 @@ public class GlobalLocations extends BukkitRunnable {
      */
     private class GlobalLocation {
 
-        private ObjectiveID objectiveID;
-        private LocationData location;
-        private VariableNumber range;
-        private ConditionID[] conditions;
-        private EventID[] events;
-        private String tag;
+        private final ObjectiveID objectiveID;
+        private final LocationData location;
+        private final VariableNumber range;
+        private final ConditionID[] conditions;
+        private final EventID[] events;
+        private final String tag;
 
         /**
          * Creates new global location using objective event's ID.

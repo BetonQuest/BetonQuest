@@ -18,8 +18,8 @@ import java.util.Locale;
 @SuppressWarnings("deprecation")
 public class DoorEvent extends QuestEvent {
 
-    private LocationData loc;
-    private ToggleType type;
+    private final LocationData loc;
+    private final ToggleType type;
 
     public DoorEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

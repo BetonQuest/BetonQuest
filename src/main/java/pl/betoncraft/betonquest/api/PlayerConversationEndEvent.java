@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
 public class PlayerConversationEndEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private Conversation conversation;
+    private final Conversation conversation;
 
     /**
      * Creates new conversation start event

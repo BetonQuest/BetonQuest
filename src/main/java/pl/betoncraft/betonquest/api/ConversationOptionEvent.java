@@ -9,10 +9,10 @@ public class ConversationOptionEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private Player player;
-    private Conversation conv;
-    private String selectedOption;
-    private String npcResponse;
+    private final Player player;
+    private final Conversation conv;
+    private final String selectedOption;
+    private final String npcResponse;
 
     public ConversationOptionEvent(final Player player, final Conversation conv, final String playerChosen, final String npcResponse) {
         super();

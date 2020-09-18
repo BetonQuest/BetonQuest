@@ -63,8 +63,8 @@ public class Backpack implements Listener {
     /**
      * Language of the player
      */
-    private String lang;
-    private Backpack backpack;
+    private final String lang;
+    private final Backpack backpack;
 
     /**
      * Creates new backpack GUI opened at given page type.
@@ -367,7 +367,7 @@ public class Backpack implements Listener {
      */
     private class Cancelers extends Display {
 
-        private HashMap<Integer, QuestCanceler> map = new HashMap<>();
+        private final HashMap<Integer, QuestCanceler> map = new HashMap<>();
 
         /**
          * Creates a page with quest cancelers and displays it to the player.
@@ -418,9 +418,9 @@ public class Backpack implements Listener {
 
     private class Compass extends Display {
 
-        private HashMap<Integer, Location> locations = new HashMap<>();
-        private HashMap<Integer, String> names = new HashMap<>();
-        private HashMap<Integer, String> items = new HashMap<>();
+        private final HashMap<Integer, Location> locations = new HashMap<>();
+        private final HashMap<Integer, String> names = new HashMap<>();
+        private final HashMap<Integer, String> items = new HashMap<>();
 
         public Compass() {
             super();

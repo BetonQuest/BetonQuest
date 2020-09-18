@@ -21,17 +21,17 @@ import java.util.Map.Entry;
  */
 public class QuestItem {
 
-    private Material material;
-    private DurabilityHandler durability = new DurabilityHandler();
-    private NameHandler name = new NameHandler();
-    private LoreHandler lore = new LoreHandler();
-    private EnchantmentsHandler enchants = new EnchantmentsHandler();
-    private UnbreakableHandler unbreakable = new UnbreakableHandler();
-    private PotionHandler potion = new PotionHandler();
-    private BookHandler book = new BookHandler();
-    private HeadOwnerHandler head = new HeadOwnerHandler();
-    private ColorHandler color = new ColorHandler();
-    private FireworkHandler firework = new FireworkHandler();
+    private final Material material;
+    private final DurabilityHandler durability = new DurabilityHandler();
+    private final NameHandler name = new NameHandler();
+    private final LoreHandler lore = new LoreHandler();
+    private final EnchantmentsHandler enchants = new EnchantmentsHandler();
+    private final UnbreakableHandler unbreakable = new UnbreakableHandler();
+    private final PotionHandler potion = new PotionHandler();
+    private final BookHandler book = new BookHandler();
+    private final HeadOwnerHandler head = new HeadOwnerHandler();
+    private final ColorHandler color = new ColorHandler();
+    private final FireworkHandler firework = new FireworkHandler();
 
     /**
      * Creates new instance of the quest item using the ID from items.yml file.

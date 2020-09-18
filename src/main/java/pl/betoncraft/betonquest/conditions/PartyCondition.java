@@ -17,11 +17,11 @@ import java.util.ArrayList;
  */
 public class PartyCondition extends Condition {
 
-    private VariableNumber range;
-    private ConditionID[] conditions;
-    private ConditionID[] everyone;
-    private ConditionID[] anyone;
-    private VariableNumber count;
+    private final VariableNumber range;
+    private final ConditionID[] conditions;
+    private final ConditionID[] everyone;
+    private final ConditionID[] anyone;
+    private final VariableNumber count;
 
     public PartyCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

@@ -13,9 +13,9 @@ import java.util.Collection;
 
 public class GiveBrewEvent extends QuestEvent {
 
-    private Integer amount;
-    private Integer quality;
-    private BRecipe recipe;
+    private final Integer amount;
+    private final Integer quality;
+    private final BRecipe recipe;
 
     public GiveBrewEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

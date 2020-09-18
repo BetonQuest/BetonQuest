@@ -38,7 +38,7 @@ import java.util.logging.Level;
  */
 public class Conversation implements Listener {
 
-    private static ConcurrentHashMap<String, Conversation> list = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Conversation> list = new ConcurrentHashMap<>();
 
     private final String playerID;
     private final Player player;
@@ -56,7 +56,7 @@ public class Conversation implements Listener {
     private boolean messagesDelaying = false;
     private Interceptor interceptor;
 
-    private HashMap<Integer, String> current = new HashMap<>();
+    private final HashMap<Integer, String> current = new HashMap<>();
 
 
     /**
@@ -568,7 +568,7 @@ public class Conversation implements Listener {
      */
     private class NPCEventRunner extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public NPCEventRunner(final String option) {
             super();
@@ -589,7 +589,7 @@ public class Conversation implements Listener {
      */
     private class PlayerEventRunner extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public PlayerEventRunner(final String option) {
             super();
@@ -610,7 +610,7 @@ public class Conversation implements Listener {
      */
     private class ResponsePrinter extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public ResponsePrinter(final String option) {
             super();
@@ -638,7 +638,7 @@ public class Conversation implements Listener {
      */
     private class OptionPrinter extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public OptionPrinter(final String option) {
             super();

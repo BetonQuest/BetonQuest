@@ -28,15 +28,17 @@ import java.util.logging.Level;
 public class QuestCanceler {
 
     private String item;
-    private String[] tags, points, journal;
-    private ConditionID[] conditions;
-    private EventID[] events;
-    private ObjectiveID[] objectives;
+    private final String[] tags;
+    private final String[] points;
+    private final String[] journal;
+    private final ConditionID[] conditions;
+    private final EventID[] events;
+    private final ObjectiveID[] objectives;
     private Location loc;
-    private HashMap<String, String> name = new HashMap<>();
+    private final HashMap<String, String> name = new HashMap<>();
 
-    private String packName;
-    private String cancelerName;
+    private final String packName;
+    private final String cancelerName;
 
     /**
      * Creates a new canceler with given name.

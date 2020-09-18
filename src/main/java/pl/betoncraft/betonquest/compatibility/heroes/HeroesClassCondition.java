@@ -19,9 +19,9 @@ public class HeroesClassCondition extends Condition {
 
     private HeroClass heroClass;
     private boolean any;
-    private boolean primary;
-    private boolean mastered;
-    private VariableNumber level;
+    private final boolean primary;
+    private final boolean mastered;
+    private final VariableNumber level;
 
     public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

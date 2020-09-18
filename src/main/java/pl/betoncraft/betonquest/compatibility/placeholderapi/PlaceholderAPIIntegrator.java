@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class PlaceholderAPIIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public PlaceholderAPIIntegrator() {
         plugin = BetonQuest.getInstance();

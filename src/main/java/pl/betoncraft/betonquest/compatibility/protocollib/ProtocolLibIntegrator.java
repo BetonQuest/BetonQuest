@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInt
 
 public class ProtocolLibIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public ProtocolLibIntegrator() {
         plugin = BetonQuest.getInstance();

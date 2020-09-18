@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SlowTellrawConvIO extends TellrawConvIO {
 
-    private String npcTextColor;
+    private final String npcTextColor;
     private List<String> endLines;
 
     public SlowTellrawConvIO(final Conversation conv, final String playerID) {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class CheckCondition extends Condition {
 
-    private ArrayList<Condition> internalConditions = new ArrayList<>();
+    private final ArrayList<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

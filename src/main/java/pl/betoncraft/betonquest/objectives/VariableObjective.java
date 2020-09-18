@@ -91,7 +91,7 @@ public class VariableObjective extends Objective implements Listener {
 
     public static class VariableData extends ObjectiveData {
 
-        private HashMap<String, String> variables = new HashMap<>();
+        private final HashMap<String, String> variables = new HashMap<>();
 
         public VariableData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);

@@ -30,9 +30,9 @@ public class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance = null;
 
-    private EntityHider hider;
-    private Map<Integer, Set<ConditionID>> npcs;
-    private Integer updateInterval;
+    private final EntityHider hider;
+    private final Map<Integer, Set<ConditionID>> npcs;
+    private final Integer updateInterval;
 
     private NPCHider() {
         super();

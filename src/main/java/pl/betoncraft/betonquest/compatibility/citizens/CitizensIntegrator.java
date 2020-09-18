@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class CitizensIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public CitizensIntegrator() {
         plugin = BetonQuest.getInstance();

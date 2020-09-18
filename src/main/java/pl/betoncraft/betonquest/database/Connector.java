@@ -14,9 +14,9 @@ import java.util.logging.Level;
  */
 public class Connector {
 
-    private BetonQuest plugin;
-    private String prefix;
-    private Database database;
+    private final BetonQuest plugin;
+    private final String prefix;
+    private final Database database;
     private Connection connection;
 
     /**

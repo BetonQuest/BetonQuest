@@ -21,8 +21,8 @@ import java.util.HashMap;
  */
 public class CombatTagger implements Listener {
 
-    private static HashMap<String, Boolean> tagged = new HashMap<>();
-    private static HashMap<String, BukkitRunnable> untaggers = new HashMap<>();
+    private static final HashMap<String, Boolean> tagged = new HashMap<>();
+    private static final HashMap<String, BukkitRunnable> untaggers = new HashMap<>();
     private int delay = 10;
 
     /**

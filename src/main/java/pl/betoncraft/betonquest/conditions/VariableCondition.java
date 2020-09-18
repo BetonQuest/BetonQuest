@@ -10,8 +10,8 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
  */
 public class VariableCondition extends Condition {
 
-    private String variable;
-    private String regex;
+    private final String variable;
+    private final String regex;
 
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

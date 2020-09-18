@@ -50,7 +50,7 @@ public interface ComponentBuilder {
 
     class LegacyBuilder implements ComponentBuilder {
 
-        private StringBuilder stringBuilder;
+        private final StringBuilder stringBuilder;
 
         public LegacyBuilder() {
             this.stringBuilder = new StringBuilder();
@@ -85,7 +85,7 @@ public interface ComponentBuilder {
 
     class BugeeCordAPIBuilder implements ComponentBuilder {
 
-        private net.md_5.bungee.api.chat.ComponentBuilder builder;
+        private final net.md_5.bungee.api.chat.ComponentBuilder builder;
 
         public BugeeCordAPIBuilder() throws LinkageError {
             builder = new net.md_5.bungee.api.chat.ComponentBuilder("");

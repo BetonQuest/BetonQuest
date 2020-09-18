@@ -24,7 +24,7 @@ public class StaticEvents {
     /**
      * Contains pointers to timers, so they can be canceled if needed
      */
-    private static ArrayList<EventTimer> timers = new ArrayList<>();
+    private static final ArrayList<EventTimer> timers = new ArrayList<>();
 
     /**
      * Creates new instance of a StaticEvents object, scheduling static events

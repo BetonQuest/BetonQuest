@@ -155,7 +155,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         TASK("task"),
         DEFAULT("challenge");
 
-        private String str;
+        private final String str;
 
         FrameType(final String str) {
             this.str = str;

@@ -12,9 +12,9 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.List;
 
 public class ConditionJobLevel extends Condition {
-    private String sJobName;
-    private int nMinLevel;
-    private int nMaxLevel;
+    private final String sJobName;
+    private final int nMinLevel;
+    private final int nMaxLevel;
 
     public ConditionJobLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

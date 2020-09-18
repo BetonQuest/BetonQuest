@@ -22,8 +22,8 @@ import java.util.Locale;
  */
 public class CitizensVariable extends Variable {
 
-    private int npcId;
-    private TYPE key;
+    private final int npcId;
+    private final TYPE key;
 
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);

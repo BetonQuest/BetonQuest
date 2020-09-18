@@ -21,21 +21,21 @@ import java.util.stream.Collectors;
  */
 public class ConversationData {
 
-    private static ArrayList<String> externalPointers = new ArrayList<>();
+    private static final ArrayList<String> externalPointers = new ArrayList<>();
 
-    private ConfigPackage pack;
-    private String convName;
+    private final ConfigPackage pack;
+    private final String convName;
 
-    private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
-    private EventID[] finalEvents;
-    private String[] startingOptions;
-    private boolean blockMovement;
+    private final HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
+    private final HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
+    private final EventID[] finalEvents;
+    private final String[] startingOptions;
+    private final boolean blockMovement;
     private String convIO;
     private String interceptor;
 
-    private HashMap<String, Option> npcOptions;
-    private HashMap<String, Option> playerOptions;
+    private final HashMap<String, Option> npcOptions;
+    private final HashMap<String, Option> playerOptions;
 
     /**
      * Loads conversation from package.
@@ -439,13 +439,13 @@ public class ConversationData {
      */
     private class Option {
 
-        private String name;
-        private OptionType type;
-        private HashMap<String, String> inlinePrefix = new HashMap<>();
+        private final String name;
+        private final OptionType type;
+        private final HashMap<String, String> inlinePrefix = new HashMap<>();
 
-        private HashMap<String, String> text = new HashMap<>();
-        private List<ConditionID> conditions = new ArrayList<>();
-        private List<EventID> events = new ArrayList<>();
+        private final HashMap<String, String> text = new HashMap<>();
+        private final List<ConditionID> conditions = new ArrayList<>();
+        private final List<EventID> events = new ArrayList<>();
         private List<String> pointers;
         private List<String> extendLinks;
 

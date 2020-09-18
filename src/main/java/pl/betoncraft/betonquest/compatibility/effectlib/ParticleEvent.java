@@ -16,10 +16,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ParticleEvent extends QuestEvent {
 
-    private String effectClass;
-    private ConfigurationSection parameters;
-    private LocationData loc;
-    private boolean pr1vate;
+    private final String effectClass;
+    private final ConfigurationSection parameters;
+    private final LocationData loc;
+    private final boolean pr1vate;
 
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

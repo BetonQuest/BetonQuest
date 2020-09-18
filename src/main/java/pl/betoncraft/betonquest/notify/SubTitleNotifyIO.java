@@ -19,9 +19,9 @@ public class SubTitleNotifyIO extends NotifyIO {
 
     // Variables
 
-    private int fadeIn;
-    private int stay;
-    private int fadeOut;
+    private final int fadeIn;
+    private final int stay;
+    private final int fadeOut;
 
 
     public SubTitleNotifyIO(final Map<String, String> data) {

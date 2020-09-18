@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 public class VariableEvent extends QuestEvent {
 
-    private ObjectiveID objectiveID;
-    private String key;
-    private ArrayList<String> keyVariables;
-    private String value;
-    private ArrayList<String> valueVariables;
+    private final ObjectiveID objectiveID;
+    private final String key;
+    private final ArrayList<String> keyVariables;
+    private final String value;
+    private final ArrayList<String> valueVariables;
 
     public VariableEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

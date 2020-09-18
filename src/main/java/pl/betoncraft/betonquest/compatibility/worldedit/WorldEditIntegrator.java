@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class WorldEditIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public WorldEditIntegrator() {
         plugin = BetonQuest.getInstance();

@@ -19,11 +19,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ConversationResumer implements Listener {
 
-    private String original;
-    private Player player;
-    private String playerID;
-    private String conversationID;
-    private String option;
+    private final String original;
+    private final Player player;
+    private final String playerID;
+    private final String conversationID;
+    private final String option;
     private Location loc;
     private double distance;
 

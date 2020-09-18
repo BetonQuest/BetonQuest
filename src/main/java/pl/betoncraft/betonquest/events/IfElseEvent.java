@@ -12,9 +12,9 @@ import pl.betoncraft.betonquest.id.EventID;
  */
 public class IfElseEvent extends QuestEvent {
 
-    private ConditionID condition;
-    private EventID event;
-    private EventID elseEvent;
+    private final ConditionID condition;
+    private final EventID event;
+    private final EventID elseEvent;
 
     public IfElseEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

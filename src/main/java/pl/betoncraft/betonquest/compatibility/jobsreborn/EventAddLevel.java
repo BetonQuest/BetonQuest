@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.List;
 
 public class EventAddLevel extends QuestEvent {
-    private String sJobName;
-    private Integer nAddLevel;
+    private final String sJobName;
+    private final Integer nAddLevel;
 
     public EventAddLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

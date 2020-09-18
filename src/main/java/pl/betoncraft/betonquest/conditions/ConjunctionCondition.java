@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ConjunctionCondition extends Condition {
 
-    private List<ConditionID> conditions;
+    private final List<ConditionID> conditions;
 
     public ConjunctionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

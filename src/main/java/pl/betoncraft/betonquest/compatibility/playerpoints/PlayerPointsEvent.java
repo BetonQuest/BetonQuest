@@ -17,9 +17,9 @@ import java.util.UUID;
  */
 public class PlayerPointsEvent extends QuestEvent {
 
-    private VariableNumber count;
-    private boolean multi;
-    private PlayerPointsAPI api;
+    private final VariableNumber count;
+    private final boolean multi;
+    private final PlayerPointsAPI api;
 
     public PlayerPointsEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

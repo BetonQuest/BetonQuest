@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class DenizenIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public DenizenIntegrator() {
         plugin = BetonQuest.getInstance();

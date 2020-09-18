@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class PlaceholderVariable extends Variable {
 
-    private String placeholder;
+    private final String placeholder;
 
     public PlaceholderVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);

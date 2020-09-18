@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class GameModeCondition extends Condition {
 
-    private GameMode gameMode;
+    private final GameMode gameMode;
 
     public GameModeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

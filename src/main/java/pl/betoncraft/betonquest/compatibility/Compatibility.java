@@ -45,9 +45,9 @@ import java.util.logging.Level;
 public class Compatibility implements Listener {
 
     private static Compatibility instance;
-    private Map<String, Integrator> integrators = new HashMap<>();
-    private BetonQuest plugin = BetonQuest.getInstance();
-    private List<String> hooked = new ArrayList<>();
+    private final Map<String, Integrator> integrators = new HashMap<>();
+    private final BetonQuest plugin = BetonQuest.getInstance();
+    private final List<String> hooked = new ArrayList<>();
 
     public Compatibility() {
         instance = this;

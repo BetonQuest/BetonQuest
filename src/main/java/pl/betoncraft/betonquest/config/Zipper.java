@@ -13,9 +13,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zipper {
-    private List<String> fileList = new ArrayList<>();
-    private String outputZipFile;
-    private String sourceFolder;
+    private final List<String> fileList = new ArrayList<>();
+    private final String outputZipFile;
+    private final String sourceFolder;
 
     public Zipper(final String source, final String output) {
         String modifiedOutput = output;

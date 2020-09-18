@@ -17,7 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class ConsumeObjective extends Objective implements Listener {
 
-    private QuestItem item;
+    private final QuestItem item;
 
     public ConsumeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

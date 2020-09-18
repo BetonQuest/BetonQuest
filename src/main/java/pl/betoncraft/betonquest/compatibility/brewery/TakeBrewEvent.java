@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class TakeBrewEvent extends QuestEvent {
 
-    private Integer count;
-    private BRecipe brew;
+    private final Integer count;
+    private final BRecipe brew;
 
     public TakeBrewEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

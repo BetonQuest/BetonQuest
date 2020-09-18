@@ -16,7 +16,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  **/
 public class ConversationCondition extends Condition {
 
-    private String conversationID;
+    private final String conversationID;
 
     public ConversationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

@@ -31,16 +31,16 @@ import java.util.logging.Level;
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
-    private static HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
+    private static final HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
 
     private final List<LocationData> locations;
-    private int npcId;
+    private final int npcId;
     private ListIterator<LocationData> locationsIterator;
-    private int waitTicks;
-    private EventID[] doneEvents;
-    private EventID[] failEvents;
+    private final int waitTicks;
+    private final EventID[] doneEvents;
+    private final EventID[] failEvents;
     private String currentPlayer;
-    private boolean blockConversations;
+    private final boolean blockConversations;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

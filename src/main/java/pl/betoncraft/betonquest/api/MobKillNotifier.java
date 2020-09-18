@@ -20,8 +20,8 @@ public class MobKillNotifier {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private static MobKillNotifier instance;
-    private BukkitRunnable cleaner;
-    private ArrayList<Entity> entities = new ArrayList<>();
+    private final BukkitRunnable cleaner;
+    private final ArrayList<Entity> entities = new ArrayList<>();
 
     public MobKillNotifier() {
         instance = this;
@@ -58,8 +58,8 @@ public class MobKillNotifier {
      */
     public static class MobKilledEvent extends Event {
 
-        private Player killer;
-        private Entity killed;
+        private final Player killer;
+        private final Entity killed;
 
         public MobKilledEvent(final Player killer, final Entity killed) {
             super();

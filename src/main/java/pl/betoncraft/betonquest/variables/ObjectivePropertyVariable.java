@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.id.ObjectiveID;
  */
 public class ObjectivePropertyVariable extends Variable {
 
-    private ObjectiveID objective;
-    private String propertyName;
+    private final ObjectiveID objective;
+    private final String propertyName;
 
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);

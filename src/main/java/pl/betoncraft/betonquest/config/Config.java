@@ -25,11 +25,11 @@ public class Config {
     private static Config instance;
     private static ConfigAccessor messages;
     private static ConfigAccessor internal;
-    private static HashMap<String, ConfigPackage> packages = new HashMap<>();
-    private static HashMap<String, QuestCanceler> cancelers = new HashMap<>();
+    private static final HashMap<String, ConfigPackage> packages = new HashMap<>();
+    private static final HashMap<String, QuestCanceler> cancelers = new HashMap<>();
     private static String lang;
-    private static ArrayList<String> languages = new ArrayList<>();
-    private File root;
+    private static final ArrayList<String> languages = new ArrayList<>();
+    private final File root;
     private static String defaultPackage = "default";
 
     public Config() {

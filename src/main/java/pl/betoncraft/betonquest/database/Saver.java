@@ -14,8 +14,8 @@ import java.util.logging.Level;
  */
 public class Saver extends Thread implements Listener {
 
-    private Connector con;
-    private ConcurrentLinkedQueue<Record> queue;
+    private final Connector con;
+    private final ConcurrentLinkedQueue<Record> queue;
     private boolean run;
     private boolean active;
 
@@ -78,8 +78,8 @@ public class Saver extends Thread implements Listener {
      */
     public static class Record {
 
-        private UpdateType type;
-        private String[] args;
+        private final UpdateType type;
+        private final String[] args;
 
         /**
          * Creates new Record, which can be saved to the database using

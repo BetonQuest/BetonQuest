@@ -43,7 +43,7 @@ import java.util.logging.Level;
  */
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
-    private BetonQuest instance = BetonQuest.getInstance();
+    private final BetonQuest instance = BetonQuest.getInstance();
     private String defaultPack = Config.getString("config.default_package");
 
     /**

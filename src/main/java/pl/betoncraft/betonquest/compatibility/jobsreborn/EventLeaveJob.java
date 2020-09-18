@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class EventLeaveJob extends QuestEvent {
-    private String sJobName;
+    private final String sJobName;
 
     public EventLeaveJob(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);

@@ -18,10 +18,10 @@ import java.util.logging.Level;
  */
 public class GlobalData {
 
-    private Saver saver = BetonQuest.getInstance().getSaver();
+    private final Saver saver = BetonQuest.getInstance().getSaver();
 
-    private List<String> globalTags = new ArrayList<>();
-    private List<Point> globalPoints = new ArrayList<>();
+    private final List<String> globalTags = new ArrayList<>();
+    private final List<Point> globalPoints = new ArrayList<>();
 
     public GlobalData() {
         loadAllGlobalData();

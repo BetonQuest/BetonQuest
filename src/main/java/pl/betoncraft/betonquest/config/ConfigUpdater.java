@@ -55,7 +55,7 @@ public class ConfigUpdater {
     /**
      * BetonQuest's instance
      */
-    private BetonQuest instance = BetonQuest.getInstance();
+    private final BetonQuest instance = BetonQuest.getInstance();
     /**
      * Main configuration instance
      */
@@ -3402,41 +3402,41 @@ public class ConfigUpdater {
         /**
          * Map containing accessors for every conversation.
          */
-        private HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
+        private final HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
         /**
          * Deprecated accessor for single conversations file, used only for
          * updating configuration.
          */
-        private ConfigAccessor conversations;
+        private final ConfigAccessor conversations;
         /**
          * Deprecated accessor for objectives file, used only for updating
          * configuration.
          */
-        private ConfigAccessor objectives;
+        private final ConfigAccessor objectives;
         /**
          * Accessor for conditions file.
          */
-        private ConfigAccessor conditions;
+        private final ConfigAccessor conditions;
         /**
          * Accessor for events file.
          */
-        private ConfigAccessor events;
+        private final ConfigAccessor events;
         /**
          * Accessor for messages file.
          */
-        private ConfigAccessor messages;
+        private final ConfigAccessor messages;
         /**
          * Accessor for npcs file.
          */
-        private ConfigAccessor npcs;
+        private final ConfigAccessor npcs;
         /**
          * Accessor for journal file.
          */
-        private ConfigAccessor journal;
+        private final ConfigAccessor journal;
         /**
          * Accessor for items file.
          */
-        private ConfigAccessor items;
+        private final ConfigAccessor items;
 
         /**
          * Legacy configuration handler, only used for updating purposes. Do not

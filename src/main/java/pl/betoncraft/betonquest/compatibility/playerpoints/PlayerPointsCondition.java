@@ -17,8 +17,8 @@ import java.util.UUID;
  */
 public class PlayerPointsCondition extends Condition {
 
-    private VariableNumber count;
-    private PlayerPointsAPI api;
+    private final VariableNumber count;
+    private final PlayerPointsAPI api;
 
     public PlayerPointsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
