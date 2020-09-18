@@ -158,7 +158,7 @@ public class Backpack implements Listener {
             // items and all others 45
             final int pages = backpackItems.size() < 45 ? 1
                     : backpackItems.size() + 1 % 45 == 0 ? (backpackItems.size() + 1) / 45
-                    : (int) Math.floor((backpackItems.size() + 1) / 45) + 1;
+                    : (backpackItems.size() + 1) / 45 + 1;
             // prepare the inventory
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
