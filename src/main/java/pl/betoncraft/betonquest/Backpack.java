@@ -154,11 +154,8 @@ public class Backpack implements Listener {
             super();
             this.page = page;
             final List<ItemStack> backpackItems = playerData.getBackpack();
-            // amount of pages, considering that the first contains 44
-            // items and all others 45
-            final int pages = backpackItems.size() < 45 ? 1
-                    : backpackItems.size() + 1 % 45 == 0 ? (backpackItems.size() + 1) / 45
-                    : (backpackItems.size() + 1) / 45 + 1;
+            // amount of pages, considering that the first contains 44 items and all others 45
+            final int pages = backpackItems.size() / 45 + 1;
             // prepare the inventory
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
@@ -172,7 +169,6 @@ public class Backpack implements Listener {
                     content[0] = playerData.getJournal().getAsItem();
                 }
                 index++;
-            } else {
             }
             // set all the items
             while (index < 45 && index + (page * 45) <= backpackItems.size()) {
