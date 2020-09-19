@@ -381,7 +381,9 @@ public abstract class Objective {
 
         public long last = 0;
 
-        private QREHandler() {}
+        public QREHandler() {
+        }
+
         /**
          * Runs a task and logs occurring quest runtime exceptions with a rate
          * limit

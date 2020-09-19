@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class CancelEvent extends QuestEvent {
 
-    private String canceler;
+    private final String canceler;
 
     public CancelEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

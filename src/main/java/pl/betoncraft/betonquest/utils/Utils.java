@@ -159,7 +159,7 @@ public class Utils {
                         pages.add(page.toString().trim());
                         page = new StringBuilder();
                     }
-                    page.append(word + " ");
+                    page.append(word).append(" ");
                 }
                 pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {

@@ -31,16 +31,16 @@ import java.util.logging.Level;
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
-    private static HashMap<Integer, NPCMoveEvent> movingNPCs = new HashMap<>();
+    private static final HashMap<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
     private final List<LocationData> locations;
-    private int npcId;
+    private final int npcId;
     private ListIterator<LocationData> locationsIterator;
-    private int waitTicks;
-    private EventID[] doneEvents;
-    private EventID[] failEvents;
+    private final int waitTicks;
+    private final EventID[] doneEvents;
+    private final EventID[] failEvents;
     private String currentPlayer;
-    private boolean blockConversations;
+    private final boolean blockConversations;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -67,12 +67,12 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * standing or moving because other reasons
      */
     public static boolean isNPCMoving(final NPC npc) {
-        return movingNPCs.containsKey(npc.getId()) && movingNPCs.get(npc.getId()).currentPlayer != null;
+        return MOVING_NPCS.containsKey(npc.getId()) && MOVING_NPCS.get(npc.getId()).currentPlayer != null;
     }
 
     public static void stopNPCMoving(final NPC npc) {
-        if (movingNPCs.containsKey(npc.getId())) {
-            movingNPCs.get(npc.getId()).currentPlayer = null;
+        if (MOVING_NPCS.containsKey(npc.getId())) {
+            MOVING_NPCS.get(npc.getId()).currentPlayer = null;
         }
     }
 
@@ -86,7 +86,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (!isNPCMoving(npc)) {
             return false;
         }
-        return movingNPCs.get(npc.getId()).blockConversations;
+        return MOVING_NPCS.get(npc.getId()).blockConversations;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             npc.getNavigator().setTarget(firstLocation.getLocation(playerID));
         }
         currentPlayer = playerID;
-        movingNPCs.put(npc.getId(), this);
+        MOVING_NPCS.put(npc.getId(), this);
         return null;
     }
 

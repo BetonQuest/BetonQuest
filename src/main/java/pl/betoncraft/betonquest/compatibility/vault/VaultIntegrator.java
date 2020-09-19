@@ -14,7 +14,7 @@ import java.util.logging.Level;
 public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
     private Permission permission = null;
     private Economy economy = null;
 

@@ -30,7 +30,7 @@ public class ConfigPackage {
     private ConfigAccessor journal;
     private ConfigAccessor items;
     private ConfigAccessor custom;
-    private HashMap<String, ConfigAccessor> conversations = new HashMap<>();
+    private final HashMap<String, ConfigAccessor> conversations = new HashMap<>();
 
     /**
      * Loads a package from specified directory. It doesn't have to be valid

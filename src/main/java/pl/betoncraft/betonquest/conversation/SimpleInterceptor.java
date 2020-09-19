@@ -18,7 +18,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;
     protected final Player player;
-    private ArrayList<String> messages = new ArrayList<>();
+    private final ArrayList<String> messages = new ArrayList<>();
 
     public SimpleInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;

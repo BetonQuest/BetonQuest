@@ -38,7 +38,7 @@ import java.util.logging.Level;
  */
 public class Conversation implements Listener {
 
-    private static ConcurrentHashMap<String, Conversation> list = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Conversation> LIST = new ConcurrentHashMap<>();
 
     private final String playerID;
     private final Player player;
@@ -56,7 +56,7 @@ public class Conversation implements Listener {
     private boolean messagesDelaying = false;
     private Interceptor interceptor;
 
-    private HashMap<Integer, String> current = new HashMap<>();
+    private final HashMap<Integer, String> current = new HashMap<>();
 
 
     /**
@@ -103,13 +103,13 @@ public class Conversation implements Listener {
         }
 
         // if the player has active conversation, terminate this one
-        if (list.containsKey(playerID)) {
+        if (LIST.containsKey(playerID)) {
             LogUtils.getLogger().log(Level.FINE, "Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
             return;
         }
 
         // add the player to the list of active conversations
-        list.put(playerID, conv);
+        LIST.put(playerID, conv);
 
         final String[] options;
         if (option == null) {
@@ -131,7 +131,7 @@ public class Conversation implements Listener {
      * @return if the player is on the list of active conversations
      */
     public static boolean containsPlayer(final String playerID) {
-        return list.containsKey(playerID);
+        return LIST.containsKey(playerID);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Conversation implements Listener {
      * @return player's active conversation or null if there is no conversation
      */
     public static Conversation getConversation(final String playerID) {
-        return list.get(playerID);
+        return LIST.get(playerID);
     }
 
     /**
@@ -288,7 +288,7 @@ public class Conversation implements Listener {
         }
 
         // delete conversation
-        list.remove(playerID);
+        LIST.remove(playerID);
         HandlerList.unregisterAll(this);
 
         new BukkitRunnable() {
@@ -381,7 +381,7 @@ public class Conversation implements Listener {
         if (inOut == null) {
             LogUtils.getLogger().log(Level.WARNING, "Conversation IO is not loaded, conversation will end for player "
                     + PlayerConverter.getName(playerID));
-            list.remove(playerID);
+            LIST.remove(playerID);
             HandlerList.unregisterAll(this);
             return;
         }
@@ -399,7 +399,7 @@ public class Conversation implements Listener {
         }
 
         // delete conversation
-        list.remove(playerID);
+        LIST.remove(playerID);
         HandlerList.unregisterAll(this);
 
         try {
@@ -568,7 +568,7 @@ public class Conversation implements Listener {
      */
     private class NPCEventRunner extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public NPCEventRunner(final String option) {
             super();
@@ -589,7 +589,7 @@ public class Conversation implements Listener {
      */
     private class PlayerEventRunner extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public PlayerEventRunner(final String option) {
             super();
@@ -610,7 +610,7 @@ public class Conversation implements Listener {
      */
     private class ResponsePrinter extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public ResponsePrinter(final String option) {
             super();
@@ -638,7 +638,7 @@ public class Conversation implements Listener {
      */
     private class OptionPrinter extends BukkitRunnable {
 
-        private String option;
+        private final String option;
 
         public OptionPrinter(final String option) {
             super();
@@ -655,7 +655,7 @@ public class Conversation implements Listener {
      * Ends the conversation. Should be called in the main thread.
      */
     private class ConversationEnder extends BukkitRunnable {
-        private ConversationEnder() {
+        public ConversationEnder() {
             super();
         }
 

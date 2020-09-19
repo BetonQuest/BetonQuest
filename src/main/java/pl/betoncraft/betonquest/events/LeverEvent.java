@@ -16,8 +16,8 @@ import java.util.Locale;
  */
 public class LeverEvent extends QuestEvent {
 
-    private LocationData loc;
-    private ToggleType type;
+    private final LocationData loc;
+    private final ToggleType type;
 
     public LeverEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

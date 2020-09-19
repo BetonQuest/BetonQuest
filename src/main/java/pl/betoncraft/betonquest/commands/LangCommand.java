@@ -34,9 +34,9 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             }
             if (!Config.getLanguages().contains(args[0]) && !args[0].equalsIgnoreCase("default")) {
                 final StringBuilder builder = new StringBuilder();
-                builder.append("default (" + Config.getLanguage() + "), ");
+                builder.append("default (").append(Config.getLanguage()).append("), ");
                 for (final String lang : Config.getLanguages()) {
-                    builder.append(lang + ", ");
+                    builder.append(lang).append(", ");
                 }
                 if (builder.length() < 3) {
                     LogUtils.getLogger().log(Level.WARNING, "No translations loaded, somethings wrong!");

@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class MagicIntegrator implements Integrator, Listener {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public MagicIntegrator() {
         plugin = BetonQuest.getInstance();

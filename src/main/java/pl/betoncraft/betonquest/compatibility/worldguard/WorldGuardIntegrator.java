@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.compatibility.citizens.NPCRegionCondition;
 
 public class WorldGuardIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public WorldGuardIntegrator() {
         plugin = BetonQuest.getInstance();

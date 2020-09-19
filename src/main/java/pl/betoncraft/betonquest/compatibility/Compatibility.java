@@ -45,9 +45,9 @@ import java.util.logging.Level;
 public class Compatibility implements Listener {
 
     private static Compatibility instance;
-    private Map<String, Integrator> integrators = new HashMap<>();
-    private BetonQuest plugin = BetonQuest.getInstance();
-    private List<String> hooked = new ArrayList<>();
+    private final Map<String, Integrator> integrators = new HashMap<>();
+    private final BetonQuest plugin = BetonQuest.getInstance();
+    private final List<String> hooked = new ArrayList<>();
 
     public Compatibility() {
         instance = this;
@@ -95,7 +95,7 @@ public class Compatibility implements Listener {
                 if (hooked.size() > 0) {
                     final StringBuilder string = new StringBuilder();
                     for (final String plugin : hooked) {
-                        string.append(plugin + ", ");
+                        string.append(plugin).append(", ");
                     }
                     final String plugins = string.substring(0, string.length() - 2);
                     LogUtils.getLogger().log(Level.INFO, "Hooked into " + plugins + "!");

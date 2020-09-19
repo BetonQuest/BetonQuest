@@ -14,8 +14,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HeroesExperienceEvent extends QuestEvent {
 
-    private boolean primary;
-    private VariableNumber amount;
+    private final boolean primary;
+    private final VariableNumber amount;
 
     public HeroesExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

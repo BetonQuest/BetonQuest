@@ -14,7 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class MooncycleCondition extends Condition {
 
-    private VariableNumber thisCycle;
+    private final VariableNumber thisCycle;
 
     public MooncycleCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

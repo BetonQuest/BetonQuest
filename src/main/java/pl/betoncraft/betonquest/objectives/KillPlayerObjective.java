@@ -18,8 +18,8 @@ public class KillPlayerObjective extends Objective implements Listener {
     private final int notifyInterval;
     private int amount = 1;
     private String name = null;
-    private ConditionID[] required;
-    private boolean notify;
+    private final ConditionID[] required;
+    private final boolean notify;
 
     public KillPlayerObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

@@ -21,11 +21,11 @@ public abstract class NotifyIO {
 
     private final Map<String, String> data;
 
-    public NotifyIO(final Map<String, String> data) {
+    protected NotifyIO(final Map<String, String> data) {
         this.data = data;
     }
 
-    public NotifyIO() {
+    protected NotifyIO() {
         this.data = new HashMap<>();
     }
 
@@ -62,7 +62,9 @@ public abstract class NotifyIO {
     /**
      * Show a notify to a collection of players
      */
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
+    public abstract void sendNotify(final String message, final Collection<? extends Player> players);
+
+    protected void sendNotificationSound(final Collection<? extends Player> players) {
         if (getData().containsKey("sound")) {
             for (final Player player : players) {
                 try {

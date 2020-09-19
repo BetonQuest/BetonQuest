@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class DrunkQualityCondition extends Condition {
 
-    private Integer quality;
+    private final Integer quality;
 
     public DrunkQualityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -85,7 +85,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         for (final ChatColor color : colors.get("player")) {
             string.append(color);
         }
-        string.append(player.getName() + ChatColor.RESET + ": ");
+        string.append(player.getName()).append(ChatColor.RESET).append(": ");
         for (final ChatColor color : colors.get("answer")) {
             string.append(color);
         }
@@ -131,7 +131,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             end();
         }
         // each row contains 7 options, so get amount of rows
-        int rows = (int) Math.floor(options.size() / 7);
+        int rows = options.size() / 7;
         rows++;
         // this itemstack represents slots in the inventory
         inv = Bukkit.createInventory(null, 9 * rows, "NPC");
@@ -282,7 +282,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final int slot = event.getRawSlot();
         // calculate the option number
         if (slot % 9 > 1) {
-            final int row = (int) Math.floor(slot / 9);
+            final int row = slot / 9;
             // raw column number minus two columns (npc head an empty space)
             // and plus one (because options are indexed starting with 1)
             final int col = slot % 9 - 2 + 1;
@@ -372,7 +372,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     }
                     line = new StringBuilder();
                 }
-                line.append(arr[i] + " ");
+                line.append(arr[i]).append(" ");
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;

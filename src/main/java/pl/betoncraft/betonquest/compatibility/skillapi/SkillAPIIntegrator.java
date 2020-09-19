@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class SkillAPIIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public SkillAPIIntegrator() {
         plugin = BetonQuest.getInstance();

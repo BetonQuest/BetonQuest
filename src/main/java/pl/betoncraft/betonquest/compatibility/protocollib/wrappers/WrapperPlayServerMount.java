@@ -11,17 +11,23 @@ import org.bukkit.entity.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperPlayServerMount extends AbstractPacket {
+public class WrapperPlayServerMount extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Server.MOUNT;
 
     public WrapperPlayServerMount() {
-        super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this(new DefaultPacketHandler(TYPE));
     }
 
     public WrapperPlayServerMount(final PacketContainer packet) {
-        super(packet, TYPE);
+        this(new DefaultPacketHandler(packet, TYPE));
+    }
+
+    public WrapperPlayServerMount(final PacketHandler packetHandler) {
+        super(packetHandler);
+        if (getPacketHandler().getType() != TYPE) {
+            throw new IllegalArgumentException(getPacketHandler().getType() + " is not a packet of type " + TYPE);
+        }
     }
 
     /**
@@ -32,7 +38,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @return The current Entity ID
      */
     public int getEntityID() {
-        return handle.getIntegers().read(0);
+        return getHandle().getIntegers().read(0);
     }
 
     /**
@@ -41,7 +47,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @param value - new value.
      */
     public void setEntityID(final int value) {
-        handle.getIntegers().write(0, value);
+        getHandle().getIntegers().write(0, value);
     }
 
     /**
@@ -51,7 +57,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @return The involved entity.
      */
     public Entity getEntity(final World world) {
-        return handle.getEntityModifier(world).read(0);
+        return getHandle().getEntityModifier(world).read(0);
     }
 
     /**
@@ -65,11 +71,11 @@ public class WrapperPlayServerMount extends AbstractPacket {
     }
 
     public int[] getPassengerIds() {
-        return handle.getIntegerArrays().read(0);
+        return getHandle().getIntegerArrays().read(0);
     }
 
     public void setPassengerIds(final int[] value) {
-        handle.getIntegerArrays().write(0, value);
+        getHandle().getIntegerArrays().write(0, value);
     }
 
     public List<Entity> getPassengers(final PacketEvent event) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LoreHandler {
 
-    private List<String> lore = new LinkedList<>();
+    private final List<String> lore = new LinkedList<>();
     private Existence existence = Existence.WHATEVER;
     private boolean exact = true;
 

@@ -25,19 +25,19 @@ import java.util.Locale;
  */
 public class SpawnMobEvent extends QuestEvent {
 
-    private LocationData loc;
-    private EntityType type;
-    private VariableNumber amount;
+    private final LocationData loc;
+    private final EntityType type;
+    private final VariableNumber amount;
     private String name;
     private String marked;
 
-    private QuestItem helmet;
-    private QuestItem chestplate;
-    private QuestItem leggings;
-    private QuestItem boots;
-    private QuestItem mainHand;
-    private QuestItem offHand;
-    private Item[] drops;
+    private final QuestItem helmet;
+    private final QuestItem chestplate;
+    private final QuestItem leggings;
+    private final QuestItem boots;
+    private final QuestItem mainHand;
+    private final QuestItem offHand;
+    private final Item[] drops;
 
     public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

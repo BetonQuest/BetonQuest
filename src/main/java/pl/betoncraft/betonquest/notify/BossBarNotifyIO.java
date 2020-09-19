@@ -142,6 +142,6 @@ public class BossBarNotifyIO extends NotifyIO {
             }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

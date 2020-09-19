@@ -17,9 +17,9 @@ import java.util.ArrayList;
  */
 public class PartyEvent extends QuestEvent {
 
-    private ConditionID[] conditions;
-    private EventID[] events;
-    private VariableNumber range;
+    private final ConditionID[] conditions;
+    private final EventID[] events;
+    private final VariableNumber range;
 
     public PartyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

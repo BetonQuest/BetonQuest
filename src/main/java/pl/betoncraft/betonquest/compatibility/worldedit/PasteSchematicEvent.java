@@ -31,10 +31,10 @@ import java.util.logging.Level;
  */
 public class PasteSchematicEvent extends QuestEvent {
 
-    private WorldEditPlugin worldEdit;
+    private final WorldEditPlugin worldEdit;
     private File file;
-    private LocationData loc;
-    private boolean noAir;
+    private final LocationData loc;
+    private final boolean noAir;
 
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

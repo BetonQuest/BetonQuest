@@ -35,7 +35,7 @@ public class Instruction {
 
     protected String instruction;
     protected String[] parts;
-    private ConfigPackage pack;
+    private final ConfigPackage pack;
     private ID identifier;
     private int next = 1;
     private int current = 1;
@@ -501,9 +501,9 @@ public class Instruction {
     @SuppressWarnings("PMD.ShortClassName")
     public class Item {
 
-        private ItemID itemID;
-        private QuestItem questItem;
-        private VariableNumber amount;
+        private final ItemID itemID;
+        private final QuestItem questItem;
+        private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
             this.itemID = itemID;

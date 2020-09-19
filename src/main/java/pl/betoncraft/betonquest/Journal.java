@@ -28,9 +28,9 @@ import java.util.logging.Level;
  */
 public class Journal {
 
-    private String playerID;
-    private List<Pointer> pointers;
-    private List<String> texts = new ArrayList<>();
+    private final String playerID;
+    private final List<Pointer> pointers;
+    private final List<String> texts = new ArrayList<>();
     private String lang;
     private String mainPage;
 

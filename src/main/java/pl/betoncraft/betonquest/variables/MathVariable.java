@@ -206,7 +206,7 @@ public class MathVariable extends Variable {
         private final Calculable numberB;
         private final Operation operation;
 
-        private Calculation(final Calculable numberA, final Calculable numberB, final Operation operation) {
+        public Calculation(final Calculable numberA, final Calculable numberB, final Operation operation) {
             this.numberA = numberA;
             this.numberB = numberB;
             this.operation = operation;

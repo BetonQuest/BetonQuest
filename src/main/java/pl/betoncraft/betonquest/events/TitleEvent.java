@@ -50,7 +50,7 @@ public class TitleEvent extends QuestEvent {
                 }
                 currentLang = part.substring(1, part.length() - 1);
             } else {
-                string.append(part + " ");
+                string.append(part).append(" ");
             }
         }
         if (string.length() > 0) {

@@ -46,18 +46,18 @@ import java.util.regex.Pattern;
 public class BetonQuest extends JavaPlugin {
 
     private static BetonQuest instance;
-    private static HashMap<String, Class<? extends Condition>> conditionTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends QuestEvent>> eventTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends Objective>> objectiveTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends ConversationIO>> convIOTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends Interceptor>> interceptorTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends NotifyIO>> notifyIOTypes = new HashMap<>();
-    private static HashMap<String, Class<? extends Variable>> variableTypes = new HashMap<>();
-    private static HashMap<ConditionID, Condition> conditions = new HashMap<>();
-    private static HashMap<EventID, QuestEvent> events = new HashMap<>();
-    private static HashMap<ObjectiveID, Objective> objectives = new HashMap<>();
-    private static HashMap<String, ConversationData> conversations = new HashMap<>();
-    private static HashMap<VariableID, Variable> variables = new HashMap<>();
+    private static final HashMap<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
+    private static final HashMap<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+    private static final HashMap<ConditionID, Condition> CONDITIONS = new HashMap<>();
+    private static final HashMap<EventID, QuestEvent> EVENTS = new HashMap<>();
+    private static final HashMap<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
+    private static final HashMap<String, ConversationData> CONVERSATIONS = new HashMap<>();
+    private static final HashMap<VariableID, Variable> VARIABLES = new HashMap<>();
     private Database database;
     private boolean isMySQLUsed;
     private Saver saver;
@@ -94,7 +94,7 @@ public class BetonQuest extends JavaPlugin {
         }
         // get the condition
         Condition condition = null;
-        for (final Entry<ConditionID, Condition> e : conditions.entrySet()) {
+        for (final Entry<ConditionID, Condition> e : CONDITIONS.entrySet()) {
             if (e.getKey().equals(conditionID)) {
                 condition = e.getValue();
                 break;
@@ -145,7 +145,7 @@ public class BetonQuest extends JavaPlugin {
         }
         // get the event
         QuestEvent event = null;
-        for (final Entry<EventID, QuestEvent> e : events.entrySet()) {
+        for (final Entry<EventID, QuestEvent> e : EVENTS.entrySet()) {
             if (e.getKey().equals(eventID)) {
                 event = e.getValue();
                 break;
@@ -183,7 +183,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
         Objective objective = null;
-        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 objective = e.getValue();
                 break;
@@ -212,7 +212,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
         Objective objective = null;
-        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 objective = e.getValue();
                 break;
@@ -248,7 +248,7 @@ public class BetonQuest extends JavaPlugin {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
-        for (final Entry<VariableID, Variable> e : variables.entrySet()) {
+        for (final Entry<VariableID, Variable> e : VARIABLES.entrySet()) {
             if (e.getKey().equals(variableID)) {
                 return e.getValue();
             }
@@ -257,7 +257,7 @@ public class BetonQuest extends JavaPlugin {
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments in variable " + variableID);
         }
-        final Class<? extends Variable> variableClass = variableTypes.get(parts[0]);
+        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(parts[0]);
         // if it's null then there is no such type registered, log an error
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + parts[0] + " is not registered");
@@ -265,7 +265,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(pack, null, instruction));
-            variables.put(variableID, variable);
+            VARIABLES.put(variableID, variable);
             LogUtils.getLogger().log(Level.FINE, "Variable " + variableID + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
@@ -306,7 +306,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the class object for this notify IO type
      */
     public static Class<? extends NotifyIO> getNotifyIO(final String name) {
-        return notifyIOTypes.get(name);
+        return NOTIFY_IO_TYPES.get(name);
     }
 
     @Override
@@ -584,7 +584,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new BStatsMetrics(this, conditions, events, objectives, variables, conditionTypes, eventTypes, objectiveTypes, variableTypes);
+        new BStatsMetrics(this, CONDITIONS, EVENTS, OBJECTIVES, VARIABLES, CONDITION_TYPES, EVENT_TYPES, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         // updater
         updater = new Updater(this.getFile());
@@ -598,15 +598,15 @@ public class BetonQuest extends JavaPlugin {
      */
     public void loadData() {
         // save data of all objectives to the players
-        for (final Objective objective : objectives.values()) {
+        for (final Objective objective : OBJECTIVES.values()) {
             objective.close();
         }
         // clear previously loaded data
-        events.clear();
-        conditions.clear();
-        conversations.clear();
-        objectives.clear();
-        variables.clear();
+        EVENTS.clear();
+        CONDITIONS.clear();
+        CONVERSATIONS.clear();
+        OBJECTIVES.clear();
+        VARIABLES.clear();
         // load new data
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
@@ -636,7 +636,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                final Class<? extends QuestEvent> eventClass = eventTypes.get(type);
+                final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
                 if (eventClass == null) {
                     // if it's null then there is no such type registered, log
                     // an error
@@ -647,7 +647,7 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     final QuestEvent event = eventClass.getConstructor(Instruction.class)
                             .newInstance(identifier.generateInstruction());
-                    events.put(identifier, event);
+                    EVENTS.put(identifier, event);
                     LogUtils.getLogger().log(Level.FINE, "  Event '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
@@ -686,7 +686,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                final Class<? extends Condition> conditionClass = conditionTypes.get(type);
+                final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
                 // if it's null then there is no such type registered, log an
                 // error
                 if (conditionClass == null) {
@@ -697,7 +697,7 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     final Condition condition = conditionClass.getConstructor(Instruction.class)
                             .newInstance(identifier.generateInstruction());
-                    conditions.put(identifier, condition);
+                    CONDITIONS.put(identifier, condition);
                     LogUtils.getLogger().log(Level.FINE, "  Condition '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
@@ -736,7 +736,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.logThrowable(e);
                     continue;
                 }
-                final Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
+                final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
                 // if it's null then there is no such type registered, log an
                 // error
                 if (objectiveClass == null) {
@@ -748,7 +748,7 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     final Objective objective = objectiveClass.getConstructor(Instruction.class)
                             .newInstance(identifier.generateInstruction());
-                    objectives.put(identifier, objective);
+                    OBJECTIVES.put(identifier, objective);
                     LogUtils.getLogger().log(Level.FINE, "  Objective '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
@@ -770,7 +770,7 @@ public class BetonQuest extends JavaPlugin {
                     continue;
                 }
                 try {
-                    conversations.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
+                    CONVERSATIONS.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
                 } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
@@ -785,8 +785,8 @@ public class BetonQuest extends JavaPlugin {
         }
         // done
         LogUtils.getLogger().log(Level.INFO,
-                "There are " + conditions.size() + " conditions, " + events.size() + " events, "
-                        + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
+                "There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
+                        + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
                         + Config.getPackages().size() + " packages.");
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
@@ -924,7 +924,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " condition type");
-        conditionTypes.put(name, conditionClass);
+        CONDITION_TYPES.put(name, conditionClass);
     }
 
     /**
@@ -935,7 +935,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " event type");
-        eventTypes.put(name, eventClass);
+        EVENT_TYPES.put(name, eventClass);
     }
 
     /**
@@ -946,7 +946,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " objective type");
-        objectiveTypes.put(name, objectiveClass);
+        OBJECTIVE_TYPES.put(name, objectiveClass);
     }
 
     /**
@@ -957,7 +957,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " conversation IO type");
-        convIOTypes.put(name, convIOClass);
+        CONVERSATION_IO_TYPES.put(name, convIOClass);
     }
 
     /**
@@ -968,7 +968,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " interceptor type");
-        interceptorTypes.put(name, interceptorClass);
+        INTERCEPTOR_TYPES.put(name, interceptorClass);
     }
 
     /**
@@ -979,7 +979,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " notify IO type");
-        notifyIOTypes.put(name, ioClass);
+        NOTIFY_IO_TYPES.put(name, ioClass);
     }
 
     /**
@@ -990,7 +990,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerVariable(final String name, final Class<? extends Variable> variable) {
         LogUtils.getLogger().log(Level.FINE, "Registering " + name + " variable type");
-        variableTypes.put(name, variable);
+        VARIABLE_TYPES.put(name, variable);
     }
 
     /**
@@ -1001,7 +1001,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public ArrayList<Objective> getPlayerObjectives(final String playerID) {
         final ArrayList<Objective> list = new ArrayList<>();
-        for (final Objective objective : objectives.values()) {
+        for (final Objective objective : OBJECTIVES.values()) {
             if (objective.containsPlayer(playerID)) {
                 list.add(objective);
             }
@@ -1015,7 +1015,7 @@ public class BetonQuest extends JavaPlugin {
      * not exist
      */
     public ConversationData getConversation(final String name) {
-        return conversations.get(name);
+        return CONVERSATIONS.get(name);
     }
 
     /**
@@ -1023,7 +1023,7 @@ public class BetonQuest extends JavaPlugin {
      * @return Objective object or null if it does not exist
      */
     public Objective getObjective(final ObjectiveID objectiveID) {
-        for (final Entry<ObjectiveID, Objective> e : objectives.entrySet()) {
+        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
             if (e.getKey().equals(objectiveID)) {
                 return e.getValue();
             }
@@ -1045,7 +1045,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the class object for this conversation IO type
      */
     public Class<? extends ConversationIO> getConvIO(final String name) {
-        return convIOTypes.get(name);
+        return CONVERSATION_IO_TYPES.get(name);
     }
 
     /**
@@ -1053,7 +1053,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the class object for this interceptor type
      */
     public Class<? extends Interceptor> getInterceptor(final String name) {
-        return interceptorTypes.get(name);
+        return INTERCEPTOR_TYPES.get(name);
     }
 
     /**
@@ -1088,7 +1088,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the class of the event
      */
     public Class<? extends QuestEvent> getEventClass(final String name) {
-        return eventTypes.get(name);
+        return EVENT_TYPES.get(name);
     }
 
     /**
@@ -1096,7 +1096,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the class of the event
      */
     public Class<? extends Condition> getConditionClass(final String name) {
-        return conditionTypes.get(name);
+        return CONDITION_TYPES.get(name);
     }
 
     /**
@@ -1106,6 +1106,6 @@ public class BetonQuest extends JavaPlugin {
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        objectives.put(rename, objectives.remove(name));
+        OBJECTIVES.put(rename, OBJECTIVES.remove(name));
     }
 }

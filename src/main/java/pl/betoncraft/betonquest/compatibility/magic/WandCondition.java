@@ -21,11 +21,11 @@ import java.util.UUID;
  */
 public class WandCondition extends Condition {
 
-    private MagicAPI api;
-    private CheckType type;
-    private HashMap<String, VariableNumber> spells = new HashMap<>();
-    private String name;
-    private VariableNumber amount;
+    private final MagicAPI api;
+    private final CheckType type;
+    private final HashMap<String, VariableNumber> spells = new HashMap<>();
+    private final String name;
+    private final VariableNumber amount;
 
     public WandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

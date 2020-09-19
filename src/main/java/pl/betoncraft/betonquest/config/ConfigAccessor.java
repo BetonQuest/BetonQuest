@@ -14,7 +14,7 @@ public class ConfigAccessor {
     private final BetonQuest plugin;
     private final AccessorType type;
 
-    private File configFile;
+    private final File configFile;
     private FileConfiguration fileConfiguration;
 
     /**

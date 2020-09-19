@@ -21,9 +21,9 @@ import pl.betoncraft.betonquest.utils.Utils;
  */
 public class KillMobEvent extends QuestEvent {
 
-    private EntityType type;
-    private LocationData loc;
-    private VariableNumber radius;
+    private final EntityType type;
+    private final LocationData loc;
+    private final VariableNumber radius;
     private String name;
     private String marked;
 

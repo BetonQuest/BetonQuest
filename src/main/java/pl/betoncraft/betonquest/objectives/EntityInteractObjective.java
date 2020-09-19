@@ -46,8 +46,8 @@ public class EntityInteractObjective extends Objective {
     protected boolean notify;
     protected Interaction interaction;
     protected boolean cancel;
-    private LocationData loc;
-    private VariableNumber range;
+    private final LocationData loc;
+    private final VariableNumber range;
 
     private RightClickListener rightClickListener;
     private LeftClickListener leftClickListener;
@@ -183,7 +183,7 @@ public class EntityInteractObjective extends Objective {
     public static class EntityInteractData extends ObjectiveData {
 
         private int amount;
-        private Set<UUID> entitys;
+        private final Set<UUID> entitys;
 
         public EntityInteractData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);

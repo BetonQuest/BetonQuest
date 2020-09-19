@@ -10,7 +10,7 @@ import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 public class EffectLibIntegrator implements Integrator {
 
     private static EffectLibIntegrator instance;
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
     private EffectManager manager;
 
     public EffectLibIntegrator() {

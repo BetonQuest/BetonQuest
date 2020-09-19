@@ -21,21 +21,21 @@ import java.util.stream.Collectors;
  */
 public class ConversationData {
 
-    private static ArrayList<String> externalPointers = new ArrayList<>();
+    private static final ArrayList<String> EXTERNAL_POINTERS = new ArrayList<>();
 
-    private ConfigPackage pack;
-    private String convName;
+    private final ConfigPackage pack;
+    private final String convName;
 
-    private HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
-    private EventID[] finalEvents;
-    private String[] startingOptions;
-    private boolean blockMovement;
+    private final HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
+    private final HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
+    private final EventID[] finalEvents;
+    private final String[] startingOptions;
+    private final boolean blockMovement;
     private String convIO;
     private String interceptor;
 
-    private HashMap<String, Option> npcOptions;
-    private HashMap<String, Option> playerOptions;
+    private final HashMap<String, Option> npcOptions;
+    private final HashMap<String, Option> playerOptions;
 
     /**
      * Loads conversation from package.
@@ -134,7 +134,7 @@ public class ConversationData {
         }
         npcOptions = new HashMap<>();
         for (final String key : npcSection.getKeys(false)) {
-            npcOptions.put(key, new NPCOption(key));
+            npcOptions.put(key, new Option(key, OptionType.NPC));
         }
         // check if all starting options point to existing NPC options
         startingOptions = rawStartingOptions.split(",");
@@ -146,7 +146,7 @@ public class ConversationData {
             if (startingOption.contains(".")) {
                 final String entirePointer = pack.getName() + "." + convName + ".<starting_option>."
                         + startingOption;
-                externalPointers.add(entirePointer);
+                EXTERNAL_POINTERS.add(entirePointer);
             } else if (!npcOptions.containsKey(startingOption)) {
                 throw new InstructionParseException("Starting option " + startingOption + " does not exist");
             }
@@ -157,7 +157,7 @@ public class ConversationData {
         playerOptions = new HashMap<>();
         if (playerSection != null) {
             for (final String key : playerSection.getKeys(false)) {
-                playerOptions.put(key, new PlayerOption(key));
+                playerOptions.put(key, new Option(key, OptionType.PLAYER));
             }
         }
 
@@ -182,7 +182,7 @@ public class ConversationData {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
                     final String entirePointer = pack.getName() + "." + convName + "." + option.getName() + "." + pointer;
-                    externalPointers.add(entirePointer);
+                    EXTERNAL_POINTERS.add(entirePointer);
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
@@ -212,7 +212,7 @@ public class ConversationData {
      * not throw any exceptions, just display errors in the console.
      */
     public static void postEnableCheck() {
-        for (final String externalPointer : externalPointers) {
+        for (final String externalPointer : EXTERNAL_POINTERS) {
             final String[] parts = externalPointer.split("\\.");
             final String packName = parts[0];
             final String sourceConv = parts[1];
@@ -236,7 +236,7 @@ public class ConversationData {
                         + "' conversation, but it does not exist.");
             }
         }
-        externalPointers.clear();
+        EXTERNAL_POINTERS.clear();
     }
 
     /**
@@ -413,27 +413,45 @@ public class ConversationData {
     }
 
     public enum OptionType {
-        NPC, PLAYER
+        NPC("NPC_options", "NPC option"),
+        PLAYER("player_options", "player option"),
+        ;
+
+        private final String identifier;
+        private final String readable;
+
+        OptionType(final String identifier, final String readable) {
+            this.identifier = identifier;
+            this.readable = readable;
+        }
+
+        public String getIdentifier() {
+            return identifier;
+        }
+
+        public String getReadable() {
+            return readable;
+        }
     }
 
     /**
      * Represents an option
      */
-    private abstract class Option {
+    private class Option {
 
-        private String name;
-        private OptionType type;
-        private HashMap<String, String> inlinePrefix = new HashMap<>();
+        private final String name;
+        private final OptionType type;
+        private final HashMap<String, String> inlinePrefix = new HashMap<>();
 
-        private HashMap<String, String> text = new HashMap<>();
-        private List<ConditionID> conditions = new ArrayList<>();
-        private List<EventID> events = new ArrayList<>();
+        private final HashMap<String, String> text = new HashMap<>();
+        private final List<ConditionID> conditions = new ArrayList<>();
+        private final List<EventID> events = new ArrayList<>();
         private List<String> pointers;
         private List<String> extendLinks;
 
-        public Option(final String name, final String type, final String visibleType) throws InstructionParseException {
+        protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
-            this.type = type.equals("player_options") ? OptionType.PLAYER : OptionType.NPC;
+            this.type = type;
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
 
             if (conv == null) {
@@ -452,7 +470,7 @@ public class ConversationData {
                         }
                     }
                     if (!inlinePrefix.containsKey(defaultLang)) {
-                        throw new InstructionParseException("No default language for " + name + " " + visibleType
+                        throw new InstructionParseException("No default language for " + name + " " + type.getReadable()
                                 + " prefix");
                     }
                 } else {
@@ -472,7 +490,7 @@ public class ConversationData {
                                 + lang));
                     }
                     if (!text.containsKey(defaultLang)) {
-                        throw new InstructionParseException("No default language for " + name + " " + visibleType);
+                        throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
                     }
                 } else {
                     text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
@@ -481,7 +499,7 @@ public class ConversationData {
                 final ArrayList<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
                     if (theText == null || theText.equals("")) {
-                        throw new InstructionParseException("Text not defined in " + visibleType + " " + name);
+                        throw new InstructionParseException("Text not defined in " + type.getReadable() + " " + name);
                     }
                     // variables are possibly duplicated because there probably is
                     // the same variable in every language
@@ -511,7 +529,7 @@ public class ConversationData {
                     }
                 }
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's conditions: "
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
                         + e.getMessage(), e);
             }
 
@@ -523,7 +541,7 @@ public class ConversationData {
                     }
                 }
             } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + visibleType + " option's events: "
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's events: "
                         + e.getMessage(), e);
             }
 
@@ -659,24 +677,6 @@ public class ConversationData {
 
         public String[] getExtends() {
             return extendLinks.toArray(new String[0]);
-        }
-    }
-
-    /**
-     * Represents an option which can be choosen by the Player
-     */
-    private class PlayerOption extends Option {
-        public PlayerOption(final String name) throws InstructionParseException {
-            super(name, "player_options", "player option");
-        }
-    }
-
-    /**
-     * Represents an option which can be choosen by the NPC
-     */
-    private class NPCOption extends Option {
-        public NPCOption(final String name) throws InstructionParseException {
-            super(name, "NPC_options", "NPC option");
         }
     }
 }

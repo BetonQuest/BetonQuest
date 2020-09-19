@@ -48,8 +48,8 @@ public class EntityHider implements Listener {
     private ProtocolManager manager;
 
     // Listeners
-    private Listener bukkitListener;
-    private PacketAdapter protocolListener;
+    private final Listener bukkitListener;
+    private final PacketAdapter protocolListener;
 
     /**
      * Construct a new entity hider.

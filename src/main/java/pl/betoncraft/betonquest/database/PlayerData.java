@@ -33,14 +33,14 @@ import java.util.logging.Level;
  */
 public class PlayerData {
 
-    private Saver saver = BetonQuest.getInstance().getSaver();
+    private final Saver saver = BetonQuest.getInstance().getSaver();
 
-    private String playerID;
+    private final String playerID;
 
-    private List<String> tags = new CopyOnWriteArrayList<>();
-    private List<Pointer> entries = new CopyOnWriteArrayList<>();
-    private List<Point> points = new CopyOnWriteArrayList<>();
-    private Map<String, String> objectives = new ConcurrentHashMap<>();
+    private final List<String> tags = new CopyOnWriteArrayList<>();
+    private final List<Pointer> entries = new CopyOnWriteArrayList<>();
+    private final List<Point> points = new CopyOnWriteArrayList<>();
+    private final Map<String, String> objectives = new ConcurrentHashMap<>();
     private Journal journal;
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
     private String conv;

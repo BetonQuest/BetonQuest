@@ -91,7 +91,7 @@ public class VariableObjective extends Objective implements Listener {
 
     public static class VariableData extends ObjectiveData {
 
-        private HashMap<String, String> variables = new HashMap<>();
+        private final HashMap<String, String> variables = new HashMap<>();
 
         public VariableData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
@@ -117,7 +117,7 @@ public class VariableObjective extends Objective implements Listener {
         public String toString() {
             final StringBuilder builder = new StringBuilder();
             for (final Entry<String, String> entry : variables.entrySet()) {
-                builder.append(entry.getKey() + ':' + entry.getValue() + '\n');
+                builder.append(entry.getKey()).append(':').append(entry.getValue()).append('\n');
             }
             return builder.toString().trim();
         }

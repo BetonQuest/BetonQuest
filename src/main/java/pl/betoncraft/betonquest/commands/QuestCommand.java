@@ -43,7 +43,7 @@ import java.util.logging.Level;
  */
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
-    private BetonQuest instance = BetonQuest.getInstance();
+    private final BetonQuest instance = BetonQuest.getInstance();
     private String defaultPack = Config.getString("config.default_package");
 
     /**
@@ -528,7 +528,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 final StringBuilder strBldr = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
-                    strBldr.append(args[i] + " ");
+                    strBldr.append(args[i]).append(" ");
                 }
                 if (strBldr.length() < 2) {
                     LogUtils.getLogger().log(Level.FINE, "Wrong path!");
@@ -552,7 +552,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 final StringBuilder strBldr2 = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
-                    strBldr2.append(args[i] + " ");
+                    strBldr2.append(args[i]).append(" ");
                 }
                 if (strBldr2.length() < 2) {
                     LogUtils.getLogger().log(Level.FINE, "Wrong path!");

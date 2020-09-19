@@ -138,7 +138,8 @@ public class PotionHandler {
         private int power = 1;
         private Number powerE = Number.WHATEVER;
 
-        private CustomEffectHandler() {}
+        public CustomEffectHandler() {
+        }
 
         private void set(final String custom) throws InstructionParseException {
             final String[] parts;

@@ -28,11 +28,11 @@ import java.util.logging.Level;
  */
 public class ActionObjective extends Objective implements Listener {
 
-    private Click action;
-    private BlockSelector selector;
+    private final Click action;
+    private final BlockSelector selector;
     private final boolean exactMatch;
-    private LocationData loc;
-    private VariableNumber range;
+    private final LocationData loc;
+    private final VariableNumber range;
     private boolean cancel = false;
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {

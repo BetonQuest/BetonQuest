@@ -33,8 +33,8 @@ import java.util.logging.Level;
  */
 public class HologramLoop {
 
-    private HashMap<Hologram, ConditionID[]> holograms = new HashMap<>();
-    private HashMap<Hologram, BukkitRunnable> runnables = new HashMap<>();
+    private final HashMap<Hologram, ConditionID[]> holograms = new HashMap<>();
+    private final HashMap<Hologram, BukkitRunnable> runnables = new HashMap<>();
     private BukkitRunnable runnable;
 
     /**

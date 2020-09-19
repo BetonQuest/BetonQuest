@@ -8,7 +8,7 @@ public class Point {
     /**
      * Category of these points.
      */
-    private String category;
+    private final String category;
     /**
      * Amount of these points.
      */

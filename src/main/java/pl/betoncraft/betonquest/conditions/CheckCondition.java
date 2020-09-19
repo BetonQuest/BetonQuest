@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class CheckCondition extends Condition {
 
-    private ArrayList<Condition> internalConditions = new ArrayList<>();
+    private final ArrayList<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
@@ -29,9 +29,9 @@ public class CheckCondition extends Condition {
                     internalConditions.add(createCondition(builder.toString().trim()));
                     builder = new StringBuilder();
                 }
-                builder.append(part.substring(1) + " ");
+                builder.append(part.substring(1)).append(" ");
             } else {
-                builder.append(part + " ");
+                builder.append(part).append(" ");
             }
         }
         internalConditions.add(createCondition(builder.toString().trim()));

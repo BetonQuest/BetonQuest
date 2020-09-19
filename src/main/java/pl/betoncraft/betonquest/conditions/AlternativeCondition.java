@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AlternativeCondition extends Condition {
 
-    private List<ConditionID> conditions;
+    private final List<ConditionID> conditions;
 
     public AlternativeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

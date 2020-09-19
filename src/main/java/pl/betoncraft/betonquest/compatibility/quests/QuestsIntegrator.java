@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 public class QuestsIntegrator implements Integrator {
 
     private static Quests questsInstance;
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public QuestsIntegrator() {
         plugin = BetonQuest.getInstance();

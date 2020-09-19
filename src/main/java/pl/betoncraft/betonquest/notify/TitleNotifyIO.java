@@ -20,10 +20,10 @@ public class TitleNotifyIO extends NotifyIO {
 
     // Variables
 
-    private int fadeIn;
-    private int stay;
-    private int fadeOut;
-    private String subTitle;
+    private final int fadeIn;
+    private final int stay;
+    private final int fadeOut;
+    private final String subTitle;
 
 
     public TitleNotifyIO(final Map<String, String> data) {
@@ -41,6 +41,6 @@ public class TitleNotifyIO extends NotifyIO {
             player.sendTitle(Utils.format(message), Utils.format(subTitle), fadeIn, stay, fadeOut);
         }
 
-        super.sendNotify(message, players);
+        sendNotificationSound(players);
     }
 }

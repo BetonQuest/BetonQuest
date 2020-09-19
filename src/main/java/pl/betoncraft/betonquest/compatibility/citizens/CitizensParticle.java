@@ -28,9 +28,9 @@ import java.util.logging.Level;
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;
-    private Set<Integer> npcs = new HashSet<>();
-    private Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
-    private List<Effect> effects = new ArrayList<>();
+    private final Set<Integer> npcs = new HashSet<>();
+    private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
+    private final List<Effect> effects = new ArrayList<>();
     private int interval = 100;
     private int tick = 0;
     private boolean enabled = false;
@@ -251,7 +251,8 @@ public class CitizensParticle extends BukkitRunnable {
         private List<ConditionID> conditions;
         private ConfigurationSection settings;
 
-        private Effect() {}
+        public Effect() {
+        }
     }
 
 }

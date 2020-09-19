@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class BreweryIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public BreweryIntegrator() {
         plugin = BetonQuest.getInstance();

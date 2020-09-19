@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class HasBrewCondition extends Condition {
 
-    private Integer count;
-    private BRecipe brew;
+    private final Integer count;
+    private final BRecipe brew;
 
     public HasBrewCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class SkillAPIClassCondition extends Condition {
 
-    private String className;
-    private boolean exact;
+    private final String className;
+    private final boolean exact;
 
     public SkillAPIClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

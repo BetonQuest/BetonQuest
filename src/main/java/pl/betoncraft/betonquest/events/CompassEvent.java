@@ -20,8 +20,8 @@ import java.util.logging.Level;
  */
 public class CompassEvent extends QuestEvent {
 
-    private Action action;
-    private String compass;
+    private final Action action;
+    private final String compass;
     private ConfigurationSection compassSection;
     private ConfigPackage compassPackage;
 

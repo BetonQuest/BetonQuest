@@ -16,11 +16,11 @@ import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
 
 public class MythicMobDistanceCondition extends Condition {
 
-    private String mythicMobInternalName;
+    private final String mythicMobInternalName;
 
-    private VariableNumber distance;
+    private final VariableNumber distance;
 
-    private BukkitAPIHelper apiHelper;
+    private final BukkitAPIHelper apiHelper;
 
     public MythicMobDistanceCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

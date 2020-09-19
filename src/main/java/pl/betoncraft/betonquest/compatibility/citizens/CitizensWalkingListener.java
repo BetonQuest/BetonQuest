@@ -21,8 +21,8 @@ public class CitizensWalkingListener implements Listener {
 
     private static CitizensWalkingListener instance = null;
 
-    private HashMap<NPC, Integer> npcs = new HashMap<>();
-    private HashMap<NPC, Location> locs = new HashMap<>();
+    private final HashMap<NPC, Integer> npcs = new HashMap<>();
+    private final HashMap<NPC, Location> locs = new HashMap<>();
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around

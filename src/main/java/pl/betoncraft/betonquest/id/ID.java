@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
-@SuppressWarnings("PMD.ShortClassName")
+@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class ID {
 
     public static final String UP_STR = "_"; // string used as "up the hierarchy" package
@@ -15,7 +15,7 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    public ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
 
         // id must be specified
         if (identifier == null || identifier.length() == 0) {
@@ -44,10 +44,10 @@ public abstract class ID {
                 // construct the final absolute path
                 final StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < root.length - stepsUp; i++) {
-                    builder.append(root[i] + '-');
+                    builder.append(root[i]).append('-');
                 }
                 for (int i = stepsUp; i < path.length; i++) {
-                    builder.append(path[i] + '-');
+                    builder.append(path[i]).append('-');
                 }
                 final String absolute = builder.substring(0, builder.length() - 1);
                 this.pack = Config.getPackages().get(absolute);

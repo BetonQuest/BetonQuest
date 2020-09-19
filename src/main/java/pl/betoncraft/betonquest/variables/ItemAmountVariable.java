@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class ItemAmountVariable extends Variable {
 
-    private QuestItem questItem;
-    private Type type;
+    private final QuestItem questItem;
+    private final Type type;
     private int amount;
 
     public ItemAmountVariable(final Instruction instruction) throws InstructionParseException {

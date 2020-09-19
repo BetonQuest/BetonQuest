@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
  */
 public class SimpleConvIO extends ChatConvIO {
 
-    private String optionFormat;
+    private final String optionFormat;
 
     public SimpleConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);

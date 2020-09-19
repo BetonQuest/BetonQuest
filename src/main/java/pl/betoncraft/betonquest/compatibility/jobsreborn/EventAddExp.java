@@ -12,8 +12,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.List;
 
 public class EventAddExp extends QuestEvent {
-    private String sJobName;
-    private double nAddExperience;
+    private final String sJobName;
+    private final double nAddExperience;
 
     public EventAddExp(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

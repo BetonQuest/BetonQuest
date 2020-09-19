@@ -41,11 +41,11 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     private static CitizensHologram instance;
 
     // All NPC's with config
-    private Map<String, List<NPCHologram>> npcs = new HashMap<>();
+    private final Map<String, List<NPCHologram>> npcs = new HashMap<>();
 
     private int interval = 100;
     private boolean follow = false;
-    private boolean enabled;
+    private final boolean enabled;
 
     // Updater
     private BukkitRunnable updater;
@@ -340,7 +340,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private HologramConfig config;
         private Hologram hologram;
 
-        private NPCHologram() {}
+        public NPCHologram() {
+        }
     }
 
     private class HologramConfig {
@@ -349,7 +350,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         private ConfigurationSection settings;
         private ConfigPackage pack;
 
-        private  HologramConfig() {
+        public HologramConfig() {
             super();
         }
     }

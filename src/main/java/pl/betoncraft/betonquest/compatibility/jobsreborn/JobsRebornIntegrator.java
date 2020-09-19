@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 public class JobsRebornIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public JobsRebornIntegrator() {
         plugin = BetonQuest.getInstance();

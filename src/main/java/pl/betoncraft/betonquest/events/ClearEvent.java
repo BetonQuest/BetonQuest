@@ -22,11 +22,11 @@ import java.util.Locale;
  */
 public class ClearEvent extends QuestEvent {
 
-    private EntityType[] types;
-    private LocationData loc;
-    private VariableNumber range;
-    private String name;
-    private boolean kill;
+    private final EntityType[] types;
+    private final LocationData loc;
+    private final VariableNumber range;
+    private final String name;
+    private final boolean kill;
     private String marked;
 
     public ClearEvent(final Instruction instruction) throws InstructionParseException {

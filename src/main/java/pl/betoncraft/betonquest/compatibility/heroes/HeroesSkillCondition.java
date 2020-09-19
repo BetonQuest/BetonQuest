@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class HeroesSkillCondition extends Condition {
 
-    private String skillName;
+    private final String skillName;
 
     public HeroesSkillCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

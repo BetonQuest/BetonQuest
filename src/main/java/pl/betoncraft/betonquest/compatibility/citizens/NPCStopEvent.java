@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  * Stop the NPC when he is walking
  */
 public class NPCStopEvent extends QuestEvent implements Listener {
-    private int npcId;
+    private final int npcId;
 
     public NPCStopEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

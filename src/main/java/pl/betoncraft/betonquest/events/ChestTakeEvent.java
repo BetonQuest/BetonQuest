@@ -16,8 +16,8 @@ import pl.betoncraft.betonquest.utils.LocationData;
  */
 public class ChestTakeEvent extends QuestEvent {
 
-    private Item[] questItems;
-    private LocationData loc;
+    private final Item[] questItems;
+    private final LocationData loc;
 
     public ChestTakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

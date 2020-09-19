@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class MythicMobsIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public MythicMobsIntegrator() {
         plugin = BetonQuest.getInstance();

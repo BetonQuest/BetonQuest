@@ -7,7 +7,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 
 public class SkriptIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public SkriptIntegrator() {
         plugin = BetonQuest.getInstance();

@@ -17,8 +17,8 @@ import java.util.Optional;
  */
 public class SkillAPILevelCondition extends Condition {
 
-    private String className;
-    private VariableNumber level;
+    private final String className;
+    private final VariableNumber level;
 
     public SkillAPILevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

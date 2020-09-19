@@ -13,8 +13,8 @@ import java.util.logging.Level;
  */
 public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
 
-    private String questName;
-    private boolean override;
+    private final String questName;
+    private final boolean override;
 
     public QuestEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class OpenShopEvent extends QuestEvent {
 
-    private Shopkeeper shopkeeper;
+    private final Shopkeeper shopkeeper;
 
     public OpenShopEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

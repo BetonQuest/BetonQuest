@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class RunEvent extends QuestEvent {
 
-    private ArrayList<QuestEvent> internalEvents = new ArrayList<>();
+    private final ArrayList<QuestEvent> internalEvents = new ArrayList<>();
 
     public RunEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
@@ -31,9 +31,9 @@ public class RunEvent extends QuestEvent {
                     internalEvents.add(createEvent(builder.toString().trim()));
                     builder = new StringBuilder();
                 }
-                builder.append(part.substring(1) + " ");
+                builder.append(part.substring(1)).append(" ");
             } else {
-                builder.append(part + " ");
+                builder.append(part).append(" ");
             }
         }
         internalEvents.add(createEvent(builder.toString().trim()));

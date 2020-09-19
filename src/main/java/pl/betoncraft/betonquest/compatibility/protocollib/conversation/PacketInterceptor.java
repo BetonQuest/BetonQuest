@@ -35,8 +35,8 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;
     protected final Player player;
-    private ArrayList<WrapperPlayServerChat> messages = new ArrayList<>();
-    private PacketAdapter packetAdapter;
+    private final ArrayList<WrapperPlayServerChat> messages = new ArrayList<>();
+    private final PacketAdapter packetAdapter;
 
     public PacketInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;

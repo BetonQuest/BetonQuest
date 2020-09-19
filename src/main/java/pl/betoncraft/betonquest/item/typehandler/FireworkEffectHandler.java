@@ -16,9 +16,9 @@ public class FireworkEffectHandler {
 
     private Type type = Type.BALL; // default type for giving is small ball
     private Existence typeE = Existence.WHATEVER;
-    private List<Color> mainColors = new LinkedList<>();
+    private final List<Color> mainColors = new LinkedList<>();
     private Existence mainE = Existence.WHATEVER;
-    private List<Color> fadeColors = new LinkedList<>();
+    private final List<Color> fadeColors = new LinkedList<>();
     private Existence fadeE = Existence.WHATEVER;
     private Existence trail = Existence.WHATEVER;
     private Existence flicker = Existence.WHATEVER;

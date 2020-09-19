@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 
 public class ShopkeepersIntegrator implements Integrator {
 
-    private BetonQuest plugin;
+    private final BetonQuest plugin;
 
     public ShopkeepersIntegrator() {
         plugin = BetonQuest.getInstance();

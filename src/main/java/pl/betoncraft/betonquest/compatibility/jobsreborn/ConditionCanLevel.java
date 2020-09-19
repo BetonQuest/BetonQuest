@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.List;
 
 public class ConditionCanLevel extends Condition {
-    private String sJobName;
+    private final String sJobName;
 
     public ConditionCanLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

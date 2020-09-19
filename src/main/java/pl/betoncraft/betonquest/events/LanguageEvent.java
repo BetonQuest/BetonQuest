@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  */
 public class LanguageEvent extends QuestEvent {
 
-    private String lang;
+    private final String lang;
 
     public LanguageEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

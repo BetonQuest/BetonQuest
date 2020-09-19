@@ -55,7 +55,7 @@ public class ConfigUpdater {
     /**
      * BetonQuest's instance
      */
-    private BetonQuest instance = BetonQuest.getInstance();
+    private final BetonQuest instance = BetonQuest.getInstance();
     /**
      * Main configuration instance
      */
@@ -1000,9 +1000,9 @@ public class ConfigUpdater {
                                     instructions.add(builder.toString().trim());
                                     builder = new StringBuilder();
                                 }
-                                builder.append(part.substring(1) + " ");
+                                builder.append(part.substring(1)).append(" ");
                             } else {
-                                builder.append(part + " ");
+                                builder.append(part).append(" ");
                             }
                         }
                         instructions.add(builder.toString().trim());
@@ -1063,9 +1063,9 @@ public class ConfigUpdater {
                                     instructions.add(builder.toString().trim());
                                     builder = new StringBuilder();
                                 }
-                                builder.append(part.substring(1) + " ");
+                                builder.append(part.substring(1)).append(" ");
                             } else {
-                                builder.append(part + " ");
+                                builder.append(part).append(" ");
                             }
                         }
                         instructions.add(builder.toString().trim());
@@ -1628,42 +1628,42 @@ public class ConfigUpdater {
                 if (color == null) {
                     continue;
                 }
-                npc.append(color.name().toLowerCase() + ",");
+                npc.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.npc", npc.substring(0, npc.length() - 1));
             for (final ChatColor color : textColors) {
                 if (color == null) {
                     continue;
                 }
-                text.append(color.name().toLowerCase() + ",");
+                text.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.text", text.substring(0, text.length() - 1));
             for (final ChatColor color : numberColors) {
                 if (color == null) {
                     continue;
                 }
-                number.append(color.name().toLowerCase() + ",");
+                number.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.number", number.substring(0, number.length() - 1));
             for (final ChatColor color : optionColors) {
                 if (color == null) {
                     continue;
                 }
-                option.append(color.name().toLowerCase() + ",");
+                option.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.option", option.substring(0, option.length() - 1));
             for (final ChatColor color : playerColors) {
                 if (color == null) {
                     continue;
                 }
-                player.append(color.name().toLowerCase() + ",");
+                player.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.player", player.substring(0, player.length() - 1));
             for (final ChatColor color : answerColors) {
                 if (color == null) {
                     continue;
                 }
-                answer.append(color.name().toLowerCase() + ",");
+                answer.append(color.name().toLowerCase()).append(",");
             }
             config.set("conversation_colors.answer", answer.substring(0, answer.length() - 1));
             config.set("conversation", null);
@@ -1720,9 +1720,9 @@ public class ConfigUpdater {
                     final StringBuilder string = new StringBuilder();
                     for (final String part : canceler.split(" ")) {
                         if (part.startsWith("name")) {
-                            string.append(part.replace(":", ":" + cancelColor) + " ");
+                            string.append(part.replace(":", ":" + cancelColor)).append(" ");
                         } else {
-                            string.append(part + " ");
+                            string.append(part).append(" ");
                         }
                     }
                     cancelers.set(key, string.toString().trim());
@@ -1880,7 +1880,7 @@ public class ConfigUpdater {
                         }
                         final String[] instParts = inst.split(" ");
                         if (instParts.length > 2 && inst.startsWith("objective start ")) {
-                            string.append(instParts[2] + ",");
+                            string.append(instParts[2]).append(",");
                         }
                     }
                     main.getConfig().set("global_locations", string.substring(0, string.length() - 1));
@@ -2124,14 +2124,14 @@ public class ConfigUpdater {
                         newInstruction.append("events:");
                         final String[] events = part.substring(7).split(",");
                         for (final String event : events) {
-                            newInstruction.append("default." + event + ",");
+                            newInstruction.append("default.").append(event).append(",");
                         }
                         newInstruction.deleteCharAt(newInstruction.length() - 1);
                     } else if (part.startsWith("conditions:")) {
                         newInstruction.append("conditions:");
                         final String[] conditions = part.substring(11).split(",");
                         for (final String condition : conditions) {
-                            newInstruction.append("default." + condition + ",");
+                            newInstruction.append("default.").append(condition).append(",");
                         }
                         newInstruction.deleteCharAt(newInstruction.length() - 1);
                     } else {
@@ -2945,7 +2945,7 @@ public class ConfigUpdater {
                     }
                     final StringBuilder newConditionsList = new StringBuilder();
                     for (final String part : parts) {
-                        newConditionsList.append(part + ",");
+                        newConditionsList.append(part).append(",");
                     }
                     final String newInstruction = firstPart
                             + newConditionsList.toString().substring(0, newConditionsList.length() - 1) + lastPart;
@@ -3015,7 +3015,7 @@ public class ConfigUpdater {
                     // single string)
                     final StringBuilder newListBuilder = new StringBuilder();
                     for (final String condition : conditionArr) {
-                        newListBuilder.append(condition + ",");
+                        newListBuilder.append(condition).append(",");
                     }
                     final String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
                     LogUtils.getLogger().log(Level.FINE, "      Saving new list: " + newList);
@@ -3064,7 +3064,7 @@ public class ConfigUpdater {
                     // put it all together
                     final StringBuilder newListBuilder = new StringBuilder();
                     for (final String part : parts) {
-                        newListBuilder.append(part + ",");
+                        newListBuilder.append(part).append(",");
                     }
                     final String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
                     LogUtils.getLogger().log(Level.FINE, "      New condition list is '" + newList + "'");
@@ -3102,7 +3102,7 @@ public class ConfigUpdater {
                     // put it all together
                     final StringBuilder newListBuilder = new StringBuilder();
                     for (final String part : parts) {
-                        newListBuilder.append(part + ",");
+                        newListBuilder.append(part).append(",");
                     }
                     final String newList = newListBuilder.toString().substring(0, newListBuilder.length() - 1);
                     LogUtils.getLogger().log(Level.FINE, "      New condition list is '" + newList + "'");
@@ -3187,9 +3187,9 @@ public class ConfigUpdater {
                 final StringBuilder parts = new StringBuilder();
                 for (final String part : events.getConfig().getString(key).split(" ")) {
                     if (part.startsWith("conditions:")) {
-                        parts.append("event_conditions:" + part.substring(11) + " ");
+                        parts.append("event_conditions:").append(part.substring(11)).append(" ");
                     } else {
-                        parts.append(part + " ");
+                        parts.append(part).append(" ");
                     }
                 }
                 LogUtils.getLogger().log(Level.FINE, "    Found 'conditions:' option, replacing!");
@@ -3219,7 +3219,7 @@ public class ConfigUpdater {
                 index++;
                 events.getConfig().set("global_location_" + index,
                         "objective " + objectives.getConfig().getString(globalLoc));
-                configGlobalLocs.append("global_location_" + index + ",");
+                configGlobalLocs.append("global_location_").append(index).append(",");
                 LogUtils.getLogger().log(Level.INFO, "Converted " + globalLoc + " objective.");
             }
             config.set("global_locations", configGlobalLocs.substring(0, configGlobalLocs.length() - 1));
@@ -3247,12 +3247,12 @@ public class ConfigUpdater {
                 if (text != null) {
                     final StringBuilder pages = new StringBuilder();
                     for (final String page : Utils.pagesFromString(text.replace("_", " "))) {
-                        pages.append(page.replaceAll(" ", "_") + "|");
+                        pages.append(page.replaceAll(" ", "_")).append("|");
                     }
                     parts.add("text:" + pages.substring(0, pages.length() - 2));
                     final StringBuilder instruction = new StringBuilder();
                     for (final String part : parts) {
-                        instruction.append(part + " ");
+                        instruction.append(part).append(" ");
                     }
                     items.getConfig().set(key, instruction.toString().trim().replaceAll("\\n", "\\\\n"));
                     LogUtils.getLogger().log(Level.INFO, "Converted book " + key + ".");
@@ -3385,7 +3385,7 @@ public class ConfigUpdater {
         final StringBuilder builder = new StringBuilder();
         for (final String part : obj.split(" ")) {
             if (part.startsWith("tag:")) {
-                builder.append("label:" + part.substring(4));
+                builder.append("label:").append(part.substring(4));
             } else {
                 builder.append(part);
             }
@@ -3402,41 +3402,41 @@ public class ConfigUpdater {
         /**
          * Map containing accessors for every conversation.
          */
-        private HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
+        private final HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
         /**
          * Deprecated accessor for single conversations file, used only for
          * updating configuration.
          */
-        private ConfigAccessor conversations;
+        private final ConfigAccessor conversations;
         /**
          * Deprecated accessor for objectives file, used only for updating
          * configuration.
          */
-        private ConfigAccessor objectives;
+        private final ConfigAccessor objectives;
         /**
          * Accessor for conditions file.
          */
-        private ConfigAccessor conditions;
+        private final ConfigAccessor conditions;
         /**
          * Accessor for events file.
          */
-        private ConfigAccessor events;
+        private final ConfigAccessor events;
         /**
          * Accessor for messages file.
          */
-        private ConfigAccessor messages;
+        private final ConfigAccessor messages;
         /**
          * Accessor for npcs file.
          */
-        private ConfigAccessor npcs;
+        private final ConfigAccessor npcs;
         /**
          * Accessor for journal file.
          */
-        private ConfigAccessor journal;
+        private final ConfigAccessor journal;
         /**
          * Accessor for items file.
          */
-        private ConfigAccessor items;
+        private final ConfigAccessor items;
 
         /**
          * Legacy configuration handler, only used for updating purposes. Do not

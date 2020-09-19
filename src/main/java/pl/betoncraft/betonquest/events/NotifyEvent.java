@@ -18,9 +18,9 @@ import java.util.StringJoiner;
 
 public class NotifyEvent extends QuestEvent {
 
-    private Map<String, String> data;
+    private final Map<String, String> data;
     private String category;
-    private String message;
+    private final String message;
 
     /**
      * Provide a Notification
