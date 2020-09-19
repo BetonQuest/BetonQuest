@@ -1,10 +1,10 @@
 # Compatibility
-**In total 28 plugins have dedicated support for BetonQuest.**
+**In total 27 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
-23 plugins are supported right now:    
+22 plugins are supported right now:    
 _Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
-mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, PlayerPoints, ProtocolLib, Quests,
+mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
 Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
@@ -682,30 +682,6 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 !!! example
     ```YAML
     %ph.player_item_in_hand%
-    ```
-
-## [PlayerPoints](http://dev.bukkit.org/bukkit-plugins/playerpoints/)
-
-### Conditions
-
-#### PlayerPoints: `playerpoints`
-
-This condition simply checks if the player has specified amount of points in the PlayerPoints plugin. The only argument is a number.
-
-!!! example
-    ```YAML
-    playerpoints 100
-    ```
-    
-### Events
-
-#### PlayerPoints: `playerpoints`
-
-This event simply adds, removes or multiplies points in the PlayerPoints plugin. The only argument is a number, it can be positive, negative or prefixed with an asterisk for multiplication.
-
-!!! example
-    ```YAML
-    playerpoints *2
     ```
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
