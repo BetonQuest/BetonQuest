@@ -452,7 +452,7 @@ public class ConversationData {
         protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
             this.type = type;
-            final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type + "." + name);
+            final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
                 return;
@@ -486,14 +486,14 @@ public class ConversationData {
                 if (conv.isConfigurationSection("text")) {
                     //noinspection ConstantConditions
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
-                        text.put(lang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text."
+                        text.put(lang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text."
                                 + lang));
                     }
                     if (!text.containsKey(defaultLang)) {
                         throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
                     }
                 } else {
-                    text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type + "." + name + ".text"));
+                    text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text"));
                 }
 
                 final ArrayList<String> variables = new ArrayList<>();
