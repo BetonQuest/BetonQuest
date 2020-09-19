@@ -242,27 +242,6 @@
     </profile>
 
     <profile>
-      <id>from-dakanilabs</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>dakanilabs-repo</id>
-          <url>https://repo.dakanilabs.com/repository/maven-public/</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>org.black_ixx</groupId>
-          <artifactId>PlayerPoints</artifactId>
-          <version>2.1.3</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
       <id>from-placeholderapi</id>
       <activation>
         <activeByDefault>true</activeByDefault>

@@ -21,7 +21,6 @@ import pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrat
 import pl.betoncraft.betonquest.compatibility.mmogroup.mmolib.MMOLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
-import pl.betoncraft.betonquest.compatibility.playerpoints.PlayerPointsIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.quests.QuestsIntegrator;
 import pl.betoncraft.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
@@ -63,7 +62,6 @@ public class Compatibility implements Listener {
         integrators.put("MMOCore", new MMOCoreIntegrator());
         integrators.put("MMOItems", new MMOItemsIntegrator());
         integrators.put("EffectLib", new EffectLibIntegrator());
-        integrators.put("PlayerPoints", new PlayerPointsIntegrator());
         integrators.put("Heroes", new HeroesIntegrator());
         integrators.put("Magic", new MagicIntegrator());
         integrators.put("Denizen", new DenizenIntegrator());
