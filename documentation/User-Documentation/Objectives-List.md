@@ -158,7 +158,7 @@ Don't forget that if you use global and persistent you can still remove the obje
 
 !!! example
     ```YAML
-    login events:wellcome_message
+    login events:welcome_message
     ```
 
 ## Logout: `logout`
