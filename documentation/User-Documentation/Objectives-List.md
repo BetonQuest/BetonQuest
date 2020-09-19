@@ -149,6 +149,18 @@ Location objective contains one property, `location`. It's a string formatted li
     location 100;200;300;world 5 condition:test1,!test2 events:test1,test2
     ```
 
+## Login: `login`
+
+To complete this objective the player simply needs to login to the server.
+If you use `global` this objective will be also completed directly when the player joins the first time.
+If you use `persistent` it will be permanent.
+Don't forget that if you use global and persistent you can still remove the objective explicit.
+
+!!! example
+    ```YAML
+    login events:wellcome_message
+    ```
+
 ## Logout: `logout`
 
 To complete this objective the player simply needs to leave the server. Keep in mind that running `folder` event here will make it run in "persistent" mode, since the player is offline on the next tick.
