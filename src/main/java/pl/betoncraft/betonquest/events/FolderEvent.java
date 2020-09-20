@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.EventID;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -19,6 +20,7 @@ import java.util.Random;
 public class FolderEvent extends QuestEvent {
 
     public VariableNumber delay;
+    public VariableNumber period;
     public VariableNumber random;
     public EventID[] events;
     public boolean ticks;
@@ -28,8 +30,9 @@ public class FolderEvent extends QuestEvent {
         super(instruction, false);
         staticness = true;
         persistent = true;
-        events = instruction.getList(e -> instruction.getEvent(e)).toArray(new EventID[0]);
+        events = instruction.getList(instruction::getEvent).toArray(new EventID[0]);
         delay = instruction.getVarNum(instruction.getOptional("delay"));
+        period = instruction.getVarNum(instruction.getOptional("period"));
         random = instruction.getVarNum(instruction.getOptional("random"));
         ticks = instruction.hasArgument("ticks");
         minutes = instruction.hasArgument("minutes");
@@ -42,10 +45,7 @@ public class FolderEvent extends QuestEvent {
         final int randomInt = random == null ? 0 : random.getInt(playerID);
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifiable ArrayList
-            final ArrayList<EventID> eventsList = new ArrayList<>();
-            for (final EventID event : events) {
-                eventsList.add(event);
-            }
+            final ArrayList<EventID> eventsList = new ArrayList<>(Arrays.asList(events));
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
@@ -53,27 +53,41 @@ public class FolderEvent extends QuestEvent {
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {
-            // add all events if it's not random
-            for (final EventID event : events) {
-                chosenList.add(event);
-            }
+            chosenList.addAll(Arrays.asList(events));
         }
-        double time = (delay == null) ? 0d : delay.getDouble(playerID);
-        if (ticks) {
-            // do nothing
-        } else if (minutes) {
-            time *= 20 * 60;
-        } else {
-            time *= 20;
+        double execDelay = (delay == null) ? 0d : delay.getDouble(playerID);
+        if (minutes) {
+            execDelay *= 20 * 60;
+        } else if (!ticks) {
+            execDelay *= 20;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (final EventID event : chosenList) {
-                    BetonQuest.event(playerID, event);
+        if (period == null) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (final EventID event : chosenList) {
+                        BetonQuest.event(playerID, event);
+                    }
                 }
+            }.runTaskLater(BetonQuest.getInstance(), (int) execDelay);
+        } else {
+            double execPeriod = period.getDouble(playerID);
+            if (minutes) {
+                execPeriod *= 20 * 60;
+            } else if (!ticks) {
+                execPeriod *= 20;
             }
-        }.runTaskLater(BetonQuest.getInstance(), (int) time);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    final EventID event = chosenList.remove(0);
+                    BetonQuest.event(playerID, event);
+                    if (chosenList.size() == 0) {
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(BetonQuest.getInstance(), (int) execDelay, (int) execPeriod);
+        }
         return null;
     }
 

@@ -174,11 +174,20 @@ Creates an explosion. It can make fire and destroy blocks. You can also define p
 
 **persistent**, **static**
 
-It's something like a container for multiple events. You can use it to clarify your code. It also features optional delay measured in seconds (you can use ticks or minutes if you add `ticks` or `minutes` argument). It is persistent for events marked as _persistent_, which means that the events will be fired even after the player logs out. Beware though, all conditions are false then the player is offline (even inverted ones), so those events should not be blocked by any conditions! The only required argument is a list of events separated by commas. There are also two optional arguments: `delay:` and `random:`. Delay is a number of seconds and it's optional (leaving it blank is the same as `delay:0`. Random is the amount of events, that will be randomly chosen to fire. If set to 0 or omited, it does nothing (all events will fire).
+It's something like a container for multiple events. You can use it to clarify your code.
+It also features optional delay and period measured in seconds (you can use ticks or minutes if you add `ticks` or `minutes` argument).
+It is persistent for events marked as _persistent_, which means that the events will be fired even after the player logs out.
+Beware though, all conditions are false then the player is offline (even inverted ones),
+so those events should not be blocked by any conditions!
+The only required argument is a list of events separated by commas.
+
+There are also three optional arguments: `delay:`, `period:` and `random:`.
+Delay and Period is a number of seconds. Delay is the time before execution and period is the time between each event. It's optional and leaving it blank is the same as `delay:0` or `period:0`.
+Random is the amount of events, that will be randomly chosen to fire. It's optional and leaving it blank or omit it will fire all events.
 
 !!! example
     ```YAML
-    folder event1,event2,event3 delay:5 random:1
+    folder event1,event2,event3 delay:5 period:5 random:1
     ```
 
 ## Give Items: `give`
