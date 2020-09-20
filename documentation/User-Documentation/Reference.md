@@ -1,3 +1,5 @@
+
+
 # Reference
 
 This chapter describes all aspects of BetonQuest in one place. You should read it at least once to know what you're dealing with and where to search for information if you ever have any problems.
@@ -374,15 +376,25 @@ Now, it means that all players that: are in radius of 50 blocks around the playe
 
 When specifying a way of matching a block, a `block selector` is used.
 
+### Format
+
 The format of a block selector is: `prefix:material[state=value,...]`
 
 Where:
 
-  - `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'
+  - `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'.
+   Can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
   
-  - `material` - The material the block is made of. You can look this up in [this list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). Wildcards are supported (both * and ?).
+  - `material` - The material the block is made of. All materials can be found in
+  [Spigots Javadocs](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). 
+  It can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+  If the regex ends with square brackets you have to add another pair of empty square brackets even if you don't want to 
+  use the state argument.
   
-  - `state` - (optional) The block states can be provided in a comma separated list surrounded by square brackets. You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states). Any states left out will be ignored when matching.
+  - `state` - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets.
+   You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states).
+   Any states left out will be ignored when matching.
+   *Values* can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
 
 Examples:
 
@@ -399,3 +411,15 @@ Examples:
   - `*` - Matches everything
   
   - `*[waterlogged=true]` - Matches all waterlogged blocks
+
+###Setting behaviour
+
+A block selector with a regex as it's material name results in a random block out of all blocks that match that regex.
+You cannot use a regex in block states when the block selector is used for placing blocks.
+
+###Matching behaviour
+
+The block state will ignore all additional block states on the block it's compared with by default.
+Example: `fence[facing=north] matches fence[facing=north] and fence[facing=north,waterlogged=true]`
+You can add an `exactMatch` argument if you only want to match blocks that exactly match the block state. 
+A regex is allowed in any block state value when the block selector is used to match blocks.
