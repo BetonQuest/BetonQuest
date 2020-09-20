@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.item.typehandler.*;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -68,7 +69,7 @@ public class QuestItem {
             throw new InstructionParseException("Not enough arguments");
         }
 
-        material = Material.getMaterial(parts[0]);
+        material = Material.getMaterial(parts[0].toUpperCase(Locale.ROOT));
         if (material == null) {
             throw new InstructionParseException("Material '" + parts[0] + "' not exist!");
         }
@@ -136,6 +137,7 @@ public class QuestItem {
      */
     @SuppressWarnings("deprecation")
     public static String itemToString(final ItemStack item) {
+        String durability = "";
         String name = "";
         String lore = "";
         String enchants = "";
@@ -148,6 +150,9 @@ public class QuestItem {
         String firework = "";
         String unbreakable = "";
         final ItemMeta meta = item.getItemMeta();
+        if (item.getDurability() != 0) {
+            durability = " durability:" + item.getDurability();
+        }
         if (meta.hasDisplayName()) {
             name = " name:" + meta.getDisplayName().replace(" ", "_");
         }
@@ -276,7 +281,7 @@ public class QuestItem {
             }
         }
         // put it all together in a single string
-        return item.getType() + " durability:" + item.getDurability() + name + lore + enchants + title + author + text
+        return item.getType() + durability + name + lore + enchants + title + author + text
                 + effects + color + owner + firework + unbreakable;
     }
 
