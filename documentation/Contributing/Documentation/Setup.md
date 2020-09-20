@@ -27,6 +27,7 @@ If you use Python for more than this you might want to look into <a href="https:
 This should not be the case for any non-devs though.
 
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the console.
+You may need to install [GTK](https://www.gtk.org/) too.
 
 ### See your changes live
 Mkdocs enables you to create a website that shows you your changes while you make them.
