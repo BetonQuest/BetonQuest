@@ -177,7 +177,7 @@ Creates an explosion. It can make fire and destroy blocks. You can also define p
 It's something like a container for multiple events. You can use it to clarify your code.
 It also features optional delay and period measured in seconds (you can use ticks or minutes if you add `ticks` or `minutes` argument).
 It is persistent for events marked as _persistent_, which means that the events will be fired even after the player logs out.
-Beware though, all conditions are false then the player is offline (even inverted ones),
+Beware though, all conditions are false when the player is offline (even inverted ones),
 so those events should not be blocked by any conditions!
 The only required argument is a list of events separated by commas.
 
