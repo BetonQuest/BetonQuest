@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - improved chestput waring for locations without a chest
 - reworked location variable: %location.(xyz|x|y|z|yaw|pitch|world|ulfShort|ulfLong)(.NUMBER)%
 - multiple conditions and objectives now use the block selector. The same applies for the setblock event.
+- static events now allow comma separated event list
 ### Deprecated
 ### Removed
 - Removed Deprecated Exceptions
