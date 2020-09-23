@@ -122,6 +122,7 @@ start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder g
 ## Static events
 
 Static events are events that will fire at the specified time of the day.
+It is possible to address multiple events with a `,` separated list.
 They are not tied to a specific player, so not all event types can be used as static.
 (Which player should receive a tag or objective? From which one should the items be taken?)
 Also, static events cannot have conditions defined (`event-conditions:` argument),
