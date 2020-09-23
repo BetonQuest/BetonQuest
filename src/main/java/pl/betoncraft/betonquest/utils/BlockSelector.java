@@ -57,7 +57,7 @@ public class BlockSelector {
         return materials.toString() + (states == null ? "" : "[" + states.toString() + "]");
     }
 
-    private Material getRandomMaterial() {
+    public Material getRandomMaterial() {
         final Random random = new Random();
         return materials.get(random.nextInt(materials.size()));
     }

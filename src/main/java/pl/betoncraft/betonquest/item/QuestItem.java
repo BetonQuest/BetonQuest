@@ -13,7 +13,6 @@ import pl.betoncraft.betonquest.item.typehandler.*;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -22,7 +21,7 @@ import java.util.Map.Entry;
  */
 public class QuestItem {
 
-    private final Material material;
+    private final BlockSelector selector;
     private final DurabilityHandler durability = new DurabilityHandler();
     private final NameHandler name = new NameHandler();
     private final LoreHandler lore = new LoreHandler();
@@ -69,10 +68,7 @@ public class QuestItem {
             throw new InstructionParseException("Not enough arguments");
         }
 
-        material = Material.getMaterial(parts[0].toUpperCase(Locale.ROOT));
-        if (material == null) {
-            throw new InstructionParseException("Material '" + parts[0] + "' not exist!");
-        }
+        selector = new BlockSelector(parts[0]);
 
         for (final String part : parts) {
             if (part.toLowerCase().startsWith("durability:")) {
@@ -135,7 +131,6 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
-    @SuppressWarnings("deprecation")
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";
@@ -293,7 +288,7 @@ public class QuestItem {
         } else {
             return false;
         }
-        if (item.material != material) {
+        if (item.selector != selector) {
             return false;
         }
         if (!item.durability.equals(durability)) {
@@ -332,13 +327,12 @@ public class QuestItem {
      * @param item ItemStack to compare
      * @return true if the item matches
      */
-    @SuppressWarnings("deprecation")
     public boolean compare(final ItemStack item) {
         // basic item checks
         if (item == null) {
             return false;
         }
-        if (material != item.getType()) {
+        if (!selector.match(item.getType())) {
             return false;
         }
         // basic meta checks
@@ -421,8 +415,10 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
-    @SuppressWarnings("deprecation")
     public ItemStack generate(final int stackSize) {
+        // Try resolve material directly
+        Material material = selector.getRandomMaterial();
+
         final ItemStack item = new ItemStack(material, stackSize);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
@@ -484,7 +480,7 @@ public class QuestItem {
      * @return the material
      */
     public Material getMaterial() {
-        return material;
+        return selector.getRandomMaterial();
     }
 
     /**
