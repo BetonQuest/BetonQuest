@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -61,7 +62,7 @@ public class EntityInteractObjective extends Objective {
         name = instruction.getOptional("name");
         if (name != null) {
             name = name.replace('_', ' ');
-            name = name.replace('&','§');
+            name = ChatColor.translateAlternateColorCodes('&', name);
         }
         marked = instruction.getOptional("marked");
         if (marked != null) {
@@ -220,11 +221,11 @@ public class EntityInteractObjective extends Objective {
 
         @Override
         public String toString() {
-            String string = Integer.toString(amount);
+            StringBuilder string = new StringBuilder(Integer.toString(amount));
             for (final UUID uuid : entitys) {
-                string += " " + uuid.toString();
+                string.append(" ").append(uuid.toString());
             }
-            return string;
+            return string.toString();
         }
 
     }
