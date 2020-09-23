@@ -58,12 +58,16 @@ public class StaticEvents {
                     LogUtils.getLogger().log(Level.WARNING, "Incorrect time value in static event declaration (" + key + "), skipping this one");
                     continue;
                 }
-                LogUtils.getLogger().log(Level.FINE, "Scheduling static event " + value + " at hour " + key + ". Current timestamp: "
+                LogUtils.getLogger().log(Level.FINE, "Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
-                // add the timer to static list, so it can be canceled if needed
                 try {
-                    TIMERS.add(new EventTimer(timeStamp, new EventID(pack, value)));
-                } catch (ObjectNotFoundException e) {
+                    final String[] events = value.split(",");
+                    final EventID[] eventIDS = new EventID[events.length];
+                    for (int i = 0; i < events.length; i++) {
+                        eventIDS[i] = new EventID(pack, events[i]);
+                    }
+                    TIMERS.add(new EventTimer(timeStamp, eventIDS));
+                } catch (final ObjectNotFoundException | NullPointerException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
                 }
@@ -96,7 +100,7 @@ public class StaticEvents {
         long timeStamp = -1;
         try {
             timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm").parse(timeString).getTime();
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error in time setting in static event declaration: " + hour);
             LogUtils.logThrowable(e);
         }
@@ -112,7 +116,7 @@ public class StaticEvents {
      */
     private class EventTimer extends TimerTask {
 
-        protected final EventID event;
+        protected final EventID[] event;
 
         /**
          * Creates and schedules a new timer for specified event, based on given
@@ -121,7 +125,7 @@ public class StaticEvents {
          * @param timeStamp
          * @param eventID
          */
-        public EventTimer(final long timeStamp, final EventID eventID) {
+        public EventTimer(final long timeStamp, final EventID... eventID) {
             super();
             event = eventID;
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
@@ -132,8 +136,9 @@ public class StaticEvents {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    // run the event in sync
-                    BetonQuest.event(null, event);
+                    for (final EventID eventID : event) {
+                        BetonQuest.event(null, eventID);
+                    }
                 }
             }.runTask(BetonQuest.getInstance());
         }

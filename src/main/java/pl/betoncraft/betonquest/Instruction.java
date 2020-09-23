@@ -471,7 +471,7 @@ public class Instruction {
         if (string == null) {
             return new String[0];
         }
-        return string.split("[,]");
+        return string.split(",");
     }
 
     public <T> List<T> getList(final Converter<T> converter) throws InstructionParseException {
