@@ -61,7 +61,7 @@ public class StaticEvents {
                 LogUtils.getLogger().log(Level.FINE, "Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
                 try {
-                    final String[] events = value.split("[,]");
+                    final String[] events = value.split(",");
                     final EventID[] eventIDS = new EventID[events.length];
                     for (int i = 0; i < events.length; i++) {
                         eventIDS[i] = new EventID(pack, events[i]);
