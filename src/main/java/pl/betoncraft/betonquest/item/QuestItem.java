@@ -417,7 +417,7 @@ public class QuestItem {
      */
     public ItemStack generate(final int stackSize) {
         // Try resolve material directly
-        Material material = selector.getRandomMaterial();
+        final Material material = selector.getRandomMaterial();
 
         final ItemStack item = new ItemStack(material, stackSize);
         final ItemMeta meta = item.getItemMeta();
