@@ -122,7 +122,16 @@ Fishing has the same properties as mob kill objective.
 
 ## Interact with entity: `interact`
 
-The player must click on an entity to complete this objective. The first argument is the type of a click. Available values are `right`, `left` and `any`. Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on the same zombie to complete it. There is also an optional `name:` parameter which specifies what name the entity must have and `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). You can also add `notify` argument to make the objective notify players whenever they click a correct entity, optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does (i.e. left click won't hurt the entity). This can be limited with an optional `loc` and `range` attribute to limit within a range of a location.
+The player must click on an entity to complete this objective. The first argument is the type of a click.
+Available values are `right`, `left` and `any`.
+Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on
+the same zombie to complete it. There is also an optional `name:` parameter which specifies what name the entity must have
+(you need to write `_` instead of the space character).
+Add `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). 
+You can also add `notify` argument to make the objective notify players whenever they click a correct entity,
+optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does
+(i.e. left click won't hurt the entity). This can be limited with an optional `loc` and `range` attribute to limit within a range of a location.
 
 !!! example
     ```YAML

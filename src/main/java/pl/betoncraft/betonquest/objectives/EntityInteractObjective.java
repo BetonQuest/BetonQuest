@@ -61,6 +61,7 @@ public class EntityInteractObjective extends Objective {
         name = instruction.getOptional("name");
         if (name != null) {
             name = name.replace('_', ' ');
+            name = name.replace('&','§');
         }
         marked = instruction.getOptional("marked");
         if (marked != null) {
