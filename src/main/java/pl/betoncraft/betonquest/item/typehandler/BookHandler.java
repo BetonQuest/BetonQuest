@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.item.typehandler;
 
+import org.bukkit.ChatColor;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -26,7 +27,8 @@ public class BookHandler {
         if (string.equalsIgnoreCase("none")) {
             titleE = Existence.FORBIDDEN;
         } else {
-            title = string.replace('_', ' ').replace('&', '§');
+            title = string.replace('_', ' ');
+            title = ChatColor.translateAlternateColorCodes('&', title);
             titleE = Existence.REQUIRED;
         }
     }

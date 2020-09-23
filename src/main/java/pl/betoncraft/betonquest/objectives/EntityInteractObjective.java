@@ -221,7 +221,7 @@ public class EntityInteractObjective extends Objective {
 
         @Override
         public String toString() {
-            StringBuilder string = new StringBuilder(Integer.toString(amount));
+            final StringBuilder string = new StringBuilder(Integer.toString(amount));
             for (final UUID uuid : entitys) {
                 string.append(" ").append(uuid.toString());
             }
