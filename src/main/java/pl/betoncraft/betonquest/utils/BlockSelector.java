@@ -148,9 +148,9 @@ public class BlockSelector {
         }
 
         if (restSelector.contains(":")) {
-            final String[] parts = restSelector.split(":");
-            selectorParts[0] = parts[0].toLowerCase(Locale.ROOT);
-            selectorParts[1] = parts[1].toLowerCase(Locale.ROOT);
+            final int index = restSelector.indexOf(":");
+            selectorParts[0] = restSelector.substring(0, index).toLowerCase(Locale.ROOT);
+            selectorParts[1] = restSelector.substring(index + 1).toLowerCase(Locale.ROOT);
         } else {
             selectorParts[0] = "minecraft";
             selectorParts[1] = restSelector.toLowerCase(Locale.ROOT);
