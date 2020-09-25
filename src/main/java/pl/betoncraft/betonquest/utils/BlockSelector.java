@@ -187,9 +187,9 @@ public class BlockSelector {
         }
 
         if (keyString.contains(":")) {
-            String[] groupParts = keyString.split(":");
-            NamespacedKey namespacedKey = new NamespacedKey(namespaceString, groupParts[1]);
-            Tag<Material> tag = Bukkit.getTag(groupParts[0], namespacedKey, Material.class);
+            final String[] groupParts = keyString.split(":");
+            final NamespacedKey namespacedKey = new NamespacedKey(namespaceString, groupParts[1]);
+            final Tag<Material> tag = Bukkit.getTag(groupParts[0], namespacedKey, Material.class);
             if (tag != null) {
                 materials.addAll(tag.getValues());
             }
