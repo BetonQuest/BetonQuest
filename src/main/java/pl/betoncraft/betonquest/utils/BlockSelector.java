@@ -143,17 +143,17 @@ public class BlockSelector {
 
         if (restSelector.endsWith("]")) {
             final int index = getBracketIndex(restSelector, 0);
-            selectorParts[2] = restSelector.substring(index + 1, restSelector.length() - 1).toLowerCase();
+            selectorParts[2] = restSelector.substring(index + 1, restSelector.length() - 1).toLowerCase(Locale.ROOT);
             restSelector = restSelector.substring(0, index);
         }
 
         if (restSelector.contains(":")) {
             final String[] parts = restSelector.split(":");
-            selectorParts[0] = parts[0].toLowerCase();
-            selectorParts[1] = parts[1].toLowerCase();
+            selectorParts[0] = parts[0].toLowerCase(Locale.ROOT);
+            selectorParts[1] = parts[1].toLowerCase(Locale.ROOT);
         } else {
             selectorParts[0] = "minecraft";
-            selectorParts[1] = restSelector.toLowerCase();
+            selectorParts[1] = restSelector.toLowerCase(Locale.ROOT);
         }
 
         return selectorParts;
