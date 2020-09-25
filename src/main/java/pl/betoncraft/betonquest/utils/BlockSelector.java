@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -111,8 +112,8 @@ public class BlockSelector {
         }
 
         final Map<String, String> blockStates = getStates(getSelectorParts(block.getBlockData().getAsString())[2]);
-        if (states == null && (!exactMatch || blockStates == null)) {
-            return true;
+        if (states == null) {
+            return !exactMatch || blockStates == null;
         }
         if (exactMatch && states.size() != blockStates.size()) {
             return false;
@@ -176,11 +177,22 @@ public class BlockSelector {
         return -1;
     }
 
+    @SuppressWarnings("deprecation")
     private List<Material> getMaterials(final String namespaceString, final String keyString) {
         final List<Material> materials = new ArrayList<>();
         final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
         if (fullMatch != null) {
             materials.add(fullMatch);
+            return materials;
+        }
+
+        if (keyString.contains(":")) {
+            String[] groupParts = keyString.split(":");
+            NamespacedKey namespacedKey = new NamespacedKey(namespaceString, groupParts[1]);
+            Tag<Material> tag = Bukkit.getTag(groupParts[0], namespacedKey, Material.class);
+            if (tag != null) {
+                materials.addAll(tag.getValues());
+            }
             return materials;
         }
 
