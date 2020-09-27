@@ -50,7 +50,7 @@ This can and will be a little confusing, so you should name your options, condit
 
 ## Cross-conversation pointers
 
-If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, more focused files, you can point to NPC options in other conversation. Just type the pointer as `conversation.npc_option`.
+If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, more focused files, you can point to NPC options in other conversations. Just type the pointer as `conversation.npc_option`.
 
 Keep in mind that you can only cross-point to NPC options. It means that you can use those pointers only in `first` starting options and in all player options. Using them in NPC options will throw errors.
 
