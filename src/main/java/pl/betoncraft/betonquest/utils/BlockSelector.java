@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.*;
@@ -77,17 +78,21 @@ public class BlockSelector {
         return builder.toString();
     }
 
+    public BlockData getBlockData() {
+        if (states == null) {
+            return Bukkit.createBlockData(getRandomMaterial());
+        } else {
+            return Bukkit.createBlockData(getRandomMaterial(), getStateAsString());
+        }
+    }
+
     public void setToBlock(final Block block, final boolean applyPhysics) {
         final BlockState state = block.getState();
 
-        if (states == null) {
-            state.setType(getRandomMaterial());
-        } else {
-            try {
-                state.setBlockData(Bukkit.createBlockData(getRandomMaterial(), getStateAsString()));
-            } catch (final IllegalArgumentException exception) {
-                LogUtils.getLogger().log(Level.SEVERE, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
-            }
+        try {
+            state.setBlockData(getBlockData());
+        } catch (final IllegalArgumentException exception) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);
