@@ -111,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed ConcurrentModificationException in PlayerData
 - fixed issue where the PacketInterceptor prints the message tag in the chat
 - fixed database backups breaking with some languages
+- fixed when PlaceholderAPI variables contains dots
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

@@ -12,7 +12,7 @@ public class PlaceholderVariable extends Variable {
 
     public PlaceholderVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        placeholder = instruction.next();
+        placeholder = instruction.getInstruction().substring(3);
     }
 
     @Override
