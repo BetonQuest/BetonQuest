@@ -23,8 +23,8 @@ theme:
   name: material
   language: en
   features:
-    - tabs
-    - instant
+    - navigation.tabs
+    - navigation.instant
   palette:
     primary: indigo
     accent: indigo
