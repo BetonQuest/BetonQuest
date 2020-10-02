@@ -15,31 +15,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A method of selectinig blocks using a quasi similar method as Majong. 1.13+ version.
+ * A method of selecting blocks using regex and block states.
  * <p>
  * Block selector format:
- * prefix:type[state=value,...]
+ * namespace:material[state=value,...]
  * <p>
  * Where:
- * - prefix - (optional) Prefix of type. If missing will assume to be minecraft
- * - type - Type of block. IE: stone
- * - state flags - (optional) Comma separate list of states contained in brackets
- * <p>
- * Type can contain the wildcard character '*'. For example:
- * - *_LOG - Match everything ending with _LOG
- * - * - Match everything
- * <p>
- * State flags:
- * - If a state flag is missing, then it will not be compared against. If it is set then that state
- * must be set.
- * <p>
- * Example:
- * - redstone_wird[power=5] - Tests for all redstone_wire of power 5, irregardless of direction
+ * - namespace - (optional) The material namespace. If left out then it will be assumed to be 'minecraft'. Regex allowed
+ * - material - The material the block is made of. Regex and Tags are allowed
+ * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets. Regex allowed
  */
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;
 
+    /**
+     * Create a {@link BlockSelector} from a {@link String}
+     *
+     * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#toString()}
+     * @throws InstructionParseException Is thrown, if no material match that selector string
+     */
     public BlockSelector(final String block) throws InstructionParseException {
         final String[] selectorParts = getSelectorParts(block);
         materials = getMaterials(selectorParts[0], selectorParts[1]);
@@ -50,15 +45,31 @@ public class BlockSelector {
         }
     }
 
+    /**
+     * Create a {@link BlockSelector} from a {@link Block}
+     *
+     * @param block The {@link Block} of the {@link BlockSelector}
+     * @throws InstructionParseException Is thrown, if no material match that selector string
+     */
     public BlockSelector(final Block block) throws InstructionParseException {
         this(block.getBlockData().getAsString());
     }
 
+    /**
+     * Return the {@link BlockSelector} as a string in a readable format. All matched blocks will be listed.
+     *
+     * @return The readable {@link BlockSelector}
+     */
     @Override
     public String toString() {
         return materials.toString() + (states == null ? "" : "[" + states.toString() + "]");
     }
 
+    /**
+     * Get a random Material. If only one Material is represented by this {@link BlockSelector} this will be returned.
+     *
+     * @return A {@link Material}
+     */
     public Material getRandomMaterial() {
         final Random random = new Random();
         return materials.get(random.nextInt(materials.size()));
@@ -78,6 +89,12 @@ public class BlockSelector {
         return builder.toString();
     }
 
+    /**
+     * Get a BlockData. The Material is random selected from {@link BlockSelector#getRandomMaterial()}.
+     * If the states contains regex {@link IllegalArgumentException} is thrown, if you apply this with {@link BlockState#setBlockData(BlockData)}.
+     *
+     * @return A {@link BlockData}
+     */
     public BlockData getBlockData() {
         if (states == null) {
             return Bukkit.createBlockData(getRandomMaterial());
@@ -86,6 +103,12 @@ public class BlockSelector {
         }
     }
 
+    /**
+     * Set the {@link BlockData} returned from {@link BlockSelector#getBlockData()} to a block.
+     *
+     * @param block        The block that is changed by the {@link BlockData}
+     * @param applyPhysics If physics should be active for that block
+     */
     public void setToBlock(final Block block, final boolean applyPhysics) {
         final BlockState state = block.getState();
 
@@ -99,7 +122,10 @@ public class BlockSelector {
     }
 
     /**
-     * Return true if material matches our selector. State is ignored
+     * Checks if a {@link Material} matched this {@link BlockSelector}. The {@link BlockState} is ignored.
+     *
+     * @param material The {@link Material} that should be compared
+     * @return True if the {@link Material} is represented by this {@link BlockSelector}
      */
     public boolean match(final Material material) {
         return materials.contains(material);
@@ -110,6 +136,14 @@ public class BlockSelector {
      *
      * @param block Block to test
      * @return boolean True if a match occurred
+     */
+    /**
+     * Checks if a {@link Block} matched this {@link BlockSelector}.
+     *
+     * @param block      The {@link Block} that should be compared
+     * @param exactMatch If false, the target block may have more {@link BlockState}s than this {@link BlockSelector}.
+     *                   If true, the the target block is not allowed to have more {@link BlockState}s than this {@link BlockSelector}.
+     * @return True if the {@link Material} is represented by this {@link BlockSelector} and the {@link BlockState} matches.
      */
     public boolean match(final Block block, final boolean exactMatch) {
         if (!match(block.getBlockData().getMaterial())) {
@@ -182,7 +216,6 @@ public class BlockSelector {
         return -1;
     }
 
-    @SuppressWarnings("deprecation")
     private List<Material> getMaterials(final String namespaceString, final String keyString) {
         final List<Material> materials = new ArrayList<>();
         final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
