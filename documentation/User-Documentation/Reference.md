@@ -386,18 +386,21 @@ When specifying a way of matching a block, a `block selector` is used.
 
 ### Format
 
-The format of a block selector is: `prefix:material[state=value,...]`
+The format of a block selector is: `namespace:material[state=value,...]`
 
 Where:
 
-  - `prefix` - (optional) The material prefix. If left out then it will be assumed to be 'minecraft'.
+  - `namespace` - (optional) The material namespace. If left out then it will be assumed to be 'minecraft'.
    Can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
   
   - `material` - The material the block is made of. All materials can be found in
   [Spigots Javadocs](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). 
   It can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
   If the regex ends with square brackets you have to add another pair of empty square brackets even if you don't want to 
-  use the state argument.
+  use the state argument (`[regex][]`).  
+  Instead of using a regex to match multiple materials you can also define a [Tag](https://minecraft.gamepedia.com/Tag) that matches a logic group of materials.
+  Every tag has a tag group like blocks, items, ... and you write it in the format `:blocks:flowers` or `minecraft:blocks:flowers`.
+  Be aware, that a tag always start with `:` or a namespace. 
   
   - `state` - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets.
    You can look up states in [this list](https://minecraft.gamepedia.com/1.13/Flattening#Block_states).
@@ -419,10 +422,14 @@ Examples:
   - `*` - Matches everything
   
   - `*[waterlogged=true]` - Matches all waterlogged blocks
+  
+  - `minecraft:blocks:flowers` - Matches all flowers
+  
+  - `:blocks:crops[age=0]` - Matches all crops with a age of 0 meaning, not grown or just planted
 
 ###Setting behaviour
 
-A block selector with a regex as it's material name results in a random block out of all blocks that match that regex.
+A block selector with a regex or tag as it's material name results in a random block out of all blocks that match that regex or tag.
 You cannot use a regex in block states when the block selector is used for placing blocks.
 
 ###Matching behaviour
