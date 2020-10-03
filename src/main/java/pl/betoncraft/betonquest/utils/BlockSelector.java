@@ -132,12 +132,6 @@ public class BlockSelector {
     }
 
     /**
-     * Return true if block matches our selector
-     *
-     * @param block Block to test
-     * @return boolean True if a match occurred
-     */
-    /**
      * Checks if a {@link Block} matched this {@link BlockSelector}.
      *
      * @param block      The {@link Block} that should be compared
@@ -216,6 +210,7 @@ public class BlockSelector {
         return -1;
     }
 
+    @SuppressWarnings("deprecation")
     private List<Material> getMaterials(final String namespaceString, final String keyString) {
         final List<Material> materials = new ArrayList<>();
         final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
