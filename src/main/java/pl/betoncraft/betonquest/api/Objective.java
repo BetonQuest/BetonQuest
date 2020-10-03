@@ -77,6 +77,9 @@ public abstract class Objective {
             try {
                 events[i] = new EventID(instruction.getPackage(), event);
             } catch (ObjectNotFoundException e) {
+                if (length == 1 && e.getMessage().equals("ID is null")) {
+                    throw new InstructionParseException("Error while parsing objective events: No events are defined!");
+                }
                 throw new InstructionParseException("Error while parsing objective events: " + e.getMessage(), e);
             }
         }
