@@ -112,6 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed issue where the PacketInterceptor prints the message tag in the chat
 - fixed database backups breaking with some languages
 - fixed when PlaceholderAPI variables contains dots
+- fixed quester name not support & as color code
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

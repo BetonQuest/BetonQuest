@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.conversation;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -56,10 +57,10 @@ public class ConversationData {
         if (conv.isConfigurationSection("quester")) {
             //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
-                quester.put(lang, pack.getString("conversations." + name + ".quester." + lang));
+                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
             }
         } else {
-            quester.put(Config.getLanguage(), pack.getString("conversations." + name + ".quester"));
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
         }
         if (conv.isConfigurationSection("prefix")) {
             //noinspection ConstantConditions
