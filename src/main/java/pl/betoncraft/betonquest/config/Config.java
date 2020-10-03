@@ -394,24 +394,24 @@ public class Config {
         }
     }
 
-    public static void sendNotify(final String playerID, final String messageName, final String category) {
-        sendNotify(playerID, messageName, null, category);
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) {
+        sendNotify(packName, playerID, messageName, null, category);
     }
 
-    public static void sendNotify(final Player player, final String messageName, final String category) {
-        sendNotify(player, messageName, null, category);
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) {
+        sendNotify(packName, player, messageName, null, category);
     }
 
-    public static void sendNotify(final String playerID, final String messageName, final String[] variables, final String category) {
-        sendNotify(playerID, messageName, variables, category, null);
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) {
+        sendNotify(packName, playerID, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final Player player, final String messageName, final String[] variables, final String category) {
-        sendNotify(player, messageName, variables, category, null);
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) {
+        sendNotify(packName, player, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
-        sendNotify(PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+        sendNotify(packName, PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
     }
 
     /**
@@ -425,13 +425,13 @@ public class Config {
      * @param category    notification category
      * @param data        custom notifyIO data
      */
-    public static void sendNotify(final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
         final String message = parseMessage(player, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        Notify.get(category, data).sendNotify(message, player);
+        Notify.get(category, data).sendNotify(packName, message, player);
     }
 
     public static String parseMessage(final String playerID, final String messageName, final String[] variables) {

@@ -47,11 +47,11 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendNotify(playerID, "blocks_to_break",
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
                             new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
                             "blocks_to_break,info");
                 } else {
-                    Config.sendNotify(playerID, "blocks_to_place",
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
                             new String[]{String.valueOf(neededAmount - playerData.getAmount())},
                             "blocks_to_place,info");
                 }
@@ -69,11 +69,11 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendNotify(playerID, "blocks_to_break",
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
                             new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
                             "blocks_to_break,info");
                 } else {
-                    Config.sendNotify(playerID, "blocks_to_place",
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
                             new String[]{String.valueOf(neededAmount - playerData.getAmount())},
                             "blocks_to_place,info");
                 }

@@ -138,7 +138,12 @@ public class Notify {
         }
 
         @Override
-        public void sendNotify(final String message, final Collection<? extends Player> players) {
+        public void sendNotify(final String packName, final String message, final Player... players) {
+        }
+
+        @Override
+        public void sendNotify(final HashMap<Player, String> playerMessages) {
+
         }
     }
 

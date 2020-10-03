@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,21 +17,16 @@ import java.util.Map;
  */
 public class ActionBarNotifyIO extends NotifyIO {
 
-
-    // Variables
-
     public ActionBarNotifyIO(final Map<String, String> data) {
         super(data);
     }
 
     @Override
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
-        final BaseComponent[] textMessage = TextComponent.fromLegacyText(Utils.format(message));
-
-        for (final Player player : players) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
+    public void sendNotify(final HashMap<Player, String> playerMessages) {
+        for (final Map.Entry<Player,String> entry : playerMessages.entrySet()) {
+            final BaseComponent[] textMessage = TextComponent.fromLegacyText(Utils.format(entry.getValue()));
+            entry.getKey().spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
         }
-
-        sendNotificationSound(players);
+        sendNotificationSound(playerMessages.keySet());
     }
 }

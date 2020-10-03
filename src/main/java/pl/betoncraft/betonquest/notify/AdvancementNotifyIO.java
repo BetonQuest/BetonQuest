@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.notify;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -13,16 +14,13 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
  * Use Advancement Popup for Notification
  * <p>
- * Data Valuues:
+ * Data Values:
  * * frame: {challenge|goal|task|default} - What frame to use
  * * icon:  {item_name} - What icon to use
  */
@@ -47,43 +45,78 @@ public class AdvancementNotifyIO extends NotifyIO {
 
         icon = "minecraft:map";
         if (getData().containsKey("icon")) {
-            // Before 1.13 we can't check this without linking to NMS so for now we'll have to trust the user input
-            // and catch the horrible exception later.
-            icon = getData().get("icon");
+            icon = getData().get("icon").toLowerCase();
         }
     }
 
     @Override
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
-        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
+    public void sendNotify(final HashMap<Player, String> playerMessages) {
+        final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages = loadAdvancements(playerMessages);
 
-        // Add the advancement. Pre 1.13 we have to catch some errors here
-        try {
-            add(key, Utils.format(message));
-        } catch (JsonSyntaxException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Failed to create notification. Check your syntax and make sure your icon is lowercase with its vanilla name (IE: minecraft:map)");
-            LogUtils.logThrowable(e);
-            return;
-        }
-
-        // Grant to players
-        for (final Player player : players) {
-            grant(key, player);
-        }
+        grantAll(messages);
 
         // Remove after 10 ticks
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                for (final Player player : players) {
-                    revoke(key, player);
-                }
-                remove(key);
+                revokeAll(messages);
+                removeAll(messages);
             }
         }.runTaskLater(BetonQuest.getInstance(), 10);
 
-        sendNotificationSound(players);
+        sendNotificationSound(playerMessages.keySet());
+    }
+
+    private HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> loadAdvancements(final HashMap<Player, String> playerMessages) {
+        final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages = new HashMap<>();
+        for (final Map.Entry<Player, String> entry : playerMessages.entrySet()) {
+            if (messages.containsKey(entry.getValue())) {
+                messages.get(entry.getValue()).getLeft().add(entry.getKey());
+            } else {
+                final ArrayList<Player> players = new ArrayList<>();
+                players.add(entry.getKey());
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
+                try {
+                    add(key, Utils.format(entry.getValue()));
+                } catch (Exception e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Failed to create notification: '" + entry.getValue() + "',! Cause: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                    messages.put(entry.getValue(), Pair.of(players, null));
+                    continue;
+                }
+                messages.put(entry.getValue(), Pair.of(players, key));
+            }
+        }
+        return messages;
+    }
+
+    private void grantAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
+        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
+            if(entry.getRight() != null) {
+                for(final Player player : entry.getLeft()) {
+                    grant(entry.getRight(), player);
+                }
+            }
+        }
+    }
+
+    private void revokeAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
+        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
+            if(entry.getRight() != null) {
+                for(final Player player : entry.getLeft()) {
+                    revoke(entry.getRight(), player);
+                }
+            }
+        }
+    }
+
+    private void removeAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
+        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
+            if(entry.getRight() != null) {
+                remove(entry.getRight());
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")

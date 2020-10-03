@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,17 +28,17 @@ public class SubTitleNotifyIO extends NotifyIO {
     public SubTitleNotifyIO(final Map<String, String> data) {
         super(data);
 
-        fadeIn = Integer.valueOf(data.getOrDefault("fadein", "10"));
-        stay = Integer.valueOf(data.getOrDefault("stay", "70"));
-        fadeOut = Integer.valueOf(data.getOrDefault("fadeout", "20"));
+        fadeIn = Integer.parseInt(data.getOrDefault("fadein", "10"));
+        stay = Integer.parseInt(data.getOrDefault("stay", "70"));
+        fadeOut = Integer.parseInt(data.getOrDefault("fadeout", "20"));
     }
 
     @Override
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
-        for (final Player player : players) {
-            player.sendTitle("", Utils.format(message), fadeIn, stay, fadeOut);
+    public void sendNotify(final HashMap<Player, String> playerMessages) {
+        for (final Map.Entry<Player,String> entry : playerMessages.entrySet()) {
+            entry.getKey().sendTitle("", Utils.format(entry.getValue()), fadeIn, stay, fadeOut);
         }
-
-        sendNotificationSound(players);
+        sendNotificationSound(playerMessages.keySet());
     }
+
 }

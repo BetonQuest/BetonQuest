@@ -53,7 +53,7 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         if (playerData.getPlacedBlocks() == neededAmount) {
             completeObjective(playerID);
         } else if (notify && playerData.getPlacedBlocks() % notifyInterval == 0) {
-            Config.sendNotify(playerID, "blocks_to_break",
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
                     new String[]{String.valueOf(neededAmount - playerData.getPlacedBlocks())},
                     "blocks_to_break,info");
         }

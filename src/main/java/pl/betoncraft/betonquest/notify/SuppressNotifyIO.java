@@ -2,7 +2,7 @@ package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,6 +15,6 @@ public class SuppressNotifyIO extends NotifyIO {
     }
 
     @Override
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
+    public void sendNotify(final HashMap<Player, String> playerMessages) {
     }
 }

@@ -81,7 +81,7 @@ public class MobKillObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // send a notification
-                Config.sendNotify(playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())},
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())},
                         "mobs_to_kill,info");
             }
         }

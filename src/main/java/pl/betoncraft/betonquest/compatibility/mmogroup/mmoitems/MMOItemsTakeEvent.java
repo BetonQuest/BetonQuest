@@ -61,7 +61,7 @@ public class MMOItemsTakeEvent extends QuestEvent {
         inv.setContents(inventoryItems);
 
         if (notify && deletedCounter > 1) {
-            Config.sendNotify(playerID, "items_taken",
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
                     new String[]{itemName, String.valueOf(deletedCounter)},
                     "items_given,info");
         }

@@ -77,7 +77,7 @@ public class PointEvent extends QuestEvent {
                 if (p.getCategory().equalsIgnoreCase(category)) {
                     playerData.modifyPoints(category, (int)Math.floor(p.getCount() * count.getDouble(playerID) - p.getCount()));
                     if (notify) {
-                        Config.sendNotify(playerID, "point_multiplied", new String[] { String.valueOf(intCount), categoryName }, "point_multiplied,info");
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "point_multiplied", new String[] { String.valueOf(intCount), categoryName }, "point_multiplied,info");
                     }
                 }
             }
@@ -85,10 +85,10 @@ public class PointEvent extends QuestEvent {
         else {
             playerData.modifyPoints(category, (int)Math.floor(count.getDouble(playerID)));
             if (notify && intCount > 0) {
-                Config.sendNotify(playerID, "point_given", new String[] { String.valueOf(intCount), categoryName }, "point_given,info");
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "point_given", new String[] { String.valueOf(intCount), categoryName }, "point_given,info");
 
             } else if (notify) {
-                Config.sendNotify(playerID, "point_taken", new String[] { String.valueOf(Math.abs(intCount)), categoryName }, "point_taken,info");
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "point_taken", new String[] { String.valueOf(Math.abs(intCount)), categoryName }, "point_taken,info");
             }
         }
     }

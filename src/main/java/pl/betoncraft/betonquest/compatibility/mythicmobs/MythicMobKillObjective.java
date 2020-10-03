@@ -60,7 +60,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
             completeObjective(playerID);
         } else if (notify) {
             // send a notification
-            Config.sendNotify(playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
         }
 
     }
