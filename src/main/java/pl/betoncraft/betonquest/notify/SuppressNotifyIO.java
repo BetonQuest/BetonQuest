@@ -1,20 +1,17 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.entity.Player;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Used to supress any notification including sounds
- */
 public class SuppressNotifyIO extends NotifyIO {
 
-    public SuppressNotifyIO(final Map<String, String> data) {
+    public SuppressNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(data);
     }
 
     @Override
-    public void sendNotify(final HashMap<Player, String> playerMessages) {
+    protected void sendNotify(final String message, final Player player) {
     }
 }

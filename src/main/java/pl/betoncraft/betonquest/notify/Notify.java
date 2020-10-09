@@ -120,7 +120,7 @@ public class Notify {
 
         if (tio == null) {
             LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
-            return new DummyIO(ioData);
+            return new SuppressNotifyIO(ioData);
         }
 
         return tio;
@@ -129,22 +129,4 @@ public class Notify {
     public static NotifyIO get() {
         return get(new HashMap<>());
     }
-
-    // Fallback dummy IO
-    public static class DummyIO extends NotifyIO {
-
-        public DummyIO(final Map<String, String> data) {
-            super(data);
-        }
-
-        @Override
-        public void sendNotify(final String packName, final String message, final Player... players) {
-        }
-
-        @Override
-        public void sendNotify(final HashMap<Player, String> playerMessages) {
-
-        }
-    }
-
 }
