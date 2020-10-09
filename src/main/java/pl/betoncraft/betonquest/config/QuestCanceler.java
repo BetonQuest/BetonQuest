@@ -246,7 +246,7 @@ public class QuestCanceler {
         // done
         LogUtils.getLogger().log(Level.FINE, "Quest removed!");
         final String questName = getName(playerID);
-        Config.sendNotify(playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+        Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
     }
 
     /**

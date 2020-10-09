@@ -94,7 +94,7 @@ public class BrewObjective extends Objective implements Listener {
                 if (data.getAmount() >= amount) {
                     completeObjective(playerID);
                 } else if (notify && data.getAmount() % notifyInterval == 0) {
-                    Config.sendNotify(playerID, "potions_to_brew",
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "potions_to_brew",
                             new String[]{String.valueOf(amount - data.getAmount())},
                             "potions_to_brew,info");
                 }

@@ -54,7 +54,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         }
 
         if (notify) {
-            Config.sendNotify(playerID, "items_given",
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
                     new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                     "items_given,info");
         }

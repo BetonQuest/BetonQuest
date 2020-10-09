@@ -46,7 +46,7 @@ public class TakeEvent extends QuestEvent {
 
             // notify the player
             if (notify) {
-                Config.sendNotify(playerID, "items_taken",
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
                         new String[]{
                                 questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
                                 String.valueOf(counter)},

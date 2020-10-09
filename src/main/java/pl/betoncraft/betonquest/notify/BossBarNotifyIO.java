@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.notify;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -61,7 +62,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         if (getData().containsKey("progress")) {
             try {
-                progress = Math.max(0.0, Math.min(1.0, Double.valueOf(getData().get("progress"))));
+                progress = Math.max(0.0, Math.min(1.0, Double.parseDouble(getData().get("progress"))));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar progress: " + getData().get("progress"));
                 LogUtils.logThrowable(e);
@@ -79,7 +80,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         if (getData().containsKey("stay")) {
             try {
-                stay = Math.max(0, Integer.valueOf(getData().get("stay")));
+                stay = Math.max(0, Integer.parseInt(getData().get("stay")));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar stay: " + getData().get("stay"));
                 LogUtils.logThrowable(e);
@@ -88,7 +89,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         if (getData().containsKey("countdown")) {
             try {
-                countdown = Integer.valueOf(getData().get("countdown"));
+                countdown = Integer.parseInt(getData().get("countdown"));
             } catch (IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar countdown: " + getData().get("countdown"));
                 LogUtils.logThrowable(e);
@@ -98,50 +99,69 @@ public class BossBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    public void sendNotify(final String message, final Collection<? extends Player> players) {
-        final BossBar bossBar = Bukkit.createBossBar(Utils.format(message), barColor, style);
-        if (barFlags != null) {
-            for (final BarFlag flag : barFlags) {
-                bossBar.addFlag(flag);
+    public void sendNotify(final HashMap<Player, String> playerMessages) {
+        loadBars(playerMessages);
+        sendNotificationSound(playerMessages.keySet());
+    }
+
+    private void loadBars(final HashMap<Player, String> playerMessages) {
+        final HashMap<String, Pair<ArrayList<Player>, BossBar>> messages = new HashMap<>();
+        for (final Map.Entry<Player, String> entry : playerMessages.entrySet()) {
+            if (messages.containsKey(entry.getValue())) {
+                final Pair<ArrayList<Player>, BossBar> pair = messages.get(entry.getValue());
+                pair.getLeft().add(entry.getKey());
+                pair.getRight().addPlayer(entry.getKey());
+            } else {
+                final ArrayList<Player> players = new ArrayList<>();
+                players.add(entry.getKey());
+                final BossBar bossBar = Bukkit.createBossBar(Utils.format(entry.getValue()), barColor, style);
+                if (barFlags != null) {
+                    for (final BarFlag flag : barFlags) {
+                        bossBar.addFlag(flag);
+                    }
+                }
+                bossBar.setProgress(progress);
+                bossBar.addPlayer(entry.getKey());
+                bossBar.setVisible(true);
+                scheduleRemoval(bossBar);
+
+                // If Countdown, then divide stay by countdown and reduce progress to 0 by those intervals
+                if (countdown > 0) {
+                    final int interval = stay / countdown;
+                    final double amount = progress / ((double) countdown);
+                    scheduleAnimation(bossBar, interval, amount);
+                }
+                messages.put(entry.getValue(), Pair.of(players, bossBar));
             }
         }
-        bossBar.setProgress(progress);
+    }
 
-        // Show bar
-        for (final Player player : players) {
-            bossBar.addPlayer(player);
-        }
-
-        bossBar.setVisible(true);
-
-        // Remove after stay ticks
+    private void scheduleAnimation(final BossBar bar, final int interval, final double amount) {
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                bossBar.removeAll();
+                if (countdown == 0) {
+                    cancel();
+                    return;
+                }
+                countdown -= 1;
+                progress -= amount;
+                bar.setProgress(Math.max(0.0, progress));
+
+            }
+        }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
+    }
+
+
+    private void scheduleRemoval(final BossBar bar) {
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                bar.removeAll();
             }
         }.runTaskLater(BetonQuest.getInstance(), stay);
-
-        // If Countdown, then divide stay by countdown and reduce progress to 0 by those intevals
-        if (countdown > 0) {
-            final int interval = stay / countdown;
-            final double amount = progress / ((double) countdown);
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    if (countdown == 0) {
-                        cancel();
-                        return;
-                    }
-                    countdown -= 1;
-                    progress -= amount;
-                    bossBar.setProgress(Math.max(0.0, progress));
-                }
-            }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
-        }
-
-        sendNotificationSound(players);
     }
+
 }

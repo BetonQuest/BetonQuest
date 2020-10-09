@@ -54,13 +54,13 @@ public class MoneyEvent extends QuestEvent {
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
-                Config.sendNotify(playerID, "money_given",
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "money_given",
                         new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
             }
         } else if (difference < 0) {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
-                Config.sendNotify(playerID, "money_taken",
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "money_taken",
                         new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
             }
         }

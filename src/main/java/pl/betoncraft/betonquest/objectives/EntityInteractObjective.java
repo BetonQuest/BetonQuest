@@ -145,7 +145,7 @@ public class EntityInteractObjective extends Objective {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // send a notification
-                Config.sendNotify(playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())},
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())},
                         "mobs_to_click,info");
             }
             return true;

@@ -58,7 +58,7 @@ public class JournalEvent extends QuestEvent {
             final Journal journal = playerData.getJournal();
             if (add) {
                 journal.addPointer(new Pointer(name, new Date().getTime()));
-                Config.sendNotify(playerID, "new_journal_entry", null, "new_journal_entry,info");
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "new_journal_entry", null, "new_journal_entry,info");
             } else if (name != null) {
                 journal.removePointer(name);
             }

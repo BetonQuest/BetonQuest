@@ -59,7 +59,7 @@ public class NotifyEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-        Notify.get(category, data).sendNotify(message, player);
+        Notify.get(category, data).sendNotify(instruction.getPackage().getName(), message, player);
         return null;
     }
 

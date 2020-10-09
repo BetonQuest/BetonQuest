@@ -59,7 +59,7 @@ public class ShearObjective extends Objective implements Listener {
             if (data.getAmount() <= 0) {
                 completeObjective(playerID);
             } else if (notify && data.getAmount() % notifyInterval == 0) {
-                Config.sendNotify(playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())},
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())},
                         "sheep_to_shear,info");
             }
         }

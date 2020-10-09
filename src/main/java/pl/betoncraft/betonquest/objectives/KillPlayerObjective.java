@@ -59,7 +59,7 @@ public class KillPlayerObjective extends Objective implements Listener {
             if (data.getLeft() <= 0) {
                 completeObjective(killer);
             } else if (notify && data.getLeft() % notifyInterval == 0) {
-                Config.sendNotify(killer, "players_to_kill", new String[]{String.valueOf(data.getLeft())},
+                Config.sendNotify(instruction.getPackage().getName(), killer, "players_to_kill", new String[]{String.valueOf(data.getLeft())},
                         "players_to_kill,info");
             }
         }

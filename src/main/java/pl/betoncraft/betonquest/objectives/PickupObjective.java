@@ -57,7 +57,7 @@ public class PickupObjective extends Objective implements Listener {
         }
 
         if (notify) {
-            Config.sendNotify(playerID, "items_to_pickup", new String[]{Integer.toString(playerData.getAmount())}, "items_to_pickup,info");
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "items_to_pickup", new String[]{Integer.toString(playerData.getAmount())}, "items_to_pickup,info");
         }
     }
 
