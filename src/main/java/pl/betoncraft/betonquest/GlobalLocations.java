@@ -24,8 +24,11 @@ import java.util.logging.Level;
 
 /**
  * Handler for global locations.
- * @deprecated The old global locations system got replaced by the new {@link GlobalObjectives global objectives}
+ *
+ * @deprecated The old global locations system got replaced by the new {@link GlobalObjectives global objectives},
+ * this will be removed in 2.0 release
  */
+// TODO Delete in BQ 2.0.0
 @Deprecated
 public class GlobalLocations extends BukkitRunnable {
 

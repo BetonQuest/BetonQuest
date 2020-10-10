@@ -37,6 +37,7 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
     /**
      * @deprecated There is a new constructor that handles thread safety.
      * Using this may worsen your conditions performance!
+     * This will be removed in 2.0 release
      */
     // TODO Delete in BQ 2.0.0
     @Deprecated
