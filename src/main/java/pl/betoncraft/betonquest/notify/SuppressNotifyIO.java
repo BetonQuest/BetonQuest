@@ -10,9 +10,10 @@ public class SuppressNotifyIO extends NotifyIO {
 
     public SuppressNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(new HashMap<>());
+        data.clear();
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
     }
 }

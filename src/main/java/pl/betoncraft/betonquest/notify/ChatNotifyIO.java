@@ -12,7 +12,7 @@ public class ChatNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         player.sendMessage(message);
     }
 }

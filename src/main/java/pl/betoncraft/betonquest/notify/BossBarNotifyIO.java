@@ -58,7 +58,7 @@ public class BossBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         final BossBar bossBar = Bukkit.createBossBar(message, barColor, style);
         for (final BarFlag flag : barFlags) {
             bossBar.addFlag(flag);

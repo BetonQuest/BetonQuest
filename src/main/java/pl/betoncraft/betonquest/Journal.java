@@ -388,7 +388,7 @@ public class Journal {
         final List<String> finalList = new ArrayList<>();
         if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
             final String color = Config.getString("config.journal_colors.line");
-            String separator = Config.parseMessage(playerID, "journal_separator", null);
+            String separator = Config.parseMessage(null, playerID, "journal_separator", null);
             if (separator == null) {
                 separator = "---------------";
             }

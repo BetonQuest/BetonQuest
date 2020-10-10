@@ -21,7 +21,7 @@ public class SubTitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         player.sendTitle("", message, fadeIn, stay, fadeOut);
     }
 }

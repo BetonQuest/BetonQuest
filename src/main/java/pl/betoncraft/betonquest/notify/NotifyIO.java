@@ -6,10 +6,8 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.LocationData;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
@@ -33,27 +31,18 @@ public abstract class NotifyIO {
         sound = new IOSound();
     }
 
-    public void sendNotify(final String packName, final String message) {
+    public void sendNotify(@NotNull final String message) {
         for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
-            sendNotify(packName, message, player);
+            sendNotify(message, player);
         }
     }
 
-    public void sendNotify(final String packName, @NotNull final String message, @NotNull final Player player) {
+    public void sendNotify(@NotNull final String message, @NotNull final Player player) {
         sound.sendSound(player);
-        if (packName == null) {
-            sendNotify(Utils.format(message), player);
-        } else {
-            String resolvedMessage = message;
-            for (final String variable : BetonQuest.resolveVariables(message)) {
-                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, PlayerConverter.getID(player));
-                resolvedMessage = resolvedMessage.replace(variable, replacement);
-            }
-            sendNotify(Utils.format(resolvedMessage), player);
-        }
+        notifyPlayer(Utils.format(message), player);
     }
 
-    protected abstract void sendNotify(final String message, final Player player);
+    protected abstract void notifyPlayer(final String message, final Player player);
 
     protected float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);

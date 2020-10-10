@@ -20,7 +20,7 @@ public class TitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         final String[] messageParts = message.split("\n");
         final String title = messageParts[0];
         final String subtitle = messageParts.length > 1 ? messageParts[1] : "";

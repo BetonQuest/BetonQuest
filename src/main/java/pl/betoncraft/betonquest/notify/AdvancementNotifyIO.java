@@ -30,7 +30,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         final NamespacedKey key = loadAdvancement(message);
         grant(key, player);
         new BukkitRunnable() {

@@ -15,7 +15,7 @@ public class ActionBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void sendNotify(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final Player player) {
         final BaseComponent[] textMessage = TextComponent.fromLegacyText(message);
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
     }
