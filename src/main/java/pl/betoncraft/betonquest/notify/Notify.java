@@ -102,7 +102,7 @@ public class Notify {
                 }
             }
         }
-        return null;
+        throw new InstructionParseException("No Notify IO could be found, searched for '" + ios + "'!");
     }
 
     /**
