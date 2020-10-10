@@ -64,20 +64,24 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private void grant(final NamespacedKey key, final Player player) {
         final Advancement advancement = Bukkit.getAdvancement(key);
-        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
-        if (!progress.isDone()) {
-            for (final String criteria : progress.getRemainingCriteria()) {
-                progress.awardCriteria(criteria);
+        if (advancement != null) {
+            final AdvancementProgress progress = player.getAdvancementProgress(advancement);
+            if (!progress.isDone()) {
+                for (final String criteria : progress.getRemainingCriteria()) {
+                    progress.awardCriteria(criteria);
+                }
             }
         }
     }
 
     private void revoke(final NamespacedKey key, final Player player) {
         final Advancement advancement = Bukkit.getAdvancement(key);
-        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
-        if (progress.isDone()) {
-            for (final String criteria : progress.getRemainingCriteria()) {
-                progress.revokeCriteria(criteria);
+        if (advancement != null) {
+            final AdvancementProgress progress = player.getAdvancementProgress(advancement);
+            if (progress.isDone()) {
+                for (final String criteria : progress.getRemainingCriteria()) {
+                    progress.revokeCriteria(criteria);
+                }
             }
         }
     }
