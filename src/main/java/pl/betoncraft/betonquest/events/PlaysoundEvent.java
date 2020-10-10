@@ -7,11 +7,19 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Plays a sound for the player
+ *
+ * @deprecated Use the {@link NotifyEvent} instead,
+ * this will be removed in 2.0 release
  */
+// TODO Delete in BQ 2.0.0
+@Deprecated
 public class PlaysoundEvent extends QuestEvent {
 
     private final String sound;
@@ -22,6 +30,8 @@ public class PlaysoundEvent extends QuestEvent {
 
     public PlaysoundEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        LogUtils.getLogger().log(Level.WARNING, "This event will be REMOVED! Use the Notify system instead: "
+                + "https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Notifications/");
         sound = instruction.next();
         location = instruction.getLocation(instruction.getOptional("location"));
         final String category = instruction.getOptional("category");

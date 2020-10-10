@@ -83,6 +83,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - static events now allow comma separated event list
 - changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
 ### Deprecated
+- Marked message event for removal in BQ 2.0
+- Marked playsound event for removal in BQ 2.0
+- Marked title event for removal in BQ 2.0
 ### Removed
 - Removed Deprecated Exceptions
 - Removed RacesAndClasses support
