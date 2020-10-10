@@ -87,8 +87,8 @@ public class BossBarNotifyIO extends NotifyIO {
     private void scheduleAnimation(final BossBar bar, final int interval, final double amount) {
 
         new BukkitRunnable() {
-            int currentCountdown = countdown;
-            double currentProgress = progress;
+            private int currentCountdown = countdown;
+            private double currentProgress = progress;
 
             @Override
             public void run() {

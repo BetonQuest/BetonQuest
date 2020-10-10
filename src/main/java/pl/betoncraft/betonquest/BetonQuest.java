@@ -317,6 +317,7 @@ public class BetonQuest extends JavaPlugin {
 
         // load configuration
         new Config();
+        Notify.load();
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
@@ -804,6 +805,7 @@ public class BetonQuest extends JavaPlugin {
         // reload the configuration
         LogUtils.getLogger().log(Level.FINE, "Reloading configuration");
         new Config();
+        Notify.load();
         // reload updater settings
         BetonQuest.getInstance().getUpdater().reload();
         // load new static events

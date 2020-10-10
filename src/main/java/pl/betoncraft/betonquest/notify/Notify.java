@@ -11,6 +11,13 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class Notify {
+    private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
+    private static String defaultNotifyIO = null;
+
+    public static void load() {
+        loadCategorySettings();
+        defaultNotifyIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
+    }
 
     public static NotifyIO get() {
         return get(null, null);
@@ -35,9 +42,8 @@ public class Notify {
         }
 
         final List<String> ios = getIOs(categoryData);
-        final String configuredIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
-        if (configuredIO != null) {
-            ios.add(configuredIO);
+        if (defaultNotifyIO != null) {
+            ios.add(defaultNotifyIO);
         }
         ios.add("chat");
 
@@ -64,23 +70,11 @@ public class Notify {
         return categories;
     }
 
-    private static Map<String, String> getCategorySettings(SortedSet<String> categories) {
-        for (final String packName : Config.getPackages().keySet()) {
-            final ConfigurationSection section = Config.getPackages().get(packName).getCustom().getConfig().getConfigurationSection("notifications");
-            if (section != null) {
-                final SortedSet<String> intersect = new TreeSet<>(categories);
-                intersect.retainAll(section.getKeys(false));
-                if (intersect.size() > 0) {
-                    final ConfigurationSection selectedConfig = section.getConfigurationSection(intersect.first());
-                    if (selectedConfig != null && intersect.first().equals(categories.first())) {
-                        final Map<String, String> ioData = new HashMap<>();
-                        for (final String key : selectedConfig.getKeys(false)) {
-                            ioData.put(key.toLowerCase(Locale.ROOT), selectedConfig.getString(key));
-                        }
-                        return ioData;
-                    }
-                    categories = categories.subSet(categories.first(), intersect.first());
-                }
+    private static Map<String, String> getCategorySettings(final SortedSet<String> categories) {
+        for (final String category : categories) {
+            final Map<String, String> data = CATEGORY_SETTINGS.get(category);
+            if (data != null) {
+                return data;
             }
         }
         return new HashMap<>();
@@ -109,5 +103,26 @@ public class Notify {
             }
         }
         return null;
+    }
+
+    private static void loadCategorySettings() {
+        final Map<String, Map<String, String>> settings = new HashMap<>();
+        for (final String packName : Config.getPackages().keySet()) {
+            final ConfigurationSection notifySection = Config.getPackages().get(packName).getCustom().getConfig().getConfigurationSection("notifications");
+            if (notifySection != null) {
+                for (final String notifyName : notifySection.getKeys(false)) {
+                    final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);
+                    if (notify != null && !settings.containsKey(notifyName)) {
+                        final Map<String, String> data = new HashMap<>();
+                        for (final String key : notify.getKeys(false)) {
+                            data.put(key.toLowerCase(Locale.ROOT), notify.getString(key));
+                        }
+                        settings.put(notifyName, data);
+                    }
+                }
+            }
+        }
+        CATEGORY_SETTINGS.clear();
+        CATEGORY_SETTINGS.putAll(settings);
     }
 }
