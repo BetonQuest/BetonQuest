@@ -27,7 +27,7 @@ public class Notify {
         return get(category, null);
     }
 
-    public static NotifyIO get(final Map<String, String> data) {
+    public static NotifyIO get(@Nullable final Map<String, String> data) {
         return get(null, data);
     }
 
