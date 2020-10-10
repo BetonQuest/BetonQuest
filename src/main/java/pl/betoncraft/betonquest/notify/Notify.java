@@ -58,7 +58,7 @@ public class Notify {
         } catch (final InstructionParseException exception) {
             LogUtils.logThrowableReport(exception);
         }
-        return null;
+        throw new NullPointerException();
     }
 
     private static SortedSet<String> getCategories(final String category) {
