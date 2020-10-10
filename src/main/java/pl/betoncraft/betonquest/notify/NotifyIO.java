@@ -84,23 +84,23 @@ public abstract class NotifyIO {
         public IOSound() throws InstructionParseException {
             sound = data.get("sound");
 
-            final String locationString = data.get("soundLocation");
+            final String locationString = data.get("soundlocation");
             location = locationString == null ? null : LocationData.parseLocation(locationString);
 
-            final String locationOffsetString = data.get("soundLocationOffset");
+            final String locationOffsetString = data.get("soundlocationoffset");
             locationOffset = locationOffsetString == null ? new Vector() : LocationData.parseVector(locationOffsetString);
 
-            final String soundCategoryString = data.get("soundCategory");
+            final String soundCategoryString = data.get("soundcategory");
             try {
                 soundCategory = soundCategoryString == null ? SoundCategory.MASTER : SoundCategory.valueOf(soundCategoryString.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException exception) {
-                throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "SoundCategory", soundCategoryString.toUpperCase(Locale.ROOT)), exception);
+                throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "soundcategory", soundCategoryString.toUpperCase(Locale.ROOT)), exception);
             }
 
-            final String volumeString = data.get("soundVolume");
-            volume = getFloatData("soundVolume", 1);
-            final String pitchString = data.get("soundPitch");
-            pitch = getFloatData("soundPitch", 1);
+            final String volumeString = data.get("soundvolume");
+            volume = getFloatData("soundvolume", 1);
+            final String pitchString = data.get("soundpitch");
+            pitch = getFloatData("soundpitch", 1);
 
             if (sound == null && (locationString != null || locationOffsetString != null || soundCategoryString != null || volumeString != null || pitchString != null)) {
                 throw new InstructionParseException("You must specify a 'sound' if you want to use sound options!");
