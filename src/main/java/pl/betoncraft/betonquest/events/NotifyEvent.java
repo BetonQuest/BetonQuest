@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NotifyEvent extends QuestEvent {
-    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+):(?<value>\\S+)");
+    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z]{2})\\} (?<message>.*?)(?=(?: )\\{[a-z]{2}\\} |$)");
 
     private final HashMap<String, String> messages;
@@ -29,41 +29,43 @@ public class NotifyEvent extends QuestEvent {
         messages = new HashMap<>();
         variables = new ArrayList<>();
 
+        final HashMap<String, String> data = new HashMap<>();
+
         final String rawInstruction = instruction.getInstruction();
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 
         final int indexStart = rawInstruction.indexOf(" ") + 1;
-        final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() - 1 : rawInstruction.length();
-        keyValueMatcher.reset();
+        if (indexStart != 0) {
+            final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
+            keyValueMatcher.reset();
 
-        final String langMessages = rawInstruction.substring(indexStart, indexEnd);
-        checkVariables(langMessages);
+            final String langMessages = rawInstruction.substring(indexStart, indexEnd);
+            checkVariables(langMessages);
 
-        final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(langMessages);
-        while (languageMatcher.find()) {
-            final String lang = languageMatcher.group("lang");
-            final String message = languageMatcher.group("message")
-                    .replace("\\{", "{")
-                    .replace("\\:", ":");
-            messages.put(lang, message);
-        }
-        if (messages.isEmpty()) {
-            messages.put(Config.getLanguage(), langMessages);
-        }
-        if (!messages.containsKey(Config.getLanguage())) {
-            throw new InstructionParseException("No message defined for default language '" + Config.getLanguage() + "'!");
-        }
+            final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(langMessages);
+            while (languageMatcher.find()) {
+                final String lang = languageMatcher.group("lang");
+                final String message = languageMatcher.group("message")
+                        .replace("\\{", "{")
+                        .replace("\\:", ":");
+                messages.put(lang, message);
+            }
+            if (messages.isEmpty()) {
+                messages.put(Config.getLanguage(), langMessages);
+            }
+            if (!messages.containsKey(Config.getLanguage())) {
+                throw new InstructionParseException("No message defined for default language '" + Config.getLanguage() + "'!");
+            }
 
-        final HashMap<String, String> data = new HashMap<>();
-        while (keyValueMatcher.find()) {
-            final String key = keyValueMatcher.group("key");
-            final String value = keyValueMatcher.group("value");
-            data.put(key, value);
+            while (keyValueMatcher.find()) {
+                final String key = keyValueMatcher.group("key");
+                final String value = keyValueMatcher.group("value");
+                data.put(key, value);
+            }
+            data.remove("events");
+            data.remove("conditions");
         }
         final String category = data.remove("category");
-        data.remove("events");
-        data.remove("conditions");
-
         notifyIO = Notify.get(category, data);
     }
 

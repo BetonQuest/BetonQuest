@@ -536,6 +536,7 @@ public class BetonQuest extends JavaPlugin {
         registerNotifyIO("bossbar", BossBarNotifyIO.class);
         registerNotifyIO("title", TitleNotifyIO.class);
         registerNotifyIO("subtitle", SubTitleNotifyIO.class);
+        registerNotifyIO("sound", SoundIO.class);
 
         // register variable types
         registerVariable("condition", ConditionVariable.class);
