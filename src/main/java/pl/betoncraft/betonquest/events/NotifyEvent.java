@@ -61,6 +61,8 @@ public class NotifyEvent extends QuestEvent {
             data.put(key, value);
         }
         final String category = data.remove("category");
+        data.remove("events");
+        data.remove("conditions");
 
         notifyIO = Notify.get(category, data);
     }

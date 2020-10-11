@@ -484,6 +484,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("pickrandom", PickRandomEvent.class);
         registerEvents("experience", ExperienceEvent.class);
         registerEvents("notify", NotifyEvent.class);
+        registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
 
         // register objectives
