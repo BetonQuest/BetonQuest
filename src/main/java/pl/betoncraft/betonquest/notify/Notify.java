@@ -50,15 +50,15 @@ public class Notify {
         try {
             return getNotifyIO(ios, categoryData);
         } catch (final InstructionParseException exception) {
-            LogUtils.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+            LogUtils.getLogger().log(Level.WARNING, exception.getMessage(), exception);
         }
 
         try {
             return new SuppressNotifyIO(categoryData);
         } catch (final InstructionParseException exception) {
             LogUtils.logThrowableReport(exception);
+            throw new UnsupportedOperationException();
         }
-        throw new NullPointerException();
     }
 
     private static SortedSet<String> getCategories(final String category) {
