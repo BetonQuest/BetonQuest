@@ -15,7 +15,7 @@ public class NotifyAllEvent extends NotifyEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
             super.execute(PlayerConverter.getID(player));
         }
         return null;
