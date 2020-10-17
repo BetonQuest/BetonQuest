@@ -330,14 +330,16 @@ Manages the objectives. Syntax is `objective <action> name`, where `<action>` ca
     objective start wood
     ```
 
-## OPSudo: `opsudo`
+## OPsudo: `opsudo`
 
-This event is similar to `command` event, the only difference is that it will fire a command as the player with temporary OP permissions.
+This event is similar to the `sudo` event, the only difference is that it will fire a command as the player with temporary OP permissions. 
 Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
+
+Looking for [run as normal player](#sudo-sudo)?
 
 !!! example
     ```YAML
-    sudo spawn
+    opsudo spawn
     ```
 
 ## Party event: `party`
@@ -442,6 +444,8 @@ You can specify armor which the mob will wear and items it will hold with `h:` (
 
 This event is similar to `command` event, the only difference is that it will fire a command as the player.
 Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
+
+Looking for [run as admin](#opsudo-opsudo)? 
 
 !!! example
     ```YAML
