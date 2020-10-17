@@ -355,11 +355,19 @@ Runs the specified list of events (third argument) for every player in a party. 
 
 **persistent**, **static**
 
-Another container for events. It picks one (ore multiple) of the given events and runs it (but only if all conditions are true, if not it will do nothing). You must specify how likely it is that each event is picked by adding the percentage before the events id. By default it picks one event from the list but you can add a `amount:` optional if you want more to be picked. Note that only as many events as specified can be picked and `amount:0` will do nothing.
+Another container for events. It picks one (or multiple) of the given events and runs it.
+You must specify how likely it is that each event is picked by adding the percentage before the event's id. 
+The event won't break if your total percentages are above 100%. 
+
+It picks one event from the list by default, but you can add an optional `amount:` if you want more to be picked.
+Note that only as many events as specified can be picked and `amount:0` will do nothing.
+
+There must be two `%%` before the event's name if variables are used, one is from the variable and the other one from the event's syntax.
 
 !!! example
     ```YAML
     pickrandom 20.5%event1,0.5%event2,79%event3 amount:2
+    pickrandom %point.factionXP.amount%%event1,0.5%event2,79%event3,1%event4 amount:3
     ```
 
 ## Play sound: `playsound`

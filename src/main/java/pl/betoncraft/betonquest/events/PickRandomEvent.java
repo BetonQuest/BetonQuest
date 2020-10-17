@@ -26,18 +26,40 @@ public class PickRandomEvent extends QuestEvent {
         super.persistent = true;
         super.staticness = true;
         this.events = instruction.getList(string -> {
-            if (!string.matches("\\d+(\\.\\d+)?%[^%]*")) {
+            if (!string.matches("(\\d+\\.?\\d?|%.*%)%\\w+")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
             }
+
+            int index = 0;
+            int count = 0;
+            while (index < string.length()) {
+                if (string.charAt(index) == '%') {
+                    count++;
+                }
+                index++;
+            }
+
             final String[] parts = string.split("%");
             final EventID eventID;
-            try {
-                eventID = new EventID(instruction.getPackage(), parts[1]);
-            } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
+
+            if (count == 1) {
+                try {
+                    eventID = new EventID(instruction.getPackage(), parts[1]);
+                } catch (ObjectNotFoundException e) {
+                    throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
+                }
+                final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
+                return new RandomEvent(eventID, chance);
+            } else if (count == 3) {
+                try {
+                    eventID = new EventID(instruction.getPackage(), parts[3]);
+                } catch (ObjectNotFoundException e) {
+                    throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
+                }
+                final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), "%" + parts[1] + "%");
+                return new RandomEvent(eventID, chance);
             }
-            final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
-            return new RandomEvent(eventID, chance);
+            throw new InstructionParseException("Error while loading event: '" + instruction.getEvent().getFullID() + "'. Wrong number of % detected. Check your event.");
         });
         this.amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
@@ -60,13 +82,14 @@ public class PickRandomEvent extends QuestEvent {
             inner:
             for (int i = 0; i < events.size(); i++) {
                 final RandomEvent event = events.get(i);
-                current += event.getChance().getDouble(playerID);
+                final double chance = event.getChance().getDouble(playerID);
+                current += chance;
                 if (current >= found) {
                     //run the event
                     BetonQuest.event(playerID, event.getIdentifier());
                     //remove the event from the list so that it's not picked again
                     events.remove(i);
-                    total -= event.getChance().getDouble(playerID);
+                    total -= chance;
                     break inner;
                 }
             }
