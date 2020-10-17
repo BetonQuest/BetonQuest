@@ -323,7 +323,10 @@ Please refer to the Notification chapter for more details.
 
 **persistent**, **static**
 
-Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two), _delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.
+Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two),
+_delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.
+
+Using this in static contexts only works when removing objectives!
 
 !!! example
     ```YAML
