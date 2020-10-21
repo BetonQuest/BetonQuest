@@ -1,23 +1,23 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.EventHandler;
-
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Player has to kill MythicMobs monster
@@ -27,17 +27,28 @@ public class MythicMobKillObjective extends Objective implements Listener {
     private final Set<String> names = new HashSet<>();
     private final int amount;
     private final boolean notify;
+    private final VariableNumber minMobLevel;
+    private final VariableNumber maxMobLevel;
 
     public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = MMData.class;
+        notify = instruction.hasArgument("notify");
+
         Collections.addAll(names, instruction.getArray());
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
-        notify = instruction.hasArgument("notify");
+
+        final String unsafeMinMobLevel = instruction.getOptional("minLevel");
+        final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
+        final String packName = instruction.getPackage().getName();
+
+        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.MAX_VALUE) : new VariableNumber(packName, unsafeMinMobLevel);
+        maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.MAX_VALUE) : new VariableNumber(packName, unsafeMaxMobLevel);
+
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(final MythicMobDeathEvent event) {
+    public void onBossKill(final MythicMobDeathEvent event) throws QuestRuntimeException {
         if (!names.contains(event.getMobType().getInternalName())) {
             return;
         }
@@ -47,6 +58,11 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
         final String playerID = PlayerConverter.getID((Player) event.getKiller());
         if (!containsPlayer(playerID)) {
+            return;
+        }
+
+        final double actualMobLevel = event.getMobLevel();
+        if (actualMobLevel > maxMobLevel.getDouble(playerID) || actualMobLevel < minMobLevel.getDouble(playerID)) {
             return;
         }
         if (!checkConditions(playerID)) {
