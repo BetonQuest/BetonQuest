@@ -51,7 +51,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v62";
+    private final String destination = "v63";
     /**
      * BetonQuest's instance
      */
@@ -168,6 +168,14 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    private void updateFromV62() {
+        LogUtils.getLogger().log(Level.INFO, "Adding 'acceptNPCLeftClick' to config.yml");
+        config.set("acceptNPCLeftClick", false);
+        config.set("version", "v63");
+        instance.saveConfig();
+        LogUtils.getLogger().log(Level.INFO, "Successfully added 'acceptNPCLeftClick' to config.yml");
     }
 
     private void updateFromV61() {
