@@ -1,10 +1,12 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.event.CitizensReloadEvent;
+import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -16,15 +18,59 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class CitizensListener implements Listener {
 
+    private RightClickListener rightClick;
+    private LeftClickListener leftClick;
+
     /**
      * Initializes the listener
      */
     public CitizensListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        reload();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onNPCClick(final NPCRightClickEvent event) {
+    public void reload() {
+        if (rightClick != null) {
+            HandlerList.unregisterAll(rightClick);
+        }
+        if (leftClick != null) {
+            HandlerList.unregisterAll(leftClick);
+        }
+
+
+        final BetonQuest plugin = BetonQuest.getInstance();
+
+        rightClick = new RightClickListener();
+        Bukkit.getPluginManager().registerEvents(rightClick, plugin);
+
+        if (plugin.getConfig().getBoolean("acceptNPCLeftClick")) {
+            leftClick = new LeftClickListener();
+            Bukkit.getPluginManager().registerEvents(leftClick, plugin);
+        }
+    }
+
+    private class RightClickListener implements Listener {
+
+        public RightClickListener() {
+        }
+
+        @EventHandler
+        public void onNPCClick(final NPCRightClickEvent event) {
+            interactLogic(event);
+        }
+    }
+
+    private class LeftClickListener implements Listener {
+
+        public LeftClickListener() {
+        }
+
+        @EventHandler
+        public void onNPCClick(final NPCLeftClickEvent event) {
+            interactLogic(event);
+        }
+    }
+
+    public void interactLogic(final NPCClickEvent event) {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;
         }

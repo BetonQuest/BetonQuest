@@ -13,13 +13,15 @@ public class CitizensIntegrator implements Integrator {
 
     private final BetonQuest plugin;
 
+    private CitizensListener citizensListener;
+
     public CitizensIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook() {
-        new CitizensListener();
+        citizensListener = new CitizensListener();
         new CitizensWalkingListener();
         if (Compatibility.getHooked().contains("EffectLib")) {
             new CitizensParticle();
@@ -59,6 +61,9 @@ public class CitizensIntegrator implements Integrator {
 
         if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "HolographicDisplays"))) {
             CitizensHologram.reload();
+        }
+        if (Compatibility.getHooked().contains("Citizens")) {
+            citizensListener.reload();
         }
     }
 

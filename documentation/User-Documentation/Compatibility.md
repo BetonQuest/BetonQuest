@@ -63,8 +63,11 @@ takebrew MY_OTHER_BREW 2
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
 
+A Citizen NPC will only react to right clicks by default. This can be changed by 
+setting `acceptNPCLeftClick` in the config.yml to `true`.
+
 !!! notice
-    When you use Citizens, in main.yml you need to specify the ID of the NPC instead of the name!
+      You need to specify the ID of the NPC instead of it's name in the main.yml when using Citizens!
 
 ### Conditions
 
