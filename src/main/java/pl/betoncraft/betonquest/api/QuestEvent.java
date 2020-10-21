@@ -113,7 +113,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                     final String onlinePlayerID = PlayerConverter.getID(player);
                     for (final ConditionID condition : conditions) {
                         if (!BetonQuest.condition(onlinePlayerID, condition)) {
-                            LogUtils.getLogger().log(Level.FINE, "  Event conditions were not met for player " + player.getName());
+                            LogUtils.getLogger().log(Level.FINE, "Event conditions were not met for player " + player.getName());
                             continue players;
                         }
                     }

@@ -631,11 +631,18 @@ Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs 
 
 #### MobKill: `mmobkill`
 
-To complete this objective you need to kill specified amount of MythicMobs. The first argument must be the mob's internal name (the one defined in MythicMobs' configuration). You can optionally add `amount:` argument to specify how many of these mobs the player needs to kill. You can also add "notify" keyword if you want to display to players the amount of mobs left to kill.
+You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
+the mob's internal name (the one defined in your MythicMobs configuration). You can optionally add the `amount:`
+argument to specify how many of these mobs need to be killed. It's also possible to add the optional arguments
+`minLevel` and `maxLevel` to further customize what mobs need to be killed.
+You can add a "notify" keyword if you want to send a notification to players whenever the objective
+progresses.
+
 
 !!! example
     ```YAML
     mmobkill SkeletalKnight amount:2 events:reward
+    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward
     ```
 
 ### Conditions
