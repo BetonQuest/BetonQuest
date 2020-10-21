@@ -8,4 +8,4 @@ Learning how to use BetonQuest is not super easy since it is quite complex due t
 This website provides great learning material that will help you on your journey to become a good quester.
 If you struggle to understand something just join the community discord and ask! Support is usually really fast.
 
-After learning BetonQuest you can provide quests for one of over 250 servers that run BetonQuest!
+After learning BetonQuest you can provide quests for one of over 300 servers that run BetonQuest!
