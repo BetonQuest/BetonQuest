@@ -166,11 +166,15 @@ NPC Kill objective requires the player to kill an NPC with the given ID. You can
 
 #### NPC Range: `npcrange`
 
-The player has to enter/leave a circle with the given radius around the NPC to complete this objective. First argument is the ID of the NPC, second one is either `enter` or `leave` and the third one is the range.
+The player has to enter/leave a circle with the given radius around the NPC to complete this objective.
+It is also possible to define multiple NPCs separated with `,`. The objective will be completed as soon as you meet the requirement of just one npc.
+First argument is the ID of the NPC, second one is the type: Either `enter`, `leave`, `inside` or `outside` and the third one is the range.
+The types `enter`, `leave` force the player to actually enter the radius after you were outside of it and vice versa.
+This means that `enter` is not completed when the player gets the objective and is already in the range, while `inside` is instantly completed.
 
 !!! example
     ```YAML
-    npcrange 3 enter 20 events:master_inRange
+    npcrange 3,5 enter 20 events:master_inRange
     ```
 
 ## [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
