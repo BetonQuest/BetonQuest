@@ -168,9 +168,9 @@ NPC Kill objective requires the player to kill an NPC with the given ID. You can
 
 The player has to enter/leave a circle with the given radius around the NPC to complete this objective.
 It is also possible to define multiple NPCs separated with `,`. 
-First argument is the ID of the NPC, second one is the type either `enter`, `leave`, `inside` or `outise` and the third one is the range.
-The types `enter`, `leave` force the player to actually be inside or outside the range before they can complete it.
-This mean that `enter` is not completed when the player get the objective and is already in the range, while `inside` is instantly completed.
+First argument is the ID of the NPC, second one is the type: Either `enter`, `leave`, `inside` or `outside` and the third one is the range.
+The types `enter`, `leave` force the player to actually enter the radius after you were outside of it and vice versa.
+This means that `enter` is not completed when the player gets the objective and is already in the range, while `inside` is instantly completed.
 
 !!! example
     ```YAML
