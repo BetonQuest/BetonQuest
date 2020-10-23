@@ -194,7 +194,12 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
 
 If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
 
-You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section. Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings. `npcs` is a list of all NPCs on which this effect can be displayed. `conditions` is a list of conditions the player has to meet in order to see the effect. BetonQuest will find the first effect which can be displayed and show it to the player. `interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
+You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section.
+Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings.
+`npcs` is a list of all NPCs on which this effect can be displayed. If no `npcs` are specified it will use the package NPCs from _main.yml_.
+`conditions` is a list of conditions the player has to meet in order to see the effect.
+BetonQuest will find the first effect which can be displayed and show it to the player.
+`interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
 
 ```YAML
 npc_effects:

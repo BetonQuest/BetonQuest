@@ -28,7 +28,6 @@ import java.util.logging.Level;
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;
-    private final Set<Integer> npcs = new HashSet<>();
     private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private final List<Effect> effects = new ArrayList<>();
     private int interval = 100;
@@ -40,17 +39,6 @@ public class CitizensParticle extends BukkitRunnable {
         instance = this;
         // loop across all packages
         for (final ConfigPackage pack : Config.getPackages().values()) {
-
-            // load all NPC ids
-            if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
-                for (final String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
-                    try {
-                        npcs.add(Integer.parseInt(npcID));
-                    } catch (NumberFormatException e) {
-                        LogUtils.logThrowableIgnore(e);
-                    }
-                }
-            }
 
             // npc_effects contains all effects for NPCs
             final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_effects");
@@ -99,13 +87,19 @@ public class CitizensParticle extends BukkitRunnable {
 
                 // load all NPCs for which this effect can be displayed
                 effect.npcs = new HashSet<>();
-                for (final int id : settings.getIntegerList("npcs")) {
-                    effect.npcs.add(id);
-                }
-
-                // if the effect does not specify any NPCs then it's global
-                if (effect.npcs.isEmpty()) {
-                    effect.def = true;
+                if (settings.isList("npcs")) {
+                    effect.npcs.addAll(settings.getIntegerList("npcs"));
+                } else {
+                    final ConfigurationSection npcs = pack.getMain().getConfig().getConfigurationSection("npcs");
+                    if (npcs != null) {
+                        for (final String npcID : npcs.getKeys(false)) {
+                            try {
+                                effect.npcs.add(Integer.parseInt(npcID));
+                            } catch (NumberFormatException e) {
+                                LogUtils.logThrowableIgnore(e);
+                            }
+                        }
+                    }
                 }
 
                 // load all conditions
@@ -177,11 +171,8 @@ public class CitizensParticle extends BukkitRunnable {
                     }
                 }
 
-                // determine which NPCs should receive this effect
-                final Collection<Integer> applicableNPCs = effect.def ? new HashSet<>(npcs) : effect.npcs;
-
                 // assign this effect to all NPCs which don't have already assigned effects
-                for (final Integer npc : applicableNPCs) {
+                for (final Integer npc : effect.npcs) {
                     if (!assignments.containsKey(npc)) {
                         assignments.put(npc, effect);
                     }
@@ -246,7 +237,6 @@ public class CitizensParticle extends BukkitRunnable {
 
         private String name;
         private int interval;
-        private boolean def;
         private Set<Integer> npcs;
         private List<ConditionID> conditions;
         private ConfigurationSection settings;
