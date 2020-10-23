@@ -61,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added variable support to the PickRandomEvent
 - Added "acceptNPCLeftClick: true / false" config option
 - Added optional "minlevel" and "maxlevel" arguments to mmobkill objective
-- Added new options 'inside/outside' for npcrange objective and improved performance
+- Added new options 'inside/outside' for npcrange objective, support for multiple npcs and improved performance
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
