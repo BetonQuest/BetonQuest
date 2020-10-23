@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.betoncraft.betonquest.api.QuestCompassTargetChangeEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.config.QuestCanceler;
@@ -549,7 +550,11 @@ public class Backpack implements Listener {
                 return;
             }
             // set the location of the compass
-            player.setCompassTarget(loc);
+            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(loc);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                player.setCompassTarget(loc);
+            }
             player.closeInventory();
         }
     }

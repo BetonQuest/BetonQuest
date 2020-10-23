@@ -1,9 +1,11 @@
 package pl.betoncraft.betonquest.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.api.QuestCompassTargetChangeEvent;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
@@ -73,7 +75,11 @@ public class CompassEvent extends QuestEvent {
 
                 final Player player = PlayerConverter.getPlayer(playerID);
                 if (player != null) {
-                    player.setCompassTarget(location);
+                    final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(location);
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        player.setCompassTarget(location);
+                    }
                 }
         }
         return null;
