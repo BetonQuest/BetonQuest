@@ -71,7 +71,7 @@ public abstract class NotifyIO {
         private final float pitch;
 
         public IOSound() throws InstructionParseException {
-            sound = data.get("sound");
+            sound = data.containsKey("sound") ? data.get("sound").toLowerCase(Locale.ROOT) : null;
 
             final String locationString = data.get("soundlocation");
             location = locationString == null ? null : LocationData.parseLocation(locationString);
