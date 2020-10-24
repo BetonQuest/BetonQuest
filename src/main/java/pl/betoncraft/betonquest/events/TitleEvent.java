@@ -32,7 +32,8 @@ public class TitleEvent extends QuestEvent {
 
     public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        LogUtils.getLogger().log(Level.WARNING, "This event will be REMOVED! Use the Notify system instead: "
+        LogUtils.getLogger().log(Level.WARNING, "Title event will be REMOVED! Usage in package '"
+                + instruction.getPackage().getName() + "'. Use the Notify system instead: "
                 + "https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Notifications/");
         type = instruction.getEnum(TitleType.class);
         final String times = instruction.next();
