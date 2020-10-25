@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -22,7 +22,7 @@ public class WorldCondition extends Condition {
         world = Bukkit.getWorld(name);
         if (world == null) {
             try {
-                world = new LocationData(instruction.getPackage().getName(), name).getLocation(null).getWorld();
+                world = new CompoundLocation(instruction.getPackage().getName(), name).getLocation(null).getWorld();
             } catch (InstructionParseException | QuestRuntimeException e) {
                 throw new InstructionParseException("There is no such world: " + name, e);
             }

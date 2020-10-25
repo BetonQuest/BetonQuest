@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.Instruction.Item;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Checks if the chest contains specified items.
@@ -16,7 +16,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
 public class ChestItemCondition extends Condition {
 
     private final Item[] questItems;
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public ChestItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

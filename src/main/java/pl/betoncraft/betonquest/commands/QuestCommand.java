@@ -32,6 +32,7 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.*;
+import pl.betoncraft.betonquest.utils.location.VectorData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1378,7 +1379,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final Vector vector;
         try {
-            vector = LocationData.parseVector(origin);
+            vector = VectorData.parseVector(origin);
         } catch (InstructionParseException e) {
             player.sendMessage("§4ERROR");
             LogUtils.logThrowable(e);

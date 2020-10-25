@@ -21,7 +21,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.NoID;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -35,7 +35,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
     private final Condition chestItemCondition;
     private final QuestEvent chestTakeEvent;
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public ChestPutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

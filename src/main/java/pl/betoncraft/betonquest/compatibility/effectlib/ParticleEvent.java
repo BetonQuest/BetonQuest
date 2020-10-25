@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -18,7 +18,7 @@ public class ParticleEvent extends QuestEvent {
 
     private final String effectClass;
     private final ConfigurationSection parameters;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final boolean pr1vate;
 
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {

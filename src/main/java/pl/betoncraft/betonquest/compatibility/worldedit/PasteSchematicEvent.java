@@ -18,7 +18,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class PasteSchematicEvent extends QuestEvent {
 
     private final WorldEditPlugin worldEdit;
     private File file;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final boolean noAir;
 
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {

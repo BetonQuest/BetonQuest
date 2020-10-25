@@ -7,7 +7,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -15,7 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LocationCondition extends Condition {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
 
     public LocationCondition(final Instruction instruction) throws InstructionParseException {

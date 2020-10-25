@@ -8,13 +8,13 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Stop the NPC when he is walking and teleport hin to a given location
  */
 public class NPCTeleportEvent extends QuestEvent implements Listener {
-    private final LocationData location;
+    private final CompoundLocation location;
     private final int npcId;
 
     public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {

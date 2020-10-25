@@ -15,7 +15,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Locale;
@@ -25,7 +25,7 @@ import java.util.Locale;
  */
 public class SpawnMobEvent extends QuestEvent {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final EntityType type;
     private final VariableNumber amount;
     private String name;

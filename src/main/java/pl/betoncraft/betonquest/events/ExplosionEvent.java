@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Spawns an explosion in a given location and with given flags
@@ -16,7 +16,7 @@ public class ExplosionEvent extends QuestEvent {
     private final boolean setsFire;
     private final boolean breaksBlocks;
     private final VariableNumber power;
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public ExplosionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

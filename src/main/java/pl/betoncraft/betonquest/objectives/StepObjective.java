@@ -14,7 +14,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -26,7 +26,7 @@ import java.util.logging.Level;
 public class StepObjective extends Objective implements Listener {
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     private static BlockSelector getPressurePlateSelector() {
         try {

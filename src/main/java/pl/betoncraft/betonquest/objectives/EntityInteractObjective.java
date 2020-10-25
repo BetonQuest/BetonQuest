@@ -19,7 +19,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
@@ -47,7 +47,7 @@ public class EntityInteractObjective extends Objective {
     protected boolean notify;
     protected Interaction interaction;
     protected boolean cancel;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
 
     private RightClickListener rightClickListener;

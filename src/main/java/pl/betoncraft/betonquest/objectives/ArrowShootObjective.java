@@ -16,7 +16,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -27,7 +27,7 @@ import java.util.logging.Level;
  */
 public class ArrowShootObjective extends Objective implements Listener {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
 
     public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {

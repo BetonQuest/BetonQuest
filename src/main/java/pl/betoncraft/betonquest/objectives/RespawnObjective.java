@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -19,7 +19,7 @@ import java.util.logging.Level;
 
 public class RespawnObjective extends Objective implements Listener {
 
-    private final LocationData location;
+    private final CompoundLocation location;
 
     public RespawnObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

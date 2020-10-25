@@ -5,14 +5,14 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Strikes a lightning at specified location
  */
 public class LightningEvent extends QuestEvent {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public LightningEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -10,7 +10,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.Locale;
 public class ClearEvent extends QuestEvent {
 
     private final EntityType[] types;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
     private final String name;
     private final boolean kill;

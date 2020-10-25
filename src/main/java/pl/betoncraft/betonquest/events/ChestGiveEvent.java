@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.HashMap;
 
@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class ChestGiveEvent extends QuestEvent {
 
     private final Item[] questItems;
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public ChestGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
