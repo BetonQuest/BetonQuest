@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -18,7 +18,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class LookingAtCondition extends Condition {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final BlockSelector selector;
     private final boolean exactMatch;
 

@@ -6,14 +6,14 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Clears a specified chest from all items inside.
  */
 public class ChestClearEvent extends QuestEvent {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public ChestClearEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -17,7 +17,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.EventID;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -33,9 +33,9 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private static final HashMap<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
-    private final List<LocationData> locations;
+    private final List<CompoundLocation> locations;
     private final int npcId;
-    private ListIterator<LocationData> locationsIterator;
+    private ListIterator<CompoundLocation> locationsIterator;
     private final int waitTicks;
     private final EventID[] doneEvents;
     private final EventID[] failEvents;
@@ -110,7 +110,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return null;
         }
         locationsIterator = locations.listIterator(0);
-        final LocationData firstLocation = locationsIterator.next();
+        final CompoundLocation firstLocation = locationsIterator.next();
         if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
             CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation.getLocation(playerID));
         } else {

@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Checks if a npc is at a specific location
@@ -19,7 +19,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
 public class NPCLocationCondition extends Condition {
 
     private final int npcId;
-    private final LocationData location;
+    private final CompoundLocation location;
     private final VariableNumber radius;
 
     public NPCLocationCondition(final Instruction instruction) throws InstructionParseException {

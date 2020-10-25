@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -15,7 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class PlaysoundEvent extends QuestEvent {
 
     private final String sound;
-    private final LocationData location;
+    private final CompoundLocation location;
     private final SoundCategory soundCategoty;
     private final float volume;
     private final float pitch;

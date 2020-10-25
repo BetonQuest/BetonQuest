@@ -10,7 +10,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class EntityCondition extends Condition {
 
     private final EntityType[] types;
     private final VariableNumber[] amounts;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
     private final String name;
     private String marked;

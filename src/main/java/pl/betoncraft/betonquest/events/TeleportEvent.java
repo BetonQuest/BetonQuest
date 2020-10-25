@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -14,7 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class TeleportEvent extends QuestEvent {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
 
     public TeleportEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -13,7 +13,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -135,7 +135,7 @@ public class GlobalLocations extends BukkitRunnable {
     private class GlobalLocation {
 
         private final ObjectiveID objectiveID;
-        private final LocationData location;
+        private final CompoundLocation location;
         private final VariableNumber range;
         private final ConditionID[] conditions;
         private final EventID[] events;
@@ -192,7 +192,7 @@ public class GlobalLocations extends BukkitRunnable {
         /**
          * @return the location
          */
-        public LocationData getLocation() {
+        public CompoundLocation getLocation() {
             return location;
         }
 

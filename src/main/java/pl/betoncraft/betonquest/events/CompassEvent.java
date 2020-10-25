@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -66,7 +66,7 @@ public class CompassEvent extends QuestEvent {
             case SET:
                 final Location location;
                 try {
-                    location = new LocationData(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
+                    location = new CompoundLocation(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
                 } catch (QuestRuntimeException | InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
                     LogUtils.logThrowable(e);

@@ -18,7 +18,7 @@ import pl.betoncraft.betonquest.id.NoID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
@@ -123,16 +123,16 @@ public class Instruction {
     ///    OBJECTS    ///
     /////////////////////
 
-    public LocationData getLocation() throws InstructionParseException {
+    public CompoundLocation getLocation() throws InstructionParseException {
         return getLocation(next());
     }
 
-    public LocationData getLocation(final String string) throws InstructionParseException {
+    public CompoundLocation getLocation(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
         try {
-            return new LocationData(pack.getName(), string);
+            return new CompoundLocation(pack.getName(), string);
         } catch (InstructionParseException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }

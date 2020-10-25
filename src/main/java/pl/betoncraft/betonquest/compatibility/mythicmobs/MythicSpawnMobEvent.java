@@ -8,14 +8,14 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Spawns MythicMobs mobs
  */
 public class MythicSpawnMobEvent extends QuestEvent {
 
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final String mob;
     private final VariableNumber amount;
     private final VariableNumber level;

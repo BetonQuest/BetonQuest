@@ -16,7 +16,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -31,7 +31,7 @@ public class ActionObjective extends Objective implements Listener {
     private final Click action;
     private final BlockSelector selector;
     private final boolean exactMatch;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final VariableNumber range;
     private boolean cancel = false;
 

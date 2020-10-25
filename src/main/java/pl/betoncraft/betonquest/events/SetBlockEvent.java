@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 /**
  * Sets a block specified as {@link BlockSelector} at specified location
@@ -14,7 +14,7 @@ import pl.betoncraft.betonquest.utils.LocationData;
 public class SetBlockEvent extends QuestEvent {
 
     private final BlockSelector selector;
-    private final LocationData loc;
+    private final CompoundLocation loc;
     private final boolean applyPhysics;
 
     public SetBlockEvent(final Instruction instruction) throws InstructionParseException {
