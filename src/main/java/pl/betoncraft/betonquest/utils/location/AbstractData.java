@@ -75,7 +75,7 @@ abstract class AbstractData<T> {
             try {
                 object = parse(data);
             } catch (final InstructionParseException e) {
-                throw new InstructionParseException("Error while parsing vector. " + e.getMessage(), e);
+                throw new InstructionParseException("Error while parsing: " + e.getMessage(), e);
             }
             objectVariables = null;
             objectFormatted = null;
