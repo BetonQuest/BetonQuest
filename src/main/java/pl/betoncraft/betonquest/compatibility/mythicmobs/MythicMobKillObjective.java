@@ -42,8 +42,8 @@ public class MythicMobKillObjective extends Objective implements Listener {
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
         final String packName = instruction.getPackage().getName();
 
-        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.MIN_VALUE) : new VariableNumber(packName, unsafeMinMobLevel);
-        maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.MAX_VALUE) : new VariableNumber(packName, unsafeMaxMobLevel);
+        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(packName, unsafeMinMobLevel);
+        maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(packName, unsafeMaxMobLevel);
 
     }
 
@@ -62,9 +62,10 @@ public class MythicMobKillObjective extends Objective implements Listener {
         }
 
         final double actualMobLevel = event.getMobLevel();
-        if (actualMobLevel > maxMobLevel.getDouble(playerID) || actualMobLevel < minMobLevel.getDouble(playerID)) {
+        if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
             return;
         }
+
         if (!checkConditions(playerID)) {
             return;
         }
