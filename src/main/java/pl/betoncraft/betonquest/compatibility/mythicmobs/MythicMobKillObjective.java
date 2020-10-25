@@ -42,7 +42,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
         final String packName = instruction.getPackage().getName();
 
-        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.MAX_VALUE) : new VariableNumber(packName, unsafeMinMobLevel);
+        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.MIN_VALUE) : new VariableNumber(packName, unsafeMinMobLevel);
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.MAX_VALUE) : new VariableNumber(packName, unsafeMaxMobLevel);
 
     }
