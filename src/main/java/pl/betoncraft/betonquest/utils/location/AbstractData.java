@@ -118,7 +118,7 @@ abstract class AbstractData<T> {
         try {
             return parse(result);
         } catch (final InstructionParseException e) {
-            throw new QuestRuntimeException("Error while parsing vector. " + e.getMessage(), e);
+            throw new QuestRuntimeException("Error while parsing: " + e.getMessage(), e);
         }
     }
 }
