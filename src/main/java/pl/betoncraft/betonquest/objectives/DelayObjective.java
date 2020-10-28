@@ -130,7 +130,7 @@ public class DelayObjective extends Objective {
                     }
                 }
             } else {
-                time.append(words[0]).append(", ").append(words[1]).append(" ").append(Config.getMessage(lang, "and ")).append(words[2]);
+                time.append(words[0]).append(", ").append(words[1]).append(" ").append(Config.getMessage(lang, "and")).append(" ").append(words[2]);
             }
             return time.toString();
         } else if (name.equalsIgnoreCase("date")) {
