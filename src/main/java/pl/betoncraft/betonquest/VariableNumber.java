@@ -89,7 +89,7 @@ public class VariableNumber {
             try {
                 parsed = Double.parseDouble(resolved);
             } catch (NumberFormatException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not parse the as a number, it's value is: '" + resolved + "'; returning 0.");
+                LogUtils.getLogger().log(Level.FINE, "Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.");
                 LogUtils.logThrowable(e);
             }
             return parsed;
