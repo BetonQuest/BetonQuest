@@ -12,8 +12,12 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.BlockSelector;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Player has to break/place specified amount of blocks. Doing opposite thing
@@ -38,7 +42,7 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockPlace(final BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             final BlockData playerData = (BlockData) dataMap.get(playerID);
@@ -47,20 +51,36 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
-                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
-                            "blocks_to_break,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
+                                new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
+                                "blocks_to_break,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            throw new QuestRuntimeException(exep);
+                        }
+                    }
                 } else {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
-                            new String[]{String.valueOf(neededAmount - playerData.getAmount())},
-                            "blocks_to_place,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
+                                new String[]{String.valueOf(neededAmount - playerData.getAmount())},
+                                "blocks_to_place,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            throw new QuestRuntimeException(exep);
+                        }
+                    }
                 }
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockBreak(final BlockBreakEvent event) {
+    public void onBlockBreak(final BlockBreakEvent event) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             final BlockData playerData = (BlockData) dataMap.get(playerID);
@@ -69,13 +89,29 @@ public class BlockObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 if (playerData.getAmount() > neededAmount) {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
-                            new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
-                            "blocks_to_break,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
+                                new String[]{String.valueOf(playerData.getAmount() - neededAmount)},
+                                "blocks_to_break,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            throw new QuestRuntimeException(exep);
+                        }
+                    }
                 } else {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
-                            new String[]{String.valueOf(neededAmount - playerData.getAmount())},
-                            "blocks_to_place,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_place",
+                                new String[]{String.valueOf(neededAmount - playerData.getAmount())},
+                                "blocks_to_place,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            throw new QuestRuntimeException(exep);
+                        }
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ItemID;
@@ -246,7 +247,11 @@ public class QuestCanceler {
         // done
         LogUtils.getLogger().log(Level.FINE, "Quest removed!");
         final String questName = getName(playerID);
-        Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+        try {
+            Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+        } catch (final QuestRuntimeException exception) {
+            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
+        }
     }
 
     /**

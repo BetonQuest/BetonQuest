@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -366,7 +367,12 @@ public class Journal {
             }
         } else {
             // if there is no place for the item then print a message about it
-            Config.sendNotify(null ,playerID, "inventory_full", null, "inventory_full,error");
+            try {
+                Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
+            } catch (final QuestRuntimeException exception) {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowableIgnore(exception);
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.ConversationResumer;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -57,7 +58,12 @@ public class JoinQuitListener implements Listener {
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")
                 && new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
-            Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
+            try {
+                Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
+            } catch (final QuestRuntimeException exception) {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'changelog' category. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowableIgnore(exception);
+            }
         }
         if (Journal.hasJournal(playerID)) {
             playerData.getJournal().update();

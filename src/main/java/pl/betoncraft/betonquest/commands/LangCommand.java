@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.PlayerData;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -60,7 +61,13 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 if (slot > 0) {
                     journal.addToInv(slot);
                 }
-                Config.sendNotify(null, playerID, "language_changed", new String[]{lang}, "language_changed,info");
+                try {
+                    Config.sendNotify(null, playerID, "language_changed", new String[]{lang}, "language_changed,info");
+                } catch (QuestRuntimeException exception) {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowableIgnore(exception);
+                }
+
             } else {
                 BetonQuest.getInstance().getConfig().set("language", args[0]);
                 sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));

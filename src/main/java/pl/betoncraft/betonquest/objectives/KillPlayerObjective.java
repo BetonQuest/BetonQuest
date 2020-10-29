@@ -10,8 +10,12 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 public class KillPlayerObjective extends Objective implements Listener {
 
@@ -36,7 +40,7 @@ public class KillPlayerObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onKill(final PlayerDeathEvent event) {
+    public void onKill(final PlayerDeathEvent event) throws QuestRuntimeException {
         if (event.getEntity().getKiller() == null) {
             return;
         }
@@ -59,8 +63,16 @@ public class KillPlayerObjective extends Objective implements Listener {
             if (data.getLeft() <= 0) {
                 completeObjective(killer);
             } else if (notify && data.getLeft() % notifyInterval == 0) {
-                Config.sendNotify(instruction.getPackage().getName(), killer, "players_to_kill", new String[]{String.valueOf(data.getLeft())},
-                        "players_to_kill,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), killer, "players_to_kill", new String[]{String.valueOf(data.getLeft())},
+                            "players_to_kill,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'players_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
         }
     }

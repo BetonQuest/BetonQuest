@@ -11,9 +11,11 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class MMOItemsGiveEvent extends QuestEvent {
 
@@ -54,9 +56,17 @@ public class MMOItemsGiveEvent extends QuestEvent {
         }
 
         if (notify) {
-            Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
-                    new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
-                    "items_given,info");
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
+                        new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
+                        "items_given,info");
+            } catch (final QuestRuntimeException exception) {
+                try {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_given' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                } catch (final InstructionParseException exep) {
+                    throw new QuestRuntimeException(exep);
+                }
+            }
         }
 
         while (amount > 0) {
