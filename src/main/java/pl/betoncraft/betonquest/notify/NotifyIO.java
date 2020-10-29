@@ -1,17 +1,13 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.utils.LocationData;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public abstract class NotifyIO {
@@ -20,7 +16,7 @@ public abstract class NotifyIO {
     protected final static String CATCH_MESSAGE_TYPE = "%s with the name '%s' does not exists!";
 
     protected final Map<String, String> data;
-    private final IOSound sound;
+    private final NotifySound sound;
 
     protected NotifyIO() throws InstructionParseException {
         this(new HashMap<>());
@@ -28,18 +24,18 @@ public abstract class NotifyIO {
 
     protected NotifyIO(final Map<String, String> data) throws InstructionParseException {
         this.data = data;
-        sound = new IOSound();
+        sound = new NotifySound(this);
     }
 
-    public void sendNotify(@NotNull final String message) {
+    public void sendNotify(@NotNull final String message) throws QuestRuntimeException {
         for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
             sendNotify(message, player);
         }
     }
 
-    public void sendNotify(@NotNull final String message, @NotNull final Player player) {
-        sound.sendSound(player);
+    public void sendNotify(@NotNull final String message, @NotNull final Player player) throws QuestRuntimeException {
         notifyPlayer(Utils.format(message), player);
+        sound.sendSound(player);
     }
 
     protected abstract void notifyPlayer(final String message, final Player player);
@@ -59,49 +55,6 @@ public abstract class NotifyIO {
             return dataString == null ? defaultData : Integer.parseInt(dataString);
         } catch (final NumberFormatException exception) {
             throw new InstructionParseException(String.format(CATCH_MESSAGE_INTEGER, dataKey, dataString), exception);
-        }
-    }
-
-    private class IOSound {
-        private final String sound;
-        private final Location location;
-        private final Vector locationOffset;
-        private final SoundCategory soundCategory;
-        private final float volume;
-        private final float pitch;
-
-        public IOSound() throws InstructionParseException {
-            sound = data.containsKey("sound") ? data.get("sound").toLowerCase(Locale.ROOT) : null;
-
-            final String locationString = data.get("soundlocation");
-            location = locationString == null ? null : LocationData.parseLocation(locationString);
-
-            final String locationOffsetString = data.get("soundlocationoffset");
-            locationOffset = locationOffsetString == null ? new Vector() : LocationData.parseVector(locationOffsetString);
-
-            final String soundCategoryString = data.get("soundcategory");
-            try {
-                soundCategory = soundCategoryString == null ? SoundCategory.MASTER : SoundCategory.valueOf(soundCategoryString.toUpperCase(Locale.ROOT));
-            } catch (final IllegalArgumentException exception) {
-                throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "soundcategory", soundCategoryString.toUpperCase(Locale.ROOT)), exception);
-            }
-
-            final String volumeString = data.get("soundvolume");
-            volume = getFloatData("soundvolume", 1);
-            final String pitchString = data.get("soundpitch");
-            pitch = getFloatData("soundpitch", 1);
-
-            if (sound == null && (locationString != null || locationOffsetString != null || soundCategoryString != null || volumeString != null || pitchString != null)) {
-                throw new InstructionParseException("You must specify a 'sound' if you want to use sound options!");
-            }
-        }
-
-        protected void sendSound(final Player player) {
-            if (sound != null) {
-                final Location loc = location == null ? player.getLocation() : location.clone();
-                loc.add(locationOffset);
-                player.playSound(loc, sound, soundCategory, volume, pitch);
-            }
         }
     }
 }
