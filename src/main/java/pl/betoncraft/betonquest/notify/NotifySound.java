@@ -42,7 +42,7 @@ class NotifySound {
 
         final String playerOffsetString = data.get(KEY_SOUND_PLAYER_OFFSET);
         final Float playerOffsetDistance = getPlayerOffsetDistance(playerOffsetString);
-        final VectorData playerOffset = getPlayerOffset(playerOffsetString);
+        final VectorData playerOffset = playerOffsetDistance == null ? getPlayerOffset(playerOffsetString) : null;
 
         String soundString = data.get(KEY_SOUND);
         final Sound sound = getSound(soundString);
@@ -68,16 +68,17 @@ class NotifySound {
     private Location getLocation(final Player player, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(player);
         final Location location = compoundLocation == null ? player.getLocation() : compoundLocation.getLocation(playerID);
+        if (playerOffsetDistance != null) {
+            final Vector directionVector = location.subtract(player.getLocation()).toVector();
+            directionVector.normalize().multiply(playerOffsetDistance);
+            location.add(directionVector);
+        }
         if (playerOffset != null) {
             final Vector relative = playerOffset.get(playerID);
             final Location playerLoc = player.getLocation();
             relative.rotateAroundY(playerLoc.getYaw());
             relative.rotateAroundAxis(new Vector(1, 0, 1), playerLoc.getPitch());
             location.add(relative);
-        } else if (playerOffsetDistance != null) {
-            final Vector directionVector = location.subtract(player.getLocation()).toVector();
-            directionVector.normalize().multiply(playerOffsetDistance);
-            location.add(directionVector);
         }
 
         return location;
@@ -144,6 +145,6 @@ class NotifySound {
 
     @FunctionalInterface
     private interface SoundPlayer {
-        void play(Player p) throws QuestRuntimeException;
+        void play(final Player player) throws QuestRuntimeException;
     }
 }

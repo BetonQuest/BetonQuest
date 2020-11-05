@@ -71,7 +71,6 @@ public class GiveEvent extends QuestEvent {
                     }
                 }
                 amountInt = amountInt - stackSize;
-
             }
         }
         return null;
