@@ -329,21 +329,20 @@
     </profile>
 
     <profile>
-      <id>from-erethon</id>
+      <id>from-zebradrive</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <repositories>
-        <!-- This repository is a temporary solution and should be replaced with the original repo, if it is fixed -->
         <repository>
-          <id>erethon-repo</id>
-          <url>https://erethon.de/repo</url>
+          <id>zebradrive-repo</id>
+          <url>https://zebradrive.de/maven</url>
         </repository>
       </repositories>
       <dependencies>
         <dependency>
           <groupId>com.dre</groupId>
-          <artifactId>brewery</artifactId>
+          <artifactId>Brewery</artifactId>
           <version>2.1.1</version>
           <scope>provided</scope>
         </dependency>
