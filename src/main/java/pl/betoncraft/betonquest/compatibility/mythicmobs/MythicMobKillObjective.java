@@ -13,11 +13,13 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Player has to kill MythicMobs monster
@@ -48,7 +50,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(final MythicMobDeathEvent event) throws QuestRuntimeException {
+    public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) {
             return;
         }
@@ -62,7 +64,16 @@ public class MythicMobKillObjective extends Objective implements Listener {
         }
 
         final double actualMobLevel = event.getMobLevel();
-        if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
+        try {
+            if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
+                return;
+            }
+        } catch (QuestRuntimeException exep) {
+            try {
+                LogUtils.getLogger().log(Level.SEVERE, "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
+            } catch (InstructionParseException e) {
+                LogUtils.logThrowableReport(exep);
+            }
             return;
         }
 
@@ -77,9 +88,20 @@ public class MythicMobKillObjective extends Objective implements Listener {
             completeObjective(playerID);
         } else if (notify) {
             // send a notification
-            Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
+            } catch (final QuestRuntimeException exception) {
+                try {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                } catch (final InstructionParseException exep) {
+                    try {
+                        throw new QuestRuntimeException(exep);
+                    } catch (QuestRuntimeException e) {
+                        LogUtils.logThrowableReport(exep);
+                    }
+                }
+            }
         }
-
     }
 
     @Override

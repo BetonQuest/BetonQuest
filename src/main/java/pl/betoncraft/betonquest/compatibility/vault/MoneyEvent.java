@@ -7,9 +7,11 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.text.DecimalFormat;
+import java.util.logging.Level;
 
 /**
  * Modifies player's balance
@@ -54,14 +56,30 @@ public class MoneyEvent extends QuestEvent {
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "money_given",
-                        new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "money_given",
+                            new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_given' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
         } else if (difference < 0) {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "money_taken",
-                        new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "money_taken",
+                            new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
         }
         return null;

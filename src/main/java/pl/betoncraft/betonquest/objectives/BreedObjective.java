@@ -12,7 +12,11 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 public class BreedObjective extends Objective implements Listener {
 
@@ -41,8 +45,16 @@ public class BreedObjective extends Objective implements Listener {
                 if (data.getAmount() == 0) {
                     completeObjective(playerID);
                 } else if (notify) {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())},
-                            "animals_to_breed,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())},
+                                "animals_to_breed,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            LogUtils.logThrowableReport(exep);
+                        }
+                    }
                 }
             }
         }

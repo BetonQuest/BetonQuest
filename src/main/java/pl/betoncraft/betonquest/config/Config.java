@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.notify.Notify;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -394,23 +395,23 @@ public class Config {
         }
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) throws QuestRuntimeException {
         sendNotify(packName, playerID, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
         sendNotify(packName, playerID, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
         sendNotify(packName, PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
     }
 
@@ -425,7 +426,7 @@ public class Config {
      * @param category    notification category
      * @param data        custom notifyIO data
      */
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
         final String message = parseMessage(packName, player, messageName, variables);
         if (message == null || message.length() == 0) {
             return;

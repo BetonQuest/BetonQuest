@@ -11,7 +11,10 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 public class MMOItemsTakeEvent extends QuestEvent {
 
@@ -61,10 +64,19 @@ public class MMOItemsTakeEvent extends QuestEvent {
         inv.setContents(inventoryItems);
 
         if (notify && deletedCounter > 1) {
-            Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
-                    new String[]{itemName, String.valueOf(deletedCounter)},
-                    "items_given,info");
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
+                        new String[]{itemName, String.valueOf(deletedCounter)},
+                        "items_taken,info");
+            } catch (final QuestRuntimeException exception) {
+                try {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                } catch (InstructionParseException exep) {
+                    throw new QuestRuntimeException(exep);
+                }
+            }
         }
         return null;
     }
 }
+

@@ -12,10 +12,13 @@ import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Date;
+import java.util.logging.Level;
 
 /**
  * Adds the entry to player's journal
@@ -39,7 +42,7 @@ public class JournalEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
             if (!add && name != null) {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
@@ -52,13 +55,21 @@ public class JournalEvent extends QuestEvent {
                         name
                 }));
             }
-        }
-        else {
+        } else {
             final PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
             final Journal journal = playerData.getJournal();
             if (add) {
                 journal.addPointer(new Pointer(name, new Date().getTime()));
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "new_journal_entry", null, "new_journal_entry,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "new_journal_entry", null, "new_journal_entry,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'new_journal_entry' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        LogUtils.logThrowableIgnore(exception);
+                    } catch (InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             } else if (name != null) {
                 journal.removePointer(name);
             }

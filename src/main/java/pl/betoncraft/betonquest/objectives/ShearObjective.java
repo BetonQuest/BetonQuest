@@ -12,7 +12,11 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Requires the player to shear a sheep.
@@ -59,8 +63,16 @@ public class ShearObjective extends Objective implements Listener {
             if (data.getAmount() <= 0) {
                 completeObjective(playerID);
             } else if (notify && data.getAmount() % notifyInterval == 0) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())},
-                        "sheep_to_shear,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "sheep_to_shear", new String[]{String.valueOf(data.getAmount())},
+                            "sheep_to_shear,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'sheep_to_shear' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        LogUtils.logThrowableReport(exep);
+                    }
+                }
             }
         }
     }
