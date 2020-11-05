@@ -50,7 +50,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(final MythicMobDeathEvent event) throws QuestRuntimeException {
+    public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) {
             return;
         }
@@ -64,7 +64,16 @@ public class MythicMobKillObjective extends Objective implements Listener {
         }
 
         final double actualMobLevel = event.getMobLevel();
-        if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
+        try {
+            if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
+                return;
+            }
+        } catch (QuestRuntimeException exep) {
+            try {
+                LogUtils.getLogger().log(Level.SEVERE, "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
+            } catch (InstructionParseException e) {
+                LogUtils.logThrowableReport(exep);
+            }
             return;
         }
 
@@ -85,7 +94,11 @@ public class MythicMobKillObjective extends Objective implements Listener {
                 try {
                     LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException exep) {
-                    throw new QuestRuntimeException(exep);
+                    try {
+                        throw new QuestRuntimeException(exep);
+                    } catch (QuestRuntimeException e) {
+                        LogUtils.logThrowableReport(exep);
+                    }
                 }
             }
         }

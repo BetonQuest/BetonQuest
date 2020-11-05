@@ -92,7 +92,7 @@ public class EntityInteractObjective extends Objective {
         }
     }
 
-    private boolean onInteract(final Player player, final Entity entity) throws QuestRuntimeException {
+    private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {
             return false;
@@ -152,7 +152,7 @@ public class EntityInteractObjective extends Objective {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
+                        LogUtils.logThrowableReport(exep);
                     }
                 }
             }
@@ -244,7 +244,7 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onDamage(final EntityDamageByEntityEvent event) throws QuestRuntimeException {
+        public void onDamage(final EntityDamageByEntityEvent event) {
             final Player player;
             // check if entity is damaged by a Player
             if (event.getDamager() instanceof Player) {
@@ -265,7 +265,7 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractEntityEvent event) throws QuestRuntimeException {
+        public void onRightClick(final PlayerInteractEntityEvent event) {
             final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
             if (success && cancel) {
                 event.setCancelled(true);

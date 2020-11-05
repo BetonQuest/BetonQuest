@@ -52,7 +52,7 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onMobKill(final MobKilledEvent event) throws QuestRuntimeException {
+    public void onMobKill(final MobKilledEvent event) {
         // check if it's the right entity type
         if (!event.getEntity().getType().equals(mobType)) {
             return;
@@ -91,7 +91,7 @@ public class MobKillObjective extends Objective implements Listener {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
+                        LogUtils.logThrowableReport(exep);
                     }
                 }
             }

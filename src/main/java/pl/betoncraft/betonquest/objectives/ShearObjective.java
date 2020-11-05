@@ -41,7 +41,7 @@ public class ShearObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onShear(final PlayerShearEntityEvent event) throws QuestRuntimeException {
+    public void onShear(final PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
@@ -70,7 +70,7 @@ public class ShearObjective extends Objective implements Listener {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'sheep_to_shear' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
+                        LogUtils.logThrowableReport(exep);
                     }
                 }
             }

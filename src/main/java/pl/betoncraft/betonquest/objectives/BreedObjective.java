@@ -33,7 +33,7 @@ public class BreedObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBreeding(final EntityBreedEvent event) throws QuestRuntimeException {
+    public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
             final String playerID = PlayerConverter.getID((Player) event.getBreeder());
             if (!containsPlayer(playerID)) {
@@ -52,7 +52,7 @@ public class BreedObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            throw new QuestRuntimeException(exep);
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 }

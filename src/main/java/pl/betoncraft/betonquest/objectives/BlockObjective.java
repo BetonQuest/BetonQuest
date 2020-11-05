@@ -42,7 +42,7 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockPlace(final BlockPlaceEvent event) throws QuestRuntimeException {
+    public void onBlockPlace(final BlockPlaceEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             final BlockData playerData = (BlockData) dataMap.get(playerID);
@@ -59,7 +59,7 @@ public class BlockObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            throw new QuestRuntimeException(exep);
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 } else {
@@ -71,7 +71,7 @@ public class BlockObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            throw new QuestRuntimeException(exep);
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 }
@@ -80,7 +80,7 @@ public class BlockObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockBreak(final BlockBreakEvent event) throws QuestRuntimeException {
+    public void onBlockBreak(final BlockBreakEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
             final BlockData playerData = (BlockData) dataMap.get(playerID);
@@ -97,7 +97,7 @@ public class BlockObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            throw new QuestRuntimeException(exep);
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 } else {
@@ -109,7 +109,7 @@ public class BlockObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            throw new QuestRuntimeException(exep);
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 }

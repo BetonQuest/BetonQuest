@@ -62,7 +62,7 @@ public class FishObjective extends Objective implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
-    public void onFishCatch(final PlayerFishEvent event) throws QuestRuntimeException {
+    public void onFishCatch(final PlayerFishEvent event) {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
@@ -97,7 +97,7 @@ public class FishObjective extends Objective implements Listener {
                 try {
                     LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'fish_to_catch' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException exep) {
-                    throw new QuestRuntimeException(exep);
+                    LogUtils.logThrowableReport(exep);
                 }
             }
         }

@@ -40,7 +40,7 @@ public class KillPlayerObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onKill(final PlayerDeathEvent event) throws QuestRuntimeException {
+    public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
             return;
         }
@@ -70,7 +70,7 @@ public class KillPlayerObjective extends Objective implements Listener {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'players_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
+                        LogUtils.logThrowableReport(exep);
                     }
                 }
             }
