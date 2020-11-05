@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
@@ -57,6 +58,11 @@ public class RegionObjective extends Objective implements Listener {
         }
 
         return region.contains(BukkitAdapter.asBlockVector(loc));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onTeleport(final PlayerTeleportEvent event) {
+        onMove(event);
     }
 
     @EventHandler(ignoreCancelled = true)
