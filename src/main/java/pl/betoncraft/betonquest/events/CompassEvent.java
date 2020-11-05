@@ -77,7 +77,7 @@ public class CompassEvent extends QuestEvent {
                 if (player != null) {
                     final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(location);
                     Bukkit.getServer().getPluginManager().callEvent(event);
-                    if (event.isCancelled()) {
+                    if (!event.isCancelled()) {
                         player.setCompassTarget(location);
                     }
                 }
