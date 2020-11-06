@@ -91,7 +91,7 @@ public class PickupObjective extends Objective implements Listener {
             case "left":
                 return Integer.toString(getPickupData(playerID).getAmount());
             case "amount":
-                return Integer.toString(amount - getPickupData(playerID).getAmount());
+                return Integer.toString(amount);
             default:
                 return "";
         }

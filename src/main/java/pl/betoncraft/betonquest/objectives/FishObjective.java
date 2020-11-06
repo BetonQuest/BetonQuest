@@ -93,12 +93,14 @@ public class FishObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("left")) {
-            return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
-            return Integer.toString(amount - ((FishData) dataMap.get(playerID)).getAmount());
+        switch (name.toLowerCase()) {
+            case "left":
+                return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
+            case "amount":
+                return Integer.toString(amount);
+            default:
+                return "";
         }
-        return "";
     }
 
     @Override
