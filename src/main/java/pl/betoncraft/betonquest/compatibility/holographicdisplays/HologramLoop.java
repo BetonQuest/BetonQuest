@@ -127,14 +127,11 @@ public class HologramLoop {
                     final BukkitRunnable runnable = new BukkitRunnable() {
                         @Override
                         public void run() {
-                            player:
                             for (final Player player : Bukkit.getOnlinePlayers()) {
                                 final String playerID = PlayerConverter.getID(player);
-                                for (final ConditionID condition : conditionsList) {
-                                    if (!BetonQuest.condition(playerID, condition)) {
-                                        hologram.getVisibilityManager().hideTo(player);
-                                        continue player;
-                                    }
+                                if (!BetonQuest.condition(playerID, conditionsList)) {
+                                    hologram.getVisibilityManager().hideTo(player);
+                                    continue;
                                 }
                                 hologram.getVisibilityManager().showTo(player);
                             }
@@ -151,13 +148,10 @@ public class HologramLoop {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
-                    holograms:
                     for (final Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
-                        for (final ConditionID condition : entry.getValue()) {
-                            if (!BetonQuest.condition(playerID, condition)) {
-                                entry.getKey().getVisibilityManager().hideTo(player);
-                                continue holograms;
-                            }
+                        if (!BetonQuest.condition(playerID, entry.getValue())) {
+                            entry.getKey().getVisibilityManager().hideTo(player);
+                            continue;
                         }
                         entry.getKey().getVisibilityManager().showTo(player);
                     }

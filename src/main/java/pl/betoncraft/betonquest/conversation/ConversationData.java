@@ -389,7 +389,6 @@ public class ConversationData {
      * Check if conversation has at least one valid option for player
      */
     public boolean isReady(final String playerID) {
-        options:
         for (final String option : getStartingOptions()) {
             final String convName;
             final String optionName;
@@ -403,10 +402,8 @@ public class ConversationData {
             }
             final ConfigPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
-            for (final ConditionID condition : currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC)) {
-                if (!BetonQuest.condition(playerID, condition)) {
-                    continue options;
-                }
+            if (!BetonQuest.condition(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+                continue;
             }
             return true;
         }
@@ -585,12 +582,9 @@ public class ConversationData {
             final StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
 
             if (playerID != null) {
-                extend:
                 for (final String extend : extendLinks) {
-                    for (final ConditionID condition : getOption(extend, type).getConditions()) {
-                        if (!BetonQuest.condition(playerID, condition)) {
-                            continue extend;
-                        }
+                    if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                        continue;
                     }
                     ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
                     break;
@@ -629,12 +623,9 @@ public class ConversationData {
 
             final List<EventID> ret = new ArrayList<>(events);
 
-            extend:
             for (final String extend : extendLinks) {
-                for (final ConditionID condition : getOption(extend, type).getConditions()) {
-                    if (!BetonQuest.condition(playerID, condition)) {
-                        continue extend;
-                    }
+                if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                    continue;
                 }
                 ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
                 break;
@@ -661,12 +652,9 @@ public class ConversationData {
             final List<String> ret = new ArrayList<>(pointers);
 
             if (playerID != null) {
-                extend:
                 for (final String extend : extendLinks) {
-                    for (final ConditionID condition : getOption(extend, type).getConditions()) {
-                        if (!BetonQuest.condition(playerID, condition)) {
-                            continue extend;
-                        }
+                    if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                        continue;
                     }
                     ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
                     break;

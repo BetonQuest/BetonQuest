@@ -31,8 +31,7 @@ import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -76,6 +75,14 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
+    }
+
+    public static boolean condition(final String playerID, final ConditionID[] conditionIDs) {
+        return Arrays.stream(conditionIDs).parallel().allMatch(con -> condition(playerID, con));
+    }
+
+    public static boolean condition(final String playerID, final Collection<ConditionID> conditionIDs) {
+        return conditionIDs.parallelStream().allMatch(con -> condition(playerID, con));
     }
 
     /**

@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Checks the conditions for the whole party (including the player that started
@@ -37,28 +38,20 @@ public class PartyCondition extends Condition {
         // get the party
         final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions
-        for (final ConditionID condition : everyone) {
-            for (final String memberID : members) {
-                // if this condition wasn't met by someone, return false
-                if (!BetonQuest.condition(memberID, condition)) {
-                    return false;
-                }
-            }
-        }
-        // check every condition against every player - at least one of them must meet each of those
-        for (final ConditionID condition : anyone) {
-            boolean met = false;
-            for (final String memberID : members) {
-                if (BetonQuest.condition(memberID, condition)) {
-                    met = true;
-                    break;
-                }
-            }
-            // if this condition wasn't met by anyone, return false
-            if (!met) {
+        for (final String memberID : members) {
+            // if this condition wasn't met by someone, return false
+            if (!BetonQuest.condition(memberID, everyone)) {
                 return false;
             }
         }
+
+        // check every condition against every player - every condition must be met by at least one player
+        if (!Arrays.stream(anyone).parallel()
+                .allMatch(condition -> members.parallelStream()
+                        .anyMatch(member -> BetonQuest.condition(member, condition)))) {
+            return false;
+        }
+
         // if the count is more than 0, we need to check if there are more
         // players in the party than required minimum
         final int pCount = count == null ? 0 : count.getInt(playerID);

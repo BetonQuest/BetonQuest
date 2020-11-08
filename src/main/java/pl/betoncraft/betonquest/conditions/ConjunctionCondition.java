@@ -22,11 +22,6 @@ public class ConjunctionCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) {
-        for (final ConditionID condition : conditions) {
-            if (!BetonQuest.condition(playerID, condition)) {
-                return false;
-            }
-        }
-        return true;
+        return BetonQuest.condition(playerID, conditions);
     }
 }

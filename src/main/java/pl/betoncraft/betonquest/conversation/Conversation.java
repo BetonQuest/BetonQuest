@@ -159,7 +159,6 @@ public class Conversation implements Listener {
         }
         // get npc's text
         option = null;
-        options:
         for (final String option : options) {
             final String convName;
             final String optionName;
@@ -173,10 +172,8 @@ public class Conversation implements Listener {
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
             if (!force) {
-                for (final ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
-                    if (!BetonQuest.condition(this.playerID, condition)) {
-                        continue options;
-                    }
+                if (!BetonQuest.condition(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
+                    continue;
                 }
             }
             this.option = optionName;
@@ -233,10 +230,8 @@ public class Conversation implements Listener {
         int optionsCount = 0;
         answers:
         for (final String option : options) {
-            for (final ConditionID condition : data.getConditionIDs(option, OptionType.PLAYER)) {
-                if (!BetonQuest.condition(playerID, condition)) {
-                    continue answers;
-                }
+            if (!BetonQuest.condition(playerID, data.getConditionIDs(option, OptionType.PLAYER))) {
+                continue;
             }
             optionsCount++;
             // print reply and put it to the hashmap

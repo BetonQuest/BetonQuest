@@ -23,6 +23,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Represents player's journal.
@@ -250,18 +251,25 @@ public class Journal {
                     // check conditions and continue loop if not met
                     final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && rawConditions.length() > 0) {
-                        for (final String condition : rawConditions.split(",")) {
-                            try {
-                                final ConditionID conditionID = new ConditionID(pack, condition);
-                                if (!BetonQuest.condition(playerID, conditionID)) {
-                                    continue keys;
-                                }
-                            } catch (ObjectNotFoundException e) {
-                                LogUtils.getLogger().log(Level.WARNING, "Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
-                                        + "'s journal - condition '" + condition + "' not found: " + e.getMessage());
-                                LogUtils.logThrowable(e);
-                                continue keys;
+                        try {
+                            Collection<ConditionID> pageConditions = Arrays.stream(rawConditions.split(","))
+                                    .map(con -> {
+                                        try {
+                                            return new ConditionID(pack, con);
+                                        } catch (ObjectNotFoundException e) {
+                                            throw new IllegalArgumentException("Error while generating main page in " + PlayerConverter.getPlayer(playerID)
+                                                    + "'s journal - condition '" + con + "' not found: " + e.getMessage(), e);
+                                        }
+                                    })
+                                    .collect(Collectors.toList());
+
+                            if (!BetonQuest.condition(playerID, pageConditions)) {
+                                continue;
                             }
+                        } catch (IllegalArgumentException exception) {
+                            LogUtils.getLogger().log(Level.WARNING, exception.getMessage());
+                            LogUtils.logThrowable(exception);
+                            continue;
                         }
                     }
                     // here conditions are met, get the text in player's language

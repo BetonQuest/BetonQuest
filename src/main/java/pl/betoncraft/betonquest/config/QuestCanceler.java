@@ -177,12 +177,7 @@ public class QuestCanceler {
         if (conditions == null) {
             return true;
         }
-        for (final ConditionID condition : conditions) {
-            if (!BetonQuest.condition(playerID, condition)) {
-                return false;
-            }
-        }
-        return true;
+        return BetonQuest.condition(playerID, conditions);
     }
 
     /**

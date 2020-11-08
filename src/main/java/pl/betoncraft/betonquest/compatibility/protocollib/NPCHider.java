@@ -132,11 +132,8 @@ public class NPCHider extends BukkitRunnable implements Listener {
         if (conditions == null || conditions.isEmpty()) {
             hidden = false;
         } else {
-            for (final ConditionID condition : conditions) {
-                if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                    hidden = false;
-                    break;
-                }
+            if (!BetonQuest.condition(PlayerConverter.getID(player), conditions)) {
+                hidden = false;
             }
         }
 

@@ -22,11 +22,6 @@ public class AlternativeCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) {
-        for (final ConditionID condition : conditions) {
-            if (BetonQuest.condition(playerID, condition)) {
-                return true;
-            }
-        }
-        return false;
+        return conditions.parallelStream().anyMatch(con -> BetonQuest.condition(playerID, con));
     }
 }
