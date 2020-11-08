@@ -252,7 +252,7 @@ public class Journal {
                     final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && rawConditions.length() > 0) {
                         try {
-                            Collection<ConditionID> pageConditions = Arrays.stream(rawConditions.split(","))
+                            final Collection<ConditionID> pageConditions = Arrays.stream(rawConditions.split(","))
                                     .map(con -> {
                                         try {
                                             return new ConditionID(pack, con);
