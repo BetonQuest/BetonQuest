@@ -31,7 +31,10 @@ import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
