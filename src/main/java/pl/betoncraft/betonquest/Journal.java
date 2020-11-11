@@ -253,7 +253,7 @@ public class Journal {
                     if (rawConditions != null && rawConditions.length() > 0) {
                         try {
                             final List<ConditionID> pageConditions = new ArrayList<>();
-                            for (String conditionString : rawConditions.split(",")) {
+                            for (final String conditionString : rawConditions.split(",")) {
                                 pageConditions.add(new ConditionID(pack, conditionString));
                             }
 

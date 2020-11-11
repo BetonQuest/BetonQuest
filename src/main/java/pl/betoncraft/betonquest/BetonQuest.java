@@ -40,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Represents BetonQuest plugin
@@ -81,11 +82,16 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public static boolean conditions(final String playerID, final ConditionID[] conditionIDs) {
-        return Arrays.stream(conditionIDs).parallel().allMatch(con -> condition(playerID, con));
+        return conditions(playerID, Arrays.stream(conditionIDs));
     }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
-        return conditionIDs.parallelStream().allMatch(con -> condition(playerID, con));
+        return conditions(playerID, conditionIDs.stream());
+    }
+
+    private static boolean conditions(final String playerID, final Stream<ConditionID> stream) {
+        final Stream<ConditionID> conditions = Bukkit.isPrimaryThread() ? stream : stream.parallel();
+        return conditions.allMatch(con -> condition(playerID, con));
     }
 
     /**
