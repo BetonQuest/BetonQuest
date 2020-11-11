@@ -38,11 +38,8 @@ public class PartyCondition extends Condition {
         // get the party
         final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions
-        for (final String memberID : members) {
-            // if this condition wasn't met by someone, return false
-            if (!BetonQuest.conditions(memberID, everyone)) {
-                return false;
-            }
+        if (!members.parallelStream().allMatch(member -> BetonQuest.conditions(member, everyone))) {
+            return false;
         }
 
         // check every condition against every player - every condition must be met by at least one player

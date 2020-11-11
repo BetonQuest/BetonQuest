@@ -228,7 +228,6 @@ public class Conversation implements Listener {
     private void printOptions(final String[] options) {
         // i is for counting replies, like 1. something, 2. something else
         int optionsCount = 0;
-        answers:
         for (final String option : options) {
             if (!BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER))) {
                 continue;

@@ -252,22 +252,17 @@ public class Journal {
                     final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && rawConditions.length() > 0) {
                         try {
-                            final Collection<ConditionID> pageConditions = Arrays.stream(rawConditions.split(","))
-                                    .map(con -> {
-                                        try {
-                                            return new ConditionID(pack, con);
-                                        } catch (ObjectNotFoundException e) {
-                                            throw new IllegalArgumentException("Error while generating main page in " + PlayerConverter.getPlayer(playerID)
-                                                    + "'s journal - condition '" + con + "' not found: " + e.getMessage(), e);
-                                        }
-                                    })
-                                    .collect(Collectors.toList());
+                            final List<ConditionID> pageConditions = new ArrayList<>();
+                            for (String conditionString : rawConditions.split(",")) {
+                                pageConditions.add(new ConditionID(pack, conditionString));
+                            }
 
                             if (!BetonQuest.conditions(playerID, pageConditions)) {
                                 continue;
                             }
-                        } catch (IllegalArgumentException exception) {
-                            LogUtils.getLogger().log(Level.WARNING, exception.getMessage());
+                        } catch (ObjectNotFoundException exception) {
+                            LogUtils.getLogger().log(Level.WARNING,
+                                    "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + exception.getMessage());
                             LogUtils.logThrowable(exception);
                             continue;
                         }
