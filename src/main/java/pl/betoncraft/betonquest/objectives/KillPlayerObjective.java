@@ -50,7 +50,7 @@ public class KillPlayerObjective extends Objective implements Listener {
             if (name != null && !event.getEntity().getName().equalsIgnoreCase(name)) {
                 return;
             }
-            if (!BetonQuest.condition(victim, required)) {
+            if (!BetonQuest.conditions(victim, required)) {
                 return;
             }
             if (!checkConditions(killer)) {

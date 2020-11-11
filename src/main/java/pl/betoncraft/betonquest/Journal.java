@@ -263,7 +263,7 @@ public class Journal {
                                     })
                                     .collect(Collectors.toList());
 
-                            if (!BetonQuest.condition(playerID, pageConditions)) {
+                            if (!BetonQuest.conditions(playerID, pageConditions)) {
                                 continue;
                             }
                         } catch (IllegalArgumentException exception) {

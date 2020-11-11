@@ -40,7 +40,7 @@ public class PartyCondition extends Condition {
         // check every condition against every player - all of them must meet those conditions
         for (final String memberID : members) {
             // if this condition wasn't met by someone, return false
-            if (!BetonQuest.condition(memberID, everyone)) {
+            if (!BetonQuest.conditions(memberID, everyone)) {
                 return false;
             }
         }

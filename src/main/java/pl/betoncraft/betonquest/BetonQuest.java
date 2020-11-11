@@ -80,11 +80,11 @@ public class BetonQuest extends JavaPlugin {
         return instance;
     }
 
-    public static boolean condition(final String playerID, final ConditionID[] conditionIDs) {
+    public static boolean conditions(final String playerID, final ConditionID[] conditionIDs) {
         return Arrays.stream(conditionIDs).parallel().allMatch(con -> condition(playerID, con));
     }
 
-    public static boolean condition(final String playerID, final Collection<ConditionID> conditionIDs) {
+    public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         return conditionIDs.parallelStream().allMatch(con -> condition(playerID, con));
     }
 

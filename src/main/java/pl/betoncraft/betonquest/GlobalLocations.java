@@ -113,7 +113,7 @@ public class GlobalLocations extends BukkitRunnable {
                     }
                     // check all conditions
                     if (location.getConditions() != null) {
-                        if (!BetonQuest.condition(playerID, location.getConditions())) {
+                        if (!BetonQuest.conditions(playerID, location.getConditions())) {
                             continue;
                         }
                     }

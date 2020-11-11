@@ -172,7 +172,7 @@ public class Conversation implements Listener {
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
             if (!force) {
-                if (!BetonQuest.condition(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
+                if (!BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
                     continue;
                 }
             }
@@ -230,7 +230,7 @@ public class Conversation implements Listener {
         int optionsCount = 0;
         answers:
         for (final String option : options) {
-            if (!BetonQuest.condition(playerID, data.getConditionIDs(option, OptionType.PLAYER))) {
+            if (!BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER))) {
                 continue;
             }
             optionsCount++;

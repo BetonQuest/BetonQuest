@@ -402,7 +402,7 @@ public class ConversationData {
             }
             final ConfigPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
-            if (!BetonQuest.condition(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+            if (!BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
                 continue;
             }
             return true;
@@ -583,7 +583,7 @@ public class ConversationData {
 
             if (playerID != null) {
                 for (final String extend : extendLinks) {
-                    if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                    if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
                         continue;
                     }
                     ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
@@ -624,7 +624,7 @@ public class ConversationData {
             final List<EventID> ret = new ArrayList<>(events);
 
             for (final String extend : extendLinks) {
-                if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
                     continue;
                 }
                 ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
@@ -653,7 +653,7 @@ public class ConversationData {
 
             if (playerID != null) {
                 for (final String extend : extendLinks) {
-                    if (!BetonQuest.condition(playerID, getOption(extend, type).getConditions())) {
+                    if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
                         continue;
                     }
                     ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));

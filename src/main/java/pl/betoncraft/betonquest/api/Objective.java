@@ -173,7 +173,7 @@ public abstract class Objective {
     public final boolean checkConditions(final String playerID) {
         LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for player " + PlayerConverter.getName(playerID));
-        return BetonQuest.condition(playerID, conditions);
+        return BetonQuest.conditions(playerID, conditions);
     }
 
     /**

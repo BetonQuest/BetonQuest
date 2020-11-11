@@ -220,7 +220,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     boolean visible = true;
 
-                    if (!BetonQuest.condition(PlayerConverter.getID(player), npcHologram.config.conditions)) {
+                    if (!BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.config.conditions)) {
                         visible = false;
                     }
 

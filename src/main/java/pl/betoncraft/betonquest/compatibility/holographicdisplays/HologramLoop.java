@@ -129,7 +129,7 @@ public class HologramLoop {
                         public void run() {
                             for (final Player player : Bukkit.getOnlinePlayers()) {
                                 final String playerID = PlayerConverter.getID(player);
-                                if (!BetonQuest.condition(playerID, conditionsList)) {
+                                if (!BetonQuest.conditions(playerID, conditionsList)) {
                                     hologram.getVisibilityManager().hideTo(player);
                                     continue;
                                 }
@@ -149,7 +149,7 @@ public class HologramLoop {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
                     for (final Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
-                        if (!BetonQuest.condition(playerID, entry.getValue())) {
+                        if (!BetonQuest.conditions(playerID, entry.getValue())) {
                             entry.getKey().getVisibilityManager().hideTo(player);
                             continue;
                         }

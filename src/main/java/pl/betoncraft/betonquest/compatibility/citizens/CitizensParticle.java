@@ -164,7 +164,7 @@ public class CitizensParticle extends BukkitRunnable {
             for (final Effect effect : effects) {
 
                 // skip the effect if conditions are not met
-                if (!BetonQuest.condition(PlayerConverter.getID(player), effect.conditions)) {
+                if (!BetonQuest.conditions(PlayerConverter.getID(player), effect.conditions)) {
                     continue;
                 }
 
