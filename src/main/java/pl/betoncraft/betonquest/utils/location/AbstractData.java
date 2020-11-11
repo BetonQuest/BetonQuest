@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * This class is a abstract implementation to pars various strings with or without {@link Variable}s.
  */
-abstract class AbstractData<T> {
+abstract class AbstractData<T extends Cloneable> {
     /**
      * This regex matches everything except ';'.
      */
@@ -93,6 +93,14 @@ abstract class AbstractData<T> {
     public abstract T parse(final String objectString) throws InstructionParseException;
 
     /**
+     * Clones the object to prevent illegal modification.
+     *
+     * @param object The object
+     * @return The cloned object
+     */
+    protected abstract T clone(final T object);
+
+    /**
      * Get the {@link T}
      *
      * @param playerID ID of the player - needed for {@link Variable}s resolution
@@ -101,7 +109,7 @@ abstract class AbstractData<T> {
      *                               the values couldn't be parsed.
      */
     public T get(final String playerID) throws QuestRuntimeException {
-        return object == null ? parseVariableObject(playerID) : object;
+        return object == null ? parseVariableObject(playerID) : clone(object);
     }
 
     private T parseVariableObject(final String playerID) throws QuestRuntimeException {

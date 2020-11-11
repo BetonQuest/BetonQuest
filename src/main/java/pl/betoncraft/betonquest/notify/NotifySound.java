@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.location.VectorData;
@@ -68,20 +69,32 @@ class NotifySound {
     private Location getLocation(final Player player, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(player);
         final Location location = compoundLocation == null ? player.getLocation() : compoundLocation.getLocation(playerID);
-        if (playerOffsetDistance != null) {
-            final Vector directionVector = location.subtract(player.getLocation()).toVector();
-            directionVector.normalize().multiply(playerOffsetDistance);
-            location.add(directionVector);
+
+        if (playerOffsetDistance != null && player.getLocation().distance(location) > playerOffsetDistance) {
+            return getLocationRelativeDistance(location, player, playerOffsetDistance);
         }
         if (playerOffset != null) {
-            final Vector relative = playerOffset.get(playerID);
-            final Location playerLoc = player.getLocation();
-            relative.rotateAroundY(playerLoc.getYaw());
-            relative.rotateAroundAxis(new Vector(1, 0, 1), playerLoc.getPitch());
-            location.add(relative);
+            return getLocationRelativeVector(location, player, playerID, playerOffset);
         }
 
         return location;
+    }
+
+    private Location getLocationRelativeDistance(final Location location, final Player player, final Float playerOffsetDistance) {
+        final Vector directionVector = location.toVector().subtract(player.getLocation().toVector());
+        directionVector.normalize().multiply(playerOffsetDistance);
+        return player.getLocation().add(directionVector);
+    }
+
+    private Location getLocationRelativeVector(final Location location, final Player player, final String playerID, final VectorData playerOffset) throws QuestRuntimeException {
+        final Vector relative = playerOffset.get(playerID);
+        final Location playerLoc = player.getLocation();
+
+        relative.rotateAroundY(-Math.toRadians(playerLoc.getYaw()));
+        Vector vec = new Vector(0, 0, 1).rotateAroundY(-Math.toRadians(playerLoc.getYaw() + 90));
+        relative.rotateAroundAxis(vec, -Math.toRadians(playerLoc.getPitch()));
+
+        return location.add(relative);
     }
 
     private SoundPlayer checkInput(final Map<String, String> data) throws InstructionParseException {
@@ -125,6 +138,7 @@ class NotifySound {
             try {
                 return Float.parseFloat(playerOffsetString);
             } catch (final NumberFormatException exception) {
+                LogUtils.logThrowableIgnore(exception);
                 return null;
             }
         }

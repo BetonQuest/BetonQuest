@@ -82,4 +82,9 @@ public class LocationData extends AbstractData<Location> {
     public Location parse(final String objectString) throws InstructionParseException {
         return LocationData.parseLocation(objectString);
     }
+
+    @Override
+    protected Location clone(final Location object) {
+        return object.clone();
+    }
 }
