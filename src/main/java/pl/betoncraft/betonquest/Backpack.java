@@ -553,7 +553,7 @@ public class Backpack implements Listener {
             // set the location of the compass
             final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(loc);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled()) {
+            if (!event.isCancelled()) {
                 player.setCompassTarget(loc);
             }
             player.closeInventory();
