@@ -23,7 +23,8 @@ public class FireworkEffectHandler {
     private Existence trail = Existence.WHATEVER;
     private Existence flicker = Existence.WHATEVER;
 
-    public FireworkEffectHandler() {}
+    public FireworkEffectHandler() {
+    }
 
     public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {

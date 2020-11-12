@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Warning;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;

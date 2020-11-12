@@ -11,7 +11,8 @@ public class ColorHandler {
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
     private Existence colorE = Existence.WHATEVER;
 
-    public ColorHandler() {}
+    public ColorHandler() {
+    }
 
     public void set(final String string) throws InstructionParseException {
         if (string.equalsIgnoreCase("none")) {

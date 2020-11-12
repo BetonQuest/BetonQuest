@@ -11,6 +11,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     public BetonQuestPlaceholder() {
         super();
     }
+
     /**
      * Persist through reloads
      *

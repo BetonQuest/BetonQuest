@@ -18,9 +18,9 @@ import pl.betoncraft.betonquest.id.NoID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.BlockSelector;
-import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

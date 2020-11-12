@@ -91,7 +91,7 @@ class NotifySound {
         final Location playerLoc = player.getLocation();
 
         relative.rotateAroundY(-Math.toRadians(playerLoc.getYaw()));
-        Vector vec = new Vector(0, 0, 1).rotateAroundY(-Math.toRadians(playerLoc.getYaw() + 90));
+        final Vector vec = new Vector(0, 0, 1).rotateAroundY(-Math.toRadians(playerLoc.getYaw() + 90));
         relative.rotateAroundAxis(vec, -Math.toRadians(playerLoc.getPitch()));
 
         return location.add(relative);

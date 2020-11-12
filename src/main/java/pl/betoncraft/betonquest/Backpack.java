@@ -133,7 +133,8 @@ public class Backpack implements Listener {
      * Represents a display that can be shown as the backpack.
      */
     private abstract class Display {
-        private Display() {}
+        private Display() {
+        }
 
         protected abstract void click(int slot, int playerSlot, ClickType click);
     }

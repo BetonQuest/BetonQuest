@@ -17,7 +17,8 @@ public class FireworkHandler {
     private Existence effectsE = Existence.WHATEVER;
     private boolean exact = true;
 
-    public FireworkHandler() {}
+    public FireworkHandler() {
+    }
 
     public void setNotExact() {
         exact = false;

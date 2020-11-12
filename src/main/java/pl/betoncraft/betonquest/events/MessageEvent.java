@@ -93,7 +93,7 @@ public class MessageEvent extends QuestEvent {
         }
         final String formattedMessage = Utils.format(message);
         final Conversation conversation = Conversation.getConversation(playerID);
-        if(conversation == null || conversation.getInterceptor() == null) {
+        if (conversation == null || conversation.getInterceptor() == null) {
             PlayerConverter.getPlayer(playerID).sendMessage(formattedMessage);
         } else {
             conversation.getInterceptor().sendMessage(formattedMessage);

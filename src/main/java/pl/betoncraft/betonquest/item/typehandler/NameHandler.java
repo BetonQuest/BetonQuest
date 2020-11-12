@@ -8,7 +8,8 @@ public class NameHandler {
     private String name = null;
     private Existence existence = Existence.WHATEVER;
 
-    public NameHandler() {}
+    public NameHandler() {
+    }
 
     public void set(final String name) throws InstructionParseException {
         if (name == null || name.isEmpty()) {

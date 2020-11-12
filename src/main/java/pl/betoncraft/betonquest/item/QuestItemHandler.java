@@ -1,9 +1,5 @@
 package pl.betoncraft.betonquest.item;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.ItemFrame;
@@ -21,13 +17,16 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
+
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
 
 /**
  * Handler for Journals.

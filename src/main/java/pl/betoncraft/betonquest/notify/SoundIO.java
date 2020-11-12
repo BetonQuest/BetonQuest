@@ -3,7 +3,6 @@ package pl.betoncraft.betonquest.notify;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SoundIO extends NotifyIO {
