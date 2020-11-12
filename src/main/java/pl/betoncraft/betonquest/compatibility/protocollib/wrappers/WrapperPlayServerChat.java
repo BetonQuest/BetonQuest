@@ -62,8 +62,10 @@ public class WrapperPlayServerChat extends PacketHandlerDecorator {
      * action bar
      *
      * @return The current Position
-     * @deprecated Magic values replaced by enum
+     * @deprecated Magic values replaced by enum,
+     * this will be removed in 2.0 release
      */
+    // TODO Delete in BQ 2.0.0
     @Deprecated
     public byte getPosition() {
         final Byte position = getHandle().getBytes().readSafely(0);
@@ -78,8 +80,10 @@ public class WrapperPlayServerChat extends PacketHandlerDecorator {
      * Set Position.
      *
      * @param value - new value.
-     * @deprecated Magic values replaced by enum
+     * @deprecated Magic values replaced by enum,
+     * this will be removed in 2.0 release
      */
+    // TODO Delete in BQ 2.0.0
     @Deprecated
     public void setPosition(final byte value) {
         getHandle().getBytes().writeSafely(0, value);

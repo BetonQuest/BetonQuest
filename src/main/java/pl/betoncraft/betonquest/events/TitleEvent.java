@@ -7,13 +7,21 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
+/**
+ * @deprecated Use the {@link NotifyEvent} instead,
+ * this will be removed in 2.0 release
+ */
+// TODO Delete in BQ 2.0.0
+@Deprecated
 public class TitleEvent extends QuestEvent {
 
     protected TitleType type;
@@ -23,6 +31,9 @@ public class TitleEvent extends QuestEvent {
 
     public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        LogUtils.getLogger().log(Level.WARNING, "Title event will be REMOVED! Usage in package '"
+                + instruction.getPackage().getName() + "'. Use the Notify system instead: "
+                + "https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Notifications/");
         type = instruction.getEnum(TitleType.class);
         final String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {

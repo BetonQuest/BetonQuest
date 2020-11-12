@@ -11,12 +11,14 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Removes items from player's inventory and/or backpack
@@ -46,11 +48,19 @@ public class TakeEvent extends QuestEvent {
 
             // notify the player
             if (notify) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
-                        new String[]{
-                                questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
-                                String.valueOf(counter)},
-                        "items_taken,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
+                            new String[]{
+                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
+                                    String.valueOf(counter)},
+                            "items_taken,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
 
             // Remove Quest items from player's inventory

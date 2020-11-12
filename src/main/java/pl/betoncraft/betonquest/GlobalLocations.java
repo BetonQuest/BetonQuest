@@ -13,9 +13,9 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
-import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,8 +24,11 @@ import java.util.logging.Level;
 
 /**
  * Handler for global locations.
- * @deprecated The old global locations system got replaced by the new {@link GlobalObjectives global objectives}
+ *
+ * @deprecated The old global locations system got replaced by the new {@link GlobalObjectives global objectives},
+ * this will be removed in 2.0 release
  */
+// TODO Delete in BQ 2.0.0
 @Deprecated
 public class GlobalLocations extends BukkitRunnable {
 

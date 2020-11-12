@@ -14,7 +14,11 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 public class MMOCoreBreakCustomBlockObjective extends Objective implements Listener {
 
@@ -53,9 +57,18 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         if (playerData.getPlacedBlocks() == neededAmount) {
             completeObjective(playerID);
         } else if (notify && playerData.getPlacedBlocks() % notifyInterval == 0) {
-            Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
-                    new String[]{String.valueOf(neededAmount - playerData.getPlacedBlocks())},
-                    "blocks_to_break,info");
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
+                        new String[]{String.valueOf(neededAmount - playerData.getPlacedBlocks())},
+                        "blocks_to_break,info");
+            } catch (final QuestRuntimeException exception) {
+                try {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowableIgnore(exception);
+                } catch (InstructionParseException exep) {
+                    LogUtils.logThrowableReport(exep);
+                }
+            }
         }
 
     }

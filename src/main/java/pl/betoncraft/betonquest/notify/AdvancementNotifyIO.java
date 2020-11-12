@@ -2,8 +2,6 @@ package pl.betoncraft.betonquest.notify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -11,112 +9,47 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
-/**
- * Use Advancement Popup for Notification
- * <p>
- * Data Values:
- * * frame: {challenge|goal|task|default} - What frame to use
- * * icon:  {item_name} - What icon to use
- */
 public class AdvancementNotifyIO extends NotifyIO {
 
-    private String icon;
+    private final String frame;
+    private final String icon;
 
-    // Variables
-    private String frame;
-
-    public AdvancementNotifyIO(final Map<String, String> data) {
+    public AdvancementNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(data);
 
-        frame = FrameType.DEFAULT.str;
-        if (getData().containsKey("frame")) {
-            try {
-                frame = FrameType.valueOf(getData().get("frame").toUpperCase(Locale.ROOT)).str;
-            } catch (IllegalArgumentException e) {
-                LogUtils.logThrowableIgnore(e);
-            }
-        }
-
-        icon = "minecraft:map";
-        if (getData().containsKey("icon")) {
-            icon = getData().get("icon").toLowerCase();
-        }
+        frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
+        icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
     @Override
-    public void sendNotify(final HashMap<Player, String> playerMessages) {
-        final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages = loadAdvancements(playerMessages);
-
-        grantAll(messages);
-
-        // Remove after 10 ticks
+    protected void notifyPlayer(final String message, final Player player) {
+        final NamespacedKey key = loadAdvancement(message);
+        grant(key, player);
         new BukkitRunnable() {
-
             @Override
             public void run() {
-                revokeAll(messages);
-                removeAll(messages);
+                revoke(key, player);
+                remove(key);
             }
         }.runTaskLater(BetonQuest.getInstance(), 10);
-
-        sendNotificationSound(playerMessages.keySet());
     }
 
-    private HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> loadAdvancements(final HashMap<Player, String> playerMessages) {
-        final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages = new HashMap<>();
-        for (final Map.Entry<Player, String> entry : playerMessages.entrySet()) {
-            if (messages.containsKey(entry.getValue())) {
-                messages.get(entry.getValue()).getLeft().add(entry.getKey());
-            } else {
-                final ArrayList<Player> players = new ArrayList<>();
-                players.add(entry.getKey());
-                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
-                try {
-                    add(key, Utils.format(entry.getValue()));
-                } catch (Exception e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Failed to create notification: '" + entry.getValue() + "',! Cause: " + e.getMessage());
-                    LogUtils.logThrowable(e);
-                    messages.put(entry.getValue(), Pair.of(players, null));
-                    continue;
-                }
-                messages.put(entry.getValue(), Pair.of(players, key));
-            }
+    private NamespacedKey loadAdvancement(final String message) {
+        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
+        try {
+            add(key, message);
+        } catch (final Exception e) {
+            LogUtils.getLogger().log(Level.WARNING, "Failed to create notification: '" + message + "'! Cause: " + e.getMessage(), e);
         }
-        return messages;
-    }
-
-    private void grantAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
-        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
-            if(entry.getRight() != null) {
-                for(final Player player : entry.getLeft()) {
-                    grant(entry.getRight(), player);
-                }
-            }
-        }
-    }
-
-    private void revokeAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
-        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
-            if(entry.getRight() != null) {
-                for(final Player player : entry.getLeft()) {
-                    revoke(entry.getRight(), player);
-                }
-            }
-        }
-    }
-
-    private void removeAll(final HashMap<String, Pair<ArrayList<Player>, NamespacedKey>> messages) {
-        for(final Pair<ArrayList<Player>, NamespacedKey> entry : messages.values()) {
-            if(entry.getRight() != null) {
-                remove(entry.getRight());
-            }
-        }
+        return key;
     }
 
     @SuppressWarnings("deprecation")
@@ -131,27 +64,30 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private void grant(final NamespacedKey key, final Player player) {
         final Advancement advancement = Bukkit.getAdvancement(key);
-        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
-        if (!progress.isDone()) {
-            for (final String criteria : progress.getRemainingCriteria()) {
-                progress.awardCriteria(criteria);
+        if (advancement != null) {
+            final AdvancementProgress progress = player.getAdvancementProgress(advancement);
+            if (!progress.isDone()) {
+                for (final String criteria : progress.getRemainingCriteria()) {
+                    progress.awardCriteria(criteria);
+                }
             }
         }
     }
 
     private void revoke(final NamespacedKey key, final Player player) {
         final Advancement advancement = Bukkit.getAdvancement(key);
-        final AdvancementProgress progress = player.getAdvancementProgress(advancement);
-        if (progress.isDone()) {
-            for (final String criteria : progress.getRemainingCriteria()) {
-                progress.revokeCriteria(criteria);
+        if (advancement != null) {
+            final AdvancementProgress progress = player.getAdvancementProgress(advancement);
+            if (progress.isDone()) {
+                for (final String criteria : progress.getRemainingCriteria()) {
+                    progress.revokeCriteria(criteria);
+                }
             }
         }
     }
 
     private String generateJson(final String message) {
         final JsonObject json = new JsonObject();
-
 
         final JsonObject icon = new JsonObject();
         icon.addProperty("item", this.icon);
@@ -179,23 +115,5 @@ public class AdvancementNotifyIO extends NotifyIO {
         json.add("display", display);
 
         return new GsonBuilder().setPrettyPrinting().create().toJson(json);
-    }
-
-
-    public enum FrameType {
-        CHALLENGE("challenge"),
-        GOAL("goal"),
-        TASK("task"),
-        DEFAULT("challenge");
-
-        private final String str;
-
-        FrameType(final String str) {
-            this.str = str;
-        }
-
-        public String getName() {
-            return this.str;
-        }
     }
 }

@@ -22,6 +22,7 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -277,7 +278,7 @@ public class Conversation implements Listener {
         //only display status messages if conversationIO allows it
         if (conv.inOut.printMessages()) {
             // print message
-            conv.inOut.print(Config.parseMessage(playerID, "conversation_end", new String[]{data.getQuester(language)}));
+            conv.inOut.print(Config.parseMessage(pack.getName(), playerID, "conversation_end", new String[]{data.getQuester(language)}));
         }
         //play conversation end sound
         Config.playSound(playerID, "end");
@@ -346,8 +347,12 @@ public class Conversation implements Listener {
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
-
-            Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+            try {
+                Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+            } catch (final QuestRuntimeException exception) {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowableIgnore(exception);
+            }
         }
     }
 
@@ -538,7 +543,7 @@ public class Conversation implements Listener {
                 if (conv.inOut.printMessages()) {
                     // print message about starting a conversation only if it
                     // is started, not resumed
-                    conv.inOut.print(Config.parseMessage(playerID, "conversation_start", new String[]{data.getQuester(language)},
+                    conv.inOut.print(Config.parseMessage(pack.getName(), playerID, "conversation_start", new String[]{data.getQuester(language)},
                             prefixName, prefixVariables));
                 }
                 //play the conversation start sound

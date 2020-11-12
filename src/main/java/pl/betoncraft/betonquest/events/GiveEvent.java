@@ -11,10 +11,12 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Gives the player specified items
@@ -38,12 +40,18 @@ public class GiveEvent extends QuestEvent {
             final VariableNumber amount = theItem.getAmount();
             int amountInt = amount.getInt(playerID);
             if (notify) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
-                        new String[]{
-                                questItem.getName() == null ?  questItem.getMaterial().toString().toLowerCase().replace("_", " ")
-                                    : questItem.getName(),
-                                String.valueOf(amountInt)},
-                        "items_given,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
+                            new String[]{
+                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
+                                    String.valueOf(amountInt)}, "items_given,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
             while (amountInt > 0) {
                 final int stackSize;

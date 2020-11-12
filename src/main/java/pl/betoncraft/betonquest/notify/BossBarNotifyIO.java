@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.notify;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -9,154 +8,75 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.*;
-import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-/**
- * Use a BossBar for Notification
- * <p>
- * Data Values:
- * * barFlags:{create_fog,darken_sky,play_boss_music} - Comma seperated BAR values
- * * barColor: {blue|green|pink|purple|red|white}
- * * progress: Progress between 0.0 and 1.0
- * * style: {segmented_10|segmented_12|segmented_20|segmented_6|solid} - Style of bar
- * * stay: ticks to stay
- */
 public class BossBarNotifyIO extends NotifyIO {
 
+    private final List<BarFlag> barFlags;
+    private final BarColor barColor;
+    private final BarStyle style;
+    private final double progress;
+    private final int stay;
+    private final int countdown;
 
-    // Variables
-    private List<BarFlag> barFlags = null;
-    private BarColor barColor = BarColor.BLUE;
-    private double progress = 1;
-    private BarStyle style = BarStyle.SOLID;
-    private int stay = 70;
-    private int countdown = 0;
-
-    public BossBarNotifyIO(final Map<String, String> data) {
+    public BossBarNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(data);
 
-        if (getData().containsKey("barflags")) {
-            barFlags = new ArrayList<>();
-            for (final String flag : getData().get("barflags").split(",")) {
+        barFlags = new ArrayList<>();
+        if (data.containsKey("barflags")) {
+            for (final String flag : data.get("barflags").split(",")) {
                 try {
                     barFlags.add(BarFlag.valueOf(flag.toUpperCase(Locale.ROOT)));
-                } catch (IllegalArgumentException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar barFlag: " + flag);
-                    LogUtils.logThrowable(e);
+                } catch (final IllegalArgumentException exception) {
+                    throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarFlag", flag.toUpperCase(Locale.ROOT)), exception);
                 }
             }
         }
 
-        if (getData().containsKey("barcolor")) {
-            try {
-                barColor = BarColor.valueOf(getData().get("barcolor").toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar color: " + getData().get("barcolor"));
-                LogUtils.logThrowable(e);
-            }
+        final String barColorString = data.get("barcolor");
+        try {
+            barColor = barColorString == null ? BarColor.BLUE : BarColor.valueOf(barColorString.toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException exception) {
+            throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarColor", barColorString.toUpperCase(Locale.ROOT)), exception);
         }
 
-        if (getData().containsKey("progress")) {
-            try {
-                progress = Math.max(0.0, Math.min(1.0, Double.parseDouble(getData().get("progress"))));
-            } catch (IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar progress: " + getData().get("progress"));
-                LogUtils.logThrowable(e);
-            }
+        final String styleString = data.get("style");
+        try {
+            style = styleString == null ? BarStyle.SOLID : BarStyle.valueOf(styleString.toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException exception) {
+            throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", styleString.toUpperCase(Locale.ROOT)), exception);
         }
 
-        if (getData().containsKey("style")) {
-            try {
-                style = BarStyle.valueOf(getData().get("style").toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar style: " + getData().get("style"));
-                LogUtils.logThrowable(e);
-            }
-        }
-
-        if (getData().containsKey("stay")) {
-            try {
-                stay = Math.max(0, Integer.parseInt(getData().get("stay")));
-            } catch (IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar stay: " + getData().get("stay"));
-                LogUtils.logThrowable(e);
-            }
-        }
-
-        if (getData().containsKey("countdown")) {
-            try {
-                countdown = Integer.parseInt(getData().get("countdown"));
-            } catch (IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Invalid BossBar countdown: " + getData().get("countdown"));
-                LogUtils.logThrowable(e);
-            }
-        }
-
+        progress = Math.max(0.0, Math.min(1.0, getFloatData("progress", 1)));
+        stay = Math.max(0, getIntegerData("stay", 70));
+        countdown = getIntegerData("countdown", 0);
     }
 
     @Override
-    public void sendNotify(final HashMap<Player, String> playerMessages) {
-        loadBars(playerMessages);
-        sendNotificationSound(playerMessages.keySet());
-    }
+    protected void notifyPlayer(final String message, final Player player) {
+        final BossBar bossBar = Bukkit.createBossBar(message, barColor, style);
+        for (final BarFlag flag : barFlags) {
+            bossBar.addFlag(flag);
+        }
+        bossBar.setProgress(progress);
+        bossBar.addPlayer(player);
+        bossBar.setVisible(true);
+        scheduleRemoval(bossBar);
 
-    private void loadBars(final HashMap<Player, String> playerMessages) {
-        final HashMap<String, Pair<ArrayList<Player>, BossBar>> messages = new HashMap<>();
-        for (final Map.Entry<Player, String> entry : playerMessages.entrySet()) {
-            if (messages.containsKey(entry.getValue())) {
-                final Pair<ArrayList<Player>, BossBar> pair = messages.get(entry.getValue());
-                pair.getLeft().add(entry.getKey());
-                pair.getRight().addPlayer(entry.getKey());
-            } else {
-                final ArrayList<Player> players = new ArrayList<>();
-                players.add(entry.getKey());
-                final BossBar bossBar = Bukkit.createBossBar(Utils.format(entry.getValue()), barColor, style);
-                if (barFlags != null) {
-                    for (final BarFlag flag : barFlags) {
-                        bossBar.addFlag(flag);
-                    }
-                }
-                bossBar.setProgress(progress);
-                bossBar.addPlayer(entry.getKey());
-                bossBar.setVisible(true);
-                scheduleRemoval(bossBar);
-
-                // If Countdown, then divide stay by countdown and reduce progress to 0 by those intervals
-                if (countdown > 0) {
-                    final int interval = stay / countdown;
-                    final double amount = progress / ((double) countdown);
-                    scheduleAnimation(bossBar, interval, amount);
-                }
-                messages.put(entry.getValue(), Pair.of(players, bossBar));
-            }
+        if (countdown > 0) {
+            final int interval = stay / countdown;
+            final double amount = progress / ((double) countdown);
+            scheduleAnimation(bossBar, interval, amount);
         }
     }
 
-    private void scheduleAnimation(final BossBar bar, final int interval, final double amount) {
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                if (countdown == 0) {
-                    cancel();
-                    return;
-                }
-                countdown -= 1;
-                progress -= amount;
-                bar.setProgress(Math.max(0.0, progress));
-
-            }
-        }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
-    }
-
-
     private void scheduleRemoval(final BossBar bar) {
         new BukkitRunnable() {
-
             @Override
             public void run() {
                 bar.removeAll();
@@ -164,4 +84,23 @@ public class BossBarNotifyIO extends NotifyIO {
         }.runTaskLater(BetonQuest.getInstance(), stay);
     }
 
+    private void scheduleAnimation(final BossBar bar, final int interval, final double amount) {
+
+        new BukkitRunnable() {
+            private int currentCountdown = countdown;
+            private double currentProgress = progress;
+
+            @Override
+            public void run() {
+                if (currentCountdown == 0) {
+                    cancel();
+                    return;
+                }
+                currentCountdown -= 1;
+                currentProgress -= amount;
+                bar.setProgress(Math.max(0.0, currentProgress));
+
+            }
+        }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
+    }
 }

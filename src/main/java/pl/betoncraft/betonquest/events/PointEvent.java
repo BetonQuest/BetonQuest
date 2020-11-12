@@ -40,8 +40,7 @@ public class PointEvent extends QuestEvent {
         }
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }
         notify = instruction.hasArgument("notify");
@@ -75,20 +74,43 @@ public class PointEvent extends QuestEvent {
         if (multi) {
             for (final Point p : playerData.getPoints()) {
                 if (p.getCategory().equalsIgnoreCase(category)) {
-                    playerData.modifyPoints(category, (int)Math.floor(p.getCount() * count.getDouble(playerID) - p.getCount()));
+                    playerData.modifyPoints(category, (int) Math.floor(p.getCount() * count.getDouble(playerID) - p.getCount()));
                     if (notify) {
-                        Config.sendNotify(instruction.getPackage().getName(), playerID, "point_multiplied", new String[] { String.valueOf(intCount), categoryName }, "point_multiplied,info");
+                        try {
+                            Config.sendNotify(instruction.getPackage().getName(), playerID, "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
+                        } catch (final QuestRuntimeException exception) {
+                            try {
+                                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_multiplied' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            } catch (final InstructionParseException exep) {
+                                throw new QuestRuntimeException(exep);
+                            }
+                        }
                     }
                 }
             }
-        }
-        else {
-            playerData.modifyPoints(category, (int)Math.floor(count.getDouble(playerID)));
+        } else {
+            playerData.modifyPoints(category, (int) Math.floor(count.getDouble(playerID)));
             if (notify && intCount > 0) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "point_given", new String[] { String.valueOf(intCount), categoryName }, "point_given,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_given' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
 
             } else if (notify) {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "point_taken", new String[] { String.valueOf(Math.abs(intCount)), categoryName }, "point_taken,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        throw new QuestRuntimeException(exep);
+                    }
+                }
             }
         }
     }

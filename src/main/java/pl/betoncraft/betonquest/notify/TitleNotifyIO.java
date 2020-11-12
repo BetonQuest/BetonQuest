@@ -1,45 +1,29 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.entity.Player;
-import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Use Title Popup for Notification
- * <p>
- * Data Valuues:
- * * fadeIn: seconds to fade in
- * * stay: seconds to stay
- * * fadeOut: seconds to fade out
- * * subTitle: the subtitle to show, else blank
- */
 public class TitleNotifyIO extends NotifyIO {
-
-
-    // Variables
 
     private final int fadeIn;
     private final int stay;
     private final int fadeOut;
-    private final String subTitle;
 
-
-    public TitleNotifyIO(final Map<String, String> data) {
+    public TitleNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(data);
 
-        fadeIn = Integer.parseInt(data.getOrDefault("fadein", "10"));
-        stay = Integer.parseInt(data.getOrDefault("stay", "70"));
-        fadeOut = Integer.parseInt(data.getOrDefault("fadeout", "20"));
-        subTitle = getData().getOrDefault("subtitle", "").replace("_", " ");
+        fadeIn = getIntegerData("fadein", 10);
+        stay = getIntegerData("stay", 70);
+        fadeOut = getIntegerData("fadeout", 20);
     }
 
     @Override
-    public void sendNotify(final HashMap<Player, String> playerMessages) {
-        for (final Map.Entry<Player, String> entry : playerMessages.entrySet()) {
-            entry.getKey().sendTitle(Utils.format(entry.getValue()), Utils.format(subTitle), fadeIn, stay, fadeOut);
-        }
-        sendNotificationSound(playerMessages.keySet());
+    protected void notifyPlayer(final String message, final Player player) {
+        final String[] messageParts = message.split("\n");
+        final String title = messageParts[0];
+        final String subtitle = messageParts.length > 1 ? messageParts[1] : "";
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 }

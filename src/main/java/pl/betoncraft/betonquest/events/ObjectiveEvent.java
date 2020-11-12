@@ -52,7 +52,7 @@ public class ObjectiveEvent extends QuestEvent {
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, new String[]{
                         objective.toString()
                 }));
-            } else  {
+            } else {
                 LogUtils.getLogger().log(Level.WARNING, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {

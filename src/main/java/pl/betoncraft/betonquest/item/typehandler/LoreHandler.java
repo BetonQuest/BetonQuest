@@ -12,7 +12,8 @@ public class LoreHandler {
     private Existence existence = Existence.WHATEVER;
     private boolean exact = true;
 
-    public LoreHandler() {}
+    public LoreHandler() {
+    }
 
     public void set(final String lore) throws InstructionParseException {
         if (lore.equals("none")) {

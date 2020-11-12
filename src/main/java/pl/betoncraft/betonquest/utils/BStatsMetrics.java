@@ -11,7 +11,9 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.id.*;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BStatsMetrics {
     private final static int METRICS_ID = 551;

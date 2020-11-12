@@ -25,7 +25,8 @@ public class PotionHandler {
     private Existence customE = Existence.WHATEVER;
     private boolean exact = true;
 
-    public PotionHandler() {}
+    public PotionHandler() {
+    }
 
     public void setType(final String type) throws InstructionParseException {
         typeE = Existence.REQUIRED;

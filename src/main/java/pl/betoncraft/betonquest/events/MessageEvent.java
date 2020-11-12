@@ -6,15 +6,22 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Sends a message to the player, in his language
+ *
+ * @deprecated Use the {@link NotifyEvent} instead,
+ * this will be removed in 2.0 release
  */
+// TODO Delete in BQ 2.0.0
+@Deprecated
 public class MessageEvent extends QuestEvent {
 
     private final HashMap<String, String> messages = new HashMap<>();
@@ -22,6 +29,9 @@ public class MessageEvent extends QuestEvent {
 
     public MessageEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        LogUtils.getLogger().log(Level.WARNING, "Message event will be REMOVED! Usage in package '"
+                + instruction.getPackage().getName() + "'. Use the Notify system instead: "
+                + "https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Notifications/");
         final String[] parts;
         try {
             parts = instruction.getInstruction().substring(8).split(" ");
@@ -83,7 +93,7 @@ public class MessageEvent extends QuestEvent {
         }
         final String formattedMessage = Utils.format(message);
         final Conversation conversation = Conversation.getConversation(playerID);
-        if(conversation == null || conversation.getInterceptor() == null) {
+        if (conversation == null || conversation.getInterceptor() == null) {
             PlayerConverter.getPlayer(playerID).sendMessage(formattedMessage);
         } else {
             conversation.getInterceptor().sendMessage(formattedMessage);

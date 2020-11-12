@@ -63,6 +63,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional "minlevel" and "maxlevel" arguments to mmobkill objective
 - Added new options 'inside/outside' for npcrange objective, support for multiple npcs and improved performance
 - Added new Event QuestCompassTargetChangeEvent that is triggered when a new CompassTarget is set. It is also possible to cancel it
+- added multi language support for Notify system
+- Added 'notifyall' event to broadcast a notification
+- Added new notification IO 'sound'
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
@@ -81,8 +84,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - reworked location variable: %location.(xyz|x|y|z|yaw|pitch|world|ulfShort|ulfLong)(.NUMBER)%
 - multiple conditions and objectives now use the block selector. The same applies for the setblock event.
 - static events now allow comma separated event list
-- changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
 ### Deprecated
+- Marked message event for removal in BQ 2.0
+- Marked playsound event for removal in BQ 2.0
+- Marked title event for removal in BQ 2.0
 ### Removed
 - Removed Deprecated Exceptions
 - Removed RacesAndClasses support

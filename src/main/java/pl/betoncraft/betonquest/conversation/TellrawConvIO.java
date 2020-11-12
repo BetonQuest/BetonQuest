@@ -13,11 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Adds tellraw command handling to the SimpleConvIO

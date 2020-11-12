@@ -2,7 +2,6 @@ package pl.betoncraft.betonquest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -317,6 +316,7 @@ public class BetonQuest extends JavaPlugin {
 
         // load configuration
         new Config();
+        Notify.load();
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
@@ -483,6 +483,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("pickrandom", PickRandomEvent.class);
         registerEvents("experience", ExperienceEvent.class);
         registerEvents("notify", NotifyEvent.class);
+        registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
 
         // register objectives
@@ -534,6 +535,7 @@ public class BetonQuest extends JavaPlugin {
         registerNotifyIO("bossbar", BossBarNotifyIO.class);
         registerNotifyIO("title", TitleNotifyIO.class);
         registerNotifyIO("subtitle", SubTitleNotifyIO.class);
+        registerNotifyIO("sound", SoundIO.class);
 
         // register variable types
         registerVariable("condition", ConditionVariable.class);
@@ -804,6 +806,7 @@ public class BetonQuest extends JavaPlugin {
         // reload the configuration
         LogUtils.getLogger().log(Level.FINE, "Reloading configuration");
         new Config();
+        Notify.load();
         // reload updater settings
         BetonQuest.getInstance().getUpdater().reload();
         // load new static events

@@ -8,7 +8,8 @@ public class DurabilityHandler {
     private short durability = 0;
     private Number number = Number.WHATEVER;
 
-    public DurabilityHandler() {}
+    public DurabilityHandler() {
+    }
 
     public void set(String durability) throws InstructionParseException {
         if (durability.endsWith("-")) {

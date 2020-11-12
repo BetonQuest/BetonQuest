@@ -10,11 +10,8 @@ import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
-
-import java.util.logging.Level;
 
 /**
  * Adds or removes tags from the player

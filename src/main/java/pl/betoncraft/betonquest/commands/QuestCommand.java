@@ -1868,7 +1868,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void sendMessage(final CommandSender sender, final String messageName, final String[] variables) {
         if (sender instanceof Player) {
-            Config.sendMessage(PlayerConverter.getID((Player) sender), messageName, variables);
+            Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
         } else {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);

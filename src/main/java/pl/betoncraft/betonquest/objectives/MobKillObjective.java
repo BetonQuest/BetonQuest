@@ -12,10 +12,13 @@ import pl.betoncraft.betonquest.api.MobKillNotifier.MobKilledEvent;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Player has to kill specified amount of specified mobs. It can also require
@@ -81,8 +84,16 @@ public class MobKillObjective extends Objective implements Listener {
                 completeObjective(playerID);
             } else if (notify && playerData.getAmount() % notifyInterval == 0) {
                 // send a notification
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())},
-                        "mobs_to_kill,info");
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())},
+                            "mobs_to_kill,info");
+                } catch (final QuestRuntimeException exception) {
+                    try {
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        LogUtils.logThrowableReport(exep);
+                    }
+                }
             }
         }
     }

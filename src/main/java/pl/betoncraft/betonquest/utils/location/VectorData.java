@@ -50,21 +50,23 @@ public class VectorData extends AbstractData<Vector> {
                     "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
         }
         final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
-        final double locX;
-        final double locY;
-        final double locZ;
         try {
-            locX = Double.parseDouble(parts[0]);
-            locY = Double.parseDouble(parts[1]);
-            locZ = Double.parseDouble(parts[2]);
+            final double locX = Double.parseDouble(parts[0]);
+            final double locY = Double.parseDouble(parts[1]);
+            final double locZ = Double.parseDouble(parts[2]);
+            return new Vector(locX, locY, locZ);
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse a number in the vector. " + e.getMessage(), e);
         }
-        return new Vector(locX, locY, locZ);
     }
 
     @Override
     public Vector parse(final String objectString) throws InstructionParseException {
         return VectorData.parseVector(objectString);
+    }
+
+    @Override
+    protected Vector clone(final Vector object) {
+        return object.clone();
     }
 }

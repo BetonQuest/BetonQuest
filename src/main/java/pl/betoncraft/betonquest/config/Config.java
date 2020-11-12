@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.notify.Notify;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -21,16 +22,16 @@ import java.util.logging.Level;
 public class Config {
 
     private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
+    private static final HashMap<String, ConfigPackage> PACKAGES = new HashMap<>();
+    private static final HashMap<String, QuestCanceler> CANCELERS = new HashMap<>();
+    private static final ArrayList<String> LANGUAGES = new ArrayList<>();
     private static BetonQuest plugin;
     private static Config instance;
     private static ConfigAccessor messages;
     private static ConfigAccessor internal;
-    private static final HashMap<String, ConfigPackage> PACKAGES = new HashMap<>();
-    private static final HashMap<String, QuestCanceler> CANCELERS = new HashMap<>();
     private static String lang;
-    private static final ArrayList<String> LANGUAGES = new ArrayList<>();
-    private final File root;
     private static String defaultPackage = "default";
+    private final File root;
 
     public Config() {
         this(true);
@@ -91,7 +92,7 @@ public class Config {
                 final String name = pack.getName() + "." + key;
                 try {
                     CANCELERS.put(name, new QuestCanceler(name));
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load '" + name + "' quest canceler: " + e.getMessage());
                     LogUtils.logThrowable(e);
                 }
@@ -150,7 +151,7 @@ public class Config {
                     len = input.read(buffer);
                 }
                 output.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not save resource: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
@@ -337,8 +338,8 @@ public class Config {
      * @param playerID    ID of the player
      * @param messageName ID of the message
      */
-    public static void sendMessage(final String playerID, final String messageName) {
-        sendMessage(playerID, messageName, null, null, null, null);
+    public static void sendMessage(final String packName, final String playerID, final String messageName) {
+        sendMessage(packName, playerID, messageName, null, null, null, null);
     }
 
     /**
@@ -350,8 +351,8 @@ public class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String playerID, final String messageName, final String[] variables) {
-        sendMessage(playerID, messageName, variables, null, null, null);
+    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+        sendMessage(packName, playerID, messageName, variables, null, null, null);
     }
 
     /**
@@ -364,8 +365,8 @@ public class Config {
      * @param variables   array of variables which will be inserted into the string
      * @param soundName   name of the sound to play to the player
      */
-    public static void sendMessage(final String playerID, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(playerID, messageName, variables, soundName, null, null);
+    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName) {
+        sendMessage(packName, playerID, messageName, variables, soundName, null, null);
     }
 
     /**
@@ -380,9 +381,9 @@ public class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(final String playerID, final String messageName, final String[] variables, final String soundName,
+    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName,
                                    final String prefixName, final String[] prefixVariables) {
-        final String message = parseMessage(playerID, messageName, variables, prefixName, prefixVariables);
+        final String message = parseMessage(packName, playerID, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
         }
@@ -394,23 +395,23 @@ public class Config {
         }
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) throws QuestRuntimeException {
         sendNotify(packName, playerID, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
         sendNotify(packName, playerID, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) {
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
+    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
         sendNotify(packName, PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
     }
 
@@ -425,26 +426,26 @@ public class Config {
      * @param category    notification category
      * @param data        custom notifyIO data
      */
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) {
-        final String message = parseMessage(player, messageName, variables);
+    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
+        final String message = parseMessage(packName, player, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        Notify.get(category, data).sendNotify(packName, message, player);
+        Notify.get(category, data).sendNotify(message, player);
     }
 
-    public static String parseMessage(final String playerID, final String messageName, final String[] variables) {
-        return parseMessage(playerID, messageName, variables, null, null);
+    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+        return parseMessage(packName, playerID, messageName, variables, null, null);
     }
 
-    public static String parseMessage(final Player player, final String messageName, final String[] variables) {
-        return parseMessage(player, messageName, variables, null, null);
+    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables) {
+        return parseMessage(packName, player, messageName, variables, null, null);
     }
 
-    public static String parseMessage(final String playerID, final String messageName, final String[] variables, final String prefixName,
+    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
                                       final String[] prefixVariables) {
-        return parseMessage(PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
+        return parseMessage(packName, PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
     }
 
     /**
@@ -456,7 +457,7 @@ public class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static String parseMessage(final Player player, final String messageName, final String[] variables, final String prefixName,
+    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
                                       final String[] prefixVariables) {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
         if (playerData == null) {
@@ -471,6 +472,12 @@ public class Config {
             final String prefix = getMessage(language, prefixName, prefixVariables);
             if (prefix.length() > 0) {
                 message = prefix + message;
+            }
+        }
+        if (packName != null) {
+            for (final String variable : BetonQuest.resolveVariables(message)) {
+                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, PlayerConverter.getID(player));
+                message = message.replace(variable, replacement);
             }
         }
         return message;
@@ -491,7 +498,7 @@ public class Config {
         if (!rawSound.equalsIgnoreCase("false")) {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Unknown sound type: " + rawSound);
                 LogUtils.logThrowable(e);
             }

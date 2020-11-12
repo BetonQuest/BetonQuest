@@ -8,7 +8,8 @@ public class DataHandler {
     private short data = 0;
     private Number number = Number.WHATEVER;
 
-    private DataHandler() {}
+    private DataHandler() {
+    }
 
     public void set(String data) throws InstructionParseException {
         if (data.endsWith("-")) {

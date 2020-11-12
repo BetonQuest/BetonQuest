@@ -18,10 +18,13 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Requires the player to manually brew a potion.
@@ -94,9 +97,17 @@ public class BrewObjective extends Objective implements Listener {
                 if (data.getAmount() >= amount) {
                     completeObjective(playerID);
                 } else if (notify && data.getAmount() % notifyInterval == 0) {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "potions_to_brew",
-                            new String[]{String.valueOf(amount - data.getAmount())},
-                            "potions_to_brew,info");
+                    try {
+                        Config.sendNotify(instruction.getPackage().getName(), playerID, "potions_to_brew",
+                                new String[]{String.valueOf(amount - data.getAmount())},
+                                "potions_to_brew,info");
+                    } catch (final QuestRuntimeException exception) {
+                        try {
+                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'potions_to_brew' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        } catch (final InstructionParseException exep) {
+                            exep.printStackTrace();
+                        }
+                    }
                 }
             }
         }.runTask(BetonQuest.getInstance());

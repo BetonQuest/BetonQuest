@@ -11,7 +11,11 @@ import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.conversation.CombatTagger;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 /**
  * Starts new conversations with NPCs
@@ -79,7 +83,12 @@ public class CitizensListener implements Listener {
         }
         final String playerID = PlayerConverter.getID(event.getClicker());
         if (CombatTagger.isTagged(playerID)) {
-            Config.sendNotify(null, playerID, "busy", "busy,error");
+            try {
+                Config.sendNotify(null, playerID, "busy", "busy,error");
+            } catch (final QuestRuntimeException exception) {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'busy' category. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowableIgnore(exception);
+            }
             return;
         }
         final String npcId = String.valueOf(event.getNPC().getId());

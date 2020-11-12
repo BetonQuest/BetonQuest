@@ -1,18 +1,16 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import java.util.Collection;
-
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.VariableNumber;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import java.util.Collection;
 
 public class MythicMobDistanceCondition extends Condition {
 

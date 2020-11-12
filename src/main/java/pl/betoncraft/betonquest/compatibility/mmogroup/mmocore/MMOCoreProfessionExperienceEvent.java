@@ -38,7 +38,7 @@ public class MMOCoreProfessionExperienceEvent extends QuestEvent {
         final PlayerData mmoData = PlayerData.get(UUID.fromString(playerID));
 
         if (isLevel) {
-            mmoData.getCollectionSkills().giveLevels(profession,amount,EXPSource.QUEST);
+            mmoData.getCollectionSkills().giveLevels(profession, amount, EXPSource.QUEST);
         } else {
             mmoData.getCollectionSkills().giveExperience(profession, amount, EXPSource.QUEST);
         }

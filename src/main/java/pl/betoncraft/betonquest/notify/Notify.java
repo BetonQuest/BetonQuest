@@ -1,150 +1,133 @@
 package pl.betoncraft.betonquest.notify;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.config.ConfigPackage;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.logging.Level;
 
-/**
- * Create a short message
- */
-@SuppressWarnings("PMD.ClassNamingConventions")
 public class Notify {
+    private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
+    private static String defaultNotifyIO = null;
 
-    public static NotifyIO get(final String category) {
-        return get(category, new HashMap<>());
+    public static void load() {
+        loadCategorySettings();
+        defaultNotifyIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
     }
 
-    public static NotifyIO get(final Map<String, String> data) {
+    public static NotifyIO get() {
+        return get(null, null);
+    }
+
+    public static NotifyIO get(final String category) {
+        return get(category, null);
+    }
+
+    public static NotifyIO get(@Nullable final Map<String, String> data) {
         return get(null, data);
     }
 
-    /**
-     * Get a NotifyIO instance
-     *
-     * @param category comma separated predefined categories
-     * @param data     Data for IO
-     */
-    public static NotifyIO get(final String category, final Map<String, String> data) {
+    public static NotifyIO get(final String category, @Nullable final Map<String, String> data) {
+        final SortedSet<String> categories = getCategories(category);
 
-        SortedSet<String> categories = new TreeSet<>();
+        final Map<String, String> categoryData = getCategorySettings(categories);
+        if (data != null) {
+            for (final String key : data.keySet()) {
+                categoryData.put(key.toLowerCase(Locale.ROOT), data.get(key));
+            }
+        }
+
+        final List<String> ios = getIOs(categoryData);
+        if (defaultNotifyIO != null) {
+            ios.add(defaultNotifyIO);
+        }
+        ios.add("chat");
+
+        try {
+            return getNotifyIO(ios, categoryData);
+        } catch (final InstructionParseException exception) {
+            LogUtils.getLogger().log(Level.WARNING, exception.getMessage(), exception);
+        }
+
+        try {
+            return new SuppressNotifyIO(categoryData);
+        } catch (final InstructionParseException exception) {
+            LogUtils.logThrowableReport(exception);
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private static SortedSet<String> getCategories(final String category) {
+        final SortedSet<String> categories = new TreeSet<>();
         if (category != null) {
             categories.addAll(Arrays.asList(category.split(",")));
         }
-
-        // Add default category at end
         categories.add("default");
+        return categories;
+    }
 
-
-        // Load from all packages
-        ConfigurationSection selectedConfig = null;
-        for (final String packName : Config.getPackages().keySet()) {
-            final ConfigPackage pack = Config.getPackages().get(packName);
-
-            if (pack.getCustom().getConfig().contains("notifications")) {
-                final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("notifications");
-
-                final SortedSet<String> intersect = new TreeSet<>(categories);
-                intersect.retainAll(section.getKeys(false));
-
-                // If we match on categories, find the first entry and prune away uninteresting in categories
-                if (intersect.size() > 0) {
-                    selectedConfig = section.getConfigurationSection(intersect.first());
-
-                    // Found first category, short circuit
-                    if (intersect.first().equals(categories.first())) {
-                        break;
-                    }
-
-                    categories = categories.subSet(categories.first(), intersect.first());
-                }
+    private static Map<String, String> getCategorySettings(final SortedSet<String> categories) {
+        for (final String category : categories) {
+            final Map<String, String> data = CATEGORY_SETTINGS.get(category);
+            if (data != null) {
+                return data;
             }
         }
+        return new HashMap<>();
+    }
 
-        // Load settings from config if available
-        final Map<String, String> ioData = new HashMap<>();
-        if (selectedConfig != null) {
-            for (final String key : selectedConfig.getKeys(false)) {
-                ioData.put(key.toLowerCase(), selectedConfig.getString(key));
-            }
-        }
-
-        // Add data over the top
-        if (data != null) {
-            for (final String key : data.keySet()) {
-                ioData.put(key.toLowerCase(), data.get(key));
-            }
-        }
-
-        // NotifyIO's to use
+    private static List<String> getIOs(final Map<String, String> categoryData) {
         final List<String> ios = new ArrayList<>();
-
-        // If data contains the key 'io' then we parse it as a comma separated list of io's to use.
-        if (ioData.containsKey("io")) {
+        if (categoryData.containsKey("io")) {
             ios.addAll(Arrays.asList(
-                    Arrays.stream(ioData.get("io").split(","))
+                    Arrays.stream(categoryData.get("io").split(","))
                             .map(String::trim)
                             .toArray(String[]::new)));
         }
+        return ios;
+    }
 
-        // Add default IO, if one
-        final String configuredIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
-        if (configuredIO != null) {
-            ios.add(configuredIO);
-        }
-
-        // Add fallbacks
-        ios.add("chat");
-
-        // Load IO
-        NotifyIO tio = null;
+    private static NotifyIO getNotifyIO(final List<String> ios, final Map<String, String> categoryData) throws InstructionParseException {
         for (final String name : ios) {
             final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
             if (clazz != null) {
                 try {
-                    tio = clazz.getConstructor(Map.class).newInstance(ioData);
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
-                    LogUtils.logThrowable(e);
-                    return new DummyIO(ioData);
+                    return clazz.getConstructor(Map.class).newInstance(categoryData);
+                } catch (final Exception exception) {
+                    throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }
-                break;
             }
         }
-
-        if (tio == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Error when loading notify IO");
-            return new DummyIO(ioData);
-        }
-
-        return tio;
+        throw new InstructionParseException("No Notify IO could be found, searched for '" + ios + "'!");
     }
 
-    public static NotifyIO get() {
-        return get(new HashMap<>());
+    /**
+     * The Notifications should be in a separate configuration in the main folder
+     */
+    // TODO Delete in BQ 2.0.0
+    @Deprecated
+    private static void loadCategorySettings() {
+        final Map<String, Map<String, String>> settings = new HashMap<>();
+        for (final String packName : Config.getPackages().keySet()) {
+            final ConfigurationSection notifySection = Config.getPackages().get(packName).getCustom().getConfig().getConfigurationSection("notifications");
+            if (notifySection != null) {
+                for (final String notifyName : notifySection.getKeys(false)) {
+                    final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);
+                    if (notify != null && !settings.containsKey(notifyName)) {
+                        final Map<String, String> data = new HashMap<>();
+                        for (final String key : notify.getKeys(false)) {
+                            data.put(key.toLowerCase(Locale.ROOT), notify.getString(key));
+                        }
+                        settings.put(notifyName, data);
+                    }
+                }
+            }
+        }
+        CATEGORY_SETTINGS.clear();
+        CATEGORY_SETTINGS.putAll(settings);
     }
-
-    // Fallback dummy IO
-    public static class DummyIO extends NotifyIO {
-
-        public DummyIO(final Map<String, String> data) {
-            super(data);
-        }
-
-        @Override
-        public void sendNotify(final String packName, final String message, final Player... players) {
-        }
-
-        @Override
-        public void sendNotify(final HashMap<Player, String> playerMessages) {
-
-        }
-    }
-
 }

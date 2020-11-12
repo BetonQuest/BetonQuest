@@ -32,7 +32,7 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
-        if(!checkForLevel) {
+        if (!checkForLevel) {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
@@ -41,7 +41,7 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onExpChangeEvent(final PlayerExpChangeEvent event) {
-        if(checkForLevel) {
+        if (checkForLevel) {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
