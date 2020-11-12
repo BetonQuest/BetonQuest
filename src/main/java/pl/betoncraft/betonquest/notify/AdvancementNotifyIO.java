@@ -47,7 +47,8 @@ public class AdvancementNotifyIO extends NotifyIO {
         try {
             add(key, message);
         } catch (final Exception e) {
-            LogUtils.getLogger().log(Level.WARNING, "Failed to create notification: '" + message + "'! Cause: " + e.getMessage(), e);
+            LogUtils.getLogger().log(Level.SEVERE, "Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage());
+            LogUtils.logThrowableIgnore(e);
         }
         return key;
     }
