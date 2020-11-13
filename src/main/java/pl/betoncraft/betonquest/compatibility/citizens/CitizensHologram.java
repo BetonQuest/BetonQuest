@@ -218,13 +218,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                 }
 
                 for (final Player player : Bukkit.getOnlinePlayers()) {
-                    boolean visible = true;
-
-                    if (!BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.config.conditions)) {
-                        visible = false;
-                    }
-
-                    if (visible) {
+                    if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.config.conditions)) {
                         hologramEnabled = true;
                         if (npcHologram.hologram == null) {
                             final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.config.vector));
