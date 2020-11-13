@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - reworked location variable: %location.(xyz|x|y|z|yaw|pitch|world|ulfShort|ulfLong)(.NUMBER)%
 - multiple conditions and objectives now use the block selector. The same applies for the setblock event.
 - static events now allow comma separated event list
+- changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
 ### Deprecated
 - Marked message event for removal in BQ 2.0
 - Marked playsound event for removal in BQ 2.0
