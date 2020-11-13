@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conditions;
 
+import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -11,6 +12,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Checks the conditions for the whole party (including the player that started
@@ -27,9 +29,9 @@ public class PartyCondition extends Condition {
     public PartyCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         range = instruction.getVarNum();
-        conditions = instruction.getList(e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
-        everyone = instruction.getList(instruction.getOptional("every"), e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
-        anyone = instruction.getList(instruction.getOptional("any"), e -> instruction.getCondition(e)).toArray(new ConditionID[0]);
+        conditions = instruction.getList(instruction::getCondition).toArray(new ConditionID[0]);
+        everyone = instruction.getList(instruction.getOptional("every"), instruction::getCondition).toArray(new ConditionID[0]);
+        anyone = instruction.getList(instruction.getOptional("any"), instruction::getCondition).toArray(new ConditionID[0]);
         count = instruction.getVarNum(instruction.getOptional("count"));
     }
 
@@ -38,14 +40,17 @@ public class PartyCondition extends Condition {
         // get the party
         final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions
-        if (!members.parallelStream().allMatch(member -> BetonQuest.conditions(member, everyone))) {
+        final Stream<String> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
+        if (!partyStream.allMatch(member -> BetonQuest.conditions(member, everyone))) {
             return false;
         }
 
         // check every condition against every player - every condition must be met by at least one player
-        if (!Arrays.stream(anyone).parallel()
-                .allMatch(condition -> members.parallelStream()
-                        .anyMatch(member -> BetonQuest.condition(member, condition)))) {
+        final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? Arrays.stream(anyone) : Arrays.stream(anyone).parallel();
+        if (!anyoneStream.allMatch(condition -> {
+            final Stream<String> memberStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
+            return memberStream.anyMatch(member -> BetonQuest.condition(member, condition));
+        })) {
             return false;
         }
 

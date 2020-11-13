@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.api.ConversationOptionEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
@@ -29,10 +30,12 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Represents a conversation between player and NPC
@@ -226,10 +229,13 @@ public class Conversation implements Listener {
      * @param options list of pointers to player options separated by commas
      */
     private void printOptions(final String[] options) {
-        // i is for counting replies, like 1. something, 2. something else
+        final Set<String> validOptions = Arrays.stream(options).parallel()
+                .filter(option -> BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER)))
+                .collect(Collectors.toSet());
+
         int optionsCount = 0;
         for (final String option : options) {
-            if (!BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER))) {
+            if (!validOptions.contains(option)) {
                 continue;
             }
             optionsCount++;
