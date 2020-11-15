@@ -21,7 +21,7 @@ Head over to <a href="https://code.visualstudio.com" target="_blank">their site<
     
     `YAML` language module
 
-![Shows the location of the settings](/media/content/LearnBeton/vscode.png)
+![Shows the location of the settings](../../media/content/LearnBeton/vscode.png)
 
 ## Code Snippets
 To make the process of writing quests a lot easier we created some code snippets for VSCode.  
@@ -34,7 +34,7 @@ Just have a look at this animation:
 ### Installation
 To install the snippet extension head over to the <a href="https://marketplace.visualstudio.com/items?itemName=BetonQuest.betonquest-code-snippets" target="_blank">Visual Studio Marketplace</a>.
 
-![Marketplace Screenshot](/media/content/LearnBeton/snippets-marketplace.png)
+![Marketplace Screenshot](../../media/content/LearnBeton/snippets-marketplace.png)
 
 To install the extension all you have to do is to click on the green install button.  
 If this for some reason doesn't work go to the extensions view in VSCode (++ctrl+shift+x++) and search for `BetonQuest`. 
