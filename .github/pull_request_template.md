@@ -12,8 +12,6 @@ Closes #XXXX <- Issue number if existing
 - [ ]  ... update the documentation?
 - [ ]  ... adjust the ConfigUpdater?
 - [ ]  ... clean the commit history?
-
-
 - [ ]  ... solve all TODOs?
 - [ ]  ... remove any commented out code?
 - [ ]  Did the build pipeline succeed?
