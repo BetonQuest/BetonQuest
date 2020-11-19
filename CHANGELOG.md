@@ -129,6 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed when PlaceholderAPI variables contains dots
 - fixed quester name not support & as color code
 - fixed Region Objective listen to player teleport event
+- packet Interceptor stops 1 second AFTER conversation finishes to allow slow messages to still have its protection
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

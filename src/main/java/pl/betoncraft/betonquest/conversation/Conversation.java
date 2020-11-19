@@ -285,7 +285,12 @@ public class Conversation implements Listener {
 
         // End interceptor after a second
         if (interceptor != null) {
-            interceptor.end();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    interceptor.end();
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 20);
         }
 
         // delete conversation
