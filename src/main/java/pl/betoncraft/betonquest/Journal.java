@@ -23,7 +23,6 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Represents player's journal.
