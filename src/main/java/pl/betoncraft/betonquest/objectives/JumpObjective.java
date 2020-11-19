@@ -22,7 +22,7 @@ public class JumpObjective extends Objective implements Listener {
         amount = instruction.getInt();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJump(final PlayerJumpEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {

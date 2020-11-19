@@ -25,7 +25,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {

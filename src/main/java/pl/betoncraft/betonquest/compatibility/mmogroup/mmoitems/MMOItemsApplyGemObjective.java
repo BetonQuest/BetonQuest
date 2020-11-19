@@ -26,7 +26,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
         gemID = instruction.next();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onApplyGem(final ApplyGemStoneEvent event) {
         final MMOItem upgradedItem = event.getTargetItem();
         if (!upgradedItem.getId().equals(itemID) || !upgradedItem.getType().getId().equals(itemType)) {
