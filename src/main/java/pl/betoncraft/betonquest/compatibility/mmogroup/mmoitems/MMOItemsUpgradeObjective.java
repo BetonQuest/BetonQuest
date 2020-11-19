@@ -25,7 +25,7 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onUpgradeItem(final UpgradeItemEvent event) {
         final MMOItem upgradedItem = event.getTargetItem();
         if (!upgradedItem.getId().equals(itemID) || !upgradedItem.getType().getId().equals(itemType)) {

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class LocalChatPaginator extends ChatPaginator {
     public static Map<Character, Integer> fontSizes;
-    public static int defaultCharWidth = 5;
+    public static int defaultCharWidth = 6;
 
     static {
         fontSizes = Stream.of(new Object[][]{

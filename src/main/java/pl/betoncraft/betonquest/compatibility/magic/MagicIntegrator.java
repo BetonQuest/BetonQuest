@@ -33,7 +33,7 @@ public class MagicIntegrator implements Integrator, Listener {
 
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {
             final String playerID = PlayerConverter.getID(event.getMage().getPlayer());

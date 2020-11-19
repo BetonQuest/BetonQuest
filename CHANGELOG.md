@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - multiple conditions and objectives now use the block selector. The same applies for the setblock event.
 - static events now allow comma separated event list
 - changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
+- EventHandlers in general updated to ignore cancelled events
 ### Deprecated
 - Marked message event for removal in BQ 2.0
 - Marked playsound event for removal in BQ 2.0
@@ -128,6 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed when PlaceholderAPI variables contains dots
 - fixed quester name not support & as color code
 - fixed Region Objective listen to player teleport event
+- packet Interceptor stops 1 second AFTER conversation finishes to allow slow messages to still have its protection
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

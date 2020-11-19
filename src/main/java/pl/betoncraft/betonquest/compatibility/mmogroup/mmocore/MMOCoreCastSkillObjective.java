@@ -22,7 +22,7 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
         skillId = instruction.next();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerPostCastSkillEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {

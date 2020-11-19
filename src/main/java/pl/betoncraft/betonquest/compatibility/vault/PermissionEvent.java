@@ -29,23 +29,18 @@ public class PermissionEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) {
-        // Run in Main Thread
         final Permission vault = VaultIntegrator.getPermission();
         final Player player = PlayerConverter.getPlayer(playerID);
         if (add) {
             if (perm) {
-                // world add perm
                 vault.playerAdd(world, player, permission);
             } else {
-                // world add group
                 vault.playerAddGroup(world, player, permission);
             }
         } else {
             if (perm) {
-                // world remove perm
                 vault.playerRemove(world, player, permission);
             } else {
-                // world remove group
                 vault.playerRemoveGroup(world, player, permission);
             }
         }

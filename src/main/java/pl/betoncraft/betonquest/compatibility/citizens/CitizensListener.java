@@ -57,7 +57,7 @@ public class CitizensListener implements Listener {
         public RightClickListener() {
         }
 
-        @EventHandler
+        @EventHandler(ignoreCancelled = true)
         public void onNPCClick(final NPCRightClickEvent event) {
             interactLogic(event);
         }
@@ -68,7 +68,7 @@ public class CitizensListener implements Listener {
         public LeftClickListener() {
         }
 
-        @EventHandler
+        @EventHandler(ignoreCancelled = true)
         public void onNPCClick(final NPCLeftClickEvent event) {
             interactLogic(event);
         }

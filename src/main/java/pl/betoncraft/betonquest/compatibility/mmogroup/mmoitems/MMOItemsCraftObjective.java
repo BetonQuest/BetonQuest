@@ -41,7 +41,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         amount = instruction.getInt(instruction.next(), 1);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
 
@@ -63,7 +63,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {
