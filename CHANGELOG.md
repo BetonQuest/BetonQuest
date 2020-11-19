@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added multi language support for Notify system
 - Added 'notifyall' event to broadcast a notification
 - Added new notification IO 'sound'
+- Added 'jump' objective
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
