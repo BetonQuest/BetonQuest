@@ -83,7 +83,6 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     @Override
     public void sendMessage(final BaseComponent... message) {
-        // Tag the message. Is there a better way? Perhaps an invisible method is better
         final BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
         player.spigot().sendMessage(components);
     }
