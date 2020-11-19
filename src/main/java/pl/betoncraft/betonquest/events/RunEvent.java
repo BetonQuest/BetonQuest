@@ -18,8 +18,8 @@ public class RunEvent extends QuestEvent {
 
     public RunEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        staticness = false;
-        persistent = false;
+        staticness = true;
+        persistent = true;
         final String[] parts = instruction.getInstruction().substring(3).trim().split(" ");
         if (parts.length < 1) {
             throw new InstructionParseException("Not enough arguments");

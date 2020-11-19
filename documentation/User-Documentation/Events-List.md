@@ -406,7 +406,12 @@ This event also supports an optional `notify` argument that will display informa
 
 ## Run events: `run`
 
-This event allow for specifying multiple instruction strings in one, longer string. Each instruction must be started with `^` character and no other dividers should be used. It's not the same as `folder` condition, because you can specify an instruction string, not an event name. It is also fired on the same tick, not on the next one like in `folder`. Don't use conditions here, it behaves strangely. I'll fix this in 1.9 version.
+**persistent**, **static**
+
+This event allows you to specify multiple instructions in one, long instruction. Each instruction must be started 
+with the `^` character (it divides all the instructions). It's not the same as the `folder` event, because you have to
+specify the actual instruction, not an event name. It is also fired on the same tick, not on the next one like in `folder`.
+Don't use conditions here, it behaves strangely. We will fix this in 2.0.
 
 !!! example
     ```YAML
