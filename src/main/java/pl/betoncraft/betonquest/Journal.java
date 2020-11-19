@@ -250,18 +250,20 @@ public class Journal {
                     // check conditions and continue loop if not met
                     final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && rawConditions.length() > 0) {
-                        for (final String condition : rawConditions.split(",")) {
-                            try {
-                                final ConditionID conditionID = new ConditionID(pack, condition);
-                                if (!BetonQuest.condition(playerID, conditionID)) {
-                                    continue keys;
-                                }
-                            } catch (ObjectNotFoundException e) {
-                                LogUtils.getLogger().log(Level.WARNING, "Error while generatin main page in " + PlayerConverter.getPlayer(playerID)
-                                        + "'s journal - condition '" + condition + "' not found: " + e.getMessage());
-                                LogUtils.logThrowable(e);
-                                continue keys;
+                        try {
+                            final List<ConditionID> pageConditions = new ArrayList<>();
+                            for (final String conditionString : rawConditions.split(",")) {
+                                pageConditions.add(new ConditionID(pack, conditionString));
                             }
+
+                            if (!BetonQuest.conditions(playerID, pageConditions)) {
+                                continue;
+                            }
+                        } catch (ObjectNotFoundException exception) {
+                            LogUtils.getLogger().log(Level.WARNING,
+                                    "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + exception.getMessage());
+                            LogUtils.logThrowable(exception);
+                            continue;
                         }
                     }
                     // here conditions are met, get the text in player's language

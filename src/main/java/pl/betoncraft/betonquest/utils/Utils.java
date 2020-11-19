@@ -353,14 +353,7 @@ public class Utils {
         for (final Player otherPlayer : loc.getWorld().getPlayers()) {
             if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
                 final String otherPlayerID = PlayerConverter.getID(otherPlayer);
-                boolean meets = true;
-                for (final ConditionID condition : conditions) {
-                    if (!BetonQuest.condition(otherPlayerID, condition)) {
-                        meets = false;
-                        break;
-                    }
-                }
-                if (meets) {
+                if (BetonQuest.conditions(otherPlayerID, conditions)) {
                     list.add(otherPlayerID);
                 }
             }

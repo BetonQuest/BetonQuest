@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.conversation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,15 +24,17 @@ import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -50,14 +53,13 @@ public class Conversation implements Listener {
     private final List<String> blacklist;
     private final Conversation conv;
     private final BetonQuest plugin;
+    private final HashMap<Integer, String> current = new HashMap<>();
     private ConversationData data;
     private ConversationIO inOut;
     private String option;
     private boolean ended = false;
     private boolean messagesDelaying = false;
     private Interceptor interceptor;
-
-    private final HashMap<Integer, String> current = new HashMap<>();
 
 
     /**
@@ -159,7 +161,6 @@ public class Conversation implements Listener {
         }
         // get npc's text
         option = null;
-        options:
         for (final String option : options) {
             final String convName;
             final String optionName;
@@ -173,10 +174,8 @@ public class Conversation implements Listener {
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
             if (!force) {
-                for (final ConditionID condition : currentData.getConditionIDs(optionName, OptionType.NPC)) {
-                    if (!BetonQuest.condition(this.playerID, condition)) {
-                        continue options;
-                    }
+                if (!BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
+                    continue;
                 }
             }
             this.option = optionName;
@@ -229,15 +228,24 @@ public class Conversation implements Listener {
      * @param options list of pointers to player options separated by commas
      */
     private void printOptions(final String[] options) {
-        // i is for counting replies, like 1. something, 2. something else
-        int optionsCount = 0;
-        answers:
+        final List<Pair<String, CompletableFuture<Boolean>>> futuresOptions = new ArrayList<>();
         for (final String option : options) {
-            for (final ConditionID condition : data.getConditionIDs(option, OptionType.PLAYER)) {
-                if (!BetonQuest.condition(playerID, condition)) {
-                    continue answers;
+            final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
+                    () -> BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER)));
+            futuresOptions.add(Pair.of(option, future));
+        }
+
+        int optionsCount = 0;
+        for (final Pair<String, CompletableFuture<Boolean>> future : futuresOptions) {
+            try {
+                if (!future.getValue().get(1, TimeUnit.SECONDS)) {
+                    continue;
                 }
+            } catch (final Exception e) {
+                LogUtils.logThrowableReport(e);
+                continue;
             }
+            final String option = future.getKey();
             optionsCount++;
             // print reply and put it to the hashmap
             current.put(optionsCount, option);
@@ -420,7 +428,7 @@ public class Conversation implements Listener {
                     Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
                 }
             }.runTask(BetonQuest.getInstance());
-        } catch (IllegalPluginAccessException e) {
+        } catch (final IllegalPluginAccessException e) {
             LogUtils.logThrowableIgnore(e);
         }
 
@@ -480,6 +488,7 @@ public class Conversation implements Listener {
             this.options = options;
         }
 
+        @Override
         public void run() {
             // the conversation start event must be run on next tick
             final PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
@@ -504,7 +513,7 @@ public class Conversation implements Listener {
                 final String name = data.getConversationIO();
                 final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
                 conv.inOut = convIO.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+            } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error when loading conversation IO");
                 LogUtils.logThrowable(e);
@@ -520,7 +529,7 @@ public class Conversation implements Listener {
                     final String name = data.getInterceptor();
                     final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
                     conv.interceptor = interceptor.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error when loading interceptor");
                     LogUtils.logThrowable(e);
@@ -585,6 +594,7 @@ public class Conversation implements Listener {
             this.option = option;
         }
 
+        @Override
         public void run() {
             // fire events
             for (final EventID event : data.getEventIDs(playerID, option, OptionType.NPC)) {
@@ -606,6 +616,7 @@ public class Conversation implements Listener {
             this.option = option;
         }
 
+        @Override
         public void run() {
             // fire events
             for (final EventID event : data.getEventIDs(playerID, option, OptionType.PLAYER)) {
@@ -627,6 +638,7 @@ public class Conversation implements Listener {
             this.option = option;
         }
 
+        @Override
         public void run() {
             // don't forget to select the option prior to printing its text
             selectOption(data.getPointers(playerID, option, OptionType.PLAYER), false);
@@ -655,6 +667,7 @@ public class Conversation implements Listener {
             this.option = option;
         }
 
+        @Override
         public void run() {
             // print options
             printOptions(data.getPointers(playerID, option, OptionType.NPC));
@@ -669,6 +682,7 @@ public class Conversation implements Listener {
             super();
         }
 
+        @Override
         public void run() {
             endConversation();
         }

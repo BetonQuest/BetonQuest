@@ -161,14 +161,11 @@ public class CitizensParticle extends BukkitRunnable {
             final Map<Integer, Effect> assignments = new HashMap<>();
 
             // handle all effects
-            effects:
             for (final Effect effect : effects) {
 
                 // skip the effect if conditions are not met
-                for (final ConditionID condition : effect.conditions) {
-                    if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                        continue effects;
-                    }
+                if (!BetonQuest.conditions(PlayerConverter.getID(player), effect.conditions)) {
+                    continue;
                 }
 
                 // assign this effect to all NPCs which don't have already assigned effects

@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UpdaterTest {
 
-    public UpdaterTest() {}
+    public UpdaterTest() {
+    }
 
     @Test
     public void testVersionCompare() {

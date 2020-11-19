@@ -16,13 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Config.class, LogUtils.class, BetonQuest.class,})
 public class UtilsTest {
 
-    public UtilsTest() {}
+    public UtilsTest() {
+    }
 
     @Before
     public void setUp() {

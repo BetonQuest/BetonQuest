@@ -87,6 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - static events now allow comma separated event list
 - changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
 - EventHandlers in general updated to ignore cancelled events
+- improved performance for condition checks (Bug where it took seconds to check for conditions)
+- improved performance for conversation checks (Bug where it took seconds to check for conversation options)
 ### Deprecated
 - Marked message event for removal in BQ 2.0
 - Marked playsound event for removal in BQ 2.0

@@ -57,7 +57,6 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                     slot = journal.removeFromInv();
                 }
                 playerData.setLanguage(lang);
-                journal.generateTexts(lang);
                 if (slot > 0) {
                     journal.addToInv(slot);
                 }

@@ -32,12 +32,15 @@ import pl.betoncraft.betonquest.variables.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Represents BetonQuest plugin
@@ -76,6 +79,19 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
+    }
+
+    public static boolean conditions(final String playerID, final ConditionID[] conditionIDs) {
+        return conditions(playerID, Arrays.stream(conditionIDs));
+    }
+
+    public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
+        return conditions(playerID, conditionIDs.stream());
+    }
+
+    private static boolean conditions(final String playerID, final Stream<ConditionID> stream) {
+        final Stream<ConditionID> conditions = Bukkit.isPrimaryThread() ? stream : stream.parallel();
+        return conditions.allMatch(con -> condition(playerID, con));
     }
 
     /**

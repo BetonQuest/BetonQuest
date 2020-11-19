@@ -87,11 +87,10 @@ public class GlobalLocations extends BukkitRunnable {
         for (final Player player : players) {
             final String playerID = PlayerConverter.getID(player);
             // for each player loop all available locations
-            locations:
             for (final GlobalLocation location : finalLocations) {
                 // if location is not set, stop everything, there is an error in config
                 if (location.getLocation() == null) {
-                    continue locations;
+                    continue;
                 }
                 // if player is inside location, do stuff
                 final Location loc;
@@ -110,15 +109,12 @@ public class GlobalLocations extends BukkitRunnable {
                     // check if player has already triggered this location
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
                     if (playerData.hasTag(location.getTag())) {
-                        continue locations;
+                        continue;
                     }
                     // check all conditions
                     if (location.getConditions() != null) {
-                        for (final ConditionID condition : location.getConditions()) {
-                            if (!BetonQuest.condition(playerID, condition)) {
-                                // if some conditions are not met, skip to next location
-                                continue locations;
-                            }
+                        if (!BetonQuest.conditions(playerID, location.getConditions())) {
+                            continue;
                         }
                     }
                     // set the tag, player has triggered this location

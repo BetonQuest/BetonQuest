@@ -127,29 +127,17 @@ public class NPCHider extends BukkitRunnable implements Listener {
      * @param npcID  ID of the NPC
      */
     public void applyVisibility(final Player player, final Integer npcID) {
-        boolean hidden = true;
-        final Set<ConditionID> conditions = npcs.get(npcID);
-        if (conditions == null || conditions.isEmpty()) {
-            hidden = false;
-        } else {
-            for (final ConditionID condition : conditions) {
-                if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                    hidden = false;
-                    break;
-                }
-            }
-        }
-
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
             LogUtils.getLogger().log(Level.WARNING, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
         }
         if (npc.isSpawned()) {
-            if (hidden) {
-                hider.hideEntity(player, npc.getEntity());
-            } else {
+            final Set<ConditionID> conditions = npcs.get(npcID);
+            if (conditions == null || conditions.isEmpty() || BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
                 hider.showEntity(player, npc.getEntity());
+            } else {
+                hider.hideEntity(player, npc.getEntity());
             }
         }
     }
