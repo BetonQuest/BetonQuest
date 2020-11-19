@@ -63,7 +63,7 @@ public class MenuConvIO extends ChatConvIO {
     protected String configControlSelect = "jump,left_click";
 
     // Configuration
-    protected Integer configLineLength = 60;
+    protected Integer configLineLength = 50;
     protected Integer configRefreshDelay = 180;
     protected String configNpcWrap = "&l &r".replace('&', '§');
     protected String configNpcText = "&l &r&f{npc_text}".replace('&', '§');
