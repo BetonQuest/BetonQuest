@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -237,7 +238,7 @@ public class Conversation implements Listener {
         int optionsCount = 0;
         for (final Pair<String, CompletableFuture<Boolean>> future : futuresOptions) {
             try {
-                if (!future.getValue().get()) {
+                if (!future.getValue().get(1, TimeUnit.SECONDS)) {
                     continue;
                 }
             } catch (final Exception e) {
