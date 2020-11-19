@@ -304,6 +304,17 @@ Taming has the same properties as mob kill objective.
     ```YAML
     tame WOLF 2 events:wolfs_tamed
     ```
+   
+
+## Jump!: `jump`
+
+To complete this objective player must jump. The only argument is amount.
+`amount` and `left` are supported as objective variable properties. 
+
+!!! example
+    ```YAML
+    jump 15 events:legExerciseDone
+    ```
 
 ## Variable: `variable`
 
