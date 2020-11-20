@@ -44,6 +44,8 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
 
       - name: Build with mkdocs
         run: |
