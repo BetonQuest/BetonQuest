@@ -120,7 +120,7 @@ IO for the "language changed" category with just three entries in you custom.yml
 
 A truly custom notification can be sent using the `notify` event. You can either directly define all Notify IO options like so:
 ```YAML
-myEvent: "notify This is a custom message. io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE"
+myEvent: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
 ```
 
 Or you can use categories from the *custom.yml* like so:
@@ -141,15 +141,11 @@ notifications:
     icon: gold_ingot  
 ```
    
+!!! warning 
+    All colons (`:`) in your notification messages need to be escaped with one backslash (`\`) when using single quotes
+    (`''`) and with two backslashes (`\\`) when using double quotes (`""`). Example:  `'Peter:Heya %player%!' -> 'Peter\:Heya %player%!'` `"Peter:Heya %player%!" -> "Peter\\:Heya %player%!"`
+     
     
-
-Configuring groups
-
-default groups
-
-misc:
-show supress example
-show notify option in objective
 
 ## Notify IO's
 ### Chat
@@ -241,7 +237,54 @@ as Minecraft's sound system is kinda strange.
 | soundvolume | Minecraft's <a href="https://minecraft.gamepedia.com/Commands/playsound#Arguments" target="_blank">special sound volume</a>. Default: _1_ |
 | soundpitch | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_ |
 | soundlocation | Default: The player's location. A location using the BetonQuest [ULF](../Reference/#unified-location-formating). Can include variables. |
-| soundplayeroffset | A vector `(x;y;z)`. The location the sound will be played at is %soundplayeroffset% blocks away from the player towards the soundlocation. The sound will be at the actual location if the player is closer to the soundlocation then the offset would allow. If no soundlocation is set the sound will just be offset using Minecraft's coordinate system. Crazy stuff will happen if the soundlocation is already a ULF with a vector and this option is set too. Then the players relative coordinate system will be used which means that the vectors x axis is right / left from the players head, the y axis is up or down from where ever the players face is and the z axis is before / behind the players face.   |
+| soundplayeroffset | This option is special. See below.
+
+<h3>soundplayeroffset:</h3>
+This option can be a number or a vector.
+
+**Number**:    
+
+The location the sound will be played at is moved away from the player towards the `soundlocation` using the number from
+`soundplayeroffset`.
+The sound will be at the actual location if the player is closer to the soundlocation then the offset would allow.
+
+??? info "Visual Explanation"  
+    ![offset image](../media/content/User-Documentation/Notifications/offset.png)
+    
+    This shows how the sound will be placed at the `soundlocation` if the distance between the player and the `soundlocation`
+    is smaller then the `playeroffset`:    
+    ![offsetBiggerThanDistance image](../media/content/User-Documentation/Notifications/offsetBiggerThanDistance.png)
+
+*Example usage*:
+
+You could make a "sound compass" that will play a sound in the direction of a point of interest.
+
+
+**Vector**:     
+A vector has to be in the format`(x;y;z)`. This system will use the players relative coordinate system.
+This means that the vectors x axis is right / left from the players head, the y axis is up or down from where ever the players face is
+and the z axis is before / behind the players face. It will move along the players  head.
+
+??? info "Visual Explanation"  
+    ![relativeAxis image](../media/content/User-Documentation/Notifications/relativeAxis.png)
+ 
+This makes it possible to go crazy with sounds. Just one example: A halloween special
+where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
+
+Here is a small example:
+
+blue line = direction the player is looking in    
+🟢 = soundlocation argument    
+🔴  = the actual location the sound is played at    
+*soundplayeroffset = (0,0,5)*
+
+ <video controls loop
+     src="../../media/content/User-Documentation/Notifications/RelativeVectorExample.mp4"
+     width="780" height="500">
+ Sorry, your browser doesn't support embedded videos.
+ </video>
+
+The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
 ### Suppress
-Does not output anything. Can be used to remove "miscellaneous" notifications.
+Does not output any sound or text 🔕. Can be used to remove "miscellaneous" notifications.
