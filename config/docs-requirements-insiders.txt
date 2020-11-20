@@ -2,6 +2,7 @@ mkdocs-exclude==1.0.2
 git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git
 mkdocs-git-revision-date-localized-plugin==0.5.0
 mkdocs-awesome-pages-plugin==2.2.1
+mike==0.5.5
 
 # mkpdf
 # mkpdf-mkdocs-plugin
