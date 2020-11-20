@@ -838,7 +838,9 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
+## [SkillAPI](https://github.com/Sentropic/SkillAPI-s/releases)
+
+This adds support for [Sentropics SkillAPI fork](https://github.com/Sentropic/SkillAPI-s/releases). They still update SkillAPI.  
 
 ### Conditions
 

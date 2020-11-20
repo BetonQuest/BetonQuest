@@ -118,11 +118,30 @@ IO for the "language changed" category with just three entries in you custom.yml
 
 ## Adding custom Notifications using events
 
-Using the `notify` event a custom notification can be sent. It can make use of any category defined or can override by directly defining the NotifyIO configuration options. Please refer to the Events-List chapter for more details on this event.
- 
-    Settings
+A truly custom notification can be sent using the `notify` event. You can either directly define all Notify IO options like so:
+```YAML
+myEvent: "notify This is a custom message. io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE"
+```
+
+Or you can use categories from the *custom.yml* like so:
+```YAML
+myEvent: "notify This is a custom message! category:info"
+```
+
+You can also override category settings:
+```YAML
+myEvent: "notify Another messsage! category:info io:advancement frame:challenge"
+```
+
+These custom notifications also allow custom categories. You can go wild here:
+```YAML
+notifications:
+  money: 
+    io: bossbar
+    icon: gold_ingot  
+```
+   
     
-    Title: In order to set a subtitle you can add \n
 
 Configuring groups
 
@@ -217,12 +236,12 @@ as Minecraft's sound system is kinda strange.
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
+| sound | Sound to play. If blank, no sound. Either vanilla Minecraft sounds (get them using /playsound autocompletion) or the name of a sound from a resource pack. |
 | soundcategory | The <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html" target="_blank">category</a> in which the sound will be played. |
-| soundvolume | Minecraft's <a href="https://minecraft.gamepedia.com/Commands/playsound#Arguments" target="_blank">special sound volume</a>. Default: 1 |
-| soundpitch | Pitch of the sound. Default: 1 Min: 0 Max: 2|
-| soundlocation | Default: The player's location. A location using the BetonQuest ULF. Can include variables. |
-| soundplayeroffset | Default: The player's location. A location using the BetonQuest ULF. Can include variables. |
+| soundvolume | Minecraft's <a href="https://minecraft.gamepedia.com/Commands/playsound#Arguments" target="_blank">special sound volume</a>. Default: _1_ |
+| soundpitch | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_ |
+| soundlocation | Default: The player's location. A location using the BetonQuest [ULF](../Reference/#unified-location-formating). Can include variables. |
+| soundplayeroffset | A vector `(x;y;z)`. The location the sound will be played at is %soundplayeroffset% blocks away from the player towards the soundlocation. The sound will be at the actual location if the player is closer to the soundlocation then the offset would allow. If no soundlocation is set the sound will just be offset using Minecraft's coordinate system. Crazy stuff will happen if the soundlocation is already a ULF with a vector and this option is set too. Then the players relative coordinate system will be used which means that the vectors x axis is right / left from the players head, the y axis is up or down from where ever the players face is and the z axis is before / behind the players face.   |
 
 ### Suppress
 Does not output anything. Can be used to remove "miscellaneous" notifications.
