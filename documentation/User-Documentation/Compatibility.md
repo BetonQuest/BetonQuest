@@ -58,7 +58,7 @@ Removes the specified drink from the players inventory. An amount needs to be sp
 takebrew MY_OTHER_BREW 2
 ```
 
-## NPC's with [Citizens](http://dev.bukkit.org/bukkit-plugins/citizens/)
+## NPC's using <a href="https://www.spigotmc.org/resources/citizens.13811/" target="_blank">Citizens</a>
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
@@ -193,6 +193,11 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
 ## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
 If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
+
+EffectLib is not a normal plugin, it's a developer tool - there are no official docs. However, the Magic plugin has a
+<a href="https://reference.elmakers.com/#effectlib" target="_blank">wiki</a> for EffectLib.
+It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
+There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTemplate" target="_blank">magic editor</a> with autocompletion for EffectLib.
 
 You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section.
 Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings.
