@@ -16,9 +16,9 @@ public class ConditionID extends ID {
         }
     }
 
-    private static String removeExclamationMark(String identifier) {
+    private static String removeExclamationMark(final String identifier) {
         if (identifier.startsWith("!")) {
-            identifier = identifier.substring(1);
+            return identifier.substring(1);
         }
         return identifier;
     }

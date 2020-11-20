@@ -53,25 +53,26 @@ public class FireworkHandler {
         return power;
     }
 
-    public void setPower(String string) throws InstructionParseException {
-        if (string.equals("?")) {
+    public void setPower(final String string) throws InstructionParseException {
+        String power = string;
+        if (power.equals("?")) {
             powerN = Number.WHATEVER;
-            string = "1";
-        } else if (string.endsWith("-")) {
+            power = "1";
+        } else if (power.endsWith("-")) {
             powerN = Number.LESS;
-            string = string.substring(0, string.length() - 1);
-        } else if (string.endsWith("+")) {
+            power = power.substring(0, power.length() - 1);
+        } else if (power.endsWith("+")) {
             powerN = Number.MORE;
-            string = string.substring(0, string.length() - 1);
+            power = power.substring(0, power.length() - 1);
         } else {
             powerN = Number.EQUAL;
         }
         try {
-            power = Integer.parseInt(string);
+            this.power = Integer.parseInt(power);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Could not parse power: " + string, e);
+            throw new InstructionParseException("Could not parse power: " + power, e);
         }
-        if (power < 0) {
+        if (this.power < 0) {
             throw new InstructionParseException("Firework power must be a positive number");
         }
     }

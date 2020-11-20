@@ -11,6 +11,16 @@
 
   <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod"/>
   <rule ref="category/java/bestpractices.xml/AccessorClassGeneration"/>
+  <rule ref="category/java/bestpractices.xml/ArrayIsStoredDirectly"/>
+  <rule ref="category/java/bestpractices.xml/AvoidMessageDigestField"/>
+  <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
+  <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
+    <properties>
+      <property name="foreachReassign" value="deny"/>
+      <property name="forReassign" value="skip"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/bestpractices.xml/AvoidReassigningParameters"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>

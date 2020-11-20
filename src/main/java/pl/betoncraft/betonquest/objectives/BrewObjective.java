@@ -105,7 +105,7 @@ public class BrewObjective extends Objective implements Listener {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'potions_to_brew' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException exep) {
-                            exep.printStackTrace();
+                            LogUtils.logThrowableReport(exep);
                         }
                     }
                 }

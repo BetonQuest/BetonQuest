@@ -70,15 +70,18 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public String onPlaceholderRequest(final Player player, String identifier) {
+    public String onPlaceholderRequest(final Player player, final String identifier) {
         final String pack;
-        if (identifier.contains(":")) {
-            pack = identifier.substring(0, identifier.indexOf(':'));
-            identifier = identifier.substring(identifier.indexOf(':') + 1);
-        } else {
+        final String placeholderIdentifier;
+        final int index = identifier.indexOf(':');
+        if (index == -1) {
             pack = Config.getDefaultPackage().getName();
+            placeholderIdentifier = identifier;
+        } else {
+            pack = identifier.substring(0, index);
+            placeholderIdentifier = identifier.substring(index + 1);
         }
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + identifier + '%', PlayerConverter.getID(player));
+        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', PlayerConverter.getID(player));
     }
 
 }

@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
@@ -90,7 +91,7 @@ public class Saver extends Thread implements Listener {
          */
         public Record(final UpdateType type, final String[] args) {
             this.type = type;
-            this.args = args;
+            this.args = Arrays.copyOf(args, args.length);
         }
 
         private UpdateType getType() {

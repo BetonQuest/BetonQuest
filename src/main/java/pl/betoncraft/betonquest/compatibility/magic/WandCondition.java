@@ -45,17 +45,16 @@ public class WandCondition extends Condition {
         }
         final String[] array = instruction.getArray(instruction.getOptional("spells"));
         if (array != null) {
-            for (String spell : array) {
+            for (final String spell : array) {
                 VariableNumber level = new VariableNumber(1);
                 if (spell.contains(":")) {
                     final String[] spellParts = spell.split(":");
-                    spell = spellParts[0];
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
                     } catch (NumberFormatException e) {
                         throw new InstructionParseException("Could not parse spell level", e);
                     }
-                    this.spells.put(spell, level);
+                    this.spells.put(spellParts[0], level);
                 } else {
                     throw new InstructionParseException("Incorrect spell format");
                 }

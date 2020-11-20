@@ -350,13 +350,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
-    protected ArrayList<String> stringToLines(final String singleLine, final String color, String prefix) {
+    protected ArrayList<String> stringToLines(final String singleLine, final String color, final String prefix) {
+        String inputPrefix = prefix;
         final ArrayList<String> multiLine = new ArrayList<>();
-        boolean firstLinePrefix = prefix != null;
-        if (prefix == null) {
-            prefix = "";
+        boolean firstLinePrefix = inputPrefix != null;
+        if (inputPrefix == null) {
+            inputPrefix = "";
         }
-        final String[] lineBreaks = (prefix + singleLine).split("\n");
+        final String[] lineBreaks = (inputPrefix + singleLine).split("\n");
         for (final String brokenLine : lineBreaks) {
             final String[] arr = brokenLine.split(" ");
             StringBuilder line = new StringBuilder();
@@ -366,7 +367,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 if (rawLength + 1 > 42) {
                     if (firstLinePrefix) {
                         firstLinePrefix = false;
-                        multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+                        multiLine.add(StringUtils.replaceOnce(line.toString().trim(), inputPrefix, inputPrefix + color));
                     } else {
                         multiLine.add(color + line.toString().trim());
                     }
@@ -376,7 +377,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;
-                multiLine.add(StringUtils.replaceOnce(line.toString().trim(), prefix, prefix + color));
+                multiLine.add(StringUtils.replaceOnce(line.toString().trim(), inputPrefix, inputPrefix + color));
             } else {
                 multiLine.add(color + line.toString().trim());
             }

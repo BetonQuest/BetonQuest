@@ -178,13 +178,14 @@ public class QuestItem {
             }
             if (bookMeta.hasPages()) {
                 final StringBuilder strBldr = new StringBuilder();
-                for (String page : bookMeta.getPages()) {
-                    if (page.startsWith("\"") && page.endsWith("\"")) {
-                        page = page.substring(1, page.length() - 1);
+                for (final String page : bookMeta.getPages()) {
+                    String processedPage = page;
+                    if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
+                        processedPage = processedPage.substring(1, processedPage.length() - 1);
                     }
                     // this will remove black color code between lines
                     // Bukkit is adding it for some reason (probably to mess people's code)
-                    strBldr.append(page.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append("|");
+                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append("|");
                 }
                 text = " text:" + strBldr.substring(0, strBldr.length() - 1);
             }

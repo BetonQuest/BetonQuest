@@ -389,41 +389,42 @@ public class PlayerData {
      * it's overwritten by amount parameter. Amount can be greater than max
      * stack size.
      *
-     * @param item   ItemStack to add to backpack
-     * @param amount amount of the items
+     * @param item        ItemStack to add to backpack
+     * @param inputAmount amount of the items
      */
-    public void addItem(final ItemStack item, int amount) {
+    public void addItem(final ItemStack item, final int amount) {
+        int inputAmount = amount;
         for (final ItemStack itemStack : backpack) {
             if (item.isSimilar(itemStack)) {
                 // if items are similar they can be joined in a single itemstack
-                if (amount + itemStack.getAmount() <= itemStack.getMaxStackSize()) {
+                if (inputAmount + itemStack.getAmount() <= itemStack.getMaxStackSize()) {
                     // if they will fit all together, then just add them
-                    itemStack.setAmount(itemStack.getAmount() + amount);
-                    amount = 0; // this will allow for passing the while loop
+                    itemStack.setAmount(itemStack.getAmount() + inputAmount);
+                    inputAmount = 0; // this will allow for passing the while loop
                     break;
                 } else {
                     // if the stack will be overflown, set max size and continue
-                    amount -= itemStack.getMaxStackSize() - itemStack.getAmount();
+                    inputAmount -= itemStack.getMaxStackSize() - itemStack.getAmount();
                     itemStack.setAmount(itemStack.getMaxStackSize());
                 }
             }
         }
         // every item checked, time to add a new itemstack
-        while (amount > 0) {
+        while (inputAmount > 0) {
             // if the amount is greater than max size of the itemstack, create
             // max
             // stacks until it's lower
             final ItemStack newItem = item.clone();
             int maxSize = newItem.getType().getMaxStackSize();
-            if (amount > maxSize) {
+            if (inputAmount > maxSize) {
                 if (maxSize == 0) {
                     maxSize = 64;
                 }
                 newItem.setAmount(maxSize);
-                amount -= maxSize;
+                inputAmount -= maxSize;
             } else {
-                newItem.setAmount(amount);
-                amount = 0;
+                newItem.setAmount(inputAmount);
+                inputAmount = 0;
             }
             backpack.add(newItem);
         }

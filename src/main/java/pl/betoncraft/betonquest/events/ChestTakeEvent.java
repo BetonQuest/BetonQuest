@@ -46,18 +46,19 @@ public class ChestTakeEvent extends QuestEvent {
         return null;
     }
 
-    private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem, int amount) {
+    private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem, final int amount) {
+        int inputAmount = amount;
         for (int i = 0; i < items.length; i++) {
             final ItemStack item = items[i];
             if (questItem.compare(item)) {
-                if (item.getAmount() - amount <= 0) {
-                    amount = amount - item.getAmount();
+                if (item.getAmount() - inputAmount <= 0) {
+                    inputAmount = inputAmount - item.getAmount();
                     items[i] = null;
                 } else {
-                    item.setAmount(item.getAmount() - amount);
-                    amount = 0;
+                    item.setAmount(item.getAmount() - inputAmount);
+                    inputAmount = 0;
                 }
-                if (amount <= 0) {
+                if (inputAmount <= 0) {
                     break;
                 }
             }
