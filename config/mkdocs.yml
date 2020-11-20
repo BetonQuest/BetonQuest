@@ -31,13 +31,13 @@ theme:
       primary: indigo
       accent: indigo
       toggle:
-        icon: material/weather-sunny
+        icon: material/lightbulb-outline
         name: Switch to dark mode
     - scheme: default
       primary: blue
       accent: blue
       toggle:
-        icon: material/weather-night
+        icon: material/lightbulb
         name: Switch to light mode
   font:
     text: Roboto
@@ -140,5 +140,5 @@ nav:
 
 
 google_analytics:
-  - G-4W2KZT9102
+  - UA-164568470-1
   - auto
