@@ -29,6 +29,10 @@ This should not be the case for any non-devs though.
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the console.
 You may need to install [GTK](https://www.gtk.org/) too.
 
+In case you are a material-mkdocs insider (paid premium version):
+Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the console.
+Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
+
 ### See your changes live
 Mkdocs enables you to create a website that shows you your changes while you make them.
 To start an http document server on `http://127.0.0.1:8000` execute:

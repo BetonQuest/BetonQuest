@@ -160,14 +160,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements-insiders.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install -r ./config/docs-requirements.txt
+          python3 -m pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Set CHANGELOG.md version
         run: |

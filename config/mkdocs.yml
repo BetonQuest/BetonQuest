@@ -25,10 +25,20 @@ theme:
   features:
     - navigation.tabs
     - navigation.instant
+    - search.highlight
   palette:
-    primary: indigo
-    accent: indigo
-    scheme: slate
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
   font:
     text: Roboto
     code: Roboto Mono

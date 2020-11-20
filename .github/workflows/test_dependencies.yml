@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install -r ./config/docs-requirements.txt
+          python3 -m pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Build with mkdocs
         run: |
