@@ -127,7 +127,7 @@ public class StaticEvents {
          */
         public EventTimer(final long timeStamp, final EventID... eventID) {
             super();
-            event = eventID;
+            event = eventID.clone();
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
         }
 

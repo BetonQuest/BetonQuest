@@ -485,7 +485,7 @@ public class Conversation implements Listener {
 
         public Starter(final String[] options) {
             super();
-            this.options = options;
+            this.options = options.clone();
         }
 
         @Override
