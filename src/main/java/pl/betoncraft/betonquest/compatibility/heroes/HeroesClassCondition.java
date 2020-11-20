@@ -54,7 +54,7 @@ public class HeroesClassCondition extends Condition {
         } else if (primary) {
             heroClasses.add(hero.getHeroClass());
         } else {
-            heroClasses.add(hero.getSecondClass());
+            heroClasses.add(hero.getSecondaryClass());
         }
         if (heroClasses.isEmpty()) {
             return false;
@@ -62,11 +62,11 @@ public class HeroesClassCondition extends Condition {
         boolean matchingClass = true, matchingLevel = true;
         final int level = (this.level == null) ? -1 : this.level.getInt(playerID);
         if (any) {
-            matchingLevel = hero.getLevel() >= level;
+            matchingLevel = hero.getHeroLevel() >= level;
         } else {
             matchingClass = heroClasses.contains(heroClass);
             if (level > 0) {
-                matchingLevel = hero.getLevel(heroClass) >= level;
+                matchingLevel = hero.getHeroLevel(heroClass) >= level;
             }
         }
         return matchingClass && matchingLevel;

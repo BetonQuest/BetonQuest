@@ -48,12 +48,12 @@ abstract class AbstractData<T extends Cloneable> {
     private final String objectFormatted;
 
     /**
-     * This class parses a string into a {@link T}.
+     * This class parses a string into a object.
      * Each part of the input string can be a {@link Variable}s instead of an {@link Integer} or {@link String}.
      *
      * @param packName Name of the {@link pl.betoncraft.betonquest.config.ConfigPackage} - required for {@link Variable} resolution
-     * @param data     string containing raw {@link T} in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or {@link T}
+     * @param data     string containing raw object in the defined format
+     * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or the object
      */
     public AbstractData(final String packName, final String data) throws InstructionParseException {
         final Matcher variableMatcher = PATTERN_VARIABLE.matcher(data);
@@ -83,10 +83,10 @@ abstract class AbstractData<T extends Cloneable> {
     }
 
     /**
-     * Parses a string with resolved {@link Variable}s into a {@link T}.
+     * Parses a string with resolved {@link Variable}s into a object.
      *
      * @param objectString The string that represents the vector
-     * @return The parsed {@link T}
+     * @return The parsed object
      * @throws InstructionParseException Is thrown when the objectString is not in the right format or if
      *                                   the values couldn't be parsed.
      */
@@ -101,10 +101,10 @@ abstract class AbstractData<T extends Cloneable> {
     protected abstract T clone(final T object);
 
     /**
-     * Get the {@link T}
+     * Gets the object
      *
      * @param playerID ID of the player - needed for {@link Variable}s resolution
-     * @return The {@link T} represented by this object
+     * @return The object represented by this object
      * @throws QuestRuntimeException Is thrown when the objectString is not in the right format or if
      *                               the values couldn't be parsed.
      */

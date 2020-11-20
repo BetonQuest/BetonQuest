@@ -75,27 +75,6 @@
     </profile>
 
     <profile>
-      <id>from-bundabrg</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>bundabrg-repo</id>
-          <url>https://repo.worldguard.com.au/repository/maven-public/</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>com.sucy.skill</groupId>
-          <artifactId>SkillAPI</artifactId>
-          <version>3.37</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
       <id>from-heroes</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -109,8 +88,8 @@
       <dependencies>
         <dependency>
           <groupId>com.herocraftonline.heroes</groupId>
-          <artifactId>Heroes</artifactId>
-          <version>1.5.5.7</version>
+          <artifactId>heroes-stripped</artifactId>
+          <version>4dd3dd85</version>
           <scope>provided</scope>
         </dependency>
       </dependencies>
@@ -325,6 +304,12 @@
           <version>d05e051348</version>
           <scope>provided</scope>
         </dependency>
+        <dependency>
+          <groupId>com.github.Sentropic</groupId>
+          <artifactId>SkillAPI-s</artifactId>
+          <version>1.96-SNAPSHOT</version>
+          <scope>provided</scope>
+        </dependency>
       </dependencies>
     </profile>
 
@@ -457,6 +442,16 @@
                   <shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>
                 </relocation>
               </relocations>
+              <filters>
+                <filter>
+                  <artifact>*</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>META-INF/LICENSE</exclude>
+                    <exclude>META-INF/NOTICE</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>

@@ -32,7 +32,7 @@ public class BlockSelector {
     /**
      * Create a {@link BlockSelector} from a {@link String}
      *
-     * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#toString()}
+     * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#getAsString()}
      * @throws InstructionParseException Is thrown, if no material match that selector string
      */
     public BlockSelector(final String block) throws InstructionParseException {
