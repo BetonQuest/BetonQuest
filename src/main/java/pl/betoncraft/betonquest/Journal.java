@@ -346,23 +346,21 @@ public class Journal {
      *
      * @param slot slot number for adding the journal
      */
-    public void addToInv(int slot) {
-        // remove the old journal if it exists
-        if (hasJournal(playerID)) {
-            slot = removeFromInv();
+    public void addToInv(final int slot) {
+        int targetSlot = hasJournal(playerID) ? removeFromInv() : slot;
+        if (targetSlot < 0) {
+            targetSlot = 8;
         }
+
         // update the texts
         generateTexts(lang);
         final Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
         // if the slot is less than 0 then use default slot
-        if (slot < 0) {
-            slot = 8;
-        }
         // generate journal and place it in the slot
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
-            final ItemStack oldItem = inventory.getItem(slot);
-            inventory.setItem(slot, item);
+            final ItemStack oldItem = inventory.getItem(targetSlot);
+            inventory.setItem(targetSlot, item);
             // move the item that was previously there
             if (oldItem != null) {
                 inventory.addItem(oldItem);

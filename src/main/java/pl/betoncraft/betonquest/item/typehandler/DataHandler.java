@@ -11,18 +11,19 @@ public class DataHandler {
     private DataHandler() {
     }
 
-    public void set(String data) throws InstructionParseException {
-        if (data.endsWith("-")) {
+    public void set(final String data) throws InstructionParseException {
+        String inputData = data;
+        if (inputData.endsWith("-")) {
             number = Number.LESS;
-            data = data.substring(0, data.length() - 1);
-        } else if (data.endsWith("+")) {
+            inputData = inputData.substring(0, inputData.length() - 1);
+        } else if (inputData.endsWith("+")) {
             number = Number.MORE;
-            data = data.substring(0, data.length() - 1);
+            inputData = inputData.substring(0, inputData.length() - 1);
         } else {
             number = Number.EQUAL;
         }
         try {
-            this.data = Short.valueOf(data);
+            this.data = Short.valueOf(inputData);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse item data value", e);
         }

@@ -11,18 +11,19 @@ public class DurabilityHandler {
     public DurabilityHandler() {
     }
 
-    public void set(String durability) throws InstructionParseException {
-        if (durability.endsWith("-")) {
+    public void set(final String durability) throws InstructionParseException {
+        String inputDurability = durability;
+        if (inputDurability.endsWith("-")) {
             number = Number.LESS;
-            durability = durability.substring(0, durability.length() - 1);
-        } else if (durability.endsWith("+")) {
+            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
+        } else if (inputDurability.endsWith("+")) {
             number = Number.MORE;
-            durability = durability.substring(0, durability.length() - 1);
+            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
         } else {
             number = Number.EQUAL;
         }
         try {
-            this.durability = Short.valueOf(durability);
+            this.durability = Short.valueOf(inputDurability);
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse item durability value", e);
         }

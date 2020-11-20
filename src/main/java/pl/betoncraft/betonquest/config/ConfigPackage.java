@@ -136,18 +136,18 @@ public class ConfigPackage {
     /**
      * Perform Variable substitution
      */
-    public String subst(String input) {
+    public String subst(final String input) {
         if (input == null) {
             return null;
         }
 
         // handle "$this$" variables
-        input = input.replace("$this$", name);
+        String variableInput = input.replace("$this$", name);
 
         // handle the rest
         final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
-            final Matcher matcher = globalVariableRegex.matcher(input);
+            final Matcher matcher = globalVariableRegex.matcher(variableInput);
             if (!matcher.find()) {
                 break;
             }
@@ -159,11 +159,11 @@ public class ConfigPackage {
             } catch (ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, e.getMessage());
                 LogUtils.logThrowable(e);
-                return input;
+                return variableInput;
             }
             if (varVal == null) {
                 LogUtils.getLogger().log(Level.WARNING, String.format("Variable %s not defined in package %s", varName, name));
-                return input;
+                return variableInput;
             }
 
             if (varVal
@@ -175,14 +175,14 @@ public class ConfigPackage {
                 if (innerVarVal == null) {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Location variable %s is not defined, in variable %s, package %s.",
                             innerVarName, varName, name));
-                    return input;
+                    return variableInput;
                 }
 
                 if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
                     LogUtils.getLogger().log(Level.WARNING,
                             String.format("Inner variable %s is not valid location, in variable %s, package %s.",
                                     innerVarName, varName, name));
-                    return input;
+                    return variableInput;
                 }
 
                 final double locX;
@@ -203,7 +203,7 @@ public class ConfigPackage {
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
                             innerVarName, varName, name));
                     LogUtils.logThrowable(e);
-                    return input;
+                    return variableInput;
                 }
                 // parse the vector
                 final double vecLocX;
@@ -221,18 +221,18 @@ public class ConfigPackage {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Could not parse vector inlocation variable %s in package %s",
                             varName, name));
                     LogUtils.logThrowable(e);
-                    return input;
+                    return variableInput;
                 }
                 final double locationX = locX + vecLocX;
                 final double locationY = locY + vecLocY;
                 final double locationZ = locZ + vecLocZ;
-                input = input.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", locationX, locationY, locationZ, rest));
+                variableInput = variableInput.replace("$" + varName + "$", String.format(Locale.US, "%.2f;%.2f;%.2f%s", locationX, locationY, locationZ, rest));
             } else {
-                input = input.replace("$" + varName + "$", varVal);
+                variableInput = variableInput.replace("$" + varName + "$", varVal);
             }
         }
 
-        return input;
+        return variableInput;
     }
 
     /**

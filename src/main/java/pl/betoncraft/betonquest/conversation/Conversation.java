@@ -85,7 +85,7 @@ public class Conversation implements Listener {
      * @param option         ID of the option from where to start
      */
     public Conversation(final String playerID, final String conversationID,
-                        final Location location, String option) {
+                        final Location location, final String option) {
 
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
@@ -114,14 +114,15 @@ public class Conversation implements Listener {
         // add the player to the list of active conversations
         LIST.put(playerID, conv);
 
+        String inputOption = option;
         final String[] options;
-        if (option == null) {
+        if (inputOption == null) {
             options = null;
         } else {
-            if (!option.contains(".")) {
-                option = conversationID.substring(conversationID.indexOf('.') + 1) + "." + option;
+            if (!inputOption.contains(".")) {
+                inputOption = conversationID.substring(conversationID.indexOf('.') + 1) + "." + inputOption;
             }
-            options = new String[]{option};
+            options = new String[]{inputOption};
         }
 
         new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
@@ -150,18 +151,16 @@ public class Conversation implements Listener {
     /**
      * Chooses the first available option.
      *
-     * @param options list of option pointers separated by commas
-     * @param force   setting it to true will force the first option, even if
-     *                conditions are not met
+     * @param inputOptions list of option pointers separated by commas
+     * @param force        setting it to true will force the first option, even if
+     *                     conditions are not met
      */
-    private void selectOption(String[] options, final boolean force) {
+    private void selectOption(final String[] options, final boolean force) {
+        final String[] inputOptions = force ? new String[]{options[0]} : options;
 
-        if (force) {
-            options = new String[]{options[0]};
-        }
         // get npc's text
         option = null;
-        for (final String option : options) {
+        for (final String option : inputOptions) {
             final String convName;
             final String optionName;
             if (option.contains(".")) {

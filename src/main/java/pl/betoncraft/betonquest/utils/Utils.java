@@ -449,14 +449,15 @@ public class Utils {
      * @param lineBreaks if {@code \\n} should be replaced with {@code \n}
      * @return a formatted version of the input string
      */
-    public static String format(String string, final boolean colorCodes, final boolean lineBreaks) {
+    public static String format(final String string, final boolean colorCodes, final boolean lineBreaks) {
+        String input = string;
         if (colorCodes) {
-            string = string.replaceAll("&(?=[A-Ra-r0-9])", "§");
+            input = input.replaceAll("&(?=[A-Ra-r0-9])", "§");
         }
         if (lineBreaks) {
-            string = string.replaceAll("(?<!\\\\)\\\\n", "\n");
+            input = input.replaceAll("(?<!\\\\)\\\\n", "\n");
         }
-        return string;
+        return input;
     }
 
     /**
