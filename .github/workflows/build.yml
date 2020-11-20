@@ -157,6 +157,28 @@ jobs:
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
 
       - name: Cache dependencies
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r ./config/docs-requirements.txt
+
+      - name: Cache dependencies insiders
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         uses: actions/cache@v1
         with:
           path: ~/.cache/pip
@@ -164,12 +186,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install dependencies
+      - name: Install dependencies insiders
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
 
       - name: Set CHANGELOG.md version
         run: |
