@@ -134,7 +134,7 @@ public class NPCHider extends BukkitRunnable implements Listener {
         }
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcID);
-            if (conditions == null || conditions.isEmpty() || BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
+            if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
                 hider.showEntity(player, npc.getEntity());
             } else {
                 hider.hideEntity(player, npc.getEntity());
