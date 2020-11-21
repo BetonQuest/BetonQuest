@@ -389,8 +389,8 @@ public class PlayerData {
      * it's overwritten by amount parameter. Amount can be greater than max
      * stack size.
      *
-     * @param item        ItemStack to add to backpack
-     * @param inputAmount amount of the items
+     * @param item   ItemStack to add to backpack
+     * @param amount amount of the items
      */
     public void addItem(final ItemStack item, final int amount) {
         int inputAmount = amount;

@@ -91,7 +91,7 @@ public class Saver extends Thread implements Listener {
          */
         public Record(final UpdateType type, final String[] args) {
             this.type = type;
-            this.args = Arrays.copyOf(args, args.length);
+            this.args = args == null ? null : Arrays.copyOf(args, args.length);
         }
 
         private UpdateType getType() {

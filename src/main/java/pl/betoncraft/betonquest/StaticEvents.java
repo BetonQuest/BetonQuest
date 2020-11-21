@@ -10,10 +10,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -127,7 +124,7 @@ public class StaticEvents {
          */
         public EventTimer(final long timeStamp, final EventID... eventID) {
             super();
-            event = eventID.clone();
+            event = eventID == null ? null : Arrays.copyOf(eventID, eventID.length);
             new Timer().schedule(this, timeStamp - new Date().getTime(), 24 * 60 * 60 * 1000);
         }
 

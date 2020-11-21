@@ -30,6 +30,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -484,7 +485,7 @@ public class Conversation implements Listener {
 
         public Starter(final String[] options) {
             super();
-            this.options = options.clone();
+            this.options = options == null ? null : Arrays.copyOf(options, options.length);
         }
 
         @Override
