@@ -60,13 +60,13 @@ public class HeroesClassCondition extends Condition {
             return false;
         }
         boolean matchingClass = true, matchingLevel = true;
-        final int level = (this.level == null) ? -1 : this.level.getInt(playerID);
+        final int playerLevel = level == null ? -1 : level.getInt(playerID);
         if (any) {
-            matchingLevel = hero.getHeroLevel() >= level;
+            matchingLevel = hero.getHeroLevel() >= playerLevel;
         } else {
             matchingClass = heroClasses.contains(heroClass);
-            if (level > 0) {
-                matchingLevel = hero.getHeroLevel(heroClass) >= level;
+            if (playerLevel > 0) {
+                matchingLevel = hero.getHeroLevel(heroClass) >= playerLevel;
             }
         }
         return matchingClass && matchingLevel;
