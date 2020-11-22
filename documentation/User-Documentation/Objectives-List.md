@@ -140,7 +140,13 @@ optionally with the notification interval after colon and `cancel` if the click 
 
 ## Kill player: `kill`
 
-To complete this objective the player needs to kill another player. The first argument is amount of players to kill. You can also specify additional arguments: `name:` followed by the name will only accept killing players with this name, `required:` followed by a list of conditions separated with commas will only accept killing players meeting these conditions and `notify` will display notifications when a player is killed, optionally with the notification interval after colon.
+To complete this objective the player needs to kill another player. The first argument is amount of players to kill.
+You can also specify additional arguments: `name:` followed by the name will only accept killing players with this name,
+`required:` followed by a list of conditions separated with commas will only accept killing players meeting these conditions
+and `notify` will display notifications when a player is killed, optionally with the notification interval after a colon.
+
+The kill objective has three properties: `left` is the amount of players still left to kill, `amount` is the amount of
+already killed players and `total`is the initially required amount to kill.
 
 !!! example
     ```YAML
