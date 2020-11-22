@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
 import java.util.logging.Level;
 
 public class KillPlayerObjective extends Objective implements Listener {
@@ -33,7 +34,7 @@ public class KillPlayerObjective extends Objective implements Listener {
             throw new InstructionParseException("Amount cannot be less than 0");
         }
         name = instruction.getOptional("name");
-        required = instruction.getList(instruction.getOptional("required"), e -> instruction.getCondition(e))
+        required = instruction.getList(instruction.getOptional("required"), instruction::getCondition)
                 .toArray(new ConditionID[0]);
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
@@ -92,7 +93,16 @@ public class KillPlayerObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        return "";
+        switch (name.toLowerCase(Locale.ROOT)) {
+            case "left":
+                return Integer.toString(((KillPlayerObjective.KillData) dataMap.get(playerID)).getLeft());
+            case "amount":
+                return Integer.toString(amount - ((KillPlayerObjective.KillData) dataMap.get(playerID)).getLeft());
+            case "total":
+                return Integer.toString(amount);
+            default:
+                return "";
+        }
     }
 
     public static class KillData extends ObjectiveData {
