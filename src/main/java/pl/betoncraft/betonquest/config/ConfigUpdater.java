@@ -1126,8 +1126,7 @@ public class ConfigUpdater {
                 // get a list
                 final ArrayList<String> list = tags.get(packages.get(j).getName());
                 // and for each element
-                for (int k = 0; k < list.size(); k++) {
-                    final String checked = list.get(k);
+                for (final String checked : list) {
                     LogUtils.getLogger().log(Level.FINE, "    Checking tag '" + checked + "'");
                     // go to each next package
                     for (int l = j + 1; l < packages.size(); l++) {
@@ -1151,8 +1150,7 @@ public class ConfigUpdater {
                 // get a list
                 final ArrayList<String> list = points.get(packages.get(j).getName());
                 // and for each element
-                for (int k = 0; k < list.size(); k++) {
-                    final String checked = list.get(k);
+                for (final String checked : list) {
                     LogUtils.getLogger().log(Level.FINE, "    Checking point '" + checked + "'");
                     // go to each next package
                     for (int l = j + 1; l < packages.size(); l++) {

@@ -361,9 +361,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         for (final String brokenLine : lineBreaks) {
             final String[] arr = brokenLine.split(" ");
             StringBuilder line = new StringBuilder();
-            for (int i = 0; i < arr.length; i++) {
+            for (final String s : arr) {
                 //don't count color codes for line length
-                final int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(arr[i]).length();
+                final int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(s).length();
                 if (rawLength + 1 > 42) {
                     if (firstLinePrefix) {
                         firstLinePrefix = false;
@@ -373,7 +373,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     }
                     line = new StringBuilder();
                 }
-                line.append(arr[i]).append(" ");
+                line.append(s).append(" ");
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;
