@@ -47,6 +47,6 @@ public class UtilsTest {
         journalTextFormatted.add("&aActive Quest: &aFlint\n" + "&1wants you to visit\n" + "the Farm located at\n" + "191, 23, -167!\n");
 
         final List<String> journal = Utils.pagesFromString(journalText);
-        assertEquals(journalTextFormatted, journal);
+        assertEquals(journalTextFormatted, journal, "Formatted text does not equal expected result!");
     }
 }
