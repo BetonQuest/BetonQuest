@@ -86,6 +86,7 @@ public class MobKillNotifier {
             return killed;
         }
 
+        @Override
         public HandlerList getHandlers() {
             return HANDLERS;
         }

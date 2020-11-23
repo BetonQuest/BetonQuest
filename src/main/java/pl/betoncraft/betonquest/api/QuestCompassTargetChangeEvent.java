@@ -28,6 +28,7 @@ public class QuestCompassTargetChangeEvent extends Event implements Cancellable 
         return location;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS;
     }

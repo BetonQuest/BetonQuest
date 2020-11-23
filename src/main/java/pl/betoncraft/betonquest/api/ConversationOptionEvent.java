@@ -54,6 +54,7 @@ public class ConversationOptionEvent extends Event {
         return npcResponse;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS;
     }

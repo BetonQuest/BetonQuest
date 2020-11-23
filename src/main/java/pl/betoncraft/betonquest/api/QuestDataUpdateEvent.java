@@ -37,6 +37,7 @@ public class QuestDataUpdateEvent extends Event {
         return data;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS;
     }

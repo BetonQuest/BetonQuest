@@ -35,6 +35,7 @@ public class PlayerConversationEndEvent extends PlayerEvent {
         return conversation;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS;
     }
