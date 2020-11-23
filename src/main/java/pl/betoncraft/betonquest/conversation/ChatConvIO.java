@@ -18,6 +18,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base of all chat conversation outputs
@@ -27,9 +28,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected final Conversation conv;
     protected final String name;
     protected final Player player;
-    protected final HashMap<String, ChatColor[]> colors;
+    protected final Map<String, ChatColor[]> colors;
     protected int optionsCount;
-    protected HashMap<Integer, String> options;
+    protected Map<Integer, String> options;
     protected String npcText;
     protected String npcName;
     protected String answerFormat;

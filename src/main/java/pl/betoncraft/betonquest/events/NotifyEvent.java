@@ -13,6 +13,8 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +22,8 @@ public class NotifyEvent extends QuestEvent {
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z]{2})\\} (?<message>.*?)(?=(?: )\\{[a-z]{2}\\} |$)");
 
-    private final HashMap<String, String> messages;
-    private final ArrayList<String> variables;
+    private final Map<String, String> messages;
+    private final List<String> variables;
     private final NotifyIO notifyIO;
 
     public NotifyEvent(final Instruction instruction) throws InstructionParseException {

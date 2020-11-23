@@ -10,15 +10,15 @@ import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.objectives.VariableObjective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class VariableEvent extends QuestEvent {
 
     private final ObjectiveID objectiveID;
     private final String key;
-    private final ArrayList<String> keyVariables;
+    private final List<String> keyVariables;
     private final String value;
-    private final ArrayList<String> valueVariables;
+    private final List<String> valueVariables;
 
     public VariableEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

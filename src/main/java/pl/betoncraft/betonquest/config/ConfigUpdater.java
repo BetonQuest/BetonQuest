@@ -2966,7 +2966,7 @@ public class ConfigUpdater {
             // player option, replace old names from the map with new names
             LogUtils.getLogger().log(Level.FINE, "Starting conversation updating");
             // get every conversation accessor
-            final HashMap<String, ConfigAccessor> conversations = configHandler.getConversations();
+            final Map<String, ConfigAccessor> conversations = configHandler.getConversations();
             for (final String conversationName : conversations.keySet()) {
                 LogUtils.getLogger().log(Level.FINE, "  Processing conversation " + conversationName);
                 final ConfigAccessor conversation = conversations.get(conversationName);
@@ -3408,7 +3408,7 @@ public class ConfigUpdater {
         /**
          * Map containing accessors for every conversation.
          */
-        private final HashMap<String, ConfigAccessor> conversationsMap = new HashMap<>();
+        private final Map<String, ConfigAccessor> conversationsMap = new HashMap<>();
         /**
          * Deprecated accessor for single conversations file, used only for
          * updating configuration.
@@ -3567,8 +3567,8 @@ public class ConfigUpdater {
          *
          * @return HashMap containing all config accessors
          */
-        public HashMap<String, ConfigAccessor> getConfigs() {
-            final HashMap<String, ConfigAccessor> map = new HashMap<>();
+        public Map<String, ConfigAccessor> getConfigs() {
+            final Map<String, ConfigAccessor> map = new HashMap<>();
             map.put("conversations", conversations);
             map.put("conditions", conditions);
             map.put("events", events);
@@ -3585,7 +3585,7 @@ public class ConfigUpdater {
          *
          * @return HashMap containing conversation accessors
          */
-        public HashMap<String, ConfigAccessor> getConversations() {
+        public Map<String, ConfigAccessor> getConversations() {
             return conversationsMap;
         }
     }

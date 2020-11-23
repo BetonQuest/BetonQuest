@@ -31,10 +31,7 @@ import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -48,18 +45,18 @@ import java.util.stream.Stream;
 public class BetonQuest extends JavaPlugin {
 
     private static BetonQuest instance;
-    private static final HashMap<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
-    private static final HashMap<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
-    private static final HashMap<ConditionID, Condition> CONDITIONS = new HashMap<>();
-    private static final HashMap<EventID, QuestEvent> EVENTS = new HashMap<>();
-    private static final HashMap<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
-    private static final HashMap<String, ConversationData> CONVERSATIONS = new HashMap<>();
-    private static final HashMap<VariableID, Variable> VARIABLES = new HashMap<>();
+    private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
+    private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+    private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
+    private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
+    private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
+    private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
+    private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
     private Database database;
     private boolean isMySQLUsed;
     private Saver saver;
@@ -304,8 +301,8 @@ public class BetonQuest extends JavaPlugin {
      * @param text text from which the variables will be resolved
      * @return the list of unique variable instructions
      */
-    public static ArrayList<String> resolveVariables(final String text) {
-        final ArrayList<String> variables = new ArrayList<>();
+    public static List<String> resolveVariables(final String text) {
+        final List<String> variables = new ArrayList<>();
         final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
         while (matcher.find()) {
             final String variable = matcher.group();
@@ -1020,8 +1017,8 @@ public class BetonQuest extends JavaPlugin {
      * @param playerID ID of the player
      * @return list of this player's active objectives
      */
-    public ArrayList<Objective> getPlayerObjectives(final String playerID) {
-        final ArrayList<Objective> list = new ArrayList<>();
+    public List<Objective> getPlayerObjectives(final String playerID) {
+        final List<Objective> list = new ArrayList<>();
         for (final Objective objective : OBJECTIVES.values()) {
             if (objective.containsPlayer(playerID)) {
                 list.add(objective);

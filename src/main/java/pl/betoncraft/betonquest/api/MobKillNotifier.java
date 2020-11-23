@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Notifies the MobKillObjective about the mob being killed. If your plugin
@@ -21,7 +22,7 @@ public class MobKillNotifier {
 
     private static MobKillNotifier instance;
     private final BukkitRunnable cleaner;
-    private final ArrayList<Entity> entities = new ArrayList<>();
+    private final List<Entity> entities = new ArrayList<>();
 
     public MobKillNotifier() {
         instance = this;

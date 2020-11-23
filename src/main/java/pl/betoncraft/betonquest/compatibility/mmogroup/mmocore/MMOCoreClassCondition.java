@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MMOCoreClassCondition extends Condition {
 
@@ -20,7 +20,7 @@ public class MMOCoreClassCondition extends Condition {
         super(instruction, true);
         targetClassName = instruction.next();
 
-        final ArrayList<Integer> potentialLevel = instruction.getAllNumbers();
+        final List<Integer> potentialLevel = instruction.getAllNumbers();
         if (!potentialLevel.isEmpty()) {
             targetClassLevel = potentialLevel.get(0);
         }

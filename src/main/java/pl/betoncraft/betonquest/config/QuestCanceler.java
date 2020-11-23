@@ -21,6 +21,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -36,7 +37,7 @@ public class QuestCanceler {
     private final EventID[] events;
     private final ObjectiveID[] objectives;
     private Location loc;
-    private final HashMap<String, String> name = new HashMap<>();
+    private final Map<String, String> name = new HashMap<>();
 
     private final String packName;
     private final String cancelerName;

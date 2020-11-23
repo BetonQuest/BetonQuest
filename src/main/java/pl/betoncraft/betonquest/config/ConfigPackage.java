@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -30,7 +31,7 @@ public class ConfigPackage {
     private ConfigAccessor journal;
     private ConfigAccessor items;
     private ConfigAccessor custom;
-    private final HashMap<String, ConfigAccessor> conversations = new HashMap<>();
+    private final Map<String, ConfigAccessor> conversations = new HashMap<>();
 
     /**
      * Loads a package from specified directory. It doesn't have to be valid

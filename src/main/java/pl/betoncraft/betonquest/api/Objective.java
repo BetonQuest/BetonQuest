@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -41,7 +42,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the players with this objective active
      */
-    protected HashMap<String, ObjectiveData> dataMap = new HashMap<>();
+    protected Map<String, ObjectiveData> dataMap = new HashMap<>();
     /**
      * Should be set with the data class used to hold players' information
      */

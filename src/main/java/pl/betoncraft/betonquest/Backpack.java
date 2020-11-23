@@ -30,6 +30,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -365,7 +366,7 @@ public class Backpack implements Listener {
      */
     private class Cancelers extends Display {
 
-        private final HashMap<Integer, QuestCanceler> map = new HashMap<>();
+        private final Map<Integer, QuestCanceler> map = new HashMap<>();
 
         /**
          * Creates a page with quest cancelers and displays it to the player.
@@ -416,9 +417,9 @@ public class Backpack implements Listener {
 
     private class Compass extends Display {
 
-        private final HashMap<Integer, Location> locations = new HashMap<>();
-        private final HashMap<Integer, String> names = new HashMap<>();
-        private final HashMap<Integer, String> items = new HashMap<>();
+        private final Map<Integer, Location> locations = new HashMap<>();
+        private final Map<Integer, String> names = new HashMap<>();
+        private final Map<Integer, String> items = new HashMap<>();
 
         public Compass() {
             super();

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -91,7 +92,7 @@ public class VariableObjective extends Objective implements Listener {
 
     public static class VariableData extends ObjectiveData {
 
-        private final HashMap<String, String> variables = new HashMap<>();
+        private final Map<String, String> variables = new HashMap<>();
 
         public VariableData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);

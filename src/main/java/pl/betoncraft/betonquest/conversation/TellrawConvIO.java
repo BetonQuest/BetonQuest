@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class TellrawConvIO extends ChatConvIO {
 
-    protected HashMap<Integer, String> hashes;
+    protected Map<Integer, String> hashes;
     protected ChatColor color;
     protected boolean italic;
     protected boolean bold;

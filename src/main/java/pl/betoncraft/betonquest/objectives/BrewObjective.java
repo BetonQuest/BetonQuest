@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -35,7 +36,7 @@ public class BrewObjective extends Objective implements Listener {
     private final int amount;
     private final boolean notify;
     private final int notifyInterval;
-    private final HashMap<Location, String> locations = new HashMap<>();
+    private final Map<Location, String> locations = new HashMap<>();
 
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

@@ -10,8 +10,8 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -38,7 +38,7 @@ public class PartyCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         // get the party
-        final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
+        final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
         // check every condition against every player - all of them must meet those conditions
         final Stream<String> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
         if (!partyStream.allMatch(member -> BetonQuest.conditions(member, everyone))) {

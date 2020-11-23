@@ -22,14 +22,14 @@ public class BStatsMetrics {
     private final JavaPlugin plugin;
 
     public BStatsMetrics(final JavaPlugin plugin,
-                         final HashMap<ConditionID, Condition> conditions,
-                         final HashMap<EventID, QuestEvent> events,
-                         final HashMap<ObjectiveID, Objective> objectives,
-                         final HashMap<VariableID, Variable> variables,
-                         final HashMap<String, Class<? extends Condition>> conditionTypes,
-                         final HashMap<String, Class<? extends QuestEvent>> eventTypes,
-                         final HashMap<String, Class<? extends Objective>> objectiveTypes,
-                         final HashMap<String, Class<? extends Variable>> variableTypes) {
+                         final Map<ConditionID, Condition> conditions,
+                         final Map<EventID, QuestEvent> events,
+                         final Map<ObjectiveID, Objective> objectives,
+                         final Map<VariableID, Variable> variables,
+                         final Map<String, Class<? extends Condition>> conditionTypes,
+                         final Map<String, Class<? extends QuestEvent>> eventTypes,
+                         final Map<String, Class<? extends Objective>> objectiveTypes,
+                         final Map<String, Class<? extends Variable>> variableTypes) {
         this.plugin = plugin;
         metrics = new Metrics(plugin, METRICS_ID);
 
@@ -57,11 +57,11 @@ public class BStatsMetrics {
         return map;
     }
 
-    private <T> void listUsage(final String bStatsId, final HashMap<? extends ID, ? extends T> objects, final HashMap<String, Class<? extends T>> types) {
+    private <T> void listUsage(final String bStatsId, final Map<? extends ID, ? extends T> objects, final Map<String, Class<? extends T>> types) {
         metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Count", () -> countUsageClasses(objects.values(), types)));
         metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Enabled", () -> {
-            final HashMap<String, Integer> enabled = new HashMap<>();
-            final HashMap<String, Integer> usage = countUsageClasses(objects.values(), types);
+            final Map<String, Integer> enabled = new HashMap<>();
+            final Map<String, Integer> usage = countUsageClasses(objects.values(), types);
 
             for (final Map.Entry<String, Integer> use : usage.entrySet()) {
                 enabled.put(use.getKey(), 1);
@@ -72,8 +72,8 @@ public class BStatsMetrics {
         ));
     }
 
-    private <T> HashMap<String, Integer> countUsageClasses(final Collection<? extends T> objects, final HashMap<String, Class<? extends T>> types) {
-        final HashMap<String, Integer> countList = new HashMap<>();
+    private <T> Map<String, Integer> countUsageClasses(final Collection<? extends T> objects, final Map<String, Class<? extends T>> types) {
+        final Map<String, Integer> countList = new HashMap<>();
 
         for (final Map.Entry<String, Class<? extends T>> type : types.entrySet()) {
             int count = 0;
