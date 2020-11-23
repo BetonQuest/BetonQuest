@@ -31,6 +31,7 @@
   <rule ref="category/java/bestpractices.xml/ForLoopVariableCount"/>
   <rule ref="category/java/bestpractices.xml/GuardLogStatement"/>
   <rule ref="category/java/bestpractices.xml/JUnit4SuitesShouldUseSuiteAnnotation"/>
+  <rule ref="category/java/bestpractices.xml/JUnit4TestShouldUseAfterAnnotation"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
