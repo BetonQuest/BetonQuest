@@ -866,8 +866,13 @@ public class ConfigUpdater {
                     LogUtils.getLogger().log(Level.FINE, "  Converting " + key + " canceler: " + instruction);
                     final String[] parts = instruction.split(" ");
                     final HashMap<String, String> names = new HashMap<>();
-                    String events = null, conditions = null, tags = null, points = null, objectives = null,
-                            journal = null, loc = null;
+                    String events = null;
+                    String conditions = null;
+                    String tags = null;
+                    String points = null;
+                    String objectives = null;
+                    String journal = null;
+                    String loc = null;
                     for (final String part : parts) {
                         LogUtils.getLogger().log(Level.FINE, "    Checking part " + part);
                         if (part.startsWith("name:")) {

@@ -151,7 +151,8 @@ public class QuestCanceler {
                 LogUtils.getLogger().log(Level.WARNING, "The world doesn't exist in quest canceler " + name);
                 return;
             }
-            float yaw = 0, pitch = 0;
+            float yaw = 0;
+            float pitch = 0;
             if (locParts.length == 6) {
                 try {
                     yaw = Float.parseFloat(locParts[4]);

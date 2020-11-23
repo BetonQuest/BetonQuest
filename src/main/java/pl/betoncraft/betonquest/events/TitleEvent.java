@@ -27,7 +27,9 @@ public class TitleEvent extends QuestEvent {
     protected TitleType type;
     protected Map<String, String> messages = new HashMap<>();
     protected List<String> variables = new ArrayList<>();
-    protected int fadeIn, stay, fadeOut;
+    protected int fadeIn;
+    protected int stay;
+    protected int fadeOut;
 
     public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

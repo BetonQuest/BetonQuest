@@ -41,6 +41,7 @@
   <rule ref="category/java/bestpractices.xml/LooseCoupling"/>
   <rule ref="category/java/bestpractices.xml/MethodReturnsInternalArray"/>
   <rule ref="category/java/bestpractices.xml/MissingOverride"/>
+  <rule ref="category/java/bestpractices.xml/OneDeclarationPerLine"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
