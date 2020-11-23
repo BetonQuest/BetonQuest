@@ -8,13 +8,14 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Allows for checking multiple conditions with one instruction string.
  */
 public class CheckCondition extends Condition {
 
-    private final ArrayList<Condition> internalConditions = new ArrayList<>();
+    private final List<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

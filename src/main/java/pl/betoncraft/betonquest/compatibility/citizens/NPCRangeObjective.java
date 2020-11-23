@@ -13,16 +13,14 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCRangeObjective extends Objective {
 
-    private final ArrayList<Integer> npcIds;
+    private final List<Integer> npcIds;
     private final Trigger trigger;
     private final VariableNumber radius;
-    private final HashMap<UUID, Boolean> playersInRange;
+    private final Map<UUID, Boolean> playersInRange;
     private int npcMoveTask;
 
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {

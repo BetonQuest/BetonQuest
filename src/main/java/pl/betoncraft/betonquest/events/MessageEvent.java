@@ -12,6 +12,8 @@ import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -24,8 +26,8 @@ import java.util.logging.Level;
 @Deprecated
 public class MessageEvent extends QuestEvent {
 
-    private final HashMap<String, String> messages = new HashMap<>();
-    private final ArrayList<String> variables = new ArrayList<>();
+    private final Map<String, String> messages = new HashMap<>();
+    private final List<String> variables = new ArrayList<>();
 
     public MessageEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

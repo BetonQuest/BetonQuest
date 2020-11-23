@@ -29,10 +29,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +51,7 @@ public class Conversation implements Listener {
     private final List<String> blacklist;
     private final Conversation conv;
     private final BetonQuest plugin;
-    private final HashMap<Integer, String> current = new HashMap<>();
+    private final Map<Integer, String> current = new HashMap<>();
     private ConversationData data;
     private ConversationIO inOut;
     private String option;

@@ -22,9 +22,9 @@ import java.util.logging.Level;
 public class Config {
 
     private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
-    private static final HashMap<String, ConfigPackage> PACKAGES = new HashMap<>();
-    private static final HashMap<String, QuestCanceler> CANCELERS = new HashMap<>();
-    private static final ArrayList<String> LANGUAGES = new ArrayList<>();
+    private static final Map<String, ConfigPackage> PACKAGES = new HashMap<>();
+    private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
+    private static final List<String> LANGUAGES = new ArrayList<>();
     private static BetonQuest plugin;
     private static Config instance;
     private static ConfigAccessor messages;
@@ -170,7 +170,7 @@ public class Config {
      *
      * @return the map with quest cancelers
      */
-    public static HashMap<String, QuestCanceler> getCancelers() {
+    public static Map<String, QuestCanceler> getCancelers() {
         return CANCELERS;
     }
 
@@ -508,7 +508,7 @@ public class Config {
     /**
      * @return the languages defined for this plugin
      */
-    public static ArrayList<String> getLanguages() {
+    public static List<String> getLanguages() {
         return LANGUAGES;
     }
 

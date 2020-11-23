@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -31,7 +32,7 @@ import java.util.logging.Level;
  */
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
-    private static final HashMap<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
+    private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
     private final List<CompoundLocation> locations;
     private final int npcId;

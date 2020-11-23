@@ -8,13 +8,14 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Allows for running multiple events with one instruction string.
  */
 public class RunEvent extends QuestEvent {
 
-    private final ArrayList<QuestEvent> internalEvents = new ArrayList<>();
+    private final List<QuestEvent> internalEvents = new ArrayList<>();
 
     public RunEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

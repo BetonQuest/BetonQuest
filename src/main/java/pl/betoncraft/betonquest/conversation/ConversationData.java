@@ -22,21 +22,21 @@ import java.util.stream.Collectors;
  */
 public class ConversationData {
 
-    private static final ArrayList<String> EXTERNAL_POINTERS = new ArrayList<>();
+    private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
 
     private final ConfigPackage pack;
     private final String convName;
 
-    private final HashMap<String, String> quester = new HashMap<>(); // maps for multiple languages
-    private final HashMap<String, String> prefix = new HashMap<>(); // global conversation prefix
+    private final Map<String, String> quester = new HashMap<>(); // maps for multiple languages
+    private final Map<String, String> prefix = new HashMap<>(); // global conversation prefix
     private final EventID[] finalEvents;
     private final String[] startingOptions;
     private final boolean blockMovement;
     private String convIO;
     private String interceptor;
 
-    private final HashMap<String, Option> npcOptions;
-    private final HashMap<String, Option> playerOptions;
+    private final Map<String, Option> npcOptions;
+    private final Map<String, Option> playerOptions;
 
     /**
      * Loads conversation from package.
@@ -348,7 +348,7 @@ public class ConversationData {
     }
 
     public ConditionID[] getConditionIDs(final String option, final OptionType type) {
-        final HashMap<String, Option> options;
+        final Map<String, Option> options;
         if (type == OptionType.NPC) {
             options = npcOptions;
         } else {
@@ -358,7 +358,7 @@ public class ConversationData {
     }
 
     public EventID[] getEventIDs(final String playerID, final String option, final OptionType type) {
-        final HashMap<String, Option> options;
+        final Map<String, Option> options;
         if (type == OptionType.NPC) {
             options = npcOptions;
         } else {
@@ -372,7 +372,7 @@ public class ConversationData {
     }
 
     public String[] getPointers(final String playerID, final String option, final OptionType type) {
-        final HashMap<String, Option> options;
+        final Map<String, Option> options;
         if (type == OptionType.NPC) {
             options = npcOptions;
         } else {
@@ -439,9 +439,9 @@ public class ConversationData {
 
         private final String name;
         private final OptionType type;
-        private final HashMap<String, String> inlinePrefix = new HashMap<>();
+        private final Map<String, String> inlinePrefix = new HashMap<>();
 
-        private final HashMap<String, String> text = new HashMap<>();
+        private final Map<String, String> text = new HashMap<>();
         private final List<ConditionID> conditions = new ArrayList<>();
         private final List<EventID> events = new ArrayList<>();
         private List<String> pointers;
@@ -494,14 +494,14 @@ public class ConversationData {
                     text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text"));
                 }
 
-                final ArrayList<String> variables = new ArrayList<>();
+                final List<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
                     if (theText == null || theText.equals("")) {
                         throw new InstructionParseException("Text not defined in " + type.getReadable() + " " + name);
                     }
                     // variables are possibly duplicated because there probably is
                     // the same variable in every language
-                    final ArrayList<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
+                    final List<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
                     for (final String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
                         if (variables.contains(possiblyDuplicatedVariable)) {
                             continue;

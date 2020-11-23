@@ -22,10 +22,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -195,16 +192,16 @@ public class Instruction {
         return items;
     }
 
-    public HashMap<Enchantment, Integer> getEnchantments() throws InstructionParseException {
+    public Map<Enchantment, Integer> getEnchantments() throws InstructionParseException {
         return getEnchantments(next());
     }
 
     @SuppressWarnings("deprecation")
-    public HashMap<Enchantment, Integer> getEnchantments(final String string) throws InstructionParseException {
+    public Map<Enchantment, Integer> getEnchantments(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
-        final HashMap<Enchantment, Integer> enchants = new HashMap<>();
+        final Map<Enchantment, Integer> enchants = new HashMap<>();
         final String[] array = getArray(string);
         for (final String enchant : array) {
             final String[] enchParts = enchant.split(":");
@@ -449,7 +446,7 @@ public class Instruction {
         }
     }
 
-    public ArrayList<Integer> getAllNumbers() {
+    public List<Integer> getAllNumbers() {
         final Matcher matcher = NUMBER_PATTERN.matcher(instruction);
 
         final ArrayList<Integer> result = new ArrayList<>();

@@ -23,19 +23,17 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
  * Inventory GUI for conversations
  */
 public class InventoryConvIO implements Listener, ConversationIO {
-    private static final HashMap<String, ItemStack> SKULL_CACHE = new HashMap<>();
+    private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
     protected String response = null;
-    protected HashMap<Integer, String> options = new HashMap<>();
+    protected Map<Integer, String> options = new HashMap<>();
     protected int playerOptionsCount = 0;
     protected String npcName;
     protected String npcNameColor;
@@ -59,7 +57,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     public InventoryConvIO(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
-        final HashMap<String, ChatColor[]> colors = ConversationColors.getColors();
+        final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {
             string.append(color);
@@ -350,7 +348,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
-    protected ArrayList<String> stringToLines(final String singleLine, final String color, final String prefix) {
+    protected List<String> stringToLines(final String singleLine, final String color, final String prefix) {
         String inputPrefix = prefix;
         final ArrayList<String> multiLine = new ArrayList<>();
         boolean firstLinePrefix = inputPrefix != null;

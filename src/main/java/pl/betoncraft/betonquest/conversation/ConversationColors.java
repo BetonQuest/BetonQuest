@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -69,8 +70,8 @@ public class ConversationColors {
     /**
      * @return the map of conversation colors
      */
-    public static HashMap<String, ChatColor[]> getColors() {
-        final HashMap<String, ChatColor[]> map = new HashMap<>();
+    public static Map<String, ChatColor[]> getColors() {
+        final Map<String, ChatColor[]> map = new HashMap<>();
         map.put("text", textColors);
         map.put("option", optionColors);
         map.put("answer", answerColors);

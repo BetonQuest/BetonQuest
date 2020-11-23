@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tags players that are in combat to prevent them from starting the
@@ -21,8 +22,8 @@ import java.util.HashMap;
  */
 public class CombatTagger implements Listener {
 
-    private static final HashMap<String, Boolean> TAGGED = new HashMap<>();
-    private static final HashMap<String, BukkitRunnable> UNTAGGERS = new HashMap<>();
+    private static final Map<String, Boolean> TAGGED = new HashMap<>();
+    private static final Map<String, BukkitRunnable> UNTAGGERS = new HashMap<>();
     private int delay = 10;
 
     /**

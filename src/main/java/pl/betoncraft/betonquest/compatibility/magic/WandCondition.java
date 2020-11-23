@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,7 +24,7 @@ public class WandCondition extends Condition {
 
     private final MagicAPI api;
     private final CheckType type;
-    private final HashMap<String, VariableNumber> spells = new HashMap<>();
+    private final Map<String, VariableNumber> spells = new HashMap<>();
     private final String name;
     private final VariableNumber amount;
 

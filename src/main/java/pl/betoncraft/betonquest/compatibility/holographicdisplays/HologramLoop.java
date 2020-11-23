@@ -24,6 +24,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -32,8 +33,8 @@ import java.util.logging.Level;
  */
 public class HologramLoop {
 
-    private final HashMap<Hologram, ConditionID[]> holograms = new HashMap<>();
-    private final HashMap<Hologram, BukkitRunnable> runnables = new HashMap<>();
+    private final Map<Hologram, ConditionID[]> holograms = new HashMap<>();
+    private final Map<Hologram, BukkitRunnable> runnables = new HashMap<>();
     private BukkitRunnable runnable;
 
     /**

@@ -20,6 +20,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Provide a packet interceptor to get all chat packets to player
@@ -35,7 +36,7 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;
     protected final Player player;
-    private final ArrayList<WrapperPlayServerChat> messages = new ArrayList<>();
+    private final List<WrapperPlayServerChat> messages = new ArrayList<>();
     private final PacketAdapter packetAdapter;
 
     public PacketInterceptor(final Conversation conv, final String playerID) {

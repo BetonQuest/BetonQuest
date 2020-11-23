@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.api.PlayerConversationEndEvent;
 import pl.betoncraft.betonquest.api.PlayerConversationStartEvent;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Prevents Citizens NPCs from walking around when in conversation with the
@@ -21,8 +22,8 @@ public class CitizensWalkingListener implements Listener {
 
     private static CitizensWalkingListener instance = null;
 
-    private final HashMap<NPC, Integer> npcs = new HashMap<>();
-    private final HashMap<NPC, Location> locs = new HashMap<>();
+    private final Map<NPC, Integer> npcs = new HashMap<>();
+    private final Map<NPC, Location> locs = new HashMap<>();
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around

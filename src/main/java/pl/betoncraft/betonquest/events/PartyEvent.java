@@ -10,7 +10,7 @@ import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fires specified events for every player in the party
@@ -30,7 +30,7 @@ public class PartyEvent extends QuestEvent {
 
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        final ArrayList<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
+        final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
                 .getName(), conditions);
         for (final String memberID : members) {
             for (final EventID event : events) {

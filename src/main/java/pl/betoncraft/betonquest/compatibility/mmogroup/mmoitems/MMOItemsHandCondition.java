@@ -12,7 +12,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MMOItemsHandCondition extends Condition {
 
@@ -28,7 +28,7 @@ public class MMOItemsHandCondition extends Condition {
         itemType = typeManager.get(instruction.next());
         itemID = instruction.next();
 
-        final ArrayList<Integer> potentialAmount = instruction.getAllNumbers();
+        final List<Integer> potentialAmount = instruction.getAllNumbers();
         if (!potentialAmount.isEmpty()) {
             amount = potentialAmount.get(0);
         }

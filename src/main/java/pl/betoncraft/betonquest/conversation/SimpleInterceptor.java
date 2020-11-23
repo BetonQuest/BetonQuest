@@ -13,12 +13,13 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;
     protected final Player player;
-    private final ArrayList<String> messages = new ArrayList<>();
+    private final List<String> messages = new ArrayList<>();
 
     public SimpleInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
