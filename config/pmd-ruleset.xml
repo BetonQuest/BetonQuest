@@ -26,6 +26,7 @@
   <rule ref="category/java/bestpractices.xml/CheckResultSet"/>
   <rule ref="category/java/bestpractices.xml/ConstantsInInterface"/>
   <rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitchStmt"/>
+  <rule ref="category/java/bestpractices.xml/DoubleBraceInitialization"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
