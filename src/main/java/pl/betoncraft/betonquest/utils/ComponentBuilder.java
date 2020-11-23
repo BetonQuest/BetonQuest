@@ -48,6 +48,7 @@ public interface ComponentBuilder {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidStringBufferField")
     class LegacyBuilder implements ComponentBuilder {
 
         private final StringBuilder stringBuilder;
