@@ -18,6 +18,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -206,14 +207,14 @@ public class GlobalLocations extends BukkitRunnable {
          * @return the conditions
          */
         public ConditionID[] getConditions() {
-            return conditions;
+            return Arrays.copyOf(conditions, conditions.length);
         }
 
         /**
          * @return the events
          */
         public EventID[] getEvents() {
-            return events;
+            return Arrays.copyOf(events, events.length);
         }
 
         /**
