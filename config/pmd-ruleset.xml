@@ -24,6 +24,7 @@
   <rule ref="category/java/bestpractices.xml/AvoidStringBufferField"/>
   <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
   <rule ref="category/java/bestpractices.xml/CheckResultSet"/>
+  <rule ref="category/java/bestpractices.xml/ConstantsInInterface"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
