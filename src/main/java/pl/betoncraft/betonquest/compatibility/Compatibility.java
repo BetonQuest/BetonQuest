@@ -79,8 +79,6 @@ public class Compatibility implements Listener {
             hook(hook);
         }
 
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-
         // hook into ProtocolLib
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
                 && plugin.getConfig().getString("hook.protocollib").equalsIgnoreCase("true")) {
@@ -165,10 +163,4 @@ public class Compatibility implements Listener {
             }
         }
     }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPluginEnable(final PluginEnableEvent event) {
-        hook(event.getPlugin());
-    }
-
 }
