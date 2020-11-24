@@ -56,6 +56,7 @@
   <rule ref="category/java/bestpractices.xml/UseAssertEqualsInsteadOfAssertTrue"/>
   <rule ref="category/java/bestpractices.xml/UseAssertNullInsteadOfAssertTrue"/>
   <rule ref="category/java/bestpractices.xml/UseAssertSameInsteadOfAssertTrue"/>
+  <rule ref="category/java/bestpractices.xml/UseAssertTrueInsteadOfAssertEquals"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
