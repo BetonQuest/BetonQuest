@@ -44,6 +44,7 @@
   <rule ref="category/java/bestpractices.xml/OneDeclarationPerLine"/>
   <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
   <rule ref="category/java/bestpractices.xml/ReplaceEnumerationWithIterator"/>
+  <rule ref="category/java/bestpractices.xml/ReplaceHashtableWithMap"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
