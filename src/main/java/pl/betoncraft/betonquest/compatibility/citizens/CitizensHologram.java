@@ -38,6 +38,7 @@ import java.util.logging.Level;
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
 
+@SuppressWarnings("PMD.UnusedAssignment")
 public class CitizensHologram extends BukkitRunnable implements Listener {
 
     private static CitizensHologram instance;

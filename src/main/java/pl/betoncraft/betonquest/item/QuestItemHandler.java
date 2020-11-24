@@ -194,8 +194,7 @@ public class QuestItemHandler implements Listener {
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getRightClicked() instanceof ItemFrame) {
-            ItemStack item = null;
-            item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
+            final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
                     : event.getPlayer().getInventory().getItemInOffHand();
 
             final String playerID = PlayerConverter.getID(event.getPlayer());

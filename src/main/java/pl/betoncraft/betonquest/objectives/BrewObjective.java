@@ -81,7 +81,6 @@ public class BrewObjective extends Objective implements Listener {
             @Override
             public void run() {
                 // unfinaling it for modifications
-                boolean brewed = false;
                 int alreadyExistingFinal = alreadyExisting;
                 for (int i = 0; i < 3; i++) {
                     // if there were any potions before, don't count them to
@@ -91,7 +90,6 @@ public class BrewObjective extends Objective implements Listener {
                             data.brew();
                         }
                         alreadyExistingFinal--;
-                        brewed = true;
                     }
                 }
                 // check if the objective has been completed

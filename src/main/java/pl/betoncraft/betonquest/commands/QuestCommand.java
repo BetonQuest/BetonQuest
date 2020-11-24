@@ -905,8 +905,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             name = itemID;
         }
         final Player player = (Player) sender;
-        ItemStack item = null;
-        item = player.getInventory().getItemInMainHand();
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
         // if item is air then there is nothing to add to items.yml
         if (item == null || item.getType() == Material.AIR) {
@@ -1363,8 +1362,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             player.sendMessage("§4ERROR");
             return;
         }
-        String pack = null;
-        String name = null;
+        String pack;
+        String name;
         if (args[1].contains(".")) {
             final String[] parts = args[1].split("\\.");
             pack = parts[0];

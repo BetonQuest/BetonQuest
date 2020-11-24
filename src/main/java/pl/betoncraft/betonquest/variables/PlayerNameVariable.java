@@ -11,7 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PlayerNameVariable extends Variable {
 
-    private boolean display = false;
+    private final boolean display;
 
     public PlayerNameVariable(final Instruction instruction) {
         super(instruction);

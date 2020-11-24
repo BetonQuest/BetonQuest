@@ -181,7 +181,7 @@ public class Backpack implements Listener {
             }
             // if there are other pages, place the buttons
             if (page > 0) {
-                ItemStack previous = null;
+                ItemStack previous;
                 try {
                     previous = new QuestItem(new ItemID(Config.getDefaultPackage(), "previous_button")).generate(1);
                 } catch (ObjectNotFoundException e) {
@@ -432,7 +432,7 @@ public class Backpack implements Listener {
                 if (section != null) {
                     for (final String key : section.getKeys(false)) {
                         final String location = pack.getString("main.compass." + key + ".location");
-                        String name = null;
+                        String name;
                         if (section.isConfigurationSection(key + ".name")) {
                             name = pack.getString("main.compass." + key + ".name." + lang);
                             if (name == null) {
@@ -497,9 +497,8 @@ public class Backpack implements Listener {
             }
             // solve number of needed rows
             final int size = locations.size();
-            int numberOfRows = (size - size % 9) / 9 + 1;
+            final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                numberOfRows = 6;
                 LogUtils.getLogger().log(Level.WARNING, "Player " + player.getName() + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 player.closeInventory();
@@ -510,7 +509,7 @@ public class Backpack implements Listener {
             int index = 0;
             for (final Integer slot : locations.keySet()) {
                 final String item = items.get(slot);
-                ItemStack compass = null;
+                ItemStack compass;
                 try {
                     compass = new QuestItem(new ItemID(Config.getDefaultPackage(), item)).generate(1);
                 } catch (InstructionParseException e) {

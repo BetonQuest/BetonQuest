@@ -76,7 +76,7 @@ public class HologramLoop {
                         }
                     }
                 }
-                Location location = null;
+                final Location location;
                 try {
                     location = new CompoundLocation(packName, pack.subst(rawLocation)).getLocation(null);
                 } catch (QuestRuntimeException | InstructionParseException e) {

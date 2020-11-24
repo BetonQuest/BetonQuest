@@ -127,7 +127,7 @@ public class BetonQuest extends JavaPlugin {
             return false;
         }
         // and check if it's met or not
-        boolean outcome = false;
+        boolean outcome;
         try {
             outcome = condition.handle(playerID);
         } catch (final QuestRuntimeException e) {

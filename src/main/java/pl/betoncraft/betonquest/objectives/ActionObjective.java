@@ -33,7 +33,7 @@ public class ActionObjective extends Objective implements Listener {
     private final boolean exactMatch;
     private final CompoundLocation loc;
     private final VariableNumber range;
-    private boolean cancel = false;
+    private final boolean cancel;
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
