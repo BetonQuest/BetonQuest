@@ -424,10 +424,10 @@ public class Journal {
             }
             finalList.addAll(getText());
         }
-        if (finalList.size() > 0) {
-            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + Config.getString("config.journal_colors.line")));
-        } else {
+        if (finalList.isEmpty()) {
             meta.addPage("");
+        } else {
+            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + Config.getString("config.journal_colors.line")));
         }
         item.setItemMeta(meta);
         return item;

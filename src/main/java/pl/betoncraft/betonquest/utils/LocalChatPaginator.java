@@ -129,14 +129,14 @@ public class LocalChatPaginator extends ChatPaginator {
 
             if (singleChar != ' ' && singleChar != '\n') {
                 // Extremely long word begins a line, break the word up
-                if (line.length() == 0 && wordWidth + width >= (lines.size() == 0 ? maxWidth : maxWrapWidth)) {
+                if (line.length() == 0 && wordWidth + width >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                     lines.add(word.toString());
                     word = new StringBuilder();
                     wordWidth = 0;
                 }
 
                 // Word too long with rest of line, force line to wrap
-                if (line.length() > 0 && lineWidth + wordWidth + width >= (lines.size() == 0 ? maxWidth : maxWrapWidth)) {
+                if (line.length() > 0 && lineWidth + wordWidth + width >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                     lines.add(line.toString());
                     line = new StringBuilder();
                     lineWidth = 0;

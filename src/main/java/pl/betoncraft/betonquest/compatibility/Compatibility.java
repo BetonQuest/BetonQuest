@@ -86,7 +86,7 @@ public class Compatibility implements Listener {
             @Override
             public void run() {
                 // log which plugins have been hooked
-                if (hooked.size() > 0) {
+                if (!hooked.isEmpty()) {
                     final StringBuilder string = new StringBuilder();
                     for (final String plugin : hooked) {
                         string.append(plugin).append(", ");
