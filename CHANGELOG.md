@@ -91,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - improved performance for condition checks (Bug where it took seconds to check for conditions)
 - improved performance for conversation checks (Bug where it took seconds to check for conversation options)
 - The plugin will no longer be loaded before the worlds are loaded
+- Citizens Holograms are now more robust on reload and reload faster
 ### Deprecated
 - Marked message event for removal in BQ 2.0
 - Marked playsound event for removal in BQ 2.0

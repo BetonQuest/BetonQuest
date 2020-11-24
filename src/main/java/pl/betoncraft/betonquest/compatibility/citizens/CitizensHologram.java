@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 /**
@@ -39,6 +41,7 @@ import java.util.logging.Level;
 public class CitizensHologram extends BukkitRunnable implements Listener {
 
     private static CitizensHologram instance;
+    private static final Lock RELOAD_LOCK = new ReentrantLock();
 
     // All NPC's with config
     private final Map<String, List<NPCHologram>> npcs = new HashMap<>();
@@ -53,6 +56,10 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
     public CitizensHologram() {
         super();
+        if (instance != null) {
+            enabled = false;
+            return;
+        }
         instance = this;
 
         // Start this when all plugins loaded
@@ -159,8 +166,8 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
 
             Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance());
 
-            runTaskTimer(BetonQuest.getInstance(), 4, interval);
-        }, 3);
+            runTaskTimer(BetonQuest.getInstance(), 1, interval);
+        }, 1);
 
         enabled = true;
     }
@@ -169,13 +176,17 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
      * Reloads the particle effect
      */
     public static void reload() {
-        if (instance != null) {
-            if (instance.enabled) {
-                instance.cleanUp();
-
-                instance.cancel();
+        if (instance != null && RELOAD_LOCK.tryLock()) {
+            try {
+                if (instance.enabled) {
+                    instance.cancel();
+                    instance.cleanUp();
+                }
+                instance = null;
+                new CitizensHologram();
+            } finally {
+                RELOAD_LOCK.unlock();
             }
-            new CitizensHologram();
         }
     }
 
