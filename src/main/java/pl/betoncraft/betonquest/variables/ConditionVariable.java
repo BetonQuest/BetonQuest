@@ -15,7 +15,6 @@ public class ConditionVariable extends Variable {
     public ConditionVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         conditionId = instruction.getCondition();
-        System.out.println(instruction.getInstruction());
         papiMode = instruction.hasArgument("papiMode");
     }
 
