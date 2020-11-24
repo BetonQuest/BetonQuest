@@ -293,57 +293,57 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "conditions":
             case "condition":
             case "c":
-                return completeConditions(sender, args);
+                return completeConditions(args);
             case "events":
             case "event":
             case "e":
-                return completeEvents(sender, args);
+                return completeEvents(args);
             case "items":
             case "item":
             case "i":
             case "give":
             case "g":
-                return completeItems(sender, args);
+                return completeItems(args);
             case "config":
-                return completeConfig(sender, args);
+                return completeConfig(args);
             case "objectives":
             case "objective":
             case "o":
-                return completeObjectives(sender, args);
+                return completeObjectives(args);
             case "globaltags":
             case "globaltag":
             case "gtag":
             case "gtags":
             case "gt":
-                return completeGlobalTags(sender, args);
+                return completeGlobalTags(args);
             case "globalpoints":
             case "globalpoint":
             case "gpoints":
             case "gpoint":
             case "gp":
-                return completeGlobalPoints(sender, args);
+                return completeGlobalPoints(args);
             case "tags":
             case "tag":
             case "t":
-                return completeTags(sender, args);
+                return completeTags(args);
             case "points":
             case "point":
             case "p":
-                return completePoints(sender, args);
+                return completePoints(args);
             case "journals":
             case "journal":
             case "j":
-                return completeJournals(sender, args);
+                return completeJournals(args);
             case "delete":
             case "del":
             case "d":
-                return completeDeleting(sender, args);
+                return completeDeleting(args);
             case "rename":
             case "r":
-                return completeRenaming(sender, args);
+                return completeRenaming(args);
             case "vector":
             case "vec":
-                return completeVector(sender, args);
+                return completeVector(args);
             case "purge":
                 if (args.length == 2) {
                     return null;
@@ -351,7 +351,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return new ArrayList<>();
                 }
             case "debug":
-                return completeDebug(sender, args);
+                return completeDebug(args);
             case "version":
             case "ver":
             case "v":
@@ -368,27 +368,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list of all packages for the tab completer
      *
-     * @param sender
-     * @param args
      * @return
      */
-    private List<String> completePackage(final CommandSender sender, final String[] args) {
+    private List<String> completePackage() {
         return new ArrayList<>(Config.getPackages().keySet());
     }
 
     /**
      * Returns a list including all possible tab complete options for ids
      *
-     * @param sender
      * @param args
-     * @param type   - the type of the Id (item/event/journal/condition/objective),
-     *               null for unspecific
+     * @param type - the type of the Id (item/event/journal/condition/objective),
+     *             null for unspecific
      * @return
      */
-    private List<String> completeId(final CommandSender sender, final String[] args, final ConfigAccessor.AccessorType type) {
+    private List<String> completeId(final String[] args, final ConfigAccessor.AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
-            return completePackage(sender, args);
+            return completePackage();
         } else {
             final String pack = last.substring(0, last.indexOf("."));
             final ConfigPackage configPack = Config.getPackages().get(pack);
@@ -591,11 +588,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest config command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeConfig(final CommandSender sender, final String[] args) {
+    private List<String> completeConfig(final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("set", "add", "read");
         }
@@ -688,11 +684,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest journal command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeJournals(final CommandSender sender, final String[] args) {
+    private List<String> completeJournals(final String[] args) {
         if (args.length == 2) {
             return null;
         }
@@ -700,7 +695,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("add", "list", "del");
         }
         if (args.length == 4) {
-            return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+            return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
         }
         return new ArrayList<>();
     }
@@ -842,11 +837,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest points command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completePoints(final CommandSender sender, final String[] args) {
+    private List<String> completePoints(final String[] args) {
         if (args.length == 2) {
             return null;
         }
@@ -854,7 +848,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("add", "list", "del");
         }
         if (args.length == 4) {
-            return completeId(sender, args, null);
+            return completeId(args, null);
         }
         return new ArrayList<>();
     }
@@ -863,16 +857,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest globalpoints command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeGlobalPoints(final CommandSender sender, final String[] args) {
+    private List<String> completeGlobalPoints(final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("add", "list", "del");
         }
         if (args.length == 3) {
-            return completeId(sender, args, null);
+            return completeId(args, null);
         }
         return new ArrayList<>();
     }
@@ -937,13 +930,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest item command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeItems(final CommandSender sender, final String[] args) {
+    private List<String> completeItems(final String[] args) {
         if (args.length == 2) {
-            return completeId(sender, args, ConfigAccessor.AccessorType.ITEMS);
+            return completeId(args, ConfigAccessor.AccessorType.ITEMS);
         }
         return new ArrayList<>();
     }
@@ -986,16 +978,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest event command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeEvents(final CommandSender sender, final String[] args) {
+    private List<String> completeEvents(final String[] args) {
         if (args.length == 2) {
             return null;
         }
         if (args.length == 3) {
-            return completeId(sender, args, ConfigAccessor.AccessorType.EVENTS);
+            return completeId(args, ConfigAccessor.AccessorType.EVENTS);
         }
         return new ArrayList<>();
     }
@@ -1039,16 +1030,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest condition command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeConditions(final CommandSender sender, final String[] args) {
+    private List<String> completeConditions(final String[] args) {
         if (args.length == 2) {
             return null;
         }
         if (args.length == 3) {
-            return completeId(sender, args, ConfigAccessor.AccessorType.CONDITIONS);
+            return completeId(args, ConfigAccessor.AccessorType.CONDITIONS);
         }
         return new ArrayList<>();
     }
@@ -1177,11 +1167,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest tags command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeTags(final CommandSender sender, final String[] args) {
+    private List<String> completeTags(final String[] args) {
         if (args.length == 2) {
             return null;
         }
@@ -1189,7 +1178,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("list", "add", "del");
         }
         if (args.length == 4) {
-            return completeId(sender, args, null);
+            return completeId(args, null);
         }
         return new ArrayList<>();
     }
@@ -1198,16 +1187,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest globaltags command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeGlobalTags(final CommandSender sender, final String[] args) {
+    private List<String> completeGlobalTags(final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("list", "add", "del");
         }
         if (args.length == 3) {
-            return completeId(sender, args, null);
+            return completeId(args, null);
         }
         return new ArrayList<>();
     }
@@ -1330,11 +1318,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest objectives command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeObjectives(final CommandSender sender, final String[] args) {
+    private List<String> completeObjectives(final String[] args) {
         if (args.length == 2) {
             return null;
         }
@@ -1342,7 +1329,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("list", "add", "del", "complete");
         }
         if (args.length == 4) {
-            return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+            return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
         }
         return new ArrayList<>();
     }
@@ -1395,14 +1382,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest vector command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeVector(final CommandSender sender, final String[] args) {
+    private List<String> completeVector(final String[] args) {
         if (args.length == 2) {
             if (args[1] == null || !args[1].contains(".")) {
-                return completePackage(sender, args);
+                return completePackage();
             }
             final String pack = args[1].substring(0, args[1].indexOf("."));
             final ConfigPackage configPack = Config.getPackages().get(pack);
@@ -1576,16 +1562,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest rename command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeRenaming(final CommandSender sender, final String[] args) {
+    private List<String> completeRenaming(final String[] args) {
         if (args.length <= 3) {
-            return completeDeleting(sender, args);
+            return completeDeleting(args);
         }
         if (args.length == 4) {
-            return completeId(sender, args, null);
+            return completeId(args, null);
         }
         return new ArrayList<>();
     }
@@ -1671,11 +1656,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest delete command
      *
-     * @param sender
      * @param args
      * @return
      */
-    private List<String> completeDeleting(final CommandSender sender, final String[] args) {
+    private List<String> completeDeleting(final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("tag", "point", "objective", "entry");
         }
@@ -1687,18 +1671,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "points":
                 case "point":
                 case "p":
-                    return completeId(sender, args, null);
+                    return completeId(args, null);
                 case "objectives":
                 case "objective":
                 case "o":
-                    return completeId(sender, args, ConfigAccessor.AccessorType.OBJECTIVES);
+                    return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
                 case "journals":
                 case "journal":
                 case "j":
                 case "entries":
                 case "entry":
                 case "e":
-                    return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+                    return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
                 default:
                     break;
             }
@@ -1857,7 +1841,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
-    private List<String> completeDebug(final CommandSender sender, final String[] args) {
+    private List<String> completeDebug(final String[] args) {
         if (args.length == 2) {
             return Arrays.asList("true", "false");
         }

@@ -48,6 +48,7 @@
   <rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault"/>
   <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
   <rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
+  <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
