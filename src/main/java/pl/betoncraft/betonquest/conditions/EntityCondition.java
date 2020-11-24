@@ -49,7 +49,7 @@ public class EntityCondition extends Condition {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
                         try {
                             amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
-                        } catch (NumberFormatException e) {
+                        } catch (InstructionParseException e) {
                             throw new InstructionParseException("Could not parse amount", e);
                         }
                     }

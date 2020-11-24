@@ -36,6 +36,7 @@ public class TakeEvent extends QuestEvent {
         notify = instruction.hasArgument("notify");
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);

@@ -18,6 +18,7 @@ public class DayOfWeekCondition extends Condition {
 
     private final DayOfWeek day;
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public DayOfWeekCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.staticness = true;

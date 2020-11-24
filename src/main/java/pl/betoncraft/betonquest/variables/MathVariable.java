@@ -130,7 +130,7 @@ public class MathVariable extends Variable {
         //if a variable is specified
         try {
             return new ClaculableVariable(super.instruction.getPackage(), "%" + string + "%");
-        } catch (NumberFormatException e) {
+        } catch (InstructionParseException e) {
             throw new InstructionParseException(e.getMessage(), e);
         }
     }
@@ -166,7 +166,7 @@ public class MathVariable extends Variable {
             this(new VariableNumber(number));
         }
 
-        public ClaculableVariable(final ConfigPackage pack, final String variable) throws NumberFormatException {
+        public ClaculableVariable(final ConfigPackage pack, final String variable) throws InstructionParseException {
             this(new VariableNumber(pack.getName(), variable));
         }
 

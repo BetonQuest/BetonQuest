@@ -52,7 +52,7 @@ public class WandCondition extends Condition {
                     final String[] spellParts = spell.split(":");
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
-                    } catch (NumberFormatException e) {
+                    } catch (InstructionParseException e) {
                         throw new InstructionParseException("Could not parse spell level", e);
                     }
                     this.spells.put(spellParts[0], level);

@@ -26,7 +26,7 @@ public class EventAddExp extends QuestEvent {
                 try {
                     this.nAddExperience = Double.parseDouble(instruction.getPart(2));
                 } catch (Exception err) {
-                    throw new InstructionParseException("NUJobs_AddExp: Unable to parse the experience amount");
+                    throw new InstructionParseException("NUJobs_AddExp: Unable to parse the experience amount", err);
                 }
                 return;
             }

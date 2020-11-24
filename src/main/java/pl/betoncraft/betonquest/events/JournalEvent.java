@@ -41,6 +41,7 @@ public class JournalEvent extends QuestEvent {
         }
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {

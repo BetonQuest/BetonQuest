@@ -384,6 +384,7 @@ public class Utils {
      * @return the Color (never null)
      * @throws InstructionParseException when something goes wrong
      */
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public static Color getColor(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Color is not specified");

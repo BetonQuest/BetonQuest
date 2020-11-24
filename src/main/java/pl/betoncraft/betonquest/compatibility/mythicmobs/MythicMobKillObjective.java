@@ -46,9 +46,9 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
         minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(packName, unsafeMinMobLevel);
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(packName, unsafeMaxMobLevel);
-
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) {

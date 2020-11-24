@@ -22,7 +22,7 @@ public class HeightCondition extends Condition {
         if (string.matches("\\-?\\d+\\.?\\d*")) {
             try {
                 height = new VariableNumber(packName, string);
-            } catch (NumberFormatException e) {
+            } catch (InstructionParseException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }
         } else {

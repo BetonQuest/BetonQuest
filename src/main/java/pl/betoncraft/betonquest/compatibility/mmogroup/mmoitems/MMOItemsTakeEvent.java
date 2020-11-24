@@ -34,6 +34,7 @@ public class MMOItemsTakeEvent extends QuestEvent {
         notify = instruction.hasArgument("notify");
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Inventory inv = PlayerConverter.getPlayer(playerID).getInventory();
