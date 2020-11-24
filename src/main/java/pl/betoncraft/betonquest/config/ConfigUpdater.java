@@ -424,13 +424,13 @@ public class ConfigUpdater {
                                 case "monsters":
                                     index = 2;
                                     break;
+                                default:
+                                    break;
                             }
                             break;
                         case EVENTS:
-                            switch (object) {
-                                case "clear":
-                                    index = 2;
-                                    break;
+                            if ("clear".equals(object)) {
+                                index = 2;
                             }
                             break;
                         case OBJECTIVES:
@@ -461,6 +461,8 @@ public class ConfigUpdater {
                                     break;
                                 case "location":
                                     index = 1;
+                                    break;
+                                default:
                                     break;
                             }
                             break;

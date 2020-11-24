@@ -1700,6 +1700,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "entry":
                 case "e":
                     return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+                default:
+                    break;
             }
         }
         return new ArrayList<>();

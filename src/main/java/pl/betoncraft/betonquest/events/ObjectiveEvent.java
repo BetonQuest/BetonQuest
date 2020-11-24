@@ -73,6 +73,8 @@ public class ObjectiveEvent extends QuestEvent {
                         case "finish":
                             LogUtils.getLogger().log(Level.WARNING, "Cannot complete objective for offline player!");
                             break;
+                        default:
+                            break;
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
@@ -90,6 +92,8 @@ public class ObjectiveEvent extends QuestEvent {
                 case "complete":
                 case "finish":
                     BetonQuest.getInstance().getObjective(objective).completeObjective(playerID);
+                    break;
+                default:
                     break;
             }
         }
