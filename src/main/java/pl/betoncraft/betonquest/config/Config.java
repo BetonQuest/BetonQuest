@@ -184,7 +184,7 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(final String lang, final String message, final String[] variables) {
+    public static String getMessage(final String lang, final String message, final String... variables) {
         String result = messages.getConfig().getString(lang + "." + message);
         if (result == null) {
             result = messages.getConfig().getString(Config.getLanguage() + "." + message);
@@ -351,7 +351,7 @@ public class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+    public static void sendMessage(final String packName, final String playerID, final String messageName, final String... variables) {
         sendMessage(packName, playerID, messageName, variables, null, null, null);
     }
 
@@ -382,7 +382,7 @@ public class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String[] prefixVariables) {
+                                   final String prefixName, final String... prefixVariables) {
         final String message = parseMessage(packName, playerID, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
@@ -435,16 +435,16 @@ public class Config {
         Notify.get(category, data).sendNotify(message, player);
     }
 
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+    public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {
         return parseMessage(packName, playerID, messageName, variables, null, null);
     }
 
-    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables) {
+    public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
         return parseMessage(packName, player, messageName, variables, null, null);
     }
 
     public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
-                                      final String[] prefixVariables) {
+                                      final String... prefixVariables) {
         return parseMessage(packName, PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
     }
 
@@ -458,7 +458,7 @@ public class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
-                                      final String[] prefixVariables) {
+                                      final String... prefixVariables) {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
         if (playerData == null) {
             return null;

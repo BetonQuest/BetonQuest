@@ -78,7 +78,7 @@ public class BetonQuest extends JavaPlugin {
         return instance;
     }
 
-    public static boolean conditions(final String playerID, final ConditionID[] conditionIDs) {
+    public static boolean conditions(final String playerID, final ConditionID... conditionIDs) {
         return conditions(playerID, Arrays.stream(conditionIDs));
     }
 

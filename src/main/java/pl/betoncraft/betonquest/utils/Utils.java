@@ -345,7 +345,7 @@ public class Utils {
                 && item.getItemMeta().getLore().contains(Config.getMessage(Config.getLanguage(), "quest_item"));
     }
 
-    public static List<String> getParty(final String playerID, final double range, final String pack, final ConditionID[] conditions) {
+    public static List<String> getParty(final String playerID, final double range, final String pack, final ConditionID... conditions) {
         final List<String> list = new ArrayList<>();
         final Player player = PlayerConverter.getPlayer(playerID);
         final Location loc = player.getLocation();
