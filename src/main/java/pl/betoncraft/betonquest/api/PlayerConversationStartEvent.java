@@ -37,6 +37,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
         return conversation;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS;
     }

@@ -40,7 +40,7 @@ public class PointEvent extends QuestEvent {
         }
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
-        } catch (NumberFormatException e) {
+        } catch (InstructionParseException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }
         notify = instruction.hasArgument("notify");
@@ -69,6 +69,7 @@ public class PointEvent extends QuestEvent {
         return null;
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     private void addPoints(final String playerID, final PlayerData playerData) throws QuestRuntimeException {
         final int intCount = count.getInt(playerID);
         if (multi) {

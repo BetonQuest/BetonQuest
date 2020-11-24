@@ -317,6 +317,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (conv.isMovementBlock()) {
             new BukkitRunnable() {
+                @Override
                 public void run() {
                     player.teleport(loc);
                     player.openInventory(inv);

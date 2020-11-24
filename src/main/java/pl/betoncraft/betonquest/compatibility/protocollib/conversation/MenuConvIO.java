@@ -567,6 +567,8 @@ public class MenuConvIO extends ChatConvIO {
                         displayBuilder.append(" ");
                     }
                     break;
+                default:
+                    break;
             }
             displayBuilder.append(formattedNpcName).append("\n");
         }

@@ -292,14 +292,14 @@ public class ConversationData {
      * @return the final events
      */
     public EventID[] getFinalEvents() {
-        return finalEvents;
+        return Arrays.copyOf(finalEvents, finalEvents.length);
     }
 
     /**
      * @return the starting options
      */
     public String[] getStartingOptions() {
-        return startingOptions;
+        return Arrays.copyOf(startingOptions, startingOptions.length);
     }
 
     /**

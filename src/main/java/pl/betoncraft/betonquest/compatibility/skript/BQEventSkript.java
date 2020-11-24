@@ -50,6 +50,7 @@ public class BQEventSkript extends QuestEvent {
             return identifier;
         }
 
+        @Override
         public HandlerList getHandlers() {
             return HANDLERS;
         }

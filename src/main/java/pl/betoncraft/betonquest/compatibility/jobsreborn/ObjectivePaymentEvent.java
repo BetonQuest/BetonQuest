@@ -59,6 +59,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         return Double.toString(nAmount);
     }
 
+    @Override
     public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("left")) {
             return Double.toString(nAmount - ((PaymentData) dataMap.get(playerID)).getAmount());

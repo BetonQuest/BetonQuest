@@ -12,8 +12,10 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  */
 public class PermissionEvent extends QuestEvent {
 
-    private final String world, permission;
-    private final boolean add, perm;
+    private final String world;
+    private final String permission;
+    private final boolean add;
+    private final boolean perm;
 
     public PermissionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

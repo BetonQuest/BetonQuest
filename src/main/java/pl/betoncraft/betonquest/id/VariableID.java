@@ -21,6 +21,7 @@ public class VariableID extends ID {
         return new VariableInstruction(pack, this, identifier);
     }
 
+    @Override
     public String getBaseID() {
         return rawInstruction;
     }

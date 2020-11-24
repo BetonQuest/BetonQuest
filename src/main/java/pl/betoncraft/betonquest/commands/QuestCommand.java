@@ -1363,7 +1363,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             player.sendMessage("§4ERROR");
             return;
         }
-        String pack = null, name = null;
+        String pack = null;
+        String name = null;
         if (args[1].contains(".")) {
             final String[] parts = args[1].split("\\.");
             pack = parts[0];
@@ -1699,6 +1700,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "entry":
                 case "e":
                     return completeId(sender, args, ConfigAccessor.AccessorType.JOURNAL);
+                default:
+                    break;
             }
         }
         return new ArrayList<>();

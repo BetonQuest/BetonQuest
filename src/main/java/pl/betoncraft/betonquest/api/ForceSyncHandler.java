@@ -56,7 +56,7 @@ abstract public class ForceSyncHandler<T> {
             try {
                 return returnFuture.get();
             } catch (InterruptedException e) {
-                throw new QuestRuntimeException("Thread was Interrupted!");
+                throw new QuestRuntimeException("Thread was Interrupted!", e);
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof QuestRuntimeException) {
                     throw (QuestRuntimeException) e.getCause();

@@ -145,7 +145,7 @@ public class Instruction {
         }
         try {
             return new VariableNumber(pack.getName(), string);
-        } catch (NumberFormatException e) {
+        } catch (InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
     }

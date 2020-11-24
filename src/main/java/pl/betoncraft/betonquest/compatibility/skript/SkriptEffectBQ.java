@@ -43,6 +43,7 @@ public class SkriptEffectBQ extends Effect {
     @Override
     protected void execute(final Event event) {
         new BukkitRunnable() {
+            @Override
             public void run() {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {

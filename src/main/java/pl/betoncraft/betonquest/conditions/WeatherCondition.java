@@ -44,6 +44,8 @@ public class WeatherCondition extends Condition {
                     return true;
                 }
                 break;
+            default:
+                return false;
         }
         return false;
     }

@@ -23,15 +23,15 @@ public class VariableNumber {
      * @param packName the package in which the variable is defined
      * @param variable the string to parse
      */
-    public VariableNumber(final String packName, final String variable) throws NumberFormatException {
+    public VariableNumber(final String packName, final String variable) throws InstructionParseException {
         if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
             try {
                 this.variable = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
             } catch (InstructionParseException e) {
-                throw new NumberFormatException("Could not create variable: " + e.getMessage());
+                throw new InstructionParseException("Could not create variable: " + e.getMessage(), e);
             }
             if (this.variable == null) {
-                throw new NumberFormatException("Could not create variable");
+                throw new InstructionParseException("Could not create variable");
             }
         } else {
             number = Double.parseDouble(variable);

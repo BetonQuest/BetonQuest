@@ -28,7 +28,7 @@ public class RandomCondition extends Condition {
         try {
             valueMax = new VariableNumber(packName, values[0]);
             rangeOfRandom = new VariableNumber(packName, values[1]);
-        } catch (NumberFormatException e) {
+        } catch (InstructionParseException e) {
             throw new InstructionParseException("Cannot parse randomness values", e);
         }
     }

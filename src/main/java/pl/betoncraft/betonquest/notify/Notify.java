@@ -57,7 +57,7 @@ public class Notify {
             return new SuppressNotifyIO(categoryData);
         } catch (final InstructionParseException exception) {
             LogUtils.logThrowableReport(exception);
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException(exception);
         }
     }
 

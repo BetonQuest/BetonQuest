@@ -21,6 +21,7 @@ public class TeleportEvent extends QuestEvent {
         loc = instruction.getLocation();
     }
 
+    @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Conversation conv = Conversation.getConversation(playerID);
         if (conv != null) {

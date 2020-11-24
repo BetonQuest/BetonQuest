@@ -52,6 +52,7 @@ public final class DefaultPacketHandler implements PacketHandler {
         this.type = handle.getType();
     }
 
+    @Override
     public PacketContainer getHandle() {
         return handle;
     }
@@ -61,6 +62,7 @@ public final class DefaultPacketHandler implements PacketHandler {
         return type;
     }
 
+    @Override
     public void sendPacket(final Player receiver) {
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver, getHandle());
@@ -69,10 +71,12 @@ public final class DefaultPacketHandler implements PacketHandler {
         }
     }
 
+    @Override
     public void broadcastPacket() {
         ProtocolLibrary.getProtocolManager().broadcastServerPacket(getHandle());
     }
 
+    @Override
     public void receivePacket(final Player sender) {
         try {
             ProtocolLibrary.getProtocolManager().recieveClientPacket(sender, getHandle());
