@@ -28,17 +28,31 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
-import static com.comphenix.protocol.PacketType.Play.Server.*;
-
 
 public class EntityHider implements Listener {
 
     // Packets that update remote player entities
     private static final PacketType[] ENTITY_PACKETS = {
-            ENTITY_EQUIPMENT, ANIMATION, NAMED_ENTITY_SPAWN,
-            COLLECT, SPAWN_ENTITY, SPAWN_ENTITY_LIVING, SPAWN_ENTITY_PAINTING, SPAWN_ENTITY_EXPERIENCE_ORB,
-            ENTITY_VELOCITY, REL_ENTITY_MOVE, ENTITY_LOOK, ENTITY_TELEPORT, ENTITY_HEAD_ROTATION, ENTITY_STATUS,
-            ATTACH_ENTITY, ENTITY_METADATA, ENTITY_EFFECT, REMOVE_ENTITY_EFFECT, BLOCK_BREAK_ANIMATION, COMBAT_EVENT
+            PacketType.Play.Server.ENTITY_EQUIPMENT,
+            PacketType.Play.Server.ANIMATION,
+            PacketType.Play.Server.NAMED_ENTITY_SPAWN,
+            PacketType.Play.Server.COLLECT,
+            PacketType.Play.Server.SPAWN_ENTITY,
+            PacketType.Play.Server.SPAWN_ENTITY_LIVING,
+            PacketType.Play.Server.SPAWN_ENTITY_PAINTING,
+            PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
+            PacketType.Play.Server.ENTITY_VELOCITY,
+            PacketType.Play.Server.REL_ENTITY_MOVE,
+            PacketType.Play.Server.ENTITY_LOOK,
+            PacketType.Play.Server.ENTITY_TELEPORT,
+            PacketType.Play.Server.ENTITY_HEAD_ROTATION,
+            PacketType.Play.Server.ENTITY_STATUS,
+            PacketType.Play.Server.ATTACH_ENTITY,
+            PacketType.Play.Server.ENTITY_METADATA,
+            PacketType.Play.Server.ENTITY_EFFECT,
+            PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
+            PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
+            PacketType.Play.Server.COMBAT_EVENT
 
             // We don't handle DESTROY_ENTITY though
     };
@@ -207,7 +221,7 @@ public class EntityHider implements Listener {
 
             @Override
             public void onPacketSending(final PacketEvent event) {
-                final int index = event.getPacketType() == COMBAT_EVENT ? 1 : 0;
+                final int index = event.getPacketType() == PacketType.Play.Server.COMBAT_EVENT ? 1 : 0;
 
                 final Integer entityID = event.getPacket().getIntegers().readSafely(index);
                 if (entityID != null) {
@@ -267,7 +281,7 @@ public class EntityHider implements Listener {
         final boolean visibleBefore = updateVisibility(observer, entity.getEntityId(), false);
 
         if (visibleBefore) {
-            final PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
+            final PacketContainer destroyEntity = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
             destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
 
             // Make the entity disappear
