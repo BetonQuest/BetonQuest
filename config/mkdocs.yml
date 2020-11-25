@@ -31,7 +31,7 @@ theme:
   palette:
     - scheme: slate
       primary: indigo
-      accent: indigo
+      accent: teal
       toggle:
         icon: material/lightbulb-outline
         name: Switch to dark mode
@@ -52,6 +52,7 @@ theme:
 # See the following for docs on these extensions: https://squidfunk.github.io/mkdocs-material/extensions
 markdown_extensions:
   - admonition
+  - attr_list
   - codehilite:
       linenums: true
   - footnotes

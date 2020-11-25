@@ -15,13 +15,7 @@ These plugins allow for far more comfortable (server) scripting!
 
 For more information please visit the page that fits your needs the most:
 
-[<span style="font-size:30px">:man_office_worker:</span> **Im a server owner!**](For-Admins.md)    
-
-
-[<span style="font-size:30px">:memo:</span>**Im a quester!**](For-Questers.md)
-
-
-[<span style="font-size:30px">:handshake:</span> **I want to contribute!**](Contributing/Contributing.md)
-
-
-[<span style="font-size:30px">:man_technologist:</span> **Im a developer and want to add support for my plugin!**](Developer-Documentation/Contributing-Guidelines.md)
+[Im a server owner! <span style="font-size:25px">:man_office_worker:</span>](For-Owners.md){: .md-button .md-button--primary }              
+[Im a quester! <span style="font-size:25px">:memo:</span>](For-Questers.md){: .md-button .md-button--primary }              
+[I want to contribute! <span style="font-size:25px">:handshake:</span>](Contributing/Contributing.md){: .md-button .md-button--primary }              
+[Im a developer! <span style="font-size:25px">:man_technologist:</span>](Developer-Documentation/API.md){: .md-button .md-button--primary }
