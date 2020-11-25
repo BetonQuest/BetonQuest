@@ -58,7 +58,6 @@ public class MythicMobKillObjective extends Objective implements Listener {
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(packName, unsafeMaxMobLevel);
     }
 
-    @SuppressWarnings("PMD.PreserveStackTrace")
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) {
@@ -67,8 +66,8 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
         if (!(event.getKiller() instanceof Player)) {
             if (neutralDeathRadius > 0D) {
-                Location center = BukkitAdapter.adapt(event.getMob().getLocation());
-                for (Player player : center.getWorld().getPlayers()) {
+                final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
+                for (final Player player : center.getWorld().getPlayers()) {
                     if (!isValidPlayer(player)) {
                         continue;
                     }
@@ -99,6 +98,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
         return player.isValid();
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     private void handlePlayerKill(final Player player, final ActiveMob mob) {
         final String playerID = PlayerConverter.getID(player);
         if (!containsPlayer(playerID)) {
