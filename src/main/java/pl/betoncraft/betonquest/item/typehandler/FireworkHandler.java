@@ -36,7 +36,7 @@ public class FireworkHandler {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Firework effects missing");
         }
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             effectsE = Existence.FORBIDDEN;
             return;
         }
@@ -55,7 +55,7 @@ public class FireworkHandler {
 
     public void setPower(final String string) throws InstructionParseException {
         String power = string;
-        if (power.equals("?")) {
+        if ("?".equals(power)) {
             powerN = Number.WHATEVER;
             power = "1";
         } else if (power.endsWith("-")) {

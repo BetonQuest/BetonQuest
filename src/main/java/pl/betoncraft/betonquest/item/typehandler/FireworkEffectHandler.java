@@ -32,7 +32,7 @@ public class FireworkEffectHandler {
         }
         final String[] parts = string.split(":");
         // if "whatever" then all type checking is unnecessary
-        if (!parts[0].equals("?")) {
+        if (!"?".equals(parts[0])) {
             if (parts[0].toLowerCase().startsWith("none-")) {
                 parts[0] = parts[0].substring(5);
                 typeE = Existence.FORBIDDEN;
@@ -50,9 +50,9 @@ public class FireworkEffectHandler {
         if (parts.length != 5) {
             throw new InstructionParseException("Incorrect effect format: " + string);
         }
-        if (parts[1].equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(parts[1])) {
             mainE = Existence.FORBIDDEN;
-        } else if (parts[1].equals("?")) {
+        } else if ("?".equals(parts[1])) {
             mainE = Existence.WHATEVER;
         } else {
             mainE = Existence.REQUIRED;
@@ -62,9 +62,9 @@ public class FireworkEffectHandler {
                 mainColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
-        if (parts[2].equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(parts[2])) {
             fadeE = Existence.FORBIDDEN;
-        } else if (parts[2].equals("?")) {
+        } else if ("?".equals(parts[2])) {
             fadeE = Existence.WHATEVER;
         } else {
             fadeE = Existence.REQUIRED;
@@ -74,12 +74,12 @@ public class FireworkEffectHandler {
                 fadeColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
-        if (parts[3].equals("?")) {
+        if ("?".equals(parts[3])) {
             trail = Existence.WHATEVER;
         } else {
             trail = Boolean.parseBoolean(parts[3]) ? Existence.REQUIRED : Existence.FORBIDDEN;
         }
-        if (parts[4].equals("?")) {
+        if ("?".equals(parts[4])) {
             flicker = Existence.WHATEVER;
         } else {
             flicker = Boolean.parseBoolean(parts[4]) ? Existence.REQUIRED : Existence.FORBIDDEN;

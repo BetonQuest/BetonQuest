@@ -64,7 +64,7 @@ public class LocationObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("location")) {
+        if ("location".equalsIgnoreCase(name)) {
             final Location location;
             try {
                 location = loc.getLocation(playerID);

@@ -26,7 +26,7 @@ public class PointVariable extends Variable {
         } else {
             category = instruction.getPackage().getName() + "." + category;
         }
-        if (instruction.next().equalsIgnoreCase("amount")) {
+        if ("amount".equalsIgnoreCase(instruction.next())) {
             type = Type.AMOUNT;
         } else if (instruction.current().toLowerCase().startsWith("left:")) {
             type = Type.LEFT;

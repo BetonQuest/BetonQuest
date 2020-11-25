@@ -73,7 +73,7 @@ public class PotionHandler {
         if (custom == null || (parts = custom.split(",")).length == 0) {
             throw new InstructionParseException("Missing value");
         }
-        if (custom.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(custom)) {
             customE = Existence.FORBIDDEN;
             return;
         }
@@ -165,7 +165,7 @@ public class PotionHandler {
                     throw new InstructionParseException("Efect duration must be a positive integer");
                 }
                 // second number is the power of the potion
-                if (parts[1].equals("?")) {
+                if ("?".equals(parts[1])) {
                     powerE = Number.WHATEVER;
                     parts[1] = String.valueOf(power);
                 } else if (parts[1].endsWith("-")) {
@@ -185,7 +185,7 @@ public class PotionHandler {
                 if (power < 0) {
                     throw new InstructionParseException("Effect power must be a positive integer");
                 }
-                if (parts[2].equals("?")) {
+                if ("?".equals(parts[2])) {
                     durationE = Number.WHATEVER;
                     parts[2] = String.valueOf(duration);
                 } else if (parts[2].endsWith("-")) {

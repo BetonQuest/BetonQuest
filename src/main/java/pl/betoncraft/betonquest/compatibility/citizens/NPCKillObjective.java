@@ -70,9 +70,9 @@ public class NPCKillObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("left")) {
+        if ("left".equalsIgnoreCase(name)) {
             return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
+        } else if ("amount".equalsIgnoreCase(name)) {
             return Integer.toString(((NPCData) dataMap.get(playerID)).getAmount());
         }
         return "";

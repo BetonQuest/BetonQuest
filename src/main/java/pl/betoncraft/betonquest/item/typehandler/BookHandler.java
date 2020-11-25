@@ -25,7 +25,7 @@ public class BookHandler {
     }
 
     public void setTitle(final String string) {
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             titleE = Existence.FORBIDDEN;
         } else {
             title = string.replace('_', ' ');
@@ -39,7 +39,7 @@ public class BookHandler {
     }
 
     public void setAuthor(final String string) {
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
         } else {
             author = string.replace("_", " ");
@@ -52,7 +52,7 @@ public class BookHandler {
     }
 
     public void setText(final String string) {
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             text.add(""); // this will prevent "Invalid book tag" message in the empty book
             textE = Existence.FORBIDDEN;
         } else {

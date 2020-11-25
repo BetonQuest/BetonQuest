@@ -34,7 +34,7 @@ public class ConversationResumer implements Listener {
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];
-        if (option.equalsIgnoreCase("null")) {
+        if ("null".equalsIgnoreCase(option)) {
             return;
         }
         final String[] locParts = parts[2].split(";");

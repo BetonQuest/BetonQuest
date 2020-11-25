@@ -23,7 +23,7 @@ public class CompassCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if (cmd.getName().equalsIgnoreCase("compass")) {
+        if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 final String playerID = PlayerConverter.getID(player);

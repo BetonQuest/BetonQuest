@@ -10,7 +10,7 @@ public class UnbreakableHandler {
     }
 
     public void set(final String string) {
-        if (string.equalsIgnoreCase("true")) {
+        if ("true".equalsIgnoreCase(string)) {
             unbreakable = Existence.REQUIRED;
         } else {
             unbreakable = Existence.FORBIDDEN;

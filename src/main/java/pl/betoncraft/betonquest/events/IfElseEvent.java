@@ -20,7 +20,7 @@ public class IfElseEvent extends QuestEvent {
         super(instruction, false);
         condition = instruction.getCondition();
         event = instruction.getEvent();
-        if (!instruction.next().equalsIgnoreCase("else")) {
+        if (!"else".equalsIgnoreCase(instruction.next())) {
             throw new InstructionParseException("Missing 'else' keyword");
         }
         elseEvent = instruction.getEvent();

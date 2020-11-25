@@ -64,7 +64,7 @@ public class Config {
         messages.saveDefaultConfig();
         internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
         for (final String key : messages.getConfig().getKeys(false)) {
-            if (!key.equals("global")) {
+            if (!"global".equals(key)) {
                 if (verboose) {
                     LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
                 }
@@ -245,9 +245,9 @@ public class Config {
             return null;
         }
         final String main = parts[0];
-        if (main.equals("config")) {
+        if ("config".equals(main)) {
             return plugin.getConfig().getString(address.substring(7));
-        } else if (main.equals("messages")) {
+        } else if ("messages".equals(main)) {
             return messages.getConfig().getString(address.substring(9));
         } else {
             final ConfigPackage pack = PACKAGES.get(main);
@@ -275,11 +275,11 @@ public class Config {
             return false;
         }
         final String main = parts[0];
-        if (main.equals("config")) {
+        if ("config".equals(main)) {
             plugin.getConfig().set(address.substring(7), value);
             plugin.saveConfig();
             return true;
-        } else if (main.equals("messages")) {
+        } else if ("messages".equals(main)) {
             messages.getConfig().set(address.substring(9), value);
             messages.saveConfig();
             return true;
@@ -495,7 +495,7 @@ public class Config {
             return;
         }
         final String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
-        if (!rawSound.equalsIgnoreCase("false")) {
+        if (!"false".equalsIgnoreCase(rawSound)) {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (final IllegalArgumentException e) {
@@ -524,7 +524,7 @@ public class Config {
             final File[] content = file.listFiles();
             try {
                 for (final File subFile : content) {
-                    if (subFile.getName().equals("main.yml")) {
+                    if ("main.yml".equals(subFile.getName())) {
                         // this is a package, add it and stop searching
                         final String packPath = BetonQuest.getInstance().getDataFolder()
                                 .toURI().relativize(file.toURI())

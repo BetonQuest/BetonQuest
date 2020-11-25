@@ -11,7 +11,7 @@ public class HeadOwnerHandler {
     }
 
     public void set(final String string) {
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             ownerE = Existence.FORBIDDEN;
         } else {
             owner = string;

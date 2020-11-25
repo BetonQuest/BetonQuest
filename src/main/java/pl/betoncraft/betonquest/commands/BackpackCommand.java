@@ -25,7 +25,7 @@ public class BackpackCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if (cmd.getName().equalsIgnoreCase("backpack")) {
+        if ("backpack".equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
                 LogUtils.getLogger().log(Level.FINE, "Executing /backpack command for " + sender.getName());

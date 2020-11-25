@@ -142,7 +142,7 @@ public class Journal {
      */
     public List<String> getText() {
         final List<String> list;
-        if (Config.getString("config.journal.reversed_order").equalsIgnoreCase("true")) {
+        if ("true".equalsIgnoreCase(Config.getString("config.journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
@@ -168,7 +168,7 @@ public class Journal {
         for (final Pointer pointer : pointers) {
             // if date should not be hidden, generate the date prefix
             String datePrefix = "";
-            if (Config.getString("config.journal.hide_date").equalsIgnoreCase("false")) {
+            if ("false".equalsIgnoreCase(Config.getString("config.journal.hide_date"))) {
                 final String date = new SimpleDateFormat(Config.getString("config.date_format"))
                         .format(pointer.getTimestamp());
                 final String[] dateParts = date.split(" ");
@@ -392,7 +392,7 @@ public class Journal {
         meta.setLore(lore);
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
-        if (Config.getString("config.journal.one_entry_per_page").equalsIgnoreCase("false")) {
+        if ("false".equalsIgnoreCase(Config.getString("config.journal.one_entry_per_page"))) {
             final String color = Config.getString("config.journal_colors.line");
             String separator = Config.parseMessage(null, playerID, "journal_separator", null);
             if (separator == null) {
@@ -410,7 +410,7 @@ public class Journal {
                 stringBuilder.append(entry).append(line);
             }
             if (mainPage != null && mainPage.length() > 0) {
-                if (Config.getString("config.journal.full_main_page").equalsIgnoreCase("true")) {
+                if ("true".equalsIgnoreCase(Config.getString("config.journal.full_main_page"))) {
                     finalList.addAll(Utils.pagesFromString(mainPage));
                 } else {
                     stringBuilder.insert(0, mainPage + line);

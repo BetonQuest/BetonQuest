@@ -21,7 +21,7 @@ public class EnchantmentsHandler {
         if (enchants == null || (parts = enchants.split(",")).length == 0) {
             throw new InstructionParseException("Missing value");
         }
-        if (enchants.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(enchants)) {
             checkersE = Existence.FORBIDDEN;
             return;
         }
@@ -102,7 +102,7 @@ public class EnchantmentsHandler {
             if (parts.length != 2) {
                 throw new InstructionParseException("Wrong enchantment format");
             }
-            if (parts[1].equals("?")) {
+            if ("?".equals(parts[1])) {
                 number = Number.WHATEVER;
                 parts[1] = "1";
             } else if (parts[1].endsWith("-")) {

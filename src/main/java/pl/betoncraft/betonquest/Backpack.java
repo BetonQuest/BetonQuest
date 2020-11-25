@@ -518,7 +518,7 @@ public class Backpack implements Listener {
                     player.closeInventory();
                     return;
                 } catch (NullPointerException e) {
-                    if (e.getMessage().equals("Item instruction is null")) {
+                    if ("Item instruction is null".equals(e.getMessage())) {
                         LogUtils.getLogger().log(Level.WARNING, "Item instruction is null.");
                         LogUtils.logThrowable(e);
                         player.closeInventory();

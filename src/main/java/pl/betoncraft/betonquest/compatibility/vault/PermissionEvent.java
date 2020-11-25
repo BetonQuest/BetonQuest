@@ -19,8 +19,8 @@ public class PermissionEvent extends QuestEvent {
 
     public PermissionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        add = instruction.next().equalsIgnoreCase("add");
-        perm = instruction.next().equalsIgnoreCase("perm");
+        add = "add".equalsIgnoreCase(instruction.next());
+        perm = "perm".equalsIgnoreCase(instruction.next());
         permission = instruction.next();
         if (instruction.size() >= 5) {
             world = instruction.next();

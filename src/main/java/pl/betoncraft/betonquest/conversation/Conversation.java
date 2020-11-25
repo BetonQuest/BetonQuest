@@ -95,7 +95,7 @@ public class Conversation implements Listener {
         this.convID = conversationID;
         this.data = plugin.getConversation(convID);
         this.blacklist = plugin.getConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = plugin.getConfig().getString("display_chat_after_conversation").equalsIgnoreCase("true");
+        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getConfig().getString("display_chat_after_conversation"));
 
         // check if data is present
         if (data == null) {

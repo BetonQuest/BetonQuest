@@ -59,7 +59,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
-        if (cmd.getName().equalsIgnoreCase("betonquest")) {
+        if ("betonquest".equalsIgnoreCase(cmd.getName())) {
             LogUtils.getLogger().log(Level.FINE, "Executing /betonquest command for user " + sender.getName()
                     + " with arguments: " + Arrays.toString(args));
             // if the command is empty, display help message
@@ -533,7 +533,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     sendMessage(sender, "specify_path");
                     return;
                 }
-                final boolean set = Config.setString(path, args[3].equalsIgnoreCase("null") ? null : strBldr.toString().trim());
+                final boolean set = Config.setString(path, "null".equalsIgnoreCase(args[3]) ? null : strBldr.toString().trim());
                 if (set) {
                     LogUtils.getLogger().log(Level.FINE, "Displaying variable at path " + path);
                     final String message1 = Config.getString(path);
@@ -618,7 +618,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
-        if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
+        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             LogUtils.getLogger().log(Level.FINE, "Listing journal pointers");
             sendMessage(sender, "player_journal");
             for (final Pointer pointer : journal.getPointers()) {
@@ -719,7 +719,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             playerData = new PlayerData(playerID);
         }
         // if there are no arguments then list player's points
-        if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
+        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             final List<Point> points = playerData.getPoints();
             LogUtils.getLogger().log(Level.FINE, "Listing points");
             sendMessage(sender, "player_points");
@@ -779,7 +779,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void handleGlobalPoints(final CommandSender sender, final String... args) {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global points
-        if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+        if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
             final List<Point> points = data.getPoints();
             LogUtils.getLogger().log(Level.FINE, "Listing global points");
             sendMessage(sender, "global_points");
@@ -789,7 +789,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // handle purge
-        if (args[1].equalsIgnoreCase("purge")) {
+        if ("purge".equalsIgnoreCase(args[1])) {
             LogUtils.getLogger().log(Level.FINE, "Purging all global points");
             data.purgePoints();
             sendMessage(sender, "global_points_purged");
@@ -967,7 +967,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
-        final String playerID = args[1].equals("-") ? null : PlayerConverter.getID(args[1]);
+        final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
         BetonQuest.event(playerID, eventID);
         sendMessage(sender, "player_event", new String[]{
                 eventID.generateInstruction().getInstruction()
@@ -1019,7 +1019,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        final String playerID = args[1].equals("-") ? null : PlayerConverter.getID(args[1]);
+        final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
         sendMessage(sender, "player_condition", new String[]{
                 (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(playerID, conditionID))
@@ -1062,7 +1062,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             playerData = new PlayerData(playerID);
         }
         // if there are no arguments then list player's tags
-        if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
+        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             final List<String> tags = playerData.getTags();
             LogUtils.getLogger().log(Level.FINE, "Listing tags");
             sendMessage(sender, "player_tags");
@@ -1113,7 +1113,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void handleGlobalTags(final CommandSender sender, final String... args) {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global tags
-        if (args.length < 2 || args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("l")) {
+        if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
             final List<String> tags = data.getTags();
             LogUtils.getLogger().log(Level.FINE, "Listing global tags");
             sendMessage(sender, "global_tags");
@@ -1123,7 +1123,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // handle purge
-        if (args[1].equalsIgnoreCase("purge")) {
+        if ("purge".equalsIgnoreCase(args[1])) {
             LogUtils.getLogger().log(Level.FINE, "Purging all global tags");
             data.purgeTags();
             sendMessage(sender, "global_tags_purged");
@@ -1220,7 +1220,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             playerData = new PlayerData(playerID);
         }
         // if there are no arguments then list player's objectives
-        if (args.length < 3 || args[2].equalsIgnoreCase("list") || args[2].equalsIgnoreCase("l")) {
+        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             final List<String> tags;
             if (isOnline) {
                 // if the player is online then just retrieve tags from his
@@ -1819,8 +1819,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     "§2Debugging mode is currently " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
             return;
         }
-        final Boolean input = args[1].equalsIgnoreCase("true") ? Boolean.TRUE
-                : args[1].equalsIgnoreCase("false") ? Boolean.FALSE : null;
+        final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
+                : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
             if (LogUtils.isDebugging() && input || !LogUtils.isDebugging() && !input) {

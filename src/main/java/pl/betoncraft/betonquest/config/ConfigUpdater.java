@@ -35,6 +35,7 @@ import java.util.logging.Level;
 /**
  * Updates configuration files to the newest version.
  */
+@SuppressWarnings("PMD.LiteralsFirstInComparisons")
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

@@ -28,12 +28,12 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if (cmd.getName().equalsIgnoreCase("questlang")) {
+        if ("questlang".equalsIgnoreCase(cmd.getName())) {
             if (args.length < 1) {
                 sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
                 return true;
             }
-            if (!Config.getLanguages().contains(args[0]) && !args[0].equalsIgnoreCase("default")) {
+            if (!Config.getLanguages().contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
                 final StringBuilder builder = new StringBuilder();
                 builder.append("default (").append(Config.getLanguage()).append("), ");
                 for (final String lang : Config.getLanguages()) {

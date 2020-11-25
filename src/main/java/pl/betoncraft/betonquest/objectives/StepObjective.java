@@ -95,7 +95,7 @@ public class StepObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("location")) {
+        if ("location".equalsIgnoreCase(name)) {
             final Block block;
             try {
                 block = loc.getLocation(playerID).getBlock();
