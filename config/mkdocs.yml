@@ -14,6 +14,7 @@ extra_css:
   - 'webCode/css/version_select.css'
   - 'webCode/css/superFences.css'
   - 'webCode/css/centered.css'
+  - 'webCode/css/contentAreaFullWidth.css'
 
 extra_javascript:
   - 'webCode/js/version_select.js'
@@ -26,6 +27,7 @@ theme:
     - navigation.tabs
     - navigation.instant
     - search.highlight
+    - search.suggest
   palette:
     - scheme: slate
       primary: indigo
@@ -115,18 +117,18 @@ nav:
       - Learn-Beton/Frequently-Asked-Questions.md
       - Learn-Beton/Tips-and-tricks.md
   - 'User Documentation':
-      - User-Documentation/Reference.md
+      - 'Reference 📚': User-Documentation/Reference.md
       - User-Documentation/Objectives-List.md
       - User-Documentation/Conditions-List.md
       - User-Documentation/Events-List.md
       - 'Compatibility List': User-Documentation/Compatibility.md
       - User-Documentation/Variables-List.md
-      - User-Documentation/Notifications.md
-      - User-Documentation/Conversations.md
-      - User-Documentation/Configuration.md
+      - 'Notifications 🔊': User-Documentation/Notifications.md
+      - 'Conversations 💬': User-Documentation/Conversations.md
+      - 'Configuration 🔧': User-Documentation/Configuration.md
       - User-Documentation/Commands-and-permissions.md
-      - User-Documentation/Updating-and-Backups.md
-      - User-Documentation/CHANGELOG.md
+      - 'Updating 📥': User-Documentation/Updating-and-Backups.md
+      - 'Changelog 🗃️': User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
       - Developer-Documentation/Contributing-Guidelines.md
       - Developer-Documentation/API.md
