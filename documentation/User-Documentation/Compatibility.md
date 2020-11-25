@@ -649,6 +649,7 @@ You need to kill the specified amount of MythicMobs to complete this objective. 
 the mob's internal name (the one defined in your MythicMobs configuration). You can optionally add the `amount:`
 argument to specify how many of these mobs need to be killed. It's also possible to add the optional arguments
 `minLevel` and `maxLevel` to further customize what mobs need to be killed.
+You can also add an optional `neutralDeathRadius` argument to complete the objective for each nearby player within the defined radius when the mob is killed by any source.
 You can add a "notify" keyword if you want to send a notification to players whenever the objective
 progresses.
 
