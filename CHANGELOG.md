@@ -41,7 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementing 1.15 support for Events and Conditions
 - New Chat event, that write chat messages for a player
 - Added 'pickup' objective
-- Added 'neutralMobDeath' argument to the `mmobkill` objective
 - Added stopnpc event, that will stop the movenpc event
 - Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
 - Added option check_interval for holograms in custom.yml andd added GlobalVariable support
@@ -69,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added new notification IO 'sound'
 - Added 'jump' objective
 - Added left, amount and total properties to player kill objective
+- Added 'neutralMobDeathAllPlayers' argument to the `mmobkill` objective
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml

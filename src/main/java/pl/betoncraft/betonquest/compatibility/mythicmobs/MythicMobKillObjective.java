@@ -34,8 +34,8 @@ public class MythicMobKillObjective extends Objective implements Listener {
     private final Set<String> names = new HashSet<>();
     private final int amount;
     private final boolean notify;
-    private final double neutralDeathRadius;
-    private final double neutralDeathRadiusSquared;
+    private final double neutralDeathRadiusAllPlayers;
+    private final double neutralDeathRadiusAllPlayersSquared;
     private final VariableNumber minMobLevel;
     private final VariableNumber maxMobLevel;
 
@@ -47,8 +47,8 @@ public class MythicMobKillObjective extends Objective implements Listener {
         Collections.addAll(names, instruction.getArray());
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
 
-        neutralDeathRadius = instruction.getDouble(instruction.getOptional("neutralDeathRadius"), 0);
-        neutralDeathRadiusSquared = neutralDeathRadius * neutralDeathRadius;
+        neutralDeathRadiusAllPlayers = instruction.getDouble(instruction.getOptional("neutralDeathRadiusAllPlayers"), 0);
+        neutralDeathRadiusAllPlayersSquared = neutralDeathRadiusAllPlayers * neutralDeathRadiusAllPlayers;
 
         final String unsafeMinMobLevel = instruction.getOptional("minLevel");
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
@@ -64,27 +64,25 @@ public class MythicMobKillObjective extends Objective implements Listener {
             return;
         }
 
-        if (!(event.getKiller() instanceof Player)) {
-            if (neutralDeathRadius > 0D) {
+        if (event.getKiller() instanceof Player) {
+            handlePlayerKill((Player) event.getKiller(), event.getMob());
+        } else {
+            if (neutralDeathRadiusAllPlayers > 0D) {
                 final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
                 for (final Player player : center.getWorld().getPlayers()) {
                     if (!isValidPlayer(player)) {
                         continue;
                     }
 
-                    if (player.getLocation().distanceSquared(center) > neutralDeathRadiusSquared) {
+                    if (player.getLocation().distanceSquared(center) > neutralDeathRadiusAllPlayersSquared) {
                         continue;
                     }
 
                     handlePlayerKill(player, event.getMob());
                 }
             }
-            return;
         }
-
-        handlePlayerKill((Player) event.getKiller(), event.getMob());
     }
-
 
     private boolean isValidPlayer(final Player player) {
         if (player == null) {
