@@ -25,7 +25,7 @@ public class MooncycleCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-        final int days = (int) player.getWorld().getFullTime() / 24000;
+        final int days = (int) player.getWorld().getFullTime() / 24_000;
         int phaseInt = days % 8;
         phaseInt += 1;
         return phaseInt == thisCycle.getInt(playerID);
