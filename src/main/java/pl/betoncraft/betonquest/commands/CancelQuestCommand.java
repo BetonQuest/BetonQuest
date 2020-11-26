@@ -23,7 +23,7 @@ public class CancelQuestCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if (cmd.getName().equalsIgnoreCase("cancelquest")) {
+        if ("cancelquest".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 final String playerID = PlayerConverter.getID(player);

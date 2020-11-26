@@ -15,7 +15,7 @@ public class ColorHandler {
     }
 
     public void set(final String string) throws InstructionParseException {
-        if (string.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(string)) {
             colorE = Existence.FORBIDDEN;
             return;
         }

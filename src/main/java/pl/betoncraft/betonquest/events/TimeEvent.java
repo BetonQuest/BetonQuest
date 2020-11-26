@@ -21,7 +21,7 @@ public class TimeEvent extends QuestEvent {
             if (add = time.startsWith("+")) {
                 amount = Long.valueOf(time.substring(1)) * 1000;
             } else {
-                amount = Long.valueOf(time) * 1000 + 18000;
+                amount = Long.valueOf(time) * 1000 + 18_000;
             }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse time amount", e);
@@ -35,7 +35,7 @@ public class TimeEvent extends QuestEvent {
         if (add) {
             time += world.getTime();
         }
-        world.setTime(time % 24000);
+        world.setTime(time % 24_000);
         return null;
     }
 

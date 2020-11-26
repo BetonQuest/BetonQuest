@@ -29,5 +29,5 @@ public interface SimpleTabCompleter extends TabCompleter {
         return out;
     }
 
-    List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String[] args);
+    List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String... args);
 }

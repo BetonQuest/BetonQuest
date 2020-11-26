@@ -169,7 +169,7 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (Config.getString("config.remove_items_after_respawn").equals("false")) {
+        if ("false".equals(Config.getString("config.remove_items_after_respawn"))) {
             return;
         }
         // some plugins block item dropping after death and add those
@@ -194,8 +194,7 @@ public class QuestItemHandler implements Listener {
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getRightClicked() instanceof ItemFrame) {
-            ItemStack item = null;
-            item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
+            final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
                     : event.getPlayer().getInventory().getItemInOffHand();
 
             final String playerID = PlayerConverter.getID(event.getPlayer());
@@ -219,7 +218,7 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
-        if (BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable").equalsIgnoreCase("false")) {
+        if ("false".equalsIgnoreCase(BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable"))) {
             return;
         }
         // prevent quest items from breaking

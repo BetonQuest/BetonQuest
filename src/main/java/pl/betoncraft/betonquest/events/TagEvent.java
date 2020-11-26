@@ -25,7 +25,7 @@ public class TagEvent extends QuestEvent {
         super(instruction, false);
         persistent = true;
         staticness = true;
-        add = instruction.next().equalsIgnoreCase("add");
+        add = "add".equalsIgnoreCase(instruction.next());
         tags = instruction.getArray();
         for (int i = 0; i < tags.length; i++) {
             tags[i] = Utils.addPackage(instruction.getPackage(), tags[i]);

@@ -15,7 +15,7 @@ public class NameHandler {
         if (name == null || name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");
         }
-        if (name.equalsIgnoreCase("none")) {
+        if ("none".equalsIgnoreCase(name)) {
             existence = Existence.FORBIDDEN;
         } else {
             this.name = name.replace('_', ' ').replace('&', '§');

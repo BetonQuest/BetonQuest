@@ -90,7 +90,7 @@ public class Saver extends Thread implements Listener {
          * @param type method used for saving the data
          * @param args list of Strings which will be saved to the database
          */
-        public Record(final UpdateType type, final String[] args) {
+        public Record(final UpdateType type, final String... args) {
             this.type = type;
             this.args = args == null ? null : Arrays.copyOf(args, args.length);
         }

@@ -46,7 +46,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (lines.size() == 0) {
+                if (lines.isEmpty()) {
                     for (int j = 1; j <= options.size(); j++) {
                         // Build ColorString
                         final TextComponent colorComponent = new TextComponent();

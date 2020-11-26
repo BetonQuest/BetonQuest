@@ -51,7 +51,7 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
-    public ResultSet querySQL(final QueryType type, final String[] args) {
+    public ResultSet querySQL(final QueryType type, final String... args) {
         try {
             final PreparedStatement statement;
             switch (type) {
@@ -141,7 +141,7 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
-    public void updateSQL(final UpdateType type, final String[] args) {
+    public void updateSQL(final UpdateType type, final String... args) {
         try {
             final PreparedStatement statement;
             switch (type) {

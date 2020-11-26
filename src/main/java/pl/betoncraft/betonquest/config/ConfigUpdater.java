@@ -35,6 +35,7 @@ import java.util.logging.Level;
 /**
  * Updates configuration files to the newest version.
  */
+@SuppressWarnings("PMD.LiteralsFirstInComparisons")
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here
@@ -170,6 +171,7 @@ public class ConfigUpdater {
         update();
     }
 
+    @SuppressWarnings("unused")
     private void updateFromV62() {
         LogUtils.getLogger().log(Level.INFO, "Adding 'acceptNPCLeftClick' to config.yml");
         config.set("acceptNPCLeftClick", false);
@@ -178,6 +180,7 @@ public class ConfigUpdater {
         LogUtils.getLogger().log(Level.INFO, "Successfully added 'acceptNPCLeftClick' to config.yml");
     }
 
+    @SuppressWarnings("unused")
     private void updateFromV61() {
         LogUtils.getLogger().log(Level.INFO, "Renaming 'xp' event to 'experience'");
         LogUtils.getLogger().log(Level.INFO, "Adding 'level' argument to 'experience' condition and objective");
@@ -214,6 +217,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
+    @SuppressWarnings("unused")
     private void updateFromV60() {
         LogUtils.getLogger().log(Level.INFO, "Renaming 'monsters' condition to 'entities'");
         for (final ConfigPackage pack : Config.getPackages().values()) {

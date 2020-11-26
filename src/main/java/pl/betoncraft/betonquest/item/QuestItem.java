@@ -75,17 +75,17 @@ public class QuestItem {
                 durability.set(cut(part));
             } else if (part.toLowerCase().startsWith("enchants:")) {
                 enchants.set(cut(part));
-            } else if (part.toLowerCase().equals("enchants-containing")) {
+            } else if ("enchants-containing".equals(part.toLowerCase())) {
                 enchants.setNotExact();
             } else if (part.toLowerCase().startsWith("name:")) {
                 name.set(cut(part));
             } else if (part.toLowerCase().startsWith("lore:")) {
                 lore.set(cut(part));
-            } else if (part.toLowerCase().equals("lore-containing")) {
+            } else if ("lore-containing".equals(part.toLowerCase())) {
                 lore.setNotExact();
             } else if (part.toLowerCase().startsWith("unbreakable:")) {
                 unbreakable.set(cut(part));
-            } else if (part.toLowerCase().equals("unbreakable")) {
+            } else if ("unbreakable".equals(part.toLowerCase())) {
                 unbreakable.set("true");
             } else if (part.toLowerCase().startsWith("title:")) {
                 book.setTitle(cut(part));
@@ -95,17 +95,17 @@ public class QuestItem {
                 book.setText(cut(part));
             } else if (part.toLowerCase().startsWith("type:")) {
                 potion.setType(cut(part));
-            } else if (part.toLowerCase().equals("extended")) {
+            } else if ("extended".equals(part.toLowerCase())) {
                 potion.setExtended("true");
             } else if (part.toLowerCase().startsWith("extended:")) {
                 potion.setExtended(cut(part));
-            } else if (part.toLowerCase().equals("upgraded")) {
+            } else if ("upgraded".equals(part.toLowerCase())) {
                 potion.setUpgraded("true");
             } else if (part.toLowerCase().startsWith("upgraded:")) {
                 potion.setUpgraded(cut(part));
             } else if (part.toLowerCase().startsWith("effects:")) {
                 potion.setCustom(cut(part));
-            } else if (part.toLowerCase().equals("effects-containing")) {
+            } else if ("effects-containing".equals(part.toLowerCase())) {
                 potion.setNotExact();
             } else if (part.toLowerCase().startsWith("owner:")) {
                 head.set(cut(part));
@@ -115,7 +115,7 @@ public class QuestItem {
                 firework.setEffects(cut(part));
             } else if (part.toLowerCase().startsWith("power:")) {
                 firework.setPower(cut(part));
-            } else if (part.toLowerCase().equals("firework-containing")) {
+            } else if ("firework-containing".equals(part.toLowerCase())) {
                 firework.setNotExact();
             }
         }

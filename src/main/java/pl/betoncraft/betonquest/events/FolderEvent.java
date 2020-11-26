@@ -82,7 +82,7 @@ public class FolderEvent extends QuestEvent {
                 public void run() {
                     final EventID event = chosenList.remove(0);
                     BetonQuest.event(playerID, event);
-                    if (chosenList.size() == 0) {
+                    if (chosenList.isEmpty()) {
                         this.cancel();
                     }
                 }

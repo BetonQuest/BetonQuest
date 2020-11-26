@@ -16,8 +16,8 @@ public class WeatherCondition extends Condition {
     public WeatherCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         weather = instruction.next().toLowerCase().trim();
-        if (!weather.equals("sun") && !weather.equals("clear") && !weather.equals("rain") && !weather.equals("rainy")
-                && !weather.equals("storm") && !weather.equals("thunder")) {
+        if (!"sun".equals(weather) && !"clear".equals(weather) && !"rain".equals(weather) && !"rainy".equals(weather)
+                && !"storm".equals(weather) && !"thunder".equals(weather)) {
             throw new InstructionParseException("Weather type '" + weather + "' does not exist");
         }
     }

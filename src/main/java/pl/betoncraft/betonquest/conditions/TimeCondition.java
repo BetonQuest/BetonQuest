@@ -30,7 +30,7 @@ public class TimeCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) {
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
-        if (time >= 18000) {
+        if (time >= 18_000) {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours
             // from it makes sure that hour is correct in normal-time

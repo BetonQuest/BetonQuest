@@ -95,7 +95,7 @@ public class Conversation implements Listener {
         this.convID = conversationID;
         this.data = plugin.getConversation(convID);
         this.blacklist = plugin.getConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = plugin.getConfig().getString("display_chat_after_conversation").equalsIgnoreCase("true");
+        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getConfig().getString("display_chat_after_conversation"));
 
         // check if data is present
         if (data == null) {
@@ -224,7 +224,7 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
-    private void printOptions(final String[] options) {
+    private void printOptions(final String... options) {
         final List<Pair<String, CompletableFuture<Boolean>>> futuresOptions = new ArrayList<>();
         for (final String option : options) {
             final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
@@ -329,7 +329,7 @@ public class Conversation implements Listener {
         }
     }
 
-    public void sendMessage(final BaseComponent[] message) {
+    public void sendMessage(final BaseComponent... message) {
         if (interceptor == null) {
             player.spigot().sendMessage(message);
         } else {
@@ -480,7 +480,7 @@ public class Conversation implements Listener {
 
         private String[] options;
 
-        public Starter(final String[] options) {
+        public Starter(final String... options) {
             super();
             this.options = options == null ? null : Arrays.copyOf(options, options.length);
         }

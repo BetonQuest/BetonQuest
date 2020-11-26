@@ -19,7 +19,7 @@ public class HeroesExperienceEvent extends QuestEvent {
 
     public HeroesExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        primary = instruction.next().equalsIgnoreCase("primary");
+        primary = "primary".equalsIgnoreCase(instruction.next());
         amount = instruction.getVarNum();
     }
 

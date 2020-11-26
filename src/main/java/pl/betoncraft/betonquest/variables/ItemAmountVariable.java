@@ -31,7 +31,7 @@ public class ItemAmountVariable extends Variable {
             } catch (NumberFormatException e) {
                 throw new InstructionParseException("Could not parse item amount", e);
             }
-        } else if (instruction.current().equalsIgnoreCase("amount")) {
+        } else if ("amount".equalsIgnoreCase(instruction.current())) {
             type = Type.AMOUNT;
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",

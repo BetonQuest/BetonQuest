@@ -74,7 +74,7 @@ public class WrapperPlayServerMount extends PacketHandlerDecorator {
         return getHandle().getIntegerArrays().read(0);
     }
 
-    public void setPassengerIds(final int[] value) {
+    public void setPassengerIds(final int... value) {
         getHandle().getIntegerArrays().write(0, value);
     }
 

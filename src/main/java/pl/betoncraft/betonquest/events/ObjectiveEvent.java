@@ -35,7 +35,7 @@ public class ObjectiveEvent extends QuestEvent {
                 .contains(action)) {
             throw new InstructionParseException("Unknown action: " + action);
         }
-        persistent = !action.equalsIgnoreCase("complete");
+        persistent = !"complete".equalsIgnoreCase(action);
     }
 
     @Override
@@ -44,14 +44,12 @@ public class ObjectiveEvent extends QuestEvent {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
         if (playerID == null) {
-            if (action.toLowerCase().equals("delete") || action.toLowerCase().equals("remove")) {
+            if ("delete".equals(action.toLowerCase()) || "remove".equals(action.toLowerCase())) {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                     playerData.removeRawObjective(objective);
                 }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, new String[]{
-                        objective.toString()
-                }));
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LogUtils.getLogger().log(Level.WARNING, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }

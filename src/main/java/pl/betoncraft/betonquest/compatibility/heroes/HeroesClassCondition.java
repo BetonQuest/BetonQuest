@@ -26,10 +26,10 @@ public class HeroesClassCondition extends Condition {
     public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         String string = instruction.next();
-        primary = string.equalsIgnoreCase("primary");
-        mastered = string.equals("mastered");
+        primary = "primary".equalsIgnoreCase(string);
+        mastered = "mastered".equals(string);
         string = instruction.next();
-        if (string.equalsIgnoreCase("any")) {
+        if ("any".equalsIgnoreCase(string)) {
             any = true;
         } else {
             heroClass = Heroes.getInstance().getClassManager().getClass(string);

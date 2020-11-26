@@ -223,7 +223,7 @@ public class ConversationData {
             final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
                 LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + (sourceOption.equals("<starting_option>") ? "starting option"
+                        + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetConv
                         + "' conversation, but it does not even exist. Check your spelling!");
@@ -231,7 +231,7 @@ public class ConversationData {
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
                 LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + (sourceOption.equals("<starting_option>") ? "starting option"
+                        + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetOption + "' NPC option in '" + targetConv
                         + "' conversation, but it does not exist.");

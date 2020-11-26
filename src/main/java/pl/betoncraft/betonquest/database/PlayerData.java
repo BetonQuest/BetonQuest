@@ -116,7 +116,7 @@ public class PlayerData {
             // put it there
             if (res6.next()) {
                 lang = res6.getString("language");
-                if (lang.equals("default")) {
+                if ("default".equals(lang)) {
                     lang = Config.getLanguage();
                 }
                 conv = res6.getString("conversation");
@@ -462,7 +462,7 @@ public class PlayerData {
      * @param lang language to set
      */
     public void setLanguage(final String lang) {
-        if (lang.equalsIgnoreCase("default")) {
+        if ("default".equalsIgnoreCase(lang)) {
             this.lang = Config.getLanguage();
         } else {
             this.lang = lang;

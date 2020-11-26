@@ -21,8 +21,8 @@ import java.util.logging.Level;
 public class KillPlayerObjective extends Objective implements Listener {
 
     private final int notifyInterval;
-    private int amount = 1;
-    private String name = null;
+    private final int amount;
+    private final String name;
     private final ConditionID[] required;
     private final boolean notify;
 

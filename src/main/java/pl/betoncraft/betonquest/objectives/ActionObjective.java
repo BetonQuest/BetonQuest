@@ -33,13 +33,13 @@ public class ActionObjective extends Objective implements Listener {
     private final boolean exactMatch;
     private final CompoundLocation loc;
     private final VariableNumber range;
-    private boolean cancel = false;
+    private final boolean cancel;
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         action = instruction.getEnum(Click.class);
-        if (instruction.next().equalsIgnoreCase("any")) {
+        if ("any".equalsIgnoreCase(instruction.next())) {
             selector = null;
         } else {
             selector = instruction.getBlockSelector(instruction.current());
@@ -153,7 +153,7 @@ public class ActionObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("location")) {
+        if ("location".equalsIgnoreCase(name)) {
             if (loc == null) {
                 return "";
             }

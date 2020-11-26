@@ -79,14 +79,14 @@ public class Compatibility implements Listener {
 
         // hook into ProtocolLib
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
-                && plugin.getConfig().getString("hook.protocollib").equalsIgnoreCase("true")) {
+                && "true".equalsIgnoreCase(plugin.getConfig().getString("hook.protocollib"))) {
             hooked.add("ProtocolLib");
         }
         new BukkitRunnable() {
             @Override
             public void run() {
                 // log which plugins have been hooked
-                if (hooked.size() > 0) {
+                if (!hooked.isEmpty()) {
                     final StringBuilder string = new StringBuilder();
                     for (final String plugin : hooked) {
                         string.append(plugin).append(", ");

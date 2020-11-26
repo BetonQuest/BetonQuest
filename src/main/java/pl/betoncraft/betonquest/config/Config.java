@@ -64,7 +64,7 @@ public class Config {
         messages.saveDefaultConfig();
         internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
         for (final String key : messages.getConfig().getKeys(false)) {
-            if (!key.equals("global")) {
+            if (!"global".equals(key)) {
                 if (verboose) {
                     LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
                 }
@@ -184,7 +184,7 @@ public class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(final String lang, final String message, final String[] variables) {
+    public static String getMessage(final String lang, final String message, final String... variables) {
         String result = messages.getConfig().getString(lang + "." + message);
         if (result == null) {
             result = messages.getConfig().getString(Config.getLanguage() + "." + message);
@@ -245,9 +245,9 @@ public class Config {
             return null;
         }
         final String main = parts[0];
-        if (main.equals("config")) {
+        if ("config".equals(main)) {
             return plugin.getConfig().getString(address.substring(7));
-        } else if (main.equals("messages")) {
+        } else if ("messages".equals(main)) {
             return messages.getConfig().getString(address.substring(9));
         } else {
             final ConfigPackage pack = PACKAGES.get(main);
@@ -275,11 +275,11 @@ public class Config {
             return false;
         }
         final String main = parts[0];
-        if (main.equals("config")) {
+        if ("config".equals(main)) {
             plugin.getConfig().set(address.substring(7), value);
             plugin.saveConfig();
             return true;
-        } else if (main.equals("messages")) {
+        } else if ("messages".equals(main)) {
             messages.getConfig().set(address.substring(9), value);
             messages.saveConfig();
             return true;
@@ -351,7 +351,7 @@ public class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+    public static void sendMessage(final String packName, final String playerID, final String messageName, final String... variables) {
         sendMessage(packName, playerID, messageName, variables, null, null, null);
     }
 
@@ -382,7 +382,7 @@ public class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String[] prefixVariables) {
+                                   final String prefixName, final String... prefixVariables) {
         final String message = parseMessage(packName, playerID, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
@@ -435,16 +435,16 @@ public class Config {
         Notify.get(category, data).sendNotify(message, player);
     }
 
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables) {
+    public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {
         return parseMessage(packName, playerID, messageName, variables, null, null);
     }
 
-    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables) {
+    public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
         return parseMessage(packName, player, messageName, variables, null, null);
     }
 
     public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
-                                      final String[] prefixVariables) {
+                                      final String... prefixVariables) {
         return parseMessage(packName, PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
     }
 
@@ -458,7 +458,7 @@ public class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
-                                      final String[] prefixVariables) {
+                                      final String... prefixVariables) {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
         if (playerData == null) {
             return null;
@@ -495,7 +495,7 @@ public class Config {
             return;
         }
         final String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
-        if (!rawSound.equalsIgnoreCase("false")) {
+        if (!"false".equalsIgnoreCase(rawSound)) {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (final IllegalArgumentException e) {
@@ -524,7 +524,7 @@ public class Config {
             final File[] content = file.listFiles();
             try {
                 for (final File subFile : content) {
-                    if (subFile.getName().equals("main.yml")) {
+                    if ("main.yml".equals(subFile.getName())) {
                         // this is a package, add it and stop searching
                         final String packPath = BetonQuest.getInstance().getDataFolder()
                                 .toURI().relativize(file.toURI())

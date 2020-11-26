@@ -24,7 +24,7 @@ public class DelEffectEvent extends QuestEvent {
         super(instruction, true);
         final String next = instruction.next();
 
-        if (next.equalsIgnoreCase("any")) {
+        if ("any".equalsIgnoreCase(next)) {
             any = true;
             effects = Collections.emptyList();
         } else {

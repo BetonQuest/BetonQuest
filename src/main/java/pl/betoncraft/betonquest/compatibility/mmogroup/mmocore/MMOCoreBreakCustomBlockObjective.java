@@ -109,9 +109,9 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("left")) {
+        if ("left".equalsIgnoreCase(name)) {
             return Integer.toString(neededAmount - ((MMOBlockData) dataMap.get(playerID)).getPlacedBlocks());
-        } else if (name.equalsIgnoreCase("amount")) {
+        } else if ("amount".equalsIgnoreCase(name)) {
             return Integer.toString(((MMOBlockData) dataMap.get(playerID)).getPlacedBlocks());
         }
         return "";

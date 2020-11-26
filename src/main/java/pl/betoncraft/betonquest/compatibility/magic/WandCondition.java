@@ -47,8 +47,8 @@ public class WandCondition extends Condition {
         final String[] array = instruction.getArray(instruction.getOptional("spells"));
         if (array != null) {
             for (final String spell : array) {
-                VariableNumber level = new VariableNumber(1);
                 if (spell.contains(":")) {
+                    VariableNumber level;
                     final String[] spellParts = spell.split(":");
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
@@ -84,8 +84,7 @@ public class WandCondition extends Condition {
                 }
                 return false;
             case IN_HAND:
-                ItemStack wandItem = null;
-                wandItem = player.getInventory().getItemInMainHand();
+                final ItemStack wandItem = player.getInventory().getItemInMainHand();
                 if (!api.isWand(wandItem)) {
                     return false;
                 }

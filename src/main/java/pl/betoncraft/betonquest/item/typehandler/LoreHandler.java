@@ -16,7 +16,7 @@ public class LoreHandler {
     }
 
     public void set(final String lore) throws InstructionParseException {
-        if (lore.equals("none")) {
+        if ("none".equals(lore)) {
             existence = Existence.FORBIDDEN;
             return;
         }

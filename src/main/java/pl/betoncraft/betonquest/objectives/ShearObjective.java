@@ -79,9 +79,9 @@ public class ShearObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("left")) {
+        if ("left".equalsIgnoreCase(name)) {
             return Integer.toString(((SheepData) dataMap.get(playerID)).getAmount());
-        } else if (name.equalsIgnoreCase("amount")) {
+        } else if ("amount".equalsIgnoreCase(name)) {
             return Integer.toString(amount - ((SheepData) dataMap.get(playerID)).getAmount());
         }
         return "";

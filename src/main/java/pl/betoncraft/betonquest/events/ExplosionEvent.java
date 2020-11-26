@@ -22,8 +22,8 @@ public class ExplosionEvent extends QuestEvent {
         super(instruction, true);
         staticness = true;
         persistent = true;
-        setsFire = instruction.next().equals("1");
-        breaksBlocks = instruction.next().equals("1");
+        setsFire = "1".equals(instruction.next());
+        breaksBlocks = "1".equals(instruction.next());
         power = instruction.getVarNum();
         loc = instruction.getLocation();
 

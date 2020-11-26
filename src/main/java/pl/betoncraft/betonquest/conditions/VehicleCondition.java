@@ -17,7 +17,7 @@ public class VehicleCondition extends Condition {
     public VehicleCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String name = instruction.next();
-        if (name.equalsIgnoreCase("any")) {
+        if ("any".equalsIgnoreCase(name)) {
             any = true;
         } else {
             try {

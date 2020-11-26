@@ -79,7 +79,7 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("left")) {
+        if ("left".equalsIgnoreCase(name)) {
             final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
             final String daysWord = Config.getMessage(lang, "days");
             final String hoursWord = Config.getMessage(lang, "hours");
@@ -133,7 +133,7 @@ public class DelayObjective extends Objective {
                 time.append(words[0]).append(", ").append(words[1]).append(" ").append(Config.getMessage(lang, "and")).append(" ").append(words[2]);
             }
             return time.toString();
-        } else if (name.equalsIgnoreCase("date")) {
+        } else if ("date".equalsIgnoreCase(name)) {
             return new SimpleDateFormat(Config.getString("config.date_format"))
                     .format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
         }

@@ -475,7 +475,7 @@ public class MenuConvIO extends ChatConvIO {
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary down to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
-        if (configNpcNameType.equals("chat")) {
+        if ("chat".equals(configNpcNameType)) {
             linesAvailable = Math.max(1, linesAvailable - 1);
         }
 
@@ -554,7 +554,7 @@ public class MenuConvIO extends ChatConvIO {
         final StringBuilder displayBuilder = new StringBuilder();
 
         // If NPC name type is chat_top, show it
-        if (configNpcNameType.equals("chat")) {
+        if ("chat".equals(configNpcNameType)) {
             switch (configNpcNameAlign) {
                 case "right":
                     for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {

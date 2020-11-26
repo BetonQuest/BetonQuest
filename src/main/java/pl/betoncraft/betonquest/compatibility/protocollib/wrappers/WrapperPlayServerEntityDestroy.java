@@ -44,7 +44,7 @@ public class WrapperPlayServerEntityDestroy extends PacketHandlerDecorator {
     /**
      * Set the entities that will be destroyed.
      */
-    public void setEntities(final int[] entities) {
+    public void setEntities(final int... entities) {
         getHandle().getIntegerArrays().write(0, entities);
     }
 }

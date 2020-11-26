@@ -32,11 +32,11 @@ public class JournalEvent extends QuestEvent {
         super(instruction, false);
         staticness = true;
         final String first = instruction.next();
-        if (first.equalsIgnoreCase("update")) {
+        if ("update".equalsIgnoreCase(first)) {
             name = null;
             add = false;
         } else {
-            add = first.equalsIgnoreCase("add");
+            add = "add".equalsIgnoreCase(first);
             name = Utils.addPackage(instruction.getPackage(), instruction.next());
         }
     }
