@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.item.typehandler.*;
 import pl.betoncraft.betonquest.utils.BlockSelector;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,6 +33,7 @@ public class QuestItem {
     private final HeadOwnerHandler head = new HeadOwnerHandler();
     private final ColorHandler color = new ColorHandler();
     private final FireworkHandler firework = new FireworkHandler();
+    private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
 
     /**
      * Creates new instance of the quest item using the ID from items.yml file.
@@ -71,51 +73,55 @@ public class QuestItem {
         selector = new BlockSelector(parts[0]);
 
         for (final String part : parts) {
-            if (part.toLowerCase().startsWith("durability:")) {
+            if (part.toLowerCase(Locale.ROOT).startsWith("durability:")) {
                 durability.set(cut(part));
-            } else if (part.toLowerCase().startsWith("enchants:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("enchants:")) {
                 enchants.set(cut(part));
-            } else if ("enchants-containing".equals(part.toLowerCase())) {
+            } else if ("enchants-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 enchants.setNotExact();
-            } else if (part.toLowerCase().startsWith("name:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("name:")) {
                 name.set(cut(part));
-            } else if (part.toLowerCase().startsWith("lore:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("lore:")) {
                 lore.set(cut(part));
-            } else if ("lore-containing".equals(part.toLowerCase())) {
+            } else if ("lore-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 lore.setNotExact();
-            } else if (part.toLowerCase().startsWith("unbreakable:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("unbreakable:")) {
                 unbreakable.set(cut(part));
-            } else if ("unbreakable".equals(part.toLowerCase())) {
+            } else if ("unbreakable".equals(part.toLowerCase(Locale.ROOT))) {
                 unbreakable.set("true");
-            } else if (part.toLowerCase().startsWith("title:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("custom-model-data:")) {
+                customModelData.parse(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("no-custom-model-data")) {
+                customModelData.forbid();
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("title:")) {
                 book.setTitle(cut(part));
-            } else if (part.toLowerCase().startsWith("author:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("author:")) {
                 book.setAuthor(cut(part));
-            } else if (part.toLowerCase().startsWith("text:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("text:")) {
                 book.setText(cut(part));
-            } else if (part.toLowerCase().startsWith("type:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("type:")) {
                 potion.setType(cut(part));
-            } else if ("extended".equals(part.toLowerCase())) {
+            } else if ("extended".equals(part.toLowerCase(Locale.ROOT))) {
                 potion.setExtended("true");
-            } else if (part.toLowerCase().startsWith("extended:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("extended:")) {
                 potion.setExtended(cut(part));
-            } else if ("upgraded".equals(part.toLowerCase())) {
+            } else if ("upgraded".equals(part.toLowerCase(Locale.ROOT))) {
                 potion.setUpgraded("true");
-            } else if (part.toLowerCase().startsWith("upgraded:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("upgraded:")) {
                 potion.setUpgraded(cut(part));
-            } else if (part.toLowerCase().startsWith("effects:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("effects:")) {
                 potion.setCustom(cut(part));
-            } else if ("effects-containing".equals(part.toLowerCase())) {
+            } else if ("effects-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 potion.setNotExact();
-            } else if (part.toLowerCase().startsWith("owner:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("owner:")) {
                 head.set(cut(part));
-            } else if (part.toLowerCase().startsWith("color:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("color:")) {
                 color.set(cut(part));
-            } else if (part.toLowerCase().startsWith("firework:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("firework:")) {
                 firework.setEffects(cut(part));
-            } else if (part.toLowerCase().startsWith("power:")) {
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("power:")) {
                 firework.setPower(cut(part));
-            } else if ("firework-containing".equals(part.toLowerCase())) {
+            } else if ("firework-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 firework.setNotExact();
             }
         }
@@ -144,6 +150,7 @@ public class QuestItem {
         String owner = "";
         String firework = "";
         String unbreakable = "";
+        String customModelData = "";
         final ItemMeta meta = item.getItemMeta();
         if (item.getDurability() != 0) {
             durability = " durability:" + item.getDurability();
@@ -167,6 +174,9 @@ public class QuestItem {
         }
         if (meta.isUnbreakable()) {
             unbreakable = " unbreakable";
+        }
+        if (meta.hasCustomModelData()) {
+            customModelData = " custom-model-data:" + meta.getCustomModelData();
         }
         if (meta instanceof BookMeta) {
             final BookMeta bookMeta = (BookMeta) meta;
@@ -278,48 +288,27 @@ public class QuestItem {
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
-                + effects + color + owner + firework + unbreakable;
+                + effects + color + owner + firework + unbreakable + customModelData;
     }
 
     @Override
     public boolean equals(final Object other) {
-        final QuestItem item;
-        if (other instanceof QuestItem) {
-            item = (QuestItem) other;
-        } else {
+        if (!(other instanceof QuestItem)) {
             return false;
         }
-        if (item.selector != selector) {
-            return false;
-        }
-        if (!item.durability.equals(durability)) {
-            return false;
-        }
-        if (!item.unbreakable.equals(unbreakable)) {
-            return false;
-        }
-        if (!item.enchants.equals(enchants)) {
-            return false;
-        }
-        if (!item.lore.equals(lore)) {
-            return false;
-        }
-        if (!item.name.equals(name)) {
-            return false;
-        }
-        if (!item.potion.equals(potion)) {
-            return false;
-        }
-        if (!item.book.equals(book)) {
-            return false;
-        }
-        if (!item.head.equals(head)) {
-            return false;
-        }
-        if (!item.color.equals(color)) {
-            return false;
-        }
-        return item.firework.equals(firework);
+        final QuestItem item = (QuestItem) other;
+        return item.selector == selector
+                && item.durability.equals(durability)
+                && item.unbreakable.equals(unbreakable)
+                && item.enchants.equals(enchants)
+                && item.lore.equals(lore)
+                && item.name.equals(name)
+                && item.potion.equals(potion)
+                && item.book.equals(book)
+                && item.head.equals(head)
+                && item.color.equals(color)
+                && item.firework.equals(firework)
+                && item.customModelData.equals(customModelData);
     }
 
     /**
@@ -348,6 +337,9 @@ public class QuestItem {
             return false;
         }
         if (!unbreakable.check(meta.isUnbreakable())) {
+            return false;
+        }
+        if (!customModelData.check(meta)) {
             return false;
         }
         // advanced meta checks
@@ -425,6 +417,9 @@ public class QuestItem {
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.isUnbreakable());
+        if (customModelData.getExistence() == Existence.REQUIRED) {
+            meta.setCustomModelData(customModelData.get());
+        }
         if (meta instanceof EnchantmentStorageMeta) {
             final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
             // why no bulk adding method?!
@@ -566,6 +561,20 @@ public class QuestItem {
      */
     public boolean isUnbreakable() {
         return unbreakable.isUnbreakable();
+    }
+
+    /**
+     * @return if the item has custom model data
+     */
+    public boolean hasCustomModelData() {
+        return customModelData.has();
+    }
+
+    /**
+     * @return the custom model data (check {@link #hasCustomModelData()} before)
+     */
+    public int getCustomModelData() {
+        return customModelData.get();
     }
 
     /**

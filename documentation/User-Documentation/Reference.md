@@ -225,6 +225,8 @@ These are arguments that can be applied to every item:
 
 - `unbreakable` - this makes the item unbreakable. You can specify it either as `unbreakable` or `unbreakable:true` to require an item to be unbreakable. If you want to check if the item is breakable, use `unbreakable:false`.
 
+- `custom-model-data` - set the custom model data of the item. You have to specify the data value: `custom-model-data:3`. To check that an item does not have custom model data set `no-custom-model-data`.
+
 **Examples**:
 
 ```YAML
