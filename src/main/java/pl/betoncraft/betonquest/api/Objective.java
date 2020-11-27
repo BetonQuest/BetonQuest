@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -200,7 +201,7 @@ public abstract class Objective {
         try {
             data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
                     this.instruction.getID().getFullID());
-        } catch (Exception e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
                         + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());

@@ -30,9 +30,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
 /**
@@ -238,7 +236,7 @@ public class Conversation implements Listener {
                 if (!future.getValue().get(1, TimeUnit.SECONDS)) {
                     continue;
                 }
-            } catch (final Exception e) {
+            } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
                 LogUtils.logThrowableReport(e);
                 continue;
             }

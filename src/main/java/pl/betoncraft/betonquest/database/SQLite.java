@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Level;
 
 /**
@@ -45,7 +46,7 @@ public class SQLite extends Database {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager
                     .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
             LogUtils.logThrowable(e);
         }

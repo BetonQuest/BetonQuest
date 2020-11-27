@@ -539,7 +539,7 @@ public class Config {
                 for (final File subFile : content) {
                     searchForPackages(subFile);
                 }
-            } catch (final Exception e) {
+            } catch (final SecurityException e) {
                 LogUtils.getLogger().log(Level.SEVERE, "Error while loading packages in path '" + file.getAbsolutePath() + "'");
                 LogUtils.logThrowableIgnore(e);
             }

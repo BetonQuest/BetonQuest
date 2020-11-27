@@ -95,7 +95,7 @@ public final class LogUtils {
             if (debugReadError || "true".equals(debugString)) {
                 startDebug();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().log(Level.WARNING,
                     "It was not possible to crate the log file or to register the plugin internal logger. "
                             + "This is not critical, the server can still run, but it is not possible to use a 'debug log'.",

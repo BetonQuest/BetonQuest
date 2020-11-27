@@ -63,7 +63,7 @@ public class QuestItem {
      */
     public QuestItem(final String instruction) throws InstructionParseException {
         if (instruction == null) {
-            throw new NullPointerException("Item instruction is null");
+            throw new InstructionParseException("Item instruction is null");
         }
         final String[] parts = instruction.split(" ");
         if (parts.length < 1) {

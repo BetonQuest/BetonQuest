@@ -33,7 +33,7 @@ public class CommandEvent extends QuestEvent {
             for (int i = 0; i < rawCommands.length; i++) {
                 commands[i] = new Command(rawCommands[i]);
             }
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
             throw new InstructionParseException("Could not parse commands", e);
         }
     }

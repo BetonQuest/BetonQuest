@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -97,7 +98,7 @@ public class Notify {
             if (clazz != null) {
                 try {
                     return clazz.getConstructor(Map.class).newInstance(categoryData);
-                } catch (final Exception exception) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
                     throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }
             }

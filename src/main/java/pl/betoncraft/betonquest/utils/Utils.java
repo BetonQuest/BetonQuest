@@ -252,11 +252,11 @@ public class Utils {
             database.createTables(instance.isMySQLUsed());
             // drop all tables
             final Connector con = new Connector();
-            con.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
-            con.updateSQL(UpdateType.DROP_TAGS, new String[]{});
-            con.updateSQL(UpdateType.DROP_POINTS, new String[]{});
-            con.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
-            con.updateSQL(UpdateType.DROP_PLAYER, new String[]{});
+            con.updateSQL(UpdateType.DROP_OBJECTIVES);
+            con.updateSQL(UpdateType.DROP_TAGS);
+            con.updateSQL(UpdateType.DROP_POINTS);
+            con.updateSQL(UpdateType.DROP_JOURNALS);
+            con.updateSQL(UpdateType.DROP_PLAYER);
             // create new tables
             database.createTables(instance.isMySQLUsed());
             // load objectives
@@ -264,17 +264,17 @@ public class Utils {
             if (objectives != null) {
                 for (final String key : objectives.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_OBJECTIVE,
-                            new String[]{objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
-                                    objectives.getString(key + ".objective"),
-                                    objectives.getString(key + ".instructions"),});
+                            objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
+                            objectives.getString(key + ".objective"),
+                            objectives.getString(key + ".instructions"));
                 }
             }
             // load tags
             final ConfigurationSection tags = config.getConfigurationSection("tags");
             if (tags != null) {
                 for (final String key : tags.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_TAG, new String[]{tags.getString(key + ".id"),
-                            tags.getString(key + ".playerID"), tags.getString(key + ".tag"),});
+                    con.updateSQL(UpdateType.INSERT_TAG, tags.getString(key + ".id"),
+                            tags.getString(key + ".playerID"), tags.getString(key + ".tag"));
                 }
             }
             // load points
@@ -282,8 +282,8 @@ public class Utils {
             if (points != null) {
                 for (final String key : points.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_POINT,
-                            new String[]{points.getString(key + ".id"), points.getString(key + ".playerID"),
-                                    points.getString(key + ".category"), points.getString(key + ".count"),});
+                            points.getString(key + ".id"), points.getString(key + ".playerID"),
+                            points.getString(key + ".category"), points.getString(key + ".count"));
                 }
             }
             // load journals
@@ -291,8 +291,8 @@ public class Utils {
             if (journals != null) {
                 for (final String key : journals.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_JOURNAL,
-                            new String[]{journals.getString(key + ".id"), journals.getString(key + ".playerID"),
-                                    journals.getString(key + ".pointer"), journals.getString(key + ".date"),});
+                            journals.getString(key + ".id"), journals.getString(key + ".playerID"),
+                            journals.getString(key + ".pointer"), journals.getString(key + ".date"));
                 }
             }
             // load backpack
@@ -300,8 +300,8 @@ public class Utils {
             if (backpack != null) {
                 for (final String key : backpack.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_BACKPACK,
-                            new String[]{backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
-                                    backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"),});
+                            backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
+                            backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"));
                 }
             }
             // load player
@@ -309,13 +309,13 @@ public class Utils {
             if (player != null) {
                 for (final String key : player.getKeys(false)) {
                     con.updateSQL(UpdateType.INSERT_PLAYER,
-                            new String[]{player.getString(key + ".id"), player.getString(key + ".playerID"),
-                                    player.getString(key + ".language"), player.getString(key + ".conversation")});
+                            player.getString(key + ".id"), player.getString(key + ".playerID"),
+                            player.getString(key + ".language"), player.getString(key + ".conversation"));
                 }
             }
             // delete backup file so it doesn't get loaded again
             file.delete();
-        } catch (Exception e) {
+        } catch (SecurityException e) {
             if (isOldDatabaseBackedUP) {
                 LogUtils.getLogger().log(Level.WARNING, "Your database probably got corrupted, sorry for that :( The good news"
                         + " is that you have a backup of your old database, you can find it in backups"

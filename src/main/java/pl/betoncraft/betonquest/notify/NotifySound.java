@@ -148,7 +148,7 @@ class NotifySound {
     private Sound getSound(final String soundString) {
         try {
             return Sound.valueOf(soundString);
-        } catch (final Exception exception) {
+        } catch (final IllegalArgumentException exception) {
             return null;
         }
     }

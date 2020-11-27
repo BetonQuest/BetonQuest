@@ -157,7 +157,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         SKULL_CACHE.put(npcName, npc);
                         inv.setItem(0, npc);
                     });
-                } catch (Exception e) {
+                } catch (IllegalArgumentException e) {
                     LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
                 }
             });
