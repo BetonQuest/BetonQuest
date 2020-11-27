@@ -118,18 +118,18 @@ nav:
       - Learn-Beton/Frequently-Asked-Questions.md
       - Learn-Beton/Tips-and-tricks.md
   - 'User Documentation':
-      - 'Reference 📚': User-Documentation/Reference.md
-      - User-Documentation/Objectives-List.md
-      - User-Documentation/Conditions-List.md
-      - User-Documentation/Events-List.md
-      - 'Compatibility List': User-Documentation/Compatibility.md
-      - User-Documentation/Variables-List.md
-      - 'Notifications 🔊': User-Documentation/Notifications.md
-      - 'Conversations 💬': User-Documentation/Conversations.md
-      - 'Configuration 🔧': User-Documentation/Configuration.md
+      - '📚 Reference': User-Documentation/Reference.md
+      - '✔️ Objectives List': User-Documentation/Objectives-List.md
+      - '❓ Conditions List': User-Documentation/Conditions-List.md
+      - '⚙️ Events List': User-Documentation/Events-List.md
+      - '🤝 Compatibility List': User-Documentation/Compatibility.md
+      - '🔮 Variables List': User-Documentation/Variables-List.md
+      - '🔊 Notifications': User-Documentation/Notifications.md
+      - '💬 Conversations': User-Documentation/Conversations.md
+      - '🔧 Configuration': User-Documentation/Configuration.md
       - User-Documentation/Commands-and-permissions.md
-      - 'Updating 📥': User-Documentation/Updating-and-Backups.md
-      - 'Changelog 🗃️': User-Documentation/CHANGELOG.md
+      - '📥 Updating': User-Documentation/Updating-and-Backups.md
+      - '🗃️ Changelog': User-Documentation/CHANGELOG.md
   - 'Developer Documentation':
       - Developer-Documentation/Contributing-Guidelines.md
       - Developer-Documentation/API.md
