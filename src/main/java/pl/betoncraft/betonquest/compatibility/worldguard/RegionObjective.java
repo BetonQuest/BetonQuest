@@ -99,6 +99,7 @@ public class RegionObjective extends Objective implements Listener {
             playersInsideRegion.put(player.getUniqueId(), isInsideRegion(player.getLocation()));
         }
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
+        playersInsideRegion.put(player.getUniqueId(), inside);
 
         if (entry && inside && !fromInside || exit && fromInside && !inside) {
             if (checkConditions(playerID)) {
