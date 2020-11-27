@@ -16,7 +16,7 @@ public class CustomModelDataHandler {
         try {
             require(Integer.parseInt(data));
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse item data value", e);
+            throw new InstructionParseException("Could not parse custom model data value: " + data, e);
         }
     }
 
@@ -31,6 +31,10 @@ public class CustomModelDataHandler {
 
     public QuestItem.Existence getExistence() {
         return existence;
+    }
+
+    public boolean has() {
+        return existence == QuestItem.Existence.REQUIRED;
     }
 
     public int get() {

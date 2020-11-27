@@ -567,7 +567,7 @@ public class QuestItem {
      * @return if the item has custom model data
      */
     public boolean hasCustomModelData() {
-        return customModelData.getExistence() == Existence.REQUIRED;
+        return customModelData.has();
     }
 
     /**
