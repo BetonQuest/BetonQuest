@@ -103,8 +103,8 @@ extra:
 
 nav:
   - 'Home':
-      - 'Welcome!': index.md
-      - For-Admins.md
+      - 'Welcome! 👋': index.md
+      - For-Owners.md
       - For-Questers.md
       - Features.md
   - 'Learn Beton':
