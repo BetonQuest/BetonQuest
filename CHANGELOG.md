@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 'jump' objective
 - Added left, amount and total properties to player kill objective
 - Added 'neutralMobDeathAllPlayers' argument to the `mmobkill` objective
+- Added custom model data support for items
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
