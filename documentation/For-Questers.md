@@ -1,6 +1,6 @@
 Using BetonQuest you can create nearly any quest you can imagine.
 
-Being able to write quests with BetonQues is a valuable skill since you can make most admins dreams come true.
+Being able to write quests with BetonQuest is a valuable skill since you can make most admins dreams come true.
 BetonQuest is not only limited to quests but can also be used in combination with the Denizen or Skript scripting plugins that allow you to create 
 things that would only be possible by coding your own plugin.
 
