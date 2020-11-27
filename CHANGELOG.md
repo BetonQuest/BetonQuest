@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 'pickup' objective
 - Added stopnpc event, that will stop the movenpc event
 - Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location
-- Added option check_interval for holograms in custom.yml andd added GlobalVariable support
+- Added option check_interval for holograms in custom.yml and added GlobalVariable support
 - Added deletepoint event to delete player points
 - Added mythicmobdistance condition that will check if a specific MythicMobs entity is near the player
 - Added level argument to 'experience' objective and condition
@@ -119,17 +119,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed line breaks
 - fixed events notify interval of 1
 - fixed potion/brew objective notify
-- fixed workaround when chest converationIO has no available start points
+- fixed the bug and removed its workaround when chest converationIO has no available start points
 - fixed journal line breaking
 - fixed movement of movenpc event
 - fixed npcmove event
-- fixed bug, where a player causes an exception when he spams right left clicks in menu conversationIO
+- fixed a bug, where a player causes an exception when he spams right left clicks in menu conversationIO
 - fixed outdated Brewery dependency
-- fixed message dublication when using the packet interceptor
+- fixed message duplication when using the packet interceptor
 - fixed Journal interaction with Lectern
-- fixed QuestItems ignoring durabilty
+- fixed QuestItems ignoring durability
 - fixed QuestItem interaction with Lectern, Campfire and Composter
-- fixed journal update after magic inventory is closed
+- update journal after closing magic inventory
 - fixed lever event not toggling the lever
 - fixed ConcurrentModificationException in PlayerData
 - fixed issue where the PacketInterceptor prints the message tag in the chat
@@ -137,7 +137,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed when PlaceholderAPI variables contains dots
 - fixed quester name not support & as color code
 - fixed Region Objective listen to player teleport event
-- packet Interceptor stops 1 second AFTER conversation finishes to allow slow messages to still have its protection
+- packet Interceptor stops 1 second AFTER the end of the conversation to allow slow messages to still have its chat protection
 - fixed notify couldn't use variables that contain `:`
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
@@ -159,11 +159,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New 'nujobs_dellevel' event - Remove a level from player in Jobs Reborn
 - New 'nujobs_joinjob' event - Joins a player to a job in Jobs Reborn
 - New 'nujobs_leavejob' event - Leaves a job in Jobs Reborn
-- New 'nujobs_setlevel' event - Set a players level in Jobs Reborn
+- New 'nujobs_setlevel' event - Set a player's level in Jobs Reborn
 - New 'nujobs_joinjob' objective - Triggers when player joins job in Jobs Reborn
 - New 'nujobs_leavejob' objective - Triggers when a player leaves job in Jobs Reborn
 - New 'nujobs_levelup' objective - Triggers when a player levels up in Jobs Reborn
-- New 'nujobs_payment' objective - Triggers when a player is paid in Jobs Reborn
+- New 'nujobs_payment' objective - Triggers when a player receives money from Jobs Reborn
 - New Notification System
 - New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement
 - New 'menu' conversation IO - Requires ProtocolLib. See: https://www.youtube.com/watch?v=Qtn7Dpdf4jw&lc
