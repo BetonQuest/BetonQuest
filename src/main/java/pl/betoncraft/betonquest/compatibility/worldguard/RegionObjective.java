@@ -95,8 +95,10 @@ public class RegionObjective extends Objective implements Listener {
 
         final boolean inside = isInsideRegion(location);
 
-        if (!entry && !exit && inside && checkConditions(playerID)) {
-            completeObjective(playerID);
+        if (!entry && !exit) {
+            if (inside && checkConditions(playerID)) {
+                completeObjective(playerID);
+            }
             return;
         }
         if (!playersInsideRegion.containsKey(player.getUniqueId())) {
