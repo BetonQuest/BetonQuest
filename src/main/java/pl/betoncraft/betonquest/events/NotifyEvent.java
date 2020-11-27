@@ -42,7 +42,6 @@ public class NotifyEvent extends QuestEvent {
             keyValueMatcher.reset();
 
             final String langMessages = rawInstruction.substring(indexStart, indexEnd);
-            checkVariables(langMessages);
 
             final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(langMessages);
             while (languageMatcher.find()) {
@@ -50,10 +49,15 @@ public class NotifyEvent extends QuestEvent {
                 final String message = languageMatcher.group("message")
                         .replace("\\{", "{")
                         .replace("\\:", ":");
+                checkVariables(message);
                 messages.put(lang, message);
             }
             if (messages.isEmpty()) {
-                messages.put(Config.getLanguage(), langMessages);
+                final String message = langMessages
+                        .replace("\\{", "{")
+                        .replace("\\:", ":");
+                checkVariables(message);
+                messages.put(Config.getLanguage(), message);
             }
             if (!messages.containsKey(Config.getLanguage())) {
                 throw new InstructionParseException("No message defined for default language '" + Config.getLanguage() + "'!");
