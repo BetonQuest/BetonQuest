@@ -79,6 +79,13 @@ You can also translate journal entries, quest cancelers and `message` events, mo
 ## Conversation displaying
 
 By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore. Alternatively use `slowtellraw` which provides the npc responses line by line delayed by 0.5 seconds. If you have `protocollib` then you can use `menu`.
+It's one of our coolest IO's! This is a video of it in action:
+
+<video controls loop
+     src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
+     width="780" height="500">
+ Sorry, your browser doesn't support embedded videos.
+ </video>
 
 You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.
 
