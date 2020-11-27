@@ -42,29 +42,23 @@ public class RegionObjective extends Objective implements Listener {
         playersInsideRegion = new HashMap<>();
     }
 
-    /**
-     * Return true if location is inside region
-     *
-     * @param loc Location to Check
-     * @return boolean True if in region
-     */
-    private boolean isInsideRegion(final Location loc) {
-        if (loc == null || loc.getWorld() == null) {
-            return false;
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+        final String playerID = PlayerConverter.getID(player);
+        if (containsPlayer(playerID)) {
+            final boolean inside = isInsideRegion(player.getLocation());
+            if (!entry && !exit && inside && checkConditions(playerID)) {
+                completeObjective(playerID);
+            } else {
+                playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
+            }
         }
+    }
 
-        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
-        if (manager == null) {
-            return false;
-        }
-
-        final ProtectedRegion region = manager.getRegion(name);
-        if (region == null) {
-            return false;
-        }
-
-        return region.contains(BukkitAdapter.asBlockVector(loc));
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        playersInsideRegion.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -106,29 +100,37 @@ public class RegionObjective extends Objective implements Listener {
         }
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
 
-        if (entry && inside && !fromInside && checkConditions(playerID) || exit && fromInside && !inside && checkConditions(playerID)) {
-            completeObjective(playerID);
-            playersInsideRegion.remove(player.getUniqueId());
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID)) {
-            final boolean inside = isInsideRegion(player.getLocation());
-            if (!entry && !exit && inside && checkConditions(playerID)) {
+        if (entry && inside && !fromInside || exit && fromInside && !inside) {
+            if (checkConditions(playerID)) {
                 completeObjective(playerID);
-            } else {
-                playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
+                playersInsideRegion.remove(player.getUniqueId());
             }
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(final PlayerQuitEvent event) {
-        playersInsideRegion.remove(event.getPlayer().getUniqueId());
+    /**
+     * Return true if location is inside region
+     *
+     * @param loc Location to Check
+     * @return boolean True if in region
+     */
+    private boolean isInsideRegion(final Location loc) {
+        if (loc == null || loc.getWorld() == null) {
+            return false;
+        }
+
+        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
+        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
+        if (manager == null) {
+            return false;
+        }
+
+        final ProtectedRegion region = manager.getRegion(name);
+        if (region == null) {
+            return false;
+        }
+
+        return region.contains(BukkitAdapter.asBlockVector(loc));
     }
 
     @Override
