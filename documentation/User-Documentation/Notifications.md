@@ -50,8 +50,8 @@ notifications:
     sound: entity.blaze.hurt  #Plays a sound while showing the notification
 
 
-  changelog: #This is another category. They all need to be inside the 
-    sound: entity.experience_orb.pickup      #'notifications:' section.
+  changelog: #This is another category. They all need to be inside the 'notifications:' section.
+    sound: entity.experience_orb.pickup      
 ```
   
 
@@ -159,8 +159,8 @@ Writes the notification in the players chat.
 | sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
 
 ### Advancement
-Shows the notification using an achievement popup. Unfortunately Minecraft does play a sound here that cannot be disabled 
-unless you remove it from your ressource pack. You can still add your own additional sound to this notification though.
+Shows the notification using an achievement popup. Unfortunately Minecraft does play the default advancement sound here. It can only be disabled 
+by removing it from your ressource pack. You can still add your own additional sound to this notification though.
 
 ??? info "Preview" 
     ![advancement image](../media/content/User-Documentation/Notifications/advancement.png)
@@ -227,8 +227,10 @@ Shows the notification using a subtitle.
 
 
 ### Sound
-This IO just plays a sound. You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
-as Minecraft's sound system is kinda strange. 
+This IO just plays a sound. You can use it's options in any other IO.
+You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
+as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static. 
+Keep that in mind when creating sounds close to a player. They can move around the sound and make it louder or quieter by walking towards / away from it.  
 
 | Option | Description |
 |--------|-------------|
