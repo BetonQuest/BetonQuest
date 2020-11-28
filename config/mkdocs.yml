@@ -102,6 +102,7 @@ extra:
     - icon: fontawesome/solid/archive
       link: https://betonquest.org/old
 
+#Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
 nav:
   - 'Home':
       - 'Welcome! 👋': index.md
@@ -118,15 +119,15 @@ nav:
       - Learn-Beton/Frequently-Asked-Questions.md
       - Learn-Beton/Tips-and-tricks.md
   - 'User Documentation':
-      - '📚 Reference': User-Documentation/Reference.md
+      - '📚   Reference': User-Documentation/Reference.md
       - '✔️ Objectives List': User-Documentation/Objectives-List.md
-      - '❓ Conditions List': User-Documentation/Conditions-List.md
+      - '  ❓    Conditions List': User-Documentation/Conditions-List.md
       - '⚙️ Events List': User-Documentation/Events-List.md
       - '🤝 Compatibility List': User-Documentation/Compatibility.md
-      - '🔮 Variables List': User-Documentation/Variables-List.md
-      - '🔊 Notifications': User-Documentation/Notifications.md
-      - '💬 Conversations': User-Documentation/Conversations.md
-      - '🔧 Configuration': User-Documentation/Configuration.md
+      - '🔮   Variables List': User-Documentation/Variables-List.md
+      - '🔊   Notifications': User-Documentation/Notifications.md
+      - '💬  Conversations': User-Documentation/Conversations.md
+      - '🔧  Configuration': User-Documentation/Configuration.md
       - User-Documentation/Commands-and-permissions.md
       - '📥 Updating': User-Documentation/Updating-and-Backups.md
       - '🗃️ Changelog': User-Documentation/CHANGELOG.md
