@@ -26,14 +26,16 @@ public class HavingShopCondition extends Condition {
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         int count = amount.getInt(playerID);
         for (final Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
-            if (s instanceof PlayerShopkeeper) {
-                final PlayerShopkeeper shopkeeper = (PlayerShopkeeper) s;
-                if (shopkeeper.getOwnerUUID() != null && shopkeeper.getOwnerUUID().toString().equals(playerID)) {
-                    count--;
-                    if (count == 0) {
-                        return true;
-                    }
-                }
+            if (!(s instanceof PlayerShopkeeper)) {
+                continue;
+            }
+            final PlayerShopkeeper shopkeeper = (PlayerShopkeeper) s;
+            if (shopkeeper.getOwnerUUID() == null || !shopkeeper.getOwnerUUID().toString().equals(playerID)) {
+                continue;
+            }
+            count--;
+            if (count == 0) {
+                return true;
             }
         }
         return false;

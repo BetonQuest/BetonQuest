@@ -113,10 +113,8 @@ public class GlobalLocations extends BukkitRunnable {
                         continue;
                     }
                     // check all conditions
-                    if (location.getConditions() != null) {
-                        if (!BetonQuest.conditions(playerID, location.getConditions())) {
-                            continue;
-                        }
+                    if (location.getConditions() != null && !BetonQuest.conditions(playerID, location.getConditions())) {
+                        continue;
                     }
                     // set the tag, player has triggered this location
                     playerData.addTag(location.getTag());

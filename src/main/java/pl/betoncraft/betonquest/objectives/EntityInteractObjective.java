@@ -115,50 +115,50 @@ public class EntityInteractObjective extends Objective {
         }
         // check if the player has this objective
         final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID) && checkConditions(playerID)) {
-            // Check location matches
-            if (loc != null) {
-                try {
-                    final Location location = loc.getLocation(playerID);
-                    final double pRange = range.getDouble(playerID);
-                    if (!entity.getWorld().equals(location.getWorld())
-                            || entity.getLocation().distance(location) > pRange) {
-                        return false;
-                    }
-                } catch (QuestRuntimeException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                    LogUtils.logThrowable(e);
-                }
-            }
-
-
-            // get data off the player
-            final EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
-            // check if player already interacted with entity
-            if (playerData.containsEntity(entity)) {
-                return false;
-            }
-            // right mob is interacted with, handle data update
-            playerData.subtract();
-            playerData.addEntity(entity);
-            if (playerData.isZero()) {
-                completeObjective(playerID);
-            } else if (notify && playerData.getAmount() % notifyInterval == 0) {
-                // send a notification
-                try {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())},
-                            "mobs_to_click,info");
-                } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        LogUtils.logThrowableReport(exep);
-                    }
-                }
-            }
-            return true;
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+            return false;
         }
-        return false;
+        // Check location matches
+        if (loc != null) {
+            try {
+                final Location location = loc.getLocation(playerID);
+                final double pRange = range.getDouble(playerID);
+                if (!entity.getWorld().equals(location.getWorld())
+                        || entity.getLocation().distance(location) > pRange) {
+                    return false;
+                }
+            } catch (QuestRuntimeException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                LogUtils.logThrowable(e);
+            }
+        }
+
+
+        // get data off the player
+        final EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
+        // check if player already interacted with entity
+        if (playerData.containsEntity(entity)) {
+            return false;
+        }
+        // right mob is interacted with, handle data update
+        playerData.subtract();
+        playerData.addEntity(entity);
+        if (playerData.isZero()) {
+            completeObjective(playerID);
+        } else if (notify && playerData.getAmount() % notifyInterval == 0) {
+            // send a notification
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())},
+                        "mobs_to_click,info");
+            } catch (final QuestRuntimeException exception) {
+                try {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                } catch (final InstructionParseException exep) {
+                    LogUtils.logThrowableReport(exep);
+                }
+            }
+        }
+        return true;
     }
 
     @Override
