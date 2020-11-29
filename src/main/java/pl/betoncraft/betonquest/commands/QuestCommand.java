@@ -42,6 +42,7 @@ import java.util.logging.Level;
 /**
  * Main admin command for quest editing.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();

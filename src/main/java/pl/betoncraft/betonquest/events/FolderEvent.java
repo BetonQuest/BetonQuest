@@ -38,6 +38,7 @@ public class FolderEvent extends QuestEvent {
         minutes = instruction.hasArgument("minutes");
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();

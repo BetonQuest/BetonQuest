@@ -26,6 +26,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (!"questlang".equalsIgnoreCase(cmd.getName())) {

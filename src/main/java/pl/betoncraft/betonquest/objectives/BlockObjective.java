@@ -41,6 +41,7 @@ public class BlockObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
@@ -79,6 +80,7 @@ public class BlockObjective extends Objective implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());

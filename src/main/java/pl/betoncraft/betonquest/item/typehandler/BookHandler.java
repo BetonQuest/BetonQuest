@@ -85,6 +85,7 @@ public class BookHandler {
         return true;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean checkText(final List<String> list) {
         switch (textE) {
             case WHATEVER:

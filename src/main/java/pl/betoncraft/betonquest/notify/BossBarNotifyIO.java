@@ -24,6 +24,7 @@ public class BossBarNotifyIO extends NotifyIO {
     private final int stay;
     private final int countdown;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public BossBarNotifyIO(final Map<String, String> data) throws InstructionParseException {
         super(data);
 

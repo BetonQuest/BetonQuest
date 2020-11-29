@@ -69,13 +69,7 @@ public class GlobalLocations extends BukkitRunnable {
         runTaskTimer(BetonQuest.getInstance(), 20, 20);
     }
 
-    /**
-     * Stops active global locations timer
-     */
-    public static void stop() {
-        instance.cancel();
-    }
-
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public void run() {
         // do nothing if there is no defined locations
@@ -125,6 +119,13 @@ public class GlobalLocations extends BukkitRunnable {
                 }
             }
         }
+    }
+
+    /**
+     * Stops active global locations timer
+     */
+    public static void stop() {
+        instance.cancel();
     }
 
     /**

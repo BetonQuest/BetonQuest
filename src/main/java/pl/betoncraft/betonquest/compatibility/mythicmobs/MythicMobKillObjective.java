@@ -96,7 +96,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
         return player.isValid();
     }
 
-    @SuppressWarnings("PMD.PreserveStackTrace")
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     private void handlePlayerKill(final Player player, final ActiveMob mob) {
         final String playerID = PlayerConverter.getID(player);
         if (!containsPlayer(playerID)) {

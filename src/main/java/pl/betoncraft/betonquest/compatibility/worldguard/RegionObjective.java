@@ -81,6 +81,7 @@ public class RegionObjective extends Objective implements Listener {
         checkLocation(event.getPlayer(), event.getTo());
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
         final String playerID = PlayerConverter.getID(player);
         if (!containsPlayer(playerID)) {

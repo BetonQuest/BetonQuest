@@ -20,6 +20,7 @@ public class RealTimeCondition extends Condition {
     private final int hoursMax;
     private final int minutesMax;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public RealTimeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.staticness = true;

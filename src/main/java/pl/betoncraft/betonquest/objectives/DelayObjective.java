@@ -77,6 +77,7 @@ public class DelayObjective extends Objective {
         return Long.toString(new Date().getTime() + (long) delay);
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public String getProperty(final String name, final String playerID) {
         if ("left".equalsIgnoreCase(name)) {

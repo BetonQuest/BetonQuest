@@ -81,6 +81,7 @@ public class FireworkHandler {
         return effects.size();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean checkEffects(final List<FireworkEffect> list) {
         switch (effectsE) {
             case WHATEVER:

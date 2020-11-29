@@ -143,7 +143,7 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings("PMD.ShortClassName")
+    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity"})
     private class Page extends Display {
 
         private final int page;
@@ -421,6 +421,7 @@ public class Backpack implements Listener {
         private final Map<Integer, String> names = new HashMap<>();
         private final Map<Integer, String> items = new HashMap<>();
 
+        @SuppressWarnings("PMD.CyclomaticComplexity")
         public Compass() {
             super();
             Integer counter = 0;

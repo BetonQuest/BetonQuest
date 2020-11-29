@@ -281,6 +281,7 @@ public class Updater {
             this.unofficial = version.unofficial;
         }
 
+        @SuppressWarnings("PMD.CyclomaticComplexity")
         public boolean isNewer(final Version version, final UpdateStrategy updateStrategy) {
             if (version.isUnofficial() || !updateStrategy.isDev && version.isDev()) {
                 return false;

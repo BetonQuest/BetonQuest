@@ -131,4 +131,5 @@
   <rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
   <rule ref="category/java/design.xml/CollapsibleIfStatements"/>
   <rule ref="category/java/design.xml/CouplingBetweenObjects"/>
+  <rule ref="category/java/design.xml/CyclomaticComplexity"/>
 </ruleset>

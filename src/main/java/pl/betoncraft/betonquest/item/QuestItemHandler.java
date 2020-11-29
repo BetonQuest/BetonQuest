@@ -60,6 +60,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {

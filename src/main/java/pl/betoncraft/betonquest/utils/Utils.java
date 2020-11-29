@@ -147,6 +147,7 @@ public class Utils {
      * @param string text to convert
      * @return the list of pages for a book
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public static List<String> pagesFromString(final String string) {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
@@ -215,6 +216,7 @@ public class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");
@@ -367,7 +369,7 @@ public class Utils {
      * @return the Color (never null)
      * @throws InstructionParseException when something goes wrong
      */
-    @SuppressWarnings("PMD.PreserveStackTrace")
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     public static Color getColor(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Color is not specified");

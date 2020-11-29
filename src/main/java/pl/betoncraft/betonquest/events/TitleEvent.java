@@ -31,6 +31,7 @@ public class TitleEvent extends QuestEvent {
     protected int stay;
     protected int fadeOut;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         LogUtils.getLogger().log(Level.WARNING, "Title event will be REMOVED! Usage in package '"
@@ -87,6 +88,7 @@ public class TitleEvent extends QuestEvent {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();

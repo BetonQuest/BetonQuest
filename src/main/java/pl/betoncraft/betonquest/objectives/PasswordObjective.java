@@ -51,6 +51,7 @@ public class PasswordObjective extends Objective implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
         final String playerID = PlayerConverter.getID(player);
         if (!containsPlayer(playerID)) {
