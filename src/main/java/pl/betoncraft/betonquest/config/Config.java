@@ -522,26 +522,21 @@ public class Config {
     private void searchForPackages(final File file) {
         if (file.isDirectory() && !UTIL_DIR_NAMES.contains(file.getName())) {
             final File[] content = file.listFiles();
-            try {
-                for (final File subFile : content) {
-                    if ("main.yml".equals(subFile.getName())) {
-                        // this is a package, add it and stop searching
-                        final String packPath = BetonQuest.getInstance().getDataFolder()
-                                .toURI().relativize(file.toURI())
-                                .toString().replace('/', ' ').trim().replace(' ', '-');
-                        final ConfigPackage pack = new ConfigPackage(file, packPath);
-                        if (pack.isEnabled()) {
-                            PACKAGES.put(packPath, pack);
-                        }
-                        return;
+            for (final File subFile : content) {
+                if ("main.yml".equals(subFile.getName())) {
+                    // this is a package, add it and stop searching
+                    final String packPath = BetonQuest.getInstance().getDataFolder()
+                            .toURI().relativize(file.toURI())
+                            .toString().replace('/', ' ').trim().replace(' ', '-');
+                    final ConfigPackage pack = new ConfigPackage(file, packPath);
+                    if (pack.isEnabled()) {
+                        PACKAGES.put(packPath, pack);
                     }
+                    return;
                 }
-                for (final File subFile : content) {
-                    searchForPackages(subFile);
-                }
-            } catch (final SecurityException e) {
-                LogUtils.getLogger().log(Level.SEVERE, "Error while loading packages in path '" + file.getAbsolutePath() + "'");
-                LogUtils.logThrowableIgnore(e);
+            }
+            for (final File subFile : content) {
+                searchForPackages(subFile);
             }
         }
     }

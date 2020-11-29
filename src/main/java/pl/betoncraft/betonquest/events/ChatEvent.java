@@ -15,12 +15,8 @@ public class ChatEvent extends QuestEvent {
 
     public ChatEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        try {
-            final String string = instruction.getInstruction();
-            messages = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
-        } catch (IndexOutOfBoundsException e) {
-            throw new InstructionParseException("Could not parse message", e);
-        }
+        final String string = instruction.getInstruction().trim();
+        messages = string.substring(string.indexOf(" ") + 1).split("\\|");
     }
 
     @Override

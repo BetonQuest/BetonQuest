@@ -12,12 +12,8 @@ public class OpSudoEvent extends QuestEvent {
 
     public OpSudoEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        try {
-            final String string = instruction.getInstruction();
-            commands = string.trim().substring(string.indexOf(" ") + 1).split("\\|");
-        } catch (IndexOutOfBoundsException e) {
-            throw new InstructionParseException("Could not parse commands", e);
-        }
+        final String string = instruction.getInstruction().trim();
+        commands = string.substring(string.indexOf(" ") + 1).split("\\|");
     }
 
     @Override

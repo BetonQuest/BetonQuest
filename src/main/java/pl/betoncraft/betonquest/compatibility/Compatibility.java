@@ -148,8 +148,8 @@ public class Compatibility implements Listener {
                 hooked.add(name);
             } catch (HookException exception) {
                 final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
-                        plugin.getName(),
-                        plugin.getDescription().getVersion(),
+                        exception.getPluginName(),
+                        exception.getPluginVersion(),
                         BetonQuest.getInstance().getDescription().getVersion(),
                         Bukkit.getVersion(),
                         exception.getMessage());
