@@ -110,10 +110,8 @@ public class PotionHandler {
         if (custom == null || custom.isEmpty()) {
             return customE == Existence.FORBIDDEN;
         }
-        if (exact) {
-            if (custom.size() != this.custom.size()) {
-                return false;
-            }
+        if (exact && custom.size() != this.custom.size()) {
+            return false;
         }
         for (final CustomEffectHandler checker : this.custom) {
             PotionEffect effect = null;

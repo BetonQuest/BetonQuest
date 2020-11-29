@@ -41,11 +41,8 @@ public class EventSetLevel extends QuestEvent {
 
         final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
         for (final JobProgression oJob : oJobs) {
-            if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
-                //User has the job, return true
-                if (oJob.getJob().getMaxLevel() <= this.nLevel) {
-                    oJob.setLevel(this.nLevel);
-                }
+            if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.getJob().getMaxLevel() <= this.nLevel) {
+                oJob.setLevel(this.nLevel);
             }
         }
         return null;

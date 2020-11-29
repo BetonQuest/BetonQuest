@@ -58,10 +58,8 @@ public class EnchantmentsHandler {
         if (map == null || map.isEmpty()) {
             return checkersE == Existence.FORBIDDEN;
         }
-        if (exact) {
-            if (map.size() != get().size()) {
-                return false;
-            }
+        if (exact && map.size() != get().size()) {
+            return false;
         }
         for (final SingleEnchantmentHandler checker : checkers) {
             if (!checker.check(map.get(checker.type))) {

@@ -123,7 +123,7 @@ public class MenuConvIO extends ChatConvIO {
                     controls.put(control, ACTION.CANCEL);
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel);
             LogUtils.logThrowable(e);
         }
@@ -137,7 +137,7 @@ public class MenuConvIO extends ChatConvIO {
                     controls.put(control, ACTION.SELECT);
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect);
             LogUtils.logThrowable(e);
         }
@@ -150,7 +150,7 @@ public class MenuConvIO extends ChatConvIO {
                     controls.put(control, ACTION.MOVE);
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             LogUtils.getLogger().log(Level.WARNING, conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove);
             LogUtils.logThrowable(e);
         }
@@ -701,26 +701,22 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-
-                if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-
-                    switch (controls.get(CONTROL.LEFT_CLICK)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            debounce = true;
-                            break;
-                        case SELECT:
-                            conv.passPlayerAnswer(selectedOption + 1);
-                            debounce = true;
-                            break;
-                        case MOVE:
-                            break;
-                        default:
-                            break;
-                    }
+            if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
+                switch (controls.get(CONTROL.LEFT_CLICK)) {
+                    case CANCEL:
+                        if (!conv.isMovementBlock()) {
+                            conv.endConversation();
+                        }
+                        debounce = true;
+                        break;
+                    case SELECT:
+                        conv.passPlayerAnswer(selectedOption + 1);
+                        debounce = true;
+                        break;
+                    case MOVE:
+                        break;
+                    default:
+                        break;
                 }
             }
         } finally {
@@ -757,22 +753,16 @@ public class MenuConvIO extends ChatConvIO {
             // Cheat and assume the closest distance between previous and new slots is the direction scrolled
             final int slotDistance = event.getPreviousSlot() - event.getNewSlot();
 
-            if (slotDistance > 5 || slotDistance < 0 && slotDistance >= -5) {
-                // Scrolled down
-                if (selectedOption < options.size() - 1) {
-                    oldSelectedOption = selectedOption;
-                    selectedOption++;
-                    updateDisplay();
-                    debounce = true;
-                }
-            } else if (slotDistance != 0) {
-                // Scrolled up
-                if (selectedOption > 0) {
-                    oldSelectedOption = selectedOption;
-                    selectedOption--;
-                    updateDisplay();
-                    debounce = true;
-                }
+            if ((slotDistance > 5 || slotDistance < 0 && slotDistance >= -5) && selectedOption < options.size() - 1) {
+                oldSelectedOption = selectedOption;
+                selectedOption++;
+                updateDisplay();
+                debounce = true;
+            } else if (slotDistance != 0 && selectedOption > 0) {
+                oldSelectedOption = selectedOption;
+                selectedOption--;
+                updateDisplay();
+                debounce = true;
             }
         } finally {
             lock.readLock().unlock();

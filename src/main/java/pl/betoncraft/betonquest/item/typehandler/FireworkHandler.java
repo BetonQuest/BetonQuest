@@ -86,10 +86,8 @@ public class FireworkHandler {
             case WHATEVER:
                 return true;
             case REQUIRED:
-                if (exact) {
-                    if (list.size() != effects.size()) {
-                        return false;
-                    }
+                if (exact && list.size() != effects.size()) {
+                    return false;
                 }
                 for (final FireworkEffectHandler checker : effects) {
                     FireworkEffect effect = null;
