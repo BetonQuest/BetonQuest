@@ -125,4 +125,5 @@
   <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts"/>
   <rule ref="category/java/design.xml/AvoidRethrowingException"/>
   <rule ref="category/java/design.xml/AvoidThrowingNewInstanceOfSameException"/>
+  <rule ref="category/java/design.xml/AvoidThrowingNullPointerException"/>
 </ruleset>
