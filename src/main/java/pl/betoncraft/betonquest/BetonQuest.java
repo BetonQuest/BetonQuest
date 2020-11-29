@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 /**
  * Represents BetonQuest plugin
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class BetonQuest extends JavaPlugin {
 
     private static BetonQuest instance;

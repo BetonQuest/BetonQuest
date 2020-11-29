@@ -130,4 +130,5 @@
   <rule ref="category/java/design.xml/AvoidUncheckedExceptionsInSignatures"/>
   <rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
   <rule ref="category/java/design.xml/CollapsibleIfStatements"/>
+  <rule ref="category/java/design.xml/CouplingBetweenObjects"/>
 </ruleset>
