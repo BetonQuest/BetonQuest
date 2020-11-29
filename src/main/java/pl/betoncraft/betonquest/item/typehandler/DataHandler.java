@@ -3,7 +3,7 @@ package pl.betoncraft.betonquest.item.typehandler;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Number;
 
-public class DataHandler {
+public final class DataHandler {
 
     private short data = 0;
     private Number number = Number.WHATEVER;
