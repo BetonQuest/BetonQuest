@@ -104,7 +104,7 @@ public final class LogUtils {
     }
 
     private static void setupLoggerHandler()
-            throws SecurityException, IOException {
+            throws IOException {
         fileHandler = new FileHandler(LOG_FILE.getAbsolutePath());
         getLogger().addHandler(fileHandler);
         fileHandler.setFormatter(new LogFormatter());

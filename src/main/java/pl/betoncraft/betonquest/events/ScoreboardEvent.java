@@ -39,7 +39,7 @@ public class ScoreboardEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws IllegalStateException, QuestRuntimeException {
+    protected Void execute(final String playerID) throws QuestRuntimeException {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
