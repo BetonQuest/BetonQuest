@@ -216,119 +216,102 @@ public class Utils {
      * If the database backup file exists, loads it into the database.
      */
     public static void loadDatabaseFromBackup() {
-        boolean isOldDatabaseBackedUP = false;
-        String filename = null;
-        try {
-            final BetonQuest instance = BetonQuest.getInstance();
-            final File file = new File(instance.getDataFolder(), "database-backup.yml");
-            // if the backup doesn't exist then there is nothing to load, return
-            if (!file.exists()) {
-                return;
-            }
-            LogUtils.getLogger().log(Level.INFO, "Loading database backup!");
-            // backup the database
-            final File backupFolder = new File(instance.getDataFolder(), "backups");
-            if (!backupFolder.isDirectory()) {
-                backupFolder.mkdirs();
-            }
-            int backupNumber = 0;
-            while (new File(backupFolder, "old-database-" + backupNumber + ".yml").exists()) {
-                backupNumber++;
-            }
-            filename = "old-database-" + backupNumber + ".yml";
-            LogUtils.getLogger().log(Level.INFO, "Backing up old database!");
-            if (!(isOldDatabaseBackedUP = backupDatabase(new File(backupFolder, filename)))) {
-                LogUtils.getLogger().log(Level.WARNING, "There was an error during old database backup process. This means that"
-                        + " if the plugin loaded new database (from backup), the old one would be lost "
-                        + "forever. Because of that the loading of backup was aborted!");
-                return;
-            }
-            final ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
-            final FileConfiguration config = accessor.getConfig();
-            final Database database = instance.getDB();
-            // create tables if they don't exist, so we can be 100% sure
-            // that we can drop them without an error (should've been done
-            // in a different way...)
-            database.createTables(instance.isMySQLUsed());
-            // drop all tables
-            final Connector con = new Connector();
-            con.updateSQL(UpdateType.DROP_OBJECTIVES, new String[]{});
-            con.updateSQL(UpdateType.DROP_TAGS, new String[]{});
-            con.updateSQL(UpdateType.DROP_POINTS, new String[]{});
-            con.updateSQL(UpdateType.DROP_JOURNALS, new String[]{});
-            con.updateSQL(UpdateType.DROP_PLAYER, new String[]{});
-            // create new tables
-            database.createTables(instance.isMySQLUsed());
-            // load objectives
-            final ConfigurationSection objectives = config.getConfigurationSection("objectives");
-            if (objectives != null) {
-                for (final String key : objectives.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_OBJECTIVE,
-                            new String[]{objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
-                                    objectives.getString(key + ".objective"),
-                                    objectives.getString(key + ".instructions"),});
-                }
-            }
-            // load tags
-            final ConfigurationSection tags = config.getConfigurationSection("tags");
-            if (tags != null) {
-                for (final String key : tags.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_TAG, new String[]{tags.getString(key + ".id"),
-                            tags.getString(key + ".playerID"), tags.getString(key + ".tag"),});
-                }
-            }
-            // load points
-            final ConfigurationSection points = config.getConfigurationSection("points");
-            if (points != null) {
-                for (final String key : points.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_POINT,
-                            new String[]{points.getString(key + ".id"), points.getString(key + ".playerID"),
-                                    points.getString(key + ".category"), points.getString(key + ".count"),});
-                }
-            }
-            // load journals
-            final ConfigurationSection journals = config.getConfigurationSection("journals");
-            if (journals != null) {
-                for (final String key : journals.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_JOURNAL,
-                            new String[]{journals.getString(key + ".id"), journals.getString(key + ".playerID"),
-                                    journals.getString(key + ".pointer"), journals.getString(key + ".date"),});
-                }
-            }
-            // load backpack
-            final ConfigurationSection backpack = config.getConfigurationSection("backpack");
-            if (backpack != null) {
-                for (final String key : backpack.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_BACKPACK,
-                            new String[]{backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
-                                    backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"),});
-                }
-            }
-            // load player
-            final ConfigurationSection player = config.getConfigurationSection("player");
-            if (player != null) {
-                for (final String key : player.getKeys(false)) {
-                    con.updateSQL(UpdateType.INSERT_PLAYER,
-                            new String[]{player.getString(key + ".id"), player.getString(key + ".playerID"),
-                                    player.getString(key + ".language"), player.getString(key + ".conversation")});
-                }
-            }
-            // delete backup file so it doesn't get loaded again
-            file.delete();
-        } catch (Exception e) {
-            if (isOldDatabaseBackedUP) {
-                LogUtils.getLogger().log(Level.WARNING, "Your database probably got corrupted, sorry for that :( The good news"
-                        + " is that you have a backup of your old database, you can find it in backups"
-                        + " folder, named as " + filename + ". You can try to use it to load the "
-                        + "backup, but it will probably have the same effect.");
-            } else {
-                LogUtils.getLogger().log(Level.WARNING, "There was an error during database loading, but fortunatelly the "
-                        + "original database wasn't even touched yet. You can try to load the backup "
-                        + "again, and if the problem persists you should contact the developer to find"
-                        + " a solution.");
-            }
-            LogUtils.logThrowableReport(e);
+        final BetonQuest instance = BetonQuest.getInstance();
+        final File file = new File(instance.getDataFolder(), "database-backup.yml");
+        // if the backup doesn't exist then there is nothing to load, return
+        if (!file.exists()) {
+            return;
         }
+        LogUtils.getLogger().log(Level.INFO, "Loading database backup!");
+        // backup the database
+        final File backupFolder = new File(instance.getDataFolder(), "backups");
+        if (!backupFolder.isDirectory()) {
+            backupFolder.mkdirs();
+        }
+        int backupNumber = 0;
+        while (new File(backupFolder, "old-database-" + backupNumber + ".yml").exists()) {
+            backupNumber++;
+        }
+        final String filename = "old-database-" + backupNumber + ".yml";
+        LogUtils.getLogger().log(Level.INFO, "Backing up old database!");
+        if (!backupDatabase(new File(backupFolder, filename))) {
+            LogUtils.getLogger().log(Level.WARNING, "There was an error during old database backup process. This means that"
+                    + " if the plugin loaded new database (from backup), the old one would be lost "
+                    + "forever. Because of that the loading of backup was aborted!");
+            return;
+        }
+        final ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
+        final FileConfiguration config = accessor.getConfig();
+        final Database database = instance.getDB();
+        // create tables if they don't exist, so we can be 100% sure
+        // that we can drop them without an error (should've been done
+        // in a different way...)
+        database.createTables(instance.isMySQLUsed());
+        // drop all tables
+        final Connector con = new Connector();
+        con.updateSQL(UpdateType.DROP_OBJECTIVES);
+        con.updateSQL(UpdateType.DROP_TAGS);
+        con.updateSQL(UpdateType.DROP_POINTS);
+        con.updateSQL(UpdateType.DROP_JOURNALS);
+        con.updateSQL(UpdateType.DROP_PLAYER);
+        // create new tables
+        database.createTables(instance.isMySQLUsed());
+        // load objectives
+        final ConfigurationSection objectives = config.getConfigurationSection("objectives");
+        if (objectives != null) {
+            for (final String key : objectives.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_OBJECTIVE,
+                        objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
+                        objectives.getString(key + ".objective"),
+                        objectives.getString(key + ".instructions"));
+            }
+        }
+        // load tags
+        final ConfigurationSection tags = config.getConfigurationSection("tags");
+        if (tags != null) {
+            for (final String key : tags.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_TAG, tags.getString(key + ".id"),
+                        tags.getString(key + ".playerID"), tags.getString(key + ".tag"));
+            }
+        }
+        // load points
+        final ConfigurationSection points = config.getConfigurationSection("points");
+        if (points != null) {
+            for (final String key : points.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_POINT,
+                        points.getString(key + ".id"), points.getString(key + ".playerID"),
+                        points.getString(key + ".category"), points.getString(key + ".count"));
+            }
+        }
+        // load journals
+        final ConfigurationSection journals = config.getConfigurationSection("journals");
+        if (journals != null) {
+            for (final String key : journals.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_JOURNAL,
+                        journals.getString(key + ".id"), journals.getString(key + ".playerID"),
+                        journals.getString(key + ".pointer"), journals.getString(key + ".date"));
+            }
+        }
+        // load backpack
+        final ConfigurationSection backpack = config.getConfigurationSection("backpack");
+        if (backpack != null) {
+            for (final String key : backpack.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_BACKPACK,
+                        backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
+                        backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"));
+            }
+        }
+        // load player
+        final ConfigurationSection player = config.getConfigurationSection("player");
+        if (player != null) {
+            for (final String key : player.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_PLAYER,
+                        player.getString(key + ".id"), player.getString(key + ".playerID"),
+                        player.getString(key + ".language"), player.getString(key + ".conversation"));
+            }
+        }
+        // delete backup file so it doesn't get loaded again
+        file.delete();
     }
 
     /**

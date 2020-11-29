@@ -27,7 +27,7 @@ import pl.betoncraft.betonquest.compatibility.skript.SkriptIntegrator;
 import pl.betoncraft.betonquest.compatibility.vault.VaultIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
-import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
+import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -146,15 +146,14 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            } catch (UnsupportedVersionException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not hook into " + name + ": " + e.getMessage());
-                LogUtils.logThrowable(e);
-            } catch (Exception e) {
-                LogUtils.getLogger().log(Level.WARNING, String.format("There was an error while hooking into %s %s"
-                                + " (BetonQuest %s, Spigot %s).",
-                        name, hook.getDescription().getVersion(),
-                        plugin.getDescription().getVersion(), Bukkit.getVersion()));
-                LogUtils.logThrowableReport(e);
+            } catch (HookException exception) {
+                final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
+                        exception.getPluginName(),
+                        exception.getPluginVersion(),
+                        BetonQuest.getInstance().getDescription().getVersion(),
+                        Bukkit.getVersion(),
+                        exception.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, message, exception);
                 LogUtils.getLogger().log(Level.WARNING, "BetonQuest will work correctly save for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase()
                         + "' to false in config.yml file.");

@@ -26,7 +26,7 @@ public class EventSetLevel extends QuestEvent {
                 sJobName = job.getName();
                 try {
                     this.nLevel = Integer.parseInt(instructions.getPart(2));
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     throw new InstructionParseException("NUJobs_SetLevel: Unable to parse the level amount", e);
                 }
                 return;

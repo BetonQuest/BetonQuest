@@ -50,7 +50,7 @@ public class Updater {
                 LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
                     findDev();
-                } catch (Exception e) {
+                } catch (IOException e) {
                     if (e instanceof UnknownHostException) {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
                     } else {
@@ -59,7 +59,7 @@ public class Updater {
                 }
                 try {
                     findRelease();
-                } catch (Exception e) {
+                } catch (IOException e) {
                     if (e instanceof UnknownHostException) {
                         LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
                     } else {
@@ -79,7 +79,7 @@ public class Updater {
         }.runTaskAsynchronously(BetonQuest.getInstance());
     }
 
-    private void findRelease() throws Exception {
+    private void findRelease() throws IOException {
         final JSONArray json = new JSONArray(readStringFromURL(RELEASE_API_URL));
         for (int i = 0; i < json.length(); i++) {
             final JSONObject release = json.getJSONObject(i);
@@ -91,7 +91,7 @@ public class Updater {
         }
     }
 
-    private void findDev() throws Exception {
+    private void findDev() throws IOException {
         final JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
         final Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
@@ -262,10 +262,13 @@ public class Updater {
 
             Integer dev = null;
             boolean unofficial = false;
+            final String qualifier = artifactVersion.getQualifier();
             try {
-                dev = Integer.valueOf(artifactVersion.getQualifier().substring(DEV_TAG.length()));
-            } catch (Exception e) {
-                unofficial = artifactVersion.getQualifier() != null;
+                if (qualifier != null) {
+                    dev = Integer.valueOf(qualifier.substring(DEV_TAG.length()));
+                }
+            } catch (NumberFormatException e) {
+                unofficial = true;
             }
             this.dev = dev;
             this.unofficial = unofficial;

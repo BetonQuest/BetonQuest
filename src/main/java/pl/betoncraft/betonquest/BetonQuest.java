@@ -286,7 +286,7 @@ public class BetonQuest extends JavaPlugin {
             } else {
                 LogUtils.logThrowableReport(e);
             }
-        } catch (final Exception e) {
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             LogUtils.logThrowableReport(e);
         }
         return null;
@@ -674,7 +674,7 @@ public class BetonQuest extends JavaPlugin {
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (final Exception e) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
@@ -724,7 +724,7 @@ public class BetonQuest extends JavaPlugin {
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (final Exception e) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
@@ -775,7 +775,7 @@ public class BetonQuest extends JavaPlugin {
                     } else {
                         LogUtils.logThrowableReport(e);
                     }
-                } catch (final Exception e) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     LogUtils.logThrowableReport(e);
                 }
             }
@@ -792,8 +792,6 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.getLogger().log(Level.WARNING,
                             "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage());
                     LogUtils.logThrowable(e);
-                } catch (final Exception e) {
-                    LogUtils.logThrowableReport(e);
                 }
             }
             // check external pointers

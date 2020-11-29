@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
+import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 
 
@@ -16,7 +17,7 @@ public class ShopkeepersIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws Exception {
+    public void hook() throws HookException {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         if (shopkeepers.getDescription().getVersion().startsWith("1.")) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");

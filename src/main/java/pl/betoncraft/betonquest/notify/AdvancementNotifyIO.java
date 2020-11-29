@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.notify;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -46,7 +47,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID().toString());
         try {
             add(key, message);
-        } catch (final Exception e) {
+        } catch (final JsonIOException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage());
             LogUtils.logThrowableIgnore(e);
         }

@@ -80,7 +80,7 @@ public final class DefaultPacketHandler implements PacketHandler {
     public void receivePacket(final Player sender) {
         try {
             ProtocolLibrary.getProtocolManager().recieveClientPacket(sender, getHandle());
-        } catch (final Exception e) {
+        } catch (final InvocationTargetException | IllegalAccessException e) {
             throw new UncheckedPacketException("Cannot receive packet.", e);
         }
     }

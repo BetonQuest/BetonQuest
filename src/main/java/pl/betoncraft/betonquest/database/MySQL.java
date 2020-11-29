@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Level;
 
 /**
@@ -43,7 +44,7 @@ public class MySQL extends Database {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "MySQL says: " + e.getMessage());
             LogUtils.logThrowable(e);
         }

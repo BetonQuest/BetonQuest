@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.metadata.MetadataValue;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -28,9 +30,9 @@ public class CustomDropListener implements Listener {
                     final String item = m.asString();
                     final int separatorIndex = item.indexOf(':');
                     event.getDrops().add(new QuestItem(new ItemID(null, item.substring(0, separatorIndex)))
-                            .generate(Integer.valueOf(item.substring(separatorIndex + 1))));
+                            .generate(Integer.parseInt(item.substring(separatorIndex + 1))));
                 }
-            } catch (Exception e) {
+            } catch (InstructionParseException | ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error when dropping custom item from entity: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }

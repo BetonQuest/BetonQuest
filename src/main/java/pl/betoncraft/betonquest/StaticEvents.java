@@ -64,7 +64,7 @@ public class StaticEvents {
                         eventIDS[i] = new EventID(pack, events[i]);
                     }
                     TIMERS.add(new EventTimer(timeStamp, eventIDS));
-                } catch (final ObjectNotFoundException | NullPointerException e) {
+                } catch (final ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
                     LogUtils.logThrowable(e);
                 }

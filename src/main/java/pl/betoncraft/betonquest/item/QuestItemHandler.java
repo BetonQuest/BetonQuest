@@ -20,13 +20,11 @@ import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.List;
 import java.util.ListIterator;
-import java.util.logging.Level;
 
 /**
  * Handler for Journals.
@@ -54,22 +52,11 @@ public class QuestItemHandler implements Listener {
         if (item == null) {
             return;
         }
-        try {
-            // if journal is dropped, remove it so noone else can pick it up
-            if (Journal.isJournal(playerID, item)) {
-                event.getItemDrop().remove();
-            } else if (Utils.isQuestItem(item)) {
-                BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
-                event.getItemDrop().remove();
-            }
-        } catch (final Exception e) {
-            // if there is any problem with checking the item, prevent dropping
-            // it
-            // it will be frustrating for user but at least they won't duplicate
-            // items
-            event.setCancelled(true);
-            LogUtils.getLogger().log(Level.WARNING, "Could not excecute onItemDrop in QuestItemHandler");
-            LogUtils.logThrowable(e);
+        if (Journal.isJournal(playerID, item)) {
+            event.getItemDrop().remove();
+        } else if (Utils.isQuestItem(item)) {
+            BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
+            event.getItemDrop().remove();
         }
     }
 
