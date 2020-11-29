@@ -288,7 +288,7 @@ public class EntityHider implements Listener {
             try {
                 manager.sendServerPacket(observer, destroyEntity);
             } catch (InvocationTargetException e) {
-                throw new RuntimeException("Cannot send server packet.", e);
+                LogUtils.getLogger().log(Level.WARNING, "Cannot send server packet.", e);
             }
         }
         return visibleBefore;
