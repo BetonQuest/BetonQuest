@@ -45,7 +45,9 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
-
+        if (!event.canBreak()) {
+            return;
+        }
         final String blockId = getBlockId(event.getBlockInfo().getBlock());
         if (!blockId.equals(desiredBlockId)) {
             return;

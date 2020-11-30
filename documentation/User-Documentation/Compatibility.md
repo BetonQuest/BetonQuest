@@ -541,13 +541,19 @@ mmoprofessionlevelup MINING 10
 ```
 
 ####Craft item: `mmoitemcraft`
-This objective requires the player to craft the item with the given type and id. To count items that were crafted in 
-crafting stations add the `recipeID:` argument as the last option in the instruction. 
-An amount can also be set if it shall differ from the default (which is one).
+This objective requires the player to craft the item with the given type and id.
+It supports any MMOItem that was crafted using vanilla crafting methods, MMOItems "recipe-amounts" crafting and MMOItems station crafting.
+An amount can also be set if it shall differ from the default (which is one) by adding the `amount:` argument.
+The amount is based on how many items have actually been crafted, not how often a specific recipe has been used! Therefore,
+a recipe that makes four items at once will let the objective progress by four steps.  
+
+!!! warning test
+    MMOItems API is currently broken. You need to double the amount for all objectives that use crafting
+    stations recipes with a crafting time of zero!
+
 ```YAML linenums="1"
-mmoitemcraft STEEL_SWORD_RECIPE
-mmoitemcraft HEALTH_POTION_RECIPE 5
-mmoitemcraft DAGGER STEEL_DAGGER 3 recipeID:steel-dagger
+mmoitemcraft SWORD STEEL_SWORD
+mmoitemcraft HEALTH_POTION_RECIPE amount:5
 ```
 ####Upgrade Item: `mmoitemupgrade`
 This objective tracks if a player upgrades the given item with an upgrade consumable.  
