@@ -1,7 +1,9 @@
 package pl.betoncraft.betonquest.compatibility;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -77,6 +79,8 @@ public class Compatibility implements Listener {
             hook(hook);
         }
 
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+
         // hook into ProtocolLib
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
                 && "true".equalsIgnoreCase(plugin.getConfig().getString("hook.protocollib"))) {
@@ -97,6 +101,11 @@ public class Compatibility implements Listener {
             }
         }.runTask(BetonQuest.getInstance());
 
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPluginEnable(final PluginEnableEvent event) {
+        hook(event.getPlugin());
     }
 
     /**
