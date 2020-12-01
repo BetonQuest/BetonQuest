@@ -19,12 +19,12 @@ import java.util.Random;
  */
 public class FolderEvent extends QuestEvent {
 
-    public VariableNumber delay;
-    public VariableNumber period;
-    public VariableNumber random;
-    public EventID[] events;
-    public boolean ticks;
-    public boolean minutes;
+    private final VariableNumber delay;
+    private final VariableNumber period;
+    private final VariableNumber random;
+    private final EventID[] events;
+    private final boolean ticks;
+    private final boolean minutes;
 
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

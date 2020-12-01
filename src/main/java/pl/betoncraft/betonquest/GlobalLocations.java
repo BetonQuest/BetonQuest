@@ -131,6 +131,7 @@ public class GlobalLocations extends BukkitRunnable {
     /**
      * Represents single global location.
      */
+    @SuppressWarnings("PMD.DataClass")
     private class GlobalLocation {
 
         private final ObjectiveID objectiveID;

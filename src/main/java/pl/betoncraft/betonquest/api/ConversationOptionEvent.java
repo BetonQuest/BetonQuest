@@ -5,6 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import pl.betoncraft.betonquest.conversation.Conversation;
 
+@SuppressWarnings("PMD.DataClass")
 public class ConversationOptionEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
