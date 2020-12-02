@@ -42,7 +42,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields"})
 public class MenuConvIO extends ChatConvIO {
 
     // Thread safety

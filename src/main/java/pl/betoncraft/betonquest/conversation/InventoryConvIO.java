@@ -29,6 +29,7 @@ import java.util.logging.Level;
 /**
  * Inventory GUI for conversations
  */
+@SuppressWarnings("PMD.TooManyFields")
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 

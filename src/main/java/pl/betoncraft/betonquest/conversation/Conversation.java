@@ -36,7 +36,7 @@ import java.util.logging.Level;
 /**
  * Represents a conversation between player and NPC
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields"})
 public class Conversation implements Listener {
 
     private static final ConcurrentHashMap<String, Conversation> LIST = new ConcurrentHashMap<>();
