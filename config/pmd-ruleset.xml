@@ -138,4 +138,5 @@
   <rule ref="category/java/design.xml/ExcessiveClassLength"/>
   <!--<rule ref="category/java/design.xml/ExcessiveImports"/>-->
   <rule ref="category/java/design.xml/ExcessiveMethodLength"/>
+  <rule ref="category/java/design.xml/ExcessiveParameterList"/>
 </ruleset>
