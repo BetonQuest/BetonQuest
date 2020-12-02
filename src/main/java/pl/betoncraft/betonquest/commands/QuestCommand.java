@@ -1517,7 +1517,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }
                     // skip the player if he does not have this objective
-                    if (found == false) {
+                    if (!found) {
                         continue;
                     }
                     if (data == null) {
