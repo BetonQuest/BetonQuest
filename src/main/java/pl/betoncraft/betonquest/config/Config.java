@@ -19,7 +19,7 @@ import java.util.logging.Level;
 /**
  * Handles the configuration of the plugin
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
 public class Config {
 
     private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");

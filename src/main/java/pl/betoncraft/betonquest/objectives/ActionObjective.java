@@ -26,6 +26,7 @@ import java.util.logging.Level;
  * Player has to click on block (or air). Left click, right click and any one of
  * them is supported.
  */
+@SuppressWarnings("PMD.GodClass")
 public class ActionObjective extends Objective implements Listener {
 
     private final Click action;

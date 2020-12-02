@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * Various utilities.
  */
-@SuppressWarnings("PMD.ClassNamingConventions")
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass"})
 public class Utils {
 
     /**

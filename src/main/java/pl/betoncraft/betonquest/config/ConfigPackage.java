@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 /**
  * Holds configuration files of the package
  */
+@SuppressWarnings("PMD.GodClass")
 public class ConfigPackage {
 
     private String name;
