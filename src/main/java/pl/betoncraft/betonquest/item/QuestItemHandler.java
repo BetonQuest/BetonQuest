@@ -29,7 +29,7 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class QuestItemHandler implements Listener {
     private static final HandlerList HANDLERS = new HandlerList();
 

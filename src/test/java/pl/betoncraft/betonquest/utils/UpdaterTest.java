@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class UpdaterTest {
     private final static Updater.Version V_1_0_0 = new Updater.Version("1.0.0");
     private final static Updater.Version V_2_0_0 = new Updater.Version("2.0.0");
