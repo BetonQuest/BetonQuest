@@ -322,7 +322,7 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     @Override
     public void onEnable() {
 
@@ -615,7 +615,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Loads events and conditions to the maps
      */
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     public void loadData() {
         // save data of all objectives to the players
         for (final Objective objective : OBJECTIVES.values()) {

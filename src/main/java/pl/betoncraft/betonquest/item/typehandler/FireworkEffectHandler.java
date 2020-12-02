@@ -101,7 +101,7 @@ public class FireworkEffectHandler {
         return type;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
     public boolean check(final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:

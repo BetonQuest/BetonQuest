@@ -139,7 +139,7 @@ public class ConfigPackage {
     /**
      * Perform Variable substitution
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
     public String subst(final String input) {
         if (input == null) {
             return null;

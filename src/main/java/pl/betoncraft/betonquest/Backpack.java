@@ -153,7 +153,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 0
          */
-        @SuppressWarnings("PMD.ExcessiveMethodLength")
+        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
         public Page(final int page) {
             super();
             this.page = page;
@@ -261,6 +261,7 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
         }
 
+        @SuppressWarnings("PMD.NcssCount")
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 0 && slot == 0) {
@@ -422,7 +423,7 @@ public class Backpack implements Listener {
         private final Map<Integer, String> names = new HashMap<>();
         private final Map<Integer, String> items = new HashMap<>();
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
         public Compass() {
             super();
             Integer counter = 0;

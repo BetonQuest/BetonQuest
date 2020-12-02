@@ -462,7 +462,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;

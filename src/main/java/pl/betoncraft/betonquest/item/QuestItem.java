@@ -62,6 +62,7 @@ public class QuestItem {
      * @param instruction instruction String
      * @throws InstructionParseException when item parsing goes wrong
      */
+    @SuppressWarnings("PMD.NcssCount")
     public QuestItem(final String instruction) throws InstructionParseException {
         if (instruction == null) {
             throw new InstructionParseException("Item instruction is null");
@@ -138,7 +139,7 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";

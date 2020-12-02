@@ -52,6 +52,7 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
+    @SuppressWarnings("PMD.NcssCount")
     public ResultSet querySQL(final QueryType type, final String... args) {
         try {
             final PreparedStatement statement;
@@ -142,7 +143,7 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     public void updateSQL(final UpdateType type, final String... args) {
         try {
             final PreparedStatement statement;

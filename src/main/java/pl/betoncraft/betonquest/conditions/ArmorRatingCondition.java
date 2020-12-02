@@ -22,7 +22,7 @@ public class ArmorRatingCondition extends Condition {
         required = instruction.getVarNum();
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();

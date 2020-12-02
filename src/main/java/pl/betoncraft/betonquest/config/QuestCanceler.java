@@ -48,7 +48,7 @@ public class QuestCanceler {
      * @param cancelerID ID of the canceler (package.name)
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     public QuestCanceler(final String cancelerID) throws InstructionParseException {
         if (cancelerID == null) {
             throw new InstructionParseException("Name is null");

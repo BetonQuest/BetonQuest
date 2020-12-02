@@ -57,7 +57,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
@@ -284,6 +284,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return false;
     }
 
+    @SuppressWarnings("PMD.NcssCount")
     @Override
     public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
@@ -505,6 +506,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Reads, sets or appends strings from/to config files
      */
+    @SuppressWarnings("PMD.NcssCount")
     private void handleConfig(final CommandSender sender, final String... args) {
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "No action specified!");
@@ -1205,7 +1207,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleObjectives(final CommandSender sender, final String... args) {
         // playerID is required
         if (args.length < 2) {
@@ -1411,7 +1413,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Renames stuff.
      */
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleRenaming(final CommandSender sender, final String... args) {
         if (args.length < 4) {
             sendMessage(sender, "arguments");
@@ -1582,6 +1584,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Deleted stuff.
      */
+    @SuppressWarnings("PMD.NcssCount")
     private void handleDeleting(final CommandSender sender, final String... args) {
         if (args.length < 3) {
             sendMessage(sender, "arguments");

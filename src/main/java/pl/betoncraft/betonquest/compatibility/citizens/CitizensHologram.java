@@ -214,7 +214,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         }
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void updateHolograms() {
         // If we need to update hologram positions
         boolean npcUpdater = false;
