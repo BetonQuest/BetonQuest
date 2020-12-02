@@ -62,11 +62,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException exception) {
-                try {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_given' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                } catch (final InstructionParseException exep) {
-                    throw new QuestRuntimeException(exep);
-                }
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowable(exception);
             }
         }
 

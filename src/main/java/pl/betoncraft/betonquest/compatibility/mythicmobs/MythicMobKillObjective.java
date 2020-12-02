@@ -134,11 +134,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
                 try {
                     LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException exep) {
-                    try {
-                        throw new QuestRuntimeException(exep);
-                    } catch (QuestRuntimeException e) {
-                        LogUtils.logThrowableReport(exep);
-                    }
+                    LogUtils.logThrowableReport(exep);
                 }
             }
         }

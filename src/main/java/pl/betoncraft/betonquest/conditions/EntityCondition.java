@@ -48,11 +48,7 @@ public class EntityCondition extends Condition {
                         amounts[i] = new VariableNumber(1);
                     } else {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                        try {
-                            amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
-                        } catch (InstructionParseException e) {
-                            throw new InstructionParseException("Could not parse amount", e);
-                        }
+                        amounts[i] = getAmount(typeParts[1]);
                     }
                 } else {
                     types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
@@ -68,6 +64,14 @@ public class EntityCondition extends Condition {
         marked = instruction.getOptional("marked");
         if (marked != null) {
             marked = Utils.addPackage(instruction.getPackage(), marked);
+        }
+    }
+
+    private VariableNumber getAmount(final String typePart) throws InstructionParseException {
+        try {
+            return new VariableNumber(instruction.getPackage().getName(), typePart);
+        } catch (InstructionParseException e) {
+            throw new InstructionParseException("Could not parse amount", e);
         }
     }
 

@@ -77,8 +77,8 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while parsing event conditions: " + e.getMessage(), e);
+            } catch (final ObjectNotFoundException exception) {
+                throw new InstructionParseException("Error while parsing event conditions: " + exception.getMessage(), exception);
             }
         }
     }
@@ -133,6 +133,14 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                 return;
             }
             handle(playerID);
+        }
+    }
+
+    protected String getFullId() throws QuestRuntimeException {
+        try {
+            return instruction.getEvent().getFullID();
+        } catch (final InstructionParseException exep) {
+            throw new QuestRuntimeException(exep);
         }
     }
 }

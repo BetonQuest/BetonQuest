@@ -70,11 +70,8 @@ public class MMOItemsTakeEvent extends QuestEvent {
                         new String[]{itemName, String.valueOf(deletedCounter)},
                         "items_taken,info");
             } catch (final QuestRuntimeException exception) {
-                try {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                } catch (InstructionParseException exep) {
-                    throw new QuestRuntimeException(exep);
-                }
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowable(exception);
             }
         }
         return null;

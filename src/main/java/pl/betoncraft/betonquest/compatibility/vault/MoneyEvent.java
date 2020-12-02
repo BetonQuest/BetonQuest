@@ -61,11 +61,8 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_given' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowable(exception);
                 }
             }
         } else if (difference < 0) {
@@ -75,11 +72,8 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowable(exception);
                 }
             }
         }

@@ -47,11 +47,8 @@ public class GiveEvent extends QuestEvent {
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
                 } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowable(exception);
                 }
             }
             while (amountInt > 0) {
