@@ -150,4 +150,5 @@
   <rule ref="category/java/design.xml/NPathComplexity"/>
   <rule ref="category/java/design.xml/SignatureDeclareThrowsException"/>
   <rule ref="category/java/design.xml/SimplifiedTernary"/>
+  <rule ref="category/java/design.xml/SimplifyBooleanAssertion"/>
 </ruleset>
