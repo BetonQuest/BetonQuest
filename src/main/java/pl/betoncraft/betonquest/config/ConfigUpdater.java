@@ -64,7 +64,7 @@ public class ConfigUpdater {
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
-    private ConfigHandler configHandler;
+    private final ConfigHandler configHandler;
 
     public ConfigUpdater() {
         final String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -91,6 +91,7 @@ public class ConfigUpdater {
         }
         if (version != null && version.equals(DESTINATION)) {
             LogUtils.getLogger().log(Level.INFO, "Configuration up to date!");
+            configHandler = null;
             return;
         } else {
             Utils.backup();

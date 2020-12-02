@@ -21,17 +21,17 @@ import java.util.regex.Pattern;
 @SuppressWarnings("PMD.GodClass")
 public class ConfigPackage {
 
-    private String name;
-    private File folder;
-    private boolean enabled;
+    private final String name;
+    private final File folder;
+    private final boolean enabled;
 
-    private ConfigAccessor main;
-    private ConfigAccessor events;
-    private ConfigAccessor conditions;
-    private ConfigAccessor objectives;
-    private ConfigAccessor journal;
-    private ConfigAccessor items;
-    private ConfigAccessor custom;
+    private final ConfigAccessor main;
+    private final ConfigAccessor events;
+    private final ConfigAccessor conditions;
+    private final ConfigAccessor objectives;
+    private final ConfigAccessor journal;
+    private final ConfigAccessor items;
+    private final ConfigAccessor custom;
     private final Map<String, ConfigAccessor> conversations = new HashMap<>();
 
     /**
@@ -43,7 +43,7 @@ public class ConfigPackage {
      */
     public ConfigPackage(final File pack, final String name) {
         if (!pack.isDirectory()) {
-            return;
+            throw new IllegalArgumentException("The file '" + pack.getName() + "' is not a folder!");
         }
         folder = pack;
         this.name = name;

@@ -24,8 +24,8 @@ public class ConversationResumer implements Listener {
     private final String playerID;
     private final String conversationID;
     private final String option;
-    private Location loc;
-    private double distance;
+    private final Location loc;
+    private final double distance;
 
     public ConversationResumer(final String playerID, final String convID) {
         this.original = convID;
@@ -35,6 +35,8 @@ public class ConversationResumer implements Listener {
         this.conversationID = parts[0];
         this.option = parts[1];
         if ("null".equalsIgnoreCase(option)) {
+            loc = null;
+            distance = 0;
             return;
         }
         final String[] locParts = parts[2].split(";");

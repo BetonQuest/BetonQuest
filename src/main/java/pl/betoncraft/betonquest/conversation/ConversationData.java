@@ -446,8 +446,8 @@ public class ConversationData {
         private final Map<String, String> text = new HashMap<>();
         private final List<ConditionID> conditions = new ArrayList<>();
         private final List<EventID> events = new ArrayList<>();
-        private List<String> pointers;
-        private List<String> extendLinks;
+        private final List<String> pointers;
+        private final List<String> extendLinks;
 
         @SuppressWarnings("PMD.ExcessiveMethodLength")
         protected Option(final String name, final OptionType type) throws InstructionParseException {
@@ -456,6 +456,8 @@ public class ConversationData {
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
+                pointers = null;
+                extendLinks = null;
                 return;
             }
 
