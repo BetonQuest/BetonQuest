@@ -138,6 +138,7 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";

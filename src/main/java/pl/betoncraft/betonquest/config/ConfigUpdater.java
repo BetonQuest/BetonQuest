@@ -35,7 +35,7 @@ import java.util.logging.Level;
 /**
  * Updates configuration files to the newest version.
  */
-@SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength"})
+@SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

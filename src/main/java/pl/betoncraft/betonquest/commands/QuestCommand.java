@@ -57,6 +57,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
@@ -1204,6 +1205,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private void handleObjectives(final CommandSender sender, final String... args) {
         // playerID is required
         if (args.length < 2) {
@@ -1409,6 +1411,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Renames stuff.
      */
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private void handleRenaming(final CommandSender sender, final String... args) {
         if (args.length < 4) {
             sendMessage(sender, "arguments");

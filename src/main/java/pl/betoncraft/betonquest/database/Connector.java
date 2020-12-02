@@ -142,6 +142,7 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     public void updateSQL(final UpdateType type, final String... args) {
         try {
             final PreparedStatement statement;

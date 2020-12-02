@@ -158,6 +158,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private void start() {
         if (hasStartedUnsafe()) {
             return;
@@ -461,6 +462,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;

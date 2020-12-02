@@ -40,7 +40,7 @@ public class HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength"})
     public HologramLoop() {
         // get all holograms and their condition
         for (final ConfigPackage pack : Config.getPackages().values()) {
