@@ -18,7 +18,6 @@ public class Saver extends Thread implements Listener {
     private final Connector con;
     private final ConcurrentLinkedQueue<Record> queue;
     private boolean run;
-    private boolean active;
 
     /**
      * Creates new database saver thread
@@ -33,6 +32,7 @@ public class Saver extends Thread implements Listener {
 
     @Override
     public void run() {
+        boolean active = false;
         while (true) {
             while (queue.isEmpty()) {
                 if (!run) {

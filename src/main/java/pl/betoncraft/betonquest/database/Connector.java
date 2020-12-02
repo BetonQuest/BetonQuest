@@ -15,7 +15,6 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.CyclomaticComplexity")
 public class Connector {
 
-    private final BetonQuest plugin;
     private final String prefix;
     private final Database database;
     private Connection connection;
@@ -24,7 +23,7 @@ public class Connector {
      * Opens a new connection to the database
      */
     public Connector() {
-        plugin = BetonQuest.getInstance();
+        final BetonQuest plugin = BetonQuest.getInstance();
         prefix = plugin.getConfig().getString("mysql.prefix", "");
         database = plugin.getDB();
         connection = database.getConnection();

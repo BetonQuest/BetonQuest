@@ -154,4 +154,5 @@
   <rule ref="category/java/design.xml/SimplifyBooleanExpressions"/>
   <rule ref="category/java/design.xml/SimplifyBooleanReturns"/>
   <rule ref="category/java/design.xml/SimplifyConditional"/>
+  <rule ref="category/java/design.xml/SingularField"/>
 </ruleset>

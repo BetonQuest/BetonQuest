@@ -47,10 +47,6 @@ public class Backpack implements Listener {
      */
     private final Player player;
     /**
-     * Instance of the BetonQuest plugin
-     */
-    private final BetonQuest instance;
-    /**
      * Database handler for the player
      */
     private final PlayerData playerData;
@@ -79,7 +75,10 @@ public class Backpack implements Listener {
         this.playerID = playerID;
         lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         player = PlayerConverter.getPlayer(playerID);
-        instance = BetonQuest.getInstance();
+        /**
+         * Instance of the BetonQuest plugin
+         */
+        final BetonQuest instance = BetonQuest.getInstance();
         playerData = instance.getPlayerData(playerID);
         backpack = this;
         // create display

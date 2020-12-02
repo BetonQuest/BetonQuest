@@ -14,7 +14,6 @@ import java.util.zip.ZipOutputStream;
 
 public class Zipper {
     private final List<String> fileList = new ArrayList<>();
-    private final String outputZipFile;
     private final String sourceFolder;
 
     public Zipper(final String source, final String output) {
@@ -24,7 +23,7 @@ public class Zipper {
             counter++;
             modifiedOutput = output + "-" + counter;
         }
-        outputZipFile = modifiedOutput + ".zip";
+        final String outputZipFile = modifiedOutput + ".zip";
         sourceFolder = source;
         generateFileList(new File(sourceFolder));
         zipIt(outputZipFile);
