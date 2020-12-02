@@ -148,4 +148,5 @@
   <rule ref="category/java/design.xml/LoosePackageCoupling"/>
   <rule ref="category/java/design.xml/NcssCount"/>
   <rule ref="category/java/design.xml/NPathComplexity"/>
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException"/>
 </ruleset>
