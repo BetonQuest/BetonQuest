@@ -149,4 +149,5 @@
   <rule ref="category/java/design.xml/NcssCount"/>
   <rule ref="category/java/design.xml/NPathComplexity"/>
   <rule ref="category/java/design.xml/SignatureDeclareThrowsException"/>
+  <rule ref="category/java/design.xml/SimplifiedTernary"/>
 </ruleset>
