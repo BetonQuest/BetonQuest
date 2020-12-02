@@ -153,7 +153,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 0
          */
-        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         public Page(final int page) {
             super();
             this.page = page;
@@ -423,7 +423,7 @@ public class Backpack implements Listener {
         private final Map<Integer, String> names = new HashMap<>();
         private final Map<Integer, String> items = new HashMap<>();
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         public Compass() {
             super();
             Integer counter = 0;

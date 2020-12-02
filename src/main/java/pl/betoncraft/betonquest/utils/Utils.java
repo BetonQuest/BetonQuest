@@ -216,7 +216,7 @@ public class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");

@@ -26,7 +26,7 @@ public class FireworkEffectHandler {
     public FireworkEffectHandler() {
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Effect is missing");
@@ -101,7 +101,7 @@ public class FireworkEffectHandler {
         return type;
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
     public boolean check(final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:

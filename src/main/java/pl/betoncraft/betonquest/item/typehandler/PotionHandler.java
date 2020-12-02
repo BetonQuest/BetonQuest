@@ -141,7 +141,7 @@ public class PotionHandler {
         public CustomEffectHandler() {
         }
 
-        @SuppressWarnings("PMD.CyclomaticComplexity")
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private void set(final String custom) throws InstructionParseException {
             final String[] parts;
             if (custom == null || (parts = custom.split(":")).length == 0) {

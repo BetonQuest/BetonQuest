@@ -39,7 +39,7 @@ public class SpawnMobEvent extends QuestEvent {
     private final QuestItem offHand;
     private final Item[] drops;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
@@ -76,7 +76,7 @@ public class SpawnMobEvent extends QuestEvent {
         drops = instruction.getItemList(instruction.getOptional("drops"));
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);

@@ -99,6 +99,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerID    ID of the player which should be checked
      * @return if the condition is met
      */
+    @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(final String playerID, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
@@ -615,7 +616,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Loads events and conditions to the maps
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public void loadData() {
         // save data of all objectives to the players
         for (final Objective objective : OBJECTIVES.values()) {

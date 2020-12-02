@@ -52,7 +52,7 @@ public class ActionObjective extends Objective implements Listener {
         cancel = instruction.hasArgument("cancel");
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler
     public void onInteract(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.

@@ -147,4 +147,5 @@
   <rule ref="category/java/design.xml/LogicInversion"/>
   <rule ref="category/java/design.xml/LoosePackageCoupling"/>
   <rule ref="category/java/design.xml/NcssCount"/>
+  <rule ref="category/java/design.xml/NPathComplexity"/>
 </ruleset>

@@ -75,7 +75,7 @@ public class EntityCondition extends Condition {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);

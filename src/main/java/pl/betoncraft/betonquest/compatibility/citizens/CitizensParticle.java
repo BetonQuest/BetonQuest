@@ -34,7 +34,7 @@ public class CitizensParticle extends BukkitRunnable {
     private int tick = 0;
     private final boolean enabled;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public CitizensParticle() {
         super();
         instance = this;

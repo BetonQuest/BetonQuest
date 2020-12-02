@@ -233,7 +233,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them

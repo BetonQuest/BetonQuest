@@ -158,7 +158,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity"})
     private void start() {
         if (hasStartedUnsafe()) {
             return;
@@ -462,7 +462,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;
@@ -730,6 +730,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings("PMD.NPathComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (!isActiveUnsafe()) {

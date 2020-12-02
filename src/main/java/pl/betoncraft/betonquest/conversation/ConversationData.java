@@ -46,7 +46,7 @@ public class ConversationData {
      * @param name the name of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
         final String pkg = pack.getName();
@@ -449,7 +449,7 @@ public class ConversationData {
         private final List<String> pointers;
         private final List<String> extendLinks;
 
-        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
             this.type = type;

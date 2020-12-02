@@ -51,7 +51,7 @@ public class MathVariable extends Variable {
      * @return a calculable object which contains the whole calculation
      * @throws InstructionParseException if the instruction isn't valid
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     private Calculable parse(final String string) throws InstructionParseException {
         //clarify error messages for invalid calculations
         if (string.matches(".*[+\\-*/^]{2}.*")) {

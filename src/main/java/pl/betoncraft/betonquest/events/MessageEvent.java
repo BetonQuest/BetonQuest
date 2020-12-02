@@ -29,7 +29,7 @@ public class MessageEvent extends QuestEvent {
     private final Map<String, String> messages = new HashMap<>();
     private final List<String> variables = new ArrayList<>();
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public MessageEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         LogUtils.getLogger().log(Level.WARNING, "Message event will be REMOVED! Usage in package '"

@@ -79,7 +79,7 @@ public class EnchantmentsHandler {
         public SingleEnchantmentHandler() {
         }
 
-        @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
+        @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private void set(final String enchant) throws InstructionParseException {
             final String[] parts;
             if (enchant == null || (parts = enchant.split(":")).length == 0) {

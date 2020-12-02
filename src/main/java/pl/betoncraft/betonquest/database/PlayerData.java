@@ -60,7 +60,7 @@ public class PlayerData {
     /**
      * Loads all data for the player and puts it in appropriate lists.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void loadAllPlayerData() {
         try {
             // get connection to the database
