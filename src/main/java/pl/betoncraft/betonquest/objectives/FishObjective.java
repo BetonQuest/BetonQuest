@@ -60,7 +60,7 @@ public class FishObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onFishCatch(final PlayerFishEvent event) {
         if (event.getState() != State.CAUGHT_FISH) {

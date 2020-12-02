@@ -81,15 +81,14 @@ public class FireworkHandler {
         return effects.size();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean checkEffects(final List<FireworkEffect> list) {
         switch (effectsE) {
             case WHATEVER:
                 return true;
             case REQUIRED:
-                if (exact) {
-                    if (list.size() != effects.size()) {
-                        return false;
-                    }
+                if (exact && list.size() != effects.size()) {
+                    return false;
                 }
                 for (final FireworkEffectHandler checker : effects) {
                     FireworkEffect effect = null;

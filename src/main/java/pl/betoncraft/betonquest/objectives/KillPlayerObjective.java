@@ -40,6 +40,7 @@ public class KillPlayerObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() == null) {

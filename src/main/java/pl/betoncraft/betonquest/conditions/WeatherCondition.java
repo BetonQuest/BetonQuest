@@ -22,6 +22,7 @@ public class WeatherCondition extends Condition {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Boolean execute(final String playerID) {
         final World world = PlayerConverter.getPlayer(playerID).getWorld();

@@ -61,6 +61,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onChestClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {

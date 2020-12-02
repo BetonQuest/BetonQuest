@@ -79,6 +79,7 @@ public class ConfigPackage {
      * @param address address of the string
      * @return the raw string
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public String getRawString(final String address) {
         // prepare the address
         final String[] parts = address.split("\\.");
@@ -137,6 +138,7 @@ public class ConfigPackage {
     /**
      * Perform Variable substitution
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public String subst(final String input) {
         if (input == null) {
             return null;
@@ -275,7 +277,7 @@ public class ConfigPackage {
         return Utils.format(getString(address));
     }
 
-    @SuppressWarnings("PMD.LinguisticNaming")
+    @SuppressWarnings({"PMD.LinguisticNaming", "PMD.CyclomaticComplexity"})
     public boolean setString(final String address, final String value) {
         // prepare the address
         final String[] parts = address.split("\\.");

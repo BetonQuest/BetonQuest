@@ -82,6 +82,7 @@ public class NPCRangeObjective extends Objective {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkPlayer(final Player player, final String playerID, final boolean inside) {
         if (inside) {
             if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {

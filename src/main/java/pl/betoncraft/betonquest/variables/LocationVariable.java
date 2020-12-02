@@ -35,6 +35,7 @@ public class LocationVariable extends Variable {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public String getValue(final String playerID) {
         final Location playerLocation = PlayerConverter.getPlayer(playerID).getLocation();

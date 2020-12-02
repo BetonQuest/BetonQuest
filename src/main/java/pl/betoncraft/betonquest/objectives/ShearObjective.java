@@ -40,6 +40,7 @@ public class ShearObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onShear(final PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP) {

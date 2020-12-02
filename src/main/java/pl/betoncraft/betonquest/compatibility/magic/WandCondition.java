@@ -28,6 +28,7 @@ public class WandCondition extends Condition {
     private final String name;
     private final VariableNumber amount;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public WandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
@@ -66,6 +67,7 @@ public class WandCondition extends Condition {
         amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);

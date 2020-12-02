@@ -39,6 +39,7 @@ public class LocalChatPaginator extends ChatPaginator {
     /**
      * Takes a string and returns the last colors that can be copied to a new line
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public static String getLastColors(final String input) {
         ChatColor lastColor = null;
         final List<ChatColor> lastFormats = new ArrayList<>();
@@ -47,23 +48,24 @@ public class LocalChatPaginator extends ChatPaginator {
 
         for (int index = length - 1; index > -1; --index) {
             final char section = input.charAt(index);
-            if (section == 167 && index < length - 1) {
-                final char colorChar = input.charAt(index + 1);
-                final ChatColor color = ChatColor.getByChar(colorChar);
+            if (section != 167 || index >= length - 1) {
+                continue;
+            }
+            final char colorChar = input.charAt(index + 1);
+            final ChatColor color = ChatColor.getByChar(colorChar);
 
-                if (color != null) {
-                    if (color.equals(ChatColor.RESET)) {
-                        break;
-                    }
+            if (color != null) {
+                if (color.equals(ChatColor.RESET)) {
+                    break;
+                }
 
-                    if (color.isColor() && lastColor == null) {
-                        lastColor = color;
-                        continue;
-                    }
+                if (color.isColor() && lastColor == null) {
+                    lastColor = color;
+                    continue;
+                }
 
-                    if (color.isFormat() && !lastFormats.contains(color)) {
-                        lastFormats.add(color);
-                    }
+                if (color.isFormat() && !lastFormats.contains(color)) {
+                    lastFormats.add(color);
                 }
             }
         }
@@ -91,6 +93,7 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
 
         // A null string is a single line

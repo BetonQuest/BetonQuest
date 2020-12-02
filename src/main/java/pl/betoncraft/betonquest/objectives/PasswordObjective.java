@@ -51,37 +51,39 @@ public class PasswordObjective extends Objective implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
         final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID)) {
-            final String prefix = passwordPrefix == null ?
-                    Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(), "password") : passwordPrefix;
-            if (prefix.isEmpty() || message.toLowerCase().startsWith(prefix.toLowerCase())) {
-                final String password = message.substring(prefix.length());
-                if (checkConditions(playerID)) {
-                    if ((ignoreCase ? password.toLowerCase() : password).matches(regex)) {
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                completeObjective(playerID);
-                            }
-                        }.runTask(BetonQuest.getInstance());
-
-                        if (fromCommand) {
-                            return !prefix.isEmpty();
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        for (final EventID event : failEvents) {
-                            BetonQuest.event(playerID, event);
-                        }
+        if (!containsPlayer(playerID)) {
+            return false;
+        }
+        final String prefix = passwordPrefix == null ?
+                Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(), "password") : passwordPrefix;
+        if (!prefix.isEmpty() && !message.toLowerCase().startsWith(prefix.toLowerCase())) {
+            return false;
+        }
+        final String password = message.substring(prefix.length());
+        if (checkConditions(playerID)) {
+            if ((ignoreCase ? password.toLowerCase() : password).matches(regex)) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        completeObjective(playerID);
                     }
+                }.runTask(BetonQuest.getInstance());
+
+                if (fromCommand) {
+                    return !prefix.isEmpty();
+                } else {
+                    return true;
                 }
-                return !prefix.isEmpty();
+            } else {
+                for (final EventID event : failEvents) {
+                    BetonQuest.event(playerID, event);
+                }
             }
         }
-        return false;
+        return !prefix.isEmpty();
     }
 
     @Override

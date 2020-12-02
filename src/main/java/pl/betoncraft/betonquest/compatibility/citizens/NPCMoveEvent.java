@@ -137,6 +137,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         onContinue(event);
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onContinue(final NavigationEvent event) {
         final NPC npc = event.getNPC();
         if (npc.getId() != npcId) {

@@ -112,7 +112,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
     @Override
     public void display() {
         // prevent displaying anything if the player closed the conversation

@@ -58,10 +58,8 @@ public class EnchantmentsHandler {
         if (map == null || map.isEmpty()) {
             return checkersE == Existence.FORBIDDEN;
         }
-        if (exact) {
-            if (map.size() != get().size()) {
-                return false;
-            }
+        if (exact && map.size() != get().size()) {
+            return false;
         }
         for (final SingleEnchantmentHandler checker : checkers) {
             if (!checker.check(map.get(checker.type))) {
@@ -81,7 +79,7 @@ public class EnchantmentsHandler {
         public SingleEnchantmentHandler() {
         }
 
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
         private void set(final String enchant) throws InstructionParseException {
             final String[] parts;
             if (enchant == null || (parts = enchant.split(":")).length == 0) {

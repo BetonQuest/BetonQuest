@@ -214,6 +214,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void updateHolograms() {
         // If we need to update hologram positions
         boolean npcUpdater = false;

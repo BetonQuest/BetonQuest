@@ -36,18 +36,18 @@ public class CraftingObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            final Player player = (Player) event.getWhoClicked();
-            final String playerID = PlayerConverter.getID(player);
-            final CraftData playerData = (CraftData) dataMap.get(playerID);
-            if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-                final int absoluteCreations = countPossibleCrafts(event);
-                final int remainingSpace = countRemainingSpace(player);
-                playerData.subtract(Math.min(remainingSpace, absoluteCreations));
-                if (playerData.isZero()) {
-                    completeObjective(playerID);
-                }
-
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        final Player player = (Player) event.getWhoClicked();
+        final String playerID = PlayerConverter.getID(player);
+        final CraftData playerData = (CraftData) dataMap.get(playerID);
+        if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
+            final int absoluteCreations = countPossibleCrafts(event);
+            final int remainingSpace = countRemainingSpace(player);
+            playerData.subtract(Math.min(remainingSpace, absoluteCreations));
+            if (playerData.isZero()) {
+                completeObjective(playerID);
             }
         }
     }

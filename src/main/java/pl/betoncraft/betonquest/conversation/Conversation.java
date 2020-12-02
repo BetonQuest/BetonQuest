@@ -168,10 +168,8 @@ public class Conversation implements Listener {
                 optionName = option;
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
-            if (!force) {
-                if (!BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
-                    continue;
-                }
+            if (!force && !BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
+                continue;
             }
             this.option = optionName;
             data = currentData;

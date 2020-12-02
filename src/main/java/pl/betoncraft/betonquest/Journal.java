@@ -159,6 +159,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void generateTexts(final String lang) {
         // remove previous texts
         texts.clear();
@@ -232,6 +233,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
@@ -381,6 +383,7 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public ItemStack getAsItem() {
         // create the book with default title/author
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);

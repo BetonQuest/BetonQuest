@@ -38,6 +38,7 @@ public class ObjectiveEvent extends QuestEvent {
         persistent = !"complete".equalsIgnoreCase(action);
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (BetonQuest.getInstance().getObjective(objective) == null) {

@@ -34,6 +34,7 @@ public class CitizensParticle extends BukkitRunnable {
     private int tick = 0;
     private boolean enabled = false;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public CitizensParticle() {
         super();
         instance = this;
@@ -182,6 +183,7 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void activateEffects() {
 
         // display effects for all players

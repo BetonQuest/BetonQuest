@@ -34,11 +34,8 @@ public class ConditionCanLevel extends Condition {
 
         final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
         for (final JobProgression oJob : oJobs) {
-            if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
-                //User has the job, return true
-                if (oJob.canLevelUp()) {
-                    return true;
-                }
+            if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.canLevelUp()) {
+                return true;
             }
         }
         return false;

@@ -49,13 +49,11 @@ public class ConversationResumer implements Listener {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (event.getTo().getWorld().equals(loc.getWorld())) {
-            if (event.getTo().distanceSquared(loc) < distance * distance) {
-                HandlerList.unregisterAll(this);
-                BetonQuest.getInstance().getSaver()
-                        .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
-                new Conversation(playerID, conversationID, loc, option);
-            }
+        if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
+            HandlerList.unregisterAll(this);
+            BetonQuest.getInstance().getSaver()
+                    .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
+            new Conversation(playerID, conversationID, loc, option);
         }
     }
 

@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 /**
  * Represents an item handled by the configuration.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class QuestItem {
 
     private final BlockSelector selector;

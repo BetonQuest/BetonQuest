@@ -98,21 +98,21 @@ public class PartialDateCondition extends Condition {
         private final int start;
         private final int end;
 
-        public TimeInterval(final int start, final int end, final PartialDate type) throws IllegalArgumentException {
+        public TimeInterval(final int start, final int end, final PartialDate type) throws InstructionParseException {
             this.start = start;
             this.end = end;
             if (end < start) {
-                throw new IllegalArgumentException(type + " " + end + " is before " + start);
+                throw new InstructionParseException(type + " " + end + " is before " + start);
             }
             if (!type.isValid(start)) {
-                throw new IllegalArgumentException(start + " is not a valid " + type);
+                throw new InstructionParseException(start + " is not a valid " + type);
             }
             if (!type.isValid(end)) {
-                throw new IllegalArgumentException(end + " is not a valid " + type);
+                throw new InstructionParseException(end + " is not a valid " + type);
             }
         }
 
-        public TimeInterval(final int value, final PartialDate type) throws IllegalArgumentException {
+        public TimeInterval(final int value, final PartialDate type) throws InstructionParseException {
             this(value, value, type);
         }
 
@@ -134,7 +134,7 @@ public class PartialDateCondition extends Condition {
                     } else {
                         intervals.add(new TimeInterval(Integer.parseInt(arg), type));
                     }
-                } catch (IllegalArgumentException e) {
+                } catch (InstructionParseException e) {
                     //if some value exceeded minimum or maximum throw IPE
                     throw new InstructionParseException("could not parse " + type + " from '" + string + "'"
                             + " (" + e.getMessage() + ")", e);

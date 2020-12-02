@@ -19,12 +19,12 @@ import java.util.Random;
  */
 public class FolderEvent extends QuestEvent {
 
-    public VariableNumber delay;
-    public VariableNumber period;
-    public VariableNumber random;
-    public EventID[] events;
-    public boolean ticks;
-    public boolean minutes;
+    private final VariableNumber delay;
+    private final VariableNumber period;
+    private final VariableNumber random;
+    private final EventID[] events;
+    private final boolean ticks;
+    private final boolean minutes;
 
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
@@ -38,6 +38,7 @@ public class FolderEvent extends QuestEvent {
         minutes = instruction.hasArgument("minutes");
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();

@@ -52,39 +52,37 @@ public class DieObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onLastDamage(final EntityDamageEvent event) {
-        if (!cancel) {
+        if (!cancel || !(event.getEntity() instanceof Player)) {
             return;
         }
-        if (event.getEntity() instanceof Player) {
-            final Player player = (Player) event.getEntity();
-            final String playerID = PlayerConverter.getID(player);
-            if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
-                    && checkConditions(playerID)) {
-                event.setCancelled(true);
-                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                player.setFoodLevel(20);
-                player.setExhaustion(4);
-                player.setSaturation(20);
-                for (final PotionEffect effect : player.getActivePotionEffects()) {
-                    player.removePotionEffect(effect.getType());
-                }
-                if (location != null) {
-                    try {
-                        player.teleport(location.getLocation(playerID));
-                    } catch (QuestRuntimeException e) {
-                        LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective");
-                        LogUtils.logThrowable(e);
-                    }
-                }
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        player.setFireTicks(0);
-
-                    }
-                }.runTaskLater(BetonQuest.getInstance(), 1);
-                completeObjective(playerID);
+        final Player player = (Player) event.getEntity();
+        final String playerID = PlayerConverter.getID(player);
+        if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
+                && checkConditions(playerID)) {
+            event.setCancelled(true);
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            player.setFoodLevel(20);
+            player.setExhaustion(4);
+            player.setSaturation(20);
+            for (final PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
             }
+            if (location != null) {
+                try {
+                    player.teleport(location.getLocation(playerID));
+                } catch (QuestRuntimeException e) {
+                    LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective");
+                    LogUtils.logThrowable(e);
+                }
+            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.setFireTicks(0);
+
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 1);
+            completeObjective(playerID);
         }
     }
 

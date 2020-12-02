@@ -103,6 +103,7 @@ public class PotionHandler {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean checkCustom(final List<PotionEffect> custom) {
         if (customE == Existence.WHATEVER) {
             return true;
@@ -110,10 +111,8 @@ public class PotionHandler {
         if (custom == null || custom.isEmpty()) {
             return customE == Existence.FORBIDDEN;
         }
-        if (exact) {
-            if (custom.size() != this.custom.size()) {
-                return false;
-            }
+        if (exact && custom.size() != this.custom.size()) {
+            return false;
         }
         for (final CustomEffectHandler checker : this.custom) {
             PotionEffect effect = null;
@@ -142,6 +141,7 @@ public class PotionHandler {
         public CustomEffectHandler() {
         }
 
+        @SuppressWarnings("PMD.CyclomaticComplexity")
         private void set(final String custom) throws InstructionParseException {
             final String[] parts;
             if (custom == null || (parts = custom.split(":")).length == 0) {
@@ -211,6 +211,7 @@ public class PotionHandler {
             return new PotionEffect(customType, duration, power);
         }
 
+        @SuppressWarnings("PMD.CyclomaticComplexity")
         private boolean check(final PotionEffect effect) {
             switch (customTypeE) {
                 case WHATEVER:

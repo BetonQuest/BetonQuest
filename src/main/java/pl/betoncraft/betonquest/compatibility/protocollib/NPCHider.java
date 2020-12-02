@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class NPCHider extends BukkitRunnable implements Listener {
+public final class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance = null;
 

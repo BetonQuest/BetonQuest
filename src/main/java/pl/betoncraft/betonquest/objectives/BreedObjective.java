@@ -34,26 +34,27 @@ public class BreedObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
-        if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            final String playerID = PlayerConverter.getID((Player) event.getBreeder());
-            if (!containsPlayer(playerID)) {
-                return;
-            }
-            if (checkConditions(playerID)) {
-                final BreedData data = (BreedData) dataMap.get(playerID);
-                data.breed();
-                if (data.getAmount() == 0) {
-                    completeObjective(playerID);
-                } else if (notify) {
+        if (event.getEntityType() != type || !(event.getBreeder() instanceof Player)) {
+            return;
+        }
+        final String playerID = PlayerConverter.getID((Player) event.getBreeder());
+        if (!containsPlayer(playerID)) {
+            return;
+        }
+        if (checkConditions(playerID)) {
+            final BreedData data = (BreedData) dataMap.get(playerID);
+            data.breed();
+            if (data.getAmount() == 0) {
+                completeObjective(playerID);
+            } else if (notify) {
+                try {
+                    Config.sendNotify(instruction.getPackage().getName(), playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())},
+                            "animals_to_breed,info");
+                } catch (final QuestRuntimeException exception) {
                     try {
-                        Config.sendNotify(instruction.getPackage().getName(), playerID, "animals_to_breed", new String[]{String.valueOf(data.getAmount())},
-                                "animals_to_breed,info");
-                    } catch (final QuestRuntimeException exception) {
-                        try {
-                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        } catch (final InstructionParseException exep) {
-                            LogUtils.logThrowableReport(exep);
-                        }
+                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    } catch (final InstructionParseException exep) {
+                        LogUtils.logThrowableReport(exep);
                     }
                 }
             }

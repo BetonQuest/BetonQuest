@@ -29,6 +29,7 @@ public class EntityCondition extends Condition {
     private final String name;
     private String marked;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public EntityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;
@@ -70,6 +71,7 @@ public class EntityCondition extends Condition {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);

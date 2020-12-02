@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("PMD.DataClass")
 public class BookHandler {
 
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
@@ -85,6 +86,7 @@ public class BookHandler {
         return true;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean checkText(final List<String> list) {
         switch (textE) {
             case WHATEVER:

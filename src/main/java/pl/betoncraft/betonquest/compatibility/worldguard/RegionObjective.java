@@ -81,6 +81,7 @@ public class RegionObjective extends Objective implements Listener {
         checkLocation(event.getPlayer(), event.getTo());
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
         final String playerID = PlayerConverter.getID(player);
         if (!containsPlayer(playerID)) {
@@ -101,11 +102,9 @@ public class RegionObjective extends Objective implements Listener {
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
         playersInsideRegion.put(player.getUniqueId(), inside);
 
-        if (entry && inside && !fromInside || exit && fromInside && !inside) {
-            if (checkConditions(playerID)) {
-                completeObjective(playerID);
-                playersInsideRegion.remove(player.getUniqueId());
-            }
+        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(playerID)) {
+            completeObjective(playerID);
+            playersInsideRegion.remove(player.getUniqueId());
         }
     }
 

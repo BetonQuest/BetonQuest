@@ -69,13 +69,7 @@ public class GlobalLocations extends BukkitRunnable {
         runTaskTimer(BetonQuest.getInstance(), 20, 20);
     }
 
-    /**
-     * Stops active global locations timer
-     */
-    public static void stop() {
-        instance.cancel();
-    }
-
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public void run() {
         // do nothing if there is no defined locations
@@ -113,10 +107,8 @@ public class GlobalLocations extends BukkitRunnable {
                         continue;
                     }
                     // check all conditions
-                    if (location.getConditions() != null) {
-                        if (!BetonQuest.conditions(playerID, location.getConditions())) {
-                            continue;
-                        }
+                    if (location.getConditions() != null && !BetonQuest.conditions(playerID, location.getConditions())) {
+                        continue;
                     }
                     // set the tag, player has triggered this location
                     playerData.addTag(location.getTag());
@@ -130,8 +122,16 @@ public class GlobalLocations extends BukkitRunnable {
     }
 
     /**
+     * Stops active global locations timer
+     */
+    public static void stop() {
+        instance.cancel();
+    }
+
+    /**
      * Represents single global location.
      */
+    @SuppressWarnings("PMD.DataClass")
     private class GlobalLocation {
 
         private final ObjectiveID objectiveID;

@@ -42,11 +42,8 @@ public class ConditionJobLevel extends Condition {
 
         final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
         for (final JobProgression oJob : oJobs) {
-            if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
-                //User has the job, return true
-                if (oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel) {
-                    return true;
-                }
+            if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel) {
+                return true;
             }
         }
         return false;
