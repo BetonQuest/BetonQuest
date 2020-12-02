@@ -158,4 +158,5 @@
   <rule ref="category/java/design.xml/SwitchDensity"/>
   <rule ref="category/java/design.xml/TooManyFields"/>
   <rule ref="category/java/design.xml/TooManyMethods"/>
+  <rule ref="category/java/design.xml/UselessOverridingMethod"/>
 </ruleset>
