@@ -1214,7 +1214,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String playerID = PlayerConverter.getID(args[1]);
-        final boolean isOnline = !(PlayerConverter.getPlayer(playerID) == null);
+        final boolean isOnline = PlayerConverter.getPlayer(playerID) != null;
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list

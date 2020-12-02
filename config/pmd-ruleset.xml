@@ -144,4 +144,5 @@
   <rule ref="category/java/design.xml/GodClass"/>
   <rule ref="category/java/design.xml/ImmutableField"/>
   <!--<rule ref="category/java/design.xml/LawOfDemeter"/>-->
+  <rule ref="category/java/design.xml/LogicInversion"/>
 </ruleset>
