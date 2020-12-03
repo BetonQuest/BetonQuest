@@ -164,4 +164,10 @@
 
   <rule ref="category/java/documentation.xml/CommentContent"/>
   <rule ref="category/java/documentation.xml/CommentRequired"/>
+  <rule ref="category/java/documentation.xml/CommentSize">
+    <properties>
+      <property name="maxLines" value="0"/>
+      <property name="maxLineLength" value="80"/>
+    </properties>
+  </rule>
 </ruleset>
