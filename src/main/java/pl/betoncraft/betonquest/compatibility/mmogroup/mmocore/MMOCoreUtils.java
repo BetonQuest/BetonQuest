@@ -11,9 +11,12 @@ import java.io.File;
 import java.util.UUID;
 
 
-public class MMOCoreUtils {
+public final class MMOCoreUtils {
 
     public static YamlConfiguration mmoCoreAttributeConfig;
+
+    private MMOCoreUtils() {
+    }
 
     public static void loadMMOCoreAttributeConfig() {
         mmoCoreAttributeConfig = YamlConfiguration.loadConfiguration(new File(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder(), "attributes.yml"));

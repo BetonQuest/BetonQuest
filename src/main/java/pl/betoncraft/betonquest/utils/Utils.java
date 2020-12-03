@@ -35,7 +35,10 @@ import java.util.regex.Pattern;
  * Various utilities.
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass"})
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+    }
 
     /**
      * Does a full configuration backup.

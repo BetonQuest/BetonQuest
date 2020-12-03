@@ -9,7 +9,10 @@ import java.util.UUID;
  * Converts playerIDs to Player objects and back to playerIDs.
  */
 @SuppressWarnings("PMD.ClassNamingConventions")
-public class PlayerConverter {
+public final class PlayerConverter {
+
+    private PlayerConverter() {
+    }
 
     /**
      * Returns playerID of the passed Player.

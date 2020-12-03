@@ -390,7 +390,7 @@ public class BetonQuest extends JavaPlugin {
         new CombatTagger();
 
         // load colors for conversations
-        new ConversationColors();
+        ConversationColors.loadColors();
 
         // start mob kill listener
         new MobKillListener();
@@ -831,7 +831,7 @@ public class BetonQuest extends JavaPlugin {
         // and start new one with reloaded configs
         LogUtils.getLogger().log(Level.FINE, "Restarting global locations");
         new GlobalObjectives();
-        new ConversationColors();
+        ConversationColors.loadColors();
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
