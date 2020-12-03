@@ -14,5 +14,6 @@ public class SoundIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final Player player) {
+        // Empty
     }
 }

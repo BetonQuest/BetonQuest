@@ -51,5 +51,6 @@ public interface ConversationIO {
      * Send message through ConversationIO
      */
     default void print(final String message) {
+        // Empty
     }
 }

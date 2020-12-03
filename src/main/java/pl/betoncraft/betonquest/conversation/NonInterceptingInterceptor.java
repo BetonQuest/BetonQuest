@@ -28,6 +28,6 @@ public class NonInterceptingInterceptor implements Interceptor {
 
     @Override
     public void end() {
-
+        // Empty
     }
 }

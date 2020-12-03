@@ -34,6 +34,7 @@ public class LoginObjective extends Objective implements Listener {
 
     @Override
     public void start() {
+        // Empty
     }
 
     @Override
@@ -44,6 +45,7 @@ public class LoginObjective extends Objective implements Listener {
 
     @Override
     public void stop() {
+        // Empty
     }
 
     @Override

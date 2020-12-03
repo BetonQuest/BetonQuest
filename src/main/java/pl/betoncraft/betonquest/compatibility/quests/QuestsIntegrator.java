@@ -31,12 +31,12 @@ public class QuestsIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

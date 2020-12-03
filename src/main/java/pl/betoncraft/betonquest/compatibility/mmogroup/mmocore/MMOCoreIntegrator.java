@@ -34,11 +34,11 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 }

@@ -335,6 +335,7 @@ public class MenuConvIO extends ChatConvIO {
     @Override
     @EventHandler(ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
+        // Empty
     }
 
     /**

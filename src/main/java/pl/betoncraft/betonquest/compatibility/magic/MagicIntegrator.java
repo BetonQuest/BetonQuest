@@ -26,12 +26,12 @@ public class MagicIntegrator implements Integrator, Listener {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
     @EventHandler(ignoreCancelled = true)

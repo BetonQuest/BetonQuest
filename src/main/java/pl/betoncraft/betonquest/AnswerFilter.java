@@ -107,17 +107,17 @@ public class AnswerFilter implements Filter {
 
     @Override
     public void initialize() {
-
+        // Empty
     }
 
     @Override
     public void start() {
-
+        // Empty
     }
 
     @Override
     public void stop() {
-
+        // Empty
     }
 
     @Override

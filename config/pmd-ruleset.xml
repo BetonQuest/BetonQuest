@@ -171,4 +171,5 @@
     </properties>
   </rule>
   <!--<rule ref="category/java/documentation.xml/UncommentedEmptyConstructor"/>-->
+  <rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody"/>
 </ruleset>

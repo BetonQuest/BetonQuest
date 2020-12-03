@@ -37,6 +37,7 @@ public class EffectLibIntegrator implements Integrator {
 
     @Override
     public void reload() {
+        // Empty
     }
 
     @Override

@@ -70,7 +70,7 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

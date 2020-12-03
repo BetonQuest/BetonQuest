@@ -31,12 +31,12 @@ public class McMMOIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

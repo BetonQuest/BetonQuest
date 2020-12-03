@@ -21,12 +21,12 @@ public class PlaceholderAPIIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }
