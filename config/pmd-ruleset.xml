@@ -170,4 +170,5 @@
       <property name="maxLineLength" value="80"/>
     </properties>
   </rule>
+  <!--<rule ref="category/java/documentation.xml/UncommentedEmptyConstructor"/>-->
 </ruleset>
