@@ -51,9 +51,10 @@ public class Zipper {
 
                 final FileInputStream input = new FileInputStream(sourceFolder + File.separator + file);
 
-                int len;
-                while ((len = input.read(buffer)) > 0) {
+                int len = input.read(buffer);
+                while (len > 0) {
                     zos.write(buffer, 0, len);
+                    len = input.read(buffer);
                 }
 
                 input.close();

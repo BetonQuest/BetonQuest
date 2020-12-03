@@ -75,12 +75,12 @@ public class PickRandomEvent extends QuestEvent {
         }
         //pick as many events as given with pick optional (or 1 if amount wasn't specified)
         int pick = this.amount == null ? 1 : this.amount.getInt(playerID);
-        while (pick-- > 0 && !events.isEmpty()) {
+        while (pick > 0 && !events.isEmpty()) {
+            pick--;
             //choose a random number between 0 and the total amount of percentages
             final double found = Math.random() * total;
             double current = 0;
             //go through all random events and pick the first one where the current sum is higher than the found random number
-            inner:
             for (int i = 0; i < events.size(); i++) {
                 final RandomEvent event = events.get(i);
                 final double chance = event.getChance().getDouble(playerID);
@@ -91,7 +91,7 @@ public class PickRandomEvent extends QuestEvent {
                     //remove the event from the list so that it's not picked again
                     events.remove(i);
                     total -= chance;
-                    break inner;
+                    break;
                 }
             }
         }

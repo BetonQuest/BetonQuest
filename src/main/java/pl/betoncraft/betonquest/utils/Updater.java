@@ -177,9 +177,10 @@ public class Updater {
     private String readStringFromURL(final String url) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader bufferedReader = new BufferedReader(reader)) {
             final StringBuilder builder = new StringBuilder();
-            int singleChar;
-            while ((singleChar = bufferedReader.read()) != -1) {
+            int singleChar = bufferedReader.read();
+            while (singleChar != -1) {
                 builder.append((char) singleChar);
+                singleChar = bufferedReader.read();
             }
             return builder.toString();
         }

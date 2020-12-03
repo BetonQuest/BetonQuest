@@ -175,7 +175,8 @@ public final class Utils {
                     StringBuilder lineBuilder = new StringBuilder();
                     final int lineLength = getStringLength(line);
                     if (lineLength <= charsPerLine) {
-                        if (++lines > linesPerPage) {
+                        lines++;
+                        if (lines > linesPerPage) {
                             pages.add(page.toString());
                             lines = 1;
                             page = new StringBuilder();
@@ -187,7 +188,8 @@ public final class Utils {
                         final int stringLength = getStringLength(word);
                         final int lineBuilderLength = getStringLength(lineBuilder.toString());
                         if (lineBuilderLength + stringLength > charsPerLine) {
-                            if (++lines > linesPerPage) {
+                            lines++;
+                            if (lines > linesPerPage) {
                                 pages.add(page.toString());
                                 lines = 1;
                                 page = new StringBuilder();
@@ -197,7 +199,8 @@ public final class Utils {
                         }
                         lineBuilder.append(word).append(' ');
                     }
-                    if (++lines > linesPerPage) {
+                    lines++;
+                    if (lines > linesPerPage) {
                         pages.add(page.toString());
                         lines = 1;
                         page = new StringBuilder();

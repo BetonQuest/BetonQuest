@@ -70,9 +70,12 @@ public class PotionHandler {
     }
 
     public void setCustom(final String custom) throws InstructionParseException {
-        final String[] parts;
-        if (custom == null || (parts = custom.split(",")).length == 0) {
-            throw new InstructionParseException("Missing value");
+        if (custom == null) {
+            throw new InstructionParseException("Potion is null!");
+        }
+        final String[] parts = custom.split(",");
+        if (parts.length == 0) {
+            throw new InstructionParseException("Missing values!");
         }
         if ("none".equalsIgnoreCase(custom)) {
             customE = Existence.FORBIDDEN;
@@ -144,9 +147,12 @@ public class PotionHandler {
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private void set(final String custom) throws InstructionParseException {
-            final String[] parts;
-            if (custom == null || (parts = custom.split(":")).length == 0) {
-                throw new InstructionParseException("Missing value");
+            if (custom == null) {
+                throw new InstructionParseException("Potion is null!");
+            }
+            final String[] parts = custom.split(":");
+            if (parts.length == 0) {
+                throw new InstructionParseException("Missing values!");
             }
             if (parts[0].startsWith("none-")) {
                 parts[0] = parts[0].substring(5);

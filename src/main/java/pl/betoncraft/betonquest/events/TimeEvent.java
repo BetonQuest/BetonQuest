@@ -18,11 +18,12 @@ public class TimeEvent extends QuestEvent {
     public TimeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String time = instruction.next();
+        add = time.startsWith("+");
         try {
-            if (add = time.startsWith("+")) {
-                amount = Long.valueOf(time.substring(1)) * 1000;
+            if (add) {
+                amount = Long.parseLong(time.substring(1)) * 1000;
             } else {
-                amount = Long.valueOf(time) * 1000 + 18_000;
+                amount = Long.parseLong(time) * 1000 + 18_000;
             }
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse time amount", e);
