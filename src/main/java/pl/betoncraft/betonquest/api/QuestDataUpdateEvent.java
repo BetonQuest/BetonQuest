@@ -6,7 +6,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Should be fired when the quest data updates
  */
-@SuppressWarnings("PMD.DataClass")
+@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class QuestDataUpdateEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

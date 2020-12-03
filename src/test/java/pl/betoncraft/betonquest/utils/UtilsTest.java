@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressWarnings("PMD.CommentRequired")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Config.class, LogUtils.class, BetonQuest.class,})
 public class UtilsTest {

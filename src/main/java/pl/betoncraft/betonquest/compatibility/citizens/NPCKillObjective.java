@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Player has to kill an NPC
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCKillObjective extends Objective implements Listener {
 
     private final int npcId;

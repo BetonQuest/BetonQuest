@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Collection;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MythicMobDistanceCondition extends Condition {
 
     private final String mythicMobInternalName;

@@ -18,6 +18,7 @@ import java.util.*;
 /**
  * Adds tellraw command handling to the SimpleConvIO
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TellrawConvIO extends ChatConvIO {
 
     protected Map<Integer, String> hashes;

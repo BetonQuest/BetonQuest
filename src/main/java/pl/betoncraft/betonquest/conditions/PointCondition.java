@@ -15,6 +15,7 @@ import java.util.List;
  * Requires the player to have specified amount of points (or more) in specified
  * category
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PointCondition extends Condition {
 
     protected final String category;

@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("PMD.CommentRequired")
 public interface PacketHandler {
 
     /**

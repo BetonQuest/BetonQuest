@@ -25,6 +25,7 @@ import java.util.logging.Level;
 /**
  * Displays a particle above NPCs with conversations.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;

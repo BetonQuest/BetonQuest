@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsGiveEvent extends QuestEvent {
 
     private final MMOItems mmoPlugin = MMOItems.plugin;

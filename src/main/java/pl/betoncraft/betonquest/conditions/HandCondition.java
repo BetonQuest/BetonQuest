@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Holding item in hand condition
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HandCondition extends Condition {
 
     private final QuestItem questItem;

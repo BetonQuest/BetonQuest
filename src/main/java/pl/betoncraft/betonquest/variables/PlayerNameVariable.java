@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * This variable resolves into the player's name. It can has optional "display"
  * argument, which will resolve it to the display name.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PlayerNameVariable extends Variable {
 
     private final boolean display;

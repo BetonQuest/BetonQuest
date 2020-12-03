@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Interface which handles tab complete for commands.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public interface SimpleTabCompleter extends TabCompleter {
 
 

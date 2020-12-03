@@ -9,6 +9,7 @@ import org.bukkit.event.Event;
 /**
  * Skript event, which listens to custom event fired by BetonQuest's event
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;

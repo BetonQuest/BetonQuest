@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Manages player's permissions
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PermissionEvent extends QuestEvent {
 
     private final String world;

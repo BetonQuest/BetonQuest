@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.VariableInstruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalVariableID extends ID {
     public GlobalVariableID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);

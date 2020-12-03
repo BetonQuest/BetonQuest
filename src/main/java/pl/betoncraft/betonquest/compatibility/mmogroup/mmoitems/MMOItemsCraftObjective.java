@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import static net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent.StationAction;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsCraftObjective extends Objective implements Listener {
 
     private final Type itemType;

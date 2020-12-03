@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 /**
  * Requires the specified global tag to be set
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalTagCondition extends TagCondition {
 
     public GlobalTagCondition(final Instruction instruction) throws InstructionParseException {

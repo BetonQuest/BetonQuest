@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Checks if the chest contains specified items.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ChestItemCondition extends Condition {
 
     private final Item[] questItems;

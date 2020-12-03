@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ShopkeepersIntegrator implements Integrator {
 
     private final BetonQuest plugin;

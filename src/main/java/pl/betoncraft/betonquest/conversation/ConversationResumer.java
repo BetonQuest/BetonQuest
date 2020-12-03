@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Resumes the conversation for the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
 
     private final String original;

@@ -13,6 +13,7 @@ import java.util.Date;
  * <p>
  * Created by Jonas Blocher on 27.11.2017.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RealTimeCondition extends Condition {
 
     private final int hoursMin;

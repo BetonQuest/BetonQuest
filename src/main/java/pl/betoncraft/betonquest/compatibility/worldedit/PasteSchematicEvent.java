@@ -29,6 +29,7 @@ import java.util.logging.Level;
 /**
  * Pastes a schematic at a given location.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PasteSchematicEvent extends QuestEvent {
 
     private File file;

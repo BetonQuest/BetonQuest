@@ -36,6 +36,7 @@ import java.util.logging.Level;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Backpack implements Listener {
 
     /**

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 import java.util.UUID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionExperienceEvent extends QuestEvent {
 
     private final Profession profession;

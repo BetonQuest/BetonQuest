@@ -19,6 +19,7 @@ import java.util.logging.Level;
 /**
  * Modifies player's points
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PointEvent extends QuestEvent {
     protected final VariableNumber count;
     protected final boolean multi;

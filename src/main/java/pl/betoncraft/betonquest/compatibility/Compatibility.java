@@ -41,6 +41,7 @@ import java.util.logging.Level;
 /**
  * Compatibility with other plugins
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Compatibility implements Listener {
 
     private static Compatibility instance;

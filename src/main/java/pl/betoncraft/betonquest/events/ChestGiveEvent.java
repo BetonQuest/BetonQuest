@@ -16,6 +16,7 @@ import java.util.HashMap;
 /**
  * Puts items in a specified chest.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ChestGiveEvent extends QuestEvent {
 
     private final Item[] questItems;

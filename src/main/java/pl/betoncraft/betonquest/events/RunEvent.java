@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Allows for running multiple events with one instruction string.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RunEvent extends QuestEvent {
 
     private final List<QuestEvent> internalEvents = new ArrayList<>();

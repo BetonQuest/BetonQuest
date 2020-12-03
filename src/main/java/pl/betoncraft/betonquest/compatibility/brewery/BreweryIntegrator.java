@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.brewery;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class BreweryIntegrator implements Integrator {
 
     private final BetonQuest plugin;

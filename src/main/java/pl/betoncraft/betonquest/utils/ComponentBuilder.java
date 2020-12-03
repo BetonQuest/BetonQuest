@@ -17,6 +17,7 @@ import java.util.logging.Level;
  * <p>
  * Created on 23.06.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public interface ComponentBuilder {
 
     ComponentBuilder append(String text);

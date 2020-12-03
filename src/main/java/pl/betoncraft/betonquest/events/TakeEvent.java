@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * Removes items from player's inventory and/or backpack
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TakeEvent extends QuestEvent {
 
     private final Item[] questItems;

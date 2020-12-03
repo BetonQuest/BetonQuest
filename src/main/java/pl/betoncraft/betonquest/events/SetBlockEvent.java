@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Sets a block specified as {@link BlockSelector} at specified location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SetBlockEvent extends QuestEvent {
 
     private final BlockSelector selector;

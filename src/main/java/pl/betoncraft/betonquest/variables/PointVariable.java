@@ -12,6 +12,7 @@ import java.util.List;
  * Allows you to display total amount of points or amount of points remaining to
  * some other amount.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PointVariable extends Variable {
 
     protected String category;

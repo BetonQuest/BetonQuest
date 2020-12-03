@@ -19,6 +19,7 @@ import java.util.logging.Level;
 /**
  * Changes the default language for the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
     public LangCommand() {

@@ -17,6 +17,7 @@ import java.util.Map.Entry;
  * Player has to wait specified amount of time. He may logout, the objective
  * will be completed as soon as the time is up and he logs in again.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DelayObjective extends Objective {
 
     private final double delay;

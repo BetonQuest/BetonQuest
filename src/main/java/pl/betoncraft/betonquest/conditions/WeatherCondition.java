@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the weather to be of specific type
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class WeatherCondition extends Condition {
 
     private final String weather;

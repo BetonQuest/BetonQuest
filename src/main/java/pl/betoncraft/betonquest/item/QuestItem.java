@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 /**
  * Represents an item handled by the configuration.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired"})
 public class QuestItem {
 
     private final BlockSelector selector;

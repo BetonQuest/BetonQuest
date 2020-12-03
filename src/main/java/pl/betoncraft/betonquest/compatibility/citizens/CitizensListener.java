@@ -20,6 +20,7 @@ import java.util.logging.Level;
 /**
  * Starts new conversations with NPCs
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensListener implements Listener {
 
     private RightClickListener rightClick;

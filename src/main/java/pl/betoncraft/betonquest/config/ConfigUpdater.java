@@ -37,7 +37,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity",
         "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity",
-        "PMD.SwitchDensity", "PMD.TooManyMethods"})
+        "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

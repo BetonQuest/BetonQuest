@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Player has to wear this item as an armor
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ArmorCondition extends Condition {
 
     private final QuestItem item;

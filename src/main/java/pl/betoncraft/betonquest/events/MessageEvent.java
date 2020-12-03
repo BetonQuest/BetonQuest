@@ -24,6 +24,7 @@ import java.util.logging.Level;
  */
 // TODO Delete in BQ 2.0.0
 @Deprecated
+@SuppressWarnings("PMD.CommentRequired")
 public class MessageEvent extends QuestEvent {
 
     private final Map<String, String> messages = new HashMap<>();

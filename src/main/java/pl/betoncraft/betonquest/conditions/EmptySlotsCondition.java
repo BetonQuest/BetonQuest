@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has required amount of empty slots in his inventory
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EmptySlotsCondition extends Condition {
 
     private final VariableNumber needed;

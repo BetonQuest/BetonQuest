@@ -14,6 +14,7 @@ import java.util.Locale;
 /**
  * Adds experience in specified skill.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class McMMOAddExpEvent extends QuestEvent {
 
     private final String skillType;

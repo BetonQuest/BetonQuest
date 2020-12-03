@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.item.typehandler;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Number;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler {
 
     private short durability = 0;

@@ -18,6 +18,7 @@ import java.util.Map;
  * Prevents Citizens NPCs from walking around when in conversation with the
  * player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
     private static CitizensWalkingListener instance = null;

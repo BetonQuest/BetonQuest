@@ -30,7 +30,7 @@ import java.util.logging.Level;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
 public class PlayerData {
 
     private final Saver saver = BetonQuest.getInstance().getSaver();

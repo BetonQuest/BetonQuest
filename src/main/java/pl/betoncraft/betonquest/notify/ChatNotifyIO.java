@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ChatNotifyIO extends NotifyIO {
 
     public ChatNotifyIO(final Map<String, String> data) throws InstructionParseException {

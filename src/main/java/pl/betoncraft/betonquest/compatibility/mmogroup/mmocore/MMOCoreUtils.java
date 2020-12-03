@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.UUID;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public final class MMOCoreUtils {
 
     public static YamlConfiguration mmoCoreAttributeConfig;

@@ -26,6 +26,7 @@ import java.util.UUID;
 /**
  * Player has to enter the WorldGuard region
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RegionObjective extends Objective implements Listener {
 
     private final String name;

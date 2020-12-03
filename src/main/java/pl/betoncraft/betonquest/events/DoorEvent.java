@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * This event opens/closes/toggles doors, trapdoors and gates.
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "PMD.CommentRequired"})
 public class DoorEvent extends QuestEvent {
 
     private final CompoundLocation loc;

@@ -23,6 +23,7 @@ import java.util.Locale;
 /**
  * Spawns mobs at given location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SpawnMobEvent extends QuestEvent {
 
     private final CompoundLocation loc;

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Adds the experience the a class.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HeroesExperienceEvent extends QuestEvent {
 
     private final boolean primary;

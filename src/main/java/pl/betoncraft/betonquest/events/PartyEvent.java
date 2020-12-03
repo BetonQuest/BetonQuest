@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Fires specified events for every player in the party
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PartyEvent extends QuestEvent {
 
     private final ConditionID[] conditions;

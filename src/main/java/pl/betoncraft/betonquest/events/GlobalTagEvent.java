@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 /**
  * Adds or removes global tags
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalTagEvent extends TagEvent {
 
     public GlobalTagEvent(final Instruction instruction) throws InstructionParseException {

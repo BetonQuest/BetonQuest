@@ -111,6 +111,7 @@ public class StaticEvents {
     /**
      * EventTimer represents a timer for an event
      */
+    @SuppressWarnings("PMD.CommentRequired")
     private class EventTimer extends TimerTask {
 
         protected final EventID[] event;

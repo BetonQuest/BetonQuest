@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the time is right
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TimeCondition extends Condition {
 
     private final double timeMin;

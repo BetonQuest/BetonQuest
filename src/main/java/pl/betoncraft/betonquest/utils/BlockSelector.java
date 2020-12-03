@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
  * - material - The material the block is made of. Regex and Tags are allowed
  * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets. Regex allowed
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;

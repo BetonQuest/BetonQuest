@@ -20,6 +20,7 @@ import java.util.UUID;
 /**
  * Checks if the player is holding a wand.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class WandCondition extends Condition {
 
     private final MagicAPI api;

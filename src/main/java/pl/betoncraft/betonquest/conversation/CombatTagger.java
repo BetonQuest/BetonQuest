@@ -20,6 +20,7 @@ import java.util.Map;
  * Tags players that are in combat to prevent them from starting the
  * conversation
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
 
     private static final Map<String, Boolean> TAGGED = new HashMap<>();

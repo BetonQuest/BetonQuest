@@ -18,6 +18,7 @@ import java.util.stream.Stream;
  * Checks the conditions for the whole party (including the player that started
  * the checking)
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PartyCondition extends Condition {
 
     private final VariableNumber range;

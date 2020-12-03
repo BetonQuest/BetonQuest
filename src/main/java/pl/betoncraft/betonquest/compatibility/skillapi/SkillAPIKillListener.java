@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.api.MobKillNotifier;
 /**
  * Listens to kills by SkillAPI skills.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkillAPIKillListener implements Listener {
 
     public SkillAPIKillListener() {

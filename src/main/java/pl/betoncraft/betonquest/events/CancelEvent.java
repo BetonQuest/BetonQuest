@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Cancels the quest for the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CancelEvent extends QuestEvent {
 
     private final String canceler;

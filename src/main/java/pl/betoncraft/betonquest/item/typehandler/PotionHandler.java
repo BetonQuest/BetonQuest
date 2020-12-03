@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class PotionHandler {
 
     private PotionType type = PotionType.WATER;

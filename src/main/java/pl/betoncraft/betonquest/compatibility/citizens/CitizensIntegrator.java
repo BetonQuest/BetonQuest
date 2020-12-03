@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEve
 import java.util.Arrays;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensIntegrator implements Integrator {
 
     private final BetonQuest plugin;

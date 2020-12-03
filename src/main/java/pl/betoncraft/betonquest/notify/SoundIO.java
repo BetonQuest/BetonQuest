@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class SoundIO extends NotifyIO {
 
     public SoundIO(final Map<String, String> data) throws InstructionParseException {

@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to consume an item (eat food or drink s potion).
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConsumeObjective extends Objective implements Listener {
 
     private final QuestItem item;

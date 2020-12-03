@@ -13,6 +13,7 @@ import java.util.logging.Level;
 /**
  * Connects to and uses a SQLite database
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SQLite extends Database {
     private final String dbLocation;
 

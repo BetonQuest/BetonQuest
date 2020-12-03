@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VehicleCondition extends Condition {
 
     private EntityType vehicle;

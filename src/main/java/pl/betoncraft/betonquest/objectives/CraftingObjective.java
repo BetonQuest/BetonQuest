@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Player has to craft specified amount of items
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CraftingObjective extends Objective implements Listener {
 
     private final QuestItem item;

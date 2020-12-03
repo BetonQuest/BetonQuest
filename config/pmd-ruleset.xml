@@ -163,4 +163,5 @@
   <rule ref="category/java/design.xml/UseUtilityClass"/>
 
   <rule ref="category/java/documentation.xml/CommentContent"/>
+  <rule ref="category/java/documentation.xml/CommentRequired"/>
 </ruleset>

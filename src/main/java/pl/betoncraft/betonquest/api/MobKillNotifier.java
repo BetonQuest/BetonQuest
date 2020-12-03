@@ -16,6 +16,7 @@ import java.util.List;
  * allows players to kill mobs without direct contact (like spells), call
  * addKill method each time the player kills a mob like that.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MobKillNotifier {
 
     private static final HandlerList HANDLERS = new HandlerList();

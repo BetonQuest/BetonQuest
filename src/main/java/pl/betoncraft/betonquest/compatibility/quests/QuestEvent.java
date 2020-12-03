@@ -11,6 +11,7 @@ import java.util.logging.Level;
 /**
  * Starts a quests in Quests plugin.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
 
     private final String questName;

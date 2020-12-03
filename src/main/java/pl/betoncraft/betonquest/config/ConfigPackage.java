@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 /**
  * Holds configuration files of the package
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ConfigPackage {
 
     private final String name;

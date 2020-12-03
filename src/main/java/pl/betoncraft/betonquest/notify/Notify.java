@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public final class Notify {
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
     private static String defaultNotifyIO = null;

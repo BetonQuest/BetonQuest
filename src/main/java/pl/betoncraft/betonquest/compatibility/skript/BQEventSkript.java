@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Fires the custom event for Skript to listen to
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BQEventSkript extends QuestEvent {
 
     private final String identifier;

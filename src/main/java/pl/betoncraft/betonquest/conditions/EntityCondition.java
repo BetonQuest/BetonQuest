@@ -20,6 +20,7 @@ import java.util.Locale;
 /**
  * Checks if there are specified entities in the area
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EntityCondition extends Condition {
 
     private final EntityType[] types;

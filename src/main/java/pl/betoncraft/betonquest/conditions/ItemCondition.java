@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Requires the player to have specified amount of items in the inventory
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ItemCondition extends Condition {
 
     private final Item[] questItems;

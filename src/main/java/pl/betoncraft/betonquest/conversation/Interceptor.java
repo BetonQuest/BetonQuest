@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.conversation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 
+@SuppressWarnings("PMD.CommentRequired")
 public interface Interceptor {
 
     /**

@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Number;
 
 import java.util.*;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class EnchantmentsHandler {
 
     private List<SingleEnchantmentHandler> checkers = new ArrayList<>();

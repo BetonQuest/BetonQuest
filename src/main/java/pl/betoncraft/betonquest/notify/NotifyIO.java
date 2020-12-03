@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class NotifyIO {
     protected final static String CATCH_MESSAGE_FLOAT = "%s '%s' couldn't be parsed, it is not a valid floating point number!";
     protected final static String CATCH_MESSAGE_INTEGER = "%s '%s' couldn't be parsed, it is not a valid number!";

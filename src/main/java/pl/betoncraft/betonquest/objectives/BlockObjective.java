@@ -23,6 +23,7 @@ import java.util.logging.Level;
  * Player has to break/place specified amount of blocks. Doing opposite thing
  * (breaking when should be placing) will reverse the progress.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BlockObjective extends Objective implements Listener {
 
     private final int neededAmount;

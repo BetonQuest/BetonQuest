@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD.DataClass")
+@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class BookHandler {
 
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");

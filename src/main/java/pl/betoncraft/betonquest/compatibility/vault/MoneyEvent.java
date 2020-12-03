@@ -16,6 +16,7 @@ import java.util.logging.Level;
 /**
  * Modifies player's balance
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MoneyEvent extends QuestEvent {
 
     private final VariableNumber amount;

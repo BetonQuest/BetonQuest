@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WrapperPlayServerAnimation extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Server.ANIMATION;

@@ -16,6 +16,7 @@ import java.util.logging.Level;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalData {
 
     private final Saver saver = BetonQuest.getInstance().getSaver();

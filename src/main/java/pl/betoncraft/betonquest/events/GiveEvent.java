@@ -21,6 +21,7 @@ import java.util.logging.Level;
 /**
  * Gives the player specified items
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GiveEvent extends QuestEvent {
 
     private final Item[] questItems;

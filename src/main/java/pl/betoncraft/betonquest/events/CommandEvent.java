@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Fires a list of commands for the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CommandEvent extends QuestEvent {
 
     private final Command[] commands;

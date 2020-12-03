@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Collection;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class GiveBrewEvent extends QuestEvent {
 
     private final Integer amount;

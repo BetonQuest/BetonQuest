@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
  * <p>
  * Created on 29.06.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class KillMobEvent extends QuestEvent {
 
     private final EntityType type;

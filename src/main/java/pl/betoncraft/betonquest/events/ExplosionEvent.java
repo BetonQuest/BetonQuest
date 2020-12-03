@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Spawns an explosion in a given location and with given flags
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ExplosionEvent extends QuestEvent {
 
     private final boolean setsFire;

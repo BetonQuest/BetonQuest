@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
 /**
  * Represents a conversation with NPC
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensConversation extends Conversation {
 
     private final NPC npc;

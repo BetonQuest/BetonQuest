@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Checks Y height player is at (must be below)
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HeightCondition extends Condition {
 
     private final VariableNumber height;

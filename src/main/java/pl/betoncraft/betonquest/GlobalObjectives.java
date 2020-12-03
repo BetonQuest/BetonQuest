@@ -12,6 +12,7 @@ import java.util.Set;
 /**
  * Handler for global objectives
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
 
     private static GlobalObjectives instance;

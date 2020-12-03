@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import pl.betoncraft.betonquest.utils.Utils;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ColorHandler {
 
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();

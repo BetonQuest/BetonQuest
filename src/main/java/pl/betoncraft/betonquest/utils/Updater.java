@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class Updater {
     private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
     private static final String DEV_API_URL = "https://betonquest.org/old/api/v1/";

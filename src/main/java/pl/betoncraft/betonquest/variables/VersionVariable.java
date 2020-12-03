@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 /**
  * Displays version of the plugin.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class VersionVariable extends Variable {
 
     private final Plugin plugin;

@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Changes the weather on the server
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class WeatherEvent extends QuestEvent {
 
     private final boolean storm;

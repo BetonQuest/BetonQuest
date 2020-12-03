@@ -14,6 +14,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to meet specified condition.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConditionRequirement extends CustomRequirement {
 
     public ConditionRequirement() {

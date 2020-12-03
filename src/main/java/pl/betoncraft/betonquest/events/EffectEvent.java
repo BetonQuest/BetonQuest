@@ -15,6 +15,7 @@ import java.util.logging.Level;
 /**
  * Gives the player specified potion effect
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EffectEvent extends QuestEvent {
 
     private final PotionEffectType effect;

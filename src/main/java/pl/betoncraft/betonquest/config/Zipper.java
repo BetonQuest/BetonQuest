@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class Zipper {
     private final List<String> fileList = new ArrayList<>();
     private final String sourceFolder;

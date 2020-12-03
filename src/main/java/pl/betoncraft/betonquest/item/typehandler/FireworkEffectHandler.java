@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class FireworkEffectHandler {
 
     private Type type = Type.BALL; // default type for giving is small ball

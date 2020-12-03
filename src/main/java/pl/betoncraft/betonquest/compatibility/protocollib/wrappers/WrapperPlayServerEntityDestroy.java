@@ -6,6 +6,7 @@ import com.google.common.primitives.Ints;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WrapperPlayServerEntityDestroy extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_DESTROY;

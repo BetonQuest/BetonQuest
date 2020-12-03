@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
  * <p>
  * Created on 01.10.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCLocationCondition extends Condition {
 
     private final int npcId;

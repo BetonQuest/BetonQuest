@@ -25,6 +25,7 @@ import java.util.logging.Level;
  * the player to kill specifically named mobs and notify them about the required
  * amount.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MobKillObjective extends Objective implements Listener {
 
     private final int notifyInterval;

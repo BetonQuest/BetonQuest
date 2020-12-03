@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public CitizensInventoryConvIO(final Conversation conv, final String playerID) {

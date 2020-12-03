@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * <p>
  * Created on 01.10.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class FacingCondition extends Condition {
 
     private final Direction direction;

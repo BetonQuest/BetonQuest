@@ -18,6 +18,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * The player must tame specified amount of specified mobs
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TameObjective extends Objective implements Listener {
 
     private final EntityType type;

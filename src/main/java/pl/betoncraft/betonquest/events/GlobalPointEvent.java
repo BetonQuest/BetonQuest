@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 /**
  * Modifies global Points
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointEvent extends PointEvent {
 
     public GlobalPointEvent(final Instruction instruction) throws InstructionParseException {

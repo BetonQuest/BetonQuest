@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
 /**
  * Fires when a player starts a conversation with an NPC
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationEndEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();

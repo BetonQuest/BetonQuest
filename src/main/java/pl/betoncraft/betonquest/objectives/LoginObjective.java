@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to join the server.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LoginObjective extends Objective implements Listener {
 
     public LoginObjective(final Instruction instruction) throws InstructionParseException {

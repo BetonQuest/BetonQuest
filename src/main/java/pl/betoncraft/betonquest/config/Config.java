@@ -19,7 +19,8 @@ import java.util.logging.Level;
 /**
  * Handles the configuration of the plugin
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
+        "PMD.CommentRequired"})
 public class Config {
 
     private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");

@@ -21,6 +21,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to shear a sheep.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ShearObjective extends Objective implements Listener {
 
     private final String color;

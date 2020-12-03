@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Runs specified Denizen task script.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DenizenTaskScriptEvent extends QuestEvent {
 
     private final String name;

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
 
     private final List<BarFlag> barFlags;

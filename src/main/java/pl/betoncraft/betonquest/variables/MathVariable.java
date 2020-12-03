@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 /**
  * This variable evaluates the given calculation and returns the result.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MathVariable extends Variable {
 
     private final Calculable calculation;

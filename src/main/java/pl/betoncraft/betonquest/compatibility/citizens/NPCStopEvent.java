@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 /**
  * Stop the NPC when he is walking
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCStopEvent extends QuestEvent implements Listener {
     private final int npcId;
 

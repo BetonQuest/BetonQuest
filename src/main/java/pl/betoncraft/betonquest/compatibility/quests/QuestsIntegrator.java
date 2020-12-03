@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class QuestsIntegrator implements Integrator {
 
     private static Quests questsInstance;

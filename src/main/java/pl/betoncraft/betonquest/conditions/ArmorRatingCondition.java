@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specific armor rating
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ArmorRatingCondition extends Condition {
 
     private final VariableNumber required;

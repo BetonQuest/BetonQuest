@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 // TODO Delete in BQ 2.0.0
 @Deprecated
+@SuppressWarnings("PMD.CommentRequired")
 public class ObjectiveID extends pl.betoncraft.betonquest.id.ObjectiveID {
 
     public ObjectiveID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {

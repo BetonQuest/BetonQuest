@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Gives the player specified amount of experience
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ExperienceEvent extends QuestEvent {
 
     private final VariableNumber amount;

@@ -4,6 +4,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class DenizenIntegrator implements Integrator {
 
     private final BetonQuest plugin;

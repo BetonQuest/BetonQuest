@@ -27,6 +27,7 @@ import java.util.logging.Level;
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class QuestCanceler {
 
     private String item;

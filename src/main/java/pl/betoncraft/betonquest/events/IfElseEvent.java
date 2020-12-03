@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.id.EventID;
 /**
  * Runs one or another event, depending of the condition outcome.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class IfElseEvent extends QuestEvent {
 
     private final ConditionID condition;

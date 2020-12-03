@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specified permission node
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PermissionCondition extends Condition {
 
     private final String permission;

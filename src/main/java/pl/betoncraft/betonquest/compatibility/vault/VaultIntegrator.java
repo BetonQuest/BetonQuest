@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.util.logging.Level;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;

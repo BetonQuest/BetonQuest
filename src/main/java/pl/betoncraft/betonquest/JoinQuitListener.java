@@ -22,6 +22,7 @@ import java.util.logging.Level;
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class JoinQuitListener implements Listener {
     /**
      * Creates new listener, which will handle the data loading/saving

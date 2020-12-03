@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Existence;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class LoreHandler {
 
     private final List<String> lore = new LinkedList<>();

@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class PacketHandlerDecorator implements PacketHandler {
 
     private final PacketHandler packetHandler;

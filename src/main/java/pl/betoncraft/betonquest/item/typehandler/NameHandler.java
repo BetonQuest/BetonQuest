@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.item.typehandler;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class NameHandler {
 
     private String name = null;

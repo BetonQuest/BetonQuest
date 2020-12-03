@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 /**
  * Checks if the variable value matches given pattern.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableCondition extends Condition {
 
     private final String variable;

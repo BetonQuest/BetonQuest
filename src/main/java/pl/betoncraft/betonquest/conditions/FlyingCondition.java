@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player is gliding with elytra.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class FlyingCondition extends Condition {
 
     public FlyingCondition(final Instruction instruction) {

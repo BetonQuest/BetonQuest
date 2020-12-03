@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class AdvancementNotifyIO extends NotifyIO {
 
     private final String frame;

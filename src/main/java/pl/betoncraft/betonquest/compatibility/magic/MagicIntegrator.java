@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MagicIntegrator implements Integrator, Listener {
 
     private final BetonQuest plugin;

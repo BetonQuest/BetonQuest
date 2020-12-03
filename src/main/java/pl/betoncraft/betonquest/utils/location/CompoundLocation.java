@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 /**
  * This class parses various location related strings with or without {@link Variable}s.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CompoundLocation {
     private final LocationData locationData;
     private final VectorData vectorData;

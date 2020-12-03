@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.item.typehandler;
 
 import pl.betoncraft.betonquest.item.QuestItem.Existence;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class UnbreakableHandler {
 
     private Existence unbreakable = Existence.WHATEVER;

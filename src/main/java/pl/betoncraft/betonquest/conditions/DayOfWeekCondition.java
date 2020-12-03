@@ -14,6 +14,7 @@ import java.util.Locale;
 /**
  * Created by Jonas Blocher on 27.11.2017.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DayOfWeekCondition extends Condition {
 
     private final DayOfWeek day;

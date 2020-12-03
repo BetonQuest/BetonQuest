@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * Adds the entry to player's journal
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class JournalEvent extends QuestEvent {
 
     private final String name;

@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
 
     private static EffectLibIntegrator instance;

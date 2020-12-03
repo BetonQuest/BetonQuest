@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * <p>
  * Created on 16.10.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MCMMOQuestItemHandler implements Listener {
 
     public MCMMOQuestItemHandler() {

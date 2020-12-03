@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Displays an effect.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ParticleEvent extends QuestEvent {
 
     private final String effectClass;

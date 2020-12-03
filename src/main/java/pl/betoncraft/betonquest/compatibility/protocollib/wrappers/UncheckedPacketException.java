@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.protocollib.wrappers;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class UncheckedPacketException extends RuntimeException {
 
     private static final long serialVersionUID = 60789910395201791L;

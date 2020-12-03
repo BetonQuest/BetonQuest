@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public final class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance = null;

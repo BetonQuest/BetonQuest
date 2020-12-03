@@ -15,6 +15,7 @@ import java.util.List;
  * Allows you to count items in player's inventory and display number remaining
  * to some amount.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ItemAmountVariable extends Variable {
 
     private final QuestItem questItem;

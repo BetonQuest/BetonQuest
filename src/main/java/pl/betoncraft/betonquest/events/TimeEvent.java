@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Changes time on the server
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TimeEvent extends QuestEvent {
 
     private final long amount;

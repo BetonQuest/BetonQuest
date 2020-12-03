@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.util.logging.Level;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class McMMOIntegrator implements Integrator {
 
     private final BetonQuest plugin;

@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ActionBarNotifyIO extends NotifyIO {
 
     public ActionBarNotifyIO(final Map<String, String> data) throws InstructionParseException {

@@ -12,7 +12,7 @@ import java.util.logging.Level;
 /**
  * Holds the colors of the conversations
  */
-@SuppressWarnings("PMD.ClassNamingConventions")
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
 public final class ConversationColors {
 
     private static ChatColor[] npcColors;

@@ -23,6 +23,7 @@ import java.util.logging.Level;
  * {@link pl.betoncraft.betonquest.BetonQuest#registerEvents(String, Class) registerEvents()} method.
  * </p>
  */
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
 
     /**

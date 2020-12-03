@@ -11,6 +11,7 @@ import java.util.logging.Level;
 /**
  * Connects to and uses a MySQL database
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MySQL extends Database {
     private final String user;
     private final String database;

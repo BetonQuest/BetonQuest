@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.compatibility.protocollib.conversation.MenuConvI
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ProtocolLibIntegrator implements Integrator {
 
     private final BetonQuest plugin;

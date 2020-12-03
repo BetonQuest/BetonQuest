@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.api.MobKillNotifier;
 /**
  * Handles kills done by Heroes plugin and passes them to MobKillNotifier.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HeroesMobKillListener implements Listener {
 
     public HeroesMobKillListener() {

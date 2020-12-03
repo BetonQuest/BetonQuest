@@ -11,6 +11,7 @@ import java.util.logging.Level;
 /**
  * Represents a number which might also be a variable.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableNumber {
 
     private double number;

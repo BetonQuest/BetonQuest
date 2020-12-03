@@ -31,6 +31,7 @@ import java.util.logging.Level;
 /**
  * Hides and shows holograms to players, based on conditions.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HologramLoop {
 
     private final Map<Hologram, ConditionID[]> holograms = new HashMap<>();

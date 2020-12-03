@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.id.ConditionID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ConditionVariable extends Variable {
 
     private final ConditionID conditionId;

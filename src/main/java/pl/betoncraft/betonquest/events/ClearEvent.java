@@ -20,6 +20,7 @@ import java.util.Locale;
 /**
  * Clears all specified monsters in a certain location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ClearEvent extends QuestEvent {
 
     private final EntityType[] types;

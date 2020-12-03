@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Provide a packet interceptor to get all chat packets to player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PacketInterceptor implements Interceptor, Listener {
 
     /**

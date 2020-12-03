@@ -16,6 +16,7 @@ import java.util.List;
  * Pick random event is a collection of other events, which can be randomly chosen to run or not based on probability.
  * Other than folder you can specify which events are more likely to be run by adding the percentage.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PickRandomEvent extends QuestEvent {
 
     private final List<RandomEvent> events;

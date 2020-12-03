@@ -29,6 +29,7 @@ import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 /**
  * Player has to kill MythicMobs monster
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MythicMobKillObjective extends Objective implements Listener {
 
     private final Set<String> names = new HashSet<>();

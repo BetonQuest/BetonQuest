@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class SlowTellrawConvIO extends TellrawConvIO {
 
     private final String npcTextColor;

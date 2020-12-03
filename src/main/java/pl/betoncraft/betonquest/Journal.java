@@ -27,6 +27,7 @@ import java.util.logging.Level;
 /**
  * Represents player's journal.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Journal {
 
     private final String playerID;

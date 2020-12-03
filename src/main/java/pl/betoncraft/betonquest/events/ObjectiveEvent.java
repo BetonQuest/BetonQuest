@@ -21,6 +21,7 @@ import java.util.logging.Level;
 /**
  * Starts an objective for the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ObjectiveEvent extends QuestEvent {
 
     private final ObjectiveID objective;

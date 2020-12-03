@@ -30,6 +30,7 @@ import java.util.logging.Level;
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();

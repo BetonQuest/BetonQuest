@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Requires the player to be in specified distance from a location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LocationCondition extends Condition {
 
     private final CompoundLocation loc;

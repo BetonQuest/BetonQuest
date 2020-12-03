@@ -24,6 +24,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to catch the fish.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class FishObjective extends Objective implements Listener {
 
     private final byte data;

@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.citizens.NPCRegionCondition;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WorldGuardIntegrator implements Integrator {
 
     private final BetonQuest plugin;

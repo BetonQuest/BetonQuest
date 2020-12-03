@@ -15,6 +15,7 @@ import java.util.stream.Stream;
  * <p>
  * We also try to handle variable width characters.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LocalChatPaginator extends ChatPaginator {
     public static Map<Character, Integer> fontSizes;
     public static int defaultCharWidth = 6;

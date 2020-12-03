@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * The player must step on the pressure plate
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class StepObjective extends Objective implements Listener {
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
