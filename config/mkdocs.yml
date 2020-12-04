@@ -95,12 +95,14 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
-    - icon: fontawesome/solid/faucet
-      link: https://spigotmc.org/resources/betonquest.2117/
+    - icon: fontawesome/brands/patreon
+      link: https://patreon.com/betonquest
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: fontawesome/solid/archive
       link: https://betonquest.org/old
+    - icon: fontawesome/solid/faucet
+      link: https://spigotmc.org/resources/betonquest.2117/
 
 #Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
 nav:
