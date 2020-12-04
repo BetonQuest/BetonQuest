@@ -186,4 +186,5 @@
   <rule ref="category/java/errorprone.xml/AvoidEnumAsIdentifier"/>
   <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingMethodName"/>
   <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingTypeName"/>
+  <rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause"/>
 </ruleset>

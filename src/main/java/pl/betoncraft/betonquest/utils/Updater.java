@@ -51,21 +51,17 @@ public class Updater {
                 LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
                     findDev();
+                } catch (UnknownHostException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
                 } catch (IOException e) {
-                    if (e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
-                    } else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
                 }
                 try {
                     findRelease();
+                } catch (UnknownHostException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
                 } catch (IOException e) {
-                    if (e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
-                    } else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                 }
                 if (latest.getValue() == null) {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
