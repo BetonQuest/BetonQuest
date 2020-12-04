@@ -176,4 +176,5 @@
   <rule ref="category/java/errorprone.xml/AssignmentInOperand"/>
   <rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic"/>
   <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration"/>
+  <rule ref="category/java/errorprone.xml/AvoidAssertAsIdentifier"/>
 </ruleset>
