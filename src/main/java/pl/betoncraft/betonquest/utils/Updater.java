@@ -253,14 +253,14 @@ public class Updater {
     public static class Version {
         public static final String DEV_TAG = "DEV-";
 
-        private final String version;
+        private final String versionString;
         private final DefaultArtifactVersion artifactVersion;
         private final Integer dev;
         private final boolean unofficial;
 
-        public Version(final String version) {
-            this.version = version;
-            this.artifactVersion = new DefaultArtifactVersion(version);
+        public Version(final String versionString) {
+            this.versionString = versionString;
+            this.artifactVersion = new DefaultArtifactVersion(versionString);
 
             Integer dev = null;
             boolean unofficial = false;
@@ -276,11 +276,11 @@ public class Updater {
             this.unofficial = unofficial;
         }
 
-        public Version(final Version version) {
-            this.version = version.version;
-            this.artifactVersion = version.artifactVersion;
-            this.dev = version.dev;
-            this.unofficial = version.unofficial;
+        public Version(final Version versionString) {
+            this.versionString = versionString.versionString;
+            this.artifactVersion = versionString.artifactVersion;
+            this.dev = versionString.dev;
+            this.unofficial = versionString.unofficial;
         }
 
         @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -331,7 +331,7 @@ public class Updater {
         }
 
         public String getVersion() {
-            return version;
+            return versionString;
         }
 
         public boolean isDev() {

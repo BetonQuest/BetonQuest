@@ -63,7 +63,6 @@ public class Backpack implements Listener {
      * Language of the player
      */
     private final String lang;
-    private final Backpack backpack;
 
     /**
      * Creates new backpack GUI opened at given page type.
@@ -81,7 +80,6 @@ public class Backpack implements Listener {
          */
         final BetonQuest instance = BetonQuest.getInstance();
         playerData = instance.getPlayerData(playerID);
-        backpack = this;
         // create display
         switch (type) {
             case DEFAULT:
@@ -143,7 +141,7 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName"})
     private class Page extends Display {
 
         private final int page;
@@ -258,7 +256,7 @@ public class Backpack implements Listener {
             // set the inventory and display it
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @SuppressWarnings("PMD.NcssCount")
@@ -402,7 +400,7 @@ public class Backpack implements Listener {
             }
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @Override
@@ -534,7 +532,7 @@ public class Backpack implements Listener {
             }
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @Override
