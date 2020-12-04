@@ -477,7 +477,8 @@ public class MenuConvIO extends ChatConvIO {
                 Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
                 .collect(Collectors.toList());
 
-        // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary down to a minimum of 1.
+        // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
+        // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
         if ("chat".equals(configNpcNameType)) {
@@ -489,7 +490,8 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable = Math.max(1, linesAvailable - 2);
         }
 
-        // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less space for all options due to npc text
+        // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less
+        // pace for all options due to npc text
         final List<String> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption;
         int currentDirection = selectedOption == oldSelectedOption ? 1 : selectedOption - oldSelectedOption;

@@ -34,7 +34,8 @@ import java.util.logging.Level;
 /**
  * Displays a hologram relative to an npc
  * <p>
- * Some care is taken to optimize how holograms are displayed. They are destroyed when not needed, shared between players and
+ * Some care is taken to optimize how holograms are displayed. They are destroyed when not needed,
+ * shared between players and
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
 

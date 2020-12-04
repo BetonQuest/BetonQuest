@@ -23,7 +23,8 @@ public class CompoundLocation {
      *
      * @param packName Name of the {@link ConfigPackage} - required for {@link Variable} resolution
      * @param data     string containing raw location in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData} or {@link VectorData}
+     * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData}
+     *                                   or {@link VectorData}
      */
     public CompoundLocation(final String packName, final String data) throws InstructionParseException {
 
@@ -40,7 +41,8 @@ public class CompoundLocation {
     /**
      * @param playerID ID of the player - needed for location resolution
      * @return the location represented by this object
-     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the the resolved location is in the wrong format.
+     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the the resolved location is in
+     *                               the wrong format.
      */
     public Location getLocation(final String playerID) throws QuestRuntimeException {
         final Location loc = locationData.get(playerID);

@@ -32,7 +32,8 @@ public class LocationData extends AbstractData<Location> {
      *
      * @param packName Name of the {@link ConfigPackage} - required for {@link Variable} resolution
      * @param data     string containing raw {@link Location} in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or {@link Location}
+     * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or
+     *                                   {@link Location}
      */
     public LocationData(final String packName, final String data) throws InstructionParseException {
         super(packName, data);

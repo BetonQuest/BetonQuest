@@ -48,7 +48,8 @@ abstract public class ForceSyncHandler<T> {
      * @param playerID Unique internal player ID.
      * @return {@link ForceSyncHandler#execute(String)}'s return value.
      * @throws QuestRuntimeException Either the QRE from the implemented {@link ForceSyncHandler#execute(String)}
-     *                               or from {@link ForceSyncHandler#handle(String)}'s {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
+     *                               or from {@link ForceSyncHandler#handle(String)}'s
+     *                               {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
     public T handle(final String playerID) throws QuestRuntimeException {
         if (forceSync && !Bukkit.isPrimaryThread()) {
