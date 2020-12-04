@@ -120,10 +120,10 @@ public class WandCondition extends Condition {
      *
      * @param wand wand to check
      * @return true if the wand meets the conditions, false otherwise
-     * @throws QuestRuntimeException
      */
-    private boolean checkWand(final Wand wand, final String playerID) throws QuestRuntimeException {
-        if (name != null && !wand.getTemplateKey().equalsIgnoreCase(name)) {
+    @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
+    private boolean checkWand(final Wand wand, final String playerID) {
+        if (name != null && !name.equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }
         if (!spells.isEmpty()) {

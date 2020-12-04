@@ -174,7 +174,6 @@ public class Conversation implements Listener {
             }
             this.option = optionName;
             data = currentData;
-            break;
         }
     }
 

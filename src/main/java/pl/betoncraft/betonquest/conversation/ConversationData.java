@@ -404,10 +404,9 @@ public class ConversationData {
             }
             final ConfigPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
-            if (!BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
-                continue;
+            if (BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -592,7 +591,6 @@ public class ConversationData {
                         continue;
                     }
                     ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
-                    break;
                 }
             }
 
@@ -633,7 +631,6 @@ public class ConversationData {
                     continue;
                 }
                 ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
-                break;
             }
 
             return ret.toArray(new EventID[0]);
@@ -662,7 +659,6 @@ public class ConversationData {
                         continue;
                     }
                     ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
-                    break;
                 }
             }
 

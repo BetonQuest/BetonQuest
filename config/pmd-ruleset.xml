@@ -177,4 +177,5 @@
   <rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic"/>
   <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration"/>
   <rule ref="category/java/errorprone.xml/AvoidAssertAsIdentifier"/>
+  <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop"/>
 </ruleset>
