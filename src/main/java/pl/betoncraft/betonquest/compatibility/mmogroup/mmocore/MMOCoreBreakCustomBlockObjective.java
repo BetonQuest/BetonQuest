@@ -59,20 +59,24 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         if (playerData.getPlacedBlocks() == neededAmount) {
             completeObjective(playerID);
         } else if (notify && playerData.getPlacedBlocks() % notifyInterval == 0) {
-            try {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
-                        new String[]{String.valueOf(neededAmount - playerData.getPlacedBlocks())},
-                        "blocks_to_break,info");
-            } catch (final QuestRuntimeException exception) {
-                try {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowableIgnore(exception);
-                } catch (InstructionParseException exep) {
-                    LogUtils.logThrowableReport(exep);
-                }
-            }
+            handleNotifications(playerID, playerData);
         }
 
+    }
+
+    private void handleNotifications(final String playerID, final MMOBlockData playerData) {
+        try {
+            Config.sendNotify(instruction.getPackage().getName(), playerID, "blocks_to_break",
+                    new String[]{String.valueOf(neededAmount - playerData.getPlacedBlocks())},
+                    "blocks_to_break,info");
+        } catch (final QuestRuntimeException exception) {
+            try {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to send a notification for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowableIgnore(exception);
+            } catch (InstructionParseException exep) {
+                LogUtils.logThrowableReport(exep);
+            }
+        }
     }
 
     private String getBlockId(final BlockType blockType) {

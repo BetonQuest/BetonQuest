@@ -47,20 +47,20 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     /**
      * This is just Spigots basic crafting event for
      * MMOItems vanilla crafting functionality.
-     * @param event
+     *
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-
         if (event.getSlotType() != InventoryType.SlotType.RESULT) {
             return;
         }
+
+        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {
             return;
         }
         final ItemStack craftedItem = event.getRecipe().getResult();
-        if (!isTargetItem(craftedItem)) {
+        if (isInvalidItem(craftedItem)) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
 
         final ItemStack craftedItem = event.getResult();
-        if (!isTargetItem(craftedItem)) {
+        if (isInvalidItem(craftedItem)) {
             return;
         }
 
@@ -96,7 +96,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
 
     /**
      * This listener handles items that were crafted in a MMOItems Craftingstation GUI.
-     * <p>
+     *
      * This is only a TEMPORARY SOLUTION as this is fired twice for one crafting action.
      * The author of MMOItems has confirmed that this event will be rewritten.
      * Users need to double the input amount if they want the item to be crafted in a crafting station.
@@ -119,7 +119,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
 
         final ConfigMMOItem craftedItem = craftingRecipe.getOutput();
-        if (!isTargetItem(craftedItem.getPreview())) {
+        if (isInvalidItem(craftedItem.getPreview())) {
             return;
         }
 
@@ -130,12 +130,15 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
     }
 
-    private boolean isTargetItem(final ItemStack itemStack) {
+    /**
+     * This method check whether the given ItemStack is actually an MMOItem that is looked for in this objective.
+     */
+    private boolean isInvalidItem(final ItemStack itemStack) {
         final NBTItem realItemNBT = NBTItem.get(itemStack);
         final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
         final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
-        return realItemID.equalsIgnoreCase(itemId) && realItemType.equalsIgnoreCase(itemType.getId());
+        return !realItemID.equalsIgnoreCase(itemId) || !realItemType.equalsIgnoreCase(itemType.getId());
     }
 
     public static class CraftData extends ObjectiveData {
