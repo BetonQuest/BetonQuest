@@ -24,6 +24,7 @@ public class MobKillNotifier {
     private static MobKillNotifier instance;
     private final List<Entity> entities = new ArrayList<>();
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public MobKillNotifier() {
         instance = this;
         final BukkitRunnable cleaner = new BukkitRunnable() {

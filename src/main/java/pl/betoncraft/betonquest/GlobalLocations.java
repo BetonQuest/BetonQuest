@@ -41,6 +41,7 @@ public class GlobalLocations extends BukkitRunnable {
     /**
      * Creates new instance of global locations handler.
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public GlobalLocations() {
         super();
         // cancel previous instance if it exists

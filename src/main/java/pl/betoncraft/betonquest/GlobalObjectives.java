@@ -19,6 +19,7 @@ public class GlobalObjectives {
 
     private final Set<ObjectiveID> globalObjectives;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public GlobalObjectives() {
         instance = this;
         globalObjectives = new HashSet<>();

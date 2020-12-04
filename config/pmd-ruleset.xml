@@ -174,4 +174,5 @@
   <rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody"/>
 
   <rule ref="category/java/errorprone.xml/AssignmentInOperand"/>
+  <rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic"/>
 </ruleset>

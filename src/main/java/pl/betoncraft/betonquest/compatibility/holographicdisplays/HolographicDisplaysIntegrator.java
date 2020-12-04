@@ -11,6 +11,7 @@ public class HolographicDisplaysIntegrator implements Integrator {
     private static HolographicDisplaysIntegrator instance;
     private HologramLoop hologramLoop;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public HolographicDisplaysIntegrator() {
         instance = this;
     }

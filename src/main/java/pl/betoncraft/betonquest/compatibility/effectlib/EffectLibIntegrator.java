@@ -14,6 +14,7 @@ public class EffectLibIntegrator implements Integrator {
     private final BetonQuest plugin;
     private EffectManager manager;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public EffectLibIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();

@@ -66,6 +66,7 @@ public class BetonQuest extends JavaPlugin {
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public BetonQuest() {
         super();
         instance = this;

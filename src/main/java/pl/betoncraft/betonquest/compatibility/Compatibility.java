@@ -49,6 +49,7 @@ public class Compatibility implements Listener {
     private final BetonQuest plugin = BetonQuest.getInstance();
     private final List<String> hooked = new ArrayList<>();
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public Compatibility() {
         instance = this;
 

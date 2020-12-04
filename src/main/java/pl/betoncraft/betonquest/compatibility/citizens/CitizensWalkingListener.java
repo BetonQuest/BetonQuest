@@ -30,6 +30,7 @@ public class CitizensWalkingListener implements Listener {
      * Creates new listener which prevents Citizens NPCs from walking around
      * when in conversation
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensWalkingListener() {
         instance = this;
         Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());

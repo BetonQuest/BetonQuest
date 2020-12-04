@@ -23,7 +23,7 @@ import java.util.logging.Level;
         "PMD.CommentRequired"})
 public class Config {
 
-    private final static List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
+    private static final List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
     private static final Map<String, ConfigPackage> PACKAGES = new HashMap<>();
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
     private static final List<String> LANGUAGES = new ArrayList<>();
@@ -44,6 +44,7 @@ public class Config {
      *
      * @param verboose controls if this object should log it's actions to the file
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public Config(final boolean verboose) {
 
         PACKAGES.clear();
