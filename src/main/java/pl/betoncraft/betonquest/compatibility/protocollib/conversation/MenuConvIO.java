@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
-        "PMD.CommentRequired"})
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class MenuConvIO extends ChatConvIO {
 
     // Thread safety
@@ -82,7 +82,6 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
     private ArmorStand stand = null;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
 
@@ -352,7 +351,6 @@ public class MenuConvIO extends ChatConvIO {
                 .replace("{npc_name}", npcName);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
         if (!isActiveUnsafe()) {
@@ -398,7 +396,6 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
         if (!isActiveUnsafe()) {

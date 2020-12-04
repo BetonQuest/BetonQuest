@@ -12,7 +12,7 @@ import java.util.logging.Level;
 /**
  * Connects to the database and queries it
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class Connector {
 
     private final String prefix;

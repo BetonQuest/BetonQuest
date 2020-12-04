@@ -11,7 +11,7 @@ import java.util.logging.Level;
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public abstract class Database {
 
     protected Plugin plugin;

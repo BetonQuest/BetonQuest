@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class ConversationData {
 
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();

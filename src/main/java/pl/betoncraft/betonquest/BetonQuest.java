@@ -43,7 +43,7 @@ import java.util.stream.Stream;
  * Represents BetonQuest plugin
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class BetonQuest extends JavaPlugin {
 
     private static BetonQuest instance;
