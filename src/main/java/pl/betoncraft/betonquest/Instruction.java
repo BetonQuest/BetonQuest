@@ -35,8 +35,8 @@ public class Instruction {
     protected String[] parts;
     private final ConfigPackage pack;
     private ID identifier;
-    private int next = 1;
-    private int current = 1;
+    private int nextIndex = 1;
+    private int currentIndex = 1;
     private String lastOptional = null;
 
     public Instruction(final ConfigPackage pack, final ID identifier, final String instruction) {
@@ -78,14 +78,14 @@ public class Instruction {
 
     public String next() throws InstructionParseException {
         lastOptional = null;
-        current = next;
-        return getPart(next++);
+        currentIndex = nextIndex;
+        return getPart(nextIndex++);
     }
 
     public String current() throws InstructionParseException {
         lastOptional = null;
-        current = next - 1;
-        return getPart(current);
+        currentIndex = nextIndex - 1;
+        return getPart(currentIndex);
     }
 
     public String getPart(final int index) throws InstructionParseException {
@@ -93,7 +93,7 @@ public class Instruction {
             throw new InstructionParseException("Not enough arguments");
         }
         lastOptional = null;
-        current = index;
+        currentIndex = index;
         return parts[index];
     }
 
@@ -101,7 +101,7 @@ public class Instruction {
         for (final String part : parts) {
             if (part.toLowerCase().startsWith(prefix.toLowerCase() + ":")) {
                 lastOptional = prefix;
-                current = -1;
+                currentIndex = -1;
                 return part.substring(prefix.length() + 1);
             }
         }
@@ -534,14 +534,14 @@ public class Instruction {
          * {@link Exception#Exception(String)}
          */
         public PartParseException(final String message) {
-            super("Error while parsing " + (lastOptional == null ? current : lastOptional + " optional") + " argument: " + message);
+            super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message);
         }
 
         /**
          * {@link Exception#Exception(String, Throwable)}
          */
         public PartParseException(final String message, final Throwable cause) {
-            super("Error while parsing " + (lastOptional == null ? current : lastOptional + " optional") + " argument: " + message, cause);
+            super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message, cause);
         }
     }
 
