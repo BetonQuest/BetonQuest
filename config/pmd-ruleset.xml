@@ -181,4 +181,5 @@
   <rule ref="category/java/errorprone.xml/AvoidCallingFinalize"/>
   <rule ref="category/java/errorprone.xml/AvoidCatchingNPE"/>
   <rule ref="category/java/errorprone.xml/AvoidCatchingThrowable"/>
+  <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor"/>
 </ruleset>
