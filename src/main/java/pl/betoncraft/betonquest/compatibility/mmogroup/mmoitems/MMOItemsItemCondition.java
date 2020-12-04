@@ -46,9 +46,9 @@ public class MMOItemsItemCondition extends Condition {
             final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
             if (realItemID.equalsIgnoreCase(itemID) && realItemType.equalsIgnoreCase(itemType.getId())) {
-                counter++;
+                counter = counter + item.getAmount();
             }
         }
-        return counter == amount;
+        return counter >= amount;
     }
 }

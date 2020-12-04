@@ -498,7 +498,7 @@ mmoprofession mining 2 equal
 ```
 
 #### MMOItems item: `mmoitem`
-Checks if a player has the specified MMOItem in his inventory. If no amount has been defined the default amount is one.
+Checks if a player has the specified amount of MMOItems or more in his inventory. If no amount has been defined the default amount is one.
 ```YAML linenums="1"
 mmoitem ARMOR SKELETON_CROWN
 mmoitem GEMS SPEED_GEM 3
