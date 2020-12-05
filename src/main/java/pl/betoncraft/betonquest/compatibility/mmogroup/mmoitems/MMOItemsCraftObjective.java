@@ -2,14 +2,20 @@ package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.crafting.ConfigMMOItem;
+import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
+import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.CraftMMOItemEvent;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
 import net.Indyuce.mmoitems.manager.TypeManager;
 import net.mmogroup.mmolib.api.item.NBTItem;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -24,8 +30,6 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     private final Type itemType;
     private final String itemId;
 
-    private final String recipeID;
-
     private final int amount;
 
     public MMOItemsCraftObjective(final Instruction instruction) throws InstructionParseException {
@@ -36,11 +40,40 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         itemType = typeManager.get(instruction.next());
         itemId = instruction.next();
 
-        recipeID = instruction.getOptional("recipeID");
-
-        amount = instruction.getInt(instruction.next(), 1);
+        final String amountStr = instruction.getOptional("amount");
+        amount = amountStr == null ? 1 : Integer.parseInt(instruction.getOptional("amount"));
     }
 
+    /**
+     * This is just Spigots basic crafting event for
+     * MMOItems vanilla crafting functionality.
+     *
+     */
+    @EventHandler
+    public void onItemCraft(final CraftItemEvent event) {
+        if (event.getSlotType() != InventoryType.SlotType.RESULT) {
+            return;
+        }
+
+        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+            return;
+        }
+        final ItemStack craftedItem = event.getRecipe().getResult();
+        if (isInvalidItem(craftedItem)) {
+            return;
+        }
+
+        final CraftData playerData = (CraftData) dataMap.get(playerID);
+        playerData.craft(craftedItem.getAmount());
+        if (playerData.isCompleted()) {
+            completeObjective(playerID);
+        }
+    }
+
+    /**
+     * This event is called by MMOItems "recipe-amounts" crafting system.
+     */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
@@ -48,37 +81,64 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {
             return;
         }
-        final ItemStack item = event.getResult();
-        final NBTItem realItemNBT = NBTItem.get(item);
-        final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
-        final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
-        if (realItemID.equalsIgnoreCase(itemId) && realItemType.equalsIgnoreCase(itemType.getId())) {
-            final CraftData playerData = (CraftData) dataMap.get(playerID);
+        final ItemStack craftedItem = event.getResult();
+        if (isInvalidItem(craftedItem)) {
+            return;
+        }
 
-            playerData.craftOne();
-            if (playerData.isCompleted()) {
-                completeObjective(playerID);
-            }
+        final CraftData playerData = (CraftData) dataMap.get(playerID);
+        playerData.craft(craftedItem.getAmount());
+        if (playerData.isCompleted()) {
+            completeObjective(playerID);
         }
     }
 
+    /**
+     * This listener handles items that were crafted in a MMOItems Craftingstation GUI.
+     *
+     * This is only a TEMPORARY SOLUTION as this is fired twice for one crafting action.
+     * The author of MMOItems has confirmed that this event will be rewritten.
+     * Users need to double the input amount if they want the item to be crafted in a crafting station.
+     */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {
             return;
         }
-        if (!event.getRecipe().getId().equalsIgnoreCase(recipeID) && !(event.getInteraction() == StationAction.CRAFTING_QUEUE)) {
+
+        final Recipe usedRecipe = event.getRecipe();
+        if (!(usedRecipe instanceof CraftingRecipe)) {
+            return;
+        }
+
+        final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
+        if (event.getInteraction() == StationAction.INTERACT_WITH_RECIPE && craftingRecipe.getCraftingTime() > 0.0) {
+            return;
+        }
+
+        final ConfigMMOItem craftedItem = craftingRecipe.getOutput();
+        if (isInvalidItem(craftedItem.getPreview())) {
             return;
         }
 
         final CraftData playerData = (CraftData) dataMap.get(playerID);
-
-        playerData.craftOne();
+        playerData.craft(craftedItem.getAmount());
         if (playerData.isCompleted()) {
             completeObjective(playerID);
         }
+    }
+
+    /**
+     * This method check whether the given ItemStack is actually an MMOItem that is looked for in this objective.
+     */
+    private boolean isInvalidItem(final ItemStack itemStack) {
+        final NBTItem realItemNBT = NBTItem.get(itemStack);
+        final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
+        final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
+
+        return !realItemID.equalsIgnoreCase(itemId) || !realItemType.equalsIgnoreCase(itemType.getId());
     }
 
     public static class CraftData extends ObjectiveData {
@@ -90,9 +150,13 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
             itemsLeft = Integer.parseInt(instruction);
         }
 
-        private void craftOne() {
-            itemsLeft--;
+        private void craft(final int craftedItems) {
+            itemsLeft = itemsLeft - craftedItems;
             update();
+        }
+
+        private int getAmount() {
+            return itemsLeft;
         }
 
         private boolean isCompleted() {
@@ -122,6 +186,11 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
+        if ("left".equalsIgnoreCase(name)) {
+            return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
+        } else if ("amount".equalsIgnoreCase(name)) {
+            return Integer.toString(amount);
+        }
         return "";
     }
 }
