@@ -143,7 +143,7 @@ notifications:
    
 !!! warning 
     All colons (`:`) in your notification messages need to be escaped with one backslash (`\`) when using single quotes
-    (`''`) and with two backslashes (`\\`) when using double quotes (`""`). Example:  `'Peter:Heya %player%!' -> 'Peter\:Heya %player%!'` `"Peter:Heya %player%!" -> "Peter\\:Heya %player%!"`
+    (`''`) and with two backslashes (`\\`) when using double quotes (`""`). Example:  `'Peter:Heya %player%!' -> 'Peter{++\++}:Heya %player%!'` `"Peter:Heya %player%!" -> "Peter{++\\++}:Heya %player%!"`
      
     
 
