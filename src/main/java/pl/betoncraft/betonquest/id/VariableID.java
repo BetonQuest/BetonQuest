@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.VariableInstruction;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableID extends ID {
 
     public VariableID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {

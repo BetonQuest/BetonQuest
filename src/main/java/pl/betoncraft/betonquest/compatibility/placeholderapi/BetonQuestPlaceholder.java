@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
 
     public BetonQuestPlaceholder() {

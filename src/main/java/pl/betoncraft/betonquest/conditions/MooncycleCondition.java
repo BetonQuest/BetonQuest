@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is
  * under that moon.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MooncycleCondition extends Condition {
 
     private final VariableNumber thisCycle;

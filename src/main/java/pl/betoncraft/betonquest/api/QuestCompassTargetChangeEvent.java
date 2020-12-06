@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Should be fired when the compass calls the setCompassTarget method
  */
-@SuppressWarnings("PMD.DataClass")
+@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class QuestCompassTargetChangeEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();

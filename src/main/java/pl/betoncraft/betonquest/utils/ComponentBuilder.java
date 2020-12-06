@@ -10,13 +10,15 @@ import java.util.logging.Level;
 
 
 /**
- * Helper class which uses the bungee API to send tellraw like messages to players and allows falling back on legacy messages if API
+ * Helper class which uses the bungee API to send tellraw like messages to players and allows falling back on legacy
+ * messages if API
  * isn't available.
  * <p>
  * The bungee api is included in spigot since version 1.9
  * <p>
  * Created on 23.06.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public interface ComponentBuilder {
 
     ComponentBuilder append(String text);

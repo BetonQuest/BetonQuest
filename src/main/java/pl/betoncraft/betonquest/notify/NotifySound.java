@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 class NotifySound {
     private final static String KEY_SOUND = "sound";
     private final static String KEY_SOUND_LOCATION = "soundlocation";

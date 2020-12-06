@@ -20,6 +20,7 @@ import java.util.Locale;
 /**
  * Checks if there are specified entities in the area
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EntityCondition extends Condition {
 
     private final EntityType[] types;
@@ -48,11 +49,7 @@ public class EntityCondition extends Condition {
                         amounts[i] = new VariableNumber(1);
                     } else {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                        try {
-                            amounts[i] = new VariableNumber(instruction.getPackage().getName(), typeParts[1]);
-                        } catch (InstructionParseException e) {
-                            throw new InstructionParseException("Could not parse amount", e);
-                        }
+                        amounts[i] = getAmount(typeParts[1]);
                     }
                 } else {
                     types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
@@ -71,7 +68,15 @@ public class EntityCondition extends Condition {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private VariableNumber getAmount(final String typePart) throws InstructionParseException {
+        try {
+            return new VariableNumber(instruction.getPackage().getName(), typePart);
+        } catch (InstructionParseException e) {
+            throw new InstructionParseException("Could not parse amount", e);
+        }
+    }
+
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);

@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to smelt some amount of items
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SmeltingObjective extends Objective implements Listener {
 
     private final Material material;

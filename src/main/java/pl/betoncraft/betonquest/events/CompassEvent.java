@@ -20,6 +20,7 @@ import java.util.logging.Level;
 /**
  * Adds a compass specific tag to the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CompassEvent extends QuestEvent {
 
     private final Action action;

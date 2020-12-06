@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Teleports the player to specified location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TeleportEvent extends QuestEvent {
 
     private final CompoundLocation loc;

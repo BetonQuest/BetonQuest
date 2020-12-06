@@ -13,6 +13,7 @@ import java.util.Date;
  * <p>
  * Created by Jonas Blocher on 27.11.2017.
  */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class RealTimeCondition extends Condition {
 
     private final int hoursMin;
@@ -20,7 +21,7 @@ public class RealTimeCondition extends Condition {
     private final int hoursMax;
     private final int minutesMax;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public RealTimeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.staticness = true;

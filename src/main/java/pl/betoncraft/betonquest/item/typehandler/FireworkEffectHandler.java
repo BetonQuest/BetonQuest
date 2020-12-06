@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class FireworkEffectHandler {
 
     private Type type = Type.BALL; // default type for giving is small ball
@@ -26,7 +27,7 @@ public class FireworkEffectHandler {
     public FireworkEffectHandler() {
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Effect is missing");
@@ -101,7 +102,7 @@ public class FireworkEffectHandler {
         return type;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity"})
     public boolean check(final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Checks if the player is in the specified world.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class WorldCondition extends Condition {
 
     private World world;

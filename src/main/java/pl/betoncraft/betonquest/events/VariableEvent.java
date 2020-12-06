@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableEvent extends QuestEvent {
 
     private final ObjectiveID objectiveID;

@@ -13,12 +13,12 @@ import java.util.logging.Level;
 /**
  * Saves the data to the database asynchronously
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Saver extends Thread implements Listener {
 
     private final Connector con;
     private final ConcurrentLinkedQueue<Record> queue;
-    private boolean run;
-    private boolean active;
+    private boolean running;
 
     /**
      * Creates new database saver thread
@@ -27,15 +27,16 @@ public class Saver extends Thread implements Listener {
         super();
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
-        this.run = true;
+        this.running = true;
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
     public void run() {
+        boolean active = false;
         while (true) {
             while (queue.isEmpty()) {
-                if (!run) {
+                if (!running) {
                     return;
                 }
                 synchronized (this) {
@@ -71,7 +72,7 @@ public class Saver extends Thread implements Listener {
      * Ends this saver's job, letting it save all remaining data.
      */
     public synchronized void end() {
-        run = false;
+        running = false;
         notify();
     }
 

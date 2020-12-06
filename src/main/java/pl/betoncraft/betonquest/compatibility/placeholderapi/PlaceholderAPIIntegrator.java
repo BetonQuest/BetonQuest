@@ -4,6 +4,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class PlaceholderAPIIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -20,12 +21,12 @@ public class PlaceholderAPIIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

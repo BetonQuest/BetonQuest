@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 import java.util.UUID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreAttributeCondition extends Condition {
 
     private final String attribute;

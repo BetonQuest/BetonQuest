@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Checks block at specified location against specified {@link BlockSelector}
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TestForBlockCondition extends Condition {
 
     private final CompoundLocation loc;

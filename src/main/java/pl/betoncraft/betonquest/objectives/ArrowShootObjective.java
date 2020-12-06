@@ -25,6 +25,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to shoot a target with a bow
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ArrowShootObjective extends Objective implements Listener {
 
     private final CompoundLocation loc;

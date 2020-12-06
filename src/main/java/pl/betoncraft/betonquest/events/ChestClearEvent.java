@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Clears a specified chest from all items inside.
  */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CommentRequired"})
 public class ChestClearEvent extends QuestEvent {
 
     private final CompoundLocation loc;

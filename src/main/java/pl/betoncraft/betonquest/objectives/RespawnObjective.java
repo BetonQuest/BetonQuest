@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class RespawnObjective extends Objective implements Listener {
 
     private final CompoundLocation location;

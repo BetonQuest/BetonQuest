@@ -12,15 +12,17 @@ import java.util.Set;
 /**
  * Handler for global objectives
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
 
     private static GlobalObjectives instance;
 
-    private final Set<ObjectiveID> globalObjectives;
+    private final Set<ObjectiveID> globalObjectiveIds;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public GlobalObjectives() {
         instance = this;
-        globalObjectives = new HashSet<>();
+        globalObjectiveIds = new HashSet<>();
 
     }
 
@@ -29,7 +31,7 @@ public class GlobalObjectives {
      * This method should only be called in the constructor of global objectives
      */
     public static void add(final ObjectiveID objectiveID) {
-        instance.globalObjectives.add(objectiveID);
+        instance.globalObjectiveIds.add(objectiveID);
     }
 
     /**
@@ -39,7 +41,7 @@ public class GlobalObjectives {
      */
     public static void startAll(final String playerID) {
         final PlayerData data = BetonQuest.getInstance().getPlayerData(playerID);
-        for (final ObjectiveID id : instance.globalObjectives) {
+        for (final ObjectiveID id : instance.globalObjectiveIds) {
             final Objective objective = BetonQuest.getInstance().getObjective(id);
 
             if (objective == null) {
@@ -69,6 +71,6 @@ public class GlobalObjectives {
      * @return a list of all loaded global objectives
      */
     public static List<ObjectiveID> list() {
-        return new ArrayList<>(instance.globalObjectives);
+        return new ArrayList<>(instance.globalObjectiveIds);
     }
 }

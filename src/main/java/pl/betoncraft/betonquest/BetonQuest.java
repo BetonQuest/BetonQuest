@@ -42,7 +42,8 @@ import java.util.stream.Stream;
 /**
  * Represents BetonQuest plugin
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
 public class BetonQuest extends JavaPlugin {
 
     private static BetonQuest instance;
@@ -65,6 +66,7 @@ public class BetonQuest extends JavaPlugin {
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public BetonQuest() {
         super();
         instance = this;
@@ -99,6 +101,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerID    ID of the player which should be checked
      * @return if the condition is met
      */
+    @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(final String playerID, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
@@ -322,6 +325,7 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     @Override
     public void onEnable() {
 
@@ -388,7 +392,7 @@ public class BetonQuest extends JavaPlugin {
         new CombatTagger();
 
         // load colors for conversations
-        new ConversationColors();
+        ConversationColors.loadColors();
 
         // start mob kill listener
         new MobKillListener();
@@ -614,6 +618,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Loads events and conditions to the maps
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public void loadData() {
         // save data of all objectives to the players
         for (final Objective objective : OBJECTIVES.values()) {
@@ -828,7 +833,7 @@ public class BetonQuest extends JavaPlugin {
         // and start new one with reloaded configs
         LogUtils.getLogger().log(Level.FINE, "Restarting global locations");
         new GlobalObjectives();
-        new ConversationColors();
+        ConversationColors.loadColors();
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();

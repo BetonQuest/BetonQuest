@@ -17,6 +17,7 @@ import java.util.Map.Entry;
  * Player has to wait specified amount of time. He may logout, the objective
  * will be completed as soon as the time is up and he logs in again.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DelayObjective extends Objective {
 
     private final double delay;
@@ -77,7 +78,7 @@ public class DelayObjective extends Objective {
         return Long.toString(new Date().getTime() + (long) delay);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     public String getProperty(final String name, final String playerID) {
         if ("left".equalsIgnoreCase(name)) {

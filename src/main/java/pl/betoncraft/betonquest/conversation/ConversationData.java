@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class ConversationData {
 
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
@@ -46,6 +46,7 @@ public class ConversationData {
      * @param name the name of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
         final String pkg = pack.getName();
@@ -403,10 +404,9 @@ public class ConversationData {
             }
             final ConfigPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getName() + "." + convName);
-            if (!BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
-                continue;
+            if (BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -445,15 +445,18 @@ public class ConversationData {
         private final Map<String, String> text = new HashMap<>();
         private final List<ConditionID> conditions = new ArrayList<>();
         private final List<EventID> events = new ArrayList<>();
-        private List<String> pointers;
-        private List<String> extendLinks;
+        private final List<String> pointers;
+        private final List<String> extendLinks;
 
+        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
             this.type = type;
             final ConfigurationSection conv = pack.getConversation(convName).getConfig().getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
+                pointers = null;
+                extendLinks = null;
                 return;
             }
 
@@ -588,7 +591,6 @@ public class ConversationData {
                         continue;
                     }
                     ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
-                    break;
                 }
             }
 
@@ -629,7 +631,6 @@ public class ConversationData {
                     continue;
                 }
                 ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
-                break;
             }
 
             return ret.toArray(new EventID[0]);
@@ -658,7 +659,6 @@ public class ConversationData {
                         continue;
                     }
                     ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
-                    break;
                 }
             }
 

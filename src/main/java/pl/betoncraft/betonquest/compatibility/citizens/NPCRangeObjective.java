@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.*;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCRangeObjective extends Objective {
 
     private final List<Integer> npcIds;

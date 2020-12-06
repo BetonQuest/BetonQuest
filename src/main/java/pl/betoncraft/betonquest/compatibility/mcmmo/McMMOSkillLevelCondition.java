@@ -15,6 +15,7 @@ import java.util.Locale;
 /**
  * Checks if the player has specified level in an mcMMO skill.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class McMMOSkillLevelCondition extends Condition {
 
     private final String skillType;

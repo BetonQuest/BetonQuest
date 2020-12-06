@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Player has to right click the NPC
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCInteractObjective extends Objective implements Listener {
 
     private final int npcId;

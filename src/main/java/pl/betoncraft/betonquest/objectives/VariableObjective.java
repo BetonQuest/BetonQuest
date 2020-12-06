@@ -20,6 +20,7 @@ import java.util.Map.Entry;
  * Will not run any events, will not check any conditions.
  * The only way to remove it is using "objective cancel" event.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableObjective extends Objective implements Listener {
 
     private final boolean noChat;

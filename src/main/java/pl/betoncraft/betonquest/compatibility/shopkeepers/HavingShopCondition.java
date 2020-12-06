@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 /**
  * Checks if the player owns specified amount of shops.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HavingShopCondition extends Condition {
 
     private final VariableNumber amount;

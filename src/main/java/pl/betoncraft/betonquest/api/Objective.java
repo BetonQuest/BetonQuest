@@ -31,6 +31,7 @@ import java.util.logging.Level;
  * registerObjectives()} method.
  * </p>
  */
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class Objective {
 
     protected Instruction instruction;

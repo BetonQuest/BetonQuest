@@ -18,6 +18,7 @@ import java.util.logging.Level;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptEffectBQ extends Effect {
 
     private Expression<String> event;

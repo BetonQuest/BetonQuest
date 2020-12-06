@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VehicleObjective extends Objective implements Listener {
 
     private EntityType vehicle;

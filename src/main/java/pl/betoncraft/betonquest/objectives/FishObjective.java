@@ -24,6 +24,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to catch the fish.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class FishObjective extends Objective implements Listener {
 
     private final byte data;
@@ -60,7 +61,7 @@ public class FishObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onFishCatch(final PlayerFishEvent event) {
         if (event.getState() != State.CAUGHT_FISH) {

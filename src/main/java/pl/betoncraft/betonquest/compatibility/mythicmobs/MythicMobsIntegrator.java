@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.mythicmobs;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MythicMobsIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -20,10 +21,12 @@ public class MythicMobsIntegrator implements Integrator {
 
     @Override
     public void reload() {
+        // Empty
     }
 
     @Override
     public void close() {
+        // Empty
     }
 
 }

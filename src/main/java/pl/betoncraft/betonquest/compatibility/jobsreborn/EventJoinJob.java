@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class EventJoinJob extends QuestEvent {
     private final String sJobName;
 

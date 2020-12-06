@@ -42,7 +42,8 @@ import java.util.logging.Level;
 /**
  * Main admin command for quest editing.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass", "PMD.NPathComplexity",
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
@@ -57,6 +58,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
@@ -283,6 +285,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return false;
     }
 
+    @SuppressWarnings("PMD.NcssCount")
     @Override
     public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
@@ -504,6 +507,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Reads, sets or appends strings from/to config files
      */
+    @SuppressWarnings("PMD.NcssCount")
     private void handleConfig(final CommandSender sender, final String... args) {
         if (args.length < 3) {
             LogUtils.getLogger().log(Level.FINE, "No action specified!");
@@ -1204,6 +1208,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleObjectives(final CommandSender sender, final String... args) {
         // playerID is required
         if (args.length < 2) {
@@ -1212,7 +1217,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String playerID = PlayerConverter.getID(args[1]);
-        final boolean isOnline = !(PlayerConverter.getPlayer(playerID) == null);
+        final boolean isOnline = PlayerConverter.getPlayer(playerID) != null;
         PlayerData playerData = instance.getPlayerData(playerID);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -1409,6 +1414,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Renames stuff.
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleRenaming(final CommandSender sender, final String... args) {
         if (args.length < 4) {
             sendMessage(sender, "arguments");
@@ -1512,7 +1518,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }
                     // skip the player if he does not have this objective
-                    if (found == false) {
+                    if (!found) {
                         continue;
                     }
                     if (data == null) {
@@ -1579,6 +1585,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Deleted stuff.
      */
+    @SuppressWarnings("PMD.NcssCount")
     private void handleDeleting(final CommandSender sender, final String... args) {
         if (args.length < 3) {
             sendMessage(sender, "arguments");

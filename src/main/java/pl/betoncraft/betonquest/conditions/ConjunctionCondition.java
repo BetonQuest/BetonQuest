@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * All of specified conditions have to be true
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConjunctionCondition extends Condition {
 
     private final List<ConditionID> conditions;

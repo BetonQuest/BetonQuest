@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Modifies player's points
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DeletePointEvent extends QuestEvent {
 
     protected final String category;

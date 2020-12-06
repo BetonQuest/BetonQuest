@@ -11,6 +11,7 @@ import java.util.Random;
 /**
  * The condition that is met randomly
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RandomCondition extends Condition {
 
     private final VariableNumber valueMax;

@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player is in specified region
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RegionCondition extends Condition {
 
     private final String name;

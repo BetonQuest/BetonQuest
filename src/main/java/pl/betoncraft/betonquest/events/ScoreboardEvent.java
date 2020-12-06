@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Adds/removes/multiplies/divides scores on scoreboards.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ScoreboardEvent extends QuestEvent {
 
     private final VariableNumber count;

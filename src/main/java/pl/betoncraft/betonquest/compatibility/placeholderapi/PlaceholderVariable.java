@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class PlaceholderVariable extends Variable {
 
     private final String placeholder;

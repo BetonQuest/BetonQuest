@@ -14,6 +14,7 @@ import java.util.logging.Level;
 /**
  * Fires a BetonQuest event as a quest reward.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EventReward extends CustomReward {
 
     public EventReward() {

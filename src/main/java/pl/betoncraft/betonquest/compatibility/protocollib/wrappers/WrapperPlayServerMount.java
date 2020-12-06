@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WrapperPlayServerMount extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Server.MOUNT;

@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.util.logging.Level;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class McMMOIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -30,12 +31,12 @@ public class McMMOIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

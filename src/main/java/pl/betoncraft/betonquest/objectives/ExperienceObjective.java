@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Player needs to get specified experience level
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ExperienceObjective extends Objective implements Listener {
 
     private final int amount;

@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Spawns MythicMobs mobs
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MythicSpawnMobEvent extends QuestEvent {
 
     private final CompoundLocation loc;

@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsHandCondition extends Condition {
 
     private final Type itemType;

@@ -16,17 +16,18 @@ import java.util.List;
  * allows players to kill mobs without direct contact (like spells), call
  * addKill method each time the player kills a mob like that.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MobKillNotifier {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     private static MobKillNotifier instance;
-    private final BukkitRunnable cleaner;
     private final List<Entity> entities = new ArrayList<>();
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public MobKillNotifier() {
         instance = this;
-        cleaner = new BukkitRunnable() {
+        final BukkitRunnable cleaner = new BukkitRunnable() {
             @Override
             public void run() {
                 entities.clear();

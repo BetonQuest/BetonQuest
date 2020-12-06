@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has access to specified Heroes skill.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HeroesSkillCondition extends Condition {
 
     private final String skillName;

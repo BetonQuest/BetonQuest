@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Resolves to amount of money.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MoneyVariable extends Variable {
 
     private Type type;

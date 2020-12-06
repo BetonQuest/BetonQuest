@@ -25,6 +25,7 @@ import java.util.logging.Level;
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DieObjective extends Objective implements Listener {
 
     private final boolean cancel;

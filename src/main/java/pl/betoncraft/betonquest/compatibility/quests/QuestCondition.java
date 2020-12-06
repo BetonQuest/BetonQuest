@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has done specified quest before.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class QuestCondition extends Condition {
 
     private final String questName;

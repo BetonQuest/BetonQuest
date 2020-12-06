@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Returns true if the player is sneaking
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SneakCondition extends Condition {
 
     public SneakCondition(final Instruction instruction) {

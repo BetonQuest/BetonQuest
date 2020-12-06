@@ -8,6 +8,7 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 import java.util.Arrays;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WrapperPlayServerChat extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Server.CHAT;

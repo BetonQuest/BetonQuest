@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Simply kills the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class KillEvent extends QuestEvent {
 
     public KillEvent(final Instruction instruction) throws InstructionParseException {

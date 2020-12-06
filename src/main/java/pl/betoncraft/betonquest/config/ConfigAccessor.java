@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.io.*;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ConfigAccessor {
 
     private final String fileName;

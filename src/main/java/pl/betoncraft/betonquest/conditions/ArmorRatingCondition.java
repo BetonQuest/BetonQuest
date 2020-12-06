@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specific armor rating
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ArmorRatingCondition extends Condition {
 
     private final VariableNumber required;
@@ -22,7 +23,7 @@ public class ArmorRatingCondition extends Condition {
         required = instruction.getVarNum();
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();

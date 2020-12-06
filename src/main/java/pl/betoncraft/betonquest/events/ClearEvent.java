@@ -20,6 +20,7 @@ import java.util.Locale;
 /**
  * Clears all specified monsters in a certain location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ClearEvent extends QuestEvent {
 
     private final EntityType[] types;
@@ -52,7 +53,7 @@ public class ClearEvent extends QuestEvent {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);

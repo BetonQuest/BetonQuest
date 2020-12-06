@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsApplyGemObjective extends Objective implements Listener {
 
     private final String itemID;

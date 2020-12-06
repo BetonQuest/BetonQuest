@@ -21,6 +21,7 @@ import java.util.logging.Level;
 /**
  * Player has to reach certain radius around the specified location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LocationObjective extends Objective implements Listener {
 
     private final CompoundLocation loc;

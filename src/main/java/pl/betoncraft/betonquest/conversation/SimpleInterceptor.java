@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class SimpleInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;

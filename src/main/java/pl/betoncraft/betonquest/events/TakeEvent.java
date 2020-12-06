@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * Removes items from player's inventory and/or backpack
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TakeEvent extends QuestEvent {
 
     private final Item[] questItems;
@@ -56,11 +57,8 @@ public class TakeEvent extends QuestEvent {
                                     String.valueOf(counter)},
                             "items_taken,info");
                 } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowable(exception);
                 }
             }
 

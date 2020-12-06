@@ -17,6 +17,7 @@ import java.util.Random;
  * Folder event is a collection of other events, that can be run after a delay
  * and the events can be randomly chosen to run or not
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {
 
     private final VariableNumber delay;
@@ -38,7 +39,7 @@ public class FolderEvent extends QuestEvent {
         minutes = instruction.hasArgument("minutes");
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final ArrayList<EventID> chosenList = new ArrayList<>();

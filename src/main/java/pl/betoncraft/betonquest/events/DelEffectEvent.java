@@ -15,6 +15,7 @@ import java.util.Locale;
 /**
  * Removes potion effects from the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DelEffectEvent extends QuestEvent {
 
     private final List<PotionEffectType> effects;

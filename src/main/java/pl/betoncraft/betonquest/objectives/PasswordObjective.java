@@ -20,6 +20,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to type a password in chat.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PasswordObjective extends Objective implements Listener {
 
     private final String regex;

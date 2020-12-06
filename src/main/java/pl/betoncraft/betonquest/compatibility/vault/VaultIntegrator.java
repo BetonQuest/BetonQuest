@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.util.logging.Level;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;
@@ -18,6 +19,7 @@ public class VaultIntegrator implements Integrator {
     private Permission permission = null;
     private Economy economy = null;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public VaultIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();
@@ -65,12 +67,12 @@ public class VaultIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 
 }

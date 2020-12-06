@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has specified condition.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class AdvancementCondition extends Condition {
 
     private final Advancement advancement;

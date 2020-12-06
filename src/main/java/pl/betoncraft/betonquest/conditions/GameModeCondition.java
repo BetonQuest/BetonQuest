@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class GameModeCondition extends Condition {
 
     private final GameMode gameMode;

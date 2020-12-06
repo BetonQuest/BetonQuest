@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class DrunkQualityCondition extends Condition {
 
     private final Integer quality;

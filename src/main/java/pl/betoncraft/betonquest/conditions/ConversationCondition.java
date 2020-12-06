@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.Utils;
  * Example:
  * {@code conversation <name of conversation>}
  **/
+@SuppressWarnings("PMD.CommentRequired")
 public class ConversationCondition extends Condition {
 
     private final String conversationID;

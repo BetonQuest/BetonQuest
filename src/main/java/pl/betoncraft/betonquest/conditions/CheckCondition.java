@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Allows for checking multiple conditions with one instruction string.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CheckCondition extends Condition {
 
     private final List<Condition> internalConditions = new ArrayList<>();

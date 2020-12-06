@@ -14,6 +14,7 @@ import java.util.Locale;
 /**
  * This event turns on, of or toggles levers.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LeverEvent extends QuestEvent {
 
     private final CompoundLocation loc;

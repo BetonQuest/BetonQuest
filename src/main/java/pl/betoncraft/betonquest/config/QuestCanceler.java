@@ -27,6 +27,7 @@ import java.util.logging.Level;
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class QuestCanceler {
 
     private String item;
@@ -48,7 +49,7 @@ public class QuestCanceler {
      * @param cancelerID ID of the canceler (package.name)
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public QuestCanceler(final String cancelerID) throws InstructionParseException {
         if (cancelerID == null) {
             throw new InstructionParseException("Name is null");
@@ -188,7 +189,7 @@ public class QuestCanceler {
      *
      * @param playerID ID of the player
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void cancel(final String playerID) {
         LogUtils.getLogger().log(Level.FINE, "Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);

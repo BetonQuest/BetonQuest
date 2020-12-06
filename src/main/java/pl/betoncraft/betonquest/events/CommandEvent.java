@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Fires a list of commands for the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CommandEvent extends QuestEvent {
 
     private final Command[] commands;
@@ -73,6 +74,7 @@ public class CommandEvent extends QuestEvent {
         return null;
     }
 
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private class Command {
 
         private final String command;

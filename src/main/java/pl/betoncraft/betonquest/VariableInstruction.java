@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.id.ID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class VariableInstruction extends Instruction {
 
     public VariableInstruction(final ConfigPackage pack, final ID variableIdentifier, final String instruction) {

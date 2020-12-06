@@ -21,6 +21,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to shear a sheep.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ShearObjective extends Objective implements Listener {
 
     private final String color;
@@ -40,7 +41,7 @@ public class ShearObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onShear(final PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP) {

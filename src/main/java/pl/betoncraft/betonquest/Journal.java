@@ -27,6 +27,7 @@ import java.util.logging.Level;
 /**
  * Represents player's journal.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Journal {
 
     private final String playerID;
@@ -233,7 +234,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them

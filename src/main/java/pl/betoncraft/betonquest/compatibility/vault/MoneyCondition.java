@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has specified amount of Vault money
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MoneyCondition extends Condition {
 
     private final VariableNumber amount;

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
  * <p>
  * We also try to handle variable width characters.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LocalChatPaginator extends ChatPaginator {
     public static Map<Character, Integer> fontSizes;
     public static int defaultCharWidth = 6;
@@ -93,7 +94,7 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
 
         // A null string is a single line

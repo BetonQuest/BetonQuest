@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.util.List;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class CustomDropListener implements Listener {
 
     public CustomDropListener() {

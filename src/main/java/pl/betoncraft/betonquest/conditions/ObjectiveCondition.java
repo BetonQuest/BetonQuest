@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.id.ObjectiveID;
 /**
  * Checks if the player has specified objective active.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ObjectiveCondition extends Condition {
 
     public final ObjectiveID objective;

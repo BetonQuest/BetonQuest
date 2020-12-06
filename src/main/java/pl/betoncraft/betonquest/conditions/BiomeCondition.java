@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to be in a specified biome
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BiomeCondition extends Condition {
 
     private final Biome biome;

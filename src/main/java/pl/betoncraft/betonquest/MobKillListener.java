@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.api.MobKillNotifier;
 /**
  * Listens to standard kills and adds them to MobKillNotifier.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MobKillListener implements Listener {
 
     public MobKillListener() {

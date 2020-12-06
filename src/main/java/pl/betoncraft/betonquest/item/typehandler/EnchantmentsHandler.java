@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Number;
 
 import java.util.*;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class EnchantmentsHandler {
 
     private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
@@ -17,13 +18,16 @@ public class EnchantmentsHandler {
     }
 
     public void set(final String enchants) throws InstructionParseException {
-        final String[] parts;
-        if (enchants == null || (parts = enchants.split(",")).length == 0) {
-            throw new InstructionParseException("Missing value");
+        if (enchants == null) {
+            throw new InstructionParseException("Enchantment is null!");
         }
         if ("none".equalsIgnoreCase(enchants)) {
             checkersE = Existence.FORBIDDEN;
             return;
+        }
+        final String[] parts = enchants.split(",");
+        if (parts.length == 0) {
+            throw new InstructionParseException("Missing values!");
         }
         checkers = new ArrayList<>(parts.length);
         for (final String part : parts) {
@@ -79,11 +83,14 @@ public class EnchantmentsHandler {
         public SingleEnchantmentHandler() {
         }
 
-        @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
+        @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private void set(final String enchant) throws InstructionParseException {
-            final String[] parts;
-            if (enchant == null || (parts = enchant.split(":")).length == 0) {
-                throw new InstructionParseException("Missing value");
+            if (enchant == null) {
+                throw new InstructionParseException("Enchantment is null!");
+            }
+            final String[] parts = enchant.split(":");
+            if (parts.length == 0) {
+                throw new InstructionParseException("Missing values!");
             }
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;

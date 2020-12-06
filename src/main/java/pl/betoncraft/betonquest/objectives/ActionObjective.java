@@ -26,6 +26,7 @@ import java.util.logging.Level;
  * Player has to click on block (or air). Left click, right click and any one of
  * them is supported.
  */
+@SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
 
     private final Click action;
@@ -51,7 +52,7 @@ public class ActionObjective extends Objective implements Listener {
         cancel = instruction.hasArgument("cancel");
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler
     public void onInteract(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.

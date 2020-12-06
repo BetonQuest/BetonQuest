@@ -25,6 +25,7 @@ import java.util.logging.Level;
  * the player to kill specifically named mobs and notify them about the required
  * amount.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MobKillObjective extends Objective implements Listener {
 
     private final int notifyInterval;
@@ -51,7 +52,7 @@ public class MobKillObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
         // check if it's the right entity type

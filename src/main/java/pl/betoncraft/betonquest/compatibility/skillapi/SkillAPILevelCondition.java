@@ -15,6 +15,7 @@ import java.util.Optional;
 /**
  * Checks the level of the player in SkillAPI.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkillAPILevelCondition extends Condition {
 
     private final String className;

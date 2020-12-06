@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks if the player has specific class
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkillAPIClassCondition extends Condition {
 
     private final String className;

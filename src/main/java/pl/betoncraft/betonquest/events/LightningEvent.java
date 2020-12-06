@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Strikes a lightning at specified location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LightningEvent extends QuestEvent {
 
     private final CompoundLocation loc;

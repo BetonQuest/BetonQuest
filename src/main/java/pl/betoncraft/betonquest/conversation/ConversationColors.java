@@ -12,8 +12,8 @@ import java.util.logging.Level;
 /**
  * Holds the colors of the conversations
  */
-@SuppressWarnings("PMD.ClassNamingConventions")
-public class ConversationColors {
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
+public final class ConversationColors {
 
     private static ChatColor[] npcColors;
     private static ChatColor[] playerColors;
@@ -22,7 +22,10 @@ public class ConversationColors {
     private static ChatColor[] numberColors;
     private static ChatColor[] optionColors;
 
-    public ConversationColors() {
+    private ConversationColors() {
+    }
+
+    public static void loadColors() {
         try {
             final String[] text = Config.getString("config.conversation_colors.text").split(",");
             textColors = new ChatColor[text.length];
@@ -63,7 +66,6 @@ public class ConversationColors {
             numberColors = new ChatColor[]{};
             LogUtils.getLogger().log(Level.WARNING, "Could not parse conversation colors, everything will be white!");
             LogUtils.logThrowable(e);
-            return;
         }
     }
 

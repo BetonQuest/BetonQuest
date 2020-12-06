@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 /**
  * Changes player's language.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LanguageEvent extends QuestEvent {
 
     private final String lang;

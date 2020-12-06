@@ -18,6 +18,7 @@ import java.util.Map;
  * Prevents Citizens NPCs from walking around when in conversation with the
  * player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
     private static CitizensWalkingListener instance = null;
@@ -29,6 +30,7 @@ public class CitizensWalkingListener implements Listener {
      * Creates new listener which prevents Citizens NPCs from walking around
      * when in conversation
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensWalkingListener() {
         instance = this;
         Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());

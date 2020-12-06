@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 /**
  * Represents an item handled by the configuration.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired"})
 public class QuestItem {
 
     private final BlockSelector selector;
@@ -62,6 +62,7 @@ public class QuestItem {
      * @param instruction instruction String
      * @throws InstructionParseException when item parsing goes wrong
      */
+    @SuppressWarnings("PMD.NcssCount")
     public QuestItem(final String instruction) throws InstructionParseException {
         if (instruction == null) {
             throw new InstructionParseException("Item instruction is null");
@@ -138,6 +139,7 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";
@@ -318,6 +320,7 @@ public class QuestItem {
      * @param item ItemStack to compare
      * @return true if the item matches
      */
+    @SuppressWarnings("PMD.NPathComplexity")
     public boolean compare(final ItemStack item) {
         // basic item checks
         if (item == null) {
@@ -409,6 +412,7 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
+    @SuppressWarnings("PMD.NPathComplexity")
     public ItemStack generate(final int stackSize) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();

@@ -12,6 +12,7 @@ import java.util.UUID;
 /**
  * This event opens Shopkeeper trade window.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class OpenShopEvent extends QuestEvent {
 
     private final Shopkeeper shopkeeper;

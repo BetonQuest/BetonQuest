@@ -31,6 +31,7 @@ import java.util.logging.Level;
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ChestPutObjective extends Objective implements Listener {
 
     private final Condition chestItemCondition;

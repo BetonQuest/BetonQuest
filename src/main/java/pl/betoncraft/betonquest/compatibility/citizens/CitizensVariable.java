@@ -20,6 +20,7 @@ import java.util.Locale;
  * * full_name - Full Citizen name
  * * location  - Return citizen location. x;y;z;world;yaw;pitch
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensVariable extends Variable {
 
     private final int npcId;

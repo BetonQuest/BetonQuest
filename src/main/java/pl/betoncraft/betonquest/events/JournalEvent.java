@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * Adds the entry to player's journal
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class JournalEvent extends QuestEvent {
 
     private final String name;
@@ -64,12 +65,8 @@ public class JournalEvent extends QuestEvent {
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "new_journal_entry", null, "new_journal_entry,info");
                 } catch (final QuestRuntimeException exception) {
-                    try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'new_journal_entry' category in '" + instruction.getEvent().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        LogUtils.logThrowableIgnore(exception);
-                    } catch (InstructionParseException exep) {
-                        throw new QuestRuntimeException(exep);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'new_journal_entry' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowable(exception);
                 }
             } else if (name != null) {
                 journal.removePointer(name);

@@ -37,6 +37,7 @@ import java.util.logging.Level;
  * rightclick or damage the entity. Each entity can only be interacted once.
  * The interaction can optionally be canceled by adding the argument cancel.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EntityInteractObjective extends Objective {
 
     private final int notifyInterval;
@@ -92,7 +93,7 @@ public class EntityInteractObjective extends Objective {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {

@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * Checks if the current date matches one of the given dates
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PartialDateCondition extends Condition {
 
     private final List<TimeInterval> dayOfMonth;

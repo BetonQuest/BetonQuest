@@ -22,6 +22,7 @@ import java.util.logging.Level;
  */
 // TODO Delete in BQ 2.0.0
 @Deprecated
+@SuppressWarnings("PMD.CommentRequired")
 public class TitleEvent extends QuestEvent {
 
     protected TitleType type;
@@ -31,7 +32,7 @@ public class TitleEvent extends QuestEvent {
     protected int stay;
     protected int fadeOut;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public TitleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         LogUtils.getLogger().log(Level.WARNING, "Title event will be REMOVED! Usage in package '"

@@ -17,6 +17,7 @@ import java.util.logging.Level;
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptConditionBQ extends Condition {
 
     private Expression<Player> player;

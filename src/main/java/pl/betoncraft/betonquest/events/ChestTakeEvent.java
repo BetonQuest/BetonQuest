@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Removes items from a chest.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ChestTakeEvent extends QuestEvent {
 
     private final Item[] questItems;

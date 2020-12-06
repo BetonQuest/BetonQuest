@@ -29,6 +29,7 @@ import java.util.logging.Level;
 /**
  * Inventory GUI for conversations
  */
+@SuppressWarnings({"PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName"})
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
@@ -112,7 +113,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     @Override
     public void display() {
         // prevent displaying anything if the player closed the conversation

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 /**
  * The player must step on the pressure plate
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class StepObjective extends Objective implements Listener {
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
@@ -43,7 +44,7 @@ public class StepObjective extends Objective implements Listener {
         loc = instruction.getLocation();
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onStep(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.

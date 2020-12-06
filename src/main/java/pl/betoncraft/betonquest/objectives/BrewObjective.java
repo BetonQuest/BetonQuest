@@ -30,6 +30,7 @@ import java.util.logging.Level;
 /**
  * Requires the player to manually brew a potion.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BrewObjective extends Objective implements Listener {
 
     private final QuestItem potion;

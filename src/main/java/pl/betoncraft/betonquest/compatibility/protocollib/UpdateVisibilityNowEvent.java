@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class UpdateVisibilityNowEvent extends QuestEvent {
 
     public UpdateVisibilityNowEvent(final Instruction instruction) throws InstructionParseException {

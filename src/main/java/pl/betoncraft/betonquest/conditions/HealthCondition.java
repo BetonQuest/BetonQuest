@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specified amount of health (or more)
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HealthCondition extends Condition {
 
     private final VariableNumber health;

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class BStatsMetrics {
     private final static int METRICS_ID = 551;
 

@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have specified level of experience (or more)
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ExperienceCondition extends Condition {
 
     private final VariableNumber amount;

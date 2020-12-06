@@ -12,6 +12,7 @@ import java.util.logging.Level;
 /**
  * Gives journal to the player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GiveJournalEvent extends QuestEvent {
 
     private int journalSlot;

@@ -5,6 +5,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class TitleNotifyIO extends NotifyIO {
 
     private final int fadeIn;

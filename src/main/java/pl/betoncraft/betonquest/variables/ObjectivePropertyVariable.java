@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.id.ObjectiveID;
 /**
  * Resolves to a specified property of an objective.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ObjectivePropertyVariable extends Variable {
 
     private final ObjectiveID objective;

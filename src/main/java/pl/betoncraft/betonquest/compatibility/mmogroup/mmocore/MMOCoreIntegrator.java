@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.mmogroup.mmocore;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -33,11 +34,11 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void reload() {
-
+        // Empty
     }
 
     @Override
     public void close() {
-
+        // Empty
     }
 }

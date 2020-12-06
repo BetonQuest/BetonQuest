@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 /**
  * This variable evaluates the given calculation and returns the result.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MathVariable extends Variable {
 
     private final Calculable calculation;
@@ -51,7 +52,7 @@ public class MathVariable extends Variable {
      * @return a calculable object which contains the whole calculation
      * @throws InstructionParseException if the instruction isn't valid
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     private Calculable parse(final String string) throws InstructionParseException {
         //clarify error messages for invalid calculations
         if (string.matches(".*[+\\-*/^]{2}.*")) {

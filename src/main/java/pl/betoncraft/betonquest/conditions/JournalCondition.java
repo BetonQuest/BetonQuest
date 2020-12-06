@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Checks if the player has specified pointer in his journal
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class JournalCondition extends Condition {
 
     private final String targetPointer;

@@ -36,6 +36,7 @@ import java.util.logging.Level;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class Backpack implements Listener {
 
     /**
@@ -46,10 +47,6 @@ public class Backpack implements Listener {
      * The player object
      */
     private final Player player;
-    /**
-     * Instance of the BetonQuest plugin
-     */
-    private final BetonQuest instance;
     /**
      * Database handler for the player
      */
@@ -66,7 +63,6 @@ public class Backpack implements Listener {
      * Language of the player
      */
     private final String lang;
-    private final Backpack backpack;
 
     /**
      * Creates new backpack GUI opened at given page type.
@@ -79,9 +75,11 @@ public class Backpack implements Listener {
         this.playerID = playerID;
         lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         player = PlayerConverter.getPlayer(playerID);
-        instance = BetonQuest.getInstance();
+        /**
+         * Instance of the BetonQuest plugin
+         */
+        final BetonQuest instance = BetonQuest.getInstance();
         playerData = instance.getPlayerData(playerID);
-        backpack = this;
         // create display
         switch (type) {
             case DEFAULT:
@@ -143,7 +141,7 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName"})
     private class Page extends Display {
 
         private final int page;
@@ -153,6 +151,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 0
          */
+        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         public Page(final int page) {
             super();
             this.page = page;
@@ -257,9 +256,10 @@ public class Backpack implements Listener {
             // set the inventory and display it
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
+        @SuppressWarnings("PMD.NcssCount")
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 0 && slot == 0) {
@@ -400,7 +400,7 @@ public class Backpack implements Listener {
             }
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @Override
@@ -421,7 +421,7 @@ public class Backpack implements Listener {
         private final Map<Integer, String> names = new HashMap<>();
         private final Map<Integer, String> items = new HashMap<>();
 
-        @SuppressWarnings("PMD.CyclomaticComplexity")
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
         public Compass() {
             super();
             Integer counter = 0;
@@ -532,7 +532,7 @@ public class Backpack implements Listener {
             }
             inv.setContents(content);
             player.openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(backpack, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @Override

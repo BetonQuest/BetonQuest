@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to leave the server.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class LogoutObjective extends Objective implements Listener {
 
     public LogoutObjective(final Instruction instruction) throws InstructionParseException {

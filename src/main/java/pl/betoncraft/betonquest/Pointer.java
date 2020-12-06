@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest;
 /**
  * Represents the journal pointer.
  */
+@SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
 public class Pointer {
 
     /**

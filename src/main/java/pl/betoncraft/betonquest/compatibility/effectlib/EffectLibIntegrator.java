@@ -7,12 +7,14 @@ import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensParticle;
 
 
+@SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
 
     private static EffectLibIntegrator instance;
     private final BetonQuest plugin;
     private EffectManager manager;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public EffectLibIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();
@@ -36,6 +38,7 @@ public class EffectLibIntegrator implements Integrator {
 
     @Override
     public void reload() {
+        // Empty
     }
 
     @Override

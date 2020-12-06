@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class SuppressNotifyIO extends NotifyIO {
 
     public SuppressNotifyIO(final Map<String, String> data) throws InstructionParseException {
@@ -15,5 +16,6 @@ public class SuppressNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final Player player) {
+        // Empty
     }
 }

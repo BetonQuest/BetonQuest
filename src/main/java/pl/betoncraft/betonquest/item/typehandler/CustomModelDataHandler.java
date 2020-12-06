@@ -4,6 +4,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class CustomModelDataHandler {
 
     private QuestItem.Existence existence = QuestItem.Existence.WHATEVER;

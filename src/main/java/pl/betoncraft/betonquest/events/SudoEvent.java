@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Forces the player to run commands.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SudoEvent extends QuestEvent {
 
     private final String[] commands;

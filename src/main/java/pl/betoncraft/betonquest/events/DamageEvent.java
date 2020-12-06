@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Damages the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class DamageEvent extends QuestEvent {
 
     private final VariableNumber damage;

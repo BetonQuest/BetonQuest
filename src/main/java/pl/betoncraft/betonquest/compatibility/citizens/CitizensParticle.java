@@ -25,6 +25,7 @@ import java.util.logging.Level;
 /**
  * Displays a particle above NPCs with conversations.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;
@@ -32,9 +33,9 @@ public class CitizensParticle extends BukkitRunnable {
     private final List<Effect> effects = new ArrayList<>();
     private int interval = 100;
     private int tick = 0;
-    private boolean enabled = false;
+    private final boolean enabled;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
     public CitizensParticle() {
         super();
         instance = this;
@@ -50,6 +51,7 @@ public class CitizensParticle extends BukkitRunnable {
             }
             // there's a setting to disable npc effects altogether
             if ("true".equalsIgnoreCase(section.getString("disabled"))) {
+                enabled = false;
                 return;
             }
 
@@ -58,6 +60,7 @@ public class CitizensParticle extends BukkitRunnable {
             if (interval <= 0) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not load npc effects of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
+                enabled = false;
                 return;
             }
 

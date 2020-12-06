@@ -35,7 +35,10 @@ import java.util.logging.Level;
 /**
  * Updates configuration files to the newest version.
  */
-@SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity",
+        "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity",
+        "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
+        "PMD.AvoidDuplicateLiterals"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here
@@ -52,7 +55,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private final String destination = "v63";
+    private static final String DESTINATION = "v63";
     /**
      * BetonQuest's instance
      */
@@ -64,11 +67,11 @@ public class ConfigUpdater {
     /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
-    private ConfigHandler configHandler;
+    private final ConfigHandler configHandler;
 
     public ConfigUpdater() {
         final String version = BetonQuest.getInstance().getConfig().getString("version", null);
-        LogUtils.getLogger().log(Level.FINE, "Initializing updater with version " + version + ", destination is " + destination);
+        LogUtils.getLogger().log(Level.FINE, "Initializing updater with version " + version + ", destination is " + DESTINATION);
         // when the config is up to date then check for pending names
         // conversion;
         // conversion will occur only if UUID is manually set to true
@@ -89,8 +92,9 @@ public class ConfigUpdater {
                 }
             }
         }
-        if (version != null && version.equals(destination)) {
+        if (version != null && version.equals(DESTINATION)) {
             LogUtils.getLogger().log(Level.INFO, "Configuration up to date!");
+            configHandler = null;
             return;
         } else {
             Utils.backup();
@@ -128,7 +132,7 @@ public class ConfigUpdater {
     private void performUpdate() {
         // this is new, post-1.5.3 updating system, where config versions
         // are numbered separately from plugin's releases
-        LogUtils.getLogger().log(Level.INFO, "Updating configuration to version " + destination);
+        LogUtils.getLogger().log(Level.INFO, "Updating configuration to version " + DESTINATION);
         update();
         updateLanguages();
         instance.saveConfig();
@@ -146,7 +150,7 @@ public class ConfigUpdater {
         final String configVersion = config.getString("version", null);
         // if the version is the same as destination, updating process is
         // finished
-        if (configVersion == null || configVersion.equals(destination)) {
+        if (configVersion == null || configVersion.equals(DESTINATION)) {
             return;
         }
         final String version = configVersion.toUpperCase(Locale.ROOT);

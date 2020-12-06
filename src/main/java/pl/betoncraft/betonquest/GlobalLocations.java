@@ -31,6 +31,7 @@ import java.util.logging.Level;
  */
 // TODO Delete in BQ 2.0.0
 @Deprecated
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalLocations extends BukkitRunnable {
 
     private static GlobalLocations instance;
@@ -40,6 +41,7 @@ public class GlobalLocations extends BukkitRunnable {
     /**
      * Creates new instance of global locations handler.
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public GlobalLocations() {
         super();
         // cancel previous instance if it exists

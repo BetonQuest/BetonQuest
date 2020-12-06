@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.conversation.Conversation;
 /**
  * This variable resolves into the name of the NPC.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NpcNameVariable extends Variable {
 
     public NpcNameVariable(final Instruction instruction) {

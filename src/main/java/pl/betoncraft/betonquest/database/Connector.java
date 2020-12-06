@@ -12,10 +12,9 @@ import java.util.logging.Level;
 /**
  * Connects to the database and queries it
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class Connector {
 
-    private final BetonQuest plugin;
     private final String prefix;
     private final Database database;
     private Connection connection;
@@ -24,7 +23,7 @@ public class Connector {
      * Opens a new connection to the database
      */
     public Connector() {
-        plugin = BetonQuest.getInstance();
+        final BetonQuest plugin = BetonQuest.getInstance();
         prefix = plugin.getConfig().getString("mysql.prefix", "");
         database = plugin.getDB();
         connection = database.getConnection();
@@ -52,6 +51,7 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
+    @SuppressWarnings("PMD.NcssCount")
     public ResultSet querySQL(final QueryType type, final String... args) {
         try {
             final PreparedStatement statement;
@@ -142,6 +142,7 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     public void updateSQL(final UpdateType type, final String... args) {
         try {
             final PreparedStatement statement;

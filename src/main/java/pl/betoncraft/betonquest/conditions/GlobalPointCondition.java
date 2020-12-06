@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
  * Requires a specified amount of global points (or more) in specified
  * category
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointCondition extends PointCondition {
 
     public GlobalPointCondition(final Instruction instruction) throws InstructionParseException {

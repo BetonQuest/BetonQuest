@@ -29,9 +29,9 @@ import java.util.logging.Level;
 /**
  * Pastes a schematic at a given location.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class PasteSchematicEvent extends QuestEvent {
 
-    private final WorldEditPlugin worldEdit;
     private File file;
     private final CompoundLocation loc;
     private final boolean noAir;
@@ -39,7 +39,7 @@ public class PasteSchematicEvent extends QuestEvent {
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
-        worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");
         if (!folder.exists() || !folder.isDirectory()) {
             throw new InstructionParseException("Schematic folder does not exist");

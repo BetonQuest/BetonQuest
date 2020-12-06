@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 /**
  * Simple chat-based conversation output.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SimpleConvIO extends ChatConvIO {
 
     private final String optionFormat;

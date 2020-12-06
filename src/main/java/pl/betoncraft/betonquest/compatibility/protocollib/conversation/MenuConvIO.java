@@ -42,7 +42,8 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class MenuConvIO extends ChatConvIO {
 
     // Thread safety
@@ -81,7 +82,6 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
     private ArmorStand stand = null;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
 
@@ -158,6 +158,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity"})
     private void start() {
         if (hasStartedUnsafe()) {
             return;
@@ -333,6 +334,7 @@ public class MenuConvIO extends ChatConvIO {
     @Override
     @EventHandler(ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
+        // Empty
     }
 
     /**
@@ -349,7 +351,6 @@ public class MenuConvIO extends ChatConvIO {
                 .replace("{npc_name}", npcName);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
         if (!isActiveUnsafe()) {
@@ -395,7 +396,6 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
         if (!isActiveUnsafe()) {
@@ -461,6 +461,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;
@@ -476,7 +477,8 @@ public class MenuConvIO extends ChatConvIO {
                 Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
                 .collect(Collectors.toList());
 
-        // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary down to a minimum of 1.
+        // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
+        // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
         if ("chat".equals(configNpcNameType)) {
@@ -488,7 +490,8 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable = Math.max(1, linesAvailable - 2);
         }
 
-        // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less space for all options due to npc text
+        // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less
+        // pace for all options due to npc text
         final List<String> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption;
         int currentDirection = selectedOption == oldSelectedOption ? 1 : selectedOption - oldSelectedOption;
@@ -728,6 +731,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings("PMD.NPathComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (!isActiveUnsafe()) {

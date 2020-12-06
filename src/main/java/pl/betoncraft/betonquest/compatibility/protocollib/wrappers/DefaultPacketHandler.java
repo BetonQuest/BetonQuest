@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 
+@SuppressWarnings("PMD.CommentRequired")
 public final class DefaultPacketHandler implements PacketHandler {
 
     private final PacketContainer handle;

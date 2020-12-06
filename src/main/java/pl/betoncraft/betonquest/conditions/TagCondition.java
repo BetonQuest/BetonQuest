@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Requires the player to have specified tag
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TagCondition extends Condition {
 
     protected final String tag;

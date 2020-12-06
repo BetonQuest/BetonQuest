@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Forces the player to run commands.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ChatEvent extends QuestEvent {
 
     private final String[] messages;

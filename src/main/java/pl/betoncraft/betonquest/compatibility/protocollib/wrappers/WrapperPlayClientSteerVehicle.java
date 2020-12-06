@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.protocollib.wrappers;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class WrapperPlayClientSteerVehicle extends PacketHandlerDecorator {
 
     public static final PacketType TYPE = PacketType.Play.Client.STEER_VEHICLE;

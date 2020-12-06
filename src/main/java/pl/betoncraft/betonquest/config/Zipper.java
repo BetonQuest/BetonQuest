@@ -12,9 +12,9 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class Zipper {
     private final List<String> fileList = new ArrayList<>();
-    private final String outputZipFile;
     private final String sourceFolder;
 
     public Zipper(final String source, final String output) {
@@ -24,7 +24,7 @@ public class Zipper {
             counter++;
             modifiedOutput = output + "-" + counter;
         }
-        outputZipFile = modifiedOutput + ".zip";
+        final String outputZipFile = modifiedOutput + ".zip";
         sourceFolder = source;
         generateFileList(new File(sourceFolder));
         zipIt(outputZipFile);
@@ -51,9 +51,10 @@ public class Zipper {
 
                 final FileInputStream input = new FileInputStream(sourceFolder + File.separator + file);
 
-                int len;
-                while ((len = input.read(buffer)) > 0) {
+                int len = input.read(buffer);
+                while (len > 0) {
                     zos.write(buffer, 0, len);
+                    len = input.read(buffer);
                 }
 
                 input.close();

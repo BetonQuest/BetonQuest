@@ -9,6 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to have active potion effect
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EffectCondition extends Condition {
 
     private final PotionEffectType type;

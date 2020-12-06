@@ -23,8 +23,10 @@ import java.util.regex.Pattern;
  * Where:
  * - namespace - (optional) The material namespace. If left out then it will be assumed to be 'minecraft'. Regex allowed
  * - material - The material the block is made of. Regex and Tags are allowed
- * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets. Regex allowed
+ * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square
+ * brackets. Regex allowed
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;
@@ -91,7 +93,8 @@ public class BlockSelector {
 
     /**
      * Get a BlockData. The Material is random selected from {@link BlockSelector#getRandomMaterial()}.
-     * If the states contains regex {@link IllegalArgumentException} is thrown, if you apply this with {@link BlockState#setBlockData(BlockData)}.
+     * If the states contains regex {@link IllegalArgumentException} is thrown, if you apply this with
+     * {@link BlockState#setBlockData(BlockData)}.
      *
      * @return A {@link BlockData}
      */
@@ -136,7 +139,8 @@ public class BlockSelector {
      *
      * @param block      The {@link Block} that should be compared
      * @param exactMatch If false, the target block may have more {@link BlockState}s than this {@link BlockSelector}.
-     *                   If true, the the target block is not allowed to have more {@link BlockState}s than this {@link BlockSelector}.
+     *                   If true, the the target block is not allowed to have more {@link BlockState}s than this
+     *                   {@link BlockSelector}.
      * @return True if the {@link Material} is represented by this {@link BlockSelector} and the {@link BlockState} matches.
      */
     public boolean match(final Block block, final boolean exactMatch) {

@@ -8,6 +8,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
  * Allows you to display total amount of global points or amount of global points remaining to
  * some other amount.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointVariable extends PointVariable {
 
     protected String category;

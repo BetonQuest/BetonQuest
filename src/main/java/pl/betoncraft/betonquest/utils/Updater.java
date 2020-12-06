@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class Updater {
     private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
     private static final String DEV_API_URL = "https://betonquest.org/old/api/v1/";
@@ -50,21 +51,17 @@ public class Updater {
                 LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
                     findDev();
+                } catch (UnknownHostException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
                 } catch (IOException e) {
-                    if (e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
-                    } else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
                 }
                 try {
                     findRelease();
+                } catch (UnknownHostException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
                 } catch (IOException e) {
-                    if (e instanceof UnknownHostException) {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
-                    } else {
-                        LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
-                    }
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                 }
                 if (latest.getValue() == null) {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
@@ -176,9 +173,10 @@ public class Updater {
     private String readStringFromURL(final String url) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader bufferedReader = new BufferedReader(reader)) {
             final StringBuilder builder = new StringBuilder();
-            int singleChar;
-            while ((singleChar = bufferedReader.read()) != -1) {
+            int singleChar = bufferedReader.read();
+            while (singleChar != -1) {
                 builder.append((char) singleChar);
+                singleChar = bufferedReader.read();
             }
             return builder.toString();
         }
@@ -251,14 +249,14 @@ public class Updater {
     public static class Version {
         public static final String DEV_TAG = "DEV-";
 
-        private final String version;
+        private final String versionString;
         private final DefaultArtifactVersion artifactVersion;
         private final Integer dev;
         private final boolean unofficial;
 
-        public Version(final String version) {
-            this.version = version;
-            this.artifactVersion = new DefaultArtifactVersion(version);
+        public Version(final String versionString) {
+            this.versionString = versionString;
+            this.artifactVersion = new DefaultArtifactVersion(versionString);
 
             Integer dev = null;
             boolean unofficial = false;
@@ -274,11 +272,11 @@ public class Updater {
             this.unofficial = unofficial;
         }
 
-        public Version(final Version version) {
-            this.version = version.version;
-            this.artifactVersion = version.artifactVersion;
-            this.dev = version.dev;
-            this.unofficial = version.unofficial;
+        public Version(final Version versionString) {
+            this.versionString = versionString.versionString;
+            this.artifactVersion = versionString.artifactVersion;
+            this.dev = versionString.dev;
+            this.unofficial = versionString.unofficial;
         }
 
         @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -329,7 +327,7 @@ public class Updater {
         }
 
         public String getVersion() {
-            return version;
+            return versionString;
         }
 
         public boolean isDev() {

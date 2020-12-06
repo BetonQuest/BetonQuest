@@ -10,6 +10,7 @@ import org.apache.logging.log4j.message.Message;
 /**
  * Filters /betonquestanswer commands
  */
+@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "PMD.CommentRequired"})
 public class AnswerFilter implements Filter {
 
     public AnswerFilter() {
@@ -106,17 +107,17 @@ public class AnswerFilter implements Filter {
 
     @Override
     public void initialize() {
-
+        // Empty
     }
 
     @Override
     public void start() {
-
+        // Empty
     }
 
     @Override
     public void stop() {
-
+        // Empty
     }
 
     @Override

@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Adds or removes tags from the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class TagEvent extends QuestEvent {
 
     protected final String[] tags;

@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 /**
  * Checks the amount of points on scoreboards.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ScoreboardCondition extends Condition {
 
     private final String objective;

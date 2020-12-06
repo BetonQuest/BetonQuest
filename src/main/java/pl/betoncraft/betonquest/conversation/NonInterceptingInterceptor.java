@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class NonInterceptingInterceptor implements Interceptor {
 
     protected final Conversation conv;
@@ -27,6 +28,6 @@ public class NonInterceptingInterceptor implements Interceptor {
 
     @Override
     public void end() {
-
+        // Empty
     }
 }

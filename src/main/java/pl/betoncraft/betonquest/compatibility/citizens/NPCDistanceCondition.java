@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * <p>
  * Created on 30.09.2018.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCDistanceCondition extends Condition {
 
     private final int npcId;

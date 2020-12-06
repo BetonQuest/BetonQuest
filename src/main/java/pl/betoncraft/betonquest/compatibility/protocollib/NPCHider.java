@@ -26,18 +26,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public final class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance = null;
 
     private final EntityHider hider;
     private final Map<Integer, Set<ConditionID>> npcs;
-    private final Integer updateInterval;
 
     private NPCHider() {
         super();
         npcs = new HashMap<>();
-        updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+        final Integer updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
         hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
         loadFromConfig();
         runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);

@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ConditionJobFull extends Condition {
     private final String sJobName;
 

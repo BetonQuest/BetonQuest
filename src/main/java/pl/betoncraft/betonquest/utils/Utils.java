@@ -34,8 +34,11 @@ import java.util.regex.Pattern;
 /**
  * Various utilities.
  */
-@SuppressWarnings("PMD.ClassNamingConventions")
-public class Utils {
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+public final class Utils {
+
+    private Utils() {
+    }
 
     /**
      * Does a full configuration backup.
@@ -172,7 +175,8 @@ public class Utils {
                     StringBuilder lineBuilder = new StringBuilder();
                     final int lineLength = getStringLength(line);
                     if (lineLength <= charsPerLine) {
-                        if (++lines > linesPerPage) {
+                        lines++;
+                        if (lines > linesPerPage) {
                             pages.add(page.toString());
                             lines = 1;
                             page = new StringBuilder();
@@ -184,7 +188,8 @@ public class Utils {
                         final int stringLength = getStringLength(word);
                         final int lineBuilderLength = getStringLength(lineBuilder.toString());
                         if (lineBuilderLength + stringLength > charsPerLine) {
-                            if (++lines > linesPerPage) {
+                            lines++;
+                            if (lines > linesPerPage) {
                                 pages.add(page.toString());
                                 lines = 1;
                                 page = new StringBuilder();
@@ -194,7 +199,8 @@ public class Utils {
                         }
                         lineBuilder.append(word).append(' ');
                     }
-                    if (++lines > linesPerPage) {
+                    lines++;
+                    if (lines > linesPerPage) {
                         pages.add(page.toString());
                         lines = 1;
                         page = new StringBuilder();
@@ -216,7 +222,7 @@ public class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");

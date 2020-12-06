@@ -31,16 +31,17 @@ import java.util.logging.Level;
 /**
  * Hides and shows holograms to players, based on conditions.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class HologramLoop {
 
     private final Map<Hologram, ConditionID[]> holograms = new HashMap<>();
     private final Map<Hologram, BukkitRunnable> runnables = new HashMap<>();
-    private BukkitRunnable runnable;
+    private final BukkitRunnable runnable;
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public HologramLoop() {
         // get all holograms and their condition
         for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -53,6 +54,7 @@ public class HologramLoop {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
                     LogUtils.getLogger().log(Level.WARNING, "Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
+                    runnable = null;
                     return;
                 }
                 final List<String> lines = section.getStringList(key + ".lines");

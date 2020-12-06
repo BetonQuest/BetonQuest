@@ -19,6 +19,7 @@ import java.util.Locale;
 /**
  * Requires the player to enchant an item.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EnchantObjective extends Objective implements Listener {
 
     private final QuestItem item;

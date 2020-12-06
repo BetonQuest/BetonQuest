@@ -36,6 +36,7 @@ import java.util.logging.Level;
 /**
  * Represents a conversation between player and NPC
  */
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
 public class Conversation implements Listener {
 
     private static final ConcurrentHashMap<String, Conversation> LIST = new ConcurrentHashMap<>();
@@ -173,7 +174,6 @@ public class Conversation implements Listener {
             }
             this.option = optionName;
             data = currentData;
-            break;
         }
     }
 

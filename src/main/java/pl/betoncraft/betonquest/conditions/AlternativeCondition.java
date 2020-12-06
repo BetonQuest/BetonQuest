@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 /**
  * One of specified conditions has to be true
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class AlternativeCondition extends Condition {
 
     private final List<ConditionID> conditions;

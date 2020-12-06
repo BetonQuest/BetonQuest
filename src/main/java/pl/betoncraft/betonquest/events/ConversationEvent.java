@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.utils.Utils;
 /**
  * Fires the conversation for the player
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConversationEvent extends QuestEvent {
 
     private final String conv;

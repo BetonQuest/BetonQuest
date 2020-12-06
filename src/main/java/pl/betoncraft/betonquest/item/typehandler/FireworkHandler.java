@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class FireworkHandler {
 
     private int power = 0;

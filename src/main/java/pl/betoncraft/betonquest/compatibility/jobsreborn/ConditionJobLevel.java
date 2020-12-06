@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class ConditionJobLevel extends Condition {
     private final String sJobName;
     private final int nMinLevel;

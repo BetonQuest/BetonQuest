@@ -34,11 +34,12 @@ import java.util.logging.Level;
 /**
  * Displays a hologram relative to an npc
  * <p>
- * Some care is taken to optimize how holograms are displayed. They are destroyed when not needed, shared between players and
+ * Some care is taken to optimize how holograms are displayed. They are destroyed when not needed,
+ * shared between players and
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
 
-@SuppressWarnings("PMD.UnusedAssignment")
+@SuppressWarnings({"PMD.UnusedAssignment", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class CitizensHologram extends BukkitRunnable implements Listener {
 
     private static CitizensHologram instance;
@@ -54,7 +55,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
     // Updater
     private BukkitRunnable updater;
 
-
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
     public CitizensHologram() {
         super();
         if (instance != null) {
@@ -214,7 +215,7 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     private void updateHolograms() {
         // If we need to update hologram positions
         boolean npcUpdater = false;

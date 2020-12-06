@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 /**
  * Stop the NPC when he is walking and teleport hin to a given location
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final CompoundLocation location;
     private final int npcId;

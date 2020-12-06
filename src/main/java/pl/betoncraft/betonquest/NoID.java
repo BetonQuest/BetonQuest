@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
  */
 // TODO Delete in BQ 2.0.0
 @Deprecated
-@SuppressWarnings("PMD.ShortClassName")
+@SuppressWarnings({"PMD.ShortClassName", "PMD.CommentRequired"})
 public class NoID extends pl.betoncraft.betonquest.id.NoID {
 
     public NoID(final ConfigPackage pack) throws ObjectNotFoundException {

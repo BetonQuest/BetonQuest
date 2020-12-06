@@ -29,6 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
 public class EntityHider implements Listener {
 
     // Packets that update remote player entities

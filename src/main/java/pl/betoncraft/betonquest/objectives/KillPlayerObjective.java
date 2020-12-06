@@ -18,6 +18,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import java.util.Locale;
 import java.util.logging.Level;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class KillPlayerObjective extends Objective implements Listener {
 
     private final int notifyInterval;
