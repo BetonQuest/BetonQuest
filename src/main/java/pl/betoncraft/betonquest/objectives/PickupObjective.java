@@ -53,7 +53,9 @@ public class PickupObjective extends Objective implements Listener {
         }
 
         final PickupData playerData = getPickupData(playerID);
-        playerData.pickup();
+        final ItemStack pickupItem = event.getItem().getItemStack();
+
+        playerData.pickup(pickupItem.getAmount());
 
         if (playerData.isFinished()) {
             completeObjective(playerID);
@@ -118,8 +120,8 @@ public class PickupObjective extends Objective implements Listener {
             amount = Integer.parseInt(instruction);
         }
 
-        private void pickup() {
-            amount--;
+        private void pickup(final int pickupAmount) {
+            amount = amount - pickupAmount;
             update();
         }
 
