@@ -148,9 +148,9 @@ public class Conversation implements Listener {
     /**
      * Chooses the first available option.
      *
-     * @param inputOptions list of option pointers separated by commas
-     * @param force        setting it to true will force the first option, even if
-     *                     conditions are not met
+     * @param options list of option pointers separated by commas
+     * @param force   setting it to true will force the first option, even if
+     *                conditions are not met
      */
     private void selectOption(final String[] options, final boolean force) {
         final String[] inputOptions = force ? new String[]{options[0]} : options;
@@ -169,11 +169,11 @@ public class Conversation implements Listener {
                 optionName = option;
             }
             final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
-            if (!force && !BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
-                continue;
+            if (force || BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
+                this.option = optionName;
+                data = currentData;
+                break;
             }
-            this.option = optionName;
-            data = currentData;
         }
     }
 

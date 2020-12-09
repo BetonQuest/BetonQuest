@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -9,8 +8,6 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-
-import java.util.Collection;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicMobDistanceCondition extends Condition {
@@ -39,16 +36,10 @@ public class MythicMobDistanceCondition extends Condition {
         final Player player = PlayerConverter.getPlayer(playerID);
         final double dist = distance.getDouble(playerID);
 
-        final Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist);
-        for (final Entity entity : entities) {
-            if (entity != null
-                    && apiHelper.isMythicMob(entity)
-                    && apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist)
+                .stream().anyMatch(entity -> entity != null
+                        && apiHelper.isMythicMob(entity)
+                        && apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName));
     }
 
 }

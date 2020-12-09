@@ -587,10 +587,10 @@ public class ConversationData {
 
             if (playerID != null) {
                 for (final String extend : extendLinks) {
-                    if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                        continue;
+                    if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
+                        ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
+                        break;
                     }
-                    ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
                 }
             }
 
@@ -627,10 +627,10 @@ public class ConversationData {
             final List<EventID> ret = new ArrayList<>(events);
 
             for (final String extend : extendLinks) {
-                if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                    continue;
+                if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
+                    ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
+                    break;
                 }
-                ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
             }
 
             return ret.toArray(new EventID[0]);
@@ -655,10 +655,10 @@ public class ConversationData {
 
             if (playerID != null) {
                 for (final String extend : extendLinks) {
-                    if (!BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                        continue;
+                    if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
+                        ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
+                        break;
                     }
-                    ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
                 }
             }
 
