@@ -140,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - packet Interceptor stops 1 second AFTER the end of the conversation to allow slow messages to still have its chat protection
 - fixed notify couldn't use variables that contain `:`
 - fixed brew objective when McMMO is installed
+- fixed region and npcregion condition
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

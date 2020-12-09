@@ -1,10 +1,5 @@
 package pl.betoncraft.betonquest.compatibility.worldguard;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -48,7 +43,7 @@ public class RegionObjective extends Objective implements Listener {
         final Player player = event.getPlayer();
         final String playerID = PlayerConverter.getID(player);
         if (containsPlayer(playerID)) {
-            final boolean inside = isInsideRegion(player.getLocation());
+            final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
             if (!entry && !exit && inside && checkConditions(playerID)) {
                 completeObjective(playerID);
             } else {
@@ -89,7 +84,7 @@ public class RegionObjective extends Objective implements Listener {
             return;
         }
 
-        final boolean inside = isInsideRegion(location);
+        final boolean inside = WorldGuardIntegrator.isInsideRegion(location, name);
 
         if (!entry && !exit) {
             if (inside && checkConditions(playerID)) {
@@ -98,7 +93,7 @@ public class RegionObjective extends Objective implements Listener {
             return;
         }
         if (!playersInsideRegion.containsKey(player.getUniqueId())) {
-            playersInsideRegion.put(player.getUniqueId(), isInsideRegion(player.getLocation()));
+            playersInsideRegion.put(player.getUniqueId(), WorldGuardIntegrator.isInsideRegion(player.getLocation(), name));
         }
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
         playersInsideRegion.put(player.getUniqueId(), inside);
@@ -107,31 +102,6 @@ public class RegionObjective extends Objective implements Listener {
             completeObjective(playerID);
             playersInsideRegion.remove(player.getUniqueId());
         }
-    }
-
-    /**
-     * Return true if location is inside region
-     *
-     * @param loc Location to Check
-     * @return boolean True if in region
-     */
-    private boolean isInsideRegion(final Location loc) {
-        if (loc == null || loc.getWorld() == null) {
-            return false;
-        }
-
-        final WorldGuardPlatform worldguardPlatform = WorldGuard.getInstance().getPlatform();
-        final RegionManager manager = worldguardPlatform.getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
-        if (manager == null) {
-            return false;
-        }
-
-        final ProtectedRegion region = manager.getRegion(name);
-        if (region == null) {
-            return false;
-        }
-
-        return region.contains(BukkitAdapter.asBlockVector(loc));
     }
 
     @Override
