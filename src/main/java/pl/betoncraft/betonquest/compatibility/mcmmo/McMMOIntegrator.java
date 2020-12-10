@@ -20,7 +20,6 @@ public class McMMOIntegrator implements Integrator {
     public void hook() {
         plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
-        plugin.registerObjectives("brew", BrewObjective.class);
         try {
             new MCMMOQuestItemHandler();
             LogUtils.getLogger().log(Level.FINE, "Enabled MCMMO QuestItemHandler");

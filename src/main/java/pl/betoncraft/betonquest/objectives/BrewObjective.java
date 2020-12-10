@@ -2,15 +2,16 @@ package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -48,18 +49,49 @@ public class BrewObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 0;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = false)
     public void onIngredientPut(final InventoryClickEvent event) {
-        if (event.getInventory().getType() != InventoryType.BREWING) {
+        final Inventory topInventory = event.getView().getTopInventory();
+        if (topInventory.getType() != InventoryType.BREWING || event.getRawSlot() < 0) {
             return;
         }
-        if (event.getRawSlot() == 3 || event.getClick().equals(ClickType.SHIFT_LEFT)) {
-            final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (!containsPlayer(playerID)) {
-                return;
-            }
-            locations.put(((BrewingStand) event.getInventory().getHolder()).getLocation(), playerID);
+        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (!containsPlayer(playerID)) {
+            return;
         }
+
+        final ItemStack[] contentBefore = topInventory.getStorageContents();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final ItemStack[] contentAfter = topInventory.getStorageContents();
+                if (!itemsAdded(contentBefore, contentAfter)) {
+                    return;
+                }
+                locations.put(((BrewingStand) topInventory.getHolder()).getLocation(), playerID);
+            }
+        }.runTask(BetonQuest.getInstance());
+    }
+
+    @SuppressWarnings("PMD.UseVarargs")
+    private boolean itemsAdded(final ItemStack[] contentBefore, final ItemStack[] contentAfter) {
+        for (int i = 0; i < contentBefore.length; i++) {
+            final ItemStack before = contentBefore[i];
+            final ItemStack after = contentAfter[i];
+            if (before == null && after != null) {
+                return true;
+            }
+            if (before != null && after != null) {
+                if (before.getType() == after.getType()) {
+                    if (before.getAmount() < after.getAmount()) {
+                        return true;
+                    }
+                } else if (after.getType() != Material.AIR) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @EventHandler(ignoreCancelled = true)
