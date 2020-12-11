@@ -223,4 +223,5 @@
   <rule ref="category/java/errorprone.xml/EmptySwitchStatements"/>
   <rule ref="category/java/errorprone.xml/EmptySynchronizedBlock"/>
   <rule ref="category/java/errorprone.xml/EmptyTryBlock"/>
+  <rule ref="category/java/errorprone.xml/EmptyWhileStmt"/>
 </ruleset>
