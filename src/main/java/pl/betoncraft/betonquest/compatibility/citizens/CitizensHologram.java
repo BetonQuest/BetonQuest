@@ -242,10 +242,11 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
                                     try {
                                         final String[] args = line.substring(5).split(":");
                                         final ItemID itemID = new ItemID(npcHologram.config.pack, args[0]);
-                                        int stackSize = 1;
+                                        int stackSize;
                                         try {
-                                            stackSize = Integer.valueOf(args[1]);
+                                            stackSize = Integer.parseInt(args[1]);
                                         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                            stackSize = 1;
                                         }
                                         final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                                         stack.setAmount(stackSize);
