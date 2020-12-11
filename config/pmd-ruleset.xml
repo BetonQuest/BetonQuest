@@ -253,4 +253,5 @@
   <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale"/>
   <rule ref="category/java/errorprone.xml/SingleMethodSingleton"/>
   <rule ref="category/java/errorprone.xml/SingletonClassReturningNewInstance"/>
+  <rule ref="category/java/errorprone.xml/StaticEJBFieldShouldBeFinal"/>
 </ruleset>
