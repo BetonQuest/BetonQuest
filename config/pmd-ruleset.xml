@@ -244,4 +244,5 @@
   <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
   <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement"/>
   <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
+  <!--<rule ref="category/java/errorprone.xml/NullAssignment"/>-->
 </ruleset>
