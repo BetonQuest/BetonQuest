@@ -266,4 +266,5 @@
   <rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals"/>
   <rule ref="category/java/errorprone.xml/UseCorrectExceptionLogging"/>
   <rule ref="category/java/errorprone.xml/UseEqualsToCompareStrings"/>
+  <rule ref="category/java/errorprone.xml/UselessOperationOnImmutable"/>
 </ruleset>
