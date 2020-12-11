@@ -260,4 +260,5 @@
   <rule ref="category/java/errorprone.xml/SuspiciousOctalEscape"/>
   <rule ref="category/java/errorprone.xml/TestClassWithoutTestCases"/>
   <rule ref="category/java/errorprone.xml/UnconditionalIfStatement"/>
+  <rule ref="category/java/errorprone.xml/UnnecessaryBooleanAssertion"/>
 </ruleset>
