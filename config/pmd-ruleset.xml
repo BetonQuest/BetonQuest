@@ -239,4 +239,5 @@
   <rule ref="category/java/errorprone.xml/MethodWithSameNameAsEnclosingClass"/>
   <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
   <rule ref="category/java/errorprone.xml/MissingBreakInSwitch"/>
+  <rule ref="category/java/errorprone.xml/MissingSerialVersionUID"/>
 </ruleset>
