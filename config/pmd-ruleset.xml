@@ -246,4 +246,5 @@
   <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
   <!--<rule ref="category/java/errorprone.xml/NullAssignment"/>-->
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>
+  <rule ref="category/java/errorprone.xml/ProperCloneImplementation"/>
 </ruleset>
