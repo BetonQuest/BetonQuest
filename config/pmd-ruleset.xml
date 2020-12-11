@@ -251,4 +251,5 @@
   <rule ref="category/java/errorprone.xml/ReturnEmptyArrayRatherThanNull"/>
   <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock"/>
   <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale"/>
+  <rule ref="category/java/errorprone.xml/SingleMethodSingleton"/>
 </ruleset>
