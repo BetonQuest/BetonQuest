@@ -10,10 +10,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -110,7 +107,7 @@ public class TitleEvent extends QuestEvent {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), times);
         }
         final String title = String.format("title %s %s {\"text\":\"%s\"}",
-                name, type.toString().toLowerCase(), message.replaceAll("&", "§"));
+                name, type.toString().toLowerCase(Locale.ROOT), message.replaceAll("&", "§"));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), title);
         return null;
     }

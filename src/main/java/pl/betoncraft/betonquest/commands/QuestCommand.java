@@ -72,7 +72,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             // if there are arguments handle them
             // toLowerCase makes switch case-insensitive
-            switch (args[0].toLowerCase()) {
+            switch (args[0].toLowerCase(Locale.ROOT)) {
                 case "conditions":
                 case "condition":
                 case "c":
@@ -293,7 +293,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "vector", "version", "purge",
                     "update", "reload", "backup", "create", "debug");
         }
-        switch (args[0].toLowerCase()) {
+        switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
             case "condition":
             case "c":
@@ -641,7 +641,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String pointerName = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
-        switch (args[2].toLowerCase()) {
+        switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
             case "a":
                 final Pointer pointer;
@@ -741,7 +741,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
-        switch (args[2].toLowerCase()) {
+        switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
             case "a":
                 if (args.length < 5 || !args[4].matches("-?\\d+")) {
@@ -808,7 +808,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
-        switch (args[1].toLowerCase()) {
+        switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
             case "a":
                 if (args.length < 4 || !args[3].matches("-?\\d+")) {
@@ -1084,7 +1084,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
         // if there are arguments, handle them
-        switch (args[2].toLowerCase()) {
+        switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
             case "a":
                 // add the tag
@@ -1142,7 +1142,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
         // if there are arguments, handle them
-        switch (args[1].toLowerCase()) {
+        switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
             case "a":
                 // add the tag
@@ -1275,7 +1275,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_objective");
             return;
         }
-        switch (args[2].toLowerCase()) {
+        switch (args[2].toLowerCase(Locale.ROOT)) {
             case "start":
             case "s":
             case "add":
@@ -1420,7 +1420,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "arguments");
             return;
         }
-        final String type = args[1].toLowerCase();
+        final String type = args[1].toLowerCase(Locale.ROOT);
         String name = args[2];
         String rename = args[3];
         if (!name.contains(".")) {
@@ -1591,7 +1591,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "arguments");
             return;
         }
-        final String type = args[1].toLowerCase();
+        final String type = args[1].toLowerCase(Locale.ROOT);
         String name = args[2];
         if (!name.contains(".")) {
             name = defaultPack + "." + name;
@@ -1672,7 +1672,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("tag", "point", "objective", "entry");
         }
         if (args.length == 3) {
-            switch (args[1].toLowerCase()) {
+            switch (args[1].toLowerCase(Locale.ROOT)) {
                 case "tags":
                 case "tag":
                 case "t":

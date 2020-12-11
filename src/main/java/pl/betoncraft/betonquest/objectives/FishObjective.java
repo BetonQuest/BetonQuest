@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -107,7 +108,7 @@ public class FishObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        switch (name.toLowerCase()) {
+        switch (name.toLowerCase(Locale.ROOT)) {
             case "left":
                 return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
             case "amount":

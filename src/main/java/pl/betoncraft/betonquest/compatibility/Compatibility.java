@@ -32,10 +32,7 @@ import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -150,7 +147,7 @@ public class Compatibility implements Listener {
         }
 
         // hook into the plugin if it's enabled in the config
-        if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase()))) {
+        if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
             LogUtils.getLogger().log(Level.INFO, "Hooking into " + name);
 
             // log important information in case of an error
@@ -166,7 +163,7 @@ public class Compatibility implements Listener {
                         exception.getMessage());
                 LogUtils.getLogger().log(Level.WARNING, message, exception);
                 LogUtils.getLogger().log(Level.WARNING, "BetonQuest will work correctly save for that single integration. "
-                        + "You can turn it off by setting 'hook." + name.toLowerCase()
+                        + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
             }
         }

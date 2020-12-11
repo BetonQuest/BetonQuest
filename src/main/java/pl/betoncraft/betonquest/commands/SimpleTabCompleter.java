@@ -6,6 +6,7 @@ import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Interface which handles tab complete for commands.
@@ -23,7 +24,7 @@ public interface SimpleTabCompleter extends TabCompleter {
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
         for (final String completation : completations) {
-            if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase().startsWith(lastArg.toLowerCase())) {
+            if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase(Locale.ROOT).startsWith(lastArg.toLowerCase(Locale.ROOT))) {
                 out.add(completation);
             }
         }

@@ -3,10 +3,7 @@ package pl.betoncraft.betonquest.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -124,7 +121,7 @@ public class LocalChatPaginator extends ChatPaginator {
 
             // skip chat color modifiers
             if (singleChar == ChatColor.COLOR_CHAR) {
-                word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase()));
+                word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase(Locale.ROOT)));
                 i++; // Eat the next character as we have already processed it
                 continue;
             }

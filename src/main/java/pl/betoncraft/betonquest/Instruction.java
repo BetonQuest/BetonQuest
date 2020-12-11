@@ -100,7 +100,7 @@ public class Instruction {
 
     public String getOptional(final String prefix) {
         for (final String part : parts) {
-            if (part.toLowerCase().startsWith(prefix.toLowerCase() + ":")) {
+            if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
                 lastOptional = prefix;
                 currentIndex = -1;
                 return part.substring(prefix.length() + 1);

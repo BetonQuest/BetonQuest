@@ -35,7 +35,7 @@ public class FireworkEffectHandler {
         final String[] parts = string.split(":");
         // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
-            if (parts[0].toLowerCase().startsWith("none-")) {
+            if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {
                 parts[0] = parts[0].substring(5);
                 typeE = Existence.FORBIDDEN;
             }

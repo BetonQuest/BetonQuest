@@ -17,6 +17,8 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 /**
  * Requires the player to type a password in chat.
  */
@@ -60,12 +62,12 @@ public class PasswordObjective extends Objective implements Listener {
         }
         final String prefix = passwordPrefix == null ?
                 Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(), "password") : passwordPrefix;
-        if (!prefix.isEmpty() && !message.toLowerCase().startsWith(prefix.toLowerCase())) {
+        if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }
         final String password = message.substring(prefix.length());
         if (checkConditions(playerID)) {
-            if ((ignoreCase ? password.toLowerCase() : password).matches(regex)) {
+            if ((ignoreCase ? password.toLowerCase(Locale.ROOT) : password).matches(regex)) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {

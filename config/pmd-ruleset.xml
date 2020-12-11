@@ -267,4 +267,5 @@
   <rule ref="category/java/errorprone.xml/UseCorrectExceptionLogging"/>
   <rule ref="category/java/errorprone.xml/UseEqualsToCompareStrings"/>
   <rule ref="category/java/errorprone.xml/UselessOperationOnImmutable"/>
+  <rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions"/>
 </ruleset>

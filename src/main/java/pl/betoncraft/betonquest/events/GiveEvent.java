@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -45,7 +46,7 @@ public class GiveEvent extends QuestEvent {
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
                             new String[]{
-                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
+                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
                 } catch (final QuestRuntimeException exception) {
                     LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");

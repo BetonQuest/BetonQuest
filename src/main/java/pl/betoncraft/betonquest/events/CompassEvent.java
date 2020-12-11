@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -56,7 +57,7 @@ public class CompassEvent extends QuestEvent {
             case DEL:
                 // Add Tag to player
                 try {
-                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase() + " compass-" + compass)).handle(playerID);
+                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass)).handle(playerID);
                 } catch (InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
                     LogUtils.logThrowable(e);

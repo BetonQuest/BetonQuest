@@ -61,7 +61,7 @@ public class ObjectiveEvent extends QuestEvent {
                 @Override
                 public void run() {
                     final PlayerData playerData = new PlayerData(playerID);
-                    switch (action.toLowerCase()) {
+                    switch (action.toLowerCase(Locale.ROOT)) {
                         case "start":
                         case "add":
                             playerData.addNewRawObjective(objective);
@@ -80,7 +80,7 @@ public class ObjectiveEvent extends QuestEvent {
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            switch (action.toLowerCase()) {
+            switch (action.toLowerCase(Locale.ROOT)) {
                 case "start":
                 case "add":
                     BetonQuest.newObjective(playerID, objective);

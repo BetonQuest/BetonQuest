@@ -14,6 +14,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -131,7 +132,7 @@ public class WandCondition extends Condition {
             for (final String spell : spells.keySet()) {
                 final int level = spells.get(spell).getInt(playerID);
                 for (final String wandSpell : wand.getSpells()) {
-                    if (wandSpell.toLowerCase().startsWith(spell.toLowerCase()) && wand.getSpellLevel(spell) >= level) {
+                    if (wandSpell.toLowerCase(Locale.ROOT).startsWith(spell.toLowerCase(Locale.ROOT)) && wand.getSpellLevel(spell) >= level) {
                         continue spell;
                     }
                 }

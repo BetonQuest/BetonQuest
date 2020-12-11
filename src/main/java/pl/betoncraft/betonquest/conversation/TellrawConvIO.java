@@ -66,7 +66,7 @@ public class TellrawConvIO extends ChatConvIO {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
+        if (!event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
             return;
         }
         event.setCancelled(true);
@@ -129,7 +129,7 @@ public class TellrawConvIO extends ChatConvIO {
 
         @EventHandler(priority = EventPriority.HIGH)
         public void onCommand(final PlayerCommandPreprocessEvent event) {
-            if (event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
+            if (event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
                 event.setCancelled(true);
             }
         }

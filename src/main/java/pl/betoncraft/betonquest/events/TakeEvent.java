@@ -14,10 +14,7 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -53,7 +50,7 @@ public class TakeEvent extends QuestEvent {
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
                             new String[]{
-                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase().replace("_", " ") : questItem.getName(),
+                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(counter)},
                             "items_taken,info");
                 } catch (final QuestRuntimeException exception) {
