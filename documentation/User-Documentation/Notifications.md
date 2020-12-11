@@ -1,12 +1,14 @@
 BetonQuest features a powerful notify system that allows you to display any information to your players.
 You can freely choose between many options like simple chat output, (sub)titles, advancements or sounds. 
 Here is an example video:
+<div style="text-align: center">
  <video controls loop
      src="../../media/content/User-Documentation/Notifications/NotifySystemOverview.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>
-
+<figcaption>These "styles" are called "Notify IO's".</figcaption>
+</div>
 **These "styles" are called "Notify IO's".**
 
 The Notify system gets used by BetonQuest itself too. Therefore, you cannot only send custom messages but also
@@ -38,8 +40,8 @@ notifications:
 ```
 
 !!! warning
-All colons (`:`) in your notification messages need to be escaped with one backslash (`\`) when using single quotes
-(`''`) and with two backslashes (`\\`) when using double quotes (`""`). Example:  `'Peter:Heya %player%!' -> 'Peter{++\++}:Heya %player%!'` `"Peter:Heya %player%!" -> "Peter{++\\++}:Heya %player%!"`
+    All colons (`:`) in your notification messages need to be escaped with one backslash (`\`) when using single quotes
+    (`''`) and with two backslashes (`\\`) when using double quotes (`""`). Example:  `'Peter:Heya %player%!' -> 'Peter{++\++}:Heya %player%!'` `"Peter:Heya %player%!" -> "Peter{++\\++}:Heya %player%!"`
 
 ## Configuring default plugin messages
   

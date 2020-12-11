@@ -3,7 +3,7 @@
 Writes the notification in the players chat.
 
 ??? info "Preview"
-  ![chat image](../media/content/User-Documentation/Notifications/chat.png)
+    ![chat image](../media/content/User-Documentation/Notifications/chat.png)
 
 | Option | Description |
 |--------|-------------|
@@ -14,7 +14,7 @@ Shows the notification using an achievement popup. Unfortunately Minecraft does 
 by removing it from your ressource pack. You can still add your own additional sound to this notification though.
 
 ??? info "Preview"
-![advancement image](../media/content/User-Documentation/Notifications/advancement.png)
+    ![advancement image](../media/content/User-Documentation/Notifications/advancement.png)
 
 | Option | Description |
 |--------|-------------|
@@ -26,7 +26,7 @@ by removing it from your ressource pack. You can still add your own additional s
 Shows the notification using the actionbar.
 
 ??? info "Preview"
-![actionbar image](../media/content/User-Documentation/Notifications/actionbar.png)
+    ![actionbar image](../media/content/User-Documentation/Notifications/actionbar.png)
 
 | Option | Description |
 |--------|-------------|
@@ -36,7 +36,7 @@ Shows the notification using the actionbar.
 Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
-![bossbar image](../media/content/User-Documentation/Notifications/bossbar.png)
+    ![bossbar image](../media/content/User-Documentation/Notifications/bossbar.png)
 
 | Option | Description |
 |--------|-------------|
@@ -53,7 +53,7 @@ Shows the notification using a title. A subtitle can be played simultaneously by
 Anything after these characters will be shown in the subtitle.
 
 ??? info "Preview"     
-![title](../media/content/User-Documentation/Notifications/title.png)
+    ![title](../media/content/User-Documentation/Notifications/title.png)
 
 | Option | Description |
 |--------|-------------|
@@ -67,7 +67,7 @@ Anything after these characters will be shown in the subtitle.
 Shows the notification using a subtitle.
 
 ??? info "Preview"
-![subtitle](../media/content/User-Documentation/Notifications/subtitle.png)
+    ![subtitle](../media/content/User-Documentation/Notifications/subtitle.png)
 
 | Option | Description |
 |--------|-------------|
@@ -102,7 +102,7 @@ The location the sound will be played at is moved away from the player towards t
 The sound will be at the actual location if the player is closer to the soundlocation then the offset would allow.
 
 ??? info "Visual Explanation"  
-![offset image](../media/content/User-Documentation/Notifications/offset.png)
+    ![offset image](../media/content/User-Documentation/Notifications/offset.png)
 
     This shows how the sound will be placed at the `soundlocation` if the distance between the player and the `soundlocation`
     is smaller then the `playeroffset`:    
@@ -119,7 +119,7 @@ This means that the vectors x axis is right / left from the players head, the y 
 and the z axis is before / behind the players face. It will move along the players  head.
 
 ??? info "Visual Explanation"  
-![relativeAxis image](../media/content/User-Documentation/Notifications/relativeAxis.png)
+    ![relativeAxis image](../media/content/User-Documentation/Notifications/relativeAxis.png)
 
 This makes it possible to go crazy with sounds. Just one example: A halloween special
 where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
@@ -137,6 +137,8 @@ width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>
 
+
+
 The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
 ### Suppress
@@ -150,6 +152,7 @@ setting for any normal category.
 
 This means you can show all notifications using the actionbar while having a bossbar
 IO for the "language changed" category with just three entries in you custom.yml!
+<div style="text-align: center">
 
 | Notification  | Categories |                 
 |---------------|------------|
@@ -178,3 +181,5 @@ IO for the "language changed" category with just three entries in you custom.yml
 | Points taken | point_taken, *info* |
 | Points multiplied | point_multiplied, *info* |
 | Sheep to shear | sheep_to_shear, *info* |
+
+</div>
