@@ -5,6 +5,8 @@ import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+import java.util.Objects;
+
 @SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
 public abstract class ID {
 
@@ -106,6 +108,11 @@ public abstract class ID {
                     identifier.pack.equals(this.pack);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, pack);
     }
 
     public Instruction generateInstruction() {

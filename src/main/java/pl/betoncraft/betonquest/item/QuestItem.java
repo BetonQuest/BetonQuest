@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * Represents an item handled by the configuration.
@@ -312,6 +313,11 @@ public class QuestItem {
                 && item.color.equals(color)
                 && item.firework.equals(firework)
                 && item.customModelData.equals(customModelData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework, customModelData);
     }
 
     /**
