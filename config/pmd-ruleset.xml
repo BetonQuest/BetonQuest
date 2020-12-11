@@ -206,4 +206,5 @@
   <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
   <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod"/>
   <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
+  <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
 </ruleset>
