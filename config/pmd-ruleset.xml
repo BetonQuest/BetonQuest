@@ -218,4 +218,5 @@
   <rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
   <rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
   <rule ref="category/java/errorprone.xml/EmptyInitializer"/>
+  <rule ref="category/java/errorprone.xml/EmptyStatementBlock"/>
 </ruleset>
