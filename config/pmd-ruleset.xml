@@ -191,4 +191,5 @@
   <rule ref="category/java/errorprone.xml/AvoidLosingExceptionInformation"/>
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
+  <rule ref="category/java/errorprone.xml/BadComparison"/>
 </ruleset>
