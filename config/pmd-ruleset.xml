@@ -254,4 +254,5 @@
   <rule ref="category/java/errorprone.xml/SingleMethodSingleton"/>
   <rule ref="category/java/errorprone.xml/SingletonClassReturningNewInstance"/>
   <rule ref="category/java/errorprone.xml/StaticEJBFieldShouldBeFinal"/>
+  <rule ref="category/java/errorprone.xml/StringBufferInstantiationWithChar"/>
 </ruleset>
