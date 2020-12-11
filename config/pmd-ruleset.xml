@@ -240,4 +240,5 @@
   <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
   <rule ref="category/java/errorprone.xml/MissingBreakInSwitch"/>
   <rule ref="category/java/errorprone.xml/MissingSerialVersionUID"/>
+  <rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass"/>
 </ruleset>
