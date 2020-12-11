@@ -194,4 +194,5 @@
   <rule ref="category/java/errorprone.xml/BadComparison"/>
   <!--<rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize"/>-->
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
+  <rule ref="category/java/errorprone.xml/CallSuperFirst"/>
 </ruleset>
