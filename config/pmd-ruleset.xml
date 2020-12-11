@@ -261,4 +261,5 @@
   <rule ref="category/java/errorprone.xml/TestClassWithoutTestCases"/>
   <rule ref="category/java/errorprone.xml/UnconditionalIfStatement"/>
   <rule ref="category/java/errorprone.xml/UnnecessaryBooleanAssertion"/>
+  <rule ref="category/java/errorprone.xml/UnnecessaryCaseChange"/>
 </ruleset>

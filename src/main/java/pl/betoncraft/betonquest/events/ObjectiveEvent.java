@@ -16,6 +16,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -30,7 +31,7 @@ public class ObjectiveEvent extends QuestEvent {
     public ObjectiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
-        action = instruction.next();
+        action = instruction.next().toLowerCase(Locale.ROOT);
         objective = instruction.getObjective();
         if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"})
                 .contains(action)) {
@@ -46,7 +47,7 @@ public class ObjectiveEvent extends QuestEvent {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
         if (playerID == null) {
-            if ("delete".equals(action.toLowerCase()) || "remove".equals(action.toLowerCase())) {
+            if ("delete".equals(action) || "remove".equals(action)) {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                     playerData.removeRawObjective(objective);
