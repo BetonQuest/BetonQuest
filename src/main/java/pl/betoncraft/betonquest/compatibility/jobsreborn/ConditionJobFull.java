@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 public class ConditionJobFull extends Condition {
     private final String sJobName;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ConditionJobFull(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {

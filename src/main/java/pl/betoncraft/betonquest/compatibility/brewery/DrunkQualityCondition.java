@@ -17,7 +17,7 @@ public class DrunkQualityCondition extends Condition {
 
         quality = instruction.getInt();
 
-        if (quality < 1 || quality > 10) {
+        if (quality <= 0 || quality > 10) {
             throw new InstructionParseException("Drunk quality can only be between 1 and 10!");
         }
     }

@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ObjectiveLevelUpEvent extends Objective implements Listener {
     private final String sJobName;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectiveLevelUpEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;

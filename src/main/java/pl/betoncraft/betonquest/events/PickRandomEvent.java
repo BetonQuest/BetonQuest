@@ -18,10 +18,12 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PickRandomEvent extends QuestEvent {
+    private final static char PERCENTAGE = '%';
 
     private final List<RandomEvent> events;
     private final VariableNumber amount;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public PickRandomEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.persistent = true;
@@ -34,13 +36,13 @@ public class PickRandomEvent extends QuestEvent {
             int index = 0;
             int count = 0;
             while (index < string.length()) {
-                if (string.charAt(index) == '%') {
+                if (string.charAt(index) == PERCENTAGE) {
                     count++;
                 }
                 index++;
             }
 
-            final String[] parts = string.split("%");
+            final String[] parts = string.split(String.valueOf(PERCENTAGE));
             final EventID eventID;
 
             if (count == 1) {

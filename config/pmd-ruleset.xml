@@ -187,4 +187,5 @@
   <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingMethodName"/>
   <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingTypeName"/>
   <rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause"/>
+  <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition"/>
 </ruleset>

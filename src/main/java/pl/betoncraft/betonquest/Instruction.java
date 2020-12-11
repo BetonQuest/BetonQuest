@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
-        "PMD.AvoidFieldNameMatchingTypeName"})
+        "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition"})
 public class Instruction {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
 
@@ -397,7 +397,7 @@ public class Instruction {
 
     public int getPositive(final String string, final int def) throws InstructionParseException {
         final int number = getInt(string, def);
-        if (number < 1) {
+        if (number <= 0) {
             throw new InstructionParseException("Number cannot be less than 1");
         }
         return number;

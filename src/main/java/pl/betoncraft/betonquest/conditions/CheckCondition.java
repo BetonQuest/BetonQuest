@@ -22,7 +22,7 @@ public class CheckCondition extends Condition {
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         final String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments");
         }
         StringBuilder builder = new StringBuilder();
@@ -45,7 +45,7 @@ public class CheckCondition extends Condition {
      */
     private Condition createCondition(final String instruction) throws InstructionParseException {
         final String[] parts = instruction.split(" ");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
         final Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);

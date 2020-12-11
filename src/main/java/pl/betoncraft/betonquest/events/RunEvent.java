@@ -24,7 +24,7 @@ public class RunEvent extends QuestEvent {
         staticness = true;
         persistent = true;
         final String[] parts = instruction.getInstruction().substring(3).trim().split(" ");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments");
         }
         StringBuilder builder = new StringBuilder();
@@ -47,7 +47,7 @@ public class RunEvent extends QuestEvent {
      */
     private QuestEvent createEvent(final String instruction) throws InstructionParseException {
         final String[] parts = instruction.split(" ");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in internal event");
         }
         final Class<? extends QuestEvent> eventClass = BetonQuest.getInstance().getEventClass(parts[0]);

@@ -33,6 +33,7 @@ public class FishObjective extends Objective implements Listener {
     private final int notifyInterval;
     private Material fish;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = FishData.class;
@@ -54,7 +55,7 @@ public class FishObjective extends Objective implements Listener {
             data = -1;
         }
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Fish amount cannot be less than 0");
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);

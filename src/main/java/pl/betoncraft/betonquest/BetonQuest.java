@@ -270,7 +270,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         final String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in variable " + variableID);
         }
         final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(parts[0]);

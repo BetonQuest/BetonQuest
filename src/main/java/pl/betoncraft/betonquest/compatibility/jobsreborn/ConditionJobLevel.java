@@ -17,6 +17,7 @@ public class ConditionJobLevel extends Condition {
     private final int nMinLevel;
     private final int nMaxLevel;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ConditionJobLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {

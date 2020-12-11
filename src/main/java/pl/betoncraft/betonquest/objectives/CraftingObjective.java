@@ -30,7 +30,7 @@ public class CraftingObjective extends Objective implements Listener {
         template = CraftData.class;
         item = instruction.getQuestItem();
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }

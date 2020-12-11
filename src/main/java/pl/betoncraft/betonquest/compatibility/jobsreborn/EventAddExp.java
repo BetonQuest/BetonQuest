@@ -16,6 +16,7 @@ public class EventAddExp extends QuestEvent {
     private final String sJobName;
     private final double nAddExperience;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public EventAddExp(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {

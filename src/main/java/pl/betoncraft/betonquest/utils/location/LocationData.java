@@ -49,6 +49,7 @@ public class LocationData extends AbstractData<Location> {
      *                                   couldn't be parsed into double values or the World does not
      *                                   exist.
      */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static Location parseLocation(final String loc) throws InstructionParseException {
         if (loc == null || !PATTERN_LOCATION.matcher(loc).find()) {
             throw new InstructionParseException("Incorrect location format '" + loc

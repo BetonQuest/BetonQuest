@@ -38,7 +38,7 @@ public class DelayObjective extends Objective {
             throw new InstructionParseException("Delay cannot be less than 0");
         }
         interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
-        if (interval < 1) {
+        if (interval <= 0) {
             throw new InstructionParseException("Interval cannot be less than 1 tick");
         }
     }
@@ -78,7 +78,7 @@ public class DelayObjective extends Objective {
         return Long.toString(new Date().getTime() + (long) delay);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @Override
     public String getProperty(final String name, final String playerID) {
         if ("left".equalsIgnoreCase(name)) {

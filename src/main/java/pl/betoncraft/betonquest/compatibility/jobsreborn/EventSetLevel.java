@@ -16,6 +16,7 @@ public class EventSetLevel extends QuestEvent {
     private final String sJobName;
     private final Integer nLevel;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public EventSetLevel(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 

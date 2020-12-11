@@ -16,6 +16,7 @@ public class EventDelLevel extends QuestEvent {
     private final String sJobName;
     private final Integer nAddLevel;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public EventDelLevel(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 
@@ -45,7 +46,7 @@ public class EventDelLevel extends QuestEvent {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true
                 oJob.setLevel(oJob.getLevel() - this.nAddLevel);
-                if (oJob.getLevel() < 1) {
+                if (oJob.getLevel() <= 0) {
                     oJob.setLevel(1);
                 }
             }

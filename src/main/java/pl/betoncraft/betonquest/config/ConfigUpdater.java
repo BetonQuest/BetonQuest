@@ -38,7 +38,7 @@ import java.util.logging.Level;
 @SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity",
         "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity",
         "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
-        "PMD.AvoidDuplicateLiterals"})
+        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here
@@ -1559,13 +1559,13 @@ public class ConfigUpdater {
             if (npcParts.length == 2) {
                 try {
                     for (final String code : npcParts[0].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         npcColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : npcParts[1].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         textColors.add(ChatColor.getByChar(code.charAt(0)));
@@ -1589,13 +1589,13 @@ public class ConfigUpdater {
             if (optionParts.length == 2) {
                 try {
                     for (final String code : optionParts[0].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         numberColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : optionParts[1].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         optionColors.add(ChatColor.getByChar(code.charAt(0)));
@@ -1617,13 +1617,13 @@ public class ConfigUpdater {
             if (answerParts.length == 2) {
                 try {
                     for (final String code : answerParts[0].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         playerColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
                     for (final String code : answerParts[1].split("&")) {
-                        if (code.length() < 1) {
+                        if (code.length() <= 0) {
                             continue;
                         }
                         answerColors.add(ChatColor.getByChar(code.charAt(0)));

@@ -17,6 +17,7 @@ public class RandomCondition extends Condition {
     private final VariableNumber valueMax;
     private final VariableNumber rangeOfRandom;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public RandomCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;

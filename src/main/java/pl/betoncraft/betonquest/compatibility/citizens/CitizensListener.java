@@ -75,6 +75,7 @@ public class CitizensListener implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public void interactLogic(final NPCClickEvent event) {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;

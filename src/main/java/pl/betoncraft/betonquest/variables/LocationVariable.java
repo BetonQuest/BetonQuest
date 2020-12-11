@@ -9,7 +9,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class LocationVariable extends Variable {
 
     private final MODE mode;

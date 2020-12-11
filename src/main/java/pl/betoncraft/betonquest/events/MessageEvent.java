@@ -42,7 +42,7 @@ public class MessageEvent extends QuestEvent {
         } catch (IndexOutOfBoundsException e) {
             throw new InstructionParseException("Message missing", e);
         }
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Message missing");
         }
         String currentLang = Config.getLanguage();

@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class EventJoinJob extends QuestEvent {
     private final String sJobName;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public EventJoinJob(final Instruction instructions) throws InstructionParseException {
         super(instructions, true);
 

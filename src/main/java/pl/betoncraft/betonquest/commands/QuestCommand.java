@@ -43,7 +43,7 @@ import java.util.logging.Level;
  * Main admin command for quest editing.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass", "PMD.NPathComplexity",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
@@ -66,7 +66,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             LogUtils.getLogger().log(Level.FINE, "Executing /betonquest command for user " + sender.getName()
                     + " with arguments: " + Arrays.toString(args));
             // if the command is empty, display help message
-            if (args.length < 1) {
+            if (args.length <= 0) {
                 displayHelp(sender, alias);
                 return true;
             }

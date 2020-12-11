@@ -94,7 +94,7 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
 
         // A null string is a single line

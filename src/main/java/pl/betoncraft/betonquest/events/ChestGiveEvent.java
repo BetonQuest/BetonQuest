@@ -31,6 +31,7 @@ public class ChestGiveEvent extends QuestEvent {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Block block = loc.getLocation(playerID).getBlock();
         final InventoryHolder chest;

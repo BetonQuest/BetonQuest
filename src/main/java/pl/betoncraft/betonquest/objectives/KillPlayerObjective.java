@@ -31,7 +31,7 @@ public class KillPlayerObjective extends Objective implements Listener {
         super(instruction);
         template = KillData.class;
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 0");
         }
         name = instruction.getOptional("name");
