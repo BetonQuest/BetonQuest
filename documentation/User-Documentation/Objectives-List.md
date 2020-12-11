@@ -33,7 +33,6 @@ This objective has two properties, `amount` and `left`. Amount is current amount
 
 ## Breed animals: `breed`
 
-
 This objective is completed by breeding animals of specified type. The first argument is animal type ([types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) and second is amount (positive integer). You can add `notify` argument to display a message with remaining amount each time the animal is bred, optionally with the notification interval after colon. While you can specify any entity, the objective will be completable only for breedable ones.
 
 !!! example

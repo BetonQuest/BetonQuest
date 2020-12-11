@@ -145,41 +145,37 @@ The sound is always played 5 block away from the soundlocation. The direction is
 Does not output any sound or text 🔕. Can be used to remove "miscellaneous" notifications.
 
 
-###Categories
+# Categories
 These are all notification categories. The categories `error` and `info` are super-categories that allow you to change
 the default values for all notification with just two entries in your *custom.yml*. You can still override these settings by providing a specific
 setting for any normal category.
 
 This means you can show all notifications using the actionbar while having a bossbar
 IO for the "language changed" category with just three entries in you custom.yml!
+```YAML
+notifications:
+  info:
+    io: actionbar
+  error:
+    io: actionbar
+  language_changed: 
+    io: bossbar
+```
 <div style="text-align: center">
 
-| Notification  | Categories |                 
-|---------------|------------|
-| Pullback | pullback, *error* |
-| Command Blocked | command_blocked, *error* |
-| No Permission | no_permission, *error* |
-| Busy | busy, *error* |
-| Changelog | changelog, *info* |
-| Inventory Full | inventory_full, *error* |
-| Language Changed | language_changed, *info* |
-| Mobs to Kill | mobs_to_kill, *info* |
-| Money Given | money_given, *info* |
-| Money Taken | money_taken, *info* |
-| Quest Cancelled | quest_cancelled, *info* |
-| Items Given | items_given, *info* |
-| New Journal Entry | new_journal_entry, *info* |
-| Items Taken | items_taken, *info* |
-| Blocks to Break | blocks_to_break, *info* |
-| Blocks to Place | blocks_to_place, *info* |
-| Animals to Breed | animals_to_breed, *info* |
-| Mobs to click | mobs_to_click, *info* |
-| Fish to catch | fish_to_catch, *info* |
-| Players to kill | players_to_kill, *info* |
-| Potions to brew | potions_to_brew, *info* |
-| Points given | point_given, *info* |
-| Points taken | point_taken, *info* |
-| Points multiplied | point_multiplied, *info* |
-| Sheep to shear | sheep_to_shear, *info* |
+| Notifications       | Categories                |  | Notifications     | Categories               |
+|---------------------|---------------------------|  |-------------------|--------------------------|
+| Command Blocked     | command_blocked, *error*  |  | Animals to Breed  | animals_to_breed, *info* |
+| No Permission       | no_permission, *error*    |  | Blocks to Break   | blocks_to_break, *info*  |
+| New Changelog       | changelog, *info*         |  | Blocks to Place   | blocks_to_place, *info*  |
+| Inventory Full      | inventory_full, *error*   |  | Mobs to click     | mobs_to_click, *info*    |
+| Language Changed    | language_changed, *info*  |  | Fish to catch     | fish_to_catch, *info*    |
+| Mobs to Kill        | mobs_to_kill, *info*      |  | Players to kill   | players_to_kill, *info*  |
+| Money Given         | money_given, *info*       |  | Potions to brew   | potions_to_brew, *info*  |
+| Money Taken         | money_taken, *info*       |  | Points given      | point_given, *info*      |
+| Quest Cancelled     | quest_cancelled, *info*   |  | Points taken      | point_taken, *info*      |
+| Items Given         | items_given, *info*       |  | Points multiplied | point_multiplied, *info* |
+| New Journal Entry   | new_journal_entry, *info* |  | Sheep to shear    | sheep_to_shear, *info*   |
+| Conversation blocked| busy, *error*             |  |                   |                          |
 
 </div>
