@@ -25,6 +25,8 @@ theme:
   language: en
   features:
     - navigation.tabs
+    - navigation.sections
+    - navigation.expand
     - navigation.instant
     - search.highlight
     - search.suggest
@@ -120,19 +122,29 @@ nav:
           - Learn-Beton/Getting-Started/Quick-Start-Tutorial.md
       - Learn-Beton/Frequently-Asked-Questions.md
       - Learn-Beton/Tips-and-tricks.md
+
   - 'User Documentation':
-      - '📚   Reference': User-Documentation/Reference.md
-      - '✔️ Objectives List': User-Documentation/Objectives-List.md
-      - '  ❓    Conditions List': User-Documentation/Conditions-List.md
-      - '⚙️ Events List': User-Documentation/Events-List.md
-      - '🤝 Compatibility List': User-Documentation/Compatibility.md
-      - '🔮   Variables List': User-Documentation/Variables-List.md
-      - '🔊   Notifications': User-Documentation/Notifications.md
-      - '💬  Conversations': User-Documentation/Conversations.md
-      - '🔧  Configuration': User-Documentation/Configuration.md
-      - User-Documentation/Commands-and-permissions.md
-      - '📥 Updating': User-Documentation/Updating-and-Backups.md
-      - '🗃️ Changelog': User-Documentation/CHANGELOG.md
+      - 'General':
+        - '📚   Reference': User-Documentation/Reference.md
+        - '💬  Conversations': User-Documentation/Conversations.md
+
+      - 'Types':
+          - '✔️ Objectives List': User-Documentation/Objectives-List.md
+          - '⚙️ Events List': User-Documentation/Events-List.md
+          - '  ❓    Conditions List': User-Documentation/Conditions-List.md
+          - '🤝 Compatibility List': User-Documentation/Compatibility.md
+          - '🔮   Variables List': User-Documentation/Variables-List.md
+
+      - 'Notifications:':
+        - '🔊   Settings': User-Documentation/Notifications.md
+        - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
+
+      - 'Technical:':
+        - '🔒 Permissions & Commands': User-Documentation/Commands-and-permissions.md
+        - '📥 Updating': User-Documentation/Updating-and-Backups.md
+        - '🔧  Configuration': User-Documentation/Configuration.md
+        - '🗃️ Changelog': User-Documentation/CHANGELOG.md
+
   - 'Developer Documentation':
       - Developer-Documentation/Contributing-Guidelines.md
       - Developer-Documentation/API.md
