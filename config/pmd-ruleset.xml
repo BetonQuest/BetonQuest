@@ -210,4 +210,5 @@
   <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
   <rule ref="category/java/errorprone.xml/DoNotHardCodeSDCard"/>
   <rule ref="category/java/errorprone.xml/DoNotTerminateVM"/>
+  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
 </ruleset>
