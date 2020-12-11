@@ -203,4 +203,5 @@
   <rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName"/>
   <rule ref="category/java/errorprone.xml/CloneThrowsCloneNotSupportedException"/>
   <rule ref="category/java/errorprone.xml/CloseResource"/>
+  <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
 </ruleset>
