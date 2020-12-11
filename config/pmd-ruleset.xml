@@ -235,4 +235,5 @@
   <rule ref="category/java/errorprone.xml/InvalidLogMessageFormat"/>
   <rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
   <rule ref="category/java/errorprone.xml/JUnitSpelling"/>
+  <rule ref="category/java/errorprone.xml/JUnitStaticSuite"/>
 </ruleset>
