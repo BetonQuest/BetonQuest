@@ -35,7 +35,7 @@ public class Zipper {
      *
      * @param zipFile output ZIP file location
      */
-    public void zipIt(final String zipFile) {
+    public final void zipIt(final String zipFile) {
 
         final byte[] buffer = new byte[1024];
 

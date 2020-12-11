@@ -62,7 +62,7 @@ public class PlayerData {
      * Loads all data for the player and puts it in appropriate lists.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
-    public void loadAllPlayerData() {
+    public final void loadAllPlayerData() {
         try {
             final Connector con = new Connector();
 

@@ -33,7 +33,7 @@ public class Connector {
     /**
      * This method should be used before any other database operations.
      */
-    public void refresh() {
+    public final void refresh() {
         try {
             connection.prepareStatement("SELECT 1").executeQuery();
         } catch (SQLException e) {

@@ -31,7 +31,7 @@ public class GlobalData {
     /**
      * Loads all data for the player and puts it in appropriate lists.
      */
-    public void loadAllGlobalData() {
+    public final void loadAllGlobalData() {
         try {
             // get connection to the database
             final Connector con = new Connector();

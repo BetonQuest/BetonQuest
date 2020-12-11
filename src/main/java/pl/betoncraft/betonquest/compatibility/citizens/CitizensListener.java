@@ -33,7 +33,7 @@ public class CitizensListener implements Listener {
         reload();
     }
 
-    public void reload() {
+    public final void reload() {
         if (rightClick != null) {
             HandlerList.unregisterAll(rightClick);
         }
