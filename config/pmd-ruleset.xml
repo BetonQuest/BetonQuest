@@ -212,4 +212,5 @@
   <rule ref="category/java/errorprone.xml/DoNotTerminateVM"/>
   <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
   <rule ref="category/java/errorprone.xml/DontImportSun"/>
+  <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices"/>
 </ruleset>
