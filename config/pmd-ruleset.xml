@@ -248,4 +248,5 @@
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>
   <rule ref="category/java/errorprone.xml/ProperCloneImplementation"/>
   <rule ref="category/java/errorprone.xml/ProperLogger"/>
+  <rule ref="category/java/errorprone.xml/ReturnEmptyArrayRatherThanNull"/>
 </ruleset>
