@@ -208,4 +208,5 @@
   <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
   <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
   <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
+  <rule ref="category/java/errorprone.xml/DoNotHardCodeSDCard"/>
 </ruleset>
