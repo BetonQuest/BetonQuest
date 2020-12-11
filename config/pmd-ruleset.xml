@@ -207,4 +207,5 @@
   <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod"/>
   <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
   <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
+  <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
 </ruleset>
