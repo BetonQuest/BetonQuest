@@ -110,10 +110,10 @@ public class Journal {
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
         final String date = BetonQuest.getInstance().isMySQLUsed()
-                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, new String[]{playerID, pointer.getPointer(), date}));
+                .add(new Record(UpdateType.ADD_JOURNAL, playerID, pointer.getPointer(), date));
     }
 
     /**
@@ -126,7 +126,7 @@ public class Journal {
             final Pointer pointer = iterator.next();
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 final String date = BetonQuest.getInstance().isMySQLUsed()
-                        ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(pointer.getTimestamp()))
+                        ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
                         .add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID, pointer.getPointer(), date}));
@@ -171,7 +171,7 @@ public class Journal {
             // if date should not be hidden, generate the date prefix
             String datePrefix = "";
             if ("false".equalsIgnoreCase(Config.getString("config.journal.hide_date"))) {
-                final String date = new SimpleDateFormat(Config.getString("config.date_format"))
+                final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                         .format(pointer.getTimestamp());
                 final String[] dateParts = date.split(" ");
                 final String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];

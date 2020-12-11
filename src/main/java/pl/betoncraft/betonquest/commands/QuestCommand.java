@@ -627,7 +627,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             LogUtils.getLogger().log(Level.FINE, "Listing journal pointers");
             sendMessage(sender, "player_journal");
             for (final Pointer pointer : journal.getPointers()) {
-                final String date = new SimpleDateFormat(Config.getString("config.date_format"))
+                final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                         .format(new Date(pointer.getTimestamp()));
                 sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
             }
@@ -652,7 +652,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 } else {
                     LogUtils.getLogger().log(Level.FINE, "Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"))
+                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                                 .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (ParseException e) {
                         sendMessage(sender, "specify_date");

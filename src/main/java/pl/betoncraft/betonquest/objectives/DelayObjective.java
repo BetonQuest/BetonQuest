@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 /**
@@ -136,7 +137,7 @@ public class DelayObjective extends Objective {
             }
             return time.toString();
         } else if ("date".equalsIgnoreCase(name)) {
-            return new SimpleDateFormat(Config.getString("config.date_format"))
+            return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                     .format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
         }
         return "";
