@@ -229,4 +229,5 @@
   <rule ref="category/java/errorprone.xml/FinalizeOnlyCallsSuperFinalize"/>
   <rule ref="category/java/errorprone.xml/FinalizeOverloaded"/>
   <rule ref="category/java/errorprone.xml/FinalizeShouldBeProtected"/>
+  <rule ref="category/java/errorprone.xml/IdempotentOperations"/>
 </ruleset>
