@@ -241,4 +241,5 @@
   <rule ref="category/java/errorprone.xml/MissingBreakInSwitch"/>
   <rule ref="category/java/errorprone.xml/MissingSerialVersionUID"/>
   <rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass"/>
+  <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
 </ruleset>
