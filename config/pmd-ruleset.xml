@@ -230,4 +230,5 @@
   <rule ref="category/java/errorprone.xml/FinalizeOverloaded"/>
   <rule ref="category/java/errorprone.xml/FinalizeShouldBeProtected"/>
   <rule ref="category/java/errorprone.xml/IdempotentOperations"/>
+  <rule ref="category/java/errorprone.xml/ImportFromSamePackage"/>
 </ruleset>
