@@ -1983,6 +1983,7 @@ public class ConfigUpdater {
                             break;
                         default:
                             newInst = "";
+                            break;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     LogUtils.getLogger().log(Level.WARNING, "    Could not read data from objective " + label + ", removing");
