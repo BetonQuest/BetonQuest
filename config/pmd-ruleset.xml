@@ -247,4 +247,5 @@
   <!--<rule ref="category/java/errorprone.xml/NullAssignment"/>-->
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>
   <rule ref="category/java/errorprone.xml/ProperCloneImplementation"/>
+  <rule ref="category/java/errorprone.xml/ProperLogger"/>
 </ruleset>
