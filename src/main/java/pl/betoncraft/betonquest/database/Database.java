@@ -49,9 +49,7 @@ public abstract class Database {
         } else {
             autoIncrement = "AUTOINCREMENT";
         }
-        // create tables if they don't exist
-        final Connection connection = getConnection();
-        try {
+        try (Connection connection = getConnection()) {
             connection.createStatement()
                     .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER PRIMARY KEY "
                             + autoIncrement + ", playerID VARCHAR(256) NOT NULL, objective VARCHAR(512)"

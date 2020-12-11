@@ -45,21 +45,27 @@ public class ConfigAccessor {
      */
     public void reloadConfig() {
         if (configFile == null) {
-            final InputStream str = plugin.getResource(fileName);
-            if (str == null) {
+            try (InputStream str = plugin.getResource(fileName)) {
+                if (str == null) {
+                    fileConfiguration = new YamlConfiguration();
+                } else {
+                    fileConfiguration = YamlConfiguration
+                            .loadConfiguration(new InputStreamReader(str));
+                }
+            } catch (IOException exception) {
                 fileConfiguration = new YamlConfiguration();
-            } else {
-                fileConfiguration = YamlConfiguration
-                        .loadConfiguration(new InputStreamReader(str));
             }
         } else {
             fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
             // Look for defaults in the jar
-            final InputStream defConfigStream = plugin.getResource(fileName);
-            if (defConfigStream != null) {
-                final YamlConfiguration defConfig = YamlConfiguration
-                        .loadConfiguration(new InputStreamReader(defConfigStream));
-                fileConfiguration.setDefaults(defConfig);
+            try (InputStream defConfigStream = plugin.getResource(fileName)) {
+                if (defConfigStream != null) {
+                    final YamlConfiguration defConfig = YamlConfiguration
+                            .loadConfiguration(new InputStreamReader(defConfigStream));
+                    fileConfiguration.setDefaults(defConfig);
+                }
+            } catch (IOException e) {
+                // Empty
             }
         }
     }
@@ -108,18 +114,15 @@ public class ConfigAccessor {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                final InputStream input = plugin.getResource(fileName);
-                if (input == null) {
-                    return;
+                try (InputStream input = plugin.getResource(fileName);
+                     OutputStream out = new FileOutputStream(configFile);) {
+                    final byte[] buffer = new byte[1024];
+                    int length = input.read(buffer);
+                    while (length != -1) {
+                        out.write(buffer, 0, length);
+                        length = input.read(buffer);
+                    }
                 }
-                final OutputStream out = new FileOutputStream(configFile);
-                final byte[] buffer = new byte[1024];
-                int length = input.read(buffer);
-                while (length != -1) {
-                    out.write(buffer, 0, length);
-                    length = input.read(buffer);
-                }
-                out.close();
             } catch (IOException e) {
                 LogUtils.logThrowableReport(e);
             }

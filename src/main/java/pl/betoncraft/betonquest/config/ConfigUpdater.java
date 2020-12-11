@@ -38,7 +38,7 @@ import java.util.logging.Level;
 @SuppressWarnings({"PMD.LiteralsFirstInComparisons", "PMD.AvoidCatchingGenericException", "PMD.CyclomaticComplexity",
         "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity",
         "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
-        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CloseResource"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

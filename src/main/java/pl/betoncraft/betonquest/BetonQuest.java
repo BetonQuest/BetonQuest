@@ -31,6 +31,7 @@ import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -338,21 +339,25 @@ public class BetonQuest extends JavaPlugin {
 
         // try to connect to database
         LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
-        Connection con = null;
         if (getConfig().getBoolean("mysql.enabled", true)) {
             this.database = new MySQL(this, getConfig().getString("mysql.host"),
                     getConfig().getString("mysql.port"),
                     getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
                     getConfig().getString("mysql.pass"));
-            con = database.getConnection();
-        }
-        if (con == null) {
-            this.database = new SQLite(this, "database.db");
-            LogUtils.getLogger().log(Level.INFO, "Using SQLite for storing data!");
-            isMySQLUsed = false;
+            try (Connection con = database.getConnection()) {
+                if (con == null) {
+                    this.database = new SQLite(this, "database.db");
+                    isMySQLUsed = false;
+                    LogUtils.getLogger().log(Level.WARNING, "No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                }
+            } catch (SQLException exception) {
+                this.database = new SQLite(this, "database.db");
+                LogUtils.getLogger().log(Level.WARNING, "There was a exception during MySQL initiation! Using SQLite for storing data as fallback!");
+            }
         } else {
-            LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
-            isMySQLUsed = true;
+            this.database = new SQLite(this, "database.db");
+            isMySQLUsed = false;
+            LogUtils.getLogger().log(Level.INFO, "Using SQLite for storing data!");
         }
 
         // create tables in the database

@@ -35,22 +35,20 @@ public class GlobalData {
         try {
             // get connection to the database
             final Connector con = new Connector();
-            // load global_tags
-            final ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS, new String[0]);
-            // put them into the list
-            while (res2.next()) {
-                globalTags.add(res2.getString("tag"));
+            try (ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
+                 ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS);) {
+                // put them into the list
+                while (res2.next()) {
+                    globalTags.add(res2.getString("tag"));
+                }
+                // put them into the list
+                while (res4.next()) {
+                    globalPoints.add(new Point(res4.getString("category"), res4.getInt("count")));
+                }
+                // log data to debugger
+                LogUtils.getLogger().log(Level.FINE, "There are " + globalTags.size() + " global_tags and " + globalPoints.size()
+                        + " global_points loaded");
             }
-            // load global_points
-            final ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new String[0]);
-            // put them into the list
-            while (res4.next()) {
-                globalPoints.add(new Point(res4.getString("category"), res4.getInt("count")));
-            }
-            // log data to debugger
-            LogUtils.getLogger().log(Level.FINE, "There are " + globalTags.size() + " global_tags and " + globalPoints.size()
-                    + " global_points loaded");
-
         } catch (SQLException e) {
             LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
             LogUtils.logThrowable(e);

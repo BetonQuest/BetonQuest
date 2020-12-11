@@ -64,78 +64,73 @@ public class PlayerData {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void loadAllPlayerData() {
         try {
-            // get connection to the database
             final Connector con = new Connector();
 
-            // load objectives
-            final ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, new String[]{playerID});
-            // put them into the list
-            while (res1.next()) {
-                objectives.put(res1.getString("objective"), res1.getString("instructions"));
-            }
+            try (ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, playerID);
+                 ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, playerID);
+                 ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, playerID);
+                 ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, playerID);
+                 ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, playerID);
+                 ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, playerID)) {
 
-            // load tags
-            final ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, new String[]{playerID});
-            // put them into the list
-            while (res2.next()) {
-                tags.add(res2.getString("tag"));
-            }
-
-            // load journals
-            final ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, new String[]{playerID});
-            // put them into the list
-            while (res3.next()) {
-                entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
-            }
-
-            // load points
-            final ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, new String[]{playerID});
-            // put them into the list
-            while (res4.next()) {
-                points.add(new Point(res4.getString("category"), res4.getInt("count")));
-            }
-
-            // load backpack
-            final ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, new String[]{playerID});
-            // put items into the list
-            while (res5.next()) {
-                final String instruction = res5.getString("instruction");
-                final int amount = res5.getInt("amount");
-                final ItemStack item;
-                try {
-                    item = new QuestItem(instruction).generate(amount);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
-                            + ", with instruction '" + instruction + "', because: " + e.getMessage());
-                    LogUtils.logThrowable(e);
-                    continue;
+                // put them into the list
+                while (res1.next()) {
+                    objectives.put(res1.getString("objective"), res1.getString("instructions"));
                 }
-                backpack.add(item);
-            }
 
-            // load language
-            final ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, new String[]{playerID});
-            // put it there
-            if (res6.next()) {
-                lang = res6.getString("language");
-                if ("default".equals(lang)) {
+                // put them into the list
+                while (res2.next()) {
+                    tags.add(res2.getString("tag"));
+                }
+
+                // put them into the list
+                while (res3.next()) {
+                    entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
+                }
+
+                // put them into the list
+                while (res4.next()) {
+                    points.add(new Point(res4.getString("category"), res4.getInt("count")));
+                }
+
+                // put items into the list
+                while (res5.next()) {
+                    final String instruction = res5.getString("instruction");
+                    final int amount = res5.getInt("amount");
+                    final ItemStack item;
+                    try {
+                        item = new QuestItem(instruction).generate(amount);
+                    } catch (final InstructionParseException e) {
+                        LogUtils.getLogger().log(Level.WARNING, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
+                                + ", with instruction '" + instruction + "', because: " + e.getMessage());
+                        LogUtils.logThrowable(e);
+                        continue;
+                    }
+                    backpack.add(item);
+                }
+
+                // put it there
+                if (res6.next()) {
+                    lang = res6.getString("language");
+                    if ("default".equals(lang)) {
+                        lang = Config.getLanguage();
+                    }
+                    conv = res6.getString("conversation");
+                    if (conv == null || conv.equalsIgnoreCase("null")) {
+                        conv = null;
+                    }
+                } else {
                     lang = Config.getLanguage();
+                    saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, "default"}));
                 }
-                conv = res6.getString("conversation");
-                if (conv == null || conv.equalsIgnoreCase("null")) {
-                    conv = null;
-                }
-            } else {
-                lang = Config.getLanguage();
-                saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, "default"}));
+
+                // log data to debugger
+                LogUtils.getLogger().log(Level.FINE, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                        + " points, " + entries.size() + " journal entries and " + backpack.size()
+                        + " items loaded for player " + PlayerConverter.getName(playerID));
+
             }
-
-            // log data to debugger
-            LogUtils.getLogger().log(Level.FINE, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
-                    + " points, " + entries.size() + " journal entries and " + backpack.size()
-                    + " items loaded for player " + PlayerConverter.getName(playerID));
-
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
             LogUtils.logThrowable(e);
         }
@@ -273,7 +268,7 @@ public class PlayerData {
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(playerID, objectiveID, objectives.get(objective));
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.");
                 LogUtils.logThrowable(e);

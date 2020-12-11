@@ -53,78 +53,71 @@ public class Connector {
      */
     @SuppressWarnings("PMD.NcssCount")
     public ResultSet querySQL(final QueryType type, final String... args) {
-        try {
-            final PreparedStatement statement;
-            switch (type) {
-                case SELECT_JOURNAL:
-                    statement = connection
-                            .prepareStatement("SELECT pointer, date FROM " + prefix + "journal WHERE playerID = ?;");
-                    break;
-                case SELECT_POINTS:
-                    statement = connection
-                            .prepareStatement("SELECT category, count FROM " + prefix + "points WHERE playerID = ?;");
-                    break;
-                case SELECT_OBJECTIVES:
-                    statement = connection.prepareStatement(
-                            "SELECT objective, instructions FROM " + prefix + "objectives WHERE playerID = ?;");
-                    break;
-                case SELECT_TAGS:
-                    statement = connection.prepareStatement("SELECT tag FROM " + prefix + "tags WHERE playerID = ?;");
-                    break;
-                case SELECT_BACKPACK:
-                    statement = connection
-                            .prepareStatement("SELECT instruction, amount FROM " + prefix + "backpack WHERE playerID = ?;");
-                    break;
-                case SELECT_PLAYER:
-                    statement = connection.prepareStatement(
-                            "SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;");
-                    break;
-                case SELECT_PLAYERS_TAGS:
-                    statement = connection.prepareStatement("SELECT playerID FROM " + prefix + "tags GROUP BY playerID;");
-                    break;
-                case SELECT_PLAYERS_JOURNAL:
-                    statement = connection
-                            .prepareStatement("SELECT playerID FROM " + prefix + "journal GROUP BY playerID;");
-                    break;
-                case SELECT_PLAYERS_POINTS:
-                    statement = connection.prepareStatement("SELECT playerID FROM " + prefix + "points GROUP BY playerID;");
-                    break;
-                case SELECT_PLAYERS_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("SELECT playerID FROM " + prefix + "objectives GROUP BY playerID;");
-                    break;
-                case SELECT_PLAYERS_BACKPACK:
-                    statement = connection
-                            .prepareStatement("SELECT playerID FROM " + prefix + "backpack GROUP BY playerID;");
-                    break;
-                case LOAD_ALL_JOURNALS:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "journal");
-                    break;
-                case LOAD_ALL_OBJECTIVES:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "objectives");
-                    break;
-                case LOAD_ALL_POINTS:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "points");
-                    break;
-                case LOAD_ALL_GLOBAL_POINTS:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "global_points");
-                    break;
-                case LOAD_ALL_TAGS:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "tags");
-                    break;
-                case LOAD_ALL_GLOBAL_TAGS:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "global_tags");
-                    break;
-                case LOAD_ALL_BACKPACK:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "backpack");
-                    break;
-                case LOAD_ALL_PLAYER:
-                    statement = connection.prepareStatement("SELECT * FROM " + prefix + "player");
-                    break;
-                default:
-                    statement = connection.prepareStatement("SELECT 1");
-                    break;
-            }
+        String stringStatement;
+        switch (type) {
+            case SELECT_JOURNAL:
+                stringStatement = "SELECT pointer, date FROM " + prefix + "journal WHERE playerID = ?;";
+                break;
+            case SELECT_POINTS:
+                stringStatement = "SELECT category, count FROM " + prefix + "points WHERE playerID = ?;";
+                break;
+            case SELECT_OBJECTIVES:
+                stringStatement = "SELECT objective, instructions FROM " + prefix + "objectives WHERE playerID = ?;";
+                break;
+            case SELECT_TAGS:
+                stringStatement = "SELECT tag FROM " + prefix + "tags WHERE playerID = ?;";
+                break;
+            case SELECT_BACKPACK:
+                stringStatement = "SELECT instruction, amount FROM " + prefix + "backpack WHERE playerID = ?;";
+                break;
+            case SELECT_PLAYER:
+                stringStatement = "SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;";
+                break;
+            case SELECT_PLAYERS_TAGS:
+                stringStatement = "SELECT playerID FROM " + prefix + "tags GROUP BY playerID;";
+                break;
+            case SELECT_PLAYERS_JOURNAL:
+                stringStatement = "SELECT playerID FROM " + prefix + "journal GROUP BY playerID;";
+                break;
+            case SELECT_PLAYERS_POINTS:
+                stringStatement = "SELECT playerID FROM " + prefix + "points GROUP BY playerID;";
+                break;
+            case SELECT_PLAYERS_OBJECTIVES:
+                stringStatement = "SELECT playerID FROM " + prefix + "objectives GROUP BY playerID;";
+                break;
+            case SELECT_PLAYERS_BACKPACK:
+                stringStatement = "SELECT playerID FROM " + prefix + "backpack GROUP BY playerID;";
+                break;
+            case LOAD_ALL_JOURNALS:
+                stringStatement = "SELECT * FROM " + prefix + "journal";
+                break;
+            case LOAD_ALL_OBJECTIVES:
+                stringStatement = "SELECT * FROM " + prefix + "objectives";
+                break;
+            case LOAD_ALL_POINTS:
+                stringStatement = "SELECT * FROM " + prefix + "points";
+                break;
+            case LOAD_ALL_GLOBAL_POINTS:
+                stringStatement = "SELECT * FROM " + prefix + "global_points";
+                break;
+            case LOAD_ALL_TAGS:
+                stringStatement = "SELECT * FROM " + prefix + "tags";
+                break;
+            case LOAD_ALL_GLOBAL_TAGS:
+                stringStatement = "SELECT * FROM " + prefix + "global_tags";
+                break;
+            case LOAD_ALL_BACKPACK:
+                stringStatement = "SELECT * FROM " + prefix + "backpack";
+                break;
+            case LOAD_ALL_PLAYER:
+                stringStatement = "SELECT * FROM " + prefix + "player";
+                break;
+            default:
+                stringStatement = "SELECT 1";
+                break;
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(stringStatement)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }
@@ -142,196 +135,175 @@ public class Connector {
      * @param type type of the update
      * @param args arguments
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public void updateSQL(final UpdateType type, final String... args) {
-        try {
-            final PreparedStatement statement;
-            switch (type) {
-                case ADD_OBJECTIVES:
-                    statement = connection.prepareStatement(
-                            "INSERT INTO " + prefix + "objectives (playerID, objective, instructions) VALUES (?, ?, ?);");
-                    break;
-                case ADD_TAGS:
-                    statement = connection.prepareStatement(
-                            "INSERT INTO " + prefix + "tags (playerID, tag) VALUES (?, ?);");
-                    break;
-                case ADD_GLOBAL_TAGS:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "global_tags (tag) VALUES (?);");
-                    break;
-                case ADD_POINTS:
-                    statement = connection.prepareStatement(
-                            "INSERT INTO " + prefix + "points (playerID, category, count) VALUES (?, ?, ?);");
-                    break;
-                case ADD_GLOBAL_POINTS:
-                    statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "global_points (category, count) VALUES (?, ?);");
-                    break;
-                case ADD_JOURNAL:
-                    statement = connection.prepareStatement(
-                            "INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?, ?, ?);");
-                    break;
-                case ADD_BACKPACK:
-                    statement = connection.prepareStatement(
-                            "INSERT INTO " + prefix + "backpack (playerID, instruction, amount) VALUES (?, ?, ?);");
-                    break;
-                case ADD_PLAYER:
-                    statement = connection
-                            .prepareStatement("INSERT INTO " + prefix + "player (playerID, language) VALUES (?, ?);");
-                    break;
-                case REMOVE_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ? AND objective = ?;");
-                    break;
-                case REMOVE_TAGS:
-                    statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "tags WHERE playerID = ? AND tag = ?;");
-                    break;
-                case REMOVE_GLOBAL_TAGS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "global_tags WHERE tag = ?;");
-                    break;
-                case REMOVE_POINTS:
-                    statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ? AND category = ?;");
-                    break;
-                case REMOVE_GLOBAL_POINTS:
-                    statement = connection
-                            .prepareStatement("DELETE FROM " + prefix + "global_points WHERE category = ?;");
-                    break;
-                case REMOVE_JOURNAL:
-                    statement = connection.prepareStatement(
-                            "DELETE FROM " + prefix + "journal WHERE playerID = ? AND pointer = ? AND date = ?;");
-                    break;
-                case DELETE_OBJECTIVES:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE playerID = ?;");
-                    break;
-                case DELETE_TAGS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE playerID = ?;");
-                    break;
-                case DELETE_GLOBAL_TAGS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "global_tags");
-                    break;
-                case DELETE_POINTS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "points WHERE playerID = ?;");
-                    break;
-                case DELETE_GLOBAL_POINTS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "global_points");
-                    break;
-                case DELETE_JOURNAL:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "journal WHERE playerID = ?;");
-                    break;
-                case DELETE_BACKPACK:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "backpack WHERE playerID = ?;");
-                    break;
-                case DELETE_PLAYER:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "player WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_TAGS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "tags SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_POINTS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "points SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_JOURNAL:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "journal SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case UPDATE_PLAYERS_BACKPACK:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "backpack SET playerID = ? WHERE playerID = ?;");
-                    break;
-                case DROP_OBJECTIVES:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "objectives");
-                    break;
-                case DROP_TAGS:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "tags");
-                    break;
-                case DROP_GLOBAL_TAGS:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "global_tags");
-                    break;
-                case DROP_POINTS:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "points");
-                    break;
-                case DROP_GLOBAL_POINTS:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "global_points");
-                    break;
-                case DROP_JOURNALS:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "journal");
-                    break;
-                case DROP_BACKPACK:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "backpack");
-                    break;
-                case DROP_PLAYER:
-                    statement = connection.prepareStatement("DROP TABLE " + prefix + "player");
-                    break;
-                case INSERT_OBJECTIVE:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "objectives VALUES (?,?,?,?)");
-                    break;
-                case INSERT_TAG:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "tags VALUES (?,?,?)");
-                    break;
-                case INSERT_GLOBAL_TAG:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "global_tags VALUES (?,?)");
-                    break;
-                case INSERT_POINT:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "points VALUES (?,?,?,?)");
-                    break;
-                case INSERT_GLOBAL_POINT:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "global_points VALUES (?,?,?)");
-                    break;
-                case INSERT_JOURNAL:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "journal VALUES (?,?,?,?)");
-                    break;
-                case INSERT_BACKPACK:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "backpack VALUES (?,?,?,?)");
-                    break;
-                case INSERT_PLAYER:
-                    statement = connection.prepareStatement("INSERT INTO " + prefix + "player VALUES (?,?,?,?);");
-                    break;
-                case UPDATE_CONVERSATION:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "player SET conversation = ? WHERE playerID = ?");
-                    break;
-                case REMOVE_ALL_TAGS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "tags WHERE tag = ?;");
-                    break;
-                case REMOVE_ALL_POINTS:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "points WHERE category = ?;");
-                    break;
-                case REMOVE_ALL_OBJECTIVES:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "objectives WHERE objective = ?;");
-                    break;
-                case REMOVE_ALL_ENTRIES:
-                    statement = connection.prepareStatement("DELETE FROM " + prefix + "journal WHERE pointer = ?;");
-                    break;
-                case RENAME_ALL_TAGS:
-                    statement = connection.prepareStatement("UPDATE " + prefix + "tags SET tag = ? WHERE tag = ?;");
-                    break;
-                case RENAME_ALL_POINTS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "points SET category = ? WHERE category = ?;");
-                    break;
-                case RENAME_ALL_GLOBAL_POINTS:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "global_points SET category = ? WHERE category = ?;");
-                    break;
-                case RENAME_ALL_OBJECTIVES:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "objectives SET objective = ? WHERE objective = ?;");
-                    break;
-                case RENAME_ALL_ENTRIES:
-                    statement = connection
-                            .prepareStatement("UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;");
-                    break;
-                default:
-                    statement = connection.prepareStatement("SELECT 1");
-                    break;
-            }
+        String stringStatement;
+        switch (type) {
+            case ADD_OBJECTIVES:
+                stringStatement = "INSERT INTO " + prefix + "objectives (playerID, objective, instructions) VALUES (?, ?, ?);";
+                break;
+            case ADD_TAGS:
+                stringStatement = "INSERT INTO " + prefix + "tags (playerID, tag) VALUES (?, ?);";
+                break;
+            case ADD_GLOBAL_TAGS:
+                stringStatement = "INSERT INTO " + prefix + "global_tags (tag) VALUES (?);";
+                break;
+            case ADD_POINTS:
+                stringStatement = "INSERT INTO " + prefix + "points (playerID, category, count) VALUES (?, ?, ?);";
+                break;
+            case ADD_GLOBAL_POINTS:
+                stringStatement = "INSERT INTO " + prefix + "global_points (category, count) VALUES (?, ?);";
+                break;
+            case ADD_JOURNAL:
+                stringStatement = "INSERT INTO " + prefix + "journal (playerID, pointer, date) VALUES (?, ?, ?);";
+                break;
+            case ADD_BACKPACK:
+                stringStatement = "INSERT INTO " + prefix + "backpack (playerID, instruction, amount) VALUES (?, ?, ?);";
+                break;
+            case ADD_PLAYER:
+                stringStatement = "INSERT INTO " + prefix + "player (playerID, language) VALUES (?, ?);";
+                break;
+            case REMOVE_OBJECTIVES:
+                stringStatement = "DELETE FROM " + prefix + "objectives WHERE playerID = ? AND objective = ?;";
+                break;
+            case REMOVE_TAGS:
+                stringStatement = "DELETE FROM " + prefix + "tags WHERE playerID = ? AND tag = ?;";
+                break;
+            case REMOVE_GLOBAL_TAGS:
+                stringStatement = "DELETE FROM " + prefix + "global_tags WHERE tag = ?;";
+                break;
+            case REMOVE_POINTS:
+                stringStatement = "DELETE FROM " + prefix + "points WHERE playerID = ? AND category = ?;";
+                break;
+            case REMOVE_GLOBAL_POINTS:
+                stringStatement = "DELETE FROM " + prefix + "global_points WHERE category = ?;";
+                break;
+            case REMOVE_JOURNAL:
+                stringStatement = "DELETE FROM " + prefix + "journal WHERE playerID = ? AND pointer = ? AND date = ?;";
+                break;
+            case DELETE_OBJECTIVES:
+                stringStatement = "DELETE FROM " + prefix + "objectives WHERE playerID = ?;";
+                break;
+            case DELETE_TAGS:
+                stringStatement = "DELETE FROM " + prefix + "tags WHERE playerID = ?;";
+                break;
+            case DELETE_GLOBAL_TAGS:
+                stringStatement = "DELETE FROM " + prefix + "global_tags";
+                break;
+            case DELETE_POINTS:
+                stringStatement = "DELETE FROM " + prefix + "points WHERE playerID = ?;";
+                break;
+            case DELETE_GLOBAL_POINTS:
+                stringStatement = "DELETE FROM " + prefix + "global_points";
+                break;
+            case DELETE_JOURNAL:
+                stringStatement = "DELETE FROM " + prefix + "journal WHERE playerID = ?;";
+                break;
+            case DELETE_BACKPACK:
+                stringStatement = "DELETE FROM " + prefix + "backpack WHERE playerID = ?;";
+                break;
+            case DELETE_PLAYER:
+                stringStatement = "DELETE FROM " + prefix + "player WHERE playerID = ?;";
+                break;
+            case UPDATE_PLAYERS_OBJECTIVES:
+                stringStatement = "UPDATE " + prefix + "objectives SET playerID = ? WHERE playerID = ?;";
+                break;
+            case UPDATE_PLAYERS_TAGS:
+                stringStatement = "UPDATE " + prefix + "tags SET playerID = ? WHERE playerID = ?;";
+                break;
+            case UPDATE_PLAYERS_POINTS:
+                stringStatement = "UPDATE " + prefix + "points SET playerID = ? WHERE playerID = ?;";
+                break;
+            case UPDATE_PLAYERS_JOURNAL:
+                stringStatement = "UPDATE " + prefix + "journal SET playerID = ? WHERE playerID = ?;";
+                break;
+            case UPDATE_PLAYERS_BACKPACK:
+                stringStatement = "UPDATE " + prefix + "backpack SET playerID = ? WHERE playerID = ?;";
+                break;
+            case DROP_OBJECTIVES:
+                stringStatement = "DROP TABLE " + prefix + "objectives";
+                break;
+            case DROP_TAGS:
+                stringStatement = "DROP TABLE " + prefix + "tags";
+                break;
+            case DROP_GLOBAL_TAGS:
+                stringStatement = "DROP TABLE " + prefix + "global_tags";
+                break;
+            case DROP_POINTS:
+                stringStatement = "DROP TABLE " + prefix + "points";
+                break;
+            case DROP_GLOBAL_POINTS:
+                stringStatement = "DROP TABLE " + prefix + "global_points";
+                break;
+            case DROP_JOURNALS:
+                stringStatement = "DROP TABLE " + prefix + "journal";
+                break;
+            case DROP_BACKPACK:
+                stringStatement = "DROP TABLE " + prefix + "backpack";
+                break;
+            case DROP_PLAYER:
+                stringStatement = "DROP TABLE " + prefix + "player";
+                break;
+            case INSERT_OBJECTIVE:
+                stringStatement = "INSERT INTO " + prefix + "objectives VALUES (?,?,?,?)";
+                break;
+            case INSERT_TAG:
+                stringStatement = "INSERT INTO " + prefix + "tags VALUES (?,?,?)";
+                break;
+            case INSERT_GLOBAL_TAG:
+                stringStatement = "INSERT INTO " + prefix + "global_tags VALUES (?,?)";
+                break;
+            case INSERT_POINT:
+                stringStatement = "INSERT INTO " + prefix + "points VALUES (?,?,?,?)";
+                break;
+            case INSERT_GLOBAL_POINT:
+                stringStatement = "INSERT INTO " + prefix + "global_points VALUES (?,?,?)";
+                break;
+            case INSERT_JOURNAL:
+                stringStatement = "INSERT INTO " + prefix + "journal VALUES (?,?,?,?)";
+                break;
+            case INSERT_BACKPACK:
+                stringStatement = "INSERT INTO " + prefix + "backpack VALUES (?,?,?,?)";
+                break;
+            case INSERT_PLAYER:
+                stringStatement = "INSERT INTO " + prefix + "player VALUES (?,?,?,?);";
+                break;
+            case UPDATE_CONVERSATION:
+                stringStatement = "UPDATE " + prefix + "player SET conversation = ? WHERE playerID = ?";
+                break;
+            case REMOVE_ALL_TAGS:
+                stringStatement = "DELETE FROM " + prefix + "tags WHERE tag = ?;";
+                break;
+            case REMOVE_ALL_POINTS:
+                stringStatement = "DELETE FROM " + prefix + "points WHERE category = ?;";
+                break;
+            case REMOVE_ALL_OBJECTIVES:
+                stringStatement = "DELETE FROM " + prefix + "objectives WHERE objective = ?;";
+                break;
+            case REMOVE_ALL_ENTRIES:
+                stringStatement = "DELETE FROM " + prefix + "journal WHERE pointer = ?;";
+                break;
+            case RENAME_ALL_TAGS:
+                stringStatement = "UPDATE " + prefix + "tags SET tag = ? WHERE tag = ?;";
+                break;
+            case RENAME_ALL_POINTS:
+                stringStatement = "UPDATE " + prefix + "points SET category = ? WHERE category = ?;";
+                break;
+            case RENAME_ALL_GLOBAL_POINTS:
+                stringStatement = "UPDATE " + prefix + "global_points SET category = ? WHERE category = ?;";
+                break;
+            case RENAME_ALL_OBJECTIVES:
+                stringStatement = "UPDATE " + prefix + "objectives SET objective = ? WHERE objective = ?;";
+                break;
+            case RENAME_ALL_ENTRIES:
+                stringStatement = "UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;";
+                break;
+            default:
+                stringStatement = "SELECT 1";
+                break;
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(stringStatement)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }
