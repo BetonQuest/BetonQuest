@@ -237,4 +237,5 @@
   <rule ref="category/java/errorprone.xml/JUnitSpelling"/>
   <rule ref="category/java/errorprone.xml/JUnitStaticSuite"/>
   <rule ref="category/java/errorprone.xml/MethodWithSameNameAsEnclosingClass"/>
+  <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
 </ruleset>
