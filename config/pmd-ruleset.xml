@@ -196,4 +196,5 @@
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
   <rule ref="category/java/errorprone.xml/CallSuperFirst"/>
   <rule ref="category/java/errorprone.xml/CallSuperLast"/>
+  <rule ref="category/java/errorprone.xml/CheckSkipResult"/>
 </ruleset>
