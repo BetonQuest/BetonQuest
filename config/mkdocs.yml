@@ -152,10 +152,13 @@ nav:
       - Developer-Documentation/Releasing.md
       - Developer-Documentation/Versioning.md
   - 'Contributing':
-      - Contributing/Contributing.md
+      - 'General':
+          - Contributing/Contributing.md
       - 'Docs':
           - Contributing/Documentation/Setup.md
           - Contributing/Documentation/Guidelines.md
+      - 'Sponsorships':
+          - 'Patreon': Contributing/Sponsors.md
 
 
 google_analytics:
