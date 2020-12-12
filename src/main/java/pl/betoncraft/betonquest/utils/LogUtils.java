@@ -85,7 +85,7 @@ public final class LogUtils {
             setupLoggerHandler();
 
             final boolean dataFolderExists = BetonQuest.getInstance().getDataFolder().exists();
-            final String debugString = BetonQuest.getInstance().getConfig().getString("debugString");
+            final String debugString = BetonQuest.getInstance().getConfig().getString("debug");
             final boolean debugReadError = debugString == null && !dataFolderExists;
 
             if (debugReadError) {

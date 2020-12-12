@@ -141,6 +141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed notify couldn't use variables that contain `:`
 - improved stability for brew objective when other plugins affect brewing
 - fixed region and npcregion condition
+- fixed debugging dose not start on server startup
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 
