@@ -2,10 +2,9 @@ package pl.betoncraft.betonquest.config;
 
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,7 +38,7 @@ public class Zipper {
 
         final byte[] buffer = new byte[1024];
 
-        try (FileOutputStream fos = new FileOutputStream(zipFile);
+        try (OutputStream fos = Files.newOutputStream(Paths.get(zipFile));
              ZipOutputStream zos = new ZipOutputStream(fos);) {
 
             for (final String file : this.fileList) {
@@ -47,7 +46,7 @@ public class Zipper {
                 final ZipEntry zipEntry = new ZipEntry(file);
                 zos.putNextEntry(zipEntry);
 
-                try (FileInputStream input = new FileInputStream(sourceFolder + File.separator + file)) {
+                try (InputStream input = Files.newInputStream(Paths.get(sourceFolder + File.separator + file))) {
                     int len = input.read(buffer);
                     while (len > 0) {
                         zos.write(buffer, 0, len);

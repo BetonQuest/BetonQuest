@@ -22,8 +22,8 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.logging.Level;
 
 /**
@@ -65,7 +65,7 @@ public class PasteSchematicEvent extends QuestEvent {
             }
 
             final Clipboard clipboard;
-            try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+            try (ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()))) {
                 clipboard = reader.read();
             }
 

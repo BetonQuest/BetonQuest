@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.Locale;
@@ -122,9 +123,7 @@ public class Updater {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                try (FileOutputStream fos = new FileOutputStream(file)) {
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                }
+                FileChannel.open(file.toPath()).transferFrom(rbc, 0, Long.MAX_VALUE);
             }
             latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
             LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Download finished.");

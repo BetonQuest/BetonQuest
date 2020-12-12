@@ -274,4 +274,5 @@
   <rule ref="category/java/performance.xml/AppendCharacterWithChar"/>
   <rule ref="category/java/performance.xml/AvoidArrayLoops"/>
   <rule ref="category/java/performance.xml/AvoidCalendarDateCreation"/>
+  <rule ref="category/java/performance.xml/AvoidFileStream"/>
 </ruleset>

@@ -13,6 +13,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -146,7 +147,7 @@ public class Config {
             try {
                 file.createNewFile();
                 try (InputStream input = plugin.getResource(resource);
-                     OutputStream output = new FileOutputStream(file);) {
+                     OutputStream output = Files.newOutputStream(file.toPath());) {
                     final byte[] buffer = new byte[1024];
                     int len = input.read(buffer);
                     while (len != -1) {
