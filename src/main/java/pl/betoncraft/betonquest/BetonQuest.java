@@ -338,8 +338,8 @@ public class BetonQuest extends JavaPlugin {
         Notify.load();
 
         // try to connect to database
-        LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
         if (getConfig().getBoolean("mysql.enabled", true)) {
+            LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
             this.database = new MySQL(this, getConfig().getString("mysql.host"),
                     getConfig().getString("mysql.port"),
                     getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
@@ -350,6 +350,7 @@ public class BetonQuest extends JavaPlugin {
                     LogUtils.getLogger().log(Level.WARNING, "No connection to the mySQL Database! Using SQLite for storing data as fallback!");
                 } else {
                     isMySQLUsed = true;
+                    LogUtils.getLogger().log(Level.INFO, "Successfully connected to MySQL database!");
                 }
             } catch (SQLException exception) {
                 this.database = new SQLite(this, "database.db");
