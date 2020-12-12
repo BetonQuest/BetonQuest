@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Adds tellraw command handling to the SimpleConvIO
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class TellrawConvIO extends ChatConvIO {
 
     protected Map<Integer, String> hashes;
@@ -66,7 +66,7 @@ public class TellrawConvIO extends ChatConvIO {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (!event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
+        if (!event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
             return;
         }
         event.setCancelled(true);
@@ -129,7 +129,7 @@ public class TellrawConvIO extends ChatConvIO {
 
         @EventHandler(priority = EventPriority.HIGH)
         public void onCommand(final PlayerCommandPreprocessEvent event) {
-            if (event.getMessage().toLowerCase().startsWith("/betonquestanswer ")) {
+            if (event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
                 event.setCancelled(true);
             }
         }

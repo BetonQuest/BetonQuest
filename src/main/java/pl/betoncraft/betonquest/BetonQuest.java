@@ -31,6 +31,7 @@ import pl.betoncraft.betonquest.variables.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -270,7 +271,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         final String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length < 1) {
+        if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in variable " + variableID);
         }
         final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(parts[0]);
@@ -337,22 +338,27 @@ public class BetonQuest extends JavaPlugin {
         Notify.load();
 
         // try to connect to database
-        LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
-        Connection con = null;
         if (getConfig().getBoolean("mysql.enabled", true)) {
+            LogUtils.getLogger().log(Level.FINE, "Connecting to MySQL database");
             this.database = new MySQL(this, getConfig().getString("mysql.host"),
                     getConfig().getString("mysql.port"),
                     getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
                     getConfig().getString("mysql.pass"));
-            con = database.getConnection();
-        }
-        if (con == null) {
+            try (Connection con = database.getConnection()) {
+                if (con == null) {
+                    this.database = new SQLite(this, "database.db");
+                    LogUtils.getLogger().log(Level.WARNING, "No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                } else {
+                    isMySQLUsed = true;
+                    LogUtils.getLogger().log(Level.INFO, "Successfully connected to MySQL database!");
+                }
+            } catch (SQLException exception) {
+                this.database = new SQLite(this, "database.db");
+                LogUtils.getLogger().log(Level.WARNING, "There was a exception during MySQL initiation! Using SQLite for storing data as fallback!");
+            }
+        } else {
             this.database = new SQLite(this, "database.db");
             LogUtils.getLogger().log(Level.INFO, "Using SQLite for storing data!");
-            isMySQLUsed = false;
-        } else {
-            LogUtils.getLogger().log(Level.INFO, "Using MySQL for storing data!");
-            isMySQLUsed = true;
         }
 
         // create tables in the database

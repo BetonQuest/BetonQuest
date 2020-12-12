@@ -196,6 +196,7 @@ public class BlockSelector {
         return selectorParts;
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private int getBracketIndex(final String text, final int openedBrackets) {
         final int indexOpen = text.lastIndexOf("[");
         final int indexClose = text.lastIndexOf("]");

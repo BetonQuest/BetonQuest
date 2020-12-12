@@ -17,6 +17,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -101,7 +102,7 @@ public class PickupObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        switch (name.toLowerCase()) {
+        switch (name.toLowerCase(Locale.ROOT)) {
             case "left":
                 return Integer.toString(getPickupData(playerID).getAmount());
             case "amount":

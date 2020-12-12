@@ -35,35 +35,27 @@ public class Zipper {
      *
      * @param zipFile output ZIP file location
      */
-    public void zipIt(final String zipFile) {
+    public final void zipIt(final String zipFile) {
 
         final byte[] buffer = new byte[1024];
 
-        try {
-
-            final FileOutputStream fos = new FileOutputStream(zipFile);
-            final ZipOutputStream zos = new ZipOutputStream(fos);
+        try (FileOutputStream fos = new FileOutputStream(zipFile);
+             ZipOutputStream zos = new ZipOutputStream(fos);) {
 
             for (final String file : this.fileList) {
 
                 final ZipEntry zipEntry = new ZipEntry(file);
                 zos.putNextEntry(zipEntry);
 
-                final FileInputStream input = new FileInputStream(sourceFolder + File.separator + file);
-
-                int len = input.read(buffer);
-                while (len > 0) {
-                    zos.write(buffer, 0, len);
-                    len = input.read(buffer);
+                try (FileInputStream input = new FileInputStream(sourceFolder + File.separator + file)) {
+                    int len = input.read(buffer);
+                    while (len > 0) {
+                        zos.write(buffer, 0, len);
+                        len = input.read(buffer);
+                    }
                 }
-
-                input.close();
             }
-
             zos.closeEntry();
-            // remember close it
-            zos.close();
-
         } catch (IOException e) {
             LogUtils.getLogger().log(Level.WARNING, "Couldn't zip the files");
             LogUtils.logThrowable(e);

@@ -30,7 +30,7 @@ public class NPCKillObjective extends Objective implements Listener {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }

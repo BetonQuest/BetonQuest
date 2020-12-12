@@ -11,6 +11,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 /**
@@ -38,7 +39,7 @@ public class DelayObjective extends Objective {
             throw new InstructionParseException("Delay cannot be less than 0");
         }
         interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
-        if (interval < 1) {
+        if (interval <= 0) {
             throw new InstructionParseException("Interval cannot be less than 1 tick");
         }
     }
@@ -78,7 +79,7 @@ public class DelayObjective extends Objective {
         return Long.toString(new Date().getTime() + (long) delay);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @Override
     public String getProperty(final String name, final String playerID) {
         if ("left".equalsIgnoreCase(name)) {
@@ -136,7 +137,7 @@ public class DelayObjective extends Objective {
             }
             return time.toString();
         } else if ("date".equalsIgnoreCase(name)) {
-            return new SimpleDateFormat(Config.getString("config.date_format"))
+            return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                     .format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
         }
         return "";

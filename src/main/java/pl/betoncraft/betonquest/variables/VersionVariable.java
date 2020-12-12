@@ -17,14 +17,15 @@ public class VersionVariable extends Variable {
 
     public VersionVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        final String[] parts = instruction.getInstruction().split("\\.");
-        if (parts.length > 1) {
-            plugin = Bukkit.getPluginManager().getPlugin(parts[1]);
-            if (plugin == null) {
-                throw new InstructionParseException("Plugin " + parts[1] + "does not exist!");
-            }
-        } else {
+        final int pointIndex = instruction.getInstruction().indexOf("\\.");
+        if (pointIndex == -1) {
             plugin = BetonQuest.getInstance();
+        } else {
+            final String pluginName = instruction.getInstruction().substring(pointIndex + 1);
+            plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+            if (plugin == null) {
+                throw new InstructionParseException("Plugin " + pluginName + "does not exist!");
+            }
         }
     }
 

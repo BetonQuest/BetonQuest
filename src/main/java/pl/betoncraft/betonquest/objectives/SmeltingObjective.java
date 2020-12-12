@@ -30,7 +30,7 @@ public class SmeltingObjective extends Objective implements Listener {
         template = SmeltData.class;
         material = instruction.getEnum(Material.class);
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }

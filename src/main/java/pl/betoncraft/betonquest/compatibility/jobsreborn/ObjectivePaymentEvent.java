@@ -15,6 +15,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 public class ObjectivePaymentEvent extends Objective implements Listener {
     private final double nAmount;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
@@ -26,7 +27,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Could not parse amount", e);
         }
-        if (nAmount < 1) {
+        if (nAmount <= 0) {
             throw new InstructionParseException("Amount needs to be one or more");
         }
     }

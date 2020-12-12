@@ -73,6 +73,7 @@ public final class LogUtils {
     /**
      * Create a latest.log file, rename the old latest.log and register the LogHandler
      */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static void setupLogger() {
         if (fileHandler != null) {
             getLogger().log(Level.WARNING, "The logger was already registered!");

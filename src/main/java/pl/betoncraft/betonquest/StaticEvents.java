@@ -92,11 +92,11 @@ public class StaticEvents {
     private long getTimestamp(final String hour) {
         // get the current day and add the given hour to it
         final Date time = new Date();
-        final String timeString = new SimpleDateFormat("dd.MM.yy").format(time) + " " + hour;
+        final String timeString = new SimpleDateFormat("dd.MM.yy", Locale.ROOT).format(time) + " " + hour;
         // convert it into a timestamp
         long timeStamp = -1;
         try {
-            timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm").parse(timeString).getTime();
+            timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm", Locale.ROOT).parse(timeString).getTime();
         } catch (final ParseException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error in time setting in static event declaration: " + hour);
             LogUtils.logThrowable(e);

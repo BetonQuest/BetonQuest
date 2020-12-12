@@ -158,7 +158,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     private void start() {
         if (hasStartedUnsafe()) {
             return;

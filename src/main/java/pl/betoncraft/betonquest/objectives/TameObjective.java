@@ -34,7 +34,7 @@ public class TameObjective extends Objective implements Listener {
         }
 
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }

@@ -23,6 +23,7 @@ public class FacingCondition extends Condition {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         float rotation = player.getLocation().getYaw();

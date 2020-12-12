@@ -33,7 +33,7 @@ public class CitizensListener implements Listener {
         reload();
     }
 
-    public void reload() {
+    public final void reload() {
         if (rightClick != null) {
             HandlerList.unregisterAll(rightClick);
         }
@@ -75,6 +75,7 @@ public class CitizensListener implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public void interactLogic(final NPCClickEvent event) {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;

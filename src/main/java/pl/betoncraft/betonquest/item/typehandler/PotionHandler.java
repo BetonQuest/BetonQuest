@@ -145,7 +145,7 @@ public class PotionHandler {
         public CustomEffectHandler() {
         }
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
         private void set(final String custom) throws InstructionParseException {
             if (custom == null) {
                 throw new InstructionParseException("Potion is null!");

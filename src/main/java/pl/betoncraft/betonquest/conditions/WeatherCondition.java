@@ -6,6 +6,8 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
+
 /**
  * Requires the weather to be of specific type
  */
@@ -16,7 +18,7 @@ public class WeatherCondition extends Condition {
 
     public WeatherCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        weather = instruction.next().toLowerCase().trim();
+        weather = instruction.next().toLowerCase(Locale.ROOT).trim();
         if (!"sun".equals(weather) && !"clear".equals(weather) && !"rain".equals(weather) && !"rainy".equals(weather)
                 && !"storm".equals(weather) && !"thunder".equals(weather)) {
             throw new InstructionParseException("Weather type '" + weather + "' does not exist");

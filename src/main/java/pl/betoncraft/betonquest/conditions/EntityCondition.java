@@ -30,7 +30,7 @@ public class EntityCondition extends Condition {
     private final String name;
     private String marked;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public EntityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         staticness = true;

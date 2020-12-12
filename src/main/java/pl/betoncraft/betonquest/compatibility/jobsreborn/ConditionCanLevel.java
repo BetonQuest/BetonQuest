@@ -15,6 +15,7 @@ import java.util.List;
 public class ConditionCanLevel extends Condition {
     private final String sJobName;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ConditionCanLevel(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {

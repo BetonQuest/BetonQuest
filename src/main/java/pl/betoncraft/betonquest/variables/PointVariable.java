@@ -7,6 +7,7 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Allows you to display total amount of points or amount of points remaining to
@@ -29,7 +30,7 @@ public class PointVariable extends Variable {
         }
         if ("amount".equalsIgnoreCase(instruction.next())) {
             type = Type.AMOUNT;
-        } else if (instruction.current().toLowerCase().startsWith("left:")) {
+        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("left:")) {
             type = Type.LEFT;
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));

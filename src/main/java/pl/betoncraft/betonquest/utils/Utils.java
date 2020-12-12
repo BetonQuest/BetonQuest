@@ -98,37 +98,38 @@ public final class Utils {
             for (final String key : map.keySet()) {
                 LogUtils.getLogger().log(Level.FINE, "Saving " + key + " to the backup file");
                 // prepare resultset and meta
-                final ResultSet res = map.get(key);
-                final ResultSetMetaData rsmd = res.getMetaData();
-                // get the list of column names
-                final List<String> columns = new ArrayList<>();
-                final int columnCount = rsmd.getColumnCount();
-                LogUtils.getLogger().log(Level.FINE, "  There are " + columnCount + " columns in this ResultSet");
-                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    final String columnName = rsmd.getColumnName(i);
-                    LogUtils.getLogger().log(Level.FINE, "    Adding column " + columnName);
-                    columns.add(columnName);
-                }
-                // counter for counting rows
-                int counter = 0;
-                while (res.next()) {
-                    // for each column add a value to a config
-                    for (final String columnName : columns) {
-                        try {
-                            final String value = res.getString(columnName);
-                            config.set(key + "." + counter + "." + columnName, value);
-                        } catch (SQLException e) {
-                            LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
-                            LogUtils.logThrowable(e);
-                            done = false;
-                            // do nothing, as there can be nothing done
-                            // error while loading the string means the
-                            // database entry is broken
-                        }
+                try (ResultSet res = map.get(key)) {
+                    final ResultSetMetaData rsmd = res.getMetaData();
+                    // get the list of column names
+                    final List<String> columns = new ArrayList<>();
+                    final int columnCount = rsmd.getColumnCount();
+                    LogUtils.getLogger().log(Level.FINE, "  There are " + columnCount + " columns in this ResultSet");
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        final String columnName = rsmd.getColumnName(i);
+                        LogUtils.getLogger().log(Level.FINE, "    Adding column " + columnName);
+                        columns.add(columnName);
                     }
-                    counter++;
+                    // counter for counting rows
+                    int counter = 0;
+                    while (res.next()) {
+                        // for each column add a value to a config
+                        for (final String columnName : columns) {
+                            try {
+                                final String value = res.getString(columnName);
+                                config.set(key + "." + counter + "." + columnName, value);
+                            } catch (SQLException e) {
+                                LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
+                                LogUtils.logThrowable(e);
+                                done = false;
+                                // do nothing, as there can be nothing done
+                                // error while loading the string means the
+                                // database entry is broken
+                            }
+                        }
+                        counter++;
+                    }
+                    LogUtils.getLogger().log(Level.FINE, "  Saved " + (counter + 1) + " rows");
                 }
-                LogUtils.getLogger().log(Level.FINE, "  Saved " + (counter + 1) + " rows");
             }
             // save the config at the end
             accessor.saveConfig();

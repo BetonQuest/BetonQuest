@@ -20,7 +20,7 @@ import java.util.logging.Level;
  * Handles the configuration of the plugin
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
-        "PMD.CommentRequired"})
+        "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class Config {
 
     private static final List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
@@ -145,15 +145,15 @@ public class Config {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                final InputStream input = plugin.getResource(resource);
-                final OutputStream output = new FileOutputStream(file);
-                final byte[] buffer = new byte[1024];
-                int len = input.read(buffer);
-                while (len != -1) {
-                    output.write(buffer, 0, len);
-                    len = input.read(buffer);
+                try (InputStream input = plugin.getResource(resource);
+                     OutputStream output = new FileOutputStream(file);) {
+                    final byte[] buffer = new byte[1024];
+                    int len = input.read(buffer);
+                    while (len != -1) {
+                        output.write(buffer, 0, len);
+                        len = input.read(buffer);
+                    }
                 }
-                output.close();
             } catch (final IOException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not save resource: " + e.getMessage());
                 LogUtils.logThrowable(e);

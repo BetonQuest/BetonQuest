@@ -19,6 +19,7 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -33,6 +34,7 @@ public class FishObjective extends Objective implements Listener {
     private final int notifyInterval;
     private Material fish;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = FishData.class;
@@ -54,7 +56,7 @@ public class FishObjective extends Objective implements Listener {
             data = -1;
         }
         amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Fish amount cannot be less than 0");
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
@@ -106,7 +108,7 @@ public class FishObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        switch (name.toLowerCase()) {
+        switch (name.toLowerCase(Locale.ROOT)) {
             case "left":
                 return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
             case "amount":

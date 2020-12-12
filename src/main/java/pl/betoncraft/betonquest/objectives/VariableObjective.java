@@ -12,6 +12,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -107,7 +108,7 @@ public class VariableObjective extends Objective implements Listener {
         }
 
         public String get(final String key) {
-            return variables.get(key.toLowerCase());
+            return variables.get(key.toLowerCase(Locale.ROOT));
         }
 
         public void add(final String key, final String value) {

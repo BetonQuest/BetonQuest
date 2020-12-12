@@ -68,7 +68,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
         if (event.getKiller() instanceof Player) {
             handlePlayerKill((Player) event.getKiller(), event.getMob());
         } else {
-            if (neutralDeathRadiusAllPlayers > 0D) {
+            if (neutralDeathRadiusAllPlayers > 0) {
                 final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
                 for (final Player player : center.getWorld().getPlayers()) {
                     if (!isValidPlayer(player)) {

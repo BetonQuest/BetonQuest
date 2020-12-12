@@ -19,7 +19,7 @@ import java.util.logging.Level;
 /**
  * Changes the default language for the player
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
     public LangCommand() {
@@ -33,7 +33,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (!"questlang".equalsIgnoreCase(cmd.getName())) {
             return false;
         }
-        if (args.length < 1) {
+        if (args.length <= 0) {
             sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
             return true;
         }

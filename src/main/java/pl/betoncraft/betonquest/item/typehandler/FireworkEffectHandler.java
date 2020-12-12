@@ -27,7 +27,7 @@ public class FireworkEffectHandler {
     public FireworkEffectHandler() {
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Effect is missing");
@@ -35,7 +35,7 @@ public class FireworkEffectHandler {
         final String[] parts = string.split(":");
         // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
-            if (parts[0].toLowerCase().startsWith("none-")) {
+            if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {
                 parts[0] = parts[0].substring(5);
                 typeE = Existence.FORBIDDEN;
             }

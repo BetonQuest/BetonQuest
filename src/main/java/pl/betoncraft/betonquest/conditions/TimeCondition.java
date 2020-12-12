@@ -14,6 +14,7 @@ public class TimeCondition extends Condition {
     private final double timeMin;
     private final double timeMax;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public TimeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String[] theTime = instruction.next().split("-");
@@ -29,6 +30,7 @@ public class TimeCondition extends Condition {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final String playerID) {
         double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
         if (time >= 18_000) {

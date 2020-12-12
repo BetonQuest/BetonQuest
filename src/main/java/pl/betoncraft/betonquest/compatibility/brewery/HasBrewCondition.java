@@ -20,7 +20,7 @@ public class HasBrewCondition extends Condition {
         super(instruction, true);
 
         count = instruction.getInt();
-        if (count < 1) {
+        if (count <= 0) {
             throw new InstructionParseException("Can't give less than one brew!");
         }
 

@@ -15,6 +15,7 @@ import java.util.List;
 public class ConditionHasJob extends Condition {
     private final String sJobName;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ConditionHasJob(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         if (instruction.size() < 2) {

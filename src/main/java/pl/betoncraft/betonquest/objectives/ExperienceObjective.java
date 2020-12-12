@@ -25,7 +25,7 @@ public class ExperienceObjective extends Objective implements Listener {
         super(instruction);
         template = ObjectiveData.class;
         this.amount = instruction.getInt();
-        if (amount < 1) {
+        if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
         this.checkForLevel = instruction.hasArgument("level");

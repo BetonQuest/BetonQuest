@@ -18,6 +18,7 @@ public class PermissionEvent extends QuestEvent {
     private final boolean add;
     private final boolean perm;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public PermissionEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         add = "add".equalsIgnoreCase(instruction.next());

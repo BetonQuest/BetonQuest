@@ -85,7 +85,7 @@ public class EnchantObjective extends Objective implements Listener {
             this.level = level;
         }
 
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings({"deprecation", "PMD.AvoidLiteralsInIfCondition"})
         public static EnchantmentData convert(final String string) throws InstructionParseException {
             final String[] parts = string.split(":");
             if (parts.length != 2) {

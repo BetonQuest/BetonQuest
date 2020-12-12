@@ -10,6 +10,7 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Allows you to count items in player's inventory and display number remaining
@@ -25,7 +26,7 @@ public class ItemAmountVariable extends Variable {
     public ItemAmountVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         questItem = instruction.getQuestItem();
-        if (instruction.next().toLowerCase().startsWith("left:")) {
+        if (instruction.next().toLowerCase(Locale.ROOT).startsWith("left:")) {
             type = Type.LEFT;
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));

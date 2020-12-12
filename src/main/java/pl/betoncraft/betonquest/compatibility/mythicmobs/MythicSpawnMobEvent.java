@@ -21,6 +21,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
     private final VariableNumber amount;
     private final VariableNumber level;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public MythicSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();

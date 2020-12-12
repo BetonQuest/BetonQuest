@@ -17,6 +17,7 @@ public class IfElseEvent extends QuestEvent {
     private final EventID event;
     private final EventID elseEvent;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public IfElseEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         condition = instruction.getCondition();
