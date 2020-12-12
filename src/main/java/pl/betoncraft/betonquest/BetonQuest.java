@@ -347,8 +347,9 @@ public class BetonQuest extends JavaPlugin {
             try (Connection con = database.getConnection()) {
                 if (con == null) {
                     this.database = new SQLite(this, "database.db");
-                    isMySQLUsed = false;
                     LogUtils.getLogger().log(Level.WARNING, "No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                } else {
+                    isMySQLUsed = true;
                 }
             } catch (SQLException exception) {
                 this.database = new SQLite(this, "database.db");
@@ -356,7 +357,6 @@ public class BetonQuest extends JavaPlugin {
             }
         } else {
             this.database = new SQLite(this, "database.db");
-            isMySQLUsed = false;
             LogUtils.getLogger().log(Level.INFO, "Using SQLite for storing data!");
         }
 
