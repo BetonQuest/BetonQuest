@@ -271,4 +271,5 @@
   <rule ref="category/java/errorprone.xml/UseProperClassLoader"/>
 
   <rule ref="category/java/performance.xml/AddEmptyString"/>
+  <rule ref="category/java/performance.xml/AppendCharacterWithChar"/>
 </ruleset>
