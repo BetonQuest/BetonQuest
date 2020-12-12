@@ -117,6 +117,9 @@ public class ConfigAccessor {
                 configFile.createNewFile();
                 try (InputStream input = plugin.getResource(fileName);
                      OutputStream out = new FileOutputStream(configFile);) {
+                    if (input == null) {
+                        return;
+                    }
                     final byte[] buffer = new byte[1024];
                     int length = input.read(buffer);
                     while (length != -1) {
