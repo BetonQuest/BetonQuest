@@ -51,7 +51,7 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
-    @SuppressWarnings("PMD.NcssCount")
+    @SuppressWarnings({"PMD.NcssCount", "PMD.CloseResource"})
     public ResultSet querySQL(final QueryType type, final String... args) {
         String stringStatement;
         switch (type) {
@@ -117,7 +117,8 @@ public class Connector {
                 break;
         }
 
-        try (PreparedStatement statement = connection.prepareStatement(stringStatement)) {
+        try {
+            final PreparedStatement statement = connection.prepareStatement(stringStatement);
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }

@@ -42,9 +42,7 @@ public class TagEvent extends QuestEvent {
                         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                         playerData.removeTag(tag);
                     }
-                    BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_TAGS, new String[]{
-                            tag
-                    }));
+                    BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_TAGS, tag));
                 }
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
