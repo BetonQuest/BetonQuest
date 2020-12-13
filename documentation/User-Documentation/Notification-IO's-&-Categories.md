@@ -1,4 +1,7 @@
 ## Notify IO's
+
+A NotifyIO is a method of displaying a notification to the player. You can see them all on the 
+
 ### Chat
 Writes the notification in the players chat.
 
@@ -142,26 +145,62 @@ Sorry, your browser doesn't support embedded videos.
 The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
 ### Suppress
-Does not output any sound or text 🔕. Can be used to remove "miscellaneous" notifications.
+Does not output any sound or text 🔕. Can be used to remove built-in notifications.
 
 
-# Categories
-These are all notification categories. The categories `error` and `info` are super-categories that allow you to change
-the default values for all notification with just two entries in your *custom.yml*. You can still override these settings by providing a specific
-setting for any normal category.
+## Categories
 
-This means you can show all notifications using the actionbar while having a bossbar
-IO for the "language changed" category with just three entries in you custom.yml!
+Notify Categories are pre-defined [NotifyIO settings](#notify-ios). They can be applied to any notify event and are used
+by BetonQuests built-in notifications.
+All categories must be defined in the *custom.yml* file in a section called `notifications`.
+
+!!! warning
+    **A note about the custom.yml: This is a strange file. BetonQuest searches through all packages and just uses the first one it finds.
+    Therefore, you should probably create just one custom.yml with all your settings. We will improve this in BQ 2.0.**
+
+### Custom Categories
+
+Custom categories are user defined presets for any notify event. They shorten your events and enable you to change
+how a notification of a certain category looks in one central place. They do not allow you to set a message though as 
+the message is an argument of the notify event! 
+
+This is how a custom category looks:
+```YAML
+notifications:
+  money:            # Category name
+   io: advancement  # Set's the used NotifyIO
+   icon: gold_ingot # A setting of the bossbarIO
+```
+
+The only thing you must be careful with is the name of your custom categories. You could end up using a reserved name
+- these stem from BetonQuest's build-in notification categories. Changing these is a [different feature](#built-in-categories).
+A full list of all reserved names can be found below.
+
+### Built-in Categories
+The table below contains all build-in notification categories.
+
+You may notice that the "Categories" column lists two categories.
+These work exactly like the one in the `notify` event. The first existent category (from left to right) will be used.
+This allows you to change all build-in notifications with just two entries in your *custom.yml*:
 ```YAML
 notifications:
   info:
     io: actionbar
   error:
     io: actionbar
-  language_changed: 
-    io: bossbar
+``` 
+You can override the settings from the info/error category for any specific notification by adding it to the 
+`notifications` section. Example:
+```YAML
+notifications:
+  info:
+    io: actionbar
+  error:
+    io: actionbar
+  new_journal_entry:  # The info categories settings are overridden for the new_journal_entry notification
+    io: subtitle
 ```
-<div style="text-align: center">
+
 
 | Notifications       | Categories                |  | Notifications     | Categories               |
 |---------------------|---------------------------|  |-------------------|--------------------------|
@@ -177,5 +216,3 @@ notifications:
 | Items Given         | items_given, *info*       |  | Points multiplied | point_multiplied, *info* |
 | New Journal Entry   | new_journal_entry, *info* |  | Sheep to shear    | sheep_to_shear, *info*   |
 | Conversation blocked| busy, *error*             |  |                   |                          |
-
-</div>

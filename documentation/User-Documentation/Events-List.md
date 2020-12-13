@@ -308,16 +308,45 @@ This event simply displays a message to the player. The instruction string is th
 
 ## Notification: `notify`
 
-Trigger a notification using the NotifyIO system. The first arguments are the message to send. A comma seperated list can be provided to an optional `category` tag to use a Notification Category. You can optionally set which NotifyIO to use by providing it with an `io` tag. You can also optionally pass flags in the form of `key`:`value` to provide custom config to the NotifyIO that will override those by the category used.
+Displays a notification using the NotifyIO system. 
 
-Please note that if you don't provide a valid category and haven't defined a default category then you must provide an io flag otherwise the default io (Generally chat) will be used.
 
-Please refer to the Notification chapter for more details.
+| Option                                                             | Description                                                                                                                                     |
+|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| message  	                                                         | The message that will be displayed. Supports variables. *Required, must be first*             	                                                                     |
+| category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
+| io       	                                                         | Any NotifyIO. Overrides the "category" settings. *Optional*                                                                                     |
+| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
 
-!!! example
-    ```YAML
-    notify This is a test category:MyCategory io:bossbar barColor:red sound:BLOCK_CHEST_CLOSE`
-    ```
+The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
+`message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there. 
+
+
+!!! warning
+    All colons (`:`) in the message part of the notification need to be escaped with one backslash (`\`) when using single quotes
+    (`'...'`) and with two backslashes (`\\`) when using double quotes (`"..."`).
+    Example:  `eventName: 'notify Peter:Heya %player%!' -> eventName: 'notify Peter{++\++}:Heya %player%!'`
+    `eventName: "Peter:Heya %player%!" -> eventName: "Peter{++\\++}:Heya %player%!"`
+
+<h3>Examples:</h3>
+
+Check out the documentation about [Notify Categories](Notification-IO's-&-Categories.md#categories) and 
+[Notify IO options](Notification-IO's-&-Categories.md#notify-ios) if you haven't yet! You must understand these two to be
+able to use the Notify system to it's full extend.
+```YAML
+#The simplest of all notify events. Just a chat message:
+customEvent: "notify Hello %player%!"  
+
+#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
+myEvent1: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
+
+#Some events with categories.
+myEvent2: "notify This is a custom message! category:info"
+myEvent3: "notify This is a custom message! category:firstChoice,secondChoice"
+
+#You can also override category settings:
+myEvent: "notify Another message! category:info io:advancement frame:challenge"
+```
 
 ## Objective: `objective`
 

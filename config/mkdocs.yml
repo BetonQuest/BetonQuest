@@ -137,7 +137,7 @@ nav:
           - '🔮   Variables List': User-Documentation/Variables-List.md
 
       - 'Notifications:':
-        - '🔊   Settings': User-Documentation/Notifications.md
+        - '🔊   Settings': User-Documentation/Notification-Settings.md
         - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
 
       - 'Technical:':
