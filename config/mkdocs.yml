@@ -16,6 +16,7 @@ extra_css:
   - 'webCode/css/centered.css'
   - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
+  - 'webCode/css/smoothScrolling.css'
 
 extra_javascript:
   - 'webCode/js/version_select.js'
