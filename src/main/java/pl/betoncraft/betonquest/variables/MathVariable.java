@@ -77,12 +77,12 @@ public class MathVariable extends Variable {
             final int start = matcher.start();
             final int end = matcher.end();
             final int length = end - start;
-            String substring = tempCopy.substring(0, start + 1);
+            final StringBuilder substring = new StringBuilder(tempCopy.substring(0, start + 1));
             for (int i = 0; i < length - 2; i++) {
-                substring += " ";
+                substring.append(" ");
             }
-            substring += tempCopy.substring(end - 1);
-            tempCopy = substring;
+            substring.append(tempCopy.substring(end - 1));
+            tempCopy = substring.toString();
         }
         // ADDITION and SUBTRACTION
         int indexPlus = tempCopy.lastIndexOf('+');
