@@ -26,13 +26,13 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
      * If a condition is static it can be used with null player. Static events
      * can be run with static conditions.
      */
-    protected boolean staticness = false;
+    protected boolean staticness;
     /**
      * If a condition is persistent it can be checked for offline player.
      * Persistent conditions can be checked in folder events after the player
      * logs out.
      */
-    protected boolean persistent = false;
+    protected boolean persistent;
 
     /**
      * @deprecated There is a new constructor that handles thread safety.

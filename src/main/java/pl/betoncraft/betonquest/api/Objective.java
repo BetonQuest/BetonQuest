@@ -381,7 +381,7 @@ public abstract class Objective {
          */
         public static final int ERROR_RATE_LIMIT_MILLIS = 5000;
 
-        public long last = 0;
+        public long last;
 
         public QREHandler() {
         }

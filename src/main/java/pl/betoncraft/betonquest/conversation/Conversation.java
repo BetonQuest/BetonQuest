@@ -54,8 +54,8 @@ public class Conversation implements Listener {
     private ConversationData data;
     private ConversationIO inOut;
     private String option;
-    private boolean ended = false;
-    private boolean messagesDelaying = false;
+    private boolean ended;
+    private final boolean messagesDelaying;
     private Interceptor interceptor;
 
 

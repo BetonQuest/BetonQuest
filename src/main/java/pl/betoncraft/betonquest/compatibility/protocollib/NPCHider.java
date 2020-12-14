@@ -29,7 +29,7 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.CommentRequired")
 public final class NPCHider extends BukkitRunnable implements Listener {
 
-    private static NPCHider instance = null;
+    private static NPCHider instance;
 
     private final EntityHider hider;
     private final Map<Integer, Set<ConditionID>> npcs;

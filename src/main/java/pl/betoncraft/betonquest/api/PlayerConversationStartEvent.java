@@ -14,7 +14,7 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Conversation conversation;
-    private boolean canceled = false;
+    private boolean canceled;
 
     /**
      * Creates new conversation end event.

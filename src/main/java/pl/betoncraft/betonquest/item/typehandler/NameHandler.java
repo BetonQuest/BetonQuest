@@ -6,7 +6,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Existence;
 @SuppressWarnings("PMD.CommentRequired")
 public class NameHandler {
 
-    private String name = null;
+    private String name;
     private Existence existence = Existence.WHATEVER;
 
     public NameHandler() {

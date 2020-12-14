@@ -34,9 +34,9 @@ import java.util.logging.Level;
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
-    protected String response = null;
+    protected String response;
     protected Map<Integer, String> options = new HashMap<>();
-    protected int playerOptionsCount = 0;
+    protected int playerOptionsCount;
     protected String npcName;
     protected String npcNameColor;
     protected String npcTextColor;
@@ -46,11 +46,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected Conversation conv;
     protected Player player;
     protected Inventory inv;
-    protected boolean processingLastClick = false;
-    protected boolean allowClose = false;
-    protected boolean switching = false;
+    protected boolean processingLastClick;
+    protected boolean allowClose;
+    protected boolean switching;
     protected Location loc;
-    protected boolean printMessages = false;
+    protected boolean printMessages;
 
     // Config
     protected boolean showNumber = true;

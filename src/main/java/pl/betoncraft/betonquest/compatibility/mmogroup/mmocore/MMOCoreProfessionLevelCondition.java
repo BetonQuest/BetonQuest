@@ -14,7 +14,7 @@ public class MMOCoreProfessionLevelCondition extends Condition {
 
     private final String professionName;
     private final VariableNumber targetLevelVar;
-    private boolean mustBeEqual = false;
+    private boolean mustBeEqual;
 
     public MMOCoreProfessionLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

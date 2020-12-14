@@ -21,7 +21,7 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
-    private static CitizensWalkingListener instance = null;
+    private static CitizensWalkingListener instance;
 
     private final Map<NPC, Integer> npcs = new HashMap<>();
     private final Map<NPC, Location> locs = new HashMap<>();

@@ -18,9 +18,9 @@ public class PotionHandler {
 
     private PotionType type = PotionType.WATER;
     private Existence typeE = Existence.WHATEVER;
-    private boolean extended = false;
+    private boolean extended;
     private Existence extendedE = Existence.WHATEVER;
-    private boolean upgraded = false;
+    private boolean upgraded;
     private Existence upgradedE = Existence.WHATEVER;
     private List<CustomEffectHandler> custom = new ArrayList<>();
     private Existence customE = Existence.WHATEVER;

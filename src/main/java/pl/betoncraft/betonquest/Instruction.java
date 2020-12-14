@@ -38,7 +38,7 @@ public class Instruction {
     private ID identifier;
     private int nextIndex = 1;
     private int currentIndex = 1;
-    private String lastOptional = null;
+    private String lastOptional;
 
     public Instruction(final ConfigPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;

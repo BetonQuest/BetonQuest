@@ -13,7 +13,7 @@ public class MMOCoreAttributeCondition extends Condition {
 
     private final String attribute;
     private final VariableNumber targetLevelVar;
-    private boolean mustBeEqual = false;
+    private boolean mustBeEqual;
 
     public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
