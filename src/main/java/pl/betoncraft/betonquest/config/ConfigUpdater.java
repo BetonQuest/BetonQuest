@@ -39,7 +39,7 @@ import java.util.logging.Level;
         "PMD.ExcessiveClassLength", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity",
         "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
         "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CloseResource",
-        "PMD.UseLocaleWithCaseConversions", "PMD.SimplifyStartsWith"})
+        "PMD.UseLocaleWithCaseConversions", "PMD.SimplifyStartsWith", "PMD.UseIndexOfChar"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

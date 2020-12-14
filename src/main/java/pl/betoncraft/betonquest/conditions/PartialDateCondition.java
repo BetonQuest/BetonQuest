@@ -125,7 +125,7 @@ public class PartialDateCondition extends Condition {
             for (final String arg : args) {
                 try {
                     if (arg.contains("-")) {
-                        final int index = arg.indexOf("-");
+                        final int index = arg.indexOf('-');
                         intervals.add(new TimeInterval(Integer.parseInt(arg.substring(0, index)),
                                 Integer.parseInt(arg.substring(index + 1)),
                                 type));

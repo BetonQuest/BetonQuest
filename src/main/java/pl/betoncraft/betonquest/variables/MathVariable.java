@@ -85,8 +85,8 @@ public class MathVariable extends Variable {
             tempCopy = substring;
         }
         // ADDITION and SUBTRACTION
-        int indexPlus = tempCopy.lastIndexOf("+");
-        int indexMinus = tempCopy.lastIndexOf("-");
+        int indexPlus = tempCopy.lastIndexOf('+');
+        int indexMinus = tempCopy.lastIndexOf('-');
         if (indexPlus > indexMinus) {
             if (indexPlus == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.ADD);
@@ -105,8 +105,8 @@ public class MathVariable extends Variable {
                     Operation.SUBTRACT);
         }
         //MULTIPLY and DIVIDE
-        indexPlus = tempCopy.lastIndexOf("*");
-        indexMinus = tempCopy.lastIndexOf("/");
+        indexPlus = tempCopy.lastIndexOf('*');
+        indexMinus = tempCopy.lastIndexOf('/');
         if (indexPlus > indexMinus) {
             //'*' comes after '/'
             return new Calculation(this.parse(string.substring(0, indexPlus)),
@@ -119,7 +119,7 @@ public class MathVariable extends Variable {
                     Operation.DIVIDE);
         }
         //POW
-        indexPlus = tempCopy.lastIndexOf("^");
+        indexPlus = tempCopy.lastIndexOf('^');
         if (indexPlus != -1) {
             return new Calculation(this.parse(string.substring(0, indexPlus)),
                     this.parse(string.substring(indexPlus + 1)),

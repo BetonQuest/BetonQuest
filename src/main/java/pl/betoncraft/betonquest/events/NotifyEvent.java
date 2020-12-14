@@ -37,7 +37,7 @@ public class NotifyEvent extends QuestEvent {
         final String rawInstruction = instruction.getInstruction();
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 
-        final int indexStart = rawInstruction.indexOf(" ") + 1;
+        final int indexStart = rawInstruction.indexOf(' ') + 1;
         if (indexStart != 0) {
             final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
             keyValueMatcher.reset();

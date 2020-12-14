@@ -17,7 +17,7 @@ public class SudoEvent extends QuestEvent {
     public SudoEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.getInstruction().trim();
-        commands = string.substring(string.indexOf(" ") + 1).split("\\|");
+        commands = string.substring(string.indexOf(' ') + 1).split("\\|");
     }
 
     @Override
