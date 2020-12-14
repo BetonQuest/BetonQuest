@@ -295,4 +295,5 @@
   <rule ref="category/java/performance.xml/StringToString"/>
   <rule ref="category/java/performance.xml/TooFewBranchesForASwitchStatement"/>
   <rule ref="category/java/performance.xml/UnnecessaryWrapperObjectCreation"/>
+  <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector"/>
 </ruleset>
