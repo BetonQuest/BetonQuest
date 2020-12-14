@@ -18,7 +18,7 @@ public class TimeEvent extends QuestEvent {
     public TimeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String time = instruction.next();
-        add = time.startsWith("+");
+        add = !time.isEmpty() && time.charAt(0) == '+';
         try {
             if (add) {
                 amount = Long.parseLong(time.substring(1)) * 1000;

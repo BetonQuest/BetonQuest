@@ -10,7 +10,7 @@ public class ConditionID extends ID {
 
     public ConditionID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(identifier));
-        this.inverted = identifier.startsWith("!");
+        this.inverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
         rawInstruction = super.pack.getString("conditions." + super.identifier);
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined");
@@ -18,7 +18,7 @@ public class ConditionID extends ID {
     }
 
     private static String removeExclamationMark(final String identifier) {
-        if (identifier.startsWith("!")) {
+        if (!identifier.isEmpty() && identifier.charAt(0) == '!') {
             return identifier.substring(1);
         }
         return identifier;

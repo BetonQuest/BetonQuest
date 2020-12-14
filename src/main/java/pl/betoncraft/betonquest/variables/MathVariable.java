@@ -237,6 +237,7 @@ public class MathVariable extends Variable {
         }
 
         @Override
+        @SuppressWarnings("PMD.SimplifyStartsWith")
         public String toString() {
             final String numberA = this.numberA instanceof Calculation || this.numberA.toString().startsWith("-")
                     ? "(" + this.numberA.toString() + ")" : this.numberA.toString();

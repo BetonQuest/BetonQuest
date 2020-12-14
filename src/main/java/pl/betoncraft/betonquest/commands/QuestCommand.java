@@ -564,7 +564,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 String finalString = strBldr2.toString().trim();
                 boolean space = false;
-                if (finalString.startsWith("_")) {
+                if (!finalString.isEmpty() && finalString.charAt(0) == '_') {
                     finalString = finalString.substring(1);
                     space = true;
                 }

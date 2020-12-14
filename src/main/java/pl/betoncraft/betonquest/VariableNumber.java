@@ -25,7 +25,7 @@ public class VariableNumber {
      * @param variable the string to parse
      */
     public VariableNumber(final String packName, final String variable) throws InstructionParseException {
-        if (variable.length() > 2 && variable.startsWith("%") && variable.endsWith("%")) {
+        if (variable.length() > 2 && variable.charAt(0) == '%' && variable.endsWith("%")) {
             try {
                 this.variable = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
             } catch (InstructionParseException e) {

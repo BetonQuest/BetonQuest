@@ -10,7 +10,7 @@ public class VariableID extends ID {
 
     public VariableID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, pack.getName() + "." + identifier);
-        if (!super.identifier.startsWith("%") && !super.identifier.endsWith("%")) {
+        if (!super.identifier.isEmpty() && super.identifier.charAt(0) != '%' && !super.identifier.endsWith("%")) {
             throw new ObjectNotFoundException("Variable instruction has to start and end with '%' characters");
         }
         rawInstruction = identifier;
