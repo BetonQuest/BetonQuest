@@ -28,7 +28,7 @@ This objective has two properties, `amount` and `left`. Amount is current amount
 
 !!! example
     ```YAML
-    block LOG:2 -16 events:reward notify:5
+    block LOG -16 events:reward notify:5
     ```
 
 ## Breed animals: `breed`
