@@ -285,4 +285,5 @@
   <rule ref="category/java/performance.xml/InefficientEmptyStringCheck"/>
   <rule ref="category/java/performance.xml/InefficientStringBuffering"/>
   <rule ref="category/java/performance.xml/InsufficientStringBufferDeclaration"/>
+  <rule ref="category/java/performance.xml/IntegerInstantiation"/>
 </ruleset>

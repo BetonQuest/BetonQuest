@@ -214,9 +214,9 @@ public class Instruction {
             if (enchantment == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
-            final Integer level;
+            final int level;
             try {
-                level = new Integer(enchParts[1]);
+                level = Integer.parseInt(enchParts[1]);
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }
