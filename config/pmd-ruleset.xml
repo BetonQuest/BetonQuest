@@ -276,4 +276,5 @@
   <rule ref="category/java/performance.xml/AvoidCalendarDateCreation"/>
   <rule ref="category/java/performance.xml/AvoidFileStream"/>
   <!--<rule ref="category/java/performance.xml/AvoidInstantiatingObjectsInLoops"/>-->
+  <rule ref="category/java/performance.xml/AvoidUsingShortType"/>
 </ruleset>

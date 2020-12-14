@@ -493,6 +493,7 @@ public class QuestItem {
     /**
      * @return the durability value
      */
+    @SuppressWarnings("PMD.AvoidUsingShortType")
     public short getDurability() {
         return durability.get();
     }

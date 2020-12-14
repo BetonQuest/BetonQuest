@@ -114,7 +114,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
+            "PMD.NPathComplexity", "PMD.AvoidUsingShortType"})
     @Override
     public void display() {
         // prevent displaying anything if the player closed the conversation
