@@ -26,7 +26,7 @@ public class MoneyEvent extends QuestEvent {
     public MoneyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         String string = instruction.next();
-        if (string.startsWith("*")) {
+        if (!string.isEmpty() && string.charAt(0) == '*') {
             multi = true;
             string = string.replace("*", "");
         }

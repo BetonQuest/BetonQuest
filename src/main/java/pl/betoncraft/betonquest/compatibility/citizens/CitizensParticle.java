@@ -32,7 +32,7 @@ public class CitizensParticle extends BukkitRunnable {
     private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private final List<Effect> effects = new ArrayList<>();
     private int interval = 100;
-    private int tick = 0;
+    private int tick;
     private final boolean enabled;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})

@@ -391,7 +391,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (last == null || !last.contains(".")) {
             return completePackage();
         } else {
-            final String pack = last.substring(0, last.indexOf("."));
+            final String pack = last.substring(0, last.indexOf('.'));
             final ConfigPackage configPack = Config.getPackages().get(pack);
             if (configPack == null) {
                 return new ArrayList<>();
@@ -446,7 +446,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         try {
-            final int splitIndex = args[1].indexOf(".");
+            final int splitIndex = args[1].indexOf('.');
             final String pack = args[1].substring(0, splitIndex);
             final String item = args[1].substring(splitIndex + 1);
             final ConfigPackage configPack = Config.getPackages().get(pack);
@@ -564,7 +564,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 String finalString = strBldr2.toString().trim();
                 boolean space = false;
-                if (finalString.startsWith("_")) {
+                if (!finalString.isEmpty() && finalString.charAt(0) == '_') {
                     finalString = finalString.substring(1);
                     space = true;
                 }
@@ -1396,7 +1396,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             if (args[1] == null || !args[1].contains(".")) {
                 return completePackage();
             }
-            final String pack = args[1].substring(0, args[1].indexOf("."));
+            final String pack = args[1].substring(0, args[1].indexOf('.'));
             final ConfigPackage configPack = Config.getPackages().get(pack);
             if (configPack == null) {
                 return new ArrayList<>();

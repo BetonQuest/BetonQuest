@@ -25,7 +25,7 @@ public class CommandEvent extends QuestEvent {
         persistent = true;
         final String string = instruction.getInstruction().trim();
         // Split commands by | but allow one to use \| to represent a pipe character
-        final String[] rawCommands = Arrays.stream(string.substring(string.indexOf(" ") + 1).split("(?<!\\\\)\\|"))
+        final String[] rawCommands = Arrays.stream(string.substring(string.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
                 .map(s -> s.replace("\\|", "|"))
                 .map(String::trim)
                 .toArray(String[]::new);

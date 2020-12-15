@@ -77,16 +77,16 @@ public class MathVariable extends Variable {
             final int start = matcher.start();
             final int end = matcher.end();
             final int length = end - start;
-            String substring = tempCopy.substring(0, start + 1);
+            final StringBuilder substring = new StringBuilder(tempCopy.substring(0, start + 1));
             for (int i = 0; i < length - 2; i++) {
-                substring += " ";
+                substring.append(" ");
             }
-            substring += tempCopy.substring(end - 1);
-            tempCopy = substring;
+            substring.append(tempCopy.substring(end - 1));
+            tempCopy = substring.toString();
         }
         // ADDITION and SUBTRACTION
-        int indexPlus = tempCopy.lastIndexOf("+");
-        int indexMinus = tempCopy.lastIndexOf("-");
+        int indexPlus = tempCopy.lastIndexOf('+');
+        int indexMinus = tempCopy.lastIndexOf('-');
         if (indexPlus > indexMinus) {
             if (indexPlus == 0) {
                 return new Calculation(new ClaculableVariable(0), this.parse(string.substring(1)), Operation.ADD);
@@ -105,8 +105,8 @@ public class MathVariable extends Variable {
                     Operation.SUBTRACT);
         }
         //MULTIPLY and DIVIDE
-        indexPlus = tempCopy.lastIndexOf("*");
-        indexMinus = tempCopy.lastIndexOf("/");
+        indexPlus = tempCopy.lastIndexOf('*');
+        indexMinus = tempCopy.lastIndexOf('/');
         if (indexPlus > indexMinus) {
             //'*' comes after '/'
             return new Calculation(this.parse(string.substring(0, indexPlus)),
@@ -119,7 +119,7 @@ public class MathVariable extends Variable {
                     Operation.DIVIDE);
         }
         //POW
-        indexPlus = tempCopy.lastIndexOf("^");
+        indexPlus = tempCopy.lastIndexOf('^');
         if (indexPlus != -1) {
             return new Calculation(this.parse(string.substring(0, indexPlus)),
                     this.parse(string.substring(indexPlus + 1)),
@@ -237,6 +237,7 @@ public class MathVariable extends Variable {
         }
 
         @Override
+        @SuppressWarnings("PMD.SimplifyStartsWith")
         public String toString() {
             final String numberA = this.numberA instanceof Calculation || this.numberA.toString().startsWith("-")
                     ? "(" + this.numberA.toString() + ")" : this.numberA.toString();

@@ -53,13 +53,13 @@ public class MenuConvIO extends ChatConvIO {
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
     protected String configControlCancel = "sneak";
 
-    protected int oldSelectedOption = 0;
-    protected int selectedOption = 0;
+    protected int oldSelectedOption;
+    protected int selectedOption;
     protected AtomicBoolean started = new AtomicBoolean(false);
     protected AtomicBoolean ended = new AtomicBoolean(false);
     protected PacketAdapter packetAdapter;
     protected BukkitRunnable displayRunnable;
-    protected boolean debounce = false;
+    protected boolean debounce;
     protected BaseComponent[] displayOutput;
     protected String formattedNpcName;
     protected String configControlSelect = "jump,left_click";
@@ -80,7 +80,7 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameType = "chat";
     protected String configNpcNameAlign = "center";
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
-    private ArmorStand stand = null;
+    private ArmorStand stand;
 
     public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);

@@ -17,7 +17,7 @@ public class ChatEvent extends QuestEvent {
     public ChatEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.getInstruction().trim();
-        messages = string.substring(string.indexOf(" ") + 1).split("\\|");
+        messages = string.substring(string.indexOf(' ') + 1).split("\\|");
     }
 
     @Override

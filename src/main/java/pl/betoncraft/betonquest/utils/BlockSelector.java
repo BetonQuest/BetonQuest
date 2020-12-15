@@ -185,7 +185,7 @@ public class BlockSelector {
         }
 
         if (restSelector.contains(":")) {
-            final int index = restSelector.indexOf(":");
+            final int index = restSelector.indexOf(':');
             selectorParts[0] = restSelector.substring(0, index).toLowerCase(Locale.ROOT);
             selectorParts[1] = restSelector.substring(index + 1).toLowerCase(Locale.ROOT);
         } else {
@@ -198,8 +198,8 @@ public class BlockSelector {
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private int getBracketIndex(final String text, final int openedBrackets) {
-        final int indexOpen = text.lastIndexOf("[");
-        final int indexClose = text.lastIndexOf("]");
+        final int indexOpen = text.lastIndexOf('[');
+        final int indexClose = text.lastIndexOf(']');
         if (indexOpen == -1 && indexClose == -1) {
             return -1;
         }

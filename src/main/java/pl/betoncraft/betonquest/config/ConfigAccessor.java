@@ -6,6 +6,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -116,7 +117,7 @@ public class ConfigAccessor {
             try {
                 configFile.createNewFile();
                 try (InputStream input = plugin.getResource(fileName);
-                     OutputStream out = new FileOutputStream(configFile);) {
+                     OutputStream out = Files.newOutputStream(configFile.toPath());) {
                     if (input == null) {
                         return;
                     }

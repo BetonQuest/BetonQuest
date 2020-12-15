@@ -38,7 +38,7 @@ public class Instruction {
     private ID identifier;
     private int nextIndex = 1;
     private int currentIndex = 1;
-    private String lastOptional = null;
+    private String lastOptional;
 
     public Instruction(final ConfigPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;
@@ -214,9 +214,9 @@ public class Instruction {
             if (enchantment == null) {
                 throw new PartParseException("Unknown enchantment type: " + enchParts[0]);
             }
-            final Integer level;
+            final int level;
             try {
-                level = new Integer(enchParts[1]);
+                level = Integer.parseInt(enchParts[1]);
             } catch (NumberFormatException e) {
                 throw new PartParseException("Could not parse level in enchant: " + enchant, e);
             }

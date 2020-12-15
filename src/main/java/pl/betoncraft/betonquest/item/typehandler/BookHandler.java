@@ -62,6 +62,7 @@ public class BookHandler {
         }
     }
 
+    @SuppressWarnings("PMD.InefficientEmptyStringCheck")
     public boolean checkTitle(final String string) {
         switch (titleE) {
             case WHATEVER:
@@ -74,6 +75,7 @@ public class BookHandler {
         return true;
     }
 
+    @SuppressWarnings("PMD.InefficientEmptyStringCheck")
     public boolean checkAuthor(final String string) {
         switch (authorE) {
             case WHATEVER:

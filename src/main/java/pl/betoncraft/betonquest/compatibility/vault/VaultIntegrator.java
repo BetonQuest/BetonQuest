@@ -16,8 +16,8 @@ public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;
     private final BetonQuest plugin;
-    private Permission permission = null;
-    private Economy economy = null;
+    private Permission permission;
+    private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public VaultIntegrator() {

@@ -273,8 +273,7 @@ public class QuestItem {
             if (fireworkMeta.hasEffect()) {
                 final FireworkEffect effect = fireworkMeta.getEffect();
                 final StringBuilder builder = new StringBuilder();
-                builder.append(" firework:");
-                builder.append(effect.getType()).append(":");
+                builder.append(" firework:").append(effect.getType()).append(":");
                 for (final Color c : effect.getColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
                     builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
@@ -493,6 +492,7 @@ public class QuestItem {
     /**
      * @return the durability value
      */
+    @SuppressWarnings("PMD.AvoidUsingShortType")
     public short getDurability() {
         return durability.get();
     }

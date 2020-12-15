@@ -33,7 +33,7 @@ public class PointEvent extends QuestEvent {
         categoryName = instruction.next();
         category = Utils.addPackage(instruction.getPackage(), categoryName);
         String number = instruction.next();
-        if (number.startsWith("*")) {
+        if (!number.isEmpty() && number.charAt(0) == '*') {
             multi = true;
             number = number.replace("*", "");
         } else {

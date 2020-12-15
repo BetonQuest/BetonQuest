@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.item.QuestItem.Existence;
 @SuppressWarnings("PMD.CommentRequired")
 public class HeadOwnerHandler {
 
-    private String owner = null;
+    private String owner;
     private Existence ownerE = Existence.WHATEVER;
 
     public HeadOwnerHandler() {

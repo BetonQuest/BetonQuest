@@ -29,7 +29,7 @@ public class TellrawConvIO extends ChatConvIO {
     protected boolean strikethrough;
     protected boolean magic;
     protected String number;
-    private int count = 0;
+    private int count;
 
     static {
         new UnknownCommandTellrawListener();

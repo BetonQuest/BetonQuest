@@ -26,7 +26,7 @@ public class ScoreboardEvent extends QuestEvent {
         persistent = true;
         objective = instruction.next();
         String number = instruction.next();
-        if (number.startsWith("*")) {
+        if (!number.isEmpty() && number.charAt(0) == '*') {
             multi = true;
             number = number.replace("*", "");
         } else {

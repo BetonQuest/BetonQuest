@@ -37,11 +37,11 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     /**
      * Describes if the event is static
      */
-    protected boolean staticness = false;
+    protected boolean staticness;
     /**
      * Describes if the event is persistent
      */
-    protected boolean persistent = false;
+    protected boolean persistent;
 
     /**
      * @deprecated There is a new constructor that handles thread safety.

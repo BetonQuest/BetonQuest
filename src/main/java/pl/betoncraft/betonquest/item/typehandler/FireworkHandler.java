@@ -12,7 +12,7 @@ import java.util.List;
 @SuppressWarnings("PMD.CommentRequired")
 public class FireworkHandler {
 
-    private int power = 0;
+    private int power;
     private Number powerN = Number.WHATEVER;
     private final List<FireworkEffectHandler> effects = new ArrayList<>();
     private Existence effectsE = Existence.WHATEVER;

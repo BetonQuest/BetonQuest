@@ -27,7 +27,7 @@ public class CheckCondition extends Condition {
         }
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
-            if (part.startsWith("^")) {
+            if (!part.isEmpty() && part.charAt(0) == '^') {
                 if (builder.length() != 0) {
                     internalConditions.add(createCondition(builder.toString().trim()));
                     builder = new StringBuilder();
