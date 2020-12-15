@@ -274,6 +274,7 @@
   <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
   <rule ref="category/java/multithreading.xml/AvoidUsingVolatile"/>
   <rule ref="category/java/multithreading.xml/DoNotUseThreads"/>
+  <rule ref="category/java/multithreading.xml/DontCallThreadRun"/>
 
   <rule ref="category/java/performance.xml/AddEmptyString"/>
   <rule ref="category/java/performance.xml/AppendCharacterWithChar"/>
