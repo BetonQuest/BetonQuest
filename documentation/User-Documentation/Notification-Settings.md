@@ -26,7 +26,8 @@ For example:
 When BetonQuest fails to add a quest item to a player's inventory it will send `&e*&bYour inventory is full!&e*`.    
 This message is defined in *messages.yml* along with other default plugin messages. You can redefine them to your liking.
 
-There is more to it then just the text though.
+The Notify System can do much more than just changing messages though:
+
 All notifications will be displayed using the ChatIO and without a sound by default. You need to use
 [notification categories](Notification-IO's-&-Categories.md#categories) to change this behaviour.
 These categories are pretty much just pre-defined [NotifyIO settings](Notification-IO's-&-Categories.md#notify-ios).    

@@ -1,31 +1,51 @@
 ## Notify IO's
 
-A NotifyIO is a method of displaying a notification to the player. You can see them all on the 
+A NotifyIO is a method of displaying a notification to the player. Here's a demo video showing an example configuration
+of all NotifyIO's.
 
-### Chat
+<div style="text-align: center">
+ <video controls loop
+     src="../../media/content/User-Documentation/Notifications/NotifySystemOverview.mp4"
+     width="780" height="500">
+ Sorry, your browser doesn't support embedded videos.
+ </video>
+</div>
+
+Most NotifyIO's have unique settings that somehow change how a notification is displayed.    
+**Additionally, they all allow each setting of the SoundIO to be used!**
+This is the case because every NotifyIO has an internal SoundIO. 
+Therefore, you can play a sound whenever a notification is shown.
+
+The actual message is either defined in the event that triggers the NotifyIO or
+in the *messages.yml* for all built-in notifications. 
+
+### ChatIO
 Writes the notification in the players chat.
 
 ??? info "Preview"
     ![chat image](../media/content/User-Documentation/Notifications/chat.png)
 
-| Option | Description |
-|--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
+| Option  | Description                 |
+|---------|-----------------------------|
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### Advancement
-Shows the notification using an achievement popup. Unfortunately Minecraft does play the default advancement sound here. It can only be disabled
-by removing it from your ressource pack. You can still add your own additional sound to this notification though.
+### AdvancementIO
+Shows the notification using an achievement popup. Unfortunately Minecraft does play the default advancement sound here. 
+It's not possible to stop this sound from playing - if you want to get rid of it you would have to override / remove
+that sound from your server's ressource pack.
+You can still add your own additional sound as usual though.
+It will then be played together with the default advancement sound.
 
 ??? info "Preview"
     ![advancement image](../media/content/User-Documentation/Notifications/advancement.png)
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
 | frame | What Achievement frame to use. Can be: `challenge`, `goal`, `task` |
 | icon | What icon to show. Must be the vanilla name of an item. Example: minecraft:map |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### Actionbar
+### ActionbarIO
 Shows the notification using the actionbar.
 
 ??? info "Preview"
@@ -33,9 +53,9 @@ Shows the notification using the actionbar.
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### Bossbar
+### BossbarIO
 Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
@@ -43,15 +63,15 @@ Shows the notification using a bossbar at the top of the players screen.
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
 | barFlags | What <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html" target="_blank">flags</a> to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either Spigot or the game itself.
 | barColor | What <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarColor.html" target="_blank">color</a> to draw the bar. |
 | progress | What progress to show the bar. A floating point number between 0.0 (empty) and 1.0 (full) |
 | style | What bar <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html" target="_blank">style</a> to use. |
 | stay | How many ticks to keep the bar on screen. Defaults to 70 |
 | countdown | If set, will step the progress of the bar by countdown steps. For example, if set to 10, then 10 times during the time it is on the screen the progress will drop by 1/10 |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### Title
+### TitleIO
 Shows the notification using a title. A subtitle can be played simultaneously by adding `\n` to the notification text.
 Anything after these characters will be shown in the subtitle.
 
@@ -60,13 +80,13 @@ Anything after these characters will be shown in the subtitle.
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
 | fadeIn | Ticks to fade the title in. Default 10 |
 | stay | Ticks to keep title on screen. Default 70 |
 | fadeOut | Ticks to fade the title out. Default 20 |
 | subTitle | Optional subtitle to show. All _'s are replaced with spaces |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### SubTitle
+### SubTitleIO
 Shows the notification using a subtitle.
 
 ??? info "Preview"
@@ -74,13 +94,12 @@ Shows the notification using a subtitle.
 
 | Option | Description |
 |--------|-------------|
-| sound | Sound to play. If blank, no sound. Either <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank"> vanilla Minecraft sounds</a> or the name of a sound from a resource pack. |
 | fadeIn | Ticks to fade the title in. Default 10 |
 | stay | Ticks to keep title on screen. Default 70 |
 | fadeOut | Ticks to fade the title out. Default 20 |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-
-### Sound
+### SoundIO
 This IO just plays a sound. You can use it's options in any other IO.
 You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
 as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static.
@@ -144,7 +163,7 @@ Sorry, your browser doesn't support embedded videos.
 
 The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
-### Suppress
+### SuppressIO
 Does not output any sound or text 🔕. Can be used to remove built-in notifications.
 
 
