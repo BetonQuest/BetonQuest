@@ -63,17 +63,21 @@ public class Saver extends Thread implements Listener {
      *
      * @param rec Record to save
      */
-    public synchronized void add(final Record rec) {
-        queue.add(rec);
-        notify();
+    public void add(final Record rec) {
+        synchronized (this) {
+            queue.add(rec);
+            notify();
+        }
     }
 
     /**
      * Ends this saver's job, letting it save all remaining data.
      */
-    public synchronized void end() {
-        running = false;
-        notify();
+    public void end() {
+        synchronized (this) {
+            running = false;
+            notify();
+        }
     }
 
     /**

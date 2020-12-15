@@ -270,6 +270,8 @@
   <rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions"/>
   <rule ref="category/java/errorprone.xml/UseProperClassLoader"/>
 
+  <rule ref="category/java/multithreading.xml/AvoidSynchronizedAtMethodLevel"/>
+
   <rule ref="category/java/performance.xml/AddEmptyString"/>
   <rule ref="category/java/performance.xml/AppendCharacterWithChar"/>
   <rule ref="category/java/performance.xml/AvoidArrayLoops"/>

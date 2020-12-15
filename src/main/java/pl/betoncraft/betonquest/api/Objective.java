@@ -198,24 +198,26 @@ public abstract class Objective {
      * @param playerID    ID of the player
      * @param instruction instruction string for player's data
      */
-    public final synchronized void addPlayer(final String playerID, final String instruction) {
-        ObjectiveData data = null;
-        try {
-            data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
-                    this.instruction.getID().getFullID());
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                        + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
-                LogUtils.logThrowable(e);
-            } else {
-                LogUtils.logThrowableReport(e);
+    public final void addPlayer(final String playerID, final String instruction) {
+        synchronized (this) {
+            ObjectiveData data = null;
+            try {
+                data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
+                        this.instruction.getID().getFullID());
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                if (e.getCause() instanceof InstructionParseException) {
+                    LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
+                            + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
+                    LogUtils.logThrowable(e);
+                } else {
+                    LogUtils.logThrowableReport(e);
+                }
             }
+            if (dataMap.isEmpty()) {
+                start();
+            }
+            dataMap.put(playerID, data);
         }
-        if (dataMap.isEmpty()) {
-            start();
-        }
-        dataMap.put(playerID, data);
     }
 
     /**
@@ -226,10 +228,12 @@ public abstract class Objective {
      *
      * @param playerID ID of the player
      */
-    public final synchronized void removePlayer(final String playerID) {
-        dataMap.remove(playerID);
-        if (dataMap.isEmpty()) {
-            stop();
+    public final void removePlayer(final String playerID) {
+        synchronized (this) {
+            dataMap.remove(playerID);
+            if (dataMap.isEmpty()) {
+                stop();
+            }
         }
     }
 

@@ -44,8 +44,10 @@ public class SimpleInterceptor implements Interceptor, Listener {
     /**
      * This method prevents concurrent list modification
      */
-    private synchronized void addMessage(final String message) {
-        messages.add(message);
+    private void addMessage(final String message) {
+        synchronized (this) {
+            messages.add(message);
+        }
     }
 
     @Override
