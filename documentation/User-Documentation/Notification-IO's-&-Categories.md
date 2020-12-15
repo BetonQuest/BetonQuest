@@ -59,8 +59,9 @@ Shows the notification using the actionbar.
 Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
+    <div style="text-align: center">
     ![bossbar image](../media/content/User-Documentation/Notifications/bossbar.png)
-
+    </div>
 | Option | Description |
 |--------|-------------|
 | barFlags | What <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html" target="_blank">flags</a> to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either Spigot or the game itself.
@@ -119,16 +120,21 @@ This option can be a number or a vector.
 
 **Number**:
 
-The location the sound will be played at is moved away from the player towards the `soundlocation` using the number from
+The location the sound will be played at is moved away from the player towards the `soundlocation` using the value of
 `soundplayeroffset`.
-The sound will be at the actual location if the player is closer to the soundlocation then the offset would allow.
+The sound will be at the actual location if the player is closer to the soundlocation
+then the `soundplayeroffset` would allow.
 
 ??? info "Visual Explanation"  
+    <div style="text-align: center">
     ![offset image](../media/content/User-Documentation/Notifications/offset.png)
+    </div>
 
-    This shows how the sound will be placed at the `soundlocation` if the distance between the player and the `soundlocation`
-    is smaller then the `playeroffset`:    
+    This shows how the sound will be played at the `soundlocation` if the `soundplayeroffset` is bigger then the current
+    distance between the player and the `soundlocation` 
+    <div style="text-align: center">
     ![offsetBiggerThanDistance image](../media/content/User-Documentation/Notifications/offsetBiggerThanDistance.png)
+    </div>
 
 *Example usage*:
 
@@ -140,8 +146,12 @@ A vector has to be in the format`(x;y;z)`. This system will use the players rela
 This means that the vectors x axis is right / left from the players head, the y axis is up or down from where ever the players face is
 and the z axis is before / behind the players face. It will move along the players  head.
 
-??? info "Visual Explanation"  
+??? info "Visual Explanation"
+    In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
+    Example: The positive x-axis will always point left from the perspective of the player.
+    <div style="text-align: center">
     ![relativeAxis image](../media/content/User-Documentation/Notifications/relativeAxis.png)
+    </div>    
 
 This makes it possible to go crazy with sounds. Just one example: A halloween special
 where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
@@ -153,12 +163,13 @@ blue line = direction the player is looking in
 🔴  = the actual location the sound is played at    
 *soundplayeroffset = (0,0,5)*
 
+<div style="text-align: center">
 <video controls loop
 src="../../media/content/User-Documentation/Notifications/RelativeVectorExample.mp4"
 width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>
-
+</div>
 
 
 The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
