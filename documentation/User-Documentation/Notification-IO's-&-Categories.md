@@ -157,22 +157,20 @@ This makes it possible to go crazy with sounds. Just one example: A halloween sp
 where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
 
 Here is a small example:
+??? info "Video Example"
+    blue line = direction the player is looking in    
+    🟢 = soundlocation argument    
+    🔴  = the actual location the sound is played at    
+    *soundplayeroffset = (0,0,5)*
 
-blue line = direction the player is looking in    
-🟢 = soundlocation argument    
-🔴  = the actual location the sound is played at    
-*soundplayeroffset = (0,0,5)*
-
-<div style="text-align: center">
-<video controls loop
-src="../../media/content/User-Documentation/Notifications/RelativeVectorExample.mp4"
-width="780" height="500">
-Sorry, your browser doesn't support embedded videos.
-</video>
-</div>
-
-
-The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
+    <div style="text-align: center">
+    <video controls loop
+    src="../../media/content/User-Documentation/Notifications/RelativeVectorExample.mp4"
+    width="780" height="500">
+    Sorry, your browser doesn't support embedded videos.
+    </video>
+    </div>
+    The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
 ### SuppressIO
 Does not output any sound or text 🔕. Can be used to remove built-in notifications.
