@@ -33,6 +33,7 @@ import java.util.logging.Level;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
 public class PlayerData {
 
+    @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final String playerID;

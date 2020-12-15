@@ -361,6 +361,7 @@ public abstract class Objective {
          * will have to start this objective from scratch.
          * </p>
          */
+        @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
             saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objID}));

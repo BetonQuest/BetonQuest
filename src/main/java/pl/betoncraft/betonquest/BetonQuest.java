@@ -60,6 +60,7 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
     private Database database;
     private boolean isMySQLUsed;
+    @SuppressWarnings("PMD.DoNotUseThreads")
     private Saver saver;
     private Updater updater;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
@@ -324,7 +325,7 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads"})
     @Override
     public void onEnable() {
 
@@ -1060,6 +1061,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return the Saver
      */
+    @SuppressWarnings("PMD.DoNotUseThreads")
     public Saver getSaver() {
         return saver;
     }

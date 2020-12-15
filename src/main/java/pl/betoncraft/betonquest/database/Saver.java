@@ -13,7 +13,7 @@ import java.util.logging.Level;
 /**
  * Saves the data to the database asynchronously
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.DoNotUseThreads"})
 public class Saver extends Thread implements Listener {
 
     private final Connector con;
