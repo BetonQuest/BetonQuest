@@ -279,6 +279,7 @@
   <rule ref="category/java/multithreading.xml/NonThreadSafeSingleton"/>
   <rule ref="category/java/multithreading.xml/UnsynchronizedStaticFormatter"/>
   <!--<rule ref="category/java/multithreading.xml/UseConcurrentHashMap"/>-->
+  <rule ref="category/java/multithreading.xml/UseNotifyAllInsteadOfNotify"/>
 
   <rule ref="category/java/performance.xml/AddEmptyString"/>
   <rule ref="category/java/performance.xml/AppendCharacterWithChar"/>

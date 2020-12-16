@@ -66,7 +66,7 @@ public class Saver extends Thread implements Listener {
     public void add(final Record rec) {
         synchronized (this) {
             queue.add(rec);
-            notify();
+            notifyAll();
         }
     }
 
@@ -76,7 +76,7 @@ public class Saver extends Thread implements Listener {
     public void end() {
         synchronized (this) {
             running = false;
-            notify();
+            notifyAll();
         }
     }
 
