@@ -29,7 +29,6 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
-    - navigation.instant
     - search.highlight
     - search.suggest
   palette:
