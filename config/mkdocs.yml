@@ -14,6 +14,8 @@ extra_css:
   - 'webCode/css/version_select.css'
   - 'webCode/css/superFences.css'
   - 'webCode/css/centered.css'
+  - 'webCode/css/contentAreaFullWidth.css'
+  - 'webCode/css/admonition.css'
 
 extra_javascript:
   - 'webCode/js/version_select.js'
@@ -24,12 +26,15 @@ theme:
   language: en
   features:
     - navigation.tabs
-    - navigation.instant
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
     - search.highlight
+    - search.suggest
   palette:
     - scheme: slate
       primary: indigo
-      accent: indigo
+      accent: teal
       toggle:
         icon: material/lightbulb-outline
         name: Switch to dark mode
@@ -42,7 +47,7 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/design/icon.png
+  logo: media/design/BQIcon1k.png
   favicon: media/design/favicon.ico
 
 
@@ -50,6 +55,7 @@ theme:
 # See the following for docs on these extensions: https://squidfunk.github.io/mkdocs-material/extensions
 markdown_extensions:
   - admonition
+  - attr_list
   - codehilite:
       linenums: true
   - footnotes
@@ -92,17 +98,20 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
-    - icon: fontawesome/solid/faucet
-      link: https://spigotmc.org/resources/betonquest.2117/
+    - icon: fontawesome/brands/patreon
+      link: https://patreon.com/betonquest
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: fontawesome/solid/archive
       link: https://betonquest.org/old
+    - icon: fontawesome/solid/faucet
+      link: https://spigotmc.org/resources/betonquest.2117/
 
+#Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
 nav:
   - 'Home':
-      - 'Welcome!': index.md
-      - For-Admins.md
+      - 'Welcome! 👋': index.md
+      - For-Owners.md
       - For-Questers.md
       - Features.md
   - 'Learn Beton':
@@ -114,29 +123,42 @@ nav:
           - Learn-Beton/Getting-Started/Quick-Start-Tutorial.md
       - Learn-Beton/Frequently-Asked-Questions.md
       - Learn-Beton/Tips-and-tricks.md
+
   - 'User Documentation':
-      - User-Documentation/Reference.md
-      - User-Documentation/Objectives-List.md
-      - User-Documentation/Conditions-List.md
-      - User-Documentation/Events-List.md
-      - 'Compatibility List': User-Documentation/Compatibility.md
-      - User-Documentation/Variables-List.md
-      - User-Documentation/Notifications.md
-      - User-Documentation/Conversations.md
-      - User-Documentation/Configuration.md
-      - User-Documentation/Commands-and-permissions.md
-      - User-Documentation/Updating-and-Backups.md
-      - User-Documentation/CHANGELOG.md
+      - 'General':
+        - '📚   Reference': User-Documentation/Reference.md
+        - '💬  Conversations': User-Documentation/Conversations.md
+
+      - 'Types':
+          - '✔️ Objectives List': User-Documentation/Objectives-List.md
+          - '⚙️ Events List': User-Documentation/Events-List.md
+          - '  ❓    Conditions List': User-Documentation/Conditions-List.md
+          - '🤝 Compatibility List': User-Documentation/Compatibility.md
+          - '🔮   Variables List': User-Documentation/Variables-List.md
+
+      - 'Notifications:':
+        - '🔊   Settings': User-Documentation/Notification-Settings.md
+        - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
+
+      - 'Technical:':
+        - '🔒 Permissions & Commands': User-Documentation/Commands-and-permissions.md
+        - '📥 Updating': User-Documentation/Updating-and-Backups.md
+        - '🔧  Configuration': User-Documentation/Configuration.md
+        - '🗃️ Changelog': User-Documentation/CHANGELOG.md
+
   - 'Developer Documentation':
       - Developer-Documentation/Contributing-Guidelines.md
       - Developer-Documentation/API.md
       - Developer-Documentation/Releasing.md
       - Developer-Documentation/Versioning.md
   - 'Contributing':
-      - Contributing/Contributing.md
+      - 'General':
+          - Contributing/Contributing.md
       - 'Docs':
           - Contributing/Documentation/Setup.md
           - Contributing/Documentation/Guidelines.md
+      - 'Sponsorships':
+          - 'Patreon': Contributing/Sponsors.md
 
 
 google_analytics:

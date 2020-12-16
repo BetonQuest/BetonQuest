@@ -728,7 +728,13 @@ hide_npcs:
 
 ### Conversation IO: `menu`
 
-ProtocolLib also enables a conversation IO that makes use of a chat menu system. A video of it in action can be seen [here](../media/content/Home/MenuConvIO.mp4).
+ProtocolLib also enables a conversation IO that makes use of a chat menu system.
+
+<video controls loop
+     src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
+     width="780" height="500">
+ Sorry, your browser doesn't support embedded videos.
+ </video>
 
 Customize how it looks by adding the following lines to custom.yml:
 
@@ -844,7 +850,9 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## [SkillAPI](http://dev.bukkit.org/bukkit-plugins/skillapi/)
+## [SkillAPI](https://github.com/Sentropic/SkillAPI-s/releases)
+
+This adds support for [Sentropics SkillAPI fork](https://github.com/Sentropic/SkillAPI-s/releases). They still update SkillAPI.  
 
 ### Conditions
 

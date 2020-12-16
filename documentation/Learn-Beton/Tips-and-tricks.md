@@ -1,5 +1,82 @@
 # Tips and tricks
 
+## Can I assign multiple conversation files to one NPC?
+No. You can use cross-conversation-pointers though.
+https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Conversations/#cross-conversation-pointers
+
+## Can I delete all tags from a player at once?
+No. You either need to run all `/q t del PLAYER PACKAGE.TAG` commands or you can use `/q purge PLAYER` to reset an entire player profile.
+If you want this as a scripted part of your quest however:
+Either use a folder event that holds all tag-deleting events.
+Or use a `run` event in which you specify all tag-deleting events at once.
+(We will improve this don't worry)
+
+## How do I start an objective from a conversation?
+You can use the objective event IE
+objective start (name)
+
+## Why is X thing not working?
+If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE! You will be able to see which events etc loaded and which didn't with the reasons why. You may be able to fix it yourself from this or use this information so we can better help you!
+
+Also double check you saved your files and if needed reuplaoded to FTP. This is insanely common and can be overlooked!
+
+## How to get a formatted version of the BlockObjective's variables?
+The math variable is perfect for this.
+`/papi parse USER %betonquest_BlockVar:math.calc:|objective.test.left|`
+
+## How can i let the NPC say thing across multiple lines?
+You need to use the PIPE `|` character at the start of the multiline string.
+```YAML
+text: |
+  This is line one 
+    line two
+      line three
+```
+
+## How to get rid of not resolveable variables that show"0"?
+You can just add them together using `math.calc`.
+```
+%math.calc:0-objective.PickWheat1.left-objective.PickWheat2.left-objective.PickWheat3.left-objective.PickWheat4.left'
+```
+
+## How to match different items with just one condition?
+If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your items.yml file that matches items based of their names. More specifically, you can have a *Block Selector* that is a *regex*.  https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Reference/#block-selectors
+It would look like this in the example:
+```YAML
+#items.yml
+anyPotato: ".*potato.*"
+
+#conditions.yml
+hasAnyPotato: "item anyPotato"
+```
+
+## How to store custom text in a variable / How to use the variable objective?
+1. Start a variable objective for the player. It serves as a variable storage:
+```YAML
+#objectives.yml
+ myVariableStorage: "variable no-chat"`
+```
+2. Assign values to that storage using a key and a value. Both can be any text you like:
+ ```YAML
+#events.yml
+addBlock: "variable myVariableStorage blockName REDSTONE"
+addLocation: "variable myVariableStorage location 123;456;789;world"
+```
+3. Read from your variable storage using the storages name and the data key.
+```YAML
+#conditions.yml
+hasHeartBlock: "testforblock %objective.myVariableStorage.location% %objective.myVariableStorage.blockName%"
+```
+
+## Error "Quester is not defined"
+You either actually did not define the `quester: someName` option at the top of your conversation or your YAML syntax is invalid. YAML Syntax Errors are the HUGE red lines that you see when you do /q reload.
+They lead to the file not being properly read -> All kinds of errors like "cant find quester etc."
+Copy your file into http://www.yamllint.com/ to confirm that it is actually a YAML error and fix your syntax.
+Best practise is to define all options like this: `myOptionName: "myData"` The double quotes prevent YAMl issues with e.g. `!`.
+
+## Other plugins override BetonQuest commands / BetonQuest overrides other commands!
+You can change which command is used using a Bukkit feature: https://bukkit.gamepedia.com/Commands.yml
+
 ## Handling death in your quests
 
 Sometimes, while writing a dangerous quest you will want something specific to happen when the player dies. If it's a boss battle you may want to fail the quest, if it's a dungeon you may want to respawn the player at the beginning of a level etc. You can do that with `die` objective - simply start it for the player at the beginning of the quest and make it fire events that will do the thing you want (like teleporting the player to desired respawn point, removing tags set during the quest etc). You can add `persistent` argument to the objective instruction string to make it active even after completing it. Remember to `delete` it after the quest is done!

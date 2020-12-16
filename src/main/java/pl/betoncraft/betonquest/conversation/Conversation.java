@@ -98,7 +98,8 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Conversation doesn't exist: " + conversationID);
+            LogUtils.getLogger().log(Level.WARNING, "Conversation '" + conversationID
+                    + "' does not exist. Check for errors on /q reload! It probably couldn't be loaded due to some other error.");
             return;
         }
 
