@@ -14,7 +14,6 @@ import java.io.*;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.Locale;
@@ -103,6 +102,7 @@ public class Updater {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidFileStream")
     private void downloadUpdate() throws QuestRuntimeException {
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Updater started download of new version...");
         if (!config.enabled) {
@@ -123,7 +123,9 @@ public class Updater {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                FileChannel.open(file.toPath()).transferFrom(rbc, 0, Long.MAX_VALUE);
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                }
             }
             latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
             LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Download finished.");
@@ -196,12 +198,13 @@ public class Updater {
             plugin.getConfig().set("update.notify_dev_build", null);
 
             enabled = plugin.getConfig().getBoolean("update.enabled");
-            if (plugin.getConfig().isSet("update.strategy")) {
-                updateStrategy = UpdateStrategy.valueOf(plugin.getConfig().getString("update.strategy").toUpperCase(Locale.ROOT));
-            } else {
+            final String updateStrategyString = plugin.getConfig().getString("update.strategy");
+            if (updateStrategyString == null) {
                 updateStrategy = UpdateStrategy.MINOR;
                 plugin.getConfig().set("update.strategy", updateStrategy.toString());
                 plugin.saveConfig();
+            } else {
+                updateStrategy = UpdateStrategy.valueOf(updateStrategyString.toUpperCase(Locale.ROOT));
             }
             if (plugin.getConfig().isSet("update.automatic")) {
                 automatic = plugin.getConfig().getBoolean("update.automatic");
