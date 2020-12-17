@@ -76,6 +76,14 @@ public class CitizensHologram extends BukkitRunnable {
     public void cancel() {
         super.cancel();
 
+        if (initializationTask != null) {
+            initializationTask.cancel();
+        }
+        if (updateTask != null) {
+            updateTask.cancel();
+            updateTask = null;
+        }
+
         for (final List<NPCHologram> holograms : npcs.values()) {
             for (final NPCHologram npcHologram : holograms) {
                 if (npcHologram.hologram != null) {
@@ -84,14 +92,6 @@ public class CitizensHologram extends BukkitRunnable {
                     npcHologram.hologram = null;
                 }
             }
-        }
-
-        if (initializationTask != null) {
-            initializationTask.cancel();
-        }
-        if (updateTask != null) {
-            updateTask.cancel();
-            updateTask = null;
         }
     }
 
