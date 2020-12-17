@@ -307,7 +307,7 @@
         <dependency>
           <groupId>com.github.Sentropic</groupId>
           <artifactId>SkillAPI-s</artifactId>
-          <version>1.96-SNAPSHOT</version>
+          <version>1.96</version>
           <scope>provided</scope>
         </dependency>
         <dependency>
