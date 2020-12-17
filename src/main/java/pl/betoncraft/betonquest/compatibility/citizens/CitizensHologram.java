@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -39,16 +40,18 @@ public class CitizensHologram extends BukkitRunnable {
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
     private boolean follow;
-    private BukkitRunnable updater;
+    private final BukkitTask initializationTask;
+    private BukkitTask updateTask;
 
     public CitizensHologram() {
         super();
         if (instance != null) {
+            initializationTask = null;
             return;
         }
         instance = this;
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance(), this::initHolograms, 1);
+        initializationTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::initHolograms);
     }
 
     /**
@@ -83,9 +86,12 @@ public class CitizensHologram extends BukkitRunnable {
             }
         }
 
-        if (updater != null) {
-            updater.cancel();
-            updater = null;
+        if (initializationTask != null) {
+            initializationTask.cancel();
+        }
+        if (updateTask != null) {
+            updateTask.cancel();
+            updateTask = null;
         }
     }
 
@@ -97,7 +103,7 @@ public class CitizensHologram extends BukkitRunnable {
                 for (final String npcID : npcsSection.getKeys(false)) {
                     try {
                         npcs.put(Integer.parseInt(npcID), new ArrayList<>());
-                    } catch (NumberFormatException exception) {
+                    } catch (final NumberFormatException exception) {
                         LogUtils.getLogger().log(Level.WARNING, "Could not parse number of NPC '" + npcID + "'");
                     }
                 }
@@ -201,39 +207,32 @@ public class CitizensHologram extends BukkitRunnable {
         }
 
         if (npcUpdater) {
-            if (updater == null) {
-                updater = getUpdater();
+            if (updateTask == null) {
                 if (follow) {
-                    updater.runTaskTimer(BetonQuest.getInstance(), 1L, 1L);
+                    updateTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(), this::update, 1L, 1L);
                 } else {
-                    updater.runTaskLater(BetonQuest.getInstance(), 1L);
+                    updateTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::update);
                 }
             }
         } else {
-            if (updater != null) {
-                updater.cancel();
-                updater = null;
+            if (updateTask != null) {
+                updateTask.cancel();
+                updateTask = null;
             }
         }
     }
 
-    private BukkitRunnable getUpdater() {
-        return new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {
-                    for (final NPCHologram npcHologram : entry.getValue()) {
-                        if (npcHologram.hologram != null) {
-                            final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
-                            if (npc != null) {
-                                npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.vector));
-                            }
-                        }
+    private void update() {
+        for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {
+            for (final NPCHologram npcHologram : entry.getValue()) {
+                if (npcHologram.hologram != null) {
+                    final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
+                    if (npc != null) {
+                        npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.vector));
                     }
-
                 }
             }
-        };
+        }
     }
 
     private boolean updateHologramsForPlayers(final NPCHologram npcHologram, final NPC npc) {
