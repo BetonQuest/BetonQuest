@@ -43,23 +43,27 @@ public final class LogUtils {
     /**
      * Start writing the latest.log file
      */
-    public static synchronized void startDebug() {
-        if (!debugging) {
-            debugging = true;
-            BetonQuest.getInstance().getConfig().set("debug", "true");
-            BetonQuest.getInstance().saveConfig();
-            History.writeHistory();
+    public static void startDebug() {
+        synchronized (LogUtils.class) {
+            if (!debugging) {
+                debugging = true;
+                BetonQuest.getInstance().getConfig().set("debug", "true");
+                BetonQuest.getInstance().saveConfig();
+                History.writeHistory();
+            }
         }
     }
 
     /**
      * Stop writing the latest.log file
      */
-    public static synchronized void endDebug() {
-        if (debugging) {
-            debugging = false;
-            BetonQuest.getInstance().getConfig().set("debug", "false");
-            BetonQuest.getInstance().saveConfig();
+    public static void endDebug() {
+        synchronized (LogUtils.class) {
+            if (debugging) {
+                debugging = false;
+                BetonQuest.getInstance().getConfig().set("debug", "false");
+                BetonQuest.getInstance().saveConfig();
+            }
         }
     }
 
@@ -215,35 +219,39 @@ public final class LogUtils {
          */
         private static int index;
 
-        private static synchronized void writeHistory() {
-            int currentIndex = index;
-            boolean hasHistory = false;
-            do {
-                if (RECORDS[currentIndex] != null) {
-                    if (!hasHistory) {
-                        fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-                        hasHistory = true;
+        private static void writeHistory() {
+            synchronized (History.class) {
+                int currentIndex = index;
+                boolean hasHistory = false;
+                do {
+                    if (RECORDS[currentIndex] != null) {
+                        if (!hasHistory) {
+                            fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
+                            hasHistory = true;
+                        }
+                        fileHandler.publish(RECORDS[currentIndex]);
                     }
-                    fileHandler.publish(RECORDS[currentIndex]);
+                    currentIndex++;
+                    if (currentIndex == SIZE) {
+                        currentIndex = 0;
+                    }
+                } while (currentIndex != index);
+                if (hasHistory) {
+                    fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
                 }
-                currentIndex++;
-                if (currentIndex == SIZE) {
-                    currentIndex = 0;
-                }
-            } while (currentIndex != index);
-            if (hasHistory) {
-                fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
-            }
-            Arrays.fill(RECORDS, null);
-            index = 0;
-        }
-
-        private static synchronized void logToHistory(final LogRecord record) {
-            if (index == SIZE) {
+                Arrays.fill(RECORDS, null);
                 index = 0;
             }
-            RECORDS[index] = record;
-            index++;
+        }
+
+        private static void logToHistory(final LogRecord record) {
+            synchronized (History.class) {
+                if (index == SIZE) {
+                    index = 0;
+                }
+                RECORDS[index] = record;
+                index++;
+            }
         }
     }
 

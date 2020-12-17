@@ -13,7 +13,7 @@ import java.util.logging.Level;
 /**
  * Saves the data to the database asynchronously
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.DoNotUseThreads"})
 public class Saver extends Thread implements Listener {
 
     private final Connector con;
@@ -63,17 +63,21 @@ public class Saver extends Thread implements Listener {
      *
      * @param rec Record to save
      */
-    public synchronized void add(final Record rec) {
-        queue.add(rec);
-        notify();
+    public void add(final Record rec) {
+        synchronized (this) {
+            queue.add(rec);
+            notifyAll();
+        }
     }
 
     /**
      * Ends this saver's job, letting it save all remaining data.
      */
-    public synchronized void end() {
-        running = false;
-        notify();
+    public void end() {
+        synchronized (this) {
+            running = false;
+            notifyAll();
+        }
     }
 
     /**

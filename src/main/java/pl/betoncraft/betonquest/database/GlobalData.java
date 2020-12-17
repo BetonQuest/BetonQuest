@@ -19,6 +19,7 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalData {
 
+    @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final List<String> globalTags = new ArrayList<>();
