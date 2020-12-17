@@ -1,17 +1,27 @@
 # Description
+
 <!-- Your description here. -->
 
 ## Related Issues
-Closes #XXXX <- Issue number if existing
+
+<!-- Issue number if existing. -->
+Closes #XXXX
 
 ## Checklists
+
+Run maven Verify in your IDE and ensure it SUCCEEDS!
+
 ### Did you...
+
 <!-- Check these things before posting the pull request: -->
+
 - [ ]  ... test your changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
 - [ ]  ... adjust the ConfigUpdater?
-- [ ]  ... clean the commit history?
 - [ ]  ... solve all TODOs?
 - [ ]  ... remove any commented out code?
-- [ ]  Did the build pipeline succeed?
+- [ ]  ... add debug messages?
+- [ ]  ... clean the commit history?
+
+Check if the build pipeline succeeded for this PR!
