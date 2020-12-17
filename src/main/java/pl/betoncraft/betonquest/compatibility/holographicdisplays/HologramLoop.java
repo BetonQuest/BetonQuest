@@ -174,6 +174,7 @@ public class HologramLoop {
         if (runnable != null) {
             runnable.cancel();
             for (final Hologram hologram : holograms.keySet()) {
+                hologram.getVisibilityManager().resetVisibilityAll();
                 hologram.delete();
             }
         }

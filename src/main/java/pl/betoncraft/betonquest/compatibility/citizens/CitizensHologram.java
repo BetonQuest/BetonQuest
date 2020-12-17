@@ -8,9 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
@@ -23,12 +23,7 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -38,156 +33,36 @@ import java.util.logging.Level;
  * shared between players and
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
-
-@SuppressWarnings({"PMD.UnusedAssignment", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.NonThreadSafeSingleton"})
-public class CitizensHologram extends BukkitRunnable implements Listener {
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
+public class CitizensHologram extends BukkitRunnable {
 
     private static CitizensHologram instance;
-    private static final Lock RELOAD_LOCK = new ReentrantLock();
 
-    // All NPC's with config
-    private final Map<String, List<NPCHologram>> npcs = new HashMap<>();
-
-    private int interval = 100;
+    private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
     private boolean follow;
-    private final boolean enabled;
+    private final BukkitTask initializationTask;
+    private BukkitTask updateTask;
 
-    // Updater
-    private BukkitRunnable updater;
-
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
     public CitizensHologram() {
         super();
         if (instance != null) {
-            enabled = false;
+            initializationTask = null;
             return;
         }
         instance = this;
 
-        // Start this when all plugins loaded
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance(), () -> {
-            // loop across all packages
-            for (final ConfigPackage pack : Config.getPackages().values()) {
-
-                // load all NPC's
-                if (pack.getMain().getConfig().getConfigurationSection("npcs") != null) {
-                    for (final String npcID : pack.getMain().getConfig().getConfigurationSection("npcs").getKeys(false)) {
-                        try {
-                            final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
-                            if (npc != null) {
-                                npcs.put(npcID, new ArrayList<>());
-                            }
-                        } catch (NumberFormatException e) {
-                            LogUtils.logThrowableIgnore(e);
-                        }
-                    }
-                }
-
-                // npc_holograms contains all holograms for NPCs
-                final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
-
-                // if it's not defined then we're not displaying holograms
-                if (section == null) {
-                    continue;
-                }
-                // there's a setting to disable npc holograms altogether
-                if ("true".equalsIgnoreCase(section.getString("disabled"))) {
-                    return;
-                }
-
-                // load the condition check interval
-                interval = section.getInt("check_interval", 100);
-                if (interval <= 0) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load npc holograms of package " + pack.getName() + ": " +
-                            "Check interval must be bigger than 0.");
-                    return;
-                }
-
-                // load follow flag
-                follow = section.getBoolean("follow", false);
-
-                // loading hologram config
-                for (final String key : section.getKeys(false)) {
-                    final ConfigurationSection settings = section.getConfigurationSection(key);
-
-                    // if the key is not a configuration section then it's not a hologram
-                    if (settings == null) {
-                        continue;
-                    }
-
-                    final HologramConfig hologramConfig = new HologramConfig();
-                    hologramConfig.pack = pack;
-
-                    try {
-                        final String[] vectorParts = settings.getString("vector", "0;3;0").split(";");
-                        hologramConfig.vector = new Vector(
-                                Double.parseDouble(vectorParts[0]),
-                                Double.parseDouble(vectorParts[1]),
-                                Double.parseDouble(vectorParts[2])
-                        );
-                    } catch (NumberFormatException e) {
-                        LogUtils.getLogger().log(Level.WARNING, pack.getName() + ": Invalid vector: " + settings.getString("vector"));
-                        LogUtils.logThrowable(e);
-                        continue;
-                    }
-
-                    // load all conditions
-                    hologramConfig.conditions = new ArrayList<>();
-                    final String rawConditions = settings.getString("conditions");
-                    if (rawConditions != null) {
-                        for (final String part : rawConditions.split(",")) {
-                            try {
-                                hologramConfig.conditions.add(new ConditionID(pack, part));
-                            } catch (ObjectNotFoundException e) {
-                                LogUtils.getLogger().log(Level.WARNING, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
-                                        + key + ": " + e.getMessage());
-                                LogUtils.logThrowable(e);
-                            }
-                        }
-                    }
-
-                    hologramConfig.settings = settings;
-
-                    // load all NPCs for which this effect can be displayed
-                    final List<String> affectedNpcs = new ArrayList<>();
-                    for (final int id : settings.getIntegerList("npcs")) {
-                        final NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                        if (npc != null && npcs.containsKey(String.valueOf(id))) {
-                            affectedNpcs.add(String.valueOf(id));
-                        }
-                    }
-
-                    for (final String npcID : settings.getIntegerList("npcs").size() == 0 ? npcs.keySet() : affectedNpcs) {
-                        final NPCHologram npcHologram = new NPCHologram();
-                        npcHologram.config = hologramConfig;
-                        npcs.get(npcID).add(npcHologram);
-                    }
-
-                }
-            }
-
-            Bukkit.getPluginManager().registerEvents(instance, BetonQuest.getInstance());
-
-            runTaskTimer(BetonQuest.getInstance(), 1, interval);
-        }, 1);
-
-        enabled = true;
+        initializationTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::initHolograms);
     }
 
     /**
      * Reloads the particle effect
      */
     public static void reload() {
-        if (instance != null && RELOAD_LOCK.tryLock()) {
-            try {
-                if (instance.enabled) {
-                    instance.cancel();
-                    instance.cleanUp();
-                }
+        synchronized (CitizensHologram.class) {
+            if (instance != null) {
+                instance.cancel();
                 instance = null;
                 new CitizensHologram();
-            } finally {
-                RELOAD_LOCK.unlock();
             }
         }
     }
@@ -197,17 +72,22 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         updateHolograms();
     }
 
-    private void cleanUp() {
-        // Cancel Updater
-        if (updater != null) {
-            updater.cancel();
-            updater = null;
+    @Override
+    public void cancel() {
+        super.cancel();
+
+        if (initializationTask != null) {
+            initializationTask.cancel();
+        }
+        if (updateTask != null) {
+            updateTask.cancel();
+            updateTask = null;
         }
 
-        // Destroy all holograms
-        for (final String npcID : npcs.keySet()) {
-            for (final NPCHologram npcHologram : npcs.get(npcID)) {
+        for (final List<NPCHologram> holograms : npcs.values()) {
+            for (final NPCHologram npcHologram : holograms) {
                 if (npcHologram.hologram != null) {
+                    npcHologram.hologram.getVisibilityManager().resetVisibilityAll();
                     npcHologram.hologram.delete();
                     npcHologram.hologram = null;
                 }
@@ -215,149 +95,213 @@ public class CitizensHologram extends BukkitRunnable implements Listener {
         }
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    private void initHolograms() {
+        int interval = 100;
+        for (final ConfigPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection npcsSection = pack.getMain().getConfig().getConfigurationSection("npcs");
+            if (npcsSection != null) {
+                for (final String npcID : npcsSection.getKeys(false)) {
+                    try {
+                        npcs.put(Integer.parseInt(npcID), new ArrayList<>());
+                    } catch (final NumberFormatException exception) {
+                        LogUtils.getLogger().log(Level.WARNING, "Could not parse number of NPC '" + npcID + "'");
+                    }
+                }
+            }
+
+            final ConfigurationSection hologramsSection = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
+            if (hologramsSection == null) {
+                continue;
+            }
+            if ("true".equalsIgnoreCase(hologramsSection.getString("disabled"))) {
+                return;
+            }
+            interval = hologramsSection.getInt("check_interval", 100);
+            if (interval <= 0) {
+                LogUtils.getLogger().log(Level.WARNING, "Could not load npc holograms of package " + pack.getName() + ": " +
+                        "Check interval must be bigger than 0.");
+                return;
+            }
+            follow = hologramsSection.getBoolean("follow", false);
+
+            initHologramsConfig(pack, hologramsSection);
+        }
+
+        runTaskTimer(BetonQuest.getInstance(), 1, interval);
+    }
+
+    private void initHologramsConfig(final ConfigPackage pack, final ConfigurationSection hologramsSection) {
+        for (final String key : hologramsSection.getKeys(false)) {
+            final ConfigurationSection settingsSection = hologramsSection.getConfigurationSection(key);
+            if (settingsSection == null) {
+                continue;
+            }
+
+            final NPCHologram hologramConfig = new NPCHologram();
+            hologramConfig.pack = pack;
+            hologramConfig.vector = getVector(pack, key, settingsSection.getString("vector"));
+            hologramConfig.conditions = initHologramsConfigConditions(pack, key, settingsSection.getString("conditions"));
+            hologramConfig.lines = settingsSection.getStringList("lines");
+
+            final List<Integer> affectedNpcs = new ArrayList<>();
+            for (final int id : settingsSection.getIntegerList("npcs")) {
+                if (npcs.containsKey(id)) {
+                    affectedNpcs.add(id);
+                }
+            }
+            for (final int npcID : affectedNpcs.isEmpty() ? npcs.keySet() : affectedNpcs) {
+                npcs.get(npcID).add(hologramConfig);
+            }
+
+        }
+    }
+
+    private Vector getVector(final ConfigPackage pack, final String key, final String vector) {
+        if (vector != null) {
+            try {
+                final String[] vectorParts = vector.split(";");
+                return new Vector(Double.parseDouble(vectorParts[0]), Double.parseDouble(vectorParts[1]), Double.parseDouble(vectorParts[2]));
+            } catch (final NumberFormatException e) {
+                LogUtils.getLogger().log(Level.WARNING, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector);
+                LogUtils.logThrowable(e);
+            }
+        }
+        return new Vector(0, 3, 0);
+    }
+
+    private List<ConditionID> initHologramsConfigConditions(final ConfigPackage pack, final String key, final String rawConditions) {
+        final ArrayList<ConditionID> conditions = new ArrayList<>();
+        if (rawConditions != null) {
+            for (final String part : rawConditions.split(",")) {
+                try {
+                    conditions.add(new ConditionID(pack, part));
+                } catch (final ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                            + key + ": " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                }
+            }
+        }
+        return conditions;
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void updateHolograms() {
-        // If we need to update hologram positions
         boolean npcUpdater = false;
-
-        // Handle updating each NPC
-        for (final String npcID : npcs.keySet()) {
-            for (final NPCHologram npcHologram : npcs.get(npcID)) {
-                boolean hologramEnabled = false;
-
-                final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
-
+        for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {
+            for (final NPCHologram npcHologram : entry.getValue()) {
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
                 if (npc == null) {
                     continue;
                 }
 
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.config.conditions)) {
-                        hologramEnabled = true;
-                        if (npcHologram.hologram == null) {
-                            final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.config.vector));
-                            hologram.getVisibilityManager().setVisibleByDefault(false);
-                            for (final String line : npcHologram.config.settings.getStringList("lines")) {
-                                if (line.startsWith("item:")) {
-                                    try {
-                                        final String[] args = line.substring(5).split(":");
-                                        final ItemID itemID = new ItemID(npcHologram.config.pack, args[0]);
-                                        int stackSize;
-                                        try {
-                                            stackSize = Integer.parseInt(args[1]);
-                                        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                            stackSize = 1;
-                                        }
-                                        final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                                        stack.setAmount(stackSize);
-                                        hologram.appendItemLine(stack);
-                                    } catch (InstructionParseException e) {
-                                        LogUtils.getLogger().log(Level.WARNING, "Could not parse item " + line.substring(5) + " hologram: "
-                                                + e.getMessage());
-                                        LogUtils.logThrowable(e);
-                                    } catch (ObjectNotFoundException e) {
-                                        LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + line.substring(5).split(":")[0]
-                                                + " hologram: " + e.getMessage());
-                                        LogUtils.logThrowable(e);
-
-                                        //TODO Remove this code in the version 1.13 or later
-                                        //This support the old implementation of Items
-                                        final Material material = Material.matchMaterial(line.substring(5));
-                                        if (material != null) {
-                                            LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
-                                                    + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
-                                            hologram.appendItemLine(new ItemStack(material));
-                                        }
-                                        //Remove up to here
-                                    }
-                                } else {
-                                    hologram.appendTextLine(line.replace('&', '§'));
-                                }
-                            }
-                            npcHologram.hologram = hologram;
-                        }
-
-                        // We do this a tick later to work around a bug where holograms simply don't appear
-                        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance(), () -> {
-                            if (npcHologram.hologram != null) {
-                                npcHologram.hologram.getVisibilityManager().showTo(player);
-                            }
-                        }, 5);
-
-                    } else {
-                        if (npcHologram.hologram != null) {
-                            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(BetonQuest.getInstance(), () -> {
-                                if (npcHologram.hologram != null) {
-                                    npcHologram.hologram.getVisibilityManager().hideTo(player);
-                                }
-                            }, 5);
-                        }
-                    }
-                }
-
-                if (hologramEnabled) {
+                if (updateHologramsForPlayers(npcHologram, npc)) {
                     npcUpdater = true;
-                } else {
-                    // Destroy hologram
-                    if (npcHologram.hologram != null) {
-
-                        npcHologram.hologram.delete();
-                        npcHologram.hologram = null;
-                    }
+                } else if (npcHologram.hologram != null) {
+                    npcHologram.hologram.getVisibilityManager().resetVisibilityAll();
+                    npcHologram.hologram.delete();
+                    npcHologram.hologram = null;
                 }
             }
 
         }
 
         if (npcUpdater) {
-            if (updater == null) {
-                // The updater only runs when at least one hologram is visible to ensure it stays relative to npc location
-                updater = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (final String npcID : npcs.keySet()) {
-                            for (final NPCHologram npcHologram : npcs.get(npcID)) {
-                                if (npcHologram.hologram != null) {
-                                    final NPC npc = CitizensAPI.getNPCRegistry().getById(Integer.parseInt(npcID));
-                                    if (npc != null) {
-                                        npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.config.vector));
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                };
+            if (updateTask == null) {
                 if (follow) {
-                    updater.runTaskTimer(BetonQuest.getInstance(), 1L, 1L);
+                    updateTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(), this::update, 1L, 1L);
                 } else {
-                    updater.runTaskLater(BetonQuest.getInstance(), 1L);
+                    updateTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::update);
                 }
             }
         } else {
-            if (updater != null) {
-                updater.cancel();
-                updater = null;
+            if (updateTask != null) {
+                updateTask.cancel();
+                updateTask = null;
             }
         }
     }
 
-    private class NPCHologram {
-        private HologramConfig config;
-        private Hologram hologram;
-
-        public NPCHologram() {
+    private void update() {
+        for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {
+            for (final NPCHologram npcHologram : entry.getValue()) {
+                if (npcHologram.hologram != null) {
+                    final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
+                    if (npc != null) {
+                        npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.vector));
+                    }
+                }
+            }
         }
     }
 
-    private class HologramConfig {
+    private boolean updateHologramsForPlayers(final NPCHologram npcHologram, final NPC npc) {
+        boolean hologramEnabled = false;
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.conditions)) {
+                hologramEnabled = true;
+                if (npcHologram.hologram == null) {
+                    final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.vector));
+                    hologram.getVisibilityManager().setVisibleByDefault(false);
+                    updateHologramForPlayersLines(npcHologram, hologram);
+                    npcHologram.hologram = hologram;
+                }
+                if (!npcHologram.hologram.getVisibilityManager().isVisibleTo(player)) {
+                    npcHologram.hologram.getVisibilityManager().showTo(player);
+                }
+            } else {
+                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilityManager().isVisibleTo(player)) {
+                    npcHologram.hologram.getVisibilityManager().hideTo(player);
+                }
+            }
+        }
+        return hologramEnabled;
+    }
+
+    private void updateHologramForPlayersLines(final NPCHologram npcHologram, final Hologram hologram) {
+        for (final String line : npcHologram.lines) {
+            if (line.startsWith("item:")) {
+                try {
+                    final String[] args = line.substring(5).split(":");
+                    final ItemID itemID = new ItemID(npcHologram.pack, args[0]);
+                    int stackSize;
+                    try {
+                        stackSize = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                        stackSize = 1;
+                    }
+                    final ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                    hologram.appendItemLine(stack);
+                } catch (InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                } catch (ObjectNotFoundException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+
+                    //TODO Remove this code in the version 1.13 or later
+                    //This support the old implementation of Items
+                    final Material material = Material.matchMaterial(line.substring(5));
+                    if (material != null) {
+                        LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
+                                + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
+                        hologram.appendItemLine(new ItemStack(material));
+                    }
+                }
+            } else {
+                hologram.appendTextLine(line.replace('&', '§'));
+            }
+        }
+    }
+
+    private static class NPCHologram {
         private List<ConditionID> conditions;
         private Vector vector;
-        private ConfigurationSection settings;
+        private List<String> lines;
         private ConfigPackage pack;
+        private Hologram hologram;
 
-        public HologramConfig() {
-            super();
+        public NPCHologram() {
         }
     }
 }
