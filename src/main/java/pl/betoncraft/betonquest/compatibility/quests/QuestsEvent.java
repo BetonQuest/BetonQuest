@@ -12,12 +12,12 @@ import java.util.logging.Level;
  * Starts a quests in Quests plugin.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class QuestEvent extends pl.betoncraft.betonquest.api.QuestEvent {
+public class QuestsEvent extends pl.betoncraft.betonquest.api.QuestEvent {
 
     private final String questName;
     private final boolean override;
 
-    public QuestEvent(final Instruction instruction) throws InstructionParseException {
+    public QuestsEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questName = instruction.next();
         override = instruction.hasArgument("check-requirements");

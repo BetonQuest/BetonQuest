@@ -79,8 +79,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
             mmoItem.setAmount(stackSize);
             final HashMap<Integer, ItemStack> left = player.getInventory().addItem(mmoItem);
-            for (final Integer leftNumber : left.keySet()) {
-                final ItemStack itemStack = left.get(leftNumber);
+            for (final ItemStack itemStack : left.values()) {
                 player.getWorld().dropItem(player.getLocation(), itemStack);
             }
             amount -= stackSize;

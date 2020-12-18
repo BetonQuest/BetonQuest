@@ -288,9 +288,9 @@ public abstract class Objective {
      */
     public void close() {
         stop();
-        for (final String playerID : dataMap.keySet()) {
-            BetonQuest.getInstance().getPlayerData(playerID).addRawObjective(instruction.getID().getFullID(),
-                    dataMap.get(playerID).toString());
+        for (final Map.Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
+            BetonQuest.getInstance().getPlayerData(entry.getKey()).addRawObjective(instruction.getID().getFullID(),
+                    entry.getValue().toString());
         }
     }
 

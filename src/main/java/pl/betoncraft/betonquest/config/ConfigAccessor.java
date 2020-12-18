@@ -1,11 +1,13 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.logging.Level;
 
@@ -52,7 +54,7 @@ public class ConfigAccessor {
                     fileConfiguration = new YamlConfiguration();
                 } else {
                     fileConfiguration = YamlConfiguration
-                            .loadConfiguration(new InputStreamReader(str));
+                            .loadConfiguration(new InputStreamReader(str, StandardCharsets.UTF_8));
                 }
             } catch (IOException exception) {
                 fileConfiguration = new YamlConfiguration();
@@ -63,7 +65,7 @@ public class ConfigAccessor {
             try (InputStream defConfigStream = plugin.getResource(fileName)) {
                 if (defConfigStream != null) {
                     final YamlConfiguration defConfig = YamlConfiguration
-                            .loadConfiguration(new InputStreamReader(defConfigStream));
+                            .loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
                     fileConfiguration.setDefaults(defConfig);
                 }
             } catch (IOException e) {
@@ -90,6 +92,7 @@ public class ConfigAccessor {
      * If the configuration is empty it will delete that file.
      * If the file does not exist, it will create one.
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public void saveConfig() {
         if (configFile == null) {
             return;
@@ -109,6 +112,7 @@ public class ConfigAccessor {
     /**
      * Saves the default configuration to a file. It won't do anything if the file is null.
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public void saveDefaultConfig() {
         if (configFile == null) {
             return;

@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,6 +48,7 @@ public class Compatibility implements Listener {
     private final List<String> hooked = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public Compatibility() {
         instance = this;
 

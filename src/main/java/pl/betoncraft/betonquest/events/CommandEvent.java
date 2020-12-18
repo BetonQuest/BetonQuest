@@ -75,7 +75,7 @@ public class CommandEvent extends QuestEvent {
     }
 
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
-    private class Command {
+    private static class Command {
 
         private final String command;
         private final List<String> variables;

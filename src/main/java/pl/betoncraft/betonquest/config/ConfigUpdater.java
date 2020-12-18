@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
@@ -41,6 +42,11 @@ import java.util.logging.Level;
         "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CloseResource",
         "PMD.UseLocaleWithCaseConversions", "PMD.SimplifyStartsWith", "PMD.UseIndexOfChar",
         "PMD.UseStringBufferForStringAppends"})
+@SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "ODR_OPEN_DATABASE_RESOURCE", "DLS_DEAD_LOCAL_STORE",
+        "OBL_UNSATISFIED_OBLIGATION", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+        "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE", "REC_CATCH_EXCEPTION", "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
+        "UC_USELESS_OBJECT", "WMI_WRONG_MAP_ITERATOR", "SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE",
+        "SIC_INNER_SHOULD_BE_STATIC"})
 public class ConfigUpdater {
 
     // abandon all hope, ye who enter here

@@ -41,8 +41,8 @@ public final class Notify {
 
         final Map<String, String> categoryData = getCategorySettings(categories);
         if (data != null) {
-            for (final String key : data.keySet()) {
-                categoryData.put(key.toLowerCase(Locale.ROOT), data.get(key));
+            for (final Map.Entry<String, String> entry : data.entrySet()) {
+                categoryData.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
             }
         }
 

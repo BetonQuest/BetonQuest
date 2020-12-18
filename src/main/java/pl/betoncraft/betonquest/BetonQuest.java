@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
@@ -67,6 +68,7 @@ public class BetonQuest extends JavaPlugin {
     private GlobalData globalData;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public BetonQuest() {
         super();
         instance = this;

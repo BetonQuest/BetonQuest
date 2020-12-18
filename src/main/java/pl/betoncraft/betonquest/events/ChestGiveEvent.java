@@ -53,8 +53,7 @@ public class ChestGiveEvent extends QuestEvent {
                 }
                 final ItemStack item = questItem.generate(stackSize);
                 final HashMap<Integer, ItemStack> left = chest.getInventory().addItem(item);
-                for (final Integer leftNumber : left.keySet()) {
-                    final ItemStack itemStack = left.get(leftNumber);
+                for (final ItemStack itemStack : left.values()) {
                     block.getWorld().dropItem(block.getLocation(), itemStack);
                 }
                 amount = amount - stackSize;

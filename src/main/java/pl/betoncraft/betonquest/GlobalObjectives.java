@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.database.PlayerData;
 import pl.betoncraft.betonquest.id.ObjectiveID;
@@ -20,6 +21,7 @@ public class GlobalObjectives {
     private final Set<ObjectiveID> globalObjectiveIds;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public GlobalObjectives() {
         instance = this;
         globalObjectiveIds = new HashSet<>();

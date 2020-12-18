@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.database;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
@@ -42,6 +43,7 @@ public abstract class Database {
         con = null;
     }
 
+    @SuppressFBWarnings({"SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "OBL_UNSATISFIED_OBLIGATION", "ODR_OPEN_DATABASE_RESOURCE"})
     public void createTables(final boolean isMySQLUsed) {
         final String autoIncrement;
         if (isMySQLUsed) {

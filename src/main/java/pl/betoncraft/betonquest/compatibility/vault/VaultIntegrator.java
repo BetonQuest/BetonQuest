@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.vault;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public class VaultIntegrator implements Integrator {
     private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public VaultIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();

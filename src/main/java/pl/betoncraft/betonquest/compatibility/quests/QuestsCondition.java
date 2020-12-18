@@ -9,11 +9,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
  * Checks if the player has done specified quest before.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class QuestCondition extends Condition {
+public class QuestsCondition extends Condition {
 
     private final String questName;
 
-    public QuestCondition(final Instruction instruction) throws InstructionParseException {
+    public QuestsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questName = instruction.next();
     }

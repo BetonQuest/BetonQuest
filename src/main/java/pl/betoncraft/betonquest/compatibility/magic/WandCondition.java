@@ -129,10 +129,10 @@ public class WandCondition extends Condition {
         }
         if (!spells.isEmpty()) {
             spell:
-            for (final String spell : spells.keySet()) {
-                final int level = spells.get(spell).getInt(playerID);
+            for (final Map.Entry<String, VariableNumber> entry : spells.entrySet()) {
+                final int level = entry.getValue().getInt(playerID);
                 for (final String wandSpell : wand.getSpells()) {
-                    if (wandSpell.toLowerCase(Locale.ROOT).startsWith(spell.toLowerCase(Locale.ROOT)) && wand.getSpellLevel(spell) >= level) {
+                    if (wandSpell.toLowerCase(Locale.ROOT).startsWith(entry.getKey().toLowerCase(Locale.ROOT)) && wand.getSpellLevel(entry.getKey()) >= level) {
                         continue spell;
                     }
                 }

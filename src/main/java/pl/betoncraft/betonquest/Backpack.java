@@ -392,8 +392,7 @@ public class Backpack implements Listener {
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
-            for (final String name : cancelers.keySet()) {
-                final QuestCanceler canceler = cancelers.get(name);
+            for (final QuestCanceler canceler : cancelers.values()) {
                 content[index] = canceler.getItem(playerID);
                 map.put(index, canceler);
                 index++;

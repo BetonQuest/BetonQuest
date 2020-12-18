@@ -62,8 +62,7 @@ public class GiveEvent extends QuestEvent {
                 }
                 final ItemStack item = questItem.generate(stackSize);
                 final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
-                for (final Integer leftNumber : left.keySet()) {
-                    final ItemStack itemStack = left.get(leftNumber);
+                for (final ItemStack itemStack : left.values()) {
                     if (Utils.isQuestItem(itemStack)) {
                         BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
                     } else {

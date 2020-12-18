@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmocore;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttributes;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @SuppressWarnings("PMD.CommentRequired")
 public final class MMOCoreUtils {
 
+    @SuppressFBWarnings("MS_PKGPROTECT")
     public static YamlConfiguration mmoCoreAttributeConfig;
 
     private MMOCoreUtils() {

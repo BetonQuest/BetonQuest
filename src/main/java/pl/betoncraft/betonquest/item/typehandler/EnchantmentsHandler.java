@@ -73,7 +73,7 @@ public class EnchantmentsHandler {
         return true;
     }
 
-    private class SingleEnchantmentHandler {
+    private static class SingleEnchantmentHandler {
 
         private Enchantment type;
         private Existence existence = Existence.WHATEVER;

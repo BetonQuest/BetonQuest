@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.api;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -25,6 +26,7 @@ public class MobKillNotifier {
     private final List<Entity> entities = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public MobKillNotifier() {
         instance = this;
         final BukkitRunnable cleaner = new BukkitRunnable() {

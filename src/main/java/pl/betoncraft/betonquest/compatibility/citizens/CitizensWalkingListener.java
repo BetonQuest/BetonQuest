@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class CitizensWalkingListener implements Listener {
      * when in conversation
      */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public CitizensWalkingListener() {
         instance = this;
         Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());

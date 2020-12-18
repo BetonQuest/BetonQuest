@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -192,11 +193,13 @@ public class EntityHider implements Listener {
         return new Listener() {
 
             @EventHandler(ignoreCancelled = true)
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onEntityDeath(final EntityDeathEvent event) {
                 removeEntity(event.getEntity(), true);
             }
 
             @EventHandler(ignoreCancelled = true)
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onChunkUnload(final ChunkUnloadEvent event) {
                 for (final Entity entity : event.getChunk().getEntities()) {
                     removeEntity(entity, false);
@@ -204,6 +207,7 @@ public class EntityHider implements Listener {
             }
 
             @EventHandler(ignoreCancelled = true)
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onPlayerQuit(final PlayerQuitEvent event) {
                 removePlayer(event.getPlayer());
             }

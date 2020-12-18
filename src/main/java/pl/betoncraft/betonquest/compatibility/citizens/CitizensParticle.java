@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import de.slikey.effectlib.util.DynamicLocation;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ public class CitizensParticle extends BukkitRunnable {
     private final boolean enabled;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public CitizensParticle() {
         super();
         instance = this;
@@ -235,7 +237,7 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
-    private class Effect {
+    private static class Effect {
 
         private String name;
         private int interval;

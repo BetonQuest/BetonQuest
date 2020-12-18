@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -42,6 +43,7 @@ public class GlobalLocations extends BukkitRunnable {
      * Creates new instance of global locations handler.
      */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public GlobalLocations() {
         super();
         // cancel previous instance if it exists
@@ -134,7 +136,7 @@ public class GlobalLocations extends BukkitRunnable {
      * Represents single global location.
      */
     @SuppressWarnings("PMD.DataClass")
-    private class GlobalLocation {
+    private static class GlobalLocation {
 
         private final ObjectiveID objectiveID;
         private final CompoundLocation location;
