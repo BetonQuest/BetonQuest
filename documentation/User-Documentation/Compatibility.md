@@ -262,7 +262,7 @@ When you install Heroes, all kills done via this plugin's skills will be counted
 
 ### Conditions
 
-#### Class: `heroesclass`
+#### Heroes Class: `heroesclass`
 
 This condition checks the classes of the player. The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`. You can optionally specify `level:` argument followed by the required level of the player.
 
@@ -282,7 +282,7 @@ This condition checks if the player can use specified skill. The first argument 
 
 ### Events
 
-#### Experience: `heroesexp`
+#### Heroes experience: `heroesexp`
 
 This event simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
 
@@ -384,48 +384,48 @@ Returns true if the player has this job, and at a level equal to or between the 
 
 ### Events
 
-#### Add Experience: `nujobs_addexp {jobname} {exp}`
+#### Add Jobs Experience: `nujobs_addexp {jobname} {exp}`
 
 Gives the player experience
 
-#### Increase Level: `nujobs_addlevel {jobname} {amount}`
+#### Increase Jobs Level: `nujobs_addlevel {jobname} {amount}`
 
 Increases the player level by amount.
 
-#### Decrease Level: `nujobs_dellevel {jobname} {amount}`
+#### Decrease Jobs Level: `nujobs_dellevel {jobname} {amount}`
 
 Decreases the players level by amount.
 
-#### Join Job: `nujobs_joinjob {jobname}`
+#### Join Jobs Job Event: `nujobs_joinjob {jobname}`
 
 Joins the player to job.
 
-#### Leave Job: `nujobs_leavejob {jobname}`
+#### Leave Jobs Job Event: `nujobs_leavejob {jobname}`
 
 Removes the player from job.
 
-#### Set Level: `nujobs_setlevel {jobname} {level}`
+#### Set Jobs Level: `nujobs_setlevel {jobname} {level}`
 
 Set the player to level.
 
 ### Objectives
 
-#### Join Job: `nujobs_joinjob {jobname}`
+#### Join Jobs Job Objective: `nujobs_joinjob {jobname}`
 
 Triggers when player joins job.
 
-#### Leave Job: `nujobs_leavejob {jobname}`
+#### Leave Jobs Job Objective: `nujobs_leavejob {jobname}`
 
 Triggers when player leaves job.
 
 !!! notice
     This is not triggered by '/jobs leaveall'
 
-#### Job Levelup: `nujobs_levelup {jobname}`
+#### Jobs Job Levelup: `nujobs_levelup {jobname}`
 
 Triggers when player levels up.
 
-#### Job Payment: `nujobs_payment {amount}`
+#### Jobs Job Payment: `nujobs_payment {amount}`
 
 Triggers when player makes {amount} of money from jobs.
 
@@ -447,7 +447,7 @@ This condition can check wands. The first argument is either `hand`, `inventory`
 
 ### Conditions
 
-#### Level: `mcmmolevel`
+#### McMMO Level: `mcmmolevel`
 
 This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
 
@@ -458,7 +458,7 @@ This conditions checks if the player has high enough level in the specified skil
 
 ### Events
 
-#### Experience: `mcmmoexp`
+#### Add MCMMO Experience: `mcmmoexp`
 
 This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
 
@@ -534,7 +534,7 @@ mmocorebreakblock 64 block:STONE  #vanilla material
 mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
 ```
 
-####Profession levelup: `mmoprofessionlevelup`
+####MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
 ```YAML linenums="1"
 mmoprofessionlevelup MINING 10
@@ -583,7 +583,7 @@ mmoitemcastskill BACKSTAB
 
 ###Events
 
-####Give class experience: `mmoclassexperience`
+####Give MMOCore class experience: `mmoclassexperience`
 Adds experience to the players class. The amount can be a variable or a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
@@ -591,7 +591,7 @@ mmoclassexperience 150
 mmoclassexperience 1 level
 ```
 
-####Give profession experience: `mmoprofessionexperience`
+####Give MMOCore profession experience: `mmoprofessionexperience`
 Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
@@ -856,7 +856,7 @@ This adds support for [Sentropics SkillAPI fork](https://github.com/Sentropic/Sk
 
 ### Conditions
 
-#### Class: `skillapiclass`
+#### SkillAPI Class: `skillapiclass`
 
 This condition checks if the player has specified class or a child class of the specified one. The first argument is simply the name of a class. You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
@@ -865,7 +865,7 @@ This condition checks if the player has specified class or a child class of the 
     skillapiclass warrior
     ```
 
-#### Level: `skillapilevel`
+#### SkillAPI Level: `skillapilevel`
 
 This condition checks if the player has specified or greater level is the specified class. The first argument is class name, the second one is the required level.
 
@@ -932,7 +932,7 @@ By installing Vault you enable Permission event and Money condition/event.
 
 ### Conditions
 
-#### Money: `money`
+#### Vault Money Condition: `money`
 
 Checks if the player has specified amount of money. You can specify only one argument, amount integer. It cannot be negative!
 
@@ -943,7 +943,7 @@ Checks if the player has specified amount of money. You can specify only one arg
 
 ### Events
 
-#### Money: `money`
+#### Vault Money Event: `money`
 
 Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
 
@@ -963,7 +963,7 @@ Adds or removes a permission or a group. First argument is `add` or `remove`. It
 
 ### Variables
 
-#### Money: `money`
+#### Vault Money Variable: `money`
 
 There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
 
