@@ -176,7 +176,7 @@ Don't forget that if you use global and persistent you can still remove the obje
 
 ## Logout: `logout`
 
-To complete this objective the player simply needs to leave the server. Keep in mind that running `folder` event here will make it run in "persistent" mode, since the player is offline on the next tick.
+To complete this objective the player simply needs to leave the server. Keep in mind that running a `folder` event here will make it run in "persistent" mode, since the player is offline on the next tick.
 
 !!! example
     ```YAML
