@@ -8,7 +8,7 @@ Action objective contains one property, `location`. It's a string formatted like
 
 !!! example
     ```YAML
-    action right DOOR:1 conditions:holding_key loc:100;200;300;world range:5
+    action right DOOR conditions:holding_key loc:100;200;300;world range:5
     ```
 
 ## Arrow Shooting: `arrow`
@@ -115,7 +115,7 @@ Fishing has the same properties as mob kill objective.
 
 !!! example
     ```YAML
-    fish raw_fish:1 5 notify events:tag_fish_caught
+    fish SALMON 5 notify events:tag_fish_caught
     ```
 
 ## Interact with entity: `interact`
